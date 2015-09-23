@@ -1,0 +1,7 @@
+C:\Users\Cole\Documents\Visual Studio 2013\Projects\TwitchLib\TwitchLib\bin\Debug\TwitchLib.dll
+C:\Users\Cole\Documents\Visual Studio 2013\Projects\TwitchLib\TwitchLib\bin\Debug\TwitchLib.pdb
+C:\Users\Cole\Documents\Visual Studio 2013\Projects\TwitchLib\TwitchLib\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Cole\Documents\Visual Studio 2013\Projects\TwitchLib\TwitchLib\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Cole\Documents\Visual Studio 2013\Projects\TwitchLib\TwitchLib\obj\Debug\TwitchLib.csprojResolveAssemblyReference.cache
+C:\Users\Cole\Documents\Visual Studio 2013\Projects\TwitchLib\TwitchLib\obj\Debug\TwitchLib.dll
+C:\Users\Cole\Documents\Visual Studio 2013\Projects\TwitchLib\TwitchLib\obj\Debug\TwitchLib.pdb
