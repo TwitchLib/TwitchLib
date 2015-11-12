@@ -3,74 +3,93 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace TwitchLib
 {
+
     class ChatMessage
     {
-        private string colorHEX, username, display_name, message;
-        private Boolean subscriber, turbo;
-        List<string> emotes;
-        utility.userType user_type;
-        public ChatMessage(string _username, string _display_name, string _colorHEX, List<string> _emotes,
-            Boolean _subscriber, Boolean _turbo, utility.userType _userType, string _message)
+        public enum uType
         {
-            display_name = _display_name;
-            username = _username;
-            colorHEX = _colorHEX;
-            emotes = _emotes;
-            subscriber = _subscriber;
-            turbo = _turbo;
-            user_type = _userType;
-            message = _message;
+            Viewer,
+            Moderator,
+            GlobalModerator,
+            Admin,
+            Staff
         }
 
-        public string getSenderDisplayName()
+        private bool parsedCorrectly = false;
+
+        private int userID;
+        private string username, displayName, colorHEX, message, channel, emoteSet;
+        private bool subscriber, turbo;
+        private uType userType;
+
+        public bool ParsedCorrectly { get { return parsedCorrectly; } }
+        public int UserID { get { return userID; } }
+        public string Username { get { return username; } }
+        public string DisplayName { get { return displayName; } }
+        public string ColorHEX { get { return colorHEX; } }
+        public string Message { get { return message; } }
+        public uType UserType { get { return userType; } }
+        public string Channel { get { return channel; } }
+
+        public ChatMessage(string IRCString)
         {
-            string senderDisplayNameData = display_name;
-            return senderDisplayNameData;
+            //@color=asd;display-name=Swiftyspiffyv4;emotes=;subscriber=0;turbo=0;user-id=103325214;user-type=asd :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #burkeblack :this is a test lol
+            colorHEX = IRCString.Split(';')[0].Split('=')[1];
+            username = IRCString.Split('@')[2].Split('.')[0];
+            displayName = IRCString.Split(';')[1].Split('=')[1];
+            emoteSet = IRCString.Split(';')[2].Split('=')[1];
+            string subscriberStr = IRCString.Split(';')[3].Split('=')[1];
+            string turboStr = IRCString.Split(';')[4].Split('=')[1];
+            string userIDStr = IRCString.Split(';')[5].Split('=')[1];
+            string userTypeStr = IRCString.Split(';')[6].Split(':')[0].Split('=')[1].Replace(" ", String.Empty);
+            if (IRCString.Split('#').Count() == 3)
+            {
+                channel = IRCString.Split('#')[2].Split(' ')[0];
+                message = IRCString.Replace(IRCString.Split('#')[0] + "#" + IRCString.Split('#')[1] + "#" + channel + " :", "");
+            }
+            else
+            {
+                channel = IRCString.Split('#')[1].Split(' ')[0];
+                message = IRCString.Replace(IRCString.Split('#')[0] + "#" + channel + " :", "");
+            }
+            subscriber = convertToBool(subscriberStr);
+            turbo = convertToBool(turboStr);
+
+            userID = int.Parse(userIDStr);
+
+            switch (userTypeStr)
+            {
+                case "mod":
+                    userType = uType.Moderator;
+                    break;
+
+                case "global_mod":
+                    userType = uType.GlobalModerator;
+                    break;
+
+                case "admin":
+                    userType = uType.Admin;
+                    break;
+
+                case "staff":
+                    userType = uType.Staff;
+                    break;
+
+                default:
+                    userType = uType.Viewer;
+                    break;
+            }
         }
 
-        public string getSenderUsername()
+        private bool convertToBool(string data)
         {
-            string senderUsernameData = username;
-            return senderUsernameData;
-        }
-
-        public string getColorHEX()
-        {
-            string colorHEXData = colorHEX;
-            return colorHEXData;
-        }
-
-        public List<string> getEmotes()
-        {
-            List<string> emoteData = emotes;
-            return emoteData;
-        }
-
-        public Boolean getSubscriber()
-        {
-            Boolean subscriberData = subscriber;
-            return subscriberData;
-        }
-
-        public Boolean getTurbo()
-        {
-            Boolean turboData = turbo;
-            return turboData;
-        }
-
-        public utility.userType getUserType()
-        {
-            utility.userType uTypeData = user_type;
-            return uTypeData;
-        }
-
-        public string getMessage()
-        {
-            string messageData = message;
-            return message;
+            if (data == "1")
+                return true;
+            return false;
         }
     }
 }
