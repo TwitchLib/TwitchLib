@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Meebey.SmartIrc4net;
 
 namespace TwitchLib
 {
     public class TwitchLib
     {
-        private IrcConnection chatClients = new IrcConnection();
-        private IrcConnection whisperClient;
-
+        TwitchChatClientManager chatManager = new TwitchChatClientManager();
+        TwitchWhisperClient whisperClient = new TwitchWhisperClient();
 
         public TwitchLib()
         {

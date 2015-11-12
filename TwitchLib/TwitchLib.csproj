@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Meebey.SmartIrc4net">
-      <HintPath>..\..\..\..\..\Desktop\smartirc\bin\debug\Meebey.SmartIrc4net.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\smartirc\bin\debug\Meebey.SmartIrc4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,8 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChatMessage.cs" />
+    <Compile Include="TwitchChatClient.cs" />
+    <Compile Include="TwitchChatClientManager.cs" />
     <Compile Include="TwitchLib.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TwitchWhisperClient.cs" />
     <Compile Include="WhisperMessage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
