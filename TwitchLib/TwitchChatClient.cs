@@ -17,13 +17,29 @@ namespace TwitchLib
         public string Channel { get { return channel; } }
         public int Port { get { return port; } }
 
-        public TwitchChatClient(string channel, string host = "", int port = 443)
+        public TwitchChatClient(string channel, string host = "192.16.64.174", int port = 443)
         {
-            this.channel = channel;
+            this.channel = channel.ToLower();
             this.host = host;
             this.port = port;
         }
 
+        //TODO: connect method
+        public void connect()
+        {
 
+        }
+
+        //TODO: disconnect method
+        public void disconnect()
+        {
+
+        }
+
+        //TODO: messageInterpreter method
+        private void messageInterpreter(string IRCMessage)
+        {
+
+        }
     }
 }

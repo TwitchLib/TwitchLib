@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace TwitchLib
 {
-
+    //Should be fully functional
     class ChatMessage
     {
         public enum uType

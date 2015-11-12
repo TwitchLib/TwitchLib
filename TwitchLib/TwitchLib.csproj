@@ -42,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallResponse.cs" />
     <Compile Include="ChatMessage.cs" />
+    <Compile Include="Subscriber.cs" />
     <Compile Include="TwitchChatClient.cs" />
     <Compile Include="TwitchChatClientManager.cs" />
     <Compile Include="TwitchLib.cs" />
