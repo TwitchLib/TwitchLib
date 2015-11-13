@@ -20,13 +20,18 @@ namespace TwitchLib
         }
 
         //TODO: Raise event for new chat message
-        private void newChatMessage(string channel, ChatMessage chatMessage)
+        private void newChatMessage(object sender, TwitchChatClient.NewChatMessageArgs e)
         {
             
         }
 
         //TODO: Raise event for new subscriber
-        private void newSubscriber(string channel, Subscriber subscriber)
+        private void newSubscriber(object sender, TwitchChatClient.NewSubscriberArgs e)
+        {
+
+        }
+
+        private void channelStateAssigned(object sender, TwitchChatClient.ChannelStateAssignedArgs e)
         {
 
         }
@@ -57,6 +62,10 @@ namespace TwitchLib
             }
             TwitchChatClient newClient = new TwitchChatClient(channel, credentials);
             //TODO: Add event hook for chat messages, subs, etc
+            newClient.NewChatMessage += new EventHandler<TwitchChatClient.NewChatMessageArgs>(newChatMessage);
+            newClient.NewSubscriber += new EventHandler<TwitchChatClient.NewSubscriberArgs>(newSubscriber);
+            newClient.ChannelStateAssigned += new EventHandler<TwitchChatClient.ChannelStateAssignedArgs>(channelStateAssigned);
+
 
             chatClients.Add(newClient);
             return new CallResponse(true, newClient);

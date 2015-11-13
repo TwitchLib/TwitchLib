@@ -8,3 +8,4 @@ C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\log4net.xml
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\starksoft.aspen.xml
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\obj\Debug\TwitchLib.dll
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\obj\Debug\TwitchLib.pdb
+C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\obj\Debug\TwitchLib.csprojResolveAssemblyReference.cache

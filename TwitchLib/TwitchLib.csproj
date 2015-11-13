@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallResponse.cs" />
+    <Compile Include="ChannelState.cs" />
     <Compile Include="ChatMessage.cs" />
     <Compile Include="ConnectionCredentials.cs" />
     <Compile Include="Subscriber.cs" />

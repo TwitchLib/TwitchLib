@@ -6,18 +6,29 @@ using System.Threading.Tasks;
 
 namespace TwitchLib
 {
-    class Subscriber
+    public class Subscriber
     {
-        private string name;
+        private string channel, name;
         private int months;
 
+        public string Channel { get { return channel; } }
         public string Name { get { return name; } }
         public int Months { get { return months; } }
 
-        public Subscriber(string name, int months)
+        //:twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #cohhcarnage :swiftyspiffy just subscribed!
+        //:twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #cohhcarnage :swiftyspiffy subscribed for 9 months in a row!
+        public Subscriber(string IRCString)
         {
-            this.name = name;
-            this.months = months;
+            channel = IRCString.Split('#')[1].Split(' ')[0];
+            name = IRCString.Split(':')[2].Split(' ')[0];
+            if (IRCString.Split(' ').Count() == 5)
+            {
+                months = 0;
+            }
+            else
+            {
+                months = int.Parse(IRCString.Split(' ')[6]);
+            }
         }
     }
 }
