@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TwitchLib
 {
-    class CallResponse
+    public class CallResponse
     {
         private bool response;
         private object satteliteData;

@@ -7,27 +7,27 @@ using Meebey.SmartIrc4net;
 
 namespace TwitchLib
 {
-    class TwitchChatClient
+    public class TwitchChatClient
     {
         private IrcConnection client = new IrcConnection();
-        private string host, channel;
-        private int port;
+        private ConnectionCredentials credentials;
+        private string channel;
 
-        public string Host { get { return host; } }
         public string Channel { get { return channel; } }
-        public int Port { get { return port; } }
 
-        public TwitchChatClient(string channel, string host = "192.16.64.174", int port = 443)
+        public TwitchChatClient(string channel, ConnectionCredentials credentials)
         {
             this.channel = channel.ToLower();
-            this.host = host;
-            this.port = port;
+            this.credentials = credentials;
+
+            client.OnConnected += new EventHandler(onConnected);
+            client.OnDisconnected += new EventHandler(onDisconnected);
+            client.OnReadLine += new ReadLineEventHandler(onReadLine);
         }
 
-        //TODO: connect method
         public void connect()
         {
-
+            client.Connect(credentials.ChatHost, credentials.ChatPort);
         }
 
         //TODO: disconnect method
@@ -36,10 +36,30 @@ namespace TwitchLib
 
         }
 
-        //TODO: messageInterpreter method
-        private void messageInterpreter(string IRCMessage)
+        private void onConnected(object sender, EventArgs e)
+        {
+            client.WriteLine(String.Format("PASS {0}", credentials.TwitchOAuth));
+            client.WriteLine(String.Format("NICK {0}", credentials.TwitchUsername));
+            client.WriteLine(String.Format("USER {0}", credentials.TwitchUsername));
+
+            client.WriteLine(String.Format("CAP REQ {0}", "twitch.tv/membership"));
+            client.WriteLine(String.Format("CAP REQ {0}", "twitch.tv/commands"));
+            client.WriteLine(String.Format("CAP REQ {0}", "twitch.tv/tags"));
+
+            client.WriteLine(String.Format("JOIN #{0}", channel));
+            client.Listen();
+        }
+
+        //TODO: Handle a disconnected client
+        private void onDisconnected(object sender, EventArgs e)
         {
 
+        }
+
+        //TODO: Determine if chat message, pass the data into ChatMessage constructor, raise chatmessage event
+        private void onReadLine(object sender, ReadLineEventArgs e)
+        {
+            Console.WriteLine(e.Line);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace TwitchLib
 
         }
 
-        public CallResponse addChannel(string channel)
+        public CallResponse addChannel(string channel, ConnectionCredentials credentials)
         {
             if (channelLimit != -1 && channelLimit == chatClients.Count())
                 return new CallResponse(false, "Channel limit hit");
@@ -55,11 +55,11 @@ namespace TwitchLib
                     return new CallResponse(false, "Channel already exists");
                 }
             }
-            TwitchChatClient newClient = new TwitchChatClient(channel);
+            TwitchChatClient newClient = new TwitchChatClient(channel, credentials);
             //TODO: Add event hook for chat messages, subs, etc
 
             chatClients.Add(newClient);
-            return new CallResponse(true);
+            return new CallResponse(true, newClient);
         }
 
         public CallResponse removeChannel(string channel)

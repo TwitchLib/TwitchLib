@@ -8,17 +8,18 @@ namespace TwitchLib
 {
     public class TwitchLib
     {
-        TwitchChatClientManager chatManager = new TwitchChatClientManager();
-        TwitchWhisperClient whisperClient = new TwitchWhisperClient();
+        private TwitchChatClientManager chatManager = new TwitchChatClientManager();
+        private TwitchWhisperClient whisperClient = new TwitchWhisperClient();
+        private ConnectionCredentials credentials;
 
-        public TwitchLib()
+        public TwitchLib(ConnectionCredentials credentials)
         {
-
+            this.credentials = credentials;
         }
 
         public CallResponse addChannel(string channel)
         {
-            return chatManager.addChannel(channel);
+            return chatManager.addChannel(channel, credentials);
         }
 
         public CallResponse removeChannel(string channel)
