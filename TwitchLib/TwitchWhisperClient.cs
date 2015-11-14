@@ -7,35 +7,71 @@ using Meebey.SmartIrc4net;
 
 namespace TwitchLib
 {
-    class TwitchWhisperClient
+    public class TwitchWhisperClient
     {
         private IrcConnection client = new IrcConnection();
-        private string host;
-        private int port;
+        private ConnectionCredentials credentials;
 
-        public string Host { get { return host; } }
-        public int Port { get { return port; } }
+        public string TwitchUsername { get { return credentials.TwitchUsername; } }
 
-        public TwitchWhisperClient(string host = "192.16.64.180", int port = 443)
-        {
-            this.host = host;
-            this.port = port;
+        public event EventHandler<NewWhisperReceivedArgs> NewWhisper;
+
+        public class NewWhisperReceivedArgs : EventArgs {
+            public WhisperMessage WhisperMessage;
         }
 
-        //TODO: connect method
+        public TwitchWhisperClient(ConnectionCredentials credentials)
+        {
+            this.credentials = credentials;
+
+            client.OnConnected += new EventHandler(onConnected);
+            client.OnReadLine += new ReadLineEventHandler(onReadLine);
+        }
+
         public void connect() {
-
+            client.Connect(credentials.Host, credentials.Port);
         }
 
-        //TODO: disconnect method
         public void disconnect() {
-
+            client.Disconnect();
         }
 
-        //TODO: messageInterpreter method
-        private void messageInterpreter(string IRCMessage)
+        //:dara226!dara226@dara226.tmi.twitch.tv WHISPER the_kraken_bot :ahoy
+        public void sendWhisper(string receiver, string message)
         {
+            client.WriteLine(String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :{2}", credentials.TwitchUsername, receiver, message));
+        }
 
+        private void onConnected(object sender, EventArgs e)
+        {
+            client.WriteLine(Rfc2812.Pass(credentials.TwitchOAuth), Priority.Critical);
+            client.WriteLine(Rfc2812.Nick(credentials.TwitchUsername), Priority.Critical);
+            client.WriteLine(Rfc2812.User(credentials.TwitchUsername, 0, credentials.TwitchUsername), Priority.Critical);
+
+            client.WriteLine(String.Format("CAP REQ {0}", "twitch.tv/membership"));
+            client.WriteLine(String.Format("CAP REQ {0}", "twitch.tv/commands"));
+            client.WriteLine(String.Format("CAP REQ {0}", "twitch.tv/tags"));
+
+            Task.Factory.StartNew(() => client.Listen());
+        }
+
+        private void onReadLine(object sender, ReadLineEventArgs e)
+        {
+            if (e.Line.Split(' ').Count() > 3 && e.Line.Split(' ')[2] == "WHISPER")
+            {
+                WhisperMessage whisperMessage = new WhisperMessage(e.Line, credentials.TwitchUsername);
+                Console.WriteLine(String.Format("Color HEX: {0}\nDisplay Name: {1}\nEmote Set: {2}\nMessageID: {3}\nThread ID: {4}\nTurbo: {5}\nUserID: {6}\nUsername: {7}",
+                    whisperMessage.ColorHEX, whisperMessage.DisplayName, whisperMessage.EmoteSet, whisperMessage.MessageID, whisperMessage.ThreadID, whisperMessage.Turbo,
+                    whisperMessage.UserID, whisperMessage.Username));
+                if (NewWhisper != null)
+                {
+                    NewWhisper(null, new NewWhisperReceivedArgs { WhisperMessage = whisperMessage });
+                }
+            }
+            else
+            {
+                Console.WriteLine("Not registered: " + e.Line);
+            }
         }
     }
 }

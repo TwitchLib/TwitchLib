@@ -9,12 +9,13 @@ namespace TwitchLib
     public class ChannelState
     {
         private bool r9k, subsOnly, slowMode;
-        private string broadcasterLanguage;
+        private string broadcasterLanguage, channel;
 
         public bool R9K { get { return r9k; } }
         public bool SubOnly { get { return subsOnly; } }
         public bool SlowMode { get { return slowMode; } }
         public string BroadcasterLanguage { get { return broadcasterLanguage; } }
+        public string Channel { get { return channel;  } }
 
         public ChannelState(string IRCString)
         {
@@ -23,6 +24,7 @@ namespace TwitchLib
             r9k = convertToBool(IRCString.Split(';')[1].Split('=')[1]);
             slowMode = convertToBool(IRCString.Split(';')[2].Split('=')[1]);
             subsOnly = convertToBool(IRCString.Split(';')[3].Split('=')[1]);
+            channel = IRCString.Split('#')[1];
         }
 
         private bool convertToBool(string data)

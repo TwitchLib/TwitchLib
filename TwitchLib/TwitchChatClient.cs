@@ -17,6 +17,7 @@ namespace TwitchLib
 
         public ChannelState ChannelState { get { return state; } }
         public string Channel { get { return channel; } }
+        public string TwitchUsername { get { return credentials.TwitchUsername; } }
 
         public event EventHandler<NewChatMessageArgs> NewChatMessage;
         public event EventHandler<NewSubscriberArgs> NewSubscriber;
@@ -56,7 +57,7 @@ namespace TwitchLib
 
         public void connect()
         {
-            client.Connect(credentials.ChatHost, credentials.ChatPort);
+            client.Connect(credentials.Host, credentials.Port);
         }
 
         //TODO: disconnect method

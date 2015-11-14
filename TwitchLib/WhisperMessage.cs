@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TwitchLib
 {
-    class WhisperMessage
+    public class WhisperMessage
     {
         public enum uType
         {
@@ -15,7 +15,7 @@ namespace TwitchLib
             Admin,
             Staff
         }
-        private string colorHEX, username, displayName, emoteSet, threadID, message;
+        private string botUsername, colorHEX, username, displayName, emoteSet, threadID, message;
         private int messageID, userID;
         private bool turbo;
 
@@ -27,8 +27,10 @@ namespace TwitchLib
         public int MessageID { get { return messageID; } }
         public int UserID { get { return userID; } }
         public bool Turbo { get { return turbo; } }
+        public string BotUsername { get { return botUsername; } }
+        public string Message { get { return message; } }
 
-        public WhisperMessage(string IRCString)
+        public WhisperMessage(string IRCString, string botUsername)
         {
             //@color=#00FF7F;display-name=Dara226;emotes=;message-id=53;thread-id=62192703_66137196;turbo=0;user-id=62192703;user-type= :dara226!dara226@dara226.tmi.twitch.tv WHISPER the_kraken_bot :ahoy
             colorHEX = IRCString.Split(';')[0].Split('=')[1];
@@ -41,7 +43,7 @@ namespace TwitchLib
             userID = int.Parse(IRCString.Split(';')[6].Split('=')[1]);
             string userTypeStr = IRCString.Split(';')[7].Split('=')[1].Replace(" ", "");
             message = IRCString.Replace(IRCString.Split('@')[0] + "@" + IRCString.Split('@')[1] + "@" + IRCString.Split('@')[2].Split(':')[0] + ":", String.Empty);
-            
+            this.botUsername = botUsername;
         }
 
         private bool convertToBool(string data)

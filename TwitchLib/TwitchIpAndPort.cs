@@ -9,18 +9,23 @@ namespace TwitchLib
 {
     public class TwitchIpAndPort
     {
-        private string channel;
         private IPPort[] chatServers, whisperServers;
 
         public TwitchIpAndPort(string channel, bool autoDownloadServerData = false)
         {
-            this.channel = channel;
             if (autoDownloadServerData)
             {
-                getChatServers();
+                getChatServers(channel);
                 getWhisperServers();
             }
+        }
 
+        public TwitchIpAndPort(bool autoDownloadServerData = false)
+        {
+            if (autoDownloadServerData)
+            {
+                getWhisperServers();
+            }
         }
 
         public IPPort getFirstChatServer()
@@ -37,7 +42,7 @@ namespace TwitchLib
             return null;
         }
 
-        public IPPort[] getChatServers()
+        public IPPort[] getChatServers(string channel)
         {
             string cnts = new System.Net.WebClient().DownloadString(String.Format("https://api.twitch.tv/api/channels/{0}/chat_properties", channel));
 
