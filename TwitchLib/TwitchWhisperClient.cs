@@ -39,7 +39,7 @@ namespace TwitchLib
         //:dara226!dara226@dara226.tmi.twitch.tv WHISPER the_kraken_bot :ahoy
         public void sendWhisper(string receiver, string message)
         {
-            client.WriteLine(String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :{2}", credentials.TwitchUsername, receiver, message));
+            client.WriteLine(String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :/w {2} {3}", credentials.TwitchUsername, "jtv", receiver, message));
         }
 
         private void onConnected(object sender, EventArgs e)
@@ -51,6 +51,8 @@ namespace TwitchLib
             client.WriteLine(String.Format("CAP REQ {0}", "twitch.tv/membership"));
             client.WriteLine(String.Format("CAP REQ {0}", "twitch.tv/commands"));
             client.WriteLine(String.Format("CAP REQ {0}", "twitch.tv/tags"));
+
+            client.WriteLine(Rfc2812.Join(String.Format("#{0}", "jtv")));
 
             Task.Factory.StartNew(() => client.Listen());
         }

@@ -32,6 +32,7 @@ namespace TwitchLib
 
         public WhisperMessage(string IRCString, string botUsername)
         {
+            Console.WriteLine("Received whisper: " + IRCString);
             //@color=#00FF7F;display-name=Dara226;emotes=;message-id=53;thread-id=62192703_66137196;turbo=0;user-id=62192703;user-type= :dara226!dara226@dara226.tmi.twitch.tv WHISPER the_kraken_bot :ahoy
             colorHEX = IRCString.Split(';')[0].Split('=')[1];
             username = IRCString.Split('@')[2].Split('.')[0];

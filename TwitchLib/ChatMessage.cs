@@ -53,7 +53,8 @@ namespace TwitchLib
             string subscriberStr = IRCString.Split(';')[3 + TSSubBoost].Split('=')[1];
             string turboStr = IRCString.Split(';')[4 + TSFinalBoost].Split('=')[1];
             string userIDStr = IRCString.Split(';')[5 + TSFinalBoost].Split('=')[1];
-            string userTypeStr = IRCString.Split(';')[6 + TSFinalBoost].Split(':')[0].Split('=')[1].Replace(" ", String.Empty);
+            string userTypeStr = "viewer";
+            if (IRCString.Split(';').Count() > (6 + TSFinalBoost)) { userTypeStr = IRCString.Split(';')[6 + TSFinalBoost].Split(':')[0].Split('=')[1].Replace(" ", String.Empty); }
             if (IRCString.Split('#').Count() == 3)
             {
                 channel = IRCString.Split('#')[2].Split(' ')[0];

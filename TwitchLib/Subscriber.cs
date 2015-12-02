@@ -17,6 +17,7 @@ namespace TwitchLib
 
         //:twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #cohhcarnage :swiftyspiffy just subscribed!
         //:twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #cohhcarnage :swiftyspiffy subscribed for 9 months in a row!
+        //3 viewers resubscribed while you were away!
         public Subscriber(string IRCString)
         {
             channel = IRCString.Split('#')[1].Split(' ')[0];
@@ -27,7 +28,8 @@ namespace TwitchLib
             }
             else
             {
-                months = int.Parse(IRCString.Split(' ')[6]);
+                if(!IRCString.Contains("while you were away!"))
+                    months = int.Parse(IRCString.Split(' ')[6]);
             }
         }
     }
