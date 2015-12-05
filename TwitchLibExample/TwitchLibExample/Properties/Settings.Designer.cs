@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TwitchLib_Example.Properties
+namespace TwitchLibExample.Properties
 {
 
 
