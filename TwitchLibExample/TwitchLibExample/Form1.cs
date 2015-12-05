@@ -22,6 +22,7 @@ namespace TwitchLibExample
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
             MessageBox.Show("This application is intended to demonstrate basic functionality of TwitchLib.\n\n-swiftyspiffy");
         }
 
@@ -114,17 +115,41 @@ namespace TwitchLibExample
             }
         }
 
-        private async void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private async void button5_Click(object sender, EventArgs e)
         {
-            if (textBox8.Text.Length > 0)
+            TwitchChannel channel = await TwitchAPI.getTwitchChannel("burkeblack");
+            MessageBox.Show(channel.ID.ToString());
+
+        }
+
+        private async void button6_Click(object sender, EventArgs e)
+        {
+            foreach(Chatter chatter in await TwitchAPI.getChatters("burkeblack"))
             {
-                if (await TwitchAPI.broadcasterOnline(textBox8.Text))
+                if(chatter.UserType == Chatter.uType.Moderator)
                 {
-                    MessageBox.Show(textBox8.Text + " is indeed online!");
-                } else
-                {
-                    MessageBox.Show(textBox8.Text + " is offline!");
+                    MessageBox.Show(chatter.Username);
                 }
+            }
+        }
+
+        private async void button7_Click(object sender, EventArgs e)
+        {
+            bool swiftyFollowing = await TwitchAPI.userFollowsChannel("swiftyspiffy", "burkeblack");
+            bool danFollowing = await TwitchAPI.userFollowsChannel("dansgaming", "burkeblack");
+
+            MessageBox.Show("swiftyspiffy is following burkeblack: " + swiftyFollowing + "\ndansgaming is following burkeblack: " + danFollowing);
+        }
+
+        private async void button8_Click(object sender, EventArgs e)
+        {
+            if (await TwitchAPI.broadcasterOnline("burkeblack"))
+            {
+                MessageBox.Show(textBox8.Text + " is indeed online!");
+            }
+            else
+            {
+                MessageBox.Show(textBox8.Text + " is offline!");
             }
         }
     }
