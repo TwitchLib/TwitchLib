@@ -1,5 +1,6 @@
 # TwitchLib
-A wrapper of the SmartIRC4net class intended for use with Twitch
+A wrapper of the SmartIRC4net class intended for use with Twitch.
+Also includes class to make async web calls to Twitch API.
 
 This is still a work in progress. Basic functionality exists. 
 You can connect to multiple channels, using multiple accounts,
