@@ -40,6 +40,7 @@ namespace TwitchLibExample
             listView1.Items.Add(lvi);
             if(!comboBox2.Items.Contains(textBox4.Text))
                 comboBox2.Items.Add(textBox4.Text);
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -109,6 +110,20 @@ namespace TwitchLibExample
                 {
                     client.sendWhisper(textBox1.Text, textBox2.Text);
                     Console.WriteLine("fired");
+                }
+            }
+        }
+
+        private async void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (textBox8.Text.Length > 0)
+            {
+                if (await TwitchAPI.broadcasterOnline(textBox8.Text))
+                {
+                    MessageBox.Show(textBox8.Text + " is indeed online!");
+                } else
+                {
+                    MessageBox.Show(textBox8.Text + " is offline!");
                 }
             }
         }

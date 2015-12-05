@@ -51,7 +51,9 @@
     <Compile Include="ChannelState.cs" />
     <Compile Include="ChatMessage.cs" />
     <Compile Include="ConnectionCredentials.cs" />
+    <Compile Include="Exceptions\ErrorLoggingInException.cs" />
     <Compile Include="Subscriber.cs" />
+    <Compile Include="TwitchAPI.cs" />
     <Compile Include="TwitchChatClient.cs" />
     <Compile Include="TwitchIpAndPort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

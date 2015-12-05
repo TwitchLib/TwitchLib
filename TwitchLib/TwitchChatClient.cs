@@ -132,6 +132,18 @@ namespace TwitchLib
                         Console.WriteLine(String.Format("Unaccounted for: {0}", e.Line));
                         break;
                 }
+            } else
+            {
+                //Special cases
+                if (e.Line == ":tmi.twitch.tv NOTICE * :Error logging in")
+                {
+                    client.Disconnect();
+                    throw new Exceptions.ErrorLoggingInException(e.Line);
+                } else
+                {
+                    Console.WriteLine("Not registered: " + e.Line);
+                }
+                    
             }
         }
     }

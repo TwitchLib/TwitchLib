@@ -72,7 +72,17 @@ namespace TwitchLib
             }
             else
             {
-                Console.WriteLine("Not registered: " + e.Line);
+                //Special cases
+                if (e.Line == ":tmi.twitch.tv NOTICE * :Error logging in")
+                {
+                    client.Disconnect();
+                    throw new Exceptions.ErrorLoggingInException(e.Line);
+                }
+                else
+                {
+                    Console.WriteLine("Not registered: " + e.Line);
+                }
+
             }
         }
     }
