@@ -115,42 +115,82 @@ namespace TwitchLibExample
             }
         }
 
-        private async void button5_Click(object sender, EventArgs e)
+        private async void button9_Click(object sender, EventArgs e)
         {
-            TwitchChannel channel = await TwitchAPI.getTwitchChannel("burkeblack");
-            MessageBox.Show(channel.ID.ToString());
-
+            TwitchChannel channel = await TwitchAPI.getTwitchChannel(textBox9.Text);
+            MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At: {6}\n" +
+                "Updated At: {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
+                channel.Status, channel.Broadcaster_Language, channel.Display_name, channel.Game, channel.Language, channel.Name, channel.Created_At, channel.Updated_At,
+                channel.Delay, channel.Logo, channel.Background, channel.Profile_Banner, channel.Mature, channel.Partner, channel.ID, channel.Views, channel.Followers));
         }
 
-        private async void button6_Click(object sender, EventArgs e)
+        private async void button10_Click(object sender, EventArgs e)
         {
-            foreach(Chatter chatter in await TwitchAPI.getChatters("burkeblack"))
+            List<Chatter> chatters = await TwitchAPI.getChatters(textBox10.Text);
+            string messageContents = "";
+            foreach(Chatter user in chatters)
             {
-                if(chatter.UserType == Chatter.uType.Moderator)
+                if(messageContents == "")
                 {
-                    MessageBox.Show(chatter.Username);
+                    messageContents = String.Format("{0} ({1})", user.Username, user.UserType.ToString());
+                } else
+                {
+                    messageContents += String.Format(", {0} ({1})", user.Username, user.UserType.ToString());
                 }
             }
+            MessageBox.Show(messageContents);
         }
 
-        private async void button7_Click(object sender, EventArgs e)
+        private async void button11_Click(object sender, EventArgs e)
         {
-            bool swiftyFollowing = await TwitchAPI.userFollowsChannel("swiftyspiffy", "burkeblack");
-            bool danFollowing = await TwitchAPI.userFollowsChannel("dansgaming", "burkeblack");
-
-            MessageBox.Show("swiftyspiffy is following burkeblack: " + swiftyFollowing + "\ndansgaming is following burkeblack: " + danFollowing);
+            if (await TwitchAPI.userFollowsChannel(textBox11.Text, textBox12.Text))
+            {
+                MessageBox.Show(String.Format("'{0}' follows the channel '{1}'!", textBox11.Text, textBox12.Text));
+            } else
+            {
+                MessageBox.Show(String.Format("'{0}' does NOT follow the channel '{1}'!", textBox11.Text, textBox12.Text));
+            }   
         }
 
-        private async void button8_Click(object sender, EventArgs e)
+        private async void button12_Click(object sender, EventArgs e)
         {
-            if (await TwitchAPI.broadcasterOnline("burkeblack"))
+            if(await TwitchAPI.broadcasterOnline(textBox13.Text))
             {
-                MessageBox.Show(textBox8.Text + " is indeed online!");
-            }
-            else
+                MessageBox.Show(String.Format("'{0}' is ONLINE!", textBox13.Text));
+            } else
             {
-                MessageBox.Show(textBox8.Text + " is offline!");
+                MessageBox.Show(string.Format("'{0}' is OFFLINE!", textBox13.Text));
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            TwitchAPI.updateStreamTitle(textBox16.Text, textBox14.Text, textBox15.Text);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            TwitchAPI.updateStreamGame(textBox17.Text, textBox14.Text, textBox15.Text);
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            TwitchAPI.updateStreamTitleAndGame(textBox18.Text, textBox19.Text, textBox14.Text, textBox15.Text);
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            TwitchAPI.runCommerciale(TwitchAPI.Valid_Commercial_Lengths.SECONDS_30, textBox14.Text, textBox15.Text);
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            TwitchAPI.runCommerciale(TwitchAPI.Valid_Commercial_Lengths.SECONDS_60, textBox14.Text, textBox15.Text);
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            TwitchAPI.runCommerciale(TwitchAPI.Valid_Commercial_Lengths.SECONDS_90, textBox14.Text, textBox15.Text);
         }
     }
 }
