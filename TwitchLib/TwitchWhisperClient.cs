@@ -60,9 +60,6 @@ namespace TwitchLib
             if (e.Line.Split(' ').Count() > 3 && e.Line.Split(' ')[2] == "WHISPER")
             {
                 WhisperMessage whisperMessage = new WhisperMessage(e.Line, credentials.TwitchUsername);
-                Console.WriteLine(String.Format("Color HEX: {0}\nDisplay Name: {1}\nEmote Set: {2}\nMessageID: {3}\nThread ID: {4}\nTurbo: {5}\nUserID: {6}\nUsername: {7}",
-                    whisperMessage.ColorHEX, whisperMessage.DisplayName, whisperMessage.EmoteSet, whisperMessage.MessageID, whisperMessage.ThreadID, whisperMessage.Turbo,
-                    whisperMessage.UserID, whisperMessage.Username));
                 if (NewWhisper != null)
                 {
                     NewWhisper(null, new NewWhisperReceivedArgs { WhisperMessage = whisperMessage });

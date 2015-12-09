@@ -44,7 +44,6 @@ namespace TwitchLib
             {
                 TSSubBoost = 1;
                 TSFinalBoost = 2;
-                Console.WriteLine("TSSubBoost: " + TSSubBoost + "TSFinal: " + TSFinalBoost.ToString());
             }
             colorHEX = IRCString.Split(';')[0].Split('=')[1];
             username = IRCString.Split('@')[2].Split('.')[0];

@@ -135,6 +135,51 @@ namespace TwitchLib
             }
             var response = (HttpWebResponse)request.GetResponse();
         }
+        
+        //Required scope: channel_stream
+        public static async void resetStreamKey(string username, string access_token)
+        {
+            string data = "";
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.twitch.tv/kraken/channels/" + username + "/streamkey");
+            Console.WriteLine("https://api.twitch,tv/kraken/channels/" + username + "/streamkey");
+            request.Method = "DELETE";
+            request.Accept = "application/vnd.twitchtv.v3+json";
+            request.Headers.Add("Authorization", string.Format("OAuth {0}", access_token));
+            request.ContentType = "application/text";
+            UTF8Encoding encoding = new UTF8Encoding();
+            byte[] utfBytes = encoding.GetBytes(data);
+            using (Stream dataStream = await request.GetRequestStreamAsync())
+            {
+                dataStream.Write(utfBytes, 0, utfBytes.Length);
+            }
+            var response = (HttpWebResponse)request.GetResponse();
+        }
+
+        public static async Task<List<TwitchAPIClasses.TwitchVideo>> getChannelVideos(string channel, int limit = 10, int offset = 0, 
+            bool onlyBroadcasts = false, bool onlyHLS = false)
+        {
+            List<TwitchAPIClasses.TwitchVideo> videos = new List<TwitchAPIClasses.TwitchVideo>();
+            var client = new WebClient();
+            string limitStr = "?limit=" + limit;
+            string offsetStr = "&offset=" + offset;
+            string broadcastStr = "&broadcasts=false";
+            if(onlyBroadcasts == true) { broadcastStr = "&broadcasts=true"; }
+            string hlsStr = "&hls=false";
+            if(onlyHLS == true) { hlsStr = "&hls=true"; }
+
+            Console.WriteLine(String.Format("https://api.twitch.tv/kraken/channels/{0}/videos?{1}{2}{3}{4}",
+                channel, limitStr, offsetStr, broadcastStr, hlsStr));
+            string resp = await client.DownloadStringTaskAsync(new Uri(String.Format("https://api.twitch.tv/kraken/channels/{0}/videos?{1}{2}{3}{4}", 
+                channel, limitStr, offsetStr, broadcastStr, hlsStr)));
+            JObject json = JObject.Parse(resp);
+            foreach(JToken vid in json.SelectToken("videos"))
+            {
+                TwitchAPIClasses.TwitchVideo video = new TwitchAPIClasses.TwitchVideo(vid);
+                videos.Add(video);
+            }
+
+            return videos;
+        }
 
         //Required scope: channel_commercial
         public static async void runCommerciale(Valid_Commercial_Lengths length, string username, string access_token)

@@ -51,13 +51,14 @@
     <Compile Include="ChannelState.cs" />
     <Compile Include="ChatMessage.cs" />
     <Compile Include="Exceptions\BadScopeException.cs" />
-    <Compile Include="TwitchAPI\Chatter.cs" />
+    <Compile Include="TwitchAPIClasses\Chatter.cs" />
     <Compile Include="ConnectionCredentials.cs" />
     <Compile Include="Exceptions\ErrorLoggingInException.cs" />
     <Compile Include="Exceptions\InvalidChannelException.cs" />
     <Compile Include="Subscriber.cs" />
     <Compile Include="TwitchAPI.cs" />
-    <Compile Include="TwitchAPI\TwitchChannel.cs" />
+    <Compile Include="TwitchAPIClasses\TwitchChannel.cs" />
+    <Compile Include="TwitchAPIClasses\TwitchVideo.cs" />
     <Compile Include="TwitchChatClient.cs" />
     <Compile Include="TwitchIpAndPort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

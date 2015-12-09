@@ -192,5 +192,27 @@ namespace TwitchLibExample
         {
             TwitchAPI.runCommerciale(TwitchAPI.Valid_Commercial_Lengths.SECONDS_90, textBox14.Text, textBox15.Text);
         }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            TwitchAPI.resetStreamKey(textBox14.Text, textBox15.Text);
+        }
+
+        private async void button16_Click(object sender, EventArgs e)
+        {
+            
+            List<TwitchLib.TwitchAPIClasses.TwitchVideo> videos = await TwitchAPI.getChannelVideos(textBox20.Text);
+            foreach(TwitchLib.TwitchAPIClasses.TwitchVideo vid in videos)
+            {
+                MessageBox.Show(string.Format("Title: {0}\nDescription: {1}\nStatus: {2}\nID: {3}\nTag List: {4}\nRecorded At: {5}\nGame: {6}\nDelete At: {7}\nPreview: {8}\n" +
+                    "Broadcast ID: {9}\nLength: {10}\nIs Muted: {11}\n\nURL: {12}\nViews: {13}\n\n" +
+                    "FPS Audio Only: {14}\nFPS Mobile: {15}\nFPS Low: {16}\nFPS Medium: {17}\nFPS High: {18}\nFPS Chunked: {19}\n\n" +
+                    "Resolution Mobile: {20}\nResolution Low: {21}\nResolution Medium: {22}\nResolution High: {23}\nResolution Chunked: {24}\n\n" +
+                    "Channel Name: {25}\nChannel Display Name: {26}", vid.Title, vid.Description, vid.Status, vid.ID, vid.Tag_List, vid.Recorded_At, vid.Game, vid.Delete_At,
+                    vid.Preview, vid.Broadcast_ID, vid.Length, vid.Is_Muted, vid.URL, vid.Views, vid.FPS.Audio_Only,
+                    vid.FPS.Mobile, vid.FPS.Low, vid.FPS.Medium, vid.FPS.High, vid.FPS.Chunked, vid.Resolutions.Mobile, vid.Resolutions.Low,
+                    vid.Resolutions.Medium, vid.Resolutions.High, vid.Resolutions.Chunked, vid.Channel.Name, vid.Channel.Display_Name));
+            }
+        }
     }
 }

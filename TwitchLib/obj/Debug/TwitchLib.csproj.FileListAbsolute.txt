@@ -1,12 +1,12 @@
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\TwitchLib.dll
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\TwitchLib.pdb
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\Meebey.SmartIrc4net.dll
+C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\log4net.dll
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\starksoft.aspen.dll
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\Meebey.SmartIrc4net.pdb
+C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\log4net.xml
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\starksoft.aspen.xml
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\obj\Debug\TwitchLib.dll
 C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\obj\Debug\TwitchLib.pdb
-C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Cole\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\Newtonsoft.Json.xml
