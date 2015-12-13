@@ -49,3 +49,4 @@ This project demonstrates a majority of the functionality that TwitchLib allows 
 ### Credits and Libraries Utilized
 - Costura.Fody / Fody - Takes the projects various DLL files and packages them all in the TwitchLib.dll file, combing and removing potential problems with not having all parts
 - Newtonsoft.Json - JSON parsing class.  Used to parse Twitch API calls.
+- SmartIRC4Net - Base IRC class.
