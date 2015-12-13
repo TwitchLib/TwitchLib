@@ -13,6 +13,7 @@ namespace TwitchLib
         public string TwitchUsername { get { return credentials.TwitchUsername; } }
 
         public event EventHandler<NewWhisperReceivedArgs> NewWhisper;
+        public event EventHandler<OnConnectedArgs> OnConnected;
 
         public class NewWhisperReceivedArgs : EventArgs {
             public WhisperMessage WhisperMessage;
@@ -26,12 +27,22 @@ namespace TwitchLib
             client.OnReadLine += new ReadLineEventHandler(onReadLine);
         }
 
+        public class OnConnectedArgs : EventArgs
+        {
+            public string username;
+        }
+
         public void connect() {
             client.Connect(credentials.Host, credentials.Port);
         }
 
         public void disconnect() {
             client.Disconnect();
+        }
+
+        public void sendRaw(string message)
+        {
+            client.WriteLine(message);
         }
 
         //:dara226!dara226@dara226.tmi.twitch.tv WHISPER the_kraken_bot :ahoy
@@ -53,6 +64,10 @@ namespace TwitchLib
             client.WriteLine(Rfc2812.Join(String.Format("#{0}", "jtv")));
 
             Task.Factory.StartNew(() => client.Listen());
+            if (OnConnected != null)
+            {
+                OnConnected(null, new OnConnectedArgs { username = TwitchUsername });
+            }
         }
 
         private void onReadLine(object sender, ReadLineEventArgs e)

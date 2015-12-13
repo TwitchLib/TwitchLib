@@ -17,6 +17,7 @@ namespace TwitchLib
         public string Channel { get { return channel; } }
         public string TwitchUsername { get { return credentials.TwitchUsername; } }
 
+        public event EventHandler<OnConnectedArgs> OnConnected;
         public event EventHandler<NewChatMessageArgs> NewChatMessage;
         public event EventHandler<NewSubscriberArgs> NewSubscriber;
         public event EventHandler<ChannelStateAssignedArgs> ChannelStateAssigned;
@@ -32,6 +33,10 @@ namespace TwitchLib
         public class ChannelStateAssignedArgs : EventArgs
         {
             public ChannelState ChannelState;
+        }
+        public class OnConnectedArgs : EventArgs
+        {
+            public string username, channel;
         }
 
         public TwitchChatClient(string channel, ConnectionCredentials credentials)
@@ -77,6 +82,10 @@ namespace TwitchLib
             client.WriteLine(Rfc2812.Join(String.Format("#{0}", channel)));
 
             Task.Factory.StartNew(() => client.Listen());
+            if (OnConnected != null)
+            {
+                OnConnected(null, new OnConnectedArgs { username = TwitchUsername, channel = this.channel });
+            }
         }
 
         private void onReadLine(object sender, ReadLineEventArgs e)
