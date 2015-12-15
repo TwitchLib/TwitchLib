@@ -21,6 +21,7 @@ namespace TwitchLib
         public event EventHandler<NewChatMessageArgs> NewChatMessage;
         public event EventHandler<NewSubscriberArgs> NewSubscriber;
         public event EventHandler<ChannelStateAssignedArgs> ChannelStateAssigned;
+        public event EventHandler<ViewerJoinedArgs> ViewerJoined;
 
         public class NewChatMessageArgs : EventArgs
         {
@@ -35,6 +36,10 @@ namespace TwitchLib
             public ChannelState ChannelState;
         }
         public class OnConnectedArgs : EventArgs
+        {
+            public string username, channel;
+        }
+        public class ViewerJoinedArgs : EventArgs
         {
             public string username, channel;
         }
@@ -117,6 +122,10 @@ namespace TwitchLib
 
                     case "JOIN":
                         //:the_kraken_bot!the_kraken_bot@the_kraken_bot.tmi.twitch.tv JOIN #swiftyspiffy
+                        if(ViewerJoined != null)
+                        {
+                            ViewerJoined(null, new ViewerJoinedArgs { username = e.Line.Split('!')[1].Split('@')[0], channel = e.Line.Split('#')[1] });
+                        }
                         break;
 
                     case "MODE":
