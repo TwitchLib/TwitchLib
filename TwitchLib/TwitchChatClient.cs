@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Meebey.SmartIrc4net;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace TwitchLib
 {
@@ -12,6 +13,7 @@ namespace TwitchLib
         private ConnectionCredentials credentials;
         private ChannelState state;
         private string channel;
+        private char commandIdentifier;
 
         public ChannelState ChannelState { get { return state; } }
         public string Channel { get { return channel; } }
@@ -22,6 +24,7 @@ namespace TwitchLib
         public event EventHandler<NewSubscriberArgs> NewSubscriber;
         public event EventHandler<ChannelStateAssignedArgs> ChannelStateAssigned;
         public event EventHandler<ViewerJoinedArgs> ViewerJoined;
+        public event EventHandler<CommandReceivedArgs> CommandReceived;
 
         public class NewChatMessageArgs : EventArgs
         {
@@ -43,11 +46,17 @@ namespace TwitchLib
         {
             public string username, channel;
         }
+        public class CommandReceivedArgs : EventArgs
+        {
+            public string username, command, argumentsAsString;
+            public List<string> argumentsAsList;
+        }
 
-        public TwitchChatClient(string channel, ConnectionCredentials credentials)
+        public TwitchChatClient(string channel, ConnectionCredentials credentials, char commandIdentifier = '\0')
         {
             this.channel = channel.ToLower();
             this.credentials = credentials;
+            this.commandIdentifier = commandIdentifier;
 
             client.OnConnected += new EventHandler(onConnected);
             client.OnReadLine += new ReadLineEventHandler(onReadLine);
@@ -116,6 +125,29 @@ namespace TwitchLib
                             if (NewChatMessage != null)
                             {
                                 NewChatMessage(null, new NewChatMessageArgs { ChatMessage = chatMessage });
+                            }
+                            if (commandIdentifier != '\0' && e.Line[0] == commandIdentifier)
+                            {
+                                string command;
+                                string argumentsAsString = "";
+                                List<string> argumentsAsList = new List<string>();
+                                if(e.Line.Contains(" "))
+                                {
+                                    command = e.Line.Split(' ')[0].Substring(1, e.Line.Split(' ')[0].Length - 1);
+                                    foreach(string arg in e.Line.Split(' '))
+                                    {
+                                        argumentsAsList.Add(arg);
+                                    }
+                                    argumentsAsString = e.Line.Replace(e.Line.Split(' ')[0] + " ", "");
+                                } else
+                                {
+                                    command = e.Line.Substring(1, e.Line.Length - 1);
+                                }
+                                if(CommandReceived != null)
+                                {
+                                    CommandReceived(null, new CommandReceivedArgs { command = command, username = chatMessage.Username, argumentsAsList = argumentsAsList, argumentsAsString = argumentsAsString });
+                                }
+                                    
                             }
                         }
                         break;

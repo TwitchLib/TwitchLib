@@ -32,6 +32,7 @@ namespace TwitchLibExample
                 textBox4.Text, textBox5.Text);
             TwitchChatClient newClient = new TwitchChatClient(textBox8.Text, credentials);
             newClient.NewChatMessage += new EventHandler<TwitchChatClient.NewChatMessageArgs>(globalChatMessageReceived);
+            newClient.CommandReceived += new EventHandler<TwitchChatClient.CommandReceivedArgs>(commandReceived);
             newClient.connect();
             chatClients.Add(newClient);
             ListViewItem lvi = new ListViewItem();
@@ -58,6 +59,11 @@ namespace TwitchLibExample
             lvi.SubItems.Add("N/A");
             listView1.Items.Add(lvi);
             comboBox1.Items.Add(textBox6.Text);
+        }
+
+        private void commandReceived(object sender, TwitchChatClient.CommandReceivedArgs e)
+        {
+            listBox1.Items.Add(e.username + ": " + e.argumentsAsString);
         }
 
         private void globalChatMessageReceived(object sender, TwitchChatClient.NewChatMessageArgs e)
