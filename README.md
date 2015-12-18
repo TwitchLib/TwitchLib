@@ -10,6 +10,7 @@ TwitchLib is a C# library that attempts to harness the Twitch IRC and Twitch API
   * NewSubscriber - Fires when new subscriber is announced in chat, returns Subscriber
   * ChannelStateAssigned - Fires when connecting and channel state is received, returns ChannelState
   * ViewerJoined - New viewer/chatter joined the IRC channel room.
+  * CommandReceived - Fires when command (uses custom command identifier) is received [untested].
 - sendRaw(string message) - Sends RAW IRC message
 - sendMessage(string message) - Sends formatted Twitch channel IRC message
 - Handled IRC message types
