@@ -144,16 +144,10 @@ namespace TwitchLib
                                 {
                                     command = chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
                                 }
-                                Console.WriteLine("Stage A");
                                 if(CommandReceived != null)
                                 {
-                                    Console.WriteLine("Firing...");
                                     CommandReceived(null, new CommandReceivedArgs { Command = command, Username = chatMessage.Username, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
                                 }    
-                            } else
-                            {
-                                Console.WriteLine("Failed to pass if statement. identifier: " + commandIdentifier + ", first char: " + chatMessage.Message[0]);
-                                Console.WriteLine("Up to date");
                             }
                         }
                         break;
@@ -168,6 +162,14 @@ namespace TwitchLib
 
                     case "MODE":
                         //:jtv MODE #swiftyspiffy +o swiftyspiffy
+                        break;
+
+                    case "NOTICE":
+                        if(e.Line.Contains("Error logging in"))
+                        {
+                            client.Disconnect();
+                            throw new Exceptions.ErrorLoggingInException(e.Line);
+                        }
                         break;
 
                     case "ROOMSTATE":

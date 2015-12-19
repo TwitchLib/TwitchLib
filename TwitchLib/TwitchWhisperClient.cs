@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Meebey.SmartIrc4net;
+using System.Collections.Generic;
 
 namespace TwitchLib
 {
@@ -9,19 +10,22 @@ namespace TwitchLib
     {
         private IrcConnection client = new IrcConnection();
         private ConnectionCredentials credentials;
+        private char commandIdentifier;
 
         public string TwitchUsername { get { return credentials.TwitchUsername; } }
 
         public event EventHandler<NewWhisperReceivedArgs> NewWhisper;
         public event EventHandler<OnConnectedArgs> OnConnected;
+        public event EventHandler<CommandReceivedArgs> CommandReceived;
 
         public class NewWhisperReceivedArgs : EventArgs {
             public WhisperMessage WhisperMessage;
         }
 
-        public TwitchWhisperClient(ConnectionCredentials credentials)
+        public TwitchWhisperClient(ConnectionCredentials credentials, char commandIdentifier = '\0')
         {
             this.credentials = credentials;
+            this.commandIdentifier = commandIdentifier;
 
             client.OnConnected += new EventHandler(onConnected);
             client.OnReadLine += new ReadLineEventHandler(onReadLine);
@@ -30,6 +34,12 @@ namespace TwitchLib
         public class OnConnectedArgs : EventArgs
         {
             public string username;
+        }
+
+        public class CommandReceivedArgs : EventArgs
+        {
+            public string Username, Command, ArgumentsAsString;
+            public List<string> ArgumentsAsList;
         }
 
         public void connect() {
@@ -78,6 +88,29 @@ namespace TwitchLib
                 if (NewWhisper != null)
                 {
                     NewWhisper(null, new NewWhisperReceivedArgs { WhisperMessage = whisperMessage });
+                }
+                if(commandIdentifier != '\0' && whisperMessage.Message[0] == commandIdentifier)
+                {
+                    string command;
+                    string argumentsAsString = "";
+                    List<string> argumentsAsList = new List<string>();
+                    if(whisperMessage.Message.Contains(" "))
+                    {
+                        command = whisperMessage.Message.Split(' ')[0].Substring(1, whisperMessage.Message.Split(' ')[0].Length - 1);
+                        foreach(string arg in whisperMessage.Message.Split(' '))
+                        {
+                            if (arg != commandIdentifier + command)
+                                argumentsAsList.Add(arg);
+                        }
+                        argumentsAsString = whisperMessage.Message.Replace(whisperMessage.Message.Split(' ')[0] + " ", "");
+                    } else
+                    {
+                        command = whisperMessage.Message.Substring(1, whisperMessage.Message.Length - 1);
+                    }
+                    if(CommandReceived != null)
+                    {
+                        CommandReceived(null, new CommandReceivedArgs { Command = command, Username = whisperMessage.Username, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
+                    }
                 }
             }
             else

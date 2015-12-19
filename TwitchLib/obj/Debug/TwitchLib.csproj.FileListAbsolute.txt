@@ -16,3 +16,4 @@ C:\Users\Main\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Main\Documents\GitHub\TwitchLib\TwitchLib\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Main\Documents\GitHub\TwitchLib\TwitchLib\obj\Debug\TwitchLib.dll
 C:\Users\Main\Documents\GitHub\TwitchLib\TwitchLib\obj\Debug\TwitchLib.pdb
+C:\Users\Main\Documents\GitHub\TwitchLib\TwitchLib\obj\Debug\TwitchLib.csprojResolveAssemblyReference.cache

@@ -32,7 +32,7 @@ namespace TwitchLibExample
                 textBox4.Text, textBox5.Text);
             TwitchChatClient newClient = new TwitchChatClient(textBox8.Text, credentials, '!');
             newClient.NewChatMessage += new EventHandler<TwitchChatClient.NewChatMessageArgs>(globalChatMessageReceived);
-            newClient.CommandReceived += new EventHandler<TwitchChatClient.CommandReceivedArgs>(commandReceived);
+            newClient.CommandReceived += new EventHandler<TwitchChatClient.CommandReceivedArgs>(chatCommandReceived);
             newClient.connect();
             chatClients.Add(newClient);
             ListViewItem lvi = new ListViewItem();
@@ -49,8 +49,9 @@ namespace TwitchLibExample
         {
             ConnectionCredentials credentials = new ConnectionCredentials(ConnectionCredentials.ClientType.WHISPER, new TwitchIpAndPort(true),
                 textBox6.Text, textBox7.Text);
-            TwitchWhisperClient newClient = new TwitchWhisperClient(credentials);
+            TwitchWhisperClient newClient = new TwitchWhisperClient(credentials, '!');
             newClient.NewWhisper += new EventHandler<TwitchWhisperClient.NewWhisperReceivedArgs>(globalWhisperReceived);
+            newClient.CommandReceived += new EventHandler<TwitchWhisperClient.CommandReceivedArgs>(whisperCommandReceived);
             newClient.connect();
             whisperClients.Add(newClient);
             ListViewItem lvi = new ListViewItem();
@@ -61,14 +62,24 @@ namespace TwitchLibExample
             comboBox1.Items.Add(textBox6.Text);
         }
 
-        private void commandReceived(object sender, TwitchChatClient.CommandReceivedArgs e)
+        private void chatCommandReceived(object sender, TwitchChatClient.CommandReceivedArgs e)
         {
             listBox1.Items.Add(e.Username + ": " + e.Command + "; args: " + e.ArgumentsAsString + ";");
             foreach(string arg in e.ArgumentsAsList)
             {
-                Console.WriteLine("arg: " + arg);
+                Console.WriteLine("[chat] arg: " + arg);
             }
-            Console.WriteLine("args as string: " + e.ArgumentsAsString);
+            Console.WriteLine("[chat] args as string: " + e.ArgumentsAsString);
+        }
+
+        private void whisperCommandReceived(object sender, TwitchWhisperClient.CommandReceivedArgs e)
+        {
+            listBox2.Items.Add(e.Username + ": " + e.Command + "; args: " + e.ArgumentsAsString + ";");
+            foreach (string arg in e.ArgumentsAsList)
+            {
+                Console.WriteLine("[whisper] arg: " + arg);
+            }
+            Console.WriteLine("[whisper] args as string: " + e.ArgumentsAsString);
         }
 
         private void globalChatMessageReceived(object sender, TwitchChatClient.NewChatMessageArgs e)
