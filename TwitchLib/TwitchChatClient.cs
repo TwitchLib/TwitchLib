@@ -48,8 +48,8 @@ namespace TwitchLib
         }
         public class CommandReceivedArgs : EventArgs
         {
-            public string username, command, argumentsAsString;
-            public List<string> argumentsAsList;
+            public string Username, Command, ArgumentsAsString;
+            public List<string> ArgumentsAsList;
         }
 
         public TwitchChatClient(string channel, ConnectionCredentials credentials, char commandIdentifier = '\0')
@@ -126,28 +126,34 @@ namespace TwitchLib
                             {
                                 NewChatMessage(null, new NewChatMessageArgs { ChatMessage = chatMessage });
                             }
-                            if (commandIdentifier != '\0' && e.Line[0] == commandIdentifier)
+                            if (commandIdentifier != '\0' && chatMessage.Message[0] == commandIdentifier)
                             {
                                 string command;
                                 string argumentsAsString = "";
                                 List<string> argumentsAsList = new List<string>();
-                                if(e.Line.Contains(" "))
+                                if(chatMessage.Message.Contains(" "))
                                 {
-                                    command = e.Line.Split(' ')[0].Substring(1, e.Line.Split(' ')[0].Length - 1);
-                                    foreach(string arg in e.Line.Split(' '))
+                                    command = chatMessage.Message.Split(' ')[0].Substring(1, chatMessage.Message.Split(' ')[0].Length - 1);
+                                    foreach(string arg in chatMessage.Message.Split(' '))
                                     {
-                                        argumentsAsList.Add(arg);
+                                        if(arg != commandIdentifier + command)
+                                            argumentsAsList.Add(arg);
                                     }
-                                    argumentsAsString = e.Line.Replace(e.Line.Split(' ')[0] + " ", "");
+                                    argumentsAsString = chatMessage.Message.Replace(chatMessage.Message.Split(' ')[0] + " ", "");
                                 } else
                                 {
-                                    command = e.Line.Substring(1, e.Line.Length - 1);
+                                    command = chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
                                 }
+                                Console.WriteLine("Stage A");
                                 if(CommandReceived != null)
                                 {
-                                    CommandReceived(null, new CommandReceivedArgs { command = command, username = chatMessage.Username, argumentsAsList = argumentsAsList, argumentsAsString = argumentsAsString });
-                                }
-                                    
+                                    Console.WriteLine("Firing...");
+                                    CommandReceived(null, new CommandReceivedArgs { Command = command, Username = chatMessage.Username, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
+                                }    
+                            } else
+                            {
+                                Console.WriteLine("Failed to pass if statement. identifier: " + commandIdentifier + ", first char: " + chatMessage.Message[0]);
+                                Console.WriteLine("Up to date");
                             }
                         }
                         break;

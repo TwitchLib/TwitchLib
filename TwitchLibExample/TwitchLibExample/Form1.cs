@@ -30,7 +30,7 @@ namespace TwitchLibExample
         {
             ConnectionCredentials credentials = new ConnectionCredentials(ConnectionCredentials.ClientType.CHAT, new TwitchIpAndPort(textBox8.Text, true), 
                 textBox4.Text, textBox5.Text);
-            TwitchChatClient newClient = new TwitchChatClient(textBox8.Text, credentials);
+            TwitchChatClient newClient = new TwitchChatClient(textBox8.Text, credentials, '!');
             newClient.NewChatMessage += new EventHandler<TwitchChatClient.NewChatMessageArgs>(globalChatMessageReceived);
             newClient.CommandReceived += new EventHandler<TwitchChatClient.CommandReceivedArgs>(commandReceived);
             newClient.connect();
@@ -63,7 +63,12 @@ namespace TwitchLibExample
 
         private void commandReceived(object sender, TwitchChatClient.CommandReceivedArgs e)
         {
-            listBox1.Items.Add(e.username + ": " + e.argumentsAsString);
+            listBox1.Items.Add(e.Username + ": " + e.Command + "; args: " + e.ArgumentsAsString + ";");
+            foreach(string arg in e.ArgumentsAsList)
+            {
+                Console.WriteLine("arg: " + arg);
+            }
+            Console.WriteLine("args as string: " + e.ArgumentsAsString);
         }
 
         private void globalChatMessageReceived(object sender, TwitchChatClient.NewChatMessageArgs e)
