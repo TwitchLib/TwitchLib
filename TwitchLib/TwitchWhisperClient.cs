@@ -11,8 +11,10 @@ namespace TwitchLib
         private IrcConnection client = new IrcConnection();
         private ConnectionCredentials credentials;
         private char commandIdentifier;
+        private WhisperMessage previousWhisper;
 
         public string TwitchUsername { get { return credentials.TwitchUsername; } }
+        public WhisperMessage PreviousWhisper { get { return previousWhisper; } }
 
         public event EventHandler<NewWhisperReceivedArgs> NewWhisper;
         public event EventHandler<OnConnectedArgs> OnConnected;
@@ -85,6 +87,7 @@ namespace TwitchLib
             if (e.Line.Split(' ').Count() > 3 && e.Line.Split(' ')[2] == "WHISPER")
             {
                 WhisperMessage whisperMessage = new WhisperMessage(e.Line, credentials.TwitchUsername);
+                previousWhisper = whisperMessage;
                 if (NewWhisper != null)
                 {
                     NewWhisper(null, new NewWhisperReceivedArgs { WhisperMessage = whisperMessage });

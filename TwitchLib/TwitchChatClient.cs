@@ -14,10 +14,12 @@ namespace TwitchLib
         private ChannelState state;
         private string channel;
         private char commandIdentifier;
+        private ChatMessage previousMessage;
 
         public ChannelState ChannelState { get { return state; } }
         public string Channel { get { return channel; } }
         public string TwitchUsername { get { return credentials.TwitchUsername; } }
+        public ChatMessage PreviousMessage { get { return previousMessage; } }
 
         public event EventHandler<OnConnectedArgs> OnConnected;
         public event EventHandler<NewChatMessageArgs> NewChatMessage;
@@ -122,6 +124,7 @@ namespace TwitchLib
                         else
                         {
                             ChatMessage chatMessage = new ChatMessage(e.Line);
+                            previousMessage = chatMessage;
                             if (NewChatMessage != null)
                             {
                                 NewChatMessage(null, new NewChatMessageArgs { ChatMessage = chatMessage });
