@@ -30,6 +30,39 @@ namespace TwitchLib
             return false;
         }
 
+        //Undocumented API endpoint (reliability is shoddy); requires two API calls, try not to use often
+        public static async Task<List<string>> getChannelHosts(string channel)
+        {
+            List<string> hosts = new List<string>();
+            var client = new WebClient();
+            string resp = await client.DownloadStringTaskAsync(new Uri(String.Format("https://api.twitch.tv/kraken/users/{0}", channel)));
+            JObject json = JObject.Parse(resp);
+            if(json.SelectToken("_id") != null)
+            {
+                resp = await client.DownloadStringTaskAsync(new Uri(String.Format("http://tmi.twitch.tv/hosts?include_logins=1&target={0}", json.SelectToken("_id").ToString())));
+                json = JObject.Parse(resp);
+                foreach(JToken host in json.SelectToken("hosts"))
+                {
+                    hosts.Add(host.SelectToken("host_login").ToString());
+                }
+            }
+            return hosts;
+        }
+
+        //Undocumented API endpoint (reliability is shoddy)
+        public static async Task<List<TwitchAPIClasses.TwitchTeamMember>> getTeamMembers(string teamName)
+        {
+            List<TwitchAPIClasses.TwitchTeamMember> members = new List<TwitchAPIClasses.TwitchTeamMember>();
+            var client = new WebClient();
+            string resp = await client.DownloadStringTaskAsync(new Uri(String.Format("http://api.twitch.tv/api/team/{0}/all_channels.json", teamName)));
+            JObject json = JObject.Parse(resp);
+            foreach(JToken member in json.SelectToken("channels"))
+            {
+                members.Add(new TwitchAPIClasses.TwitchTeamMember(member.SelectToken("channel")));
+            }
+            return members;
+        }
+
         public static async Task<TwitchChannel> getTwitchChannel(string channel)
         {
             var client = new WebClient();

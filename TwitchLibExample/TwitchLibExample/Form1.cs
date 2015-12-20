@@ -40,8 +40,10 @@ namespace TwitchLibExample
             lvi.SubItems.Add("CHAT");
             lvi.SubItems.Add(textBox8.Text);
             listView1.Items.Add(lvi);
+
             if(!comboBox2.Items.Contains(textBox4.Text))
                 comboBox2.Items.Add(textBox4.Text);
+
             
         }
 
@@ -234,6 +236,29 @@ namespace TwitchLibExample
                     vid.Preview, vid.Broadcast_ID, vid.Length, vid.Is_Muted, vid.URL, vid.Views, vid.FPS.Audio_Only,
                     vid.FPS.Mobile, vid.FPS.Low, vid.FPS.Medium, vid.FPS.High, vid.FPS.Chunked, vid.Resolutions.Mobile, vid.Resolutions.Low,
                     vid.Resolutions.Medium, vid.Resolutions.High, vid.Resolutions.Chunked, vid.Channel.Name, vid.Channel.Display_Name));
+            }
+        }
+
+        private async void button17_Click(object sender, EventArgs e)
+        {
+            List<string> hosts = await TwitchAPI.getChannelHosts(textBox21.Text);
+            if (hosts.Count > 0)
+                foreach (string host in hosts)
+                    MessageBox.Show(host);
+            else
+                MessageBox.Show("No hosts for '" + textBox21.Text + "'");
+        }
+
+        private async void button18_Click(object sender, EventArgs e)
+        {
+            List<TwitchLib.TwitchAPIClasses.TwitchTeamMember> members = await TwitchAPI.getTeamMembers(textBox22.Text);
+            foreach(TwitchLib.TwitchAPIClasses.TwitchTeamMember member in members)
+            {
+                MessageBox.Show(string.Format("Name: {0}\nDescription: {1}\nTitle: {2}\nMeta Game: {3}\nDisplay Name: {4}\nLink: {5}\nStatus: {6}\nFollower count: {7}\n" +
+                    "Total Views: {8}\nCurrent Viewers: {9}\n\nImages:\nSize 600: {10}\nSize 300: {11}\nSize 150: {12}\nSize 70: {13}\nSize 50: {14}\nSize 28: {15}",
+                    member.Name, member.Description, member.Title, member.Meta_Game, member.Display_Name, member.Link, member.Status, member.Follower_Count, member.Total_Views,
+                    member.Current_Views, member.ImageSizes.Size600, member.ImageSizes.Size300, member.ImageSizes.Size150, member.ImageSizes.Size70, member.ImageSizes.Size50,
+                    member.ImageSizes.Size28));
             }
         }
     }
