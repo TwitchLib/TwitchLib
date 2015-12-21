@@ -50,6 +50,8 @@ This project demonstrates a majority of the functionality that TwitchLib allows 
 - TwitchAPIClasses/Chatter - Contains chat user properties: Username, UserType
 - TwitchAPIClasses/TwitchChannel - Contains Twitch Channel properties: Status, Broadcaster_Language, Display_name, Game, Language, Name, Created_At, Updated_At, Delay, Logo, Background, Profile_Banner, Mature, Partner, ID, Views, Followers
 - TwitchAPIClasses/TwitchVideo - Contains a Twitch video properties: Title, Description, Status, ID< Tag_List, Recorded_At, Game, Delete_At, Preview, Broadcast_ID, URL, Length, Views, Is_Muted, FPS, Resolutions, Channel
+- TwitchAPIClasses/TwitchTeamMember - Contains Twitch Team Member properties: Name, Description, Title, Meta_Game, Display_Name, Link, Follower_Count, Total_Views, Current_Views,
+Status, ImageSizes
 
 ### Credits and Libraries Utilized
 - Costura.Fody / Fody - Takes the projects various DLL files and packages them all in the TwitchLib.dll file, combing and removing potential problems with not having all parts
