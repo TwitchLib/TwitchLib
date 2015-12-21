@@ -15,6 +15,7 @@ namespace TwitchLib
         private string channel;
         private char commandIdentifier;
         private ChatMessage previousMessage;
+        private bool logging;
 
         public ChannelState ChannelState { get { return state; } }
         public string Channel { get { return channel; } }
@@ -54,11 +55,12 @@ namespace TwitchLib
             public List<string> ArgumentsAsList;
         }
 
-        public TwitchChatClient(string channel, ConnectionCredentials credentials, char commandIdentifier = '\0')
+        public TwitchChatClient(string channel, ConnectionCredentials credentials, char commandIdentifier = '\0', bool logging = true)
         {
             this.channel = channel.ToLower();
             this.credentials = credentials;
             this.commandIdentifier = commandIdentifier;
+            this.logging = logging;
 
             client.OnConnected += new EventHandler(onConnected);
             client.OnReadLine += new ReadLineEventHandler(onReadLine);
@@ -188,7 +190,8 @@ namespace TwitchLib
                         break;
 
                     default:
-                        Console.WriteLine(String.Format("Unaccounted for: {0}", e.Line));
+                        if(logging)
+                            Console.WriteLine(String.Format("Unaccounted for: {0}", e.Line));
                         break;
                 }
             } else
@@ -200,7 +203,8 @@ namespace TwitchLib
                     throw new Exceptions.ErrorLoggingInException(e.Line);
                 } else
                 {
-                    Console.WriteLine("Not registered: " + e.Line);
+                    if(logging)
+                        Console.WriteLine("Not registered: " + e.Line);
                 }
                     
             }

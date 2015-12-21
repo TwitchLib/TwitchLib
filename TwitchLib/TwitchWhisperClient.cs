@@ -12,6 +12,7 @@ namespace TwitchLib
         private ConnectionCredentials credentials;
         private char commandIdentifier;
         private WhisperMessage previousWhisper;
+        private bool logging;
 
         public string TwitchUsername { get { return credentials.TwitchUsername; } }
         public WhisperMessage PreviousWhisper { get { return previousWhisper; } }
@@ -24,10 +25,11 @@ namespace TwitchLib
             public WhisperMessage WhisperMessage;
         }
 
-        public TwitchWhisperClient(ConnectionCredentials credentials, char commandIdentifier = '\0')
+        public TwitchWhisperClient(ConnectionCredentials credentials, char commandIdentifier = '\0', bool logging = true)
         {
             this.credentials = credentials;
             this.commandIdentifier = commandIdentifier;
+            this.logging = logging;
 
             client.OnConnected += new EventHandler(onConnected);
             client.OnReadLine += new ReadLineEventHandler(onReadLine);
@@ -126,7 +128,8 @@ namespace TwitchLib
                 }
                 else
                 {
-                    Console.WriteLine("Not registered: " + e.Line);
+                    if(logging)
+                        Console.WriteLine("Not registered: " + e.Line);
                 }
 
             }
