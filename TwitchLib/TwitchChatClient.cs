@@ -113,7 +113,6 @@ namespace TwitchLib
 
         private void onReadLine(object sender, ReadLineEventArgs e)
         {
-            Console.WriteLine(e.Line);
             if (e.Line.Contains(String.Format("#{0}", channel)))
             {
                 string[] splitter = Regex.Split(e.Line, String.Format(" #{0}", channel));
