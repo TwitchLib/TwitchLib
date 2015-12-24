@@ -28,6 +28,7 @@ namespace TwitchLib
         public event EventHandler<ChannelStateAssignedArgs> ChannelStateAssigned;
         public event EventHandler<ViewerJoinedArgs> ViewerJoined;
         public event EventHandler<CommandReceivedArgs> CommandReceived;
+        public event EventHandler<MessageSentArgs> OnMessageSent;
 
         public class NewChatMessageArgs : EventArgs
         {
@@ -43,11 +44,15 @@ namespace TwitchLib
         }
         public class OnConnectedArgs : EventArgs
         {
-            public string username, channel;
+            public string Username, Channel;
         }
         public class ViewerJoinedArgs : EventArgs
         {
-            public string username, channel;
+            public string Username, Channel;
+        }
+        public class MessageSentArgs : EventArgs
+        {
+            public string Username, Channel, Message;
         }
         public class CommandReceivedArgs : EventArgs
         {
@@ -74,6 +79,8 @@ namespace TwitchLib
         public void sendMessage(string message)
         {
             client.WriteLine(String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :{2}", credentials.TwitchUsername, channel, message));
+            if (OnMessageSent != null)
+                OnMessageSent(null, new MessageSentArgs { Username = credentials.TwitchUsername, Channel = channel, Message = message });
         }
 
         public void connect()
@@ -101,13 +108,12 @@ namespace TwitchLib
 
             Task.Factory.StartNew(() => client.Listen());
             if (OnConnected != null)
-            {
-                OnConnected(null, new OnConnectedArgs { username = TwitchUsername, channel = this.channel });
-            }
+                OnConnected(null, new OnConnectedArgs { Username = TwitchUsername, Channel = this.channel });
         }
 
         private void onReadLine(object sender, ReadLineEventArgs e)
         {
+            Console.WriteLine(e.Line);
             if (e.Line.Contains(String.Format("#{0}", channel)))
             {
                 string[] splitter = Regex.Split(e.Line, String.Format(" #{0}", channel));
@@ -150,9 +156,7 @@ namespace TwitchLib
                                     command = chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
                                 }
                                 if(CommandReceived != null)
-                                {
-                                    CommandReceived(null, new CommandReceivedArgs { Command = command, Username = chatMessage.Username, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
-                                }    
+                                    CommandReceived(null, new CommandReceivedArgs { Command = command, Username = chatMessage.Username, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString }); 
                             }
                         }
                         break;
@@ -160,9 +164,7 @@ namespace TwitchLib
                     case "JOIN":
                         //:the_kraken_bot!the_kraken_bot@the_kraken_bot.tmi.twitch.tv JOIN #swiftyspiffy
                         if(ViewerJoined != null)
-                        {
-                            ViewerJoined(null, new ViewerJoinedArgs { username = e.Line.Split('!')[1].Split('@')[0], channel = e.Line.Split('#')[1] });
-                        }
+                            ViewerJoined(null, new ViewerJoinedArgs { Username = e.Line.Split('!')[1].Split('@')[0], Channel = e.Line.Split('#')[1] });
                         break;
 
                     case "MODE":
@@ -180,9 +182,7 @@ namespace TwitchLib
                     case "ROOMSTATE":
                         state = new ChannelState(e.Line);
                         if (ChannelStateAssigned != null)
-                        {
                             ChannelStateAssigned(null, new ChannelStateAssignedArgs { ChannelState = state });
-                        }
                         break;
 
                     case "USERSTATE":
@@ -206,7 +206,6 @@ namespace TwitchLib
                     if(logging)
                         Console.WriteLine("Not registered: " + e.Line);
                 }
-                    
             }
         }
     }

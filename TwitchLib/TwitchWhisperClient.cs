@@ -20,6 +20,7 @@ namespace TwitchLib
         public event EventHandler<NewWhisperReceivedArgs> NewWhisper;
         public event EventHandler<OnConnectedArgs> OnConnected;
         public event EventHandler<CommandReceivedArgs> CommandReceived;
+        public event EventHandler<OnWhisperSentArgs> WhisperSent;
 
         public class NewWhisperReceivedArgs : EventArgs {
             public WhisperMessage WhisperMessage;
@@ -38,6 +39,11 @@ namespace TwitchLib
         public class OnConnectedArgs : EventArgs
         {
             public string username;
+        }
+
+        public class OnWhisperSentArgs : EventArgs
+        {
+            public string Receiver, Message;
         }
 
         public class CommandReceivedArgs : EventArgs
@@ -63,6 +69,8 @@ namespace TwitchLib
         public void sendWhisper(string receiver, string message)
         {
             client.WriteLine(String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :/w {2} {3}", credentials.TwitchUsername, "jtv", receiver, message));
+            if (WhisperSent != null)
+                WhisperSent(null, new OnWhisperSentArgs { Receiver = receiver, Message = message });
         }
 
         private void onConnected(object sender, EventArgs e)

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TwitchLib;
+using System.IO;
 
 namespace TwitchLibExample
 {
@@ -22,7 +23,18 @@ namespace TwitchLibExample
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            if(File.Exists("credentials.txt"))
+            {
+                StreamReader file = new StreamReader("credentials.txt");
+                string twitchUser = file.ReadLine();
+                string twitchOAuth = file.ReadLine();
+                string twitchChannel = file.ReadLine();
+                textBox4.Text = twitchUser;
+                textBox6.Text = twitchUser;
+                textBox5.Text = twitchOAuth;
+                textBox7.Text = twitchOAuth;
+                textBox8.Text = twitchChannel;
+            }
             MessageBox.Show("This application is intended to demonstrate basic functionality of TwitchLib.\n\n-swiftyspiffy");
         }
 
@@ -134,7 +146,6 @@ namespace TwitchLibExample
                 if (client.TwitchUsername == comboBox1.Text.ToLower())
                 {
                     client.sendWhisper(textBox1.Text, textBox2.Text);
-                    Console.WriteLine("fired");
                 }
             }
         }
