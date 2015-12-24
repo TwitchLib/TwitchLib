@@ -11,6 +11,7 @@ TwitchLib is a C# library that attempts to harness the Twitch IRC and Twitch API
   * ChannelStateAssigned - Fires when connecting and channel state is received, returns ChannelState
   * ViewerJoined - New viewer/chatter joined the IRC channel room.
   * CommandReceived - Fires when command (uses custom command identifier) is received.
+  * MessageSent - Fires when a chat message is sent.
 - sendRaw(string message) - Sends RAW IRC message
 - sendMessage(string message) - Sends formatted Twitch channel IRC message
 - Handled IRC message types
@@ -20,7 +21,8 @@ TwitchLib is a C# library that attempts to harness the Twitch IRC and Twitch API
 - Events:
   * OnConnected - Fires on listening and after joined channel, returns username
   * NewWhisperReceived - Fires when a new whisper message is received, returns WhisperMessage
-  * CommandReceived - Fires when command (uses custom command identifier) is received [untested].
+  * CommandReceived - Fires when command (uses custom command identifier) is received.
+  * WhisperSent - Fires when a whisper is sent.
 - sendRaw(string message) - Sends RAW IRC message
 - sendWhisper(string receiver, string message) - Sends formatted Twitch whisper IRC message
 
@@ -39,7 +41,7 @@ TwitchLib is a C# library that attempts to harness the Twitch IRC and Twitch API
 - getTeamMembers(string teamName) - Async function that returns a TwitchTeamMember list of all members in a Twitch team (undocumented)
 
 ### TwitchLibExample
-This project demonstrates a majority of the functionality that TwitchLib allows for.  Includes a basic UI that has textboxes and buttons that allow for required input in the various functions.
+This project demonstrates a majority of the functionality that TwitchLib allows for.  Includes a basic UI that has textboxes and buttons that allow for required input in the various functions. Supports reading twitch account details from credentials.txt (one per line: username, oauth, channel).
 
 ### Other Classes
 - ChannelState - Contains channel states for: R9K, SubOnly, SlowMode, BroadcasterLanguage, Channel
