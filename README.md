@@ -1,6 +1,6 @@
-# TwitchLib - Twitch IRC and API C# Library
+# TwitchLib - Twitch Chat and API C# Library
 ### Overview
-TwitchLib is a C# library that attempts to harness the Twitch IRC and Twitch API into a single package. Using Costura.Fody, all required files are included in a single DLL file that can be imported into a .NET project.  Using TwitchLib, you can connect to a Twitch channel's chat or Twitch's group chat servers to setup chat and whisper bots in just a few lines of code. At the present time, you can also make channel modifications like stream title and game, as well as actions like commercials and and resetting of the stream key. Additionally, the TwitchLib project contains an example project that demonstrates the majority of functionality presented in the library.
+TwitchLib is a C# library that attempts to harness the Twitch Chat and Twitch API into a single package. Using Costura.Fody, all required files are included in a single DLL file that can be imported into a .NET project.  Using TwitchLib, you can connect to a Twitch channel's chat or Twitch's group chat servers to setup chat and whisper bots in just a few lines of code. At the present time, you can also make channel modifications like stream title and game, as well as actions like commercials and and resetting of the stream key. Additionally, the TwitchLib project contains an example project that demonstrates the majority of functionality presented in the library.
 
 ### TwitchChatClient
 - Initiailized using channel and ConnectionCredentials
@@ -9,12 +9,12 @@ TwitchLib is a C# library that attempts to harness the Twitch IRC and Twitch API
   * NewChatMessage - Fires when new chat message arrives, returns ChatMessage
   * NewSubscriber - Fires when new subscriber is announced in chat, returns Subscriber
   * ChannelStateAssigned - Fires when connecting and channel state is received, returns ChannelState
-  * ViewerJoined - New viewer/chatter joined the IRC channel room.
+  * ViewerJoined - New viewer/chatter joined the chat channel room.
   * CommandReceived - Fires when command (uses custom command identifier) is received.
   * MessageSent - Fires when a chat message is sent.
 - sendRaw(string message) - Sends RAW IRC message
-- sendMessage(string message) - Sends formatted Twitch channel IRC message
-- Handled IRC message types
+- sendMessage(string message) - Sends formatted Twitch channel chat message
+- Handled chat message types
 
 ### TwitchWhisperClient
 - Initialized using ConnectionCredentials
@@ -24,7 +24,7 @@ TwitchLib is a C# library that attempts to harness the Twitch IRC and Twitch API
   * CommandReceived - Fires when command (uses custom command identifier) is received.
   * WhisperSent - Fires when a whisper is sent.
 - sendRaw(string message) - Sends RAW IRC message
-- sendWhisper(string receiver, string message) - Sends formatted Twitch whisper IRC message
+- sendWhisper(string receiver, string message) - Sends formatted Twitch whisper message
 
 ### TwitchAPI
 - broadcasterOnline(string channel) - Async function returns bool of whether or not streamer is streaming
