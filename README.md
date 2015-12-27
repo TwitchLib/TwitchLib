@@ -12,6 +12,7 @@ TwitchLib is a C# library that attempts to harness the Twitch Chat and Twitch AP
   * ViewerJoined - New viewer/chatter joined the chat channel room.
   * CommandReceived - Fires when command (uses custom command identifier) is received.
   * MessageSent - Fires when a chat message is sent.
+  * UserStateAssigned - Fires when a user state is received.
 - sendRaw(string message) - Sends RAW IRC message
 - sendMessage(string message) - Sends formatted Twitch channel chat message
 - Handled chat message types
@@ -54,6 +55,7 @@ This project demonstrates a majority of the functionality that TwitchLib allows 
 - TwitchAPIClasses/TwitchVideo - Contains a Twitch video properties: Title, Description, Status, ID< Tag_List, Recorded_At, Game, Delete_At, Preview, Broadcast_ID, URL, Length, Views, Is_Muted, FPS, Resolutions, Channel
 - TwitchAPIClasses/TwitchTeamMember - Contains Twitch Team Member properties: Name, Description, Title, Meta_Game, Display_Name, Link, Follower_Count, Total_Views, Current_Views,
 Status, ImageSizes
+- UserState - Contains state of a user that recently connected, properties: ColorHEX, DisplayName, EmoteSet, Channel, Subscriber, Turbo, UserType
 
 ### Credits and Libraries Utilized
 - Costura.Fody / Fody - Takes the projects various DLL files and packages them all in the TwitchLib.dll file, combing and removing potential problems with not having all parts
