@@ -64,6 +64,7 @@
     <Compile Include="TwitchIpAndPort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TwitchWhisperClient.cs" />
+    <Compile Include="UserState.cs" />
     <Compile Include="WhisperMessage.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -29,6 +29,8 @@ namespace TwitchLib
         public event EventHandler<ViewerJoinedArgs> ViewerJoined;
         public event EventHandler<CommandReceivedArgs> CommandReceived;
         public event EventHandler<MessageSentArgs> OnMessageSent;
+        public event EventHandler<ModJoinedArgs> ModJoined;
+        public event EventHandler<UserStateArgs> UserStateAssigned;
 
         public class NewChatMessageArgs : EventArgs
         {
@@ -37,10 +39,12 @@ namespace TwitchLib
         public class NewSubscriberArgs : EventArgs
         {
             public Subscriber Subscriber;
+            public string Channel;
         }
         public class ChannelStateAssignedArgs : EventArgs
         {
             public ChannelState ChannelState;
+            public string Channel;
         }
         public class OnConnectedArgs : EventArgs
         {
@@ -56,8 +60,16 @@ namespace TwitchLib
         }
         public class CommandReceivedArgs : EventArgs
         {
-            public string Username, Command, ArgumentsAsString;
+            public string Username, Channel, Command, ArgumentsAsString;
             public List<string> ArgumentsAsList;
+        }
+        public class ModJoinedArgs : EventArgs
+        {
+            public string Username, Channel;
+        }
+        public class UserStateArgs : EventArgs
+        {
+            public UserState UserState;
         }
 
         public TwitchChatClient(string channel, ConnectionCredentials credentials, char commandIdentifier = '\0', bool logging = true)
@@ -108,7 +120,7 @@ namespace TwitchLib
 
             Task.Factory.StartNew(() => client.Listen());
             if (OnConnected != null)
-                OnConnected(null, new OnConnectedArgs { Username = TwitchUsername, Channel = this.channel });
+                OnConnected(null, new OnConnectedArgs { Username = TwitchUsername, Channel = channel });
         }
 
         private void onReadLine(object sender, ReadLineEventArgs e)
@@ -125,7 +137,7 @@ namespace TwitchLib
                             Subscriber subscriber = new Subscriber(e.Line);
                             if (NewSubscriber != null)
                             {
-                                NewSubscriber(null, new NewSubscriberArgs { Subscriber = subscriber });
+                                NewSubscriber(null, new NewSubscriberArgs { Subscriber = subscriber, Channel = channel });
                             }
                         }
                         else
@@ -155,7 +167,7 @@ namespace TwitchLib
                                     command = chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
                                 }
                                 if(CommandReceived != null)
-                                    CommandReceived(null, new CommandReceivedArgs { Command = command, Username = chatMessage.Username, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString }); 
+                                    CommandReceived(null, new CommandReceivedArgs { Command = command, Username = chatMessage.Username, Channel = channel, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString }); 
                             }
                         }
                         break;
@@ -163,11 +175,22 @@ namespace TwitchLib
                     case "JOIN":
                         //:the_kraken_bot!the_kraken_bot@the_kraken_bot.tmi.twitch.tv JOIN #swiftyspiffy
                         if(ViewerJoined != null)
-                            ViewerJoined(null, new ViewerJoinedArgs { Username = e.Line.Split('!')[1].Split('@')[0], Channel = e.Line.Split('#')[1] });
+                            ViewerJoined(null, new ViewerJoinedArgs { Username = e.Line.Split('!')[1].Split('@')[0], Channel = channel });
                         break;
 
                     case "MODE":
                         //:jtv MODE #swiftyspiffy +o swiftyspiffy
+                        if (e.Line.Split(' ').Length == 4)
+                        {
+                            if (ModJoined != null)
+                            {
+                                ModJoined(null, new ModJoinedArgs { Username = e.Line.Split(' ')[4], Channel = channel });
+                            }
+                        } else
+                        {
+                            if (logging)
+                                Console.WriteLine("FAILED PARSE: " + e.Line);
+                        }
                         break;
 
                     case "NOTICE":
@@ -185,7 +208,10 @@ namespace TwitchLib
                         break;
 
                     case "USERSTATE":
-                        //Unaccounted for: @color=#8A2BE2;display-name=The_Kraken_Bot;emote-sets=0,5628;subscriber=0;turbo=0;user-type=mod :tmi.twitch.tv USERSTATE #swiftyspiffy
+                        //@color=#8A2BE2;display-name=The_Kraken_Bot;emote-sets=0,5628;subscriber=0;turbo=0;user-type=mod :tmi.twitch.tv USERSTATE #swiftyspiffy
+                        UserState userState = new UserState(e.Line);
+                        if (UserStateAssigned != null)
+                            UserStateAssigned(null, new UserStateArgs { UserState = userState });
                         break;
 
                     default:
