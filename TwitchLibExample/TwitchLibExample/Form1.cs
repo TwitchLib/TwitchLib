@@ -23,6 +23,7 @@ namespace TwitchLibExample
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Console.WriteLine(string.Format("Current uptime for '{0}' is: {1}", "teezeesak", new System.Net.WebClient().DownloadString("http://burkeblack.tv/uptime.php?channel=teezeesak")));
             if(File.Exists("credentials.txt"))
             {
                 StreamReader file = new StreamReader("credentials.txt");
