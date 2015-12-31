@@ -16,11 +16,13 @@ namespace TwitchLib
         private char commandIdentifier;
         private ChatMessage previousMessage;
         private bool logging;
+        private bool connected = false;
 
         public ChannelState ChannelState { get { return state; } }
         public string Channel { get { return channel; } }
         public string TwitchUsername { get { return credentials.TwitchUsername; } }
         public ChatMessage PreviousMessage { get { return previousMessage; } }
+        public bool IsConnected { get { return connected; } }
 
         public event EventHandler<OnConnectedArgs> OnConnected;
         public event EventHandler<NewChatMessageArgs> NewChatMessage;
@@ -105,6 +107,7 @@ namespace TwitchLib
         public void disconnect()
         {
             client.Disconnect();
+            connected = false;
         }
 
         private void onConnected(object sender, EventArgs e)
@@ -120,6 +123,7 @@ namespace TwitchLib
             client.WriteLine(Rfc2812.Join(String.Format("#{0}", channel)));
 
             Task.Factory.StartNew(() => client.Listen());
+            connected = true;
             if (OnConnected != null)
                 OnConnected(null, new OnConnectedArgs { Username = TwitchUsername, Channel = channel });
         }

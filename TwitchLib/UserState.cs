@@ -22,7 +22,8 @@ namespace TwitchLib
         private bool turbo = false;
         private uType userType;
 
-        public string ColorHEX { get { return ColorHEX; } }
+        //Revursing issue noticed by SimpleVar
+        public string ColorHEX { get { return colorHEX; } }
         public string DisplayName { get { return displayName; } }
         public string EmoteSet { get { return emoteSet; } }
         public string Channel { get { return channel; } }

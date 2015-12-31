@@ -13,9 +13,11 @@ namespace TwitchLib
         private char commandIdentifier;
         private WhisperMessage previousWhisper;
         private bool logging;
+        private bool connected;
 
         public string TwitchUsername { get { return credentials.TwitchUsername; } }
         public WhisperMessage PreviousWhisper { get { return previousWhisper; } }
+        public bool IsConnected { get { return connected; } }
 
         public event EventHandler<NewWhisperReceivedArgs> NewWhisper;
         public event EventHandler<OnConnectedArgs> OnConnected;
@@ -58,6 +60,7 @@ namespace TwitchLib
 
         public void disconnect() {
             client.Disconnect();
+            connected = false;
         }
 
         public void sendRaw(string message)
@@ -86,6 +89,7 @@ namespace TwitchLib
             client.WriteLine(Rfc2812.Join(String.Format("#{0}", "jtv")));
 
             Task.Factory.StartNew(() => client.Listen());
+            connected = true;
             if (OnConnected != null)
             {
                 OnConnected(null, new OnConnectedArgs { username = TwitchUsername });
