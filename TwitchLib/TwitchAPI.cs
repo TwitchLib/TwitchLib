@@ -186,6 +186,23 @@ namespace TwitchLib
             }
             var response = (HttpWebResponse)request.GetResponse();
         }
+        //Required scope: channel_check_subscription
+        public static bool channelHasUserSubscribed(string username, string channel, string access_token)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.twitch.tv/kraken/channels/" + channel + "/subscriptions/" + username);
+                request.Method = "GET";
+                request.Accept = "application/vnd.twitchtv.v3+json";
+                request.Headers.Add("Authorization", string.Format("OAuth {0}", access_token));
+                request.ContentType = "application/text";
+                HttpWebResponse errorResponse = request.GetResponse() as HttpWebResponse;
+                return errorResponse.StatusCode != HttpStatusCode.NotFound;
+            } catch
+            {
+                return false;
+            }
+        }
 
         public static async Task<List<TwitchAPIClasses.TwitchVideo>> getChannelVideos(string channel, int limit = 10, int offset = 0, 
             bool onlyBroadcasts = false, bool onlyHLS = false)

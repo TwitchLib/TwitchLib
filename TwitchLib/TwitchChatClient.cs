@@ -60,7 +60,8 @@ namespace TwitchLib
         }
         public class CommandReceivedArgs : EventArgs
         {
-            public string Username, Channel, Command, ArgumentsAsString;
+            public ChatMessage ChatMessage;
+            public string Channel, Command, ArgumentsAsString;
             public List<string> ArgumentsAsList;
         }
         public class ModJoinedArgs : EventArgs
@@ -167,7 +168,7 @@ namespace TwitchLib
                                     command = chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
                                 }
                                 if(CommandReceived != null)
-                                    CommandReceived(null, new CommandReceivedArgs { Command = command, Username = chatMessage.Username, Channel = channel, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString }); 
+                                    CommandReceived(null, new CommandReceivedArgs { Command = command, ChatMessage = chatMessage, Channel = channel, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString }); 
                             }
                         }
                         break;

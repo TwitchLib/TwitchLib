@@ -42,8 +42,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="TwitchLib">
-      <HintPath>..\..\..\..\GitHub\TwitchLib\TwitchLib\bin\Debug\TwitchLib.dll</HintPath>
+    <Reference Include="TwitchLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TwitchLib\bin\Debug\TwitchLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

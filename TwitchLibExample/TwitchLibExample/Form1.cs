@@ -79,7 +79,7 @@ namespace TwitchLibExample
 
         private void chatCommandReceived(object sender, TwitchChatClient.CommandReceivedArgs e)
         {
-            listBox1.Items.Add(e.Username + ": " + e.Command + "; args: " + e.ArgumentsAsString + ";");
+            listBox1.Items.Add(e.ChatMessage.Username + ": " + e.Command + "; args: " + e.ArgumentsAsString + ";");
             foreach(string arg in e.ArgumentsAsList)
             {
                 Console.WriteLine("[chat] arg: " + arg);
@@ -272,6 +272,14 @@ namespace TwitchLibExample
                     member.Current_Views, member.ImageSizes.Size600, member.ImageSizes.Size300, member.ImageSizes.Size150, member.ImageSizes.Size70, member.ImageSizes.Size50,
                     member.ImageSizes.Size28));
             }
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            if (TwitchAPI.channelHasUserSubscribed(textBox23.Text, textBox14.Text, textBox15.Text))
+                MessageBox.Show("User is subscribed!");
+            else
+                MessageBox.Show("User is not subscribed!");
         }
     }
 }
