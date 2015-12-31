@@ -40,6 +40,7 @@ TwitchLib is a C# library that attempts to harness the Twitch Chat and Twitch AP
 - runCommercial(Valid_Commercial_Lengths length, string username, string access_token) - A sync function that runs a commercial of variable length on a channel
 - getChannelHosts(string channel) - Async function that returns a string list of channels hosting a specified channel (undocumented)
 - getTeamMembers(string teamName) - Async function that returns a TwitchTeamMember list of all members in a Twitch team (undocumented)
+- channelHasUserSubscribed(string username, string channel, string access_token) - Returns true or false on whether or not a user is subscribed to a channel.
 
 ### TwitchLibExample
 This project demonstrates a majority of the functionality that TwitchLib allows for.  Includes a basic UI that has textboxes and buttons that allow for required input in the various functions. Supports reading twitch account details from credentials.txt (one per line: username, oauth, channel).
