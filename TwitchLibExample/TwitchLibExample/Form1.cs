@@ -281,5 +281,15 @@ namespace TwitchLibExample
             else
                 MessageBox.Show("User is not subscribed!");
         }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            List<TwitchLib.TwitchAPIClasses.TwitchFollower> followers = TwitchAPI.getTwitchFollowers(textBox24.Text).Result;
+            foreach(TwitchLib.TwitchAPIClasses.TwitchFollower follower in followers)
+            {
+                Console.WriteLine("test");
+                MessageBox.Show(string.Format("notifications: {0}\ncreated at:{1}\n[user] name: {2}\n[user] display name: {3}\n[user] bio: {4}\n [user] logo: {5}\n[user] created at: {6}\n[user] updated at: {7}", follower.Notifications, follower.CreatedAt, follower.User.Name, follower.User.DisplayName, follower.User.Bio, follower.User.Logo, follower.User.CreatedAt, follower.User.UpdatedAt));
+            }
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace TwitchLib
         public static async Task<bool> broadcasterOnline(string channel)
         {
             var client = new WebClient();
-            string resp = await client.DownloadStringTaskAsync(new Uri(String.Format("https://api.twitch.tv/kraken/streams/{0}", channel)));
+            string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/streams/{0}", channel)));
             if (resp.Contains("{\"stream\":{\"_id\":"))
                 return true;
             return false;
@@ -35,11 +35,11 @@ namespace TwitchLib
         {
             List<string> hosts = new List<string>();
             var client = new WebClient();
-            string resp = await client.DownloadStringTaskAsync(new Uri(String.Format("https://api.twitch.tv/kraken/users/{0}", channel)));
+            string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/users/{0}", channel)));
             JObject json = JObject.Parse(resp);
             if(json.SelectToken("_id") != null)
             {
-                resp = await client.DownloadStringTaskAsync(new Uri(String.Format("http://tmi.twitch.tv/hosts?include_logins=1&target={0}", json.SelectToken("_id").ToString())));
+                resp = await client.DownloadStringTaskAsync(new Uri(string.Format("http://tmi.twitch.tv/hosts?include_logins=1&target={0}", json.SelectToken("_id").ToString())));
                 json = JObject.Parse(resp);
                 foreach(JToken host in json.SelectToken("hosts"))
                 {
@@ -54,7 +54,7 @@ namespace TwitchLib
         {
             List<TwitchAPIClasses.TwitchTeamMember> members = new List<TwitchAPIClasses.TwitchTeamMember>();
             var client = new WebClient();
-            string resp = await client.DownloadStringTaskAsync(new Uri(String.Format("http://api.twitch.tv/api/team/{0}/all_channels.json", teamName)));
+            string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("http://api.twitch.tv/api/team/{0}/all_channels.json", teamName)));
             JObject json = JObject.Parse(resp);
             foreach(JToken member in json.SelectToken("channels"))
             {
@@ -66,7 +66,7 @@ namespace TwitchLib
         public static async Task<TwitchChannel> getTwitchChannel(string channel)
         {
             var client = new WebClient();
-            string resp = await client.DownloadStringTaskAsync(new Uri(String.Format("https://api.twitch.tv/kraken/channels/{0}", channel)));
+            string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/channels/{0}", channel)));
             JObject json = JObject.Parse(resp);
             if (json.SelectToken("status").ToString() != "404" && json.SelectToken("status").ToString() != "422")
                 return new TwitchChannel(resp);
@@ -78,7 +78,7 @@ namespace TwitchLib
             var client = new WebClient();
             try
             {
-                string resp = await client.DownloadStringTaskAsync(new Uri(String.Format("https://api.twitch.tv/kraken/users/{0}/follows/channels/{1}", username, channel)));
+                string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/users/{0}/follows/channels/{1}", username, channel)));
                 return true;
             } catch (WebException)
             {
@@ -86,10 +86,27 @@ namespace TwitchLib
             }
         }
 
+        public static List<TwitchAPIClasses.TwitchFollower> getTwitchFollowers(string channel, int limit = 25, int cursor = -1, string direction = "desc")
+        {
+            List<TwitchAPIClasses.TwitchFollower> followers = new List<TwitchAPIClasses.TwitchFollower>();
+            string args = "";
+            if (cursor == -1)
+                args = string.Format("?limit={0}&direction{1}", limit, direction);
+            else
+                args = string.Format("?limit={0}&cursor={1}&direction={2}", limit, cursor, direction);
+            var client = new WebClient();
+            string json = client.DownloadString(string.Format(string.Format("https://api.twitch.tv/kraken/channels/{0}/follows{1}", channel, args)));
+            foreach (JToken follower in JObject.Parse(json).SelectToken("follows"))
+            {
+                followers.Add(new TwitchAPIClasses.TwitchFollower(follower));
+            }
+            return followers;
+        }
+
         public static async Task<List<Chatter>> getChatters(string channel)
         {
             var client = new WebClient();
-            string resp = await client.DownloadStringTaskAsync(new Uri(String.Format("https://tmi.twitch.tv/group/user/{0}/chatters", channel)));
+            string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://tmi.twitch.tv/group/user/{0}/chatters", channel)));
             JToken chatters = JObject.Parse(resp).SelectToken("chatters");
             List<Chatter> chatterList = new List<Chatter>();
             foreach(JToken user in chatters.SelectToken("moderators"))
@@ -215,7 +232,7 @@ namespace TwitchLib
             if(onlyBroadcasts == true) { broadcastStr = "&broadcasts=true"; }
             string hlsStr = "&hls=false";
             if(onlyHLS == true) { hlsStr = "&hls=true"; }
-            string resp = await client.DownloadStringTaskAsync(new Uri(String.Format("https://api.twitch.tv/kraken/channels/{0}/videos?{1}{2}{3}{4}", 
+            string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/channels/{0}/videos?{1}{2}{3}{4}", 
                 channel, limitStr, offsetStr, broadcastStr, hlsStr)));
             JObject json = JObject.Parse(resp);
             foreach(JToken vid in json.SelectToken("videos"))

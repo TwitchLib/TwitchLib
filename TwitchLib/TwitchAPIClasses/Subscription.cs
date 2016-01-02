@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.TwitchAPIClasses
 {
-    class Subscription
+    public class Subscription
     {
         private int id;
         private string logo, name, account_created_at, account_updated_at, display_name, subscription_created_at;
