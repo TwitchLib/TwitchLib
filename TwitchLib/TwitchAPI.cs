@@ -103,6 +103,23 @@ namespace TwitchLib
             return followers;
         }
 
+        public static TimeSpan getUptime(string channel)
+        {
+            TwitchAPIClasses.TwitchStream stream = getTwitchStream(channel);
+            DateTime time = Convert.ToDateTime(stream.CreatedAt);
+            return DateTime.UtcNow - time;
+        }
+
+        public static TwitchAPIClasses.TwitchStream getTwitchStream(string channel)
+        {
+            var client = new WebClient();
+            string resp = client.DownloadString(string.Format("https://api.twitch.tv/kraken/streams/{0}", channel));
+            JObject json = JObject.Parse(resp);
+            if (json.SelectToken("stream").SelectToken("_id") != null)
+                return new TwitchAPIClasses.TwitchStream(json.SelectToken("stream"));
+            throw new Exceptions.InvalidChannelException(resp);
+        }
+
         public static async Task<List<Chatter>> getChatters(string channel)
         {
             var client = new WebClient();

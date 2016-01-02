@@ -41,6 +41,9 @@ TwitchLib is a C# library that attempts to harness the Twitch Chat and Twitch AP
 - getChannelHosts(string channel) - Async function that returns a string list of channels hosting a specified channel (undocumented)
 - getTeamMembers(string teamName) - Async function that returns a TwitchTeamMember list of all members in a Twitch team (undocumented)
 - channelHasUserSubscribed(string username, string channel, string access_token) - Returns true or false on whether or not a user is subscribed to a channel.
+- getTwitchStream(string channel) - Returns TwitchStream object containing API data related to a stream
+- getTwitchFollower(string channel) - Returns asc or desc list of followers from a specific channel, returns list of TwitchFollower objects.
+- getUptime(string channel) - Returns TimeSpan object representing time between creation_at of stream, and now.
 
 ### TwitchLibExample
 This project demonstrates a majority of the functionality that TwitchLib allows for.  Includes a basic UI that has textboxes and buttons that allow for required input in the various functions. Supports reading twitch account details from credentials.txt (one per line: username, oauth, channel).

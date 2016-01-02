@@ -60,6 +60,7 @@
     <Compile Include="TwitchAPIClasses\Subscription.cs" />
     <Compile Include="TwitchAPIClasses\TwitchChannel.cs" />
     <Compile Include="TwitchAPIClasses\TwitchFollower.cs" />
+    <Compile Include="TwitchAPIClasses\TwitchStream.cs" />
     <Compile Include="TwitchAPIClasses\TwitchTeamMember.cs" />
     <Compile Include="TwitchAPIClasses\TwitchVideo.cs" />
     <Compile Include="TwitchChatClient.cs" />

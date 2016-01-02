@@ -284,12 +284,24 @@ namespace TwitchLibExample
 
         private void button20_Click(object sender, EventArgs e)
         {
-            List<TwitchLib.TwitchAPIClasses.TwitchFollower> followers = TwitchAPI.getTwitchFollowers(textBox24.Text).Result;
+            List<TwitchLib.TwitchAPIClasses.TwitchFollower> followers = TwitchAPI.getTwitchFollowers(textBox24.Text);
             foreach(TwitchLib.TwitchAPIClasses.TwitchFollower follower in followers)
             {
-                Console.WriteLine("test");
                 MessageBox.Show(string.Format("notifications: {0}\ncreated at:{1}\n[user] name: {2}\n[user] display name: {3}\n[user] bio: {4}\n [user] logo: {5}\n[user] created at: {6}\n[user] updated at: {7}", follower.Notifications, follower.CreatedAt, follower.User.Name, follower.User.DisplayName, follower.User.Bio, follower.User.Logo, follower.User.CreatedAt, follower.User.UpdatedAt));
             }
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            TwitchLib.TwitchAPIClasses.TwitchStream stream = TwitchAPI.getTwitchStream(textBox25.Text);
+            MessageBox.Show(string.Format("average fps: {0}\nchannel name: {1}\ncreated at: {2}\ndelay: {3}\ngame: {4}\nid: {5}\nplaylist: {6}\npreview large: {7}\nvideo height: {8}\n viewers: {9}", 
+                stream.AverageFPS, stream.Channel.Name, stream.CreatedAt, stream.Delay, stream.Game, stream.ID, stream.IsPlaylist, stream.Preview.Large, stream.VideoHeight, stream.Viewers));
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            TimeSpan uptime = TwitchAPI.getUptime(textBox26.Text);
+            MessageBox.Show(string.Format("uptime: {0} days, {1} hours, {2} minutes, {3} seconds", uptime.Days, uptime.Hours, uptime.Minutes, uptime.Seconds));
         }
     }
 }
