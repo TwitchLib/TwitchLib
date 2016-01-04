@@ -117,7 +117,7 @@ namespace TwitchLib
             JObject json = JObject.Parse(resp);
             if (json.SelectToken("stream").SelectToken("_id") != null)
                 return new TwitchAPIClasses.TwitchStream(json.SelectToken("stream"));
-            throw new Exceptions.InvalidChannelException(resp);
+            return null;
         }
 
         public static async Task<List<Chatter>> getChatters(string channel)
