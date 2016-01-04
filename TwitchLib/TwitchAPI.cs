@@ -23,10 +23,13 @@ namespace TwitchLib
 
         public static async Task<bool> broadcasterOnline(string channel)
         {
-            var client = new WebClient();
-            string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/streams/{0}", channel)));
-            if (resp.Contains("{\"stream\":{\"_id\":"))
-                return true;
+            try
+            {
+                var client = new WebClient();
+                string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/streams/{0}", channel)));
+                if (resp.Contains("{\"stream\":{\"_id\":"))
+                    return true;
+            }catch (Exception) {  }
             return false;
         }
 
