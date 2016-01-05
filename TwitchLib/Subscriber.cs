@@ -22,7 +22,7 @@ namespace TwitchLib
         {
             channel = IRCString.Split('#')[1].Split(' ')[0];
             name = IRCString.Split(':')[2].Split(' ')[0];
-            if (IRCString.Split(' ').Count() == 5)
+            if (IRCString.Split(' ').Count() == 5 || IRCString.Contains("just subscribed!"))
             {
                 months = 0;
             }
