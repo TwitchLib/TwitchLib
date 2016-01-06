@@ -69,7 +69,8 @@ namespace TwitchLib
             subscriber = convertToBool(subscriberStr);
             turbo = convertToBool(turboStr);
 
-            userID = int.Parse(userIDStr);
+            if (!int.TryParse(userIDStr, out userID))
+                userID = -1;
 
             switch (userTypeStr)
             {
