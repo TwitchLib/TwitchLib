@@ -61,6 +61,10 @@ This project demonstrates a majority of the functionality that TwitchLib allows 
 Status, ImageSizes
 - UserState - Contains state of a user that recently connected, properties: ColorHEX, DisplayName, EmoteSet, Channel, Subscriber, Turbo, UserType
 
+### Testing/Parsing Stability
+I've recently taken to implementing this class into test applications and connecting them to large Twitch channels to see how the class handles fast moving chat and large TwitchAPI usage.  These are the events/channels I've had the library connected to.
+- GamesDoneQuick (several days) - 80,000 - 200,000 concurrent, fixed a number of overflow and outofindex exceptions thrown when TwitchAPI returns service unavailable or TwitchIRC returns incomplete message data
+
 ### Credits and Libraries Utilized
 - Costura.Fody / Fody - Takes the projects various DLL files and packages them all in the TwitchLib.dll file, combing and removing potential problems with not having all parts
 - Newtonsoft.Json - JSON parsing class.  Used to parse Twitch API calls.
