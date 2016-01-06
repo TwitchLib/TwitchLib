@@ -69,11 +69,15 @@ namespace TwitchLib
         }
 
         //:dara226!dara226@dara226.tmi.twitch.tv WHISPER the_kraken_bot :ahoy
-        public void sendWhisper(string receiver, string message)
+        public void sendWhisper(string receiver, string message, bool dryRun = false)
         {
-            client.WriteLine(String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :/w {2} {3}", credentials.TwitchUsername, "jtv", receiver, message));
-            if (WhisperSent != null)
+            if(!dryRun)
+            {
+                client.WriteLine(String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :/w {2} {3}", credentials.TwitchUsername, "jtv", receiver, message));
+                if (WhisperSent != null)
                 WhisperSent(null, new OnWhisperSentArgs { Receiver = receiver, Message = message });
+            }
+            
         }
 
         private void onConnected(object sender, EventArgs e)

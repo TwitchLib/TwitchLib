@@ -91,11 +91,15 @@ namespace TwitchLib
             client.WriteLine(message);
         }
 
-        public void sendMessage(string message)
+        public void sendMessage(string message, bool dryRun = false)
         {
-            client.WriteLine(String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :{2}", credentials.TwitchUsername, channel, message));
-            if (OnMessageSent != null)
-                OnMessageSent(null, new MessageSentArgs { Username = credentials.TwitchUsername, Channel = channel, Message = message });
+            if(!dryRun)
+            {
+                client.WriteLine(String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :{2}", credentials.TwitchUsername, channel, message));
+                if (OnMessageSent != null)
+                    OnMessageSent(null, new MessageSentArgs { Username = credentials.TwitchUsername, Channel = channel, Message = message });
+            }
+            
         }
 
         public void connect()
