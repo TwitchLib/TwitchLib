@@ -115,12 +115,18 @@ namespace TwitchLib
 
         public static TwitchAPIClasses.TwitchStream getTwitchStream(string channel)
         {
-            var client = new WebClient();
-            string resp = client.DownloadString(string.Format("https://api.twitch.tv/kraken/streams/{0}", channel));
-            JObject json = JObject.Parse(resp);
-            if (json.SelectToken("stream").SelectToken("_id") != null)
-                return new TwitchAPIClasses.TwitchStream(json.SelectToken("stream"));
-            return null;
+            try
+            {
+                var client = new WebClient();
+                string resp = client.DownloadString(string.Format("https://api.twitch.tv/kraken/streams/{0}", channel));
+                JObject json = JObject.Parse(resp);
+                if (json.SelectToken("stream").SelectToken("_id") != null)
+                    return new TwitchAPIClasses.TwitchStream(json.SelectToken("stream"));
+                return null;
+            } catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static async Task<List<Chatter>> getChatters(string channel)
