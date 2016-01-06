@@ -55,7 +55,7 @@ namespace TwitchLib
             if(IRCString.Split(';').Length >= 6 + TSFinalBoost && IRCString.Split(';')[5 + TSFinalBoost].Split('=').Length >= 2)
                 userIDStr = IRCString.Split(';')[5 + TSFinalBoost].Split('=')[1];
             string userTypeStr = "viewer";
-            if (IRCString.Split(';').Count() > (6 + TSFinalBoost)) { userTypeStr = IRCString.Split(';')[6 + TSFinalBoost].Split(':')[0].Split('=')[1].Replace(" ", String.Empty); }
+            if (IRCString.Split(';').Count() > (6 + TSFinalBoost) && IRCString.Split(';')[6 + TSFinalBoost].Split(':')[0].Contains("=")) { userTypeStr = IRCString.Split(';')[6 + TSFinalBoost].Split(':')[0].Split('=')[1].Replace(" ", String.Empty); }
             if (IRCString.Split('#').Count() == 3)
             {
                 channel = IRCString.Split('#')[2].Split(' ')[0];
