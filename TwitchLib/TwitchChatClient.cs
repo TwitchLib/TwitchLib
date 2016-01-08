@@ -33,7 +33,6 @@ namespace TwitchLib
         public event EventHandler<MessageSentArgs> OnMessageSent;
         public event EventHandler<ModJoinedArgs> ModJoined;
         public event EventHandler<UserStateArgs> UserStateAssigned;
-        public event EventHandler<ModListReceivedArgs> ModListReceived;
 
         public class NewChatMessageArgs : EventArgs
         {
@@ -74,10 +73,6 @@ namespace TwitchLib
         public class UserStateArgs : EventArgs
         {
             public UserState UserState;
-        }
-        public class ModListReceivedArgs : EventArgs
-        {
-            public List<string> ChannelMods;
         }
         public TwitchChatClient(string channel, ConnectionCredentials credentials, char commandIdentifier = '\0', bool logging = true)
         {
@@ -216,7 +211,6 @@ namespace TwitchLib
 
                     case "ROOMSTATE":
                         state = new ChannelState(e.Line);
-                        sendMessage(".mods");
                         if (ChannelStateAssigned != null)
                             ChannelStateAssigned(null, new ChannelStateAssignedArgs { ChannelState = state });
                         break;
