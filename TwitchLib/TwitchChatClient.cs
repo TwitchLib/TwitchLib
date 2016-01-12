@@ -140,7 +140,7 @@ namespace TwitchLib
                 switch (readType)
                 {
                     case "PRIVMSG":
-                        if (e.Line.Split('!')[0] == ":twitchnotify" && !e.Line.Contains("subscribed to"))
+                        if (e.Line.Split('!')[0] == ":twitchnotify" && (e.Line.Contains("just subscribed!") || e.Line.Contains("subscribed for")))
                         {
                             Subscriber subscriber = new Subscriber(e.Line);
                             if (NewSubscriber != null)
