@@ -37,64 +37,82 @@ namespace TwitchLib
         //@color=#CC00C9;display-name=astickgamer;emotes=70803:6-11;sent-ts=1447446917994;subscriber=1;tmi-sent-ts=1447446957359;turbo=0;user-id=24549902;user-type= :astickgamer!astickgamer@astickgamer.tmi.twitch.tv PRIVMSG #cohhcarnage :cjb2, cohhHi
         public ChatMessage(string IRCString)
         {
+            string userTypeStr = "";
             //@color=asd;display-name=Swiftyspiffyv4;emotes=;subscriber=0;turbo=0;user-id=103325214;user-type=asd :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #burkeblack :this is a test lol
-            int TSFinalBoost = 0;
-            int TSSubBoost = 0;
-            if (IRCString.Split(';').Count() == 9)
+            foreach(string part in IRCString.Split(';'))
             {
-                TSSubBoost = 1;
-                TSFinalBoost = 2;
-            }
-            colorHEX = IRCString.Split(';')[0].Split('=')[1];
-            username = IRCString.Split('@')[2].Split('.')[0];
-            displayName = IRCString.Split(';')[1].Split('=')[1];
-            emoteSet = IRCString.Split(';')[2].Split('=')[1];
-            string subscriberStr = IRCString.Split(';')[3 + TSSubBoost].Split('=')[1];
-            string turboStr = IRCString.Split(';')[4 + TSFinalBoost].Split('=')[1];
-            string userIDStr = "-1";
-            if(IRCString.Split(';').Length >= 6 + TSFinalBoost && IRCString.Split(';')[5 + TSFinalBoost].Split('=').Length >= 2)
-                userIDStr = IRCString.Split(';')[5 + TSFinalBoost].Split('=')[1];
-            string userTypeStr = "viewer";
-            if (IRCString.Split(';').Count() > (6 + TSFinalBoost) && IRCString.Split(';')[6 + TSFinalBoost].Split(':')[0].Contains("=")) { userTypeStr = IRCString.Split(';')[6 + TSFinalBoost].Split(':')[0].Split('=')[1].Replace(" ", String.Empty); }
-            string messageMeta = IRCString.Split(':')[0] + ":" +  IRCString.Split(':')[1] + ":";
-            if (messageMeta.Split('#').Count() == 3)
-            {
-                channel = messageMeta.Split('#')[2];
-                message = IRCString.Replace(messageMeta, "");
-            }
-            else
-            {
-                channel = IRCString.Split('#')[1].Split(' ')[0];
-                message = IRCString.Replace(IRCString.Split('#')[0] + "#" + channel + " :", "");
-            }
-            subscriber = convertToBool(subscriberStr);
-            turbo = convertToBool(turboStr);
-
-            if (!int.TryParse(userIDStr, out userID))
-                userID = -1;
-
-            switch (userTypeStr)
-            {
-                case "mod":
+                if(part.Contains("!"))
+                {
+                    channel = part.Split('#')[1].Split(' ')[0];
+                    username = part.Split('!')[1].Split('@')[0];
+                    continue;
+                }
+                if(part.Contains("@color="))
+                {
+                    colorHEX = part.Split('=')[1];
+                    continue;
+                }
+                if(part.Contains("display-name"))
+                {
+                    displayName = part.Split('=')[1];
+                    continue;
+                }
+                if(part.Contains("emotes="))
+                {
+                    emoteSet = part.Split('=')[1];
+                    continue;
+                }
+                if(part.Contains("subscriber="))
+                {
+                    if (part.Split('=')[1] == "1")
+                        subscriber = true;
+                    else
+                        subscriber = false;
+                    continue;
+                }
+                if(part.Contains("turbo="))
+                {
+                    if (part.Split('=')[1] == "1")
+                        turbo = true;
+                    else
+                        turbo = false;
+                    continue;
+                }
+                if(part.Contains("user-id="))
+                {
+                    userID = int.Parse(part.Split('=')[1]);
+                    continue;
+                }
+                if(part.Contains("user-type="))
+                {
+                    userTypeStr = part.Split('=')[1].Split(' ')[0];
+                    switch (part.Split('=')[1].Split(' ')[0])
+                    {
+                        case "mod":
+                            userType = uType.Moderator;
+                            break;
+                        case "global_mod":
+                            userType = uType.GlobalModerator;
+                            break;
+                        case "admin":
+                            userType = uType.Admin;
+                            break;
+                        case "staff":
+                            userType = uType.Staff;
+                            break;
+                        default:
+                            userType = uType.Viewer;
+                            break;
+                    }
+                    continue;
+                }
+                if (part.Contains("mod="))
+                {
                     userType = uType.Moderator;
-                    break;
-
-                case "global_mod":
-                    userType = uType.GlobalModerator;
-                    break;
-
-                case "admin":
-                    userType = uType.Admin;
-                    break;
-
-                case "staff":
-                    userType = uType.Staff;
-                    break;
-
-                default:
-                    userType = uType.Viewer;
-                    break;
+                    continue;
+                }
             }
+            message = IRCString.Split(new string[] { string.Format(" PRIVMSG #{0} :", channel) }, StringSplitOptions.None)[1];
         }
 
         private bool convertToBool(string data)

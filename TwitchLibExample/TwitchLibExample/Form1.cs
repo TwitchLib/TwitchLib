@@ -102,7 +102,7 @@ namespace TwitchLibExample
             //Don't do this in production
             CheckForIllegalCrossThreadCalls = false;
 
-            richTextBox1.Text = String.Format("#{0} {1}: {2}", e.ChatMessage.Channel, e.ChatMessage.DisplayName, e.ChatMessage.Message) + 
+            richTextBox1.Text = String.Format("#{0} {1}[isSub: {2}]: {3}", e.ChatMessage.Channel, e.ChatMessage.DisplayName, e.ChatMessage.Subscriber, e.ChatMessage.Message) + 
                 "\n" + richTextBox1.Text;
         }
 
