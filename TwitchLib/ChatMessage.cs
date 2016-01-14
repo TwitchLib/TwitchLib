@@ -21,7 +21,7 @@ namespace TwitchLib
 
         private int userID;
         private string username, displayName, colorHEX, message, channel, emoteSet;
-        private bool subscriber, turbo;
+        private bool subscriber, turbo, modFlag;
         private uType userType;
 
         public int UserID { get { return userID; } }
@@ -33,6 +33,7 @@ namespace TwitchLib
         public string Channel { get { return channel; } }
         public bool Subscriber { get { return subscriber; } }
         public bool Turbo { get { return turbo; } }
+        public bool ModFlag { get { return modFlag; } }
 
         //@color=#CC00C9;display-name=astickgamer;emotes=70803:6-11;sent-ts=1447446917994;subscriber=1;tmi-sent-ts=1447446957359;turbo=0;user-id=24549902;user-type= :astickgamer!astickgamer@astickgamer.tmi.twitch.tv PRIVMSG #cohhcarnage :cjb2, cohhHi
         public ChatMessage(string IRCString)
@@ -108,7 +109,10 @@ namespace TwitchLib
                 }
                 if (part.Contains("mod="))
                 {
-                    userType = uType.Moderator;
+                    if (part.Split(';')[1] == "1")
+                        modFlag = true;
+                    else
+                        modFlag = false; 
                     continue;
                 }
             }
