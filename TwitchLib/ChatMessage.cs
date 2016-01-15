@@ -109,7 +109,7 @@ namespace TwitchLib
                 }
                 if (part.Contains("mod="))
                 {
-                    if (part.Split(';')[1] == "1")
+                    if (part.Split('=')[1] == "1")
                         modFlag = true;
                     else
                         modFlag = false; 
