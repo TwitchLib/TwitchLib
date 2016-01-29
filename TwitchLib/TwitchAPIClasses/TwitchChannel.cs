@@ -28,9 +28,8 @@ namespace TwitchLib
         public int Views { get { return views; } }
         public int Followers { get { return followers; } }
 
-        public TwitchChannel(string APIResponse)
+        public TwitchChannel(JObject json)
         {
-            JObject json = JObject.Parse(APIResponse);
             if(json.SelectToken("mature").ToString() == "True") { mature = true; }
             if(json.SelectToken("partner").ToString() == "True") { partner = true; }
             status = json.SelectToken("status").ToString();

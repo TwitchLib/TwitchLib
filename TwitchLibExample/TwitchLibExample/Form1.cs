@@ -35,6 +35,7 @@ namespace TwitchLibExample
                 textBox7.Text = twitchOAuth;
                 textBox8.Text = twitchChannel;
             }
+            this.Height = 640;
             MessageBox.Show("This application is intended to demonstrate basic functionality of TwitchLib.\n\n-swiftyspiffy");
         }
 
@@ -152,11 +153,17 @@ namespace TwitchLibExample
 
         private async void button9_Click(object sender, EventArgs e)
         {
-            TwitchChannel channel = await TwitchAPI.getTwitchChannel(textBox9.Text);
-            MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At: {6}\n" +
+            try
+            {
+                TwitchChannel channel = await TwitchAPI.getTwitchChannel(textBox9.Text);
+                MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At: {6}\n" +
                 "Updated At: {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
                 channel.Status, channel.Broadcaster_Language, channel.Display_name, channel.Game, channel.Language, channel.Name, channel.Created_At, channel.Updated_At,
                 channel.Delay, channel.Logo, channel.Background, channel.Profile_Banner, channel.Mature, channel.Partner, channel.ID, channel.Views, channel.Followers));
+            } catch (TwitchLib.Exceptions.InvalidChannelException)
+            {
+                MessageBox.Show(string.Format("The channel '{0}' is not a valid channel!", textBox9.Text));
+            }
         }
 
         private async void button10_Click(object sender, EventArgs e)
@@ -301,6 +308,19 @@ namespace TwitchLibExample
         {
             TimeSpan uptime = TwitchAPI.getUptime(textBox26.Text);
             MessageBox.Show(string.Format("uptime: {0} days, {1} hours, {2} minutes, {3} seconds", uptime.Days, uptime.Hours, uptime.Minutes, uptime.Seconds));
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            List<TwitchChannel> results = TwitchAPI.searchChannels(textBox27.Text);
+            if (results.Count > 0)
+                foreach(TwitchChannel channel in results)
+                    MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At: {6}\n" +
+                    "Updated At: {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
+                    channel.Status, channel.Broadcaster_Language, channel.Display_name, channel.Game, channel.Language, channel.Name, channel.Created_At, channel.Updated_At,
+                    channel.Delay, channel.Logo, channel.Background, channel.Profile_Banner, channel.Mature, channel.Partner, channel.ID, channel.Views, channel.Followers));
+            else
+                MessageBox.Show("No results!");
         }
     }
 }

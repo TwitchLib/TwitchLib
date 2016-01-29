@@ -69,11 +69,16 @@ namespace TwitchLib
         public static async Task<TwitchChannel> getTwitchChannel(string channel)
         {
             var client = new WebClient();
-            string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/channels/{0}", channel)));
-            JObject json = JObject.Parse(resp);
-            if (json.SelectToken("status").ToString() != "404" && json.SelectToken("status").ToString() != "422")
-                return new TwitchChannel(resp);
-            throw new Exceptions.InvalidChannelException(resp);
+            string resp = null;
+            try
+            {
+                resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/channels/{0}", channel)));
+            } catch (Exception)
+            {
+                throw new Exceptions.InvalidChannelException(resp);
+            }
+            JObject json = JObject.Parse(resp);   
+            return new TwitchChannel(json);
         }
 
         public static async Task<bool> userFollowsChannel(string username, string channel)
@@ -127,6 +132,18 @@ namespace TwitchLib
             {
                 return null;
             }
+        }
+
+        public static List<TwitchChannel> searchChannels(string query)
+        {
+            var client = new WebClient();
+            List<TwitchChannel> returnedChannels = new List<TwitchChannel>();
+            string resp = client.DownloadString(new Uri(string.Format("https://api.twitch.tv/kraken/search/channels?q={0}", query)));
+            JObject respO = JObject.Parse(resp);
+            if (respO.SelectToken("_total").ToString() != "0")
+                foreach (JToken channelToken in respO.SelectToken("channels"))
+                    returnedChannels.Add(new TwitchChannel((JObject)channelToken));
+            return returnedChannels;
         }
 
         public static async Task<List<Chatter>> getChatters(string channel)

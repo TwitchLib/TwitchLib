@@ -39,7 +39,7 @@ namespace TwitchLib.TwitchAPIClasses
             if (twitchStreamData.SelectToken("is_playlist").ToString() == "true")
                 is_playlist = true;
             average_fps = double.Parse(twitchStreamData.SelectToken("average_fps").ToString());
-            channel = new TwitchChannel(twitchStreamData.SelectToken("channel").ToString());
+            channel = new TwitchChannel((JObject)twitchStreamData.SelectToken("channel"));
             preview = new PreviewObj(twitchStreamData.SelectToken("preview"));
         }
 
