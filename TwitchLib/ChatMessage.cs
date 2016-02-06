@@ -39,28 +39,34 @@ namespace TwitchLib
         public ChatMessage(string IRCString)
         {
             string userTypeStr = "";
+            //
             //@color=asd;display-name=Swiftyspiffyv4;emotes=;subscriber=0;turbo=0;user-id=103325214;user-type=asd :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #burkeblack :this is a test lol
-            foreach(string part in IRCString.Split(';'))
+            foreach (string part in IRCString.Split(';'))
             {
                 if(part.Contains("!"))
                 {
-                    channel = part.Split('#')[1].Split(' ')[0];
-                    username = part.Split('!')[1].Split('@')[0];
+                    if(channel == null)
+                        channel = part.Split('#')[1].Split(' ')[0];
+                    if(username == null)
+                        username = part.Split('!')[1].Split('@')[0];
                     continue;
                 }
                 if(part.Contains("@color="))
                 {
-                    colorHEX = part.Split('=')[1];
+                    if(colorHEX == null)
+                        colorHEX = part.Split('=')[1];
                     continue;
                 }
                 if(part.Contains("display-name"))
                 {
-                    displayName = part.Split('=')[1];
+                    if(displayName == null)
+                        displayName = part.Split('=')[1];
                     continue;
                 }
                 if(part.Contains("emotes="))
                 {
-                    emoteSet = part.Split('=')[1];
+                    if(emoteSet == null)
+                        emoteSet = part.Split('=')[1];
                     continue;
                 }
                 if(part.Contains("subscriber="))

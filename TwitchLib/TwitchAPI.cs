@@ -77,7 +77,9 @@ namespace TwitchLib
             {
                 throw new Exceptions.InvalidChannelException(resp);
             }
-            JObject json = JObject.Parse(resp);   
+            JObject json = JObject.Parse(resp);
+            if (json.SelectToken("error") != null)
+                throw new Exceptions.InvalidChannelException(resp);
             return new TwitchChannel(json);
         }
 
