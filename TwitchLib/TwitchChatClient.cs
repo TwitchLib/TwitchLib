@@ -33,6 +33,7 @@ namespace TwitchLib
         public event EventHandler<MessageSentArgs> OnMessageSent;
         public event EventHandler<ModJoinedArgs> ModJoined;
         public event EventHandler<UserStateArgs> UserStateAssigned;
+        public event EventHandler HostedStreamerWentOffline;
 
         public class NewChatMessageArgs : EventArgs
         {
@@ -206,6 +207,11 @@ namespace TwitchLib
                         {
                             client.Disconnect();
                             throw new Exceptions.ErrorLoggingInException(e.Line);
+                        }
+                        if(e.Line.Contains("has gone offline"))
+                        {
+                            if (HostedStreamerWentOffline != null)
+                                HostedStreamerWentOffline(null, null);
                         }
                         break;
 
