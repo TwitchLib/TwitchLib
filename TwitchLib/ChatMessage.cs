@@ -20,7 +20,7 @@ namespace TwitchLib
         }
 
         private int userID;
-        private string username, displayName, colorHEX, message, channel, emoteSet;
+        private string username, displayName, colorHEX, message, channel, emoteSet, rawIRCMessage;
         private bool subscriber, turbo, modFlag;
         private uType userType;
 
@@ -34,10 +34,12 @@ namespace TwitchLib
         public bool Subscriber { get { return subscriber; } }
         public bool Turbo { get { return turbo; } }
         public bool ModFlag { get { return modFlag; } }
+        public string RawIRCMessage { get { return rawIRCMessage; } }
 
         //@color=#CC00C9;display-name=astickgamer;emotes=70803:6-11;sent-ts=1447446917994;subscriber=1;tmi-sent-ts=1447446957359;turbo=0;user-id=24549902;user-type= :astickgamer!astickgamer@astickgamer.tmi.twitch.tv PRIVMSG #cohhcarnage :cjb2, cohhHi
         public ChatMessage(string IRCString)
         {
+            rawIRCMessage = IRCString;
             string userTypeStr = "";
             //
             //@color=asd;display-name=Swiftyspiffyv4;emotes=;subscriber=0;turbo=0;user-id=103325214;user-type=asd :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #burkeblack :this is a test lol

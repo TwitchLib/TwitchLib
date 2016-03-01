@@ -13,6 +13,7 @@ TwitchLib is a C# library that attempts to harness the Twitch Chat and Twitch AP
   * CommandReceived - Fires when command (uses custom command identifier) is received.
   * MessageSent - Fires when a chat message is sent.
   * UserStateAssigned - Fires when a user state is received.
+  * HostedStreamerWentOffline - Fires when a hosted streamer goes offline and hosting is killed
 - sendRaw(string message) - Sends RAW IRC message
 - sendMessage(string message) - Sends formatted Twitch channel chat message
 - Handled chat message types

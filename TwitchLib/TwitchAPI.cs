@@ -177,6 +177,24 @@ namespace TwitchLib
             return chatterList;
         }
 
+        public static async void updateStreamDelay(int delay, string username, string access_token)
+        {
+            string data = "{\"channel\":{\"delay\":" + delay + "}}";
+            Console.WriteLine(data);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.twitch.tv/kraken/channels/" + username);
+            request.Method = "PUT";
+            request.Accept = "application/vnd.twitchtv.v3+json";
+            request.Headers.Add("Authorization", string.Format("OAuth {0}", access_token));
+            request.ContentType = "application/json";
+            UTF8Encoding encoding = new UTF8Encoding();
+            byte[] utfBytes = encoding.GetBytes(data);
+            using (Stream dataStream = await request.GetRequestStreamAsync())
+            {
+                dataStream.Write(utfBytes, 0, utfBytes.Length);
+            }
+            var response = (HttpWebResponse)request.GetResponse();
+        }
+
         //Required scope: channel_editor
         public static async void updateStreamTitle(string status, string username, string access_token)
         {

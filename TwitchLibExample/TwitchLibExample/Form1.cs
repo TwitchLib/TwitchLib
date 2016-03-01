@@ -322,5 +322,10 @@ namespace TwitchLibExample
             else
                 MessageBox.Show("No results!");
         }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+            TwitchAPI.updateStreamDelay(Decimal.ToInt32(numericUpDown1.Value), textBox14.Text, textBox15.Text);
+        }
     }
 }
