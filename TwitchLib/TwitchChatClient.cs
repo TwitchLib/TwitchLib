@@ -121,6 +121,11 @@ namespace TwitchLib
             //connected = false;
         }
 
+        public void joinChannel(string channel)
+        {
+            client.WriteLine(Rfc2812.Join(String.Format("#{0}", channel)));
+        }
+
         private void onConnected(object sender, EventArgs e)
         {
             client.WriteLine(Rfc2812.Pass(credentials.TwitchOAuth), Priority.Critical);
