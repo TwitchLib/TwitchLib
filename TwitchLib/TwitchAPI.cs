@@ -177,6 +177,18 @@ namespace TwitchLib
             return chatterList;
         }
 
+        // Required scope: channel_subscriptions
+        public static int getSubscriberCount(string username, string access_token)
+        {
+            WebClient wc = new WebClient();
+            wc.Headers.Add("Accept", "application/vnd.twitchtv.v3+json");
+            wc.Headers.Add("Authorization", string.Format("OAuth {0}", access_token));
+            string cnts = wc.DownloadString("https://api.twitch.tv/kraken/channels/" + username + "/subscriptions");
+            JObject json = JObject.Parse(cnts);
+            return int.Parse(json.SelectToken("_total").ToString());
+        }
+
+        // Required scope: channel_editor
         public static async void updateStreamDelay(int delay, string username, string access_token)
         {
             string data = "{\"channel\":{\"delay\":" + delay + "}}";
