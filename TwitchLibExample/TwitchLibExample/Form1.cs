@@ -34,6 +34,8 @@ namespace TwitchLibExample
                 textBox5.Text = twitchOAuth;
                 textBox7.Text = twitchOAuth;
                 textBox8.Text = twitchChannel;
+                textBox14.Text = twitchChannel;
+                textBox15.Text = twitchOAuth;
             }
             this.Height = 640;
             MessageBox.Show("This application is intended to demonstrate basic functionality of TwitchLib.\n\n-swiftyspiffy");
@@ -326,6 +328,11 @@ namespace TwitchLibExample
         private void button24_Click(object sender, EventArgs e)
         {
             TwitchAPI.updateStreamDelay(Decimal.ToInt32(numericUpDown1.Value), textBox14.Text, textBox15.Text);
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Current sub count: " + TwitchAPI.getSubscriberCount(textBox14.Text, textBox15.Text).ToString());
         }
     }
 }

@@ -76,6 +76,10 @@
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.groupBox24 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.button24 = new System.Windows.Forms.Button();
+            this.label31 = new System.Windows.Forms.Label();
             this.groupBox19 = new System.Windows.Forms.GroupBox();
             this.button19 = new System.Windows.Forms.Button();
             this.textBox23 = new System.Windows.Forms.TextBox();
@@ -151,10 +155,8 @@
             this.button9 = new System.Windows.Forms.Button();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.groupBox24 = new System.Windows.Forms.GroupBox();
-            this.button24 = new System.Windows.Forms.Button();
-            this.label31 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.groupBox25 = new System.Windows.Forms.GroupBox();
+            this.button25 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -169,6 +171,8 @@
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.groupBox11.SuspendLayout();
+            this.groupBox24.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox19.SuspendLayout();
             this.groupBox15.SuspendLayout();
             this.groupBox14.SuspendLayout();
@@ -187,8 +191,7 @@
             this.groupBox9.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
-            this.groupBox24.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.groupBox25.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -670,7 +673,7 @@
             this.tabPage5.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage5.Size = new System.Drawing.Size(1031, 1327);
+            this.tabPage5.Size = new System.Drawing.Size(1031, 1440);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "Twitch IRC";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -690,6 +693,7 @@
             // 
             // groupBox11
             // 
+            this.groupBox11.Controls.Add(this.groupBox25);
             this.groupBox11.Controls.Add(this.groupBox24);
             this.groupBox11.Controls.Add(this.groupBox19);
             this.groupBox11.Controls.Add(this.groupBox15);
@@ -709,6 +713,48 @@
             this.groupBox11.TabIndex = 1;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Auth Calls";
+            // 
+            // groupBox24
+            // 
+            this.groupBox24.Controls.Add(this.numericUpDown1);
+            this.groupBox24.Controls.Add(this.button24);
+            this.groupBox24.Controls.Add(this.label31);
+            this.groupBox24.Location = new System.Drawing.Point(483, 444);
+            this.groupBox24.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox24.Name = "groupBox24";
+            this.groupBox24.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox24.Size = new System.Drawing.Size(459, 107);
+            this.groupBox24.TabIndex = 21;
+            this.groupBox24.TabStop = false;
+            this.groupBox24.Text = "Set Stream Delay";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(152, 37);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(137, 38);
+            this.numericUpDown1.TabIndex = 19;
+            // 
+            // button24
+            // 
+            this.button24.Location = new System.Drawing.Point(307, 33);
+            this.button24.Margin = new System.Windows.Forms.Padding(5);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(120, 48);
+            this.button24.TabIndex = 18;
+            this.button24.Text = "Send!";
+            this.button24.UseVisualStyleBackColor = true;
+            this.button24.Click += new System.EventHandler(this.button24_Click);
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(11, 43);
+            this.label31.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(96, 32);
+            this.label31.TabIndex = 0;
+            this.label31.Text = "Delay:";
             // 
             // groupBox19
             // 
@@ -763,7 +809,7 @@
             this.groupBox15.Size = new System.Drawing.Size(459, 98);
             this.groupBox15.TabIndex = 22;
             this.groupBox15.TabStop = false;
-            this.groupBox15.Text = "Run Commercial";
+            this.groupBox15.Text = "Reset Stream Key";
             // 
             // button15
             // 
@@ -1523,47 +1569,28 @@
             this.label12.TabIndex = 0;
             this.label12.Text = "Channel:";
             // 
-            // groupBox24
+            // groupBox25
             // 
-            this.groupBox24.Controls.Add(this.numericUpDown1);
-            this.groupBox24.Controls.Add(this.button24);
-            this.groupBox24.Controls.Add(this.label31);
-            this.groupBox24.Location = new System.Drawing.Point(483, 444);
-            this.groupBox24.Margin = new System.Windows.Forms.Padding(5);
-            this.groupBox24.Name = "groupBox24";
-            this.groupBox24.Padding = new System.Windows.Forms.Padding(5);
-            this.groupBox24.Size = new System.Drawing.Size(459, 107);
-            this.groupBox24.TabIndex = 21;
-            this.groupBox24.TabStop = false;
-            this.groupBox24.Text = "Set Stream Delay";
+            this.groupBox25.Controls.Add(this.button25);
+            this.groupBox25.Location = new System.Drawing.Point(11, 509);
+            this.groupBox25.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox25.Name = "groupBox25";
+            this.groupBox25.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox25.Size = new System.Drawing.Size(459, 98);
+            this.groupBox25.TabIndex = 23;
+            this.groupBox25.TabStop = false;
+            this.groupBox25.Text = "Get Sub Count";
             // 
-            // button24
+            // button25
             // 
-            this.button24.Location = new System.Drawing.Point(307, 33);
-            this.button24.Margin = new System.Windows.Forms.Padding(5);
-            this.button24.Name = "button24";
-            this.button24.Size = new System.Drawing.Size(120, 48);
-            this.button24.TabIndex = 18;
-            this.button24.Text = "Send!";
-            this.button24.UseVisualStyleBackColor = true;
-            this.button24.Click += new System.EventHandler(this.button24_Click);
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(11, 43);
-            this.label31.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(96, 32);
-            this.label31.TabIndex = 0;
-            this.label31.Text = "Delay:";
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(152, 37);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(137, 38);
-            this.numericUpDown1.TabIndex = 19;
+            this.button25.Location = new System.Drawing.Point(19, 38);
+            this.button25.Margin = new System.Windows.Forms.Padding(5);
+            this.button25.Name = "button25";
+            this.button25.Size = new System.Drawing.Size(387, 48);
+            this.button25.TabIndex = 20;
+            this.button25.Text = "Get Sub Count";
+            this.button25.UseVisualStyleBackColor = true;
+            this.button25.Click += new System.EventHandler(this.button25_Click);
             // 
             // Form1
             // 
@@ -1594,6 +1621,9 @@
             this.tabPage6.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
+            this.groupBox24.ResumeLayout(false);
+            this.groupBox24.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox19.ResumeLayout(false);
             this.groupBox19.PerformLayout();
             this.groupBox15.ResumeLayout(false);
@@ -1627,9 +1657,7 @@
             this.groupBox8.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
-            this.groupBox24.ResumeLayout(false);
-            this.groupBox24.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.groupBox25.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1763,6 +1791,8 @@
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Button button24;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.GroupBox groupBox25;
+        private System.Windows.Forms.Button button25;
     }
 }
 
