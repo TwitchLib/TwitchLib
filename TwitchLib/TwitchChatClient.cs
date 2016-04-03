@@ -86,6 +86,11 @@ namespace TwitchLib
             client.OnReadLine += new ReadLineEventHandler(onReadLine);
         }
 
+        public void toggleLogging(bool loggingStatus)
+        {
+            logging = loggingStatus;
+        }
+
         public void sendRAW(string message)
         {
             client.WriteLine(message);
@@ -104,14 +109,16 @@ namespace TwitchLib
 
         public void connect()
         {
+            if(logging)
+                Console.WriteLine("Connecting to: " + credentials.Host + ":" + credentials.Port);
             client.Connect(credentials.Host, credentials.Port);
         }
 
         //TODO: disconnect method
         public void disconnect()
         {
-            client.Disconnect();
-            connected = false;
+            //client.Disconnect();
+            //connected = false;
         }
 
         private void onConnected(object sender, EventArgs e)
@@ -134,6 +141,8 @@ namespace TwitchLib
 
         private void onReadLine(object sender, ReadLineEventArgs e)
         {
+            if (logging)
+                Console.WriteLine(e.Line);
             if (e.Line.Contains(String.Format("#{0}", channel)))
             {
                 string[] splitter = Regex.Split(e.Line, String.Format(" #{0}", channel));
