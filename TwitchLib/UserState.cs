@@ -33,7 +33,10 @@ namespace TwitchLib
 
         public UserState(string IRCString)
         {
-            colorHEX = IRCString.Split(';')[0].Split('#')[1];
+            if (IRCString.Split(';')[0].Contains("#"))
+                colorHEX = IRCString.Split(';')[0].Split('#')[1];
+            else
+                colorHEX = "";
             displayName = IRCString.Split(';')[1].Split('=')[1];
             emoteSet = IRCString.Split(';')[2].Split('=')[1];
             if (IRCString.Split(';')[3].Split('=')[1] == "1")
