@@ -9,9 +9,8 @@ namespace TwitchLib.TwitchAPIClasses
 {
     public class TwitchVideo
     {
-        string title, description, status, id, tag_list, recorded_at, game, delete_at, preview, broadcast_id, url;
+        string title, description, status, id, tag_list, recorded_at, game, preview, broadcast_id, url;
         int length, views;
-        bool is_muted;
         FPS_Data fps;
         Resolutions_Data resolutions;
         Channel_Data channel;
@@ -23,13 +22,11 @@ namespace TwitchLib.TwitchAPIClasses
         public string Tag_List { get { return tag_list; } }
         public string Recorded_At { get { return recorded_at; } }
         public string Game { get { return game; } }
-        public string Delete_At { get { return delete_at; } }
         public string Preview { get { return preview; } }
         public string Broadcast_ID { get { return broadcast_id; } }
         public string URL { get { return url; } }
         public int Length { get { return length; } }
         public int Views { get { return views; } }
-        public bool Is_Muted { get { return is_muted; } }
         public FPS_Data FPS { get { return fps; } }
         public Resolutions_Data Resolutions { get { return resolutions; } }
         public Channel_Data Channel { get { return channel; } }
@@ -43,13 +40,11 @@ namespace TwitchLib.TwitchAPIClasses
             this.tag_list = APIResponse.SelectToken("tag_list").ToString();
             this.recorded_at = APIResponse.SelectToken("recorded_at").ToString();
             this.game = APIResponse.SelectToken("game").ToString();
-            this.delete_at = APIResponse.SelectToken("delete_at").ToString();
             this.preview = APIResponse.SelectToken("preview").ToString();
             this.broadcast_id = APIResponse.SelectToken("broadcast_id").ToString();
             this.url = APIResponse.SelectToken("url").ToString();
             this.length = int.Parse(APIResponse.SelectToken("length").ToString());
             this.views = int.Parse(APIResponse.SelectToken("views").ToString());
-            if (APIResponse.SelectToken("is_muted").ToString() == "True") { is_muted = true;  } else { is_muted = false; }
             fps = new FPS_Data(int.Parse(APIResponse.SelectToken("fps").SelectToken("audio_only").ToString()),
                 double.Parse(APIResponse.SelectToken("fps").SelectToken("medium").ToString()), double.Parse(APIResponse.SelectToken("fps").SelectToken("mobile").ToString()),
                 double.Parse(APIResponse.SelectToken("fps").SelectToken("high").ToString()), double.Parse(APIResponse.SelectToken("fps").SelectToken("low").ToString()),
