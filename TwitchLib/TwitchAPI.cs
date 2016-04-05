@@ -309,8 +309,8 @@ namespace TwitchLib
             if(onlyHLS == true) { hlsStr = "&hls=true"; }
             string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/channels/{0}/videos?{1}{2}{3}{4}", 
                 channel, limitStr, offsetStr, broadcastStr, hlsStr)));
-            JObject json = JObject.Parse(resp);
-            foreach(JToken vid in json.SelectToken("videos"))
+            JToken vids = JObject.Parse(resp).SelectToken("videos");
+            foreach(JToken vid in vids)
             {
                 TwitchAPIClasses.TwitchVideo video = new TwitchAPIClasses.TwitchVideo(vid);
                 videos.Add(video);
