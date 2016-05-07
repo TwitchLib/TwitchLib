@@ -49,6 +49,7 @@ namespace TwitchLibExample
             TwitchChatClient newClient = new TwitchChatClient(textBox8.Text, credentials, '!');
             newClient.NewChatMessage += new EventHandler<TwitchChatClient.NewChatMessageArgs>(globalChatMessageReceived);
             newClient.CommandReceived += new EventHandler<TwitchChatClient.CommandReceivedArgs>(chatCommandReceived);
+            newClient.IncorrectLogin += new EventHandler<TwitchChatClient.ErrorLoggingInArgs>(incorrectChatLogin);
             newClient.connect();
             chatClients.Add(newClient);
             ListViewItem lvi = new ListViewItem();
@@ -70,6 +71,7 @@ namespace TwitchLibExample
             TwitchWhisperClient newClient = new TwitchWhisperClient(credentials, '!');
             newClient.NewWhisper += new EventHandler<TwitchWhisperClient.NewWhisperReceivedArgs>(globalWhisperReceived);
             newClient.CommandReceived += new EventHandler<TwitchWhisperClient.CommandReceivedArgs>(whisperCommandReceived);
+            newClient.IncorrectLogin += new EventHandler<TwitchWhisperClient.ErrorLoggingInArgs>(incorrectWhisperLogin);
             newClient.connect();
             whisperClients.Add(newClient);
             ListViewItem lvi = new ListViewItem();
@@ -78,6 +80,16 @@ namespace TwitchLibExample
             lvi.SubItems.Add("N/A");
             listView1.Items.Add(lvi);
             comboBox1.Items.Add(textBox6.Text);
+        }
+
+        public void incorrectChatLogin(object sender, TwitchChatClient.ErrorLoggingInArgs e)
+        {
+            MessageBox.Show("Failed login as chat client!!!\nException: " + e.Exception + "\nUsername: " + e.Exception.Username);
+        }
+
+        public void incorrectWhisperLogin(object sender, TwitchWhisperClient.ErrorLoggingInArgs e)
+        {
+            MessageBox.Show("Failed login as whisper client!!!\nException: " + e.Exception + "\nUsername: " + e.Exception.Username);
         }
 
         private void chatCommandReceived(object sender, TwitchChatClient.CommandReceivedArgs e)
