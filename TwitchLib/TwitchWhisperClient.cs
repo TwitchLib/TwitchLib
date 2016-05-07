@@ -23,6 +23,7 @@ namespace TwitchLib
         public event EventHandler<OnConnectedArgs> OnConnected;
         public event EventHandler<CommandReceivedArgs> CommandReceived;
         public event EventHandler<OnWhisperSentArgs> WhisperSent;
+        public event EventHandler<ErrorLoggingInArgs> IncorrectLogin;
 
         public class NewWhisperReceivedArgs : EventArgs {
             public WhisperMessage WhisperMessage;
@@ -52,6 +53,10 @@ namespace TwitchLib
         {
             public string Username, Command, ArgumentsAsString;
             public List<string> ArgumentsAsList;
+        }
+        public class ErrorLoggingInArgs : EventArgs
+        {
+            public Exceptions.ErrorLoggingInException Exception;
         }
 
         public void connect() {
@@ -140,7 +145,8 @@ namespace TwitchLib
                 if (e.Line == ":tmi.twitch.tv NOTICE * :Error logging in")
                 {
                     client.Disconnect();
-                    throw new Exceptions.ErrorLoggingInException(e.Line);
+                    if (IncorrectLogin != null)
+                        IncorrectLogin(null, new ErrorLoggingInArgs { Exception = new Exceptions.ErrorLoggingInException(e.Line, credentials.TwitchUsername) });
                 }
                 else
                 {
