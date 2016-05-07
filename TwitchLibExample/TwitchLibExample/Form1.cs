@@ -50,6 +50,7 @@ namespace TwitchLibExample
             newClient.NewChatMessage += new EventHandler<TwitchChatClient.NewChatMessageArgs>(globalChatMessageReceived);
             newClient.CommandReceived += new EventHandler<TwitchChatClient.CommandReceivedArgs>(chatCommandReceived);
             newClient.IncorrectLogin += new EventHandler<TwitchChatClient.ErrorLoggingInArgs>(incorrectChatLogin);
+            newClient.OnConnected += new EventHandler<TwitchChatClient.OnConnectedArgs>(onChatConnected);
             newClient.connect();
             chatClients.Add(newClient);
             ListViewItem lvi = new ListViewItem();
@@ -72,6 +73,7 @@ namespace TwitchLibExample
             newClient.NewWhisper += new EventHandler<TwitchWhisperClient.NewWhisperReceivedArgs>(globalWhisperReceived);
             newClient.CommandReceived += new EventHandler<TwitchWhisperClient.CommandReceivedArgs>(whisperCommandReceived);
             newClient.IncorrectLogin += new EventHandler<TwitchWhisperClient.ErrorLoggingInArgs>(incorrectWhisperLogin);
+            newClient.OnConnected += new EventHandler<TwitchWhisperClient.OnConnectedArgs>(onWhisperConnected);
             newClient.connect();
             whisperClients.Add(newClient);
             ListViewItem lvi = new ListViewItem();
@@ -80,6 +82,16 @@ namespace TwitchLibExample
             lvi.SubItems.Add("N/A");
             listView1.Items.Add(lvi);
             comboBox1.Items.Add(textBox6.Text);
+        }
+
+        public void onWhisperConnected(object sender, TwitchWhisperClient.OnConnectedArgs e)
+        {
+            MessageBox.Show("Connected to whisper group chat under username: " + e.Username);
+        }
+
+        public void onChatConnected(object sender, TwitchChatClient.OnConnectedArgs e)
+        {
+            MessageBox.Show("Connected to channel: " + e.Channel + "\nUnder username: " + e.Username);
         }
 
         public void incorrectChatLogin(object sender, TwitchChatClient.ErrorLoggingInArgs e)
