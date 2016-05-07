@@ -34,6 +34,7 @@ namespace TwitchLib
         public event EventHandler<ModJoinedArgs> ModJoined;
         public event EventHandler<UserStateArgs> UserStateAssigned;
         public event EventHandler HostedStreamerWentOffline;
+        public event EventHandler<ErrorLoggingInArgs> IncorrectLogin;
 
         public class NewChatMessageArgs : EventArgs
         {
@@ -74,6 +75,10 @@ namespace TwitchLib
         public class UserStateArgs : EventArgs
         {
             public UserState UserState;
+        }
+        public class ErrorLoggingInArgs : EventArgs
+        {
+            public Exceptions.ErrorLoggingInException Exception;
         }
         public TwitchChatClient(string channel, ConnectionCredentials credentials, char commandIdentifier = '\0', bool logging = true)
         {
@@ -123,7 +128,7 @@ namespace TwitchLib
 
         public void joinChannel(string channel)
         {
-            client.WriteLine(Rfc2812.Join(String.Format("#{0}", channel)));
+            client.WriteLine(string.Format("/join #{0}", channel));
         }
 
         private void onConnected(object sender, EventArgs e)
@@ -220,7 +225,8 @@ namespace TwitchLib
                         if(e.Line.Contains("Error logging in"))
                         {
                             client.Disconnect();
-                            throw new Exceptions.ErrorLoggingInException(e.Line);
+                            if (IncorrectLogin != null)
+                                IncorrectLogin(null, new ErrorLoggingInArgs { Exception = new Exceptions.ErrorLoggingInException(e.Line, credentials.TwitchUsername)});
                         }
                         if(e.Line.Contains("has gone offline"))
                         {
@@ -253,7 +259,8 @@ namespace TwitchLib
                 if (e.Line == ":tmi.twitch.tv NOTICE * :Error logging in")
                 {
                     client.Disconnect();
-                    throw new Exceptions.ErrorLoggingInException(e.Line);
+                    if (IncorrectLogin != null)
+                        IncorrectLogin(null, new ErrorLoggingInArgs { Exception = new Exceptions.ErrorLoggingInException(e.Line, credentials.TwitchUsername) });
                 } else
                 {
                     if(logging)
