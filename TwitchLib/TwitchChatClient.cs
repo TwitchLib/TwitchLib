@@ -128,6 +128,8 @@ namespace TwitchLib
 
         public void joinChannel(string channel)
         {
+            if(logging)
+                Console.WriteLine("[TwitchLib] Joining channel: " + channel);
             client.WriteLine(string.Format("/join #{0}", channel));
         }
 
@@ -144,15 +146,21 @@ namespace TwitchLib
             client.WriteLine(Rfc2812.Join(String.Format("#{0}", channel)));
 
             Task.Factory.StartNew(() => client.Listen());
-            connected = true;
-            if (OnConnected != null)
-                OnConnected(null, new OnConnectedArgs { Username = TwitchUsername, Channel = channel });
         }
 
         private void onReadLine(object sender, ReadLineEventArgs e)
         {
             if (logging)
                 Console.WriteLine(e.Line);
+            if (e.Line.Split(':').Count() > 2)
+            {
+                if (e.Line.Split(':')[2] == "You are in a maze of twisty passages, all alike.")
+                {
+                    connected = true;
+                    if (OnConnected != null)
+                        OnConnected(null, new OnConnectedArgs { Channel = channel, Username = TwitchUsername });
+                }
+            }
             if (e.Line.Contains(String.Format("#{0}", channel)))
             {
                 string[] splitter = Regex.Split(e.Line, String.Format(" #{0}", channel));
