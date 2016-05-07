@@ -41,7 +41,7 @@ namespace TwitchLib
 
         public class OnConnectedArgs : EventArgs
         {
-            public string username;
+            public string Username;
         }
 
         public class OnWhisperSentArgs : EventArgs
@@ -98,15 +98,21 @@ namespace TwitchLib
             client.WriteLine(Rfc2812.Join(String.Format("#{0}", "jtv")));
 
             Task.Factory.StartNew(() => client.Listen());
-            connected = true;
-            if (OnConnected != null)
-            {
-                OnConnected(null, new OnConnectedArgs { username = TwitchUsername });
-            }
         }
 
         private void onReadLine(object sender, ReadLineEventArgs e)
         {
+            if (logging)
+                Console.WriteLine(e.Line);
+            if (e.Line.Split(':').Count() > 2)
+            {
+                if (e.Line.Split(':')[2] == "You are in a maze of twisty passages, all alike.")
+                {
+                    connected = true;
+                    if (OnConnected != null)
+                        OnConnected(null, new OnConnectedArgs { Username = TwitchUsername });
+                }
+            }
             if (e.Line.Split(' ').Count() > 3 && e.Line.Split(' ')[2] == "WHISPER")
             {
                 WhisperMessage whisperMessage = new WhisperMessage(e.Line, credentials.TwitchUsername);
