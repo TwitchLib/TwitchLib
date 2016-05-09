@@ -3,6 +3,10 @@
 
 # Other files
 credentials.txt
+TwitchLib/FodyWeavers.xml
+TwitchLib/TwitchLib.csproj
+TwitchLib/packages.config
+TwitchLib/Properties
 
 # User-specific files
 *.suo
