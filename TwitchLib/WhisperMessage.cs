@@ -15,6 +15,7 @@ namespace TwitchLib
             Admin,
             Staff
         }
+
         private string _botUsername, _colorHex, _username, _displayName, _emoteSet, _threadId, _message, _badges;
         private int _messageId, _userId;
         private bool _turbo;
@@ -33,7 +34,7 @@ namespace TwitchLib
 
         public WhisperMessage(string ircString, string botUsername)
         {
-            if(ircString.Split(';').Length == 9)
+            if (ircString.Split(';').Length == 9)
             {
                 //@badges=;color=#00FF7F;display-name=Dara226;emotes=;message-id=53;thread-id=62192703_66137196;turbo=0;user-id=62192703;user-type= :dara226!dara226@dara226.tmi.twitch.tv WHISPER the_kraken_bot :ahoy
                 _badges = ircString.Split(';')[0].Split('=')[1];
@@ -46,7 +47,10 @@ namespace TwitchLib
                 _turbo = ConvertToBool(ircString.Split(';')[6].Split('=')[1]);
                 _userId = int.Parse(ircString.Split(';')[7].Split('=')[1]);
                 string userTypeStr = ircString.Split(';')[8].Split('=')[1].Replace(" ", "");
-                _message = ircString.Replace(ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" + ircString.Split('@')[2].Split(':')[0] + ":", string.Empty);
+                _message =
+                    ircString.Replace(
+                        ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" +
+                        ircString.Split('@')[2].Split(':')[0] + ":", string.Empty);
             }
             else
             {
@@ -61,7 +65,10 @@ namespace TwitchLib
                 _turbo = ConvertToBool(ircString.Split(';')[5].Split('=')[1]);
                 _userId = int.Parse(ircString.Split(';')[6].Split('=')[1]);
                 string userTypeStr = ircString.Split(';')[7].Split('=')[1].Replace(" ", "");
-                _message = ircString.Replace(ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" + ircString.Split('@')[2].Split(':')[0] + ":", string.Empty);
+                _message =
+                    ircString.Replace(
+                        ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" +
+                        ircString.Split('@')[2].Split(':')[0] + ":", string.Empty);
             }
             this._botUsername = botUsername;
         }

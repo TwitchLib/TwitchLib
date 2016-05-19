@@ -11,7 +11,7 @@ namespace TwitchLib.TwitchAPIClasses
         private int _id;
         private string _logo, _name, _accountCreatedAt, _accountUpdatedAt, _displayName, _subscriptionCreatedAt;
         private bool _staff;
-        
+
         public int Id => _id;
         public string Logo => _logo;
         public string Name => _name;

@@ -40,7 +40,7 @@ namespace TwitchLib
                 _subscriber = true;
             if (ircString.Split(';')[4].Split('=')[1] == "1")
                 _turbo = true;
-            switch(ircString.Split('=')[6].Split(' ')[0])
+            switch (ircString.Split('=')[6].Split(' ')[0])
             {
                 case "mod":
                     _userType = UType.Moderator;

@@ -7,7 +7,6 @@ namespace TwitchLib.Exceptions
         public InvalidChannelException(string apiData)
             : base(apiData)
         {
-
         }
     }
 }

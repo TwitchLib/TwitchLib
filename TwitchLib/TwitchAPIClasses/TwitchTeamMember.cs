@@ -14,6 +14,7 @@ namespace TwitchLib.TwitchAPIClasses
             Live,
             Offline
         }
+
         private string _name, _description, _title, _metaGame, _displayName, _link;
         private int _followerCount, _totalViews, _currentViews;
         private EnumStatus _status = EnumStatus.Offline;

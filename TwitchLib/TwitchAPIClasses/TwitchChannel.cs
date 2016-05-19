@@ -6,8 +6,20 @@ namespace TwitchLib
     {
         private bool _mature = false;
         private bool _partner = false;
-        private string _status, _broadcasterLanguage, _displayName, _game, _language,
-            _name, _createdAt, _updatedAt, _delay, _logo, _background, _profileBanner;
+
+        private string _status,
+            _broadcasterLanguage,
+            _displayName,
+            _game,
+            _language,
+            _name,
+            _createdAt,
+            _updatedAt,
+            _delay,
+            _logo,
+            _background,
+            _profileBanner;
+
         private int _id, _views, _followers;
 
         public string Status => _status;
@@ -30,8 +42,9 @@ namespace TwitchLib
 
         public TwitchChannel(JObject json)
         {
-            if(json.SelectToken("mature").ToString() == "True") { _mature = true; }
-            if(json.SelectToken("partner").ToString() == "True") { _partner = true; }
+            if (json.SelectToken("mature").ToString() == "True") _mature = true;
+            if (json.SelectToken("partner").ToString() == "True") _partner = true;
+
             _status = json.SelectToken("status").ToString();
             _broadcasterLanguage = json.SelectToken("broadcaster_language").ToString();
             _displayName = json.SelectToken("display_name").ToString();

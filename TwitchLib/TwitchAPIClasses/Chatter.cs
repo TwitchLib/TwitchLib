@@ -19,7 +19,7 @@ namespace TwitchLib
 
         private string _username;
         private UType _userType;
-        
+
         public string Username => _username;
         public UType UserType => _userType;
 

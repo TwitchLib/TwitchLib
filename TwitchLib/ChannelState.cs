@@ -24,10 +24,10 @@ namespace TwitchLib
         {
             //@broadcaster-lang=;r9k=0;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #swiftyspiffy
             if (ircString.Split(';').Length <= 3) return;
-            if (ircString.Split(';')[0].Split('=').Length > 1) { _broadcasterLanguage = ircString.Split(';')[0].Split('=')[1]; }
-            if (ircString.Split(';')[1].Split('=').Length > 1) { _r9K = ConvertToBool(ircString.Split(';')[1].Split('=')[1]); }
-            if (ircString.Split(';')[2].Split('=').Length > 1) { _slowMode = ConvertToBool(ircString.Split(';')[2].Split('=')[1]); }
-            if (ircString.Split(';')[3].Split('=').Length > 1) { _subsOnly = ConvertToBool(ircString.Split(';')[3].Split('=')[1]); }
+            if (ircString.Split(';')[0].Split('=').Length > 1) _broadcasterLanguage = ircString.Split(';')[0].Split('=')[1];
+            if (ircString.Split(';')[1].Split('=').Length > 1) _r9K = ConvertToBool(ircString.Split(';')[1].Split('=')[1]);
+            if (ircString.Split(';')[2].Split('=').Length > 1) _slowMode = ConvertToBool(ircString.Split(';')[2].Split('=')[1]);
+            if (ircString.Split(';')[3].Split('=').Length > 1) _subsOnly = ConvertToBool(ircString.Split(';')[3].Split('=')[1]);
             _channel = ircString.Split('#')[1];
         }
 

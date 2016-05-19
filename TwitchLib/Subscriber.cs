@@ -28,7 +28,7 @@ namespace TwitchLib
             }
             else
             {
-                if(!ircString.Contains("while you were away!"))
+                if (!ircString.Contains("while you were away!"))
                     _months = int.Parse(ircString.Split(' ')[6]);
             }
         }

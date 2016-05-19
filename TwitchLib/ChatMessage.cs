@@ -44,48 +44,48 @@ namespace TwitchLib
             //@color=asd;display-name=Swiftyspiffyv4;emotes=;subscriber=0;turbo=0;user-id=103325214;user-type=asd :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #burkeblack :this is a test lol
             foreach (string part in ircString.Split(';'))
             {
-                if(part.Contains("!"))
+                if (part.Contains("!"))
                 {
-                    if(_channel == null)
+                    if (_channel == null)
                         _channel = part.Split('#')[1].Split(' ')[0];
-                    if(_username == null)
+                    if (_username == null)
                         _username = part.Split('!')[1].Split('@')[0];
                     continue;
                 }
-                if(part.Contains("@color="))
+                if (part.Contains("@color="))
                 {
-                    if(_colorHex == null)
+                    if (_colorHex == null)
                         _colorHex = part.Split('=')[1];
                     continue;
                 }
-                if(part.Contains("display-name"))
+                if (part.Contains("display-name"))
                 {
-                    if(_displayName == null)
+                    if (_displayName == null)
                         _displayName = part.Split('=')[1];
                     continue;
                 }
-                if(part.Contains("emotes="))
+                if (part.Contains("emotes="))
                 {
-                    if(_emoteSet == null)
+                    if (_emoteSet == null)
                         _emoteSet = part.Split('=')[1];
                     continue;
                 }
-                if(part.Contains("subscriber="))
+                if (part.Contains("subscriber="))
                 {
                     _subscriber = part.Split('=')[1] == "1";
                     continue;
                 }
-                if(part.Contains("turbo="))
+                if (part.Contains("turbo="))
                 {
                     _turbo = part.Split('=')[1] == "1";
                     continue;
                 }
-                if(part.Contains("user-id="))
+                if (part.Contains("user-id="))
                 {
                     _userId = int.Parse(part.Split('=')[1]);
                     continue;
                 }
-                if(part.Contains("user-type="))
+                if (part.Contains("user-type="))
                 {
                     switch (part.Split('=')[1].Split(' ')[0])
                     {

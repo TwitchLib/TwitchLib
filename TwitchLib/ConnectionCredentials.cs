@@ -17,10 +17,29 @@ namespace TwitchLib
         private string _host, _twitchUsername, _twitchOAuth;
         private int _port;
 
-        public string Host { get { return _host; } set { _host = value; } }
-        public string TwitchUsername { get { return _twitchUsername; } set { _twitchUsername = value; } }
-        public string TwitchOAuth { get { return _twitchOAuth; } set { _twitchOAuth = value; }  }
-        public int Port { get { return _port; } set { _port = value; } }
+        public string Host
+        {
+            get { return _host; }
+            set { _host = value; }
+        }
+
+        public string TwitchUsername
+        {
+            get { return _twitchUsername; }
+            set { _twitchUsername = value; }
+        }
+
+        public string TwitchOAuth
+        {
+            get { return _twitchOAuth; }
+            set { _twitchOAuth = value; }
+        }
+
+        public int Port
+        {
+            get { return _port; }
+            set { _port = value; }
+        }
 
         public ConnectionCredentials(string host, int port, string twitchUsername, string twitchOAuth)
         {
@@ -30,7 +49,8 @@ namespace TwitchLib
             this._twitchOAuth = twitchOAuth;
         }
 
-        public ConnectionCredentials(ClientType type, TwitchIpAndPort tIpAndPort, string twitchUsername, string twitchOAuth)
+        public ConnectionCredentials(ClientType type, TwitchIpAndPort tIpAndPort, string twitchUsername,
+            string twitchOAuth)
         {
             if (type == ClientType.Chat)
             {
@@ -45,6 +65,5 @@ namespace TwitchLib
             this._twitchUsername = twitchUsername.ToLower();
             this._twitchOAuth = twitchOAuth;
         }
-
     }
 }

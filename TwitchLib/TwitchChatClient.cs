@@ -40,47 +40,58 @@ namespace TwitchLib
         {
             public ChatMessage ChatMessage;
         }
+
         public class NewSubscriberArgs : EventArgs
         {
             public Subscriber Subscriber;
             public string Channel;
         }
+
         public class ChannelStateAssignedArgs : EventArgs
         {
             public ChannelState ChannelState;
             public string Channel;
         }
+
         public class OnConnectedArgs : EventArgs
         {
             public string Username, Channel;
         }
+
         public class ViewerJoinedArgs : EventArgs
         {
             public string Username, Channel;
         }
+
         public class MessageSentArgs : EventArgs
         {
             public string Username, Channel, Message;
         }
+
         public class CommandReceivedArgs : EventArgs
         {
             public ChatMessage ChatMessage;
             public string Channel, Command, ArgumentsAsString;
             public List<string> ArgumentsAsList;
         }
+
         public class ModJoinedArgs : EventArgs
         {
             public string Username, Channel;
         }
+
         public class UserStateArgs : EventArgs
         {
             public UserState UserState;
         }
+
         public class ErrorLoggingInArgs : EventArgs
         {
             public Exceptions.ErrorLoggingInException Exception;
         }
-        public TwitchChatClient(string channel, ConnectionCredentials credentials, char commandIdentifier = '\0', bool logging = true)
+
+        public TwitchChatClient(string channel, ConnectionCredentials credentials, char commandIdentifier = '\0',
+            bool logging = true)
         {
             this._channel = channel.ToLower();
             this._credentials = credentials;
@@ -104,13 +115,15 @@ namespace TwitchLib
         public void SendMessage(string message, bool dryRun = false)
         {
             if (dryRun) return;
-            _client.WriteLine(string.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :{2}", _credentials.TwitchUsername, _channel, message));
-            OnMessageSent?.Invoke(null, new MessageSentArgs { Username = _credentials.TwitchUsername, Channel = _channel, Message = message });
+            _client.WriteLine(string.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :{2}", _credentials.TwitchUsername,
+                _channel, message));
+            OnMessageSent?.Invoke(null,
+                new MessageSentArgs {Username = _credentials.TwitchUsername, Channel = _channel, Message = message});
         }
 
         public void Connect()
         {
-            if(_logging)
+            if (_logging)
                 Console.WriteLine("Connecting to: " + _credentials.Host + ":" + _credentials.Port);
             _client.Connect(_credentials.Host, _credentials.Port);
         }
@@ -124,7 +137,7 @@ namespace TwitchLib
 
         public void JoinChannel(string channel)
         {
-            if(_logging)
+            if (_logging)
                 Console.WriteLine("[TwitchLib] Joining channel: " + channel);
             _client.WriteLine($"/join #{channel}");
         }
@@ -133,7 +146,8 @@ namespace TwitchLib
         {
             _client.WriteLine(Rfc2812.Pass(_credentials.TwitchOAuth), Priority.Critical);
             _client.WriteLine(Rfc2812.Nick(_credentials.TwitchUsername), Priority.Critical);
-            _client.WriteLine(Rfc2812.User(_credentials.TwitchUsername, 0, _credentials.TwitchUsername), Priority.Critical);
+            _client.WriteLine(Rfc2812.User(_credentials.TwitchUsername, 0, _credentials.TwitchUsername),
+                Priority.Critical);
 
             _client.WriteLine("CAP REQ twitch.tv/membership");
             _client.WriteLine("CAP REQ twitch.tv/commands");
@@ -153,7 +167,7 @@ namespace TwitchLib
                 if (e.Line.Split(':')[2] == "You are in a maze of twisty passages, all alike.")
                 {
                     _connected = true;
-                    OnConnected?.Invoke(null, new OnConnectedArgs { Channel = _channel, Username = TwitchUsername });
+                    OnConnected?.Invoke(null, new OnConnectedArgs {Channel = _channel, Username = TwitchUsername});
                 }
             }
             if (e.Line.Contains($"#{_channel}"))
@@ -163,45 +177,61 @@ namespace TwitchLib
                 switch (readType)
                 {
                     case "PRIVMSG":
-                        if (e.Line.Split('!')[0] == ":twitchnotify" && (e.Line.Contains("just subscribed!") || e.Line.Contains("subscribed for")))
+                        if (e.Line.Split('!')[0] == ":twitchnotify" &&
+                            (e.Line.Contains("just subscribed!") || e.Line.Contains("subscribed for")))
                         {
                             Subscriber subscriber = new Subscriber(e.Line);
-                            NewSubscriber?.Invoke(null, new NewSubscriberArgs { Subscriber = subscriber, Channel = _channel });
+                            NewSubscriber?.Invoke(null,
+                                new NewSubscriberArgs {Subscriber = subscriber, Channel = _channel});
                         }
                         else
                         {
                             ChatMessage chatMessage = new ChatMessage(e.Line);
                             _previousMessage = chatMessage;
-                            NewChatMessage?.Invoke(null, new NewChatMessageArgs { ChatMessage = chatMessage });
+                            NewChatMessage?.Invoke(null, new NewChatMessageArgs {ChatMessage = chatMessage});
                             if (_commandIdentifier != '\0' && chatMessage.Message[0] == _commandIdentifier)
                             {
                                 string command;
                                 string argumentsAsString = "";
                                 List<string> argumentsAsList = new List<string>();
-                                if(chatMessage.Message.Contains(" "))
+                                if (chatMessage.Message.Contains(" "))
                                 {
-                                    command = chatMessage.Message.Split(' ')[0].Substring(1, chatMessage.Message.Split(' ')[0].Length - 1);
-                                    argumentsAsList.AddRange(chatMessage.Message.Split(' ').Where(arg => arg != _commandIdentifier + command));
-                                    argumentsAsString = chatMessage.Message.Replace(chatMessage.Message.Split(' ')[0] + " ", "");
-                                } else
+                                    command = chatMessage.Message.Split(' ')[0].Substring(1,
+                                        chatMessage.Message.Split(' ')[0].Length - 1);
+                                    argumentsAsList.AddRange(
+                                        chatMessage.Message.Split(' ').Where(arg => arg != _commandIdentifier + command));
+                                    argumentsAsString =
+                                        chatMessage.Message.Replace(chatMessage.Message.Split(' ')[0] + " ", "");
+                                }
+                                else
                                 {
                                     command = chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
                                 }
-                                CommandReceived?.Invoke(null, new CommandReceivedArgs { Command = command, ChatMessage = chatMessage, Channel = _channel, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
+                                CommandReceived?.Invoke(null,
+                                    new CommandReceivedArgs
+                                    {
+                                        Command = command,
+                                        ChatMessage = chatMessage,
+                                        Channel = _channel,
+                                        ArgumentsAsList = argumentsAsList,
+                                        ArgumentsAsString = argumentsAsString
+                                    });
                             }
                         }
                         break;
 
                     case "JOIN":
                         //:the_kraken_bot!the_kraken_bot@the_kraken_bot.tmi.twitch.tv JOIN #swiftyspiffy
-                        ViewerJoined?.Invoke(null, new ViewerJoinedArgs { Username = e.Line.Split('!')[1].Split('@')[0], Channel = _channel });
+                        ViewerJoined?.Invoke(null,
+                            new ViewerJoinedArgs {Username = e.Line.Split('!')[1].Split('@')[0], Channel = _channel});
                         break;
 
                     case "MODE":
                         //:jtv MODE #swiftyspiffy +o swiftyspiffy
                         if (e.Line.Split(' ').Length == 4)
                         {
-                            ModJoined?.Invoke(null, new ModJoinedArgs { Username = e.Line.Split(' ')[4], Channel = _channel });
+                            ModJoined?.Invoke(null,
+                                new ModJoinedArgs {Username = e.Line.Split(' ')[4], Channel = _channel});
                         }
                         else
                         {
@@ -211,12 +241,17 @@ namespace TwitchLib
                         break;
 
                     case "NOTICE":
-                        if(e.Line.Contains("Error logging in"))
+                        if (e.Line.Contains("Error logging in"))
                         {
                             _client.Disconnect();
-                            IncorrectLogin?.Invoke(null, new ErrorLoggingInArgs { Exception = new Exceptions.ErrorLoggingInException(e.Line, _credentials.TwitchUsername)});
+                            IncorrectLogin?.Invoke(null,
+                                new ErrorLoggingInArgs
+                                {
+                                    Exception =
+                                        new Exceptions.ErrorLoggingInException(e.Line, _credentials.TwitchUsername)
+                                });
                         }
-                        if(e.Line.Contains("has gone offline"))
+                        if (e.Line.Contains("has gone offline"))
                         {
                             HostedStreamerWentOffline?.Invoke(null, null);
                         }
@@ -224,30 +259,36 @@ namespace TwitchLib
 
                     case "ROOMSTATE":
                         _state = new ChannelState(e.Line);
-                        ChannelStateAssigned?.Invoke(null, new ChannelStateAssignedArgs { ChannelState = _state });
+                        ChannelStateAssigned?.Invoke(null, new ChannelStateAssignedArgs {ChannelState = _state});
                         break;
 
                     case "USERSTATE":
                         //@color=#8A2BE2;display-name=The_Kraken_Bot;emote-sets=0,5628;subscriber=0;turbo=0;user-type=mod :tmi.twitch.tv USERSTATE #swiftyspiffy
                         UserState userState = new UserState(e.Line);
-                        UserStateAssigned?.Invoke(null, new UserStateArgs { UserState = userState });
+                        UserStateAssigned?.Invoke(null, new UserStateArgs {UserState = userState});
                         break;
 
                     default:
-                        if(_logging)
+                        if (_logging)
                             Console.WriteLine(string.Format("Unaccounted for: {0}", e.Line));
                         break;
                 }
-            } else
+            }
+            else
             {
                 //Special cases
                 if (e.Line == ":tmi.twitch.tv NOTICE * :Error logging in")
                 {
                     _client.Disconnect();
-                    IncorrectLogin?.Invoke(null, new ErrorLoggingInArgs { Exception = new Exceptions.ErrorLoggingInException(e.Line, _credentials.TwitchUsername) });
-                } else
+                    IncorrectLogin?.Invoke(null,
+                        new ErrorLoggingInArgs
+                        {
+                            Exception = new Exceptions.ErrorLoggingInException(e.Line, _credentials.TwitchUsername)
+                        });
+                }
+                else
                 {
-                    if(_logging)
+                    if (_logging)
                         Console.WriteLine("Not registered: " + e.Line);
                 }
             }

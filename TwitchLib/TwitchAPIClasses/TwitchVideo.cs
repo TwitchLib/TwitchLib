@@ -46,12 +46,16 @@ namespace TwitchLib.TwitchAPIClasses
             this._length = int.Parse(apiResponse.SelectToken("length").ToString());
             this._views = int.Parse(apiResponse.SelectToken("views").ToString());
             _fps = new FpsData(int.Parse(apiResponse.SelectToken("fps").SelectToken("audio_only").ToString()),
-                double.Parse(apiResponse.SelectToken("fps").SelectToken("medium").ToString()), double.Parse(apiResponse.SelectToken("fps").SelectToken("mobile").ToString()),
-                double.Parse(apiResponse.SelectToken("fps").SelectToken("high").ToString()), double.Parse(apiResponse.SelectToken("fps").SelectToken("low").ToString()),
+                double.Parse(apiResponse.SelectToken("fps").SelectToken("medium").ToString()),
+                double.Parse(apiResponse.SelectToken("fps").SelectToken("mobile").ToString()),
+                double.Parse(apiResponse.SelectToken("fps").SelectToken("high").ToString()),
+                double.Parse(apiResponse.SelectToken("fps").SelectToken("low").ToString()),
                 double.Parse(apiResponse.SelectToken("fps").SelectToken("chunked").ToString()));
             _resolutions = new ResolutionsData(apiResponse.SelectToken("resolutions").SelectToken("medium").ToString(),
-                apiResponse.SelectToken("resolutions").SelectToken("mobile").ToString(), apiResponse.SelectToken("resolutions").SelectToken("high").ToString(),
-                apiResponse.SelectToken("resolutions").SelectToken("low").ToString(), apiResponse.SelectToken("resolutions").SelectToken("chunked").ToString());
+                apiResponse.SelectToken("resolutions").SelectToken("mobile").ToString(),
+                apiResponse.SelectToken("resolutions").SelectToken("high").ToString(),
+                apiResponse.SelectToken("resolutions").SelectToken("low").ToString(),
+                apiResponse.SelectToken("resolutions").SelectToken("chunked").ToString());
             _channel = new ChannelData(apiResponse.SelectToken("channel").SelectToken("name").ToString(),
                 apiResponse.SelectToken("channel").SelectToken("display_name").ToString());
         }
