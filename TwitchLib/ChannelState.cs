@@ -8,9 +8,7 @@ namespace TwitchLib
 {
     public class ChannelState
     {
-        private bool _r9K;
-        private bool _subsOnly;
-        private bool _slowMode;
+        private bool _r9K, _subsOnly, _slowMode;
         private string _broadcasterLanguage = "";
         private string _channel;
 

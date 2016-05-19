@@ -15,8 +15,7 @@ namespace TwitchLib
         private string _channel;
         private char _commandIdentifier;
         private ChatMessage _previousMessage;
-        private bool _logging;
-        private bool _connected;
+        private bool _logging, _connected;
 
         public ChannelState ChannelState => _state;
         public string Channel => _channel;

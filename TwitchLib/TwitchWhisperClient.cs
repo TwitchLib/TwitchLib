@@ -12,8 +12,7 @@ namespace TwitchLib
         private ConnectionCredentials _credentials;
         private char _commandIdentifier;
         private WhisperMessage _previousWhisper;
-        private bool _logging;
-        private bool _connected;
+        private bool _logging, _connected;
 
         public string TwitchUsername => _credentials.TwitchUsername;
         public WhisperMessage PreviousWhisper => _previousWhisper;
