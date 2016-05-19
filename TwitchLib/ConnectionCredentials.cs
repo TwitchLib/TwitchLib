@@ -34,13 +34,13 @@ namespace TwitchLib
         {
             if (type == ClientType.Chat)
             {
-                this._host = tIpAndPort.getFirstChatServer().IP;
-                this._port = tIpAndPort.getFirstChatServer().Port;
+                this._host = tIpAndPort.GetFirstChatServer().Ip;
+                this._port = tIpAndPort.GetFirstChatServer().Port;
             }
             else
             {
-                this._host = tIpAndPort.getFirstWhisperServer().IP;
-                this._port = tIpAndPort.getFirstWhisperServer().Port;
+                this._host = tIpAndPort.GetFirstWhisperServer().Ip;
+                this._port = tIpAndPort.GetFirstWhisperServer().Port;
             }
             this._twitchUsername = twitchUsername.ToLower();
             this._twitchOAuth = twitchOAuth;
