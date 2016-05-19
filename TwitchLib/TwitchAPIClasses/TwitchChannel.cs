@@ -4,8 +4,8 @@ namespace TwitchLib
 {
     public class TwitchChannel
     {
-        private bool _mature = false;
-        private bool _partner = false;
+        private bool _mature;
+        private bool _partner;
 
         private string _status,
             _broadcasterLanguage,

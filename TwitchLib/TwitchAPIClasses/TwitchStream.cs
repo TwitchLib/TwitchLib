@@ -12,7 +12,7 @@ namespace TwitchLib.TwitchAPIClasses
         private long _id;
         private int _viewers, _videoHeight, _delay;
         private string _game, _createdAt;
-        private bool _isPlaylist = false;
+        private bool _isPlaylist;
         private double _averageFps;
         private TwitchChannel _channel;
         private PreviewObj _preview;

@@ -18,8 +18,8 @@ namespace TwitchLib
         }
 
         private string _colorHex, _displayName, _emoteSet, _channel;
-        private bool _subscriber = false;
-        private bool _turbo = false;
+        private bool _subscriber;
+        private bool _turbo;
         private UType _userType;
 
         // Reversing issue noticed by SimpleVar

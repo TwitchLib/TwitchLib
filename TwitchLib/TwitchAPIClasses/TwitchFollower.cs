@@ -10,7 +10,7 @@ namespace TwitchLib.TwitchAPIClasses
     public class TwitchFollower
     {
         private string _createdAt;
-        private bool _notifications = false;
+        private bool _notifications;
         private UserObj _user;
 
         public string CreatedAt => _createdAt;
