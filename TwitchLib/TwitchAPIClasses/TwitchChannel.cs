@@ -10,23 +10,23 @@ namespace TwitchLib
             _name, _createdAt, _updatedAt, _delay, _logo, _background, _profileBanner;
         private int _id, _views, _followers;
 
-        public string Status { get { return _status; } }
-        public string BroadcasterLanguage { get { return _broadcasterLanguage; } }
-        public string DisplayName { get { return _displayName; } }
-        public string Game { get { return _game; } }
-        public string Language { get { return _language; } }
-        public string Name { get { return _name; } }
-        public string CreatedAt { get { return _createdAt; } }
-        public string UpdatedAt { get { return _updatedAt; } }
-        public string Delay { get { return _delay; } }
-        public string Logo { get { return _logo; } }
-        public string Background { get { return _background; } }
-        public string ProfileBanner { get { return _profileBanner; } }
-        public bool Mature { get { return _mature; } }
-        public bool Partner { get { return _partner; } }
-        public int Id { get { return _id; } }
-        public int Views { get { return _views; } }
-        public int Followers { get { return _followers; } }
+        public string Status => _status;
+        public string BroadcasterLanguage => _broadcasterLanguage;
+        public string DisplayName => _displayName;
+        public string Game => _game;
+        public string Language => _language;
+        public string Name => _name;
+        public string CreatedAt => _createdAt;
+        public string UpdatedAt => _updatedAt;
+        public string Delay => _delay;
+        public string Logo => _logo;
+        public string Background => _background;
+        public string ProfileBanner => _profileBanner;
+        public bool Mature => _mature;
+        public bool Partner => _partner;
+        public int Id => _id;
+        public int Views => _views;
+        public int Followers => _followers;
 
         public TwitchChannel(JObject json)
         {

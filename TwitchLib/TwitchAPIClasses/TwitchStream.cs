@@ -17,16 +17,16 @@ namespace TwitchLib.TwitchAPIClasses
         private TwitchChannel _channel;
         private PreviewObj _preview;
 
-        public long Id { get { return _id; } }
-        public int Viewers { get { return _viewers; } }
-        public int VideoHeight { get { return _videoHeight; } }
-        public int Delay { get { return _delay; } }
-        public string Game { get { return _game; } }
-        public string CreatedAt { get { return _createdAt; } }
-        public bool IsPlaylist { get { return _isPlaylist; } }
-        public double AverageFps { get { return _averageFps; } }
-        public TwitchChannel Channel { get { return _channel; } }
-        public PreviewObj Preview { get { return _preview; } }
+        public long Id => _id;
+        public int Viewers => _viewers;
+        public int VideoHeight => _videoHeight;
+        public int Delay => _delay;
+        public string Game => _game;
+        public string CreatedAt => _createdAt;
+        public bool IsPlaylist => _isPlaylist;
+        public double AverageFps => _averageFps;
+        public TwitchChannel Channel => _channel;
+        public PreviewObj Preview => _preview;
 
         public TwitchStream(JToken twitchStreamData)
         {
@@ -47,10 +47,10 @@ namespace TwitchLib.TwitchAPIClasses
         {
             private string _small, _medium, _large, _template;
 
-            public string Small { get { return _small; } }
-            public string Medium { get { return _medium; } }
-            public string Large { get { return _large; } }
-            public string Template { get { return _template; } }
+            public string Small => _small;
+            public string Medium => _medium;
+            public string Large => _large;
+            public string Template => _template;
 
             public PreviewObj(JToken previewData)
             {

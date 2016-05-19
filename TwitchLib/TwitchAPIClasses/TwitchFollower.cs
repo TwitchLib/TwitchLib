@@ -13,9 +13,9 @@ namespace TwitchLib.TwitchAPIClasses
         private bool _notifications = false;
         private UserObj _user;
 
-        public string CreatedAt { get { return _createdAt; } }
-        public bool Notifications { get { return _notifications; } }
-        public UserObj User { get { return _user; } }
+        public string CreatedAt => _createdAt;
+        public bool Notifications => _notifications;
+        public UserObj User => _user;
 
         public TwitchFollower(JToken followerData)
         {
@@ -30,13 +30,13 @@ namespace TwitchLib.TwitchAPIClasses
             private string _type, _bio, _logo, _displayName, _createdAt, _updatedAt, _name;
             private int _id;
 
-            public string Type { get { return _type; } }
-            public string Bio { get { return _bio; } }
-            public string Logo { get { return _logo; } }
-            public string DisplayName { get { return _displayName; } }
-            public string CreatedAt { get { return _createdAt; } }
-            public string UpdatedAt { get { return _updatedAt; } }
-            public string Name { get { return _name; } }
+            public string Type => _type;
+            public string Bio => _bio;
+            public string Logo => _logo;
+            public string DisplayName => _displayName;
+            public string CreatedAt => _createdAt;
+            public string UpdatedAt => _updatedAt;
+            public string Name => _name;
 
             public UserObj(JToken userData)
             {

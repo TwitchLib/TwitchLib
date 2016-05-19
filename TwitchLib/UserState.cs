@@ -22,21 +22,18 @@ namespace TwitchLib
         private bool _turbo = false;
         private UType _userType;
 
-        //Revursing issue noticed by SimpleVar
-        public string ColorHex { get { return _colorHex; } }
-        public string DisplayName { get { return _displayName; } }
-        public string EmoteSet { get { return _emoteSet; } }
-        public string Channel { get { return _channel; } }
-        public bool Subscriber { get { return _subscriber; } }
-        public bool Turbo { get { return _turbo; } }
-        public UType UserType { get { return _userType; } }
+        // Reversing issue noticed by SimpleVar
+        public string ColorHex => _colorHex;
+        public string DisplayName => _displayName;
+        public string EmoteSet => _emoteSet;
+        public string Channel => _channel;
+        public bool Subscriber => _subscriber;
+        public bool Turbo => _turbo;
+        public UType UserType => _userType;
 
         public UserState(string ircString)
         {
-            if (ircString.Split(';')[0].Contains("#"))
-                _colorHex = ircString.Split(';')[0].Split('#')[1];
-            else
-                _colorHex = "";
+            _colorHex = ircString.Split(';')[0].Contains("#") ? ircString.Split(';')[0].Split('#')[1] : "";
             _displayName = ircString.Split(';')[1].Split('=')[1];
             _emoteSet = ircString.Split(';')[2].Split('=')[1];
             if (ircString.Split(';')[3].Split('=')[1] == "1")

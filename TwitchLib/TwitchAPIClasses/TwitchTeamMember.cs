@@ -19,17 +19,17 @@ namespace TwitchLib.TwitchAPIClasses
         private EnumStatus _status = EnumStatus.Offline;
         public ImgSizes imageSizes;
 
-        public string Name { get { return _name; } }
-        public string Description { get { return _description; } }
-        public string Title { get { return _title; } }
-        public string MetaGame { get { return _metaGame; } }
-        public string DisplayName { get { return _displayName; } }
-        public string Link { get { return _link; } }
-        public EnumStatus Status { get { return _status; } }
-        public int FollowerCount { get { return _followerCount; } }
-        public int TotalViews { get { return _totalViews; } }
-        public int CurrentViews { get { return _currentViews; } }
-        public ImgSizes ImageSizes { get { return imageSizes; } }
+        public string Name => _name;
+        public string Description => _description;
+        public string Title => _title;
+        public string MetaGame => _metaGame;
+        public string DisplayName => _displayName;
+        public string Link => _link;
+        public EnumStatus Status => _status;
+        public int FollowerCount => _followerCount;
+        public int TotalViews => _totalViews;
+        public int CurrentViews => _currentViews;
+        public ImgSizes ImageSizes => imageSizes;
 
         public TwitchTeamMember(JToken data)
         {
@@ -51,12 +51,12 @@ namespace TwitchLib.TwitchAPIClasses
         {
             private string _size600, _size300, _size150, _size70, _size50, _size28;
 
-            public string Size600 { get { return _size600; } }
-            public string Size300 { get { return _size300; } }
-            public string Size150 { get { return _size150; } }
-            public string Size70 { get { return _size70; } }
-            public string Size50 { get { return _size50; } }
-            public string Size28 { get { return _size28; } }
+            public string Size600 => _size600;
+            public string Size300 => _size300;
+            public string Size150 => _size150;
+            public string Size70 => _size70;
+            public string Size50 => _size50;
+            public string Size28 => _size28;
 
             public ImgSizes(JToken imageData)
             {

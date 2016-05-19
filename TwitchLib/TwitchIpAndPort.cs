@@ -13,11 +13,9 @@ namespace TwitchLib
 
         public TwitchIpAndPort(string channel, bool autoDownloadServerData = false)
         {
-            if (autoDownloadServerData)
-            {
-                GetChatServers(channel);
-                GetWhisperServers();
-            }
+            if (!autoDownloadServerData) return;
+            GetChatServers(channel);
+            GetWhisperServers();
         }
 
         public TwitchIpAndPort(bool autoDownloadServerData = false)
@@ -30,25 +28,22 @@ namespace TwitchLib
 
         public IpPort GetFirstChatServer()
         {
-            if (_chatServers != null)
-                return _chatServers[0];
-            return null;
+            return _chatServers?[0];
         }
 
         public IpPort GetFirstWhisperServer()
         {
-            if (_whisperServers != null)
-                return _whisperServers[0];
-            return null;
+            return _whisperServers?[0];
         }
 
         public IpPort[] GetChatServers(string channel)
         {
-            string cnts = new System.Net.WebClient().DownloadString(String.Format("https://api.twitch.tv/api/channels/{0}/chat_properties", channel));
+            string cnts = new System.Net.WebClient().DownloadString(
+                $"https://api.twitch.tv/api/channels/{channel}/chat_properties");
 
             JObject json = JObject.Parse(cnts);
             _chatServers = new IpPort[json.SelectToken("chat_servers").Count()];
-            for (int i = 0; i < _chatServers.Count(); i++)
+            for (int i = 0; i < _chatServers.Length; i++)
             {
                 _chatServers[i] = new IpPort(json.SelectToken("chat_servers")[i].ToString());
             }
@@ -61,7 +56,7 @@ namespace TwitchLib
 
             JObject json = JObject.Parse(cnts);
             _whisperServers = new IpPort[json.SelectToken("servers").Count()];
-            for (int i = 0; i < _whisperServers.Count(); i++)
+            for (int i = 0; i < _whisperServers.Length; i++)
             {
                 _whisperServers[i] = new IpPort(json.SelectToken("servers")[i].ToString());
             }
@@ -74,8 +69,9 @@ namespace TwitchLib
         private string _ip;
         private int _port;
 
-        public string Ip { get { return _ip; } }
-        public int Port { get { return _port; } }
+        public string Ip => _ip;
+        public int Port => _port;
+
         public IpPort(string data)
         {
             _ip = data.Split(':')[0];

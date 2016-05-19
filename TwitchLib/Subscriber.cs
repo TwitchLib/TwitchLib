@@ -11,9 +11,9 @@ namespace TwitchLib
         private string _channel, _name;
         private int _months;
 
-        public string Channel { get { return _channel; } }
-        public string Name { get { return _name; } }
-        public int Months { get { return _months; } }
+        public string Channel => _channel;
+        public string Name => _name;
+        public int Months => _months;
 
         //:twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #cohhcarnage :swiftyspiffy just subscribed!
         //:twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #cohhcarnage :swiftyspiffy subscribed for 9 months in a row!
@@ -22,7 +22,7 @@ namespace TwitchLib
         {
             _channel = ircString.Split('#')[1].Split(' ')[0];
             _name = ircString.Split(':')[2].Split(' ')[0];
-            if (ircString.Split(' ').Count() == 5 || ircString.Contains("just subscribed!"))
+            if (ircString.Split(' ').Length == 5 || ircString.Contains("just subscribed!"))
             {
                 _months = 0;
             }

@@ -15,9 +15,9 @@ namespace TwitchLib
         private bool _logging;
         private bool _connected;
 
-        public string TwitchUsername { get { return _credentials.TwitchUsername; } }
-        public WhisperMessage PreviousWhisper { get { return _previousWhisper; } }
-        public bool IsConnected { get { return _connected; } }
+        public string TwitchUsername => _credentials.TwitchUsername;
+        public WhisperMessage PreviousWhisper => _previousWhisper;
+        public bool IsConnected => _connected;
 
         public event EventHandler<NewWhisperReceivedArgs> NewWhisper;
         public event EventHandler<OnConnectedArgs> OnConnected;
@@ -76,13 +76,9 @@ namespace TwitchLib
         //:dara226!dara226@dara226.tmi.twitch.tv WHISPER the_kraken_bot :ahoy
         public void SendWhisper(string receiver, string message, bool dryRun = false)
         {
-            if(!dryRun)
-            {
-                _client.WriteLine(String.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :/w {2} {3}", _credentials.TwitchUsername, "jtv", receiver, message));
-                if (WhisperSent != null)
-                WhisperSent(null, new OnWhisperSentArgs { Receiver = receiver, Message = message });
-            }
-            
+            if (dryRun) return;
+            _client.WriteLine(string.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :/w {2} {3}", _credentials.TwitchUsername, "jtv", receiver, message));
+            WhisperSent?.Invoke(null, new OnWhisperSentArgs { Receiver = receiver, Message = message });
         }
 
         private void onConnected(object sender, EventArgs e)
@@ -91,11 +87,11 @@ namespace TwitchLib
             _client.WriteLine(Rfc2812.Nick(_credentials.TwitchUsername), Priority.Critical);
             _client.WriteLine(Rfc2812.User(_credentials.TwitchUsername, 0, _credentials.TwitchUsername), Priority.Critical);
 
-            _client.WriteLine(String.Format("CAP REQ {0}", "twitch.tv/membership"));
-            _client.WriteLine(String.Format("CAP REQ {0}", "twitch.tv/commands"));
-            _client.WriteLine(String.Format("CAP REQ {0}", "twitch.tv/tags"));
+            _client.WriteLine("CAP REQ twitch.tv/membership");
+            _client.WriteLine("CAP REQ twitch.tv/commands");
+            _client.WriteLine("CAP REQ twitch.tv/tags");
 
-            _client.WriteLine(Rfc2812.Join(String.Format("#{0}", "jtv")));
+            _client.WriteLine(Rfc2812.Join("#jtv"));
 
             Task.Factory.StartNew(() => _client.Listen());
         }
@@ -109,41 +105,28 @@ namespace TwitchLib
                 if (e.Line.Split(':')[2] == "You are in a maze of twisty passages, all alike.")
                 {
                     _connected = true;
-                    if (OnConnected != null)
-                        OnConnected(null, new OnConnectedArgs { Username = TwitchUsername });
+                    OnConnected?.Invoke(null, new OnConnectedArgs { Username = TwitchUsername });
                 }
             }
             if (e.Line.Split(' ').Count() > 3 && e.Line.Split(' ')[2] == "WHISPER")
             {
                 WhisperMessage whisperMessage = new WhisperMessage(e.Line, _credentials.TwitchUsername);
                 _previousWhisper = whisperMessage;
-                if (NewWhisper != null)
+                NewWhisper?.Invoke(null, new NewWhisperReceivedArgs { WhisperMessage = whisperMessage });
+                if (_commandIdentifier == '\0' || whisperMessage.Message[0] != _commandIdentifier) return;
+                string command;
+                string argumentsAsString = "";
+                List<string> argumentsAsList = new List<string>();
+                if(whisperMessage.Message.Contains(" "))
                 {
-                    NewWhisper(null, new NewWhisperReceivedArgs { WhisperMessage = whisperMessage });
-                }
-                if(_commandIdentifier != '\0' && whisperMessage.Message[0] == _commandIdentifier)
+                    command = whisperMessage.Message.Split(' ')[0].Substring(1, whisperMessage.Message.Split(' ')[0].Length - 1);
+                    argumentsAsList.AddRange(whisperMessage.Message.Split(' ').Where(arg => arg != _commandIdentifier + command));
+                    argumentsAsString = whisperMessage.Message.Replace(whisperMessage.Message.Split(' ')[0] + " ", "");
+                } else
                 {
-                    string command;
-                    string argumentsAsString = "";
-                    List<string> argumentsAsList = new List<string>();
-                    if(whisperMessage.Message.Contains(" "))
-                    {
-                        command = whisperMessage.Message.Split(' ')[0].Substring(1, whisperMessage.Message.Split(' ')[0].Length - 1);
-                        foreach(string arg in whisperMessage.Message.Split(' '))
-                        {
-                            if (arg != _commandIdentifier + command)
-                                argumentsAsList.Add(arg);
-                        }
-                        argumentsAsString = whisperMessage.Message.Replace(whisperMessage.Message.Split(' ')[0] + " ", "");
-                    } else
-                    {
-                        command = whisperMessage.Message.Substring(1, whisperMessage.Message.Length - 1);
-                    }
-                    if(CommandReceived != null)
-                    {
-                        CommandReceived(null, new CommandReceivedArgs { Command = command, Username = whisperMessage.Username, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
-                    }
+                    command = whisperMessage.Message.Substring(1, whisperMessage.Message.Length - 1);
                 }
+                CommandReceived?.Invoke(null, new CommandReceivedArgs { Command = command, Username = whisperMessage.Username, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
             }
             else
             {
@@ -151,8 +134,7 @@ namespace TwitchLib
                 if (e.Line == ":tmi.twitch.tv NOTICE * :Error logging in")
                 {
                     _client.Disconnect();
-                    if (IncorrectLogin != null)
-                        IncorrectLogin(null, new ErrorLoggingInArgs { Exception = new Exceptions.ErrorLoggingInException(e.Line, _credentials.TwitchUsername) });
+                    IncorrectLogin?.Invoke(null, new ErrorLoggingInArgs { Exception = new Exceptions.ErrorLoggingInException(e.Line, _credentials.TwitchUsername) });
                 }
                 else
                 {

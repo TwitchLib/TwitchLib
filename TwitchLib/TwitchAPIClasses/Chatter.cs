@@ -20,8 +20,8 @@ namespace TwitchLib
         private string _username;
         private UType _userType;
         
-        public string Username { get { return _username; } }
-        public UType UserType { get { return _userType; } }
+        public string Username => _username;
+        public UType UserType => _userType;
 
         public Chatter(string username, UType userType)
         {

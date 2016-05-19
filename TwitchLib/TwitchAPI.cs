@@ -26,10 +26,15 @@ namespace TwitchLib
             try
             {
                 var client = new WebClient();
-                string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/streams/{0}", channel)));
+                string resp = await client.DownloadStringTaskAsync(new Uri(
+                    $"https://api.twitch.tv/kraken/streams/{channel}"));
                 if (resp.Contains("{\"stream\":{\"_id\":"))
                     return true;
-            }catch (Exception) {  }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
             return false;
         }
 
@@ -38,16 +43,14 @@ namespace TwitchLib
         {
             List<string> hosts = new List<string>();
             var client = new WebClient();
-            string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/users/{0}", channel)));
+            string resp = await client.DownloadStringTaskAsync(new Uri($"https://api.twitch.tv/kraken/users/{channel}"));
             JObject json = JObject.Parse(resp);
-            if(json.SelectToken("_id") != null)
+            if (json.SelectToken("_id") == null) return hosts;
+            resp = await client.DownloadStringTaskAsync(new Uri(string.Format("http://tmi.twitch.tv/hosts?include_logins=1&target={0}", json.SelectToken("_id").ToString())));
+            json = JObject.Parse(resp);
+            foreach(JToken host in json.SelectToken("hosts"))
             {
-                resp = await client.DownloadStringTaskAsync(new Uri(string.Format("http://tmi.twitch.tv/hosts?include_logins=1&target={0}", json.SelectToken("_id").ToString())));
-                json = JObject.Parse(resp);
-                foreach(JToken host in json.SelectToken("hosts"))
-                {
-                    hosts.Add(host.SelectToken("host_login").ToString());
-                }
+                hosts.Add(host.SelectToken("host_login").ToString());
             }
             return hosts;
         }
@@ -57,7 +60,8 @@ namespace TwitchLib
         {
             List<TwitchAPIClasses.TwitchTeamMember> members = new List<TwitchAPIClasses.TwitchTeamMember>();
             var client = new WebClient();
-            string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("http://api.twitch.tv/api/team/{0}/all_channels.json", teamName)));
+            string resp = await client.DownloadStringTaskAsync(new Uri(
+                $"http://api.twitch.tv/api/team/{teamName}/all_channels.json"));
             JObject json = JObject.Parse(resp);
             foreach(JToken member in json.SelectToken("channels"))
             {
@@ -72,7 +76,7 @@ namespace TwitchLib
             string resp = null;
             try
             {
-                resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/channels/{0}", channel)));
+                resp = await client.DownloadStringTaskAsync(new Uri($"https://api.twitch.tv/kraken/channels/{channel}"));
             } catch (Exception)
             {
                 throw new Exceptions.InvalidChannelException(resp);
@@ -88,7 +92,8 @@ namespace TwitchLib
             var client = new WebClient();
             try
             {
-                string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/users/{0}/follows/channels/{1}", username, channel)));
+                string resp = await client.DownloadStringTaskAsync(new Uri(
+                    $"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}"));
                 return true;
             } catch (WebException)
             {
@@ -99,13 +104,10 @@ namespace TwitchLib
         public static List<TwitchAPIClasses.TwitchFollower> GetTwitchFollowers(string channel, int limit = 25, int cursor = -1, string direction = "desc")
         {
             List<TwitchAPIClasses.TwitchFollower> followers = new List<TwitchAPIClasses.TwitchFollower>();
-            string args = "";
-            if (cursor == -1)
-                args = string.Format("?limit={0}&direction{1}", limit, direction);
-            else
-                args = string.Format("?limit={0}&cursor={1}&direction={2}", limit, cursor, direction);
+            var args = cursor == -1 ? $"?limit={limit}&direction{direction}" : $"?limit={limit}&cursor={cursor}&direction={direction}";
             var client = new WebClient();
-            string json = client.DownloadString(string.Format(string.Format("https://api.twitch.tv/kraken/channels/{0}/follows{1}", channel, args)));
+            string json = client.DownloadString(string.Format(
+                $"https://api.twitch.tv/kraken/channels/{channel}/follows{args}"));
             foreach (JToken follower in JObject.Parse(json).SelectToken("follows"))
             {
                 followers.Add(new TwitchAPIClasses.TwitchFollower(follower));
@@ -125,7 +127,7 @@ namespace TwitchLib
             try
             {
                 var client = new WebClient();
-                string resp = client.DownloadString(string.Format("https://api.twitch.tv/kraken/streams/{0}", channel));
+                string resp = client.DownloadString($"https://api.twitch.tv/kraken/streams/{channel}");
                 JObject json = JObject.Parse(resp);
                 if (json.SelectToken("stream").SelectToken("_id") != null)
                     return new TwitchAPIClasses.TwitchStream(json.SelectToken("stream"));
@@ -140,18 +142,19 @@ namespace TwitchLib
         {
             var client = new WebClient();
             List<TwitchChannel> returnedChannels = new List<TwitchChannel>();
-            string resp = client.DownloadString(new Uri(string.Format("https://api.twitch.tv/kraken/search/channels?q={0}", query)));
+            string resp = client.DownloadString(new Uri($"https://api.twitch.tv/kraken/search/channels?q={query}"));
             JObject respO = JObject.Parse(resp);
-            if (respO.SelectToken("_total").ToString() != "0")
-                foreach (JToken channelToken in respO.SelectToken("channels"))
-                    returnedChannels.Add(new TwitchChannel((JObject)channelToken));
+            if (respO.SelectToken("_total").ToString() == "0") return returnedChannels;
+            foreach (JToken channelToken in respO.SelectToken("channels"))
+                returnedChannels.Add(new TwitchChannel((JObject)channelToken));
             return returnedChannels;
         }
 
         public static async Task<List<Chatter>> GetChatters(string channel)
         {
             var client = new WebClient();
-            string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://tmi.twitch.tv/group/user/{0}/chatters", channel)));
+            string resp = await client.DownloadStringTaskAsync(new Uri(
+                $"https://tmi.twitch.tv/group/user/{channel}/chatters"));
             JToken chatters = JObject.Parse(resp).SelectToken("chatters");
             List<Chatter> chatterList = new List<Chatter>();
             foreach(JToken user in chatters.SelectToken("moderators"))
@@ -182,7 +185,7 @@ namespace TwitchLib
         {
             WebClient wc = new WebClient();
             wc.Headers.Add("Accept", "application/vnd.twitchtv.v3+json");
-            wc.Headers.Add("Authorization", string.Format("OAuth {0}", accessToken));
+            wc.Headers.Add("Authorization", $"OAuth {accessToken}");
             string cnts = wc.DownloadString("https://api.twitch.tv/kraken/channels/" + username + "/subscriptions");
             JObject json = JObject.Parse(cnts);
             return int.Parse(json.SelectToken("_total").ToString());
@@ -196,7 +199,7 @@ namespace TwitchLib
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.twitch.tv/kraken/channels/" + username);
             request.Method = "PUT";
             request.Accept = "application/vnd.twitchtv.v3+json";
-            request.Headers.Add("Authorization", string.Format("OAuth {0}", accessToken));
+            request.Headers.Add("Authorization", $"OAuth {accessToken}");
             request.ContentType = "application/json";
             UTF8Encoding encoding = new UTF8Encoding();
             byte[] utfBytes = encoding.GetBytes(data);
@@ -214,7 +217,7 @@ namespace TwitchLib
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.twitch.tv/kraken/channels/" + username);
             request.Method = "PUT";
             request.Accept = "application/vnd.twitchtv.v3+json";
-            request.Headers.Add("Authorization", string.Format("OAuth {0}", accessToken));
+            request.Headers.Add("Authorization", $"OAuth {accessToken}");
             request.ContentType = "application/json";
             UTF8Encoding encoding = new UTF8Encoding();
             byte[] utfBytes = encoding.GetBytes(data);
@@ -232,7 +235,7 @@ namespace TwitchLib
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.twitch.tv/kraken/channels/" + username);
             request.Method = "PUT";
             request.Accept = "application/vnd.twitchtv.v3+json";
-            request.Headers.Add("Authorization", string.Format("OAuth {0}", accessToken));
+            request.Headers.Add("Authorization", $"OAuth {accessToken}");
             request.ContentType = "application/json";
             UTF8Encoding encoding = new UTF8Encoding();
             byte[] utfBytes = encoding.GetBytes(data);
@@ -250,7 +253,7 @@ namespace TwitchLib
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.twitch.tv/kraken/channels/" + username);
             request.Method = "PUT";
             request.Accept = "application/vnd.twitchtv.v3+json";
-            request.Headers.Add("Authorization", string.Format("OAuth {0}", accessToken));
+            request.Headers.Add("Authorization", $"OAuth {accessToken}");
             request.ContentType = "application/json";
             UTF8Encoding encoding = new UTF8Encoding();
             byte[] utfBytes = encoding.GetBytes(data);
@@ -268,7 +271,7 @@ namespace TwitchLib
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.twitch.tv/kraken/channels/" + username + "/streamkey");
             request.Method = "DELETE";
             request.Accept = "application/vnd.twitchtv.v3+json";
-            request.Headers.Add("Authorization", string.Format("OAuth {0}", accessToken));
+            request.Headers.Add("Authorization", $"OAuth {accessToken}");
             request.ContentType = "application/text";
             UTF8Encoding encoding = new UTF8Encoding();
             byte[] utfBytes = encoding.GetBytes(data);
@@ -286,7 +289,7 @@ namespace TwitchLib
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.twitch.tv/kraken/channels/" + channel + "/subscriptions/" + username);
                 request.Method = "GET";
                 request.Accept = "application/vnd.twitchtv.v3+json";
-                request.Headers.Add("Authorization", string.Format("OAuth {0}", accessToken));
+                request.Headers.Add("Authorization", $"OAuth {accessToken}");
                 request.ContentType = "application/text";
                 HttpWebResponse errorResponse = request.GetResponse() as HttpWebResponse;
                 return errorResponse.StatusCode != HttpStatusCode.NotFound;
@@ -307,8 +310,8 @@ namespace TwitchLib
             if(onlyBroadcasts == true) { broadcastStr = "&broadcasts=true"; }
             string hlsStr = "&hls=false";
             if(onlyHls == true) { hlsStr = "&hls=true"; }
-            string resp = await client.DownloadStringTaskAsync(new Uri(string.Format("https://api.twitch.tv/kraken/channels/{0}/videos?{1}{2}{3}{4}", 
-                channel, limitStr, offsetStr, broadcastStr, hlsStr)));
+            string resp = await client.DownloadStringTaskAsync(new Uri(
+                $"https://api.twitch.tv/kraken/channels/{channel}/videos?{limitStr}{offsetStr}{broadcastStr}{hlsStr}"));
             JToken vids = JObject.Parse(resp).SelectToken("videos");
             foreach(JToken vid in vids)
             {
@@ -320,37 +323,37 @@ namespace TwitchLib
         }
 
         //Required scope: channel_commercial
-        public static async void RunCommerciale(ValidCommercialLengths length, string username, string accessToken)
+        public static async void RunCommercial(ValidCommercialLengths length, string username, string accessToken)
         {
             string data;
             switch(length)
             {
                 case ValidCommercialLengths.Seconds30:
-                    data = string.Format("length={0}", "30");
+                    data = "length=30";
                     break;
                 case ValidCommercialLengths.Seconds60:
-                    data = string.Format("length={0}", "60");
+                    data = "length=60";
                     break;
                 case ValidCommercialLengths.Seconds90:
-                    data = string.Format("length={0}", "90");
+                    data = "length=90";
                     break;
                 case ValidCommercialLengths.Second120:
-                    data = string.Format("length={0}", "120");
+                    data = "length=120";
                     break;
                 case ValidCommercialLengths.Seconds150:
-                    data = string.Format("length={0}", "150");
+                    data = "length=150";
                     break;
                 case ValidCommercialLengths.Seconds180:
-                    data = string.Format("length={0}", "180");
+                    data = "length=180";
                     break;
                 default:
-                    data = string.Format("length={0}", "30");
+                    data = "length=30";
                     break;
             }
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.twitch.tv/kraken/channels/" + username + "/commercial");
             request.Method = "POST";
             request.Accept = "application/vnd.twitchtv.v3+json";
-            request.Headers.Add("Authorization", string.Format("OAuth {0}", accessToken));
+            request.Headers.Add("Authorization", $"OAuth {accessToken}");
             request.ContentType = "application/text";
             UTF8Encoding encoding = new UTF8Encoding();
             byte[] utfBytes = encoding.GetBytes(data);

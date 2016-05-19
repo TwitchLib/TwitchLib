@@ -19,21 +19,21 @@ namespace TwitchLib
         private int _messageId, _userId;
         private bool _turbo;
 
-        public string Badges { get { return _badges; } }
-        public string ColorHex { get { return _colorHex; } }
-        public string Username { get { return _username; } }
-        public string DisplayName { get { return _displayName; } }
-        public string EmoteSet { get { return _emoteSet; } }
-        public string ThreadId { get { return _threadId; } }
-        public int MessageId { get { return _messageId; } }
-        public int UserId { get { return _userId; } }
-        public bool Turbo { get { return _turbo; } }
-        public string BotUsername { get { return _botUsername; } }
-        public string Message { get { return _message; } }
+        public string Badges => _badges;
+        public string ColorHex => _colorHex;
+        public string Username => _username;
+        public string DisplayName => _displayName;
+        public string EmoteSet => _emoteSet;
+        public string ThreadId => _threadId;
+        public int MessageId => _messageId;
+        public int UserId => _userId;
+        public bool Turbo => _turbo;
+        public string BotUsername => _botUsername;
+        public string Message => _message;
 
         public WhisperMessage(string ircString, string botUsername)
         {
-            if(ircString.Split(';').Count == 9)
+            if(ircString.Split(';').Length == 9)
             {
                 //@badges=;color=#00FF7F;display-name=Dara226;emotes=;message-id=53;thread-id=62192703_66137196;turbo=0;user-id=62192703;user-type= :dara226!dara226@dara226.tmi.twitch.tv WHISPER the_kraken_bot :ahoy
                 _badges = ircString.Split(';')[0].Split('=')[1];
@@ -46,7 +46,7 @@ namespace TwitchLib
                 _turbo = ConvertToBool(ircString.Split(';')[6].Split('=')[1]);
                 _userId = int.Parse(ircString.Split(';')[7].Split('=')[1]);
                 string userTypeStr = ircString.Split(';')[8].Split('=')[1].Replace(" ", "");
-                _message = ircString.Replace(ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" + ircString.Split('@')[2].Split(':')[0] + ":", String.Empty);
+                _message = ircString.Replace(ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" + ircString.Split('@')[2].Split(':')[0] + ":", string.Empty);
             }
             else
             {
@@ -61,16 +61,14 @@ namespace TwitchLib
                 _turbo = ConvertToBool(ircString.Split(';')[5].Split('=')[1]);
                 _userId = int.Parse(ircString.Split(';')[6].Split('=')[1]);
                 string userTypeStr = ircString.Split(';')[7].Split('=')[1].Replace(" ", "");
-                _message = ircString.Replace(ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" + ircString.Split('@')[2].Split(':')[0] + ":", String.Empty);
+                _message = ircString.Replace(ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" + ircString.Split('@')[2].Split(':')[0] + ":", string.Empty);
             }
             this._botUsername = botUsername;
         }
 
         private bool ConvertToBool(string data)
         {
-            if (data == "1")
-                return true;
-            return false;
+            return data == "1";
         }
     }
 }

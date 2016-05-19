@@ -6,7 +6,7 @@ namespace TwitchLib.Exceptions
     {
         private string _twitchUsername;
 
-        public string Username { get { return _twitchUsername; } }
+        public string Username => _twitchUsername;
 
         public ErrorLoggingInException(string ircData, string twitchUsername)
             : base(ircData)
