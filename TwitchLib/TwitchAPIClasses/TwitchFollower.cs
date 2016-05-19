@@ -9,45 +9,45 @@ namespace TwitchLib.TwitchAPIClasses
 {
     public class TwitchFollower
     {
-        private string created_at;
-        private bool notifications = false;
-        private UserObj user;
+        private string _createdAt;
+        private bool _notifications = false;
+        private UserObj _user;
 
-        public string CreatedAt { get { return created_at; } }
-        public bool Notifications { get { return notifications; } }
-        public UserObj User { get { return user; } }
+        public string CreatedAt { get { return _createdAt; } }
+        public bool Notifications { get { return _notifications; } }
+        public UserObj User { get { return _user; } }
 
         public TwitchFollower(JToken followerData)
         {
-            created_at = followerData.SelectToken("created_at").ToString();
+            _createdAt = followerData.SelectToken("created_at").ToString();
             if (followerData.SelectToken("notifications").ToString() == "true")
-                notifications = true;
-            user = new UserObj(followerData.SelectToken("user"));
+                _notifications = true;
+            _user = new UserObj(followerData.SelectToken("user"));
         }
 
         public class UserObj
         {
-            private string type, bio, logo, display_name, created_at, updated_at, name;
-            private int id;
+            private string _type, _bio, _logo, _displayName, _createdAt, _updatedAt, _name;
+            private int _id;
 
-            public string Type { get { return type; } }
-            public string Bio { get { return bio; } }
-            public string Logo { get { return logo; } }
-            public string DisplayName { get { return display_name; } }
-            public string CreatedAt { get { return created_at; } }
-            public string UpdatedAt { get { return updated_at; } }
-            public string Name { get { return name; } }
+            public string Type { get { return _type; } }
+            public string Bio { get { return _bio; } }
+            public string Logo { get { return _logo; } }
+            public string DisplayName { get { return _displayName; } }
+            public string CreatedAt { get { return _createdAt; } }
+            public string UpdatedAt { get { return _updatedAt; } }
+            public string Name { get { return _name; } }
 
             public UserObj(JToken userData)
             {
-                type = userData.SelectToken("type").ToString();
-                bio = userData.SelectToken("bio").ToString();
-                logo = userData.SelectToken("logo").ToString();
-                display_name = userData.SelectToken("display_name").ToString();
-                created_at = userData.SelectToken("created_at").ToString();
-                updated_at = userData.SelectToken("updated_at").ToString();
-                id = int.Parse(userData.SelectToken("_id").ToString());
-                name = userData.SelectToken("name").ToString();
+                _type = userData.SelectToken("type").ToString();
+                _bio = userData.SelectToken("bio").ToString();
+                _logo = userData.SelectToken("logo").ToString();
+                _displayName = userData.SelectToken("display_name").ToString();
+                _createdAt = userData.SelectToken("created_at").ToString();
+                _updatedAt = userData.SelectToken("updated_at").ToString();
+                _id = int.Parse(userData.SelectToken("_id").ToString());
+                _name = userData.SelectToken("name").ToString();
             }
         }
     }

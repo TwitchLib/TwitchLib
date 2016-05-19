@@ -9,55 +9,55 @@ namespace TwitchLib.TwitchAPIClasses
 {
     public class TwitchStream
     {
-        private long id;
-        private int viewers, video_height, delay;
-        private string game, created_at;
-        private bool is_playlist = false;
-        private double average_fps;
-        private TwitchChannel channel;
-        private PreviewObj preview;
+        private long _id;
+        private int _viewers, _videoHeight, _delay;
+        private string _game, _createdAt;
+        private bool _isPlaylist = false;
+        private double _averageFps;
+        private TwitchChannel _channel;
+        private PreviewObj _preview;
 
-        public long ID { get { return id; } }
-        public int Viewers { get { return viewers; } }
-        public int VideoHeight { get { return video_height; } }
-        public int Delay { get { return delay; } }
-        public string Game { get { return game; } }
-        public string CreatedAt { get { return created_at; } }
-        public bool IsPlaylist { get { return is_playlist; } }
-        public double AverageFPS { get { return average_fps; } }
-        public TwitchChannel Channel { get { return channel; } }
-        public PreviewObj Preview { get { return preview; } }
+        public long Id { get { return _id; } }
+        public int Viewers { get { return _viewers; } }
+        public int VideoHeight { get { return _videoHeight; } }
+        public int Delay { get { return _delay; } }
+        public string Game { get { return _game; } }
+        public string CreatedAt { get { return _createdAt; } }
+        public bool IsPlaylist { get { return _isPlaylist; } }
+        public double AverageFps { get { return _averageFps; } }
+        public TwitchChannel Channel { get { return _channel; } }
+        public PreviewObj Preview { get { return _preview; } }
 
         public TwitchStream(JToken twitchStreamData)
         {
-            id = long.Parse(twitchStreamData.SelectToken("_id").ToString());
-            viewers = int.Parse(twitchStreamData.SelectToken("viewers").ToString());
-            video_height = int.Parse(twitchStreamData.SelectToken("video_height").ToString());
-            delay = int.Parse(twitchStreamData.SelectToken("delay").ToString());
-            game = twitchStreamData.SelectToken("game").ToString();
-            created_at = twitchStreamData.SelectToken("created_at").ToString();
+            _id = long.Parse(twitchStreamData.SelectToken("_id").ToString());
+            _viewers = int.Parse(twitchStreamData.SelectToken("viewers").ToString());
+            _videoHeight = int.Parse(twitchStreamData.SelectToken("video_height").ToString());
+            _delay = int.Parse(twitchStreamData.SelectToken("delay").ToString());
+            _game = twitchStreamData.SelectToken("game").ToString();
+            _createdAt = twitchStreamData.SelectToken("created_at").ToString();
             if (twitchStreamData.SelectToken("is_playlist").ToString() == "true")
-                is_playlist = true;
-            average_fps = double.Parse(twitchStreamData.SelectToken("average_fps").ToString());
-            channel = new TwitchChannel((JObject)twitchStreamData.SelectToken("channel"));
-            preview = new PreviewObj(twitchStreamData.SelectToken("preview"));
+                _isPlaylist = true;
+            _averageFps = double.Parse(twitchStreamData.SelectToken("average_fps").ToString());
+            _channel = new TwitchChannel((JObject)twitchStreamData.SelectToken("channel"));
+            _preview = new PreviewObj(twitchStreamData.SelectToken("preview"));
         }
 
         public class PreviewObj
         {
-            private string small, medium, large, template;
+            private string _small, _medium, _large, _template;
 
-            public string Small { get { return small; } }
-            public string Medium { get { return medium; } }
-            public string Large { get { return large; } }
-            public string Template { get { return template; } }
+            public string Small { get { return _small; } }
+            public string Medium { get { return _medium; } }
+            public string Large { get { return _large; } }
+            public string Template { get { return _template; } }
 
             public PreviewObj(JToken previewData)
             {
-                small = previewData.SelectToken("small").ToString();
-                medium = previewData.SelectToken("medium").ToString();
-                large = previewData.SelectToken("large").ToString();
-                template = previewData.SelectToken("template").ToString();
+                _small = previewData.SelectToken("small").ToString();
+                _medium = previewData.SelectToken("medium").ToString();
+                _large = previewData.SelectToken("large").ToString();
+                _template = previewData.SelectToken("template").ToString();
             }
         }
     }

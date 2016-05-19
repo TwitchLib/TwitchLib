@@ -9,14 +9,14 @@ namespace TwitchLib
 {
     public class TwitchIpAndPort
     {
-        private IPPort[] chatServers, whisperServers;
+        private IpPort[] _chatServers, _whisperServers;
 
         public TwitchIpAndPort(string channel, bool autoDownloadServerData = false)
         {
             if (autoDownloadServerData)
             {
-                getChatServers(channel);
-                getWhisperServers();
+                GetChatServers(channel);
+                GetWhisperServers();
             }
         }
 
@@ -24,62 +24,62 @@ namespace TwitchLib
         {
             if (autoDownloadServerData)
             {
-                getWhisperServers();
+                GetWhisperServers();
             }
         }
 
-        public IPPort getFirstChatServer()
+        public IpPort GetFirstChatServer()
         {
-            if (chatServers != null)
-                return chatServers[0];
+            if (_chatServers != null)
+                return _chatServers[0];
             return null;
         }
 
-        public IPPort getFirstWhisperServer()
+        public IpPort GetFirstWhisperServer()
         {
-            if (whisperServers != null)
-                return whisperServers[0];
+            if (_whisperServers != null)
+                return _whisperServers[0];
             return null;
         }
 
-        public IPPort[] getChatServers(string channel)
+        public IpPort[] GetChatServers(string channel)
         {
             string cnts = new System.Net.WebClient().DownloadString(String.Format("https://api.twitch.tv/api/channels/{0}/chat_properties", channel));
 
             JObject json = JObject.Parse(cnts);
-            chatServers = new IPPort[json.SelectToken("chat_servers").Count()];
-            for (int i = 0; i < chatServers.Count(); i++)
+            _chatServers = new IpPort[json.SelectToken("chat_servers").Count()];
+            for (int i = 0; i < _chatServers.Count(); i++)
             {
-                chatServers[i] = new IPPort(json.SelectToken("chat_servers")[i].ToString());
+                _chatServers[i] = new IpPort(json.SelectToken("chat_servers")[i].ToString());
             }
-            return chatServers;
+            return _chatServers;
         }
 
-        public IPPort[] getWhisperServers()
+        public IpPort[] GetWhisperServers()
         {
             string cnts = new System.Net.WebClient().DownloadString("http://tmi.twitch.tv/servers?cluster=group");
 
             JObject json = JObject.Parse(cnts);
-            whisperServers = new IPPort[json.SelectToken("servers").Count()];
-            for (int i = 0; i < whisperServers.Count(); i++)
+            _whisperServers = new IpPort[json.SelectToken("servers").Count()];
+            for (int i = 0; i < _whisperServers.Count(); i++)
             {
-                whisperServers[i] = new IPPort(json.SelectToken("servers")[i].ToString());
+                _whisperServers[i] = new IpPort(json.SelectToken("servers")[i].ToString());
             }
-            return whisperServers;
+            return _whisperServers;
         }
     }
 
-    public class IPPort
+    public class IpPort
     {
-        private string ip;
-        private int port;
+        private string _ip;
+        private int _port;
 
-        public string IP { get { return ip; } }
-        public int Port { get { return port; } }
-        public IPPort(string data)
+        public string Ip { get { return _ip; } }
+        public int Port { get { return _port; } }
+        public IpPort(string data)
         {
-            ip = data.Split(':')[0];
-            port = int.Parse(data.Split(':')[1]);
+            _ip = data.Split(':')[0];
+            _port = int.Parse(data.Split(':')[1]);
         }
     }
 }

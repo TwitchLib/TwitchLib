@@ -9,123 +9,123 @@ namespace TwitchLib.TwitchAPIClasses
 {
     public class TwitchVideo
     {
-        string title, description, status, id, tag_list, recorded_at, game, preview, broadcast_id, url;
-        int length, views;
-        FPS_Data fps;
-        Resolutions_Data resolutions;
-        Channel_Data channel;
+        string _title, _description, _status, _id, _tagList, _recordedAt, _game, _preview, _broadcastId, _url;
+        int _length, _views;
+        FpsData _fps;
+        ResolutionsData _resolutions;
+        ChannelData _channel;
 
-        public string Title { get { return title; } }
-        public string Description { get { return description; } }
-        public string Status { get { return status; } }
-        public string ID { get { return id; } }
-        public string Tag_List { get { return tag_list; } }
-        public string Recorded_At { get { return recorded_at; } }
-        public string Game { get { return game; } }
-        public string Preview { get { return preview; } }
-        public string Broadcast_ID { get { return broadcast_id; } }
-        public string URL { get { return url; } }
-        public int Length { get { return length; } }
-        public int Views { get { return views; } }
-        public FPS_Data FPS { get { return fps; } }
-        public Resolutions_Data Resolutions { get { return resolutions; } }
-        public Channel_Data Channel { get { return channel; } }
+        public string Title { get { return _title; } }
+        public string Description { get { return _description; } }
+        public string Status { get { return _status; } }
+        public string Id { get { return _id; } }
+        public string TagList { get { return _tagList; } }
+        public string RecordedAt { get { return _recordedAt; } }
+        public string Game { get { return _game; } }
+        public string Preview { get { return _preview; } }
+        public string BroadcastId { get { return _broadcastId; } }
+        public string Url { get { return _url; } }
+        public int Length { get { return _length; } }
+        public int Views { get { return _views; } }
+        public FpsData Fps { get { return _fps; } }
+        public ResolutionsData Resolutions { get { return _resolutions; } }
+        public ChannelData Channel { get { return _channel; } }
 
-        public TwitchVideo(JToken APIResponse)
+        public TwitchVideo(JToken apiResponse)
         {
-            this.title = APIResponse.SelectToken("title").ToString();
-            this.description = APIResponse.SelectToken("description").ToString();
-            this.status = APIResponse.SelectToken("status").ToString();
-            this.id = APIResponse.SelectToken("_id").ToString();
-            this.tag_list = APIResponse.SelectToken("tag_list").ToString();
-            this.recorded_at = APIResponse.SelectToken("recorded_at").ToString();
-            this.game = APIResponse.SelectToken("game").ToString();
-            this.preview = APIResponse.SelectToken("preview").ToString();
-            this.broadcast_id = APIResponse.SelectToken("broadcast_id").ToString();
-            this.url = APIResponse.SelectToken("url").ToString();
-            this.length = int.Parse(APIResponse.SelectToken("length").ToString());
-            this.views = int.Parse(APIResponse.SelectToken("views").ToString());
-            fps = new FPS_Data(int.Parse(APIResponse.SelectToken("fps").SelectToken("audio_only").ToString()),
-                double.Parse(APIResponse.SelectToken("fps").SelectToken("medium").ToString()), double.Parse(APIResponse.SelectToken("fps").SelectToken("mobile").ToString()),
-                double.Parse(APIResponse.SelectToken("fps").SelectToken("high").ToString()), double.Parse(APIResponse.SelectToken("fps").SelectToken("low").ToString()),
-                double.Parse(APIResponse.SelectToken("fps").SelectToken("chunked").ToString()));
-            resolutions = new Resolutions_Data(APIResponse.SelectToken("resolutions").SelectToken("medium").ToString(),
-                APIResponse.SelectToken("resolutions").SelectToken("mobile").ToString(), APIResponse.SelectToken("resolutions").SelectToken("high").ToString(),
-                APIResponse.SelectToken("resolutions").SelectToken("low").ToString(), APIResponse.SelectToken("resolutions").SelectToken("chunked").ToString());
-            channel = new Channel_Data(APIResponse.SelectToken("channel").SelectToken("name").ToString(),
-                APIResponse.SelectToken("channel").SelectToken("display_name").ToString());
+            this._title = apiResponse.SelectToken("title").ToString();
+            this._description = apiResponse.SelectToken("description").ToString();
+            this._status = apiResponse.SelectToken("status").ToString();
+            this._id = apiResponse.SelectToken("_id").ToString();
+            this._tagList = apiResponse.SelectToken("tag_list").ToString();
+            this._recordedAt = apiResponse.SelectToken("recorded_at").ToString();
+            this._game = apiResponse.SelectToken("game").ToString();
+            this._preview = apiResponse.SelectToken("preview").ToString();
+            this._broadcastId = apiResponse.SelectToken("broadcast_id").ToString();
+            this._url = apiResponse.SelectToken("url").ToString();
+            this._length = int.Parse(apiResponse.SelectToken("length").ToString());
+            this._views = int.Parse(apiResponse.SelectToken("views").ToString());
+            _fps = new FpsData(int.Parse(apiResponse.SelectToken("fps").SelectToken("audio_only").ToString()),
+                double.Parse(apiResponse.SelectToken("fps").SelectToken("medium").ToString()), double.Parse(apiResponse.SelectToken("fps").SelectToken("mobile").ToString()),
+                double.Parse(apiResponse.SelectToken("fps").SelectToken("high").ToString()), double.Parse(apiResponse.SelectToken("fps").SelectToken("low").ToString()),
+                double.Parse(apiResponse.SelectToken("fps").SelectToken("chunked").ToString()));
+            _resolutions = new ResolutionsData(apiResponse.SelectToken("resolutions").SelectToken("medium").ToString(),
+                apiResponse.SelectToken("resolutions").SelectToken("mobile").ToString(), apiResponse.SelectToken("resolutions").SelectToken("high").ToString(),
+                apiResponse.SelectToken("resolutions").SelectToken("low").ToString(), apiResponse.SelectToken("resolutions").SelectToken("chunked").ToString());
+            _channel = new ChannelData(apiResponse.SelectToken("channel").SelectToken("name").ToString(),
+                apiResponse.SelectToken("channel").SelectToken("display_name").ToString());
         }
 
-        public class FPS_Data
+        public class FpsData
         {
-            private double audio_only, medium, mobile, high, low, chunked;
+            private double _audioOnly, _medium, _mobile, _high, _low, _chunked;
 
-            public double Audio_Only { get { return audio_only; } }
-            public double Medium { get { return medium; } }
-            public double Mobile { get { return mobile; } }
-            public double High { get { return high; } }
-            public double Low { get { return low; } }
-            public double Chunked { get { return chunked; } }
+            public double AudioOnly { get { return _audioOnly; } }
+            public double Medium { get { return _medium; } }
+            public double Mobile { get { return _mobile; } }
+            public double High { get { return _high; } }
+            public double Low { get { return _low; } }
+            public double Chunked { get { return _chunked; } }
 
-            public FPS_Data(double audio_only, double medium, double mobile, double high, double low, double chunked)
+            public FpsData(double audioOnly, double medium, double mobile, double high, double low, double chunked)
             {
-                this.audio_only = audio_only;
-                this.low = low;
-                this.medium = medium;
-                this.mobile = mobile;
-                this.high = high;
-                this.chunked = chunked;
+                this._audioOnly = audioOnly;
+                this._low = low;
+                this._medium = medium;
+                this._mobile = mobile;
+                this._high = high;
+                this._chunked = chunked;
             }
 
             public override string ToString()
             {
                 return string.Format("audio only: {0}, mobile: {1}, low: {2}, medium: {3}, high: {4}, chunked: {5}",
-                    audio_only, mobile, low, medium, high, chunked);
+                    _audioOnly, _mobile, _low, _medium, _high, _chunked);
             }
         }
 
-        public class Resolutions_Data
+        public class ResolutionsData
         {
-            string medium, mobile, high, low, chunked;
+            string _medium, _mobile, _high, _low, _chunked;
 
-            public string Medium { get { return medium; } }
-            public string Mobile { get { return mobile; } }
-            public string High { get { return high; } }
-            public string Low { get { return low; } }
-            public string Chunked { get { return chunked; } }
+            public string Medium { get { return _medium; } }
+            public string Mobile { get { return _mobile; } }
+            public string High { get { return _high; } }
+            public string Low { get { return _low; } }
+            public string Chunked { get { return _chunked; } }
 
-            public Resolutions_Data(string medium, string mobile, string high, string low, string chunked)
+            public ResolutionsData(string medium, string mobile, string high, string low, string chunked)
             {
-                this.medium = medium;
-                this.mobile = mobile;
-                this.high = high;
-                this.low = low;
-                this.chunked = chunked;
+                this._medium = medium;
+                this._mobile = mobile;
+                this._high = high;
+                this._low = low;
+                this._chunked = chunked;
             }
 
             public override string ToString()
             {
-                return string.Format("mobile: {0}, low: {1}, medium: {2}, high: {3}, chunked: {4}", mobile,
-                    low, medium, high, chunked);
+                return string.Format("mobile: {0}, low: {1}, medium: {2}, high: {3}, chunked: {4}", _mobile,
+                    _low, _medium, _high, _chunked);
             }
         }
 
-        public class Channel_Data
+        public class ChannelData
         {
-            string name, display_name;
+            string _name, _displayName;
 
-            public string Name { get { return name; } }
-            public string Display_Name { get { return display_name; } }
+            public string Name { get { return _name; } }
+            public string DisplayName { get { return _displayName; } }
 
-            public Channel_Data(string name, string display_name)
+            public ChannelData(string name, string displayName)
             {
-                this.name = name;
-                this.display_name = display_name;
+                this._name = name;
+                this._displayName = displayName;
             }
 
             public override string ToString()
             {
-                return string.Format("{0}, {1}", name, display_name);
+                return string.Format("{0}, {1}", _name, _displayName);
             }
         }
     }

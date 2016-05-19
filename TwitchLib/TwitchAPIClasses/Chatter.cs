@@ -8,25 +8,25 @@ namespace TwitchLib
 {
     public class Chatter
     {
-        public enum uType
+        public enum UType
         {
             Viewer,
             Moderator,
-            Global_Moderator,
+            GlobalModerator,
             Admin,
             Staff
         }
 
-        private string username;
-        private uType userType;
+        private string _username;
+        private UType _userType;
         
-        public string Username { get { return username; } }
-        public uType UserType { get { return userType; } }
+        public string Username { get { return _username; } }
+        public UType UserType { get { return _userType; } }
 
-        public Chatter(string username, uType userType)
+        public Chatter(string username, UType userType)
         {
-            this.username = username;
-            this.userType = userType;
+            this._username = username;
+            this._userType = userType;
         }
     }
 }
