@@ -10,41 +10,60 @@ namespace TwitchLib
     {
         public enum ClientType
         {
-            CHAT,
-            WHISPER
+            Chat,
+            Whisper
         }
 
-        private string host, twitchUsername, twitchOAuth;
-        private int port;
+        private string _host, _twitchUsername, _twitchOAuth;
+        private int _port;
 
-        public string Host { get { return host; } set { host = value; } }
-        public string TwitchUsername { get { return twitchUsername; } set { twitchUsername = value; } }
-        public string TwitchOAuth { get { return twitchOAuth; } set { twitchOAuth = value; }  }
-        public int Port { get { return port; } set { port = value; } }
+        public string Host
+        {
+            get { return _host; }
+            set { _host = value; }
+        }
+
+        public string TwitchUsername
+        {
+            get { return _twitchUsername; }
+            set { _twitchUsername = value; }
+        }
+
+        public string TwitchOAuth
+        {
+            get { return _twitchOAuth; }
+            set { _twitchOAuth = value; }
+        }
+
+        public int Port
+        {
+            get { return _port; }
+            set { _port = value; }
+        }
 
         public ConnectionCredentials(string host, int port, string twitchUsername, string twitchOAuth)
         {
-            this.host = host;
-            this.port = port;
-            this.twitchUsername = twitchUsername.ToLower();
-            this.twitchOAuth = twitchOAuth;
+            this._host = host;
+            this._port = port;
+            this._twitchUsername = twitchUsername.ToLower();
+            this._twitchOAuth = twitchOAuth;
         }
 
-        public ConnectionCredentials(ClientType type, TwitchIpAndPort tIpAndPort, string twitchUsername, string twitchOAuth)
+        public ConnectionCredentials(ClientType type, TwitchIpAndPort tIpAndPort, string twitchUsername,
+            string twitchOAuth)
         {
-            if (type == ClientType.CHAT)
+            if (type == ClientType.Chat)
             {
-                this.host = tIpAndPort.getFirstChatServer().IP;
-                this.port = tIpAndPort.getFirstChatServer().Port;
+                this._host = tIpAndPort.GetFirstChatServer().Ip;
+                this._port = tIpAndPort.GetFirstChatServer().Port;
             }
             else
             {
-                this.host = tIpAndPort.getFirstWhisperServer().IP;
-                this.port = tIpAndPort.getFirstWhisperServer().Port;
+                this._host = tIpAndPort.GetFirstWhisperServer().Ip;
+                this._port = tIpAndPort.GetFirstWhisperServer().Port;
             }
-            this.twitchUsername = twitchUsername.ToLower();
-            this.twitchOAuth = twitchOAuth;
+            this._twitchUsername = twitchUsername.ToLower();
+            this._twitchOAuth = twitchOAuth;
         }
-
     }
 }

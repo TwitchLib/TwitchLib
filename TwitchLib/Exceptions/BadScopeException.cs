@@ -11,7 +11,6 @@ namespace TwitchLib.Exceptions
         public BadScopeException(string data)
             : base(data)
         {
-
         }
     }
 }

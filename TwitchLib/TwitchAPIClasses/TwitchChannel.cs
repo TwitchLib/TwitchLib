@@ -4,49 +4,61 @@ namespace TwitchLib
 {
     public class TwitchChannel
     {
-        private bool mature = false;
-        private bool partner = false;
-        private string status, broadcaster_language, display_name, game, language,
-            name, created_at, updated_at, delay, logo, background, profile_banner;
-        private int id, views, followers;
+        private bool _mature, _partner;
 
-        public string Status { get { return status; } }
-        public string Broadcaster_Language { get { return broadcaster_language; } }
-        public string Display_name { get { return display_name; } }
-        public string Game { get { return game; } }
-        public string Language { get { return language; } }
-        public string Name { get { return name; } }
-        public string Created_At { get { return created_at; } }
-        public string Updated_At { get { return updated_at; } }
-        public string Delay { get { return delay; } }
-        public string Logo { get { return logo; } }
-        public string Background { get { return background; } }
-        public string Profile_Banner { get { return profile_banner; } }
-        public bool Mature { get { return mature; } }
-        public bool Partner { get { return partner; } }
-        public int ID { get { return id; } }
-        public int Views { get { return views; } }
-        public int Followers { get { return followers; } }
+        private string _status,
+            _broadcasterLanguage,
+            _displayName,
+            _game,
+            _language,
+            _name,
+            _createdAt,
+            _updatedAt,
+            _delay,
+            _logo,
+            _background,
+            _profileBanner;
+
+        private int _id, _views, _followers;
+
+        public string Status => _status;
+        public string BroadcasterLanguage => _broadcasterLanguage;
+        public string DisplayName => _displayName;
+        public string Game => _game;
+        public string Language => _language;
+        public string Name => _name;
+        public string CreatedAt => _createdAt;
+        public string UpdatedAt => _updatedAt;
+        public string Delay => _delay;
+        public string Logo => _logo;
+        public string Background => _background;
+        public string ProfileBanner => _profileBanner;
+        public bool Mature => _mature;
+        public bool Partner => _partner;
+        public int Id => _id;
+        public int Views => _views;
+        public int Followers => _followers;
 
         public TwitchChannel(JObject json)
         {
-            if(json.SelectToken("mature").ToString() == "True") { mature = true; }
-            if(json.SelectToken("partner").ToString() == "True") { partner = true; }
-            status = json.SelectToken("status").ToString();
-            broadcaster_language = json.SelectToken("broadcaster_language").ToString();
-            display_name = json.SelectToken("display_name").ToString();
-            game = json.SelectToken("game").ToString();
-            language = json.SelectToken("language").ToString();
-            id = int.Parse(json.SelectToken("_id").ToString());
-            name = json.SelectToken("name").ToString();
-            created_at = json.SelectToken("created_at").ToString();
-            updated_at = json.SelectToken("updated_at").ToString();
-            delay = json.SelectToken("delay").ToString();
-            logo = json.SelectToken("logo").ToString();
-            background = json.SelectToken("background").ToString();
-            profile_banner = json.SelectToken("profile_banner").ToString();
-            views = int.Parse(json.SelectToken("views").ToString());
-            followers = int.Parse(json.SelectToken("followers").ToString());
+            if (json.SelectToken("mature").ToString() == "True") _mature = true;
+            if (json.SelectToken("partner").ToString() == "True") _partner = true;
+
+            _status = json.SelectToken("status").ToString();
+            _broadcasterLanguage = json.SelectToken("broadcaster_language").ToString();
+            _displayName = json.SelectToken("display_name").ToString();
+            _game = json.SelectToken("game").ToString();
+            _language = json.SelectToken("language").ToString();
+            _id = int.Parse(json.SelectToken("_id").ToString());
+            _name = json.SelectToken("name").ToString();
+            _createdAt = json.SelectToken("created_at").ToString();
+            _updatedAt = json.SelectToken("updated_at").ToString();
+            _delay = json.SelectToken("delay").ToString();
+            _logo = json.SelectToken("logo").ToString();
+            _background = json.SelectToken("background").ToString();
+            _profileBanner = json.SelectToken("profile_banner").ToString();
+            _views = int.Parse(json.SelectToken("views").ToString());
+            _followers = int.Parse(json.SelectToken("followers").ToString());
         }
     }
 }

@@ -10,7 +10,7 @@ namespace TwitchLib
     //Should be fully functional
     public class ChatMessage
     {
-        public enum uType
+        public enum UType
         {
             Viewer,
             Moderator,
@@ -19,119 +19,106 @@ namespace TwitchLib
             Staff
         }
 
-        private int userID;
-        private string username, displayName, colorHEX, message, channel, emoteSet, rawIRCMessage;
-        private bool subscriber, turbo, modFlag;
-        private uType userType;
+        private int _userId;
+        private string _username, _displayName, _colorHex, _message, _channel, _emoteSet, _rawIrcMessage;
+        private bool _subscriber, _turbo, _modFlag;
+        private UType _userType;
 
-        public int UserID { get { return userID; } }
-        public string Username { get { return username; } }
-        public string DisplayName { get { return displayName; } }
-        public string ColorHEX { get { return colorHEX; } }
-        public string Message { get { return message; } }
-        public uType UserType { get { return userType; } }
-        public string Channel { get { return channel; } }
-        public bool Subscriber { get { return subscriber; } }
-        public bool Turbo { get { return turbo; } }
-        public bool ModFlag { get { return modFlag; } }
-        public string RawIRCMessage { get { return rawIRCMessage; } }
+        public int UserId => _userId;
+        public string Username => _username;
+        public string DisplayName => _displayName;
+        public string ColorHex => _colorHex;
+        public string Message => _message;
+        public UType UserType => _userType;
+        public string Channel => _channel;
+        public bool Subscriber => _subscriber;
+        public bool Turbo => _turbo;
+        public bool ModFlag => _modFlag;
+        public string RawIrcMessage => _rawIrcMessage;
 
         //@color=#CC00C9;display-name=astickgamer;emotes=70803:6-11;sent-ts=1447446917994;subscriber=1;tmi-sent-ts=1447446957359;turbo=0;user-id=24549902;user-type= :astickgamer!astickgamer@astickgamer.tmi.twitch.tv PRIVMSG #cohhcarnage :cjb2, cohhHi
-        public ChatMessage(string IRCString)
+        public ChatMessage(string ircString)
         {
-            rawIRCMessage = IRCString;
-            string userTypeStr = "";
+            _rawIrcMessage = ircString;
             //
             //@color=asd;display-name=Swiftyspiffyv4;emotes=;subscriber=0;turbo=0;user-id=103325214;user-type=asd :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #burkeblack :this is a test lol
-            foreach (string part in IRCString.Split(';'))
+            foreach (string part in ircString.Split(';'))
             {
-                if(part.Contains("!"))
+                if (part.Contains("!"))
                 {
-                    if(channel == null)
-                        channel = part.Split('#')[1].Split(' ')[0];
-                    if(username == null)
-                        username = part.Split('!')[1].Split('@')[0];
+                    if (_channel == null)
+                        _channel = part.Split('#')[1].Split(' ')[0];
+                    if (_username == null)
+                        _username = part.Split('!')[1].Split('@')[0];
                     continue;
                 }
-                if(part.Contains("@color="))
+                if (part.Contains("@color="))
                 {
-                    if(colorHEX == null)
-                        colorHEX = part.Split('=')[1];
+                    if (_colorHex == null)
+                        _colorHex = part.Split('=')[1];
                     continue;
                 }
-                if(part.Contains("display-name"))
+                if (part.Contains("display-name"))
                 {
-                    if(displayName == null)
-                        displayName = part.Split('=')[1];
+                    if (_displayName == null)
+                        _displayName = part.Split('=')[1];
                     continue;
                 }
-                if(part.Contains("emotes="))
+                if (part.Contains("emotes="))
                 {
-                    if(emoteSet == null)
-                        emoteSet = part.Split('=')[1];
+                    if (_emoteSet == null)
+                        _emoteSet = part.Split('=')[1];
                     continue;
                 }
-                if(part.Contains("subscriber="))
+                if (part.Contains("subscriber="))
                 {
-                    if (part.Split('=')[1] == "1")
-                        subscriber = true;
-                    else
-                        subscriber = false;
+                    _subscriber = part.Split('=')[1] == "1";
                     continue;
                 }
-                if(part.Contains("turbo="))
+                if (part.Contains("turbo="))
                 {
-                    if (part.Split('=')[1] == "1")
-                        turbo = true;
-                    else
-                        turbo = false;
+                    _turbo = part.Split('=')[1] == "1";
                     continue;
                 }
-                if(part.Contains("user-id="))
+                if (part.Contains("user-id="))
                 {
-                    userID = int.Parse(part.Split('=')[1]);
+                    _userId = int.Parse(part.Split('=')[1]);
                     continue;
                 }
-                if(part.Contains("user-type="))
+                if (part.Contains("user-type="))
                 {
-                    userTypeStr = part.Split('=')[1].Split(' ')[0];
                     switch (part.Split('=')[1].Split(' ')[0])
                     {
                         case "mod":
-                            userType = uType.Moderator;
+                            _userType = UType.Moderator;
                             break;
                         case "global_mod":
-                            userType = uType.GlobalModerator;
+                            _userType = UType.GlobalModerator;
                             break;
                         case "admin":
-                            userType = uType.Admin;
+                            _userType = UType.Admin;
                             break;
                         case "staff":
-                            userType = uType.Staff;
+                            _userType = UType.Staff;
                             break;
                         default:
-                            userType = uType.Viewer;
+                            _userType = UType.Viewer;
                             break;
                     }
                     continue;
                 }
                 if (part.Contains("mod="))
                 {
-                    if (part.Split('=')[1] == "1")
-                        modFlag = true;
-                    else
-                        modFlag = false; 
+                    _modFlag = part.Split('=')[1] == "1";
                     continue;
                 }
             }
-            message = IRCString.Split(new string[] { string.Format(" PRIVMSG #{0} :", channel) }, StringSplitOptions.None)[1];
+            _message = ircString.Split(new string[] {$" PRIVMSG #{_channel} :"}, StringSplitOptions.None)[1];
         }
 
-        private bool convertToBool(string data)
+        private bool ConvertToBool(string data)
         {
-            if (data == "1")
-                return true;
-            return false;
+            return data == "1";
         }
     }
 }
