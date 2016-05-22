@@ -11,7 +11,7 @@ namespace TwitchLib.Exceptions
         public ErrorLoggingInException(string ircData, string twitchUsername)
             : base(ircData)
         {
-            this._twitchUsername = twitchUsername;
+            _twitchUsername = twitchUsername;
         }
     }
 }

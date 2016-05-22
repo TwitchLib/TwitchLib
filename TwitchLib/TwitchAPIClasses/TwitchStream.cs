@@ -10,35 +10,41 @@ namespace TwitchLib.TwitchAPIClasses
     public class TwitchStream
     {
         private long _id;
-        private int _viewers, _videoHeight, _delay;
+        int _viewers, _videoHeight, _delay;
         private string _game, _createdAt;
         private bool _isPlaylist;
         private double _averageFps;
         private TwitchChannel _channel;
         private PreviewObj _preview;
 
-        public long Id => _id;
-        public int Viewers => _viewers;
-        public int VideoHeight => _videoHeight;
-        public int Delay => _delay;
-        public string Game => _game;
-        public string CreatedAt => _createdAt;
         public bool IsPlaylist => _isPlaylist;
         public double AverageFps => _averageFps;
-        public TwitchChannel Channel => _channel;
+        public int Delay => _delay;
+        public int VideoHeight => _videoHeight;
+        public int Viewers => _viewers;
+        public long Id => _id;
         public PreviewObj Preview => _preview;
+        public string CreatedAt => _createdAt;
+        public string Game => _game;
+        public TwitchChannel Channel => _channel;
 
         public TwitchStream(JToken twitchStreamData)
         {
-            _id = long.Parse(twitchStreamData.SelectToken("_id").ToString());
-            _viewers = int.Parse(twitchStreamData.SelectToken("viewers").ToString());
-            _videoHeight = int.Parse(twitchStreamData.SelectToken("video_height").ToString());
-            _delay = int.Parse(twitchStreamData.SelectToken("delay").ToString());
+            bool isPlaylist;
+            long id;
+            int viewers, videoHeight, delay;
+            double averageFps;
+
+            if (bool.TryParse(twitchStreamData.SelectToken("is_playlist").ToString(), out isPlaylist) && isPlaylist) _isPlaylist = true;
+            if (long.TryParse(twitchStreamData.SelectToken("_id").ToString(), out id)) _id = id;
+            if (int.TryParse(twitchStreamData.SelectToken("viewers").ToString(), out viewers)) _viewers = viewers;
+            if (int.TryParse(twitchStreamData.SelectToken("video_height").ToString(), out videoHeight)) _videoHeight = videoHeight;
+            if (int.TryParse(twitchStreamData.SelectToken("delay").ToString(), out delay)) _delay = delay;
+            if (double.TryParse(twitchStreamData.SelectToken("average_fps").ToString(), out averageFps)) _averageFps = averageFps;
+
             _game = twitchStreamData.SelectToken("game").ToString();
             _createdAt = twitchStreamData.SelectToken("created_at").ToString();
-            if (twitchStreamData.SelectToken("is_playlist").ToString() == "true")
-                _isPlaylist = true;
-            _averageFps = double.Parse(twitchStreamData.SelectToken("average_fps").ToString());
+
             _channel = new TwitchChannel((JObject) twitchStreamData.SelectToken("channel"));
             _preview = new PreviewObj(twitchStreamData.SelectToken("preview"));
         }

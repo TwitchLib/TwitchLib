@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Meebey.SmartIrc4net;
 using System.Collections.Generic;
+using TwitchLib.Exceptions;
 
 namespace TwitchLib
 {
@@ -18,30 +19,44 @@ namespace TwitchLib
         public WhisperMessage PreviousWhisper => _previousWhisper;
         public bool IsConnected => _connected;
 
-        public event EventHandler<NewWhisperReceivedArgs> NewWhisper;
+        /// <summary>
+        /// Fires on listening and after joined channel, returns username.
+        /// </summary>
         public event EventHandler<OnConnectedArgs> OnConnected;
-        public event EventHandler<CommandReceivedArgs> CommandReceived;
-        public event EventHandler<OnWhisperSentArgs> WhisperSent;
-        public event EventHandler<ErrorLoggingInArgs> IncorrectLogin;
 
-        public class NewWhisperReceivedArgs : EventArgs
-        {
-            public WhisperMessage WhisperMessage;
-        }
+        /// <summary>
+        /// Fires on logging in with incorrect details, returns ErrorLoggingInException.
+        /// </summary>
+        public event EventHandler<OnIncorrectLoginArgs> OnIncorrectLogin;
 
-        public TwitchWhisperClient(ConnectionCredentials credentials, char commandIdentifier = '\0', bool logging = true)
-        {
-            this._credentials = credentials;
-            this._commandIdentifier = commandIdentifier;
-            this._logging = logging;
+        /// <summary>
+        /// Fires when a new whisper message arrives, returns WhisperMessage.
+        /// </summary>
+        public event EventHandler<OnWhisperReceivedArgs> OnWhisperReceived;
 
-            _client.OnConnected += new EventHandler(onConnected);
-            _client.OnReadLine += new ReadLineEventHandler(OnReadLine);
-        }
+        /// <summary>
+        /// Fires when a whisper message is sent, returns receiver and message.
+        /// </summary>
+        public event EventHandler<OnWhisperSentArgs> OnWhisperSent;
+
+        /// <summary>
+        /// Fires when command (uses custom command identifier) is received, returns username, command, arguments as string, arguments as list.
+        /// </summary>
+        public event EventHandler<OnCommandReceivedArgs> OnCommandReceived;
 
         public class OnConnectedArgs : EventArgs
         {
             public string Username;
+        }
+
+        public class OnIncorrectLoginArgs : EventArgs
+        {
+            public ErrorLoggingInException Exception;
+        }
+
+        public class OnWhisperReceivedArgs : EventArgs
+        {
+            public WhisperMessage WhisperMessage;
         }
 
         public class OnWhisperSentArgs : EventArgs
@@ -49,43 +64,70 @@ namespace TwitchLib
             public string Receiver, Message;
         }
 
-        public class CommandReceivedArgs : EventArgs
+        public class OnCommandReceivedArgs : EventArgs
         {
             public string Username, Command, ArgumentsAsString;
             public List<string> ArgumentsAsList;
         }
 
-        public class ErrorLoggingInArgs : EventArgs
+        /// <summary>
+        /// Initializes the TwitchWhisperClient class.
+        /// </summary>
+        /// <param name="credentials">The credentials to use to log in.</param>
+        /// <param name="commandIdentifier">The identifier to be used for reading and writing commands.</param>
+        /// <param name="logging">Whether or not logging to console should be enabled.</param>
+        public TwitchWhisperClient(ConnectionCredentials credentials, char commandIdentifier = '\0', bool logging = false)
         {
-            public Exceptions.ErrorLoggingInException Exception;
+            _credentials = credentials;
+            _commandIdentifier = commandIdentifier;
+            _logging = logging;
+
+            _client.OnConnected += Connected;
+            _client.OnReadLine += OnReadLine;
         }
 
+        /// <summary>
+        /// Start connecting to the Twitch IRC chat.
+        /// </summary>
         public void Connect()
         {
             _client.Connect(_credentials.Host, _credentials.Port);
         }
 
+        /// <summary>
+        /// Start disconnecting from the Twitch IRC chat.
+        /// </summary>
         public void Disconnect()
         {
             _client.Disconnect();
             _connected = false;
         }
 
+        /// <summary>
+        /// Sends a RAW IRC whisper message.
+        /// </summary>
+        /// <param name="message">The RAW whisper message to be sent.</param>
         public void SendRaw(string message)
         {
             _client.WriteLine(message);
         }
 
-        //:dara226!dara226@dara226.tmi.twitch.tv WHISPER the_kraken_bot :ahoy
+        /// <summary>
+        /// Sends a formatted Twitch channel whisper message.
+        /// </summary>
+        /// <param name="receiver">The user to receive the whisper message.</param>
+        /// <param name="message">The message to be sent.</param>
+        /// <param name="dryRun">If set to true, the message will not actually be sent for testing purposes.</param>
+        // :dara226!dara226@dara226.tmi.twitch.tv WHISPER the_kraken_bot :ahoy
         public void SendWhisper(string receiver, string message, bool dryRun = false)
         {
             if (dryRun) return;
             _client.WriteLine(string.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :/w {2} {3}",
                 _credentials.TwitchUsername, "jtv", receiver, message));
-            WhisperSent?.Invoke(null, new OnWhisperSentArgs {Receiver = receiver, Message = message});
+            OnWhisperSent?.Invoke(null, new OnWhisperSentArgs {Receiver = receiver, Message = message});
         }
 
-        private void onConnected(object sender, EventArgs e)
+        private void Connected(object sender, EventArgs e)
         {
             _client.WriteLine(Rfc2812.Pass(_credentials.TwitchOAuth), Priority.Critical);
             _client.WriteLine(Rfc2812.Nick(_credentials.TwitchUsername), Priority.Critical);
@@ -105,7 +147,7 @@ namespace TwitchLib
         {
             if (_logging)
                 Console.WriteLine(e.Line);
-            if (e.Line.Split(':').Count() > 2)
+            if (e.Line.Split(':').Length > 2)
             {
                 if (e.Line.Split(':')[2] == "You are in a maze of twisty passages, all alike.")
                 {
@@ -113,15 +155,15 @@ namespace TwitchLib
                     OnConnected?.Invoke(null, new OnConnectedArgs {Username = TwitchUsername});
                 }
             }
-            if (e.Line.Split(' ').Count() > 3 && e.Line.Split(' ')[2] == "WHISPER")
+            if (e.Line.Split(' ').Length > 3 && e.Line.Split(' ')[2] == "WHISPER")
             {
-                WhisperMessage whisperMessage = new WhisperMessage(e.Line, _credentials.TwitchUsername);
+                var whisperMessage = new WhisperMessage(e.Line, _credentials.TwitchUsername);
                 _previousWhisper = whisperMessage;
-                NewWhisper?.Invoke(null, new NewWhisperReceivedArgs {WhisperMessage = whisperMessage});
+                OnWhisperReceived?.Invoke(null, new OnWhisperReceivedArgs {WhisperMessage = whisperMessage});
                 if (_commandIdentifier == '\0' || whisperMessage.Message[0] != _commandIdentifier) return;
                 string command;
-                string argumentsAsString = "";
-                List<string> argumentsAsList = new List<string>();
+                var argumentsAsString = "";
+                var argumentsAsList = new List<string>();
                 if (whisperMessage.Message.Contains(" "))
                 {
                     command = whisperMessage.Message.Split(' ')[0].Substring(1,
@@ -134,8 +176,8 @@ namespace TwitchLib
                 {
                     command = whisperMessage.Message.Substring(1, whisperMessage.Message.Length - 1);
                 }
-                CommandReceived?.Invoke(null,
-                    new CommandReceivedArgs
+                OnCommandReceived?.Invoke(null,
+                    new OnCommandReceivedArgs
                     {
                         Command = command,
                         Username = whisperMessage.Username,
@@ -149,10 +191,10 @@ namespace TwitchLib
                 if (e.Line == ":tmi.twitch.tv NOTICE * :Error logging in")
                 {
                     _client.Disconnect();
-                    IncorrectLogin?.Invoke(null,
-                        new ErrorLoggingInArgs
+                    OnIncorrectLogin?.Invoke(null,
+                        new OnIncorrectLoginArgs
                         {
-                            Exception = new Exceptions.ErrorLoggingInException(e.Line, _credentials.TwitchUsername)
+                            Exception = new ErrorLoggingInException(e.Line, _credentials.TwitchUsername)
                         });
                 }
                 else

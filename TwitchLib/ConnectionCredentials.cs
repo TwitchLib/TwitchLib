@@ -43,10 +43,10 @@ namespace TwitchLib
 
         public ConnectionCredentials(string host, int port, string twitchUsername, string twitchOAuth)
         {
-            this._host = host;
-            this._port = port;
-            this._twitchUsername = twitchUsername.ToLower();
-            this._twitchOAuth = twitchOAuth;
+            _host = host;
+            _port = port;
+            _twitchUsername = twitchUsername.ToLower();
+            _twitchOAuth = twitchOAuth;
         }
 
         public ConnectionCredentials(ClientType type, TwitchIpAndPort tIpAndPort, string twitchUsername,
@@ -54,16 +54,16 @@ namespace TwitchLib
         {
             if (type == ClientType.Chat)
             {
-                this._host = tIpAndPort.GetFirstChatServer().Ip;
-                this._port = tIpAndPort.GetFirstChatServer().Port;
+                _host = tIpAndPort.GetFirstChatServer().Ip;
+                _port = tIpAndPort.GetFirstChatServer().Port;
             }
             else
             {
-                this._host = tIpAndPort.GetFirstWhisperServer().Ip;
-                this._port = tIpAndPort.GetFirstWhisperServer().Port;
+                _host = tIpAndPort.GetFirstWhisperServer().Ip;
+                _port = tIpAndPort.GetFirstWhisperServer().Port;
             }
-            this._twitchUsername = twitchUsername.ToLower();
-            this._twitchOAuth = twitchOAuth;
+            _twitchUsername = twitchUsername.ToLower();
+            _twitchOAuth = twitchOAuth;
         }
     }
 }

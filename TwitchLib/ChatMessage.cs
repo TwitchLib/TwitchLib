@@ -40,9 +40,8 @@ namespace TwitchLib
         public ChatMessage(string ircString)
         {
             _rawIrcMessage = ircString;
-            //
             //@color=asd;display-name=Swiftyspiffyv4;emotes=;subscriber=0;turbo=0;user-id=103325214;user-type=asd :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #burkeblack :this is a test lol
-            foreach (string part in ircString.Split(';'))
+            foreach (var part in ircString.Split(';'))
             {
                 if (part.Contains("!"))
                 {
@@ -50,42 +49,35 @@ namespace TwitchLib
                         _channel = part.Split('#')[1].Split(' ')[0];
                     if (_username == null)
                         _username = part.Split('!')[1].Split('@')[0];
-                    continue;
                 }
-                if (part.Contains("@color="))
+                else if (part.Contains("@color="))
                 {
                     if (_colorHex == null)
                         _colorHex = part.Split('=')[1];
-                    continue;
                 }
-                if (part.Contains("display-name"))
+                else if (part.Contains("display-name"))
                 {
                     if (_displayName == null)
                         _displayName = part.Split('=')[1];
-                    continue;
                 }
-                if (part.Contains("emotes="))
+                else if (part.Contains("emotes="))
                 {
                     if (_emoteSet == null)
                         _emoteSet = part.Split('=')[1];
-                    continue;
                 }
-                if (part.Contains("subscriber="))
+                else if (part.Contains("subscriber="))
                 {
                     _subscriber = part.Split('=')[1] == "1";
-                    continue;
                 }
-                if (part.Contains("turbo="))
+                else if (part.Contains("turbo="))
                 {
                     _turbo = part.Split('=')[1] == "1";
-                    continue;
                 }
-                if (part.Contains("user-id="))
+                else if (part.Contains("user-id="))
                 {
                     _userId = int.Parse(part.Split('=')[1]);
-                    continue;
                 }
-                if (part.Contains("user-type="))
+                else if (part.Contains("user-type="))
                 {
                     switch (part.Split('=')[1].Split(' ')[0])
                     {
@@ -105,15 +97,13 @@ namespace TwitchLib
                             _userType = UType.Viewer;
                             break;
                     }
-                    continue;
                 }
-                if (part.Contains("mod="))
+                else if (part.Contains("mod="))
                 {
                     _modFlag = part.Split('=')[1] == "1";
-                    continue;
                 }
             }
-            _message = ircString.Split(new string[] {$" PRIVMSG #{_channel} :"}, StringSplitOptions.None)[1];
+            _message = ircString.Split(new[] {$" PRIVMSG #{_channel} :"}, StringSplitOptions.None)[1];
         }
 
         private bool ConvertToBool(string data)
