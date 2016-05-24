@@ -25,8 +25,8 @@ namespace TwitchLib
 
         public Chatter(string username, UType userType)
         {
-            this._username = username;
-            this._userType = userType;
+            _username = username;
+            _userType = userType;
         }
     }
 }

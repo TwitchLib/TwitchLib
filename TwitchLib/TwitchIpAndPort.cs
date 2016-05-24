@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -38,12 +39,12 @@ namespace TwitchLib
 
         public IpPort[] GetChatServers(string channel)
         {
-            string cnts = new System.Net.WebClient().DownloadString(
+            var resp = new WebClient().DownloadString(
                 $"https://api.twitch.tv/api/channels/{channel}/chat_properties");
 
-            JObject json = JObject.Parse(cnts);
+            var json = JObject.Parse(resp);
             _chatServers = new IpPort[json.SelectToken("chat_servers").Count()];
-            for (int i = 0; i < _chatServers.Length; i++)
+            for (var i = 0; i < _chatServers.Length; i++)
             {
                 _chatServers[i] = new IpPort(json.SelectToken("chat_servers")[i].ToString());
             }
@@ -52,11 +53,11 @@ namespace TwitchLib
 
         public IpPort[] GetWhisperServers()
         {
-            string cnts = new System.Net.WebClient().DownloadString("http://tmi.twitch.tv/servers?cluster=group");
+            var resp = new WebClient().DownloadString("http://tmi.twitch.tv/servers?cluster=group");
 
-            JObject json = JObject.Parse(cnts);
+            var json = JObject.Parse(resp);
             _whisperServers = new IpPort[json.SelectToken("servers").Count()];
-            for (int i = 0; i < _whisperServers.Length; i++)
+            for (var i = 0; i < _whisperServers.Length; i++)
             {
                 _whisperServers[i] = new IpPort(json.SelectToken("servers")[i].ToString());
             }

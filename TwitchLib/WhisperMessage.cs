@@ -46,7 +46,7 @@ namespace TwitchLib
                 _threadId = ircString.Split(';')[5].Split('=')[1];
                 _turbo = ConvertToBool(ircString.Split(';')[6].Split('=')[1]);
                 _userId = int.Parse(ircString.Split(';')[7].Split('=')[1]);
-                string userTypeStr = ircString.Split(';')[8].Split('=')[1].Replace(" ", "");
+                var userTypeStr = ircString.Split(';')[8].Split('=')[1].Replace(" ", "");
                 _message =
                     ircString.Replace(
                         ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" +
@@ -64,13 +64,13 @@ namespace TwitchLib
                 _threadId = ircString.Split(';')[4].Split('=')[1];
                 _turbo = ConvertToBool(ircString.Split(';')[5].Split('=')[1]);
                 _userId = int.Parse(ircString.Split(';')[6].Split('=')[1]);
-                string userTypeStr = ircString.Split(';')[7].Split('=')[1].Replace(" ", "");
+                var userTypeStr = ircString.Split(';')[7].Split('=')[1].Replace(" ", "");
                 _message =
                     ircString.Replace(
                         ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" +
                         ircString.Split('@')[2].Split(':')[0] + ":", string.Empty);
             }
-            this._botUsername = botUsername;
+            _botUsername = botUsername;
         }
 
         private bool ConvertToBool(string data)
