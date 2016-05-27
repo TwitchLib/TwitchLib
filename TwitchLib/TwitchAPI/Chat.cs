@@ -5,10 +5,13 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitchLib.TwitchAPI
 {
+    /// <summary>
+    ///     Chat is where Twitch users can interact with each other while watching a stream.
+    /// </summary>
     public class Chat : ApiBase
     {
         /// <summary>
-        /// Retrieves a list of all people currently chatting in a channel's chat.
+        ///     Retrieves a list of all people currently chatting in a channel's chat.
         /// </summary>
         /// <param name="channel">The channel to retrieve the chatting people for.</param>
         /// <returns>A list of Chatter objects detailing each chatter in a channel.</returns>

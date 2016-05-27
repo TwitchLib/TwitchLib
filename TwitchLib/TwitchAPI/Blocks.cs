@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 namespace TwitchLib.TwitchAPI
 {
     /// <summary>
-    /// Stores and updates information about a user's block list.
+    ///     Stores and updates information about a user's block list.
     /// </summary>
     public class Blocks : ApiBase
     {

@@ -7,13 +7,13 @@ using TwitchLib.Exceptions;
 namespace TwitchLib.TwitchAPI
 {
     /// <summary>
-    /// To be added.
+    ///     To be added.
     /// </summary>
     public class ChannelFeed : ApiBase
     {
-
         /// <summary>
-        /// Retrieves a list of posts that belong to the <paramref name="channel"/>'s feed. Uses <paramref name="limit"/> and <paramref name="cursor"/> pagination.
+        ///     Retrieves a list of posts that belong to the <paramref name="channel" />'s feed. Uses <paramref name="limit" /> and
+        ///     <paramref name="cursor" /> pagination.
         /// </summary>
         /// <param name="channel">The user to retrieve the feed posts for.</param>
         /// <param name="limit">Maximum number of objects in array. Default is 10. Maximum is 100.</param>
@@ -41,13 +41,16 @@ namespace TwitchLib.TwitchAPI
         }
 
         /// <summary>
-        /// Create a post for a <paramref name="channel"/>'s feed.
-        /// <para>Authenticated, required scope: <code>channel_feed_edit</code></para>
+        ///     Create a post for a <paramref name="channel" />'s feed.
+        ///     <para>Authenticated, required scope: <code>channel_feed_edit</code></para>
         /// </summary>
         /// <param name="content">Content of the post.</param>
         /// <param name="channel">The authenticated user.</param>
         /// <param name="accessToken">An oauth token with the required scope.</param>
-        /// <param name="share">When set to true, shares the post, with a link to the post URL, on the channel's Twitter if it's connected.</param>
+        /// <param name="share">
+        ///     When set to true, shares the post, with a link to the post URL, on the channel's Twitter if it's
+        ///     connected.
+        /// </param>
         /// <returns>The response of the request.</returns>
         public static async Task<string> AddFeedPost(string content, string channel, string accessToken,
             bool share = false)
@@ -60,7 +63,7 @@ namespace TwitchLib.TwitchAPI
         }
 
         /// <summary>
-        /// Returns a post belonging to the <paramref name="channel"/>.
+        ///     Returns a post belonging to the <paramref name="channel" />.
         /// </summary>
         /// <param name="postId">The ID of the post to display.</param>
         /// <param name="channel">The channel to display the post for.</param>
@@ -80,8 +83,8 @@ namespace TwitchLib.TwitchAPI
         }
 
         /// <summary>
-        /// Deletes a post.
-        /// <para>Authenticated, required scope: <code>channel_feed_edit</code></para>
+        ///     Deletes a post.
+        ///     <para>Authenticated, required scope: <code>channel_feed_edit</code></para>
         /// </summary>
         /// <param name="postId">The ID of the post to delete.</param>
         /// <param name="channel">The channel to delete the post from.</param>
@@ -96,8 +99,8 @@ namespace TwitchLib.TwitchAPI
         }
 
         /// <summary>
-        /// Create a reaction to a post.
-        /// <para>Authenticated, required scope: <code>channel_feed_edit</code></para>
+        ///     Create a reaction to a post.
+        ///     <para>Authenticated, required scope: <code>channel_feed_edit</code></para>
         /// </summary>
         /// <param name="postId">The ID of the post to react to.</param>
         /// <param name="emoteId">Single emote id (ex: "25" => Kappa) or the string "endorse".</param>
@@ -116,8 +119,8 @@ namespace TwitchLib.TwitchAPI
         }
 
         /// <summary>
-        /// Delete a reaction to a post.
-        /// <para>Authenticated, required scope: <code>channel_feed_edit</code></para>
+        ///     Delete a reaction to a post.
+        ///     <para>Authenticated, required scope: <code>channel_feed_edit</code></para>
         /// </summary>
         /// <param name="postId">The ID of the post to delete the reaction from.</param>
         /// <param name="emoteId">Single emote id (ex: "25" => Kappa) or the string "endorse".</param>

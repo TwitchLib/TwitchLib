@@ -5,10 +5,13 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitchLib.TwitchAPI
 {
+    /// <summary>
+    ///     Search for channels, streams or games with queries.
+    /// </summary>
     public class Search : ApiBase
     {
         /// <summary>
-        /// Execute a search query on Twitch to find a list of channels.
+        ///     Execute a search query on Twitch to find a list of channels.
         /// </summary>
         /// <param name="query">A url-encoded search query.</param>
         /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>

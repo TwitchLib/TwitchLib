@@ -4,10 +4,13 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitchLib.TwitchAPI
 {
+    /// <summary>
+    ///     Streams are video broadcasts that are currently live. They have a broadcaster and are part of a channel.
+    /// </summary>
     public class Streams : ApiBase
     {
         /// <summary>
-        /// Retrieves the current status of the broadcaster.
+        ///     Retrieves the current status of the broadcaster.
         /// </summary>
         /// <param name="channel">The name of the broadcaster to check.</param>
         /// <returns>True if the broadcaster is online, false otherwise.</returns>
@@ -25,7 +28,7 @@ namespace TwitchLib.TwitchAPI
         }
 
         /// <summary>
-        /// Retrieves a collection of API data from a stream.
+        ///     Retrieves a collection of API data from a stream.
         /// </summary>
         /// <param name="channel">The channel to retrieve the data for.</param>
         /// <returns>A TwitchStream object containing API data related to a stream.</returns>
@@ -46,7 +49,7 @@ namespace TwitchLib.TwitchAPI
         }
 
         /// <summary>
-        /// Retrieves the current uptime of a stream, if it is online.
+        ///     Retrieves the current uptime of a stream, if it is online.
         /// </summary>
         /// <param name="channel">The channel to retrieve the uptime for.</param>
         /// <returns>A TimeSpan object representing time between creation_at of stream, and now.</returns>
