@@ -66,8 +66,8 @@ namespace TwitchLib.TwitchAPI
         ///     navigate to the next page of results.
         /// </param>
         /// <param name="direction">Creation date sorting direction.</param>
-        /// <returns>A list of TwitchUser objects.</returns>
-        public static async Task<List<TwitchUser>> GetTwitchFollowers(string channel, int limit = 25,
+        /// <returns>A list of TwitchFollower objects.</returns>
+        public static async Task<List<TwitchFollower>> GetTwitchFollowers(string channel, int limit = 25,
             int cursor = -1, SortDirection direction = SortDirection.Descending)
         {
             var args = "";
@@ -77,7 +77,7 @@ namespace TwitchLib.TwitchAPI
             args += "&direction=" + (direction == SortDirection.Descending ? "desc" : "asc");
 
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
-            return JObject.Parse(resp).SelectToken("follows").Select(follower => new TwitchUser(follower)).ToList();
+            return JObject.Parse(resp).SelectToken("follows").Select(follower => new TwitchFollower(follower)).ToList();
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Meebey.SmartIrc4net;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace TwitchLib
@@ -39,22 +40,24 @@ namespace TwitchLib
 
             Reactions = list;
         }
-    }
 
-    public class Reaction
-    {
-        public string Id { get; }
-        public string Emote { get; }
-        public int Count { get; }
-
-        public Reaction(JToken twitchStreamData, string reactionId)
+        public class Reaction
         {
-            int count;
+            public string Id { get; }
+            public string Emote { get; }
+            public int Count { get; }
+            public List<long> UserIds { get; set; }
 
-            if (int.TryParse(twitchStreamData.SelectToken("count").ToString(), out count)) Count = count;
+            public Reaction(JToken twitchStreamData, string reactionId)
+            {
+                int count;
 
-            Id = reactionId;
-            Emote = twitchStreamData.SelectToken("emote").ToString();
+                if (int.TryParse(twitchStreamData.SelectToken("count").ToString(), out count)) Count = count;
+
+                Id = reactionId;
+                Emote = twitchStreamData.SelectToken("emote").ToString();
+                UserIds = JsonConvert.DeserializeObject<List<long>>(twitchStreamData.SelectToken("user_ids").ToString());
+            }
         }
     }
 }
