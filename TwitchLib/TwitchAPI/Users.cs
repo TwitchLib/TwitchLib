@@ -14,8 +14,8 @@ namespace TwitchLib.TwitchAPI
         /// <summary>
         ///     Retrieves a string list of channels hosting a specified channel.
         ///     <para>
-        ///         Note: This uses an undocumented API endpoint and reliability is not guaranteed. Additionally, this makes 2
-        ///         API calls so limited use is recommended.
+        ///         Note: This uses an undocumented API endpoint and reliability is not guaranteed.
+        ///         Additionally, this makes 2 API calls so limited use is recommended.
         ///     </para>
         /// </summary>
         /// <param name="channel">The name of the channel to search for.</param>
