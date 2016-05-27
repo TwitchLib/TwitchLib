@@ -18,7 +18,7 @@ namespace TwitchLib.TwitchAPI
         /// <returns>A TwitchTeamMember list of all members in a Twitch team.</returns>
         public static async Task<List<TwitchTeamMember>> GetTeamMembers(string teamName)
         {
-            var resp = await MakeGetRequest($"http://api.twitch.tv/api/team/{teamName}/all_channels.json");
+            var resp = await MakeGetRequest($"{ApiBaseUrl}/team/{teamName}/all_channels.json");
             var json = JObject.Parse(resp);
             return
                 json.SelectToken("channels")

@@ -25,7 +25,7 @@ namespace TwitchLib.TwitchAPI
         {
             var blockedChannels = new List<TwitchUser>();
             var args = $"?limit={limit}&offset={offset}";
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{channel}/blocks{args}", accessToken);
+            var resp = await MakeGetRequest($"{KrakenBaseUrl}/users/{channel}/blocks{args}", accessToken);
 
             var json = JObject.Parse(resp);
             blockedChannels.AddRange(
@@ -45,7 +45,7 @@ namespace TwitchLib.TwitchAPI
         {
             return
                 await
-                    MakeRestRequest($"https://api.twitch.tv/kraken/users/{channel}/blocks/{user}", "PUT", "",
+                    MakeRestRequest($"{KrakenBaseUrl}/users/{channel}/blocks/{user}", "PUT", "",
                         accessToken);
         }
 
@@ -61,7 +61,7 @@ namespace TwitchLib.TwitchAPI
         {
             return
                 await
-                    MakeRestRequest($"https://api.twitch.tv/kraken/users/{channel}/blocks/{user}", "DELETE", "",
+                    MakeRestRequest($"{KrakenBaseUrl}/users/{channel}/blocks/{user}", "DELETE", "",
                         accessToken);
         }
     }

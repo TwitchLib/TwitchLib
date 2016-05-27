@@ -26,7 +26,7 @@ namespace TwitchLib.TwitchAPI
             try
             {
                 var args = $"?limit={limit}&cursor={cursor}";
-                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/feed/{channel}{args}");
+                var resp = await MakeGetRequest($"{KrakenBaseUrl}/feed/{channel}{args}");
 
                 var json = JObject.Parse(resp);
                 if (json.SelectToken("_total").ToString() == "0") return returnedPosts;
@@ -58,7 +58,7 @@ namespace TwitchLib.TwitchAPI
             var data = "{\"content\":\"" + content + "\"}";
             return
                 await
-                    MakeRestRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts?share={share}", "PUT", data,
+                    MakeRestRequest($"{KrakenBaseUrl}/feed/{channel}/posts?share={share}", "PUT", data,
                         accessToken);
         }
 
@@ -72,7 +72,7 @@ namespace TwitchLib.TwitchAPI
         {
             try
             {
-                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}");
+                var resp = await MakeGetRequest($"{KrakenBaseUrl}/feed/{channel}/posts/{postId}");
                 var json = JObject.Parse(resp);
                 return new TwitchFeedPost(json);
             }
@@ -94,7 +94,7 @@ namespace TwitchLib.TwitchAPI
         {
             return
                 await
-                    MakeRestRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", "DELETE", "",
+                    MakeRestRequest($"{KrakenBaseUrl}/feed/{channel}/posts/{postId}", "DELETE", "",
                         accessToken);
         }
 
@@ -114,7 +114,7 @@ namespace TwitchLib.TwitchAPI
             return
                 await
                     MakeRestRequest(
-                        $"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}/reactions{args}", "POST", "",
+                        $"{KrakenBaseUrl}/feed/{channel}/posts/{postId}/reactions{args}", "POST", "",
                         accessToken);
         }
 
@@ -133,8 +133,7 @@ namespace TwitchLib.TwitchAPI
             var args = $"?emote_id={emoteId}";
             return
                 await
-                    MakeRestRequest(
-                        $"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}/reactions{args}", "DELETE", "",
+                    MakeRestRequest($"{KrakenBaseUrl}/feed/{channel}/posts/{postId}/reactions{args}", "DELETE", "",
                         accessToken);
         }
     }

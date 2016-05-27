@@ -24,7 +24,7 @@ namespace TwitchLib.TwitchAPI
             try
             {
                 var args = $"?query={query}&limit={limit}&offset={offset}";
-                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/search/channels{args}");
+                var resp = await MakeGetRequest($"{KrakenBaseUrl}/search/channels{args}");
 
                 var json = JObject.Parse(resp);
                 if (json.SelectToken("_total").ToString() == "0") return returnedChannels;

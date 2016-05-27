@@ -11,7 +11,22 @@ namespace TwitchLib.TwitchAPI
         #region Definitions
 
         /// <summary>
-        /// A list of valid commercial lengths.
+        ///     The base URL for the official, documented Twitch API.
+        /// </summary>
+        public static string KrakenBaseUrl { get; } = "https://api.twitch.tv/kraken";
+
+        /// <summary>
+        ///     The base URL for the official but undocumented Twitch chat API.
+        /// </summary>
+        public static string TmiBaseUrl { get; } = "https://tmi.twitch.tv";
+
+        /// <summary>
+        ///     The base URL for the official but undocumented Twitch misc API.
+        /// </summary>
+        public static string ApiBaseUrl { get; } = "http://api.twitch.tv/api";
+
+        /// <summary>
+        ///     A list of valid commercial lengths.
         /// </summary>
         public enum CommercialLength
         {
@@ -24,12 +39,42 @@ namespace TwitchLib.TwitchAPI
         }
 
         /// <summary>
-        /// A list of valid sorting directions.
+        ///     A list of valid sorting directions.
         /// </summary>
         public enum SortDirection
         {
             Descending,
             Ascending
+        }
+
+        /// <summary>
+        ///     A list of valid sort keys.
+        /// </summary>
+        public enum SortKey
+        {
+            CreatedAt,
+            LastBroadcast,
+            Login
+        }
+
+        /// <summary>
+        ///     A list of valid time periods.
+        /// </summary>
+        public enum TimePeriod
+        {
+            Week,
+            Month,
+            All
+        }
+
+        /// <summary>
+        ///     A list of valid stream types.
+        /// </summary>
+        public enum StreamType
+        {
+            Live,
+            Playlist,
+            All
         }
 
         #endregion
@@ -45,7 +90,7 @@ namespace TwitchLib.TwitchAPI
             request.Accept = "application/vnd.twitchtv.v3+json";
             request.ContentType = "application/json";
 
-            if (!String.IsNullOrWhiteSpace(accessToken))
+            if (!string.IsNullOrWhiteSpace(accessToken))
                 request.Headers.Add("Authorization", $"OAuth {accessToken}");
 
             using (var responseStream = await request.GetResponseAsync())
@@ -65,7 +110,7 @@ namespace TwitchLib.TwitchAPI
             request.Accept = "application/vnd.twitchtv.v3+json";
             request.ContentType = "application/json";
 
-            if (!String.IsNullOrWhiteSpace(accessToken))
+            if (!string.IsNullOrWhiteSpace(accessToken))
                 request.Headers.Add("Authorization", $"OAuth {accessToken}");
 
             using (var requestStream = await request.GetRequestStreamAsync())

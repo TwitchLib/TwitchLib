@@ -23,10 +23,10 @@ namespace TwitchLib.TwitchAPI
         public static async Task<List<string>> GetChannelHosts(string channel)
         {
             var hosts = new List<string>();
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{channel}");
+            var resp = await MakeGetRequest($"{KrakenBaseUrl}/users/{channel}");
             var json = JObject.Parse(resp);
             if (json.SelectToken("_id") == null) return hosts;
-            resp = await MakeGetRequest($"http://tmi.twitch.tv/hosts?include_logins=1&target={json.SelectToken("_id")}");
+            resp = await MakeGetRequest($"{TmiBaseUrl}/hosts?include_logins=1&target={json.SelectToken("_id")}");
             json = JObject.Parse(resp);
             hosts.AddRange(json.SelectToken("hosts").Select(host => host.SelectToken("host_login").ToString()));
             return hosts;
@@ -42,7 +42,7 @@ namespace TwitchLib.TwitchAPI
         {
             try
             {
-                await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}");
+                await MakeGetRequest($"{KrakenBaseUrl}/users/{username}/follows/channels/{channel}");
                 return true;
             }
             catch

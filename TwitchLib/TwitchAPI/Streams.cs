@@ -18,7 +18,7 @@ namespace TwitchLib.TwitchAPI
         {
             try
             {
-                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
+                var resp = await MakeGetRequest($"{KrakenBaseUrl}/streams/{channel}");
                 return resp.Contains("{\"stream\":{\"_id\":");
             }
             catch
@@ -36,7 +36,7 @@ namespace TwitchLib.TwitchAPI
         {
             try
             {
-                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
+                var resp = await MakeGetRequest($"{KrakenBaseUrl}/streams/{channel}");
                 var json = JObject.Parse(resp);
                 return json.SelectToken("stream").SelectToken("_id") != null
                     ? new TwitchStream(json.SelectToken("stream"))

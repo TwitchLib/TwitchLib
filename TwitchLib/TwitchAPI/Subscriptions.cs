@@ -18,7 +18,7 @@ namespace TwitchLib.TwitchAPI
         public static async Task<int> GetSubscriberCount(string channel, string accessToken)
         {
             var resp =
-                await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions", accessToken);
+                await MakeGetRequest($"{KrakenBaseUrl}/channels/{channel}/subscriptions", accessToken);
             var json = JObject.Parse(resp);
             return int.Parse(json.SelectToken("_total").ToString());
         }
@@ -35,7 +35,7 @@ namespace TwitchLib.TwitchAPI
         {
             try
             {
-                await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions/{username}",
+                await MakeGetRequest($"{KrakenBaseUrl}/channels/{channel}/subscriptions/{username}",
                     accessToken);
                 return true;
             }

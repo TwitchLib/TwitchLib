@@ -22,7 +22,7 @@ namespace TwitchLib.TwitchAPI
             var resp = "";
             try
             {
-                resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}");
+                resp = await MakeGetRequest($"{KrakenBaseUrl}/channels/{channel}");
             }
             catch
             {
@@ -44,7 +44,7 @@ namespace TwitchLib.TwitchAPI
             var resp = "";
             try
             {
-                resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels", accessToken);
+                resp = await MakeGetRequest($"{KrakenBaseUrl}/channels", accessToken);
             }
             catch
             {
@@ -76,7 +76,7 @@ namespace TwitchLib.TwitchAPI
             args += cursor != -1 ? $"&cursor={cursor}" : "";
             args += "&direction=" + (direction == SortDirection.Descending ? "desc" : "asc");
 
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
+            var resp = await MakeGetRequest($"{KrakenBaseUrl}/channels/{channel}/follows{args}");
             return JObject.Parse(resp).SelectToken("follows").Select(follower => new TwitchFollower(follower)).ToList();
         }
 
@@ -91,7 +91,7 @@ namespace TwitchLib.TwitchAPI
         public static async Task<string> UpdateStreamDelay(int delay, string channel, string accessToken)
         {
             var data = "{\"channel\":{\"delay\":" + delay + "}}";
-            return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
+            return await MakeRestRequest($"{KrakenBaseUrl}/channels/{channel}", "PUT", data, accessToken);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace TwitchLib.TwitchAPI
         public static async Task<string> UpdateStreamTitle(string status, string channel, string accessToken)
         {
             var data = "{\"channel\":{\"status\":\"" + status + "\"}}";
-            return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
+            return await MakeRestRequest($"{KrakenBaseUrl}/channels/{channel}", "PUT", data, accessToken);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace TwitchLib.TwitchAPI
         public static async Task<string> UpdateStreamGame(string game, string channel, string accessToken)
         {
             var data = "{\"channel\":{\"game\":\"" + game + "\"}}";
-            return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
+            return await MakeRestRequest($"{KrakenBaseUrl}/channels/{channel}", "PUT", data, accessToken);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace TwitchLib.TwitchAPI
             string accessToken)
         {
             var data = "{\"channel\":{\"status\":\"" + status + "\",\"game\":\"" + game + "\"}}";
-            return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
+            return await MakeRestRequest($"{KrakenBaseUrl}/channels/{channel}", "PUT", data, accessToken);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace TwitchLib.TwitchAPI
         public static async Task<string> ResetStreamKey(string channel, string accessToken)
         {
             return await
-                MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}/streamkey", "DELETE", "", accessToken);
+                MakeRestRequest($"{KrakenBaseUrl}/channels/{channel}/streamkey", "DELETE", "", accessToken);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace TwitchLib.TwitchAPI
             int offset = 0, bool onlyBroadcasts = false, bool onlyHls = false)
         {
             var args = $"?limit={limit}&offset={offset}&broadcasts={onlyBroadcasts}&hls={onlyHls}";
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/videos{args}");
+            var resp = await MakeGetRequest($"{KrakenBaseUrl}/channels/{channel}/videos{args}");
             var vids = JObject.Parse(resp).SelectToken("videos");
 
             return vids.Select(vid => new TwitchVideo(vid)).ToList();
@@ -187,7 +187,7 @@ namespace TwitchLib.TwitchAPI
             string accessToken)
         {
             return await
-                MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}/commercial", "POST",
+                MakeRestRequest($"{KrakenBaseUrl}/channels/{channel}/commercial", "POST",
                     $"length={length}", accessToken);
         }
     }
