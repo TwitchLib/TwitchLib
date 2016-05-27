@@ -12,6 +12,7 @@ namespace TwitchLib.TwitchAPI
     {
         /// <summary>
         ///     Retrieves a list of all people currently chatting in a channel's chat.
+        ///     <para>Note: This uses an undocumented API endpoint and reliability is not guaranteed.</para>
         /// </summary>
         /// <param name="channel">The channel to retrieve the chatting people for.</param>
         /// <returns>A list of Chatter objects detailing each chatter in a channel.</returns>
