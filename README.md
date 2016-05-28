@@ -8,46 +8,49 @@ Available via Nuget: `Install-Package TwitchLib`
 ### TwitchChatClient
 - Initiailized using channel and ConnectionCredentials
 - Events:
+  * OnIncorrectLogin - Fires when an invalid login is returned by Twitch
   * OnConnected - Fires on listening and after joined channel, returns username and channel
-  * NewChatMessage - Fires when new chat message arrives, returns ChatMessage
-  * NewSubscriber - Fires when new subscriber is announced in chat, returns Subscriber
-  * ChannelStateAssigned - Fires when connecting and channel state is received, returns ChannelState
-  * ViewerJoined - New viewer/chatter joined the chat channel room.
-  * CommandReceived - Fires when command (uses custom command identifier) is received.
-  * MessageSent - Fires when a chat message is sent.
-  * UserStateAssigned - Fires when a user state is received.
-  * HostedStreamerWentOffline - Fires when a hosted streamer goes offline and hosting is killed
-- sendRaw(string message) - Sends RAW IRC message
-- sendMessage(string message) - Sends formatted Twitch channel chat message
+  * OnMessageReceived - Fires when new chat message arrives, returns ChatMessage
+  * OnSubscriber - Fires when new subscriber is announced in chat, returns Subscriber
+  * OnChannelStateChanged - Fires when channel state is changed
+  * OnViewerJoined - New viewer/chatter joined the chat channel room.
+  * OnCommandReceived - Fires when command (uses custom command identifier) is received.
+  * OnMessageSent - Fires when a chat message is sent.
+  * OnUserStateChanged - Fires when a user state is received.
+  * OnModeratorJoined - Fires when a moderator joins chat (not necessarily real time)
+  * OnHostLeft - Fires when a hosted channel goes offline
+- SendRaw(string message) - Sends RAW IRC message
+- SendMessage(string message) - Sends formatted Twitch channel chat message
 - Handled chat message types
 
 ### TwitchWhisperClient
 - Initialized using ConnectionCredentials
 - Events:
+  * OnIncorrectLogin - Fires when an invalid login is returned by Twitch
   * OnConnected - Fires on listening and after joined channel, returns username
-  * NewWhisperReceived - Fires when a new whisper message is received, returns WhisperMessage
-  * CommandReceived - Fires when command (uses custom command identifier) is received.
-  * WhisperSent - Fires when a whisper is sent.
-- sendRaw(string message) - Sends RAW IRC message
-- sendWhisper(string receiver, string message) - Sends formatted Twitch whisper message
+  * OnWhisperReceived - Fires when a new whisper message is received, returns WhisperMessage
+  * OnCommandReceived - Fires when command (uses custom command identifier) is received.
+  * OnWhisperSent - Fires when a whisper is sent.
+- SendRaw(string message) - Sends RAW IRC message
+- SendWhisper(string receiver, string message) - Sends formatted Twitch whisper message
 
 ### TwitchAPI
-- broadcasterOnline(string channel) - Async function returns bool of whether or not streamer is streaming
-- getTwitchChannel(string channel) - Async function returns TwitchCHannel of a specific channel
-- userFollowsChannel(string username, string channel) - Async function returns bool if a user follows a channel
-- getChatters(string channel) - Aysync function returns list of Chatter objects detailing each chatter in a channel
-- updateStreamTitle(string status, string username, string access_token) - Async function that changes stream title
-- updateStreamGame(string game, string username, string access_token) - Async function that updates a streams's game
-- updateStreamTitleAndGame(string status, string game, string username, string access_token) - Async function that updates a stream's status and game
-- resetStreamKey(string username, string access_token) - Async function that resets the stream key of a channel
-- getChannelVideos(string channel, [int limit], [int offset], [bool onlyBroadcasts], [bool onlyHLS]) - Async function that returns list of TwitchVIdeo objects
-- runCommercial(Valid_Commercial_Lengths length, string username, string access_token) - A sync function that runs a commercial of variable length on a channel
-- getChannelHosts(string channel) - Async function that returns a string list of channels hosting a specified channel (undocumented)
-- getTeamMembers(string teamName) - Async function that returns a TwitchTeamMember list of all members in a Twitch team (undocumented)
-- channelHasUserSubscribed(string username, string channel, string access_token) - Returns true or false on whether or not a user is subscribed to a channel.
-- getTwitchStream(string channel) - Returns TwitchStream object containing API data related to a stream
-- getTwitchFollower(string channel) - Returns asc or desc list of followers from a specific channel, returns list of TwitchFollower objects.
-- getUptime(string channel) - Returns TimeSpan object representing time between creation_at of stream, and now.
+- BroadcasterOnline(string channel) - Async function returns bool of whether or not streamer is streaming
+- GetTwitchChannel(string channel) - Async function returns TwitchCHannel of a specific channel
+- UserFollowsChannel(string username, string channel) - Async function returns bool if a user follows a channel
+- GetChatters(string channel) - Aysync function returns list of Chatter objects detailing each chatter in a channel
+- UpdateStreamTitle(string status, string username, string access_token) - Async function that changes stream title
+- UpdateStreamGame(string game, string username, string access_token) - Async function that updates a streams's game
+- UpdateStreamTitleAndGame(string status, string game, string username, string access_token) - Async function that updates a stream's status and game
+- ResetStreamKey(string username, string access_token) - Async function that resets the stream key of a channel
+- GetChannelVideos(string channel, [int limit], [int offset], [bool onlyBroadcasts], [bool onlyHLS]) - Async function that returns list of TwitchVIdeo objects
+- RunCommercial(Valid_Commercial_Lengths length, string username, string access_token) - A sync function that runs a commercial of variable length on a channel
+- GetChannelHosts(string channel) - Async function that returns a string list of channels hosting a specified channel (undocumented)
+- GetTeamMembers(string teamName) - Async function that returns a TwitchTeamMember list of all members in a Twitch team (undocumented)
+- ChannelHasUserSubscribed(string username, string channel, string access_token) - Returns true or false on whether or not a user is subscribed to a channel.
+- GetTwitchStream(string channel) - Returns TwitchStream object containing API data related to a stream
+- GetTwitchFollower(string channel) - Returns asc or desc list of followers from a specific channel, returns list of TwitchFollower objects.
+- GetUptime(string channel) - Returns TimeSpan object representing time between creation_at of stream, and now.
 
 ### TwitchLibExample
 This project demonstrates a majority of the functionality that TwitchLib allows for.  Includes a basic UI that has textboxes and buttons that allow for required input in the various functions. Supports reading twitch account details from credentials.txt (one per line: username, oauth, channel).
@@ -74,13 +77,9 @@ I've recently taken to implementing this class into test applications and connec
 - Newtonsoft.Json - JSON parsing class.  Used to parse Twitch API calls.
 - SmartIRC4Net - Base IRC class.
 
+### Contributors
+ * Cole ([@swiftyspiffy](http://twitter.com/swiftyspiffy))
+ * Nadermane ([@andrewchilds](http://twitter.com/nadermane))
+ 
 ### License
-The MIT License (MIT)
-
-Copyright (c) 2015 swiftyspiffy
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+MIT License. &copy; 2016 Cole
