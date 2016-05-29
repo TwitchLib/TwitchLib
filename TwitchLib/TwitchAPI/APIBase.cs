@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +9,14 @@ namespace TwitchLib.TwitchAPI
 {
     public class ApiBase
     {
+        public static void SetClientId(string id)
+        {
+            ClientId = id;
+        }
+
         #region Definitions
+
+        private static string ClientId { get; set; }
 
         /// <summary>
         ///     The base URL for the official, documented Twitch API.
@@ -83,12 +91,16 @@ namespace TwitchLib.TwitchAPI
 
         protected static async Task<string> MakeGetRequest(string url, string accessToken = null)
         {
+            if (string.IsNullOrWhiteSpace(ClientId) && string.IsNullOrWhiteSpace(accessToken))
+                throw new InvalidCredentialException("All API calls require a Client-ID as of August 8th, 2016. In order to make a request, you must either set a Client-ID using the SetClientId method or provide an OAuth token.");
+
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
             var request = (HttpWebRequest) WebRequest.Create(new Uri(url));
             request.Method = "GET";
             request.Accept = "application/vnd.twitchtv.v3+json";
             request.ContentType = "application/json";
+            request.Headers.Add("Client-ID", ClientId);
 
             if (!string.IsNullOrWhiteSpace(accessToken))
                 request.Headers.Add("Authorization", $"OAuth {accessToken}");
@@ -102,6 +114,9 @@ namespace TwitchLib.TwitchAPI
         protected static async Task<string> MakeRestRequest(string url, string method, string requestData = null,
             string accessToken = null)
         {
+            if (string.IsNullOrWhiteSpace(ClientId) && string.IsNullOrWhiteSpace(accessToken))
+                throw new InvalidCredentialException("All API calls require a Client-ID as of August 8th, 2016. In order to make a request, you must either set a Client-ID using the SetClientId method or provide an OAuth token.");
+
             var data = new UTF8Encoding().GetBytes(requestData ?? "");
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
@@ -109,6 +124,7 @@ namespace TwitchLib.TwitchAPI
             request.Method = method;
             request.Accept = "application/vnd.twitchtv.v3+json";
             request.ContentType = "application/json";
+            request.Headers.Add("Client-ID", ClientId);
 
             if (!string.IsNullOrWhiteSpace(accessToken))
                 request.Headers.Add("Authorization", $"OAuth {accessToken}");
