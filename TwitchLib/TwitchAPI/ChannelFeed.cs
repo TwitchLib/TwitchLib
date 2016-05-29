@@ -78,7 +78,7 @@ namespace TwitchLib.TwitchAPI
             }
             catch
             {
-                throw new InvalidChannelException("");
+                return new TwitchFeedPost();
             }
         }
 

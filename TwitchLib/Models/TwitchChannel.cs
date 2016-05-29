@@ -4,6 +4,11 @@ namespace TwitchLib
 {
     public class TwitchChannel
     {
+        /// <summary>
+        /// Indicates whether this channel was not filled properly because of an error.
+        /// </summary>
+        public bool ErrorOccured { get; }
+
         public bool IsMature { get; }
 
         public bool IsPartner { get; }
@@ -41,6 +46,11 @@ namespace TwitchLib
         public string StreamKey { get; set; }
 
         public string UpdatedAt { get; }
+
+        public TwitchChannel()
+        {
+            ErrorOccured = true;
+        }
 
         public TwitchChannel(JObject json)
         {

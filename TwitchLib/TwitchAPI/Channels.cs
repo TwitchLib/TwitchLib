@@ -19,18 +19,16 @@ namespace TwitchLib.TwitchAPI
         /// <returns>A TwitchStream object containing API data related to a stream.</returns>
         public static async Task<TwitchChannel> GetTwitchChannel(string channel)
         {
-            var resp = "";
             try
             {
-                resp = await MakeGetRequest($"{KrakenBaseUrl}/channels/{channel}");
+                var resp = await MakeGetRequest($"{KrakenBaseUrl}/channels/{channel}");
+                var json = JObject.Parse(resp);
+                return json.SelectToken("error") != null ? new TwitchChannel() : new TwitchChannel(json);
             }
             catch
             {
-                throw new InvalidChannelException(resp);
+                return new TwitchChannel();
             }
-            var json = JObject.Parse(resp);
-            if (json.SelectToken("error") != null) throw new InvalidChannelException(resp);
-            return new TwitchChannel(json);
         }
 
         /// <summary>
@@ -41,18 +39,16 @@ namespace TwitchLib.TwitchAPI
         /// <returns>A TwitchStream object containing API data related to a stream.</returns>
         public static async Task<TwitchChannel> GetOwnTwitchChannel(string accessToken)
         {
-            var resp = "";
             try
             {
-                resp = await MakeGetRequest($"{KrakenBaseUrl}/channels", accessToken);
+                var resp = await MakeGetRequest($"{KrakenBaseUrl}/channels", accessToken);
+                var json = JObject.Parse(resp);
+                return json.SelectToken("error") != null ? new TwitchChannel() : new TwitchChannel(json);
             }
             catch
             {
-                throw new InvalidChannelException(resp);
+                return new TwitchChannel();
             }
-            var json = JObject.Parse(resp);
-            if (json.SelectToken("error") != null) throw new InvalidChannelException(resp);
-            return new TwitchChannel(json);
         }
 
         /// <summary>

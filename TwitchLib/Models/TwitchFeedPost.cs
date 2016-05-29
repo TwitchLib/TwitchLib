@@ -8,8 +8,10 @@ namespace TwitchLib
 {
     public class TwitchFeedPost
     {
-        // TODO note:
-        // - Implement Emote property, doesn't seem to be supported by Twitch at time of writing.
+        /// <summary>
+        /// Indicates whether this feed post was not filled properly because of an error.
+        /// </summary>
+        public bool ErrorOccured { get; }
 
         public long Id { get; }
         public string CreatedAt { get; }
@@ -17,6 +19,11 @@ namespace TwitchLib
         public string Body { get; }
         public TwitchUser User { get; }
         public List<Reaction> Reactions { get; }
+
+        public TwitchFeedPost()
+        {
+            ErrorOccured = true;
+        }
 
         public TwitchFeedPost(JToken twitchStreamData)
         {
