@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using TwitchLib.Exceptions;
 
 namespace TwitchLib.TwitchAPI
 {
@@ -135,6 +134,21 @@ namespace TwitchLib.TwitchAPI
                 await
                     MakeRestRequest($"{KrakenBaseUrl}/feed/{channel}/posts/{postId}/reactions{args}", "DELETE", "",
                         accessToken);
+        }
+
+        /// <summary>
+        ///     Enables or disables the channel feed of <paramref name="channel" />.
+        ///     <para>Authenticated, required scope: <code>channel_editor</code></para>
+        /// </summary>
+        /// <param name="channelFeedEnabled">Whether the channel's feed is enabled. Requires the channel owner's OAuth token.</param>
+        /// <param name="channel">The channel to set the channel feed enabled status for.</param>
+        /// <param name="accessToken">An oauth token with the required scope.</param>
+        /// <returns>The response of the request.</returns>
+        public static async Task<string> SetChannelFeedEnabled(bool channelFeedEnabled, string channel,
+            string accessToken)
+        {
+            var data = "{\"channel\":{\"channel_feed_enabled\":" + channelFeedEnabled + "}}";
+            return await MakeRestRequest($"{KrakenBaseUrl}/channels/{channel}", "PUT", data, accessToken);
         }
     }
 }
