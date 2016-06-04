@@ -25,7 +25,7 @@ namespace TwitchLib.TwitchAPI
             try
             {
                 var args = $"?limit={limit}&cursor={cursor}";
-                var resp = await MakeGetRequest($"{KrakenBaseUrl}/feed/{channel}{args}");
+                var resp = await MakeGetRequest($"{KrakenBaseUrl}/feed/{channel}/posts{args}");
 
                 var json = JObject.Parse(resp);
                 if (json.SelectToken("_total").ToString() == "0") return returnedPosts;
