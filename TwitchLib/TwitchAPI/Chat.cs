@@ -11,6 +11,38 @@ namespace TwitchLib.TwitchAPI
     public class Chat : ApiBase
     {
         /// <summary>
+        /// Retrieves a list of ALL emotes on Twitch.
+        /// <para>Caution: Uses a lot of memory to process the entire list.</para>
+        /// </summary>
+        /// <returns>A list of TwitchEmote objects.</returns>
+        public static async Task<List<TwitchEmote>> GetEmotes()
+        {
+            var emotes = new List<TwitchEmote>();
+            var resp = await MakeGetRequest($"{KrakenBaseUrl}/chat/emoticons");
+
+            var json = JObject.Parse(resp);
+            emotes.AddRange(
+                json.SelectToken("emoticons").Select(emote => new TwitchEmote(emote)));
+            return emotes;
+        }
+
+        /// <summary>
+        /// Retrieves a list of the emotes that can be used in <paramref name="channel"/>.
+        /// </summary>
+        /// <param name="channel">The channel to retrieve the emotes for.</param>
+        /// <returns>A list of TwitchEmote objects.</returns>
+        public static async Task<List<TwitchEmote>> GetEmotes(string channel)
+        {
+            var emotes = new List<TwitchEmote>();
+            var resp = await MakeGetRequest($"{KrakenBaseUrl}/chat/{channel}/emoticons");
+
+            var json = JObject.Parse(resp);
+            emotes.AddRange(
+                json.SelectToken("emoticons").Select(emote => new TwitchEmote(emote)));
+            return emotes;
+        }
+
+        /// <summary>
         ///     Retrieves a list of all people currently chatting in a channel's chat.
         ///     <para>Note: This uses an undocumented API endpoint and reliability is not guaranteed.</para>
         /// </summary>

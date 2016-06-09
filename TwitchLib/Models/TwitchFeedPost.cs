@@ -25,22 +25,22 @@ namespace TwitchLib
             ErrorOccured = true;
         }
 
-        public TwitchFeedPost(JToken twitchStreamData)
+        public TwitchFeedPost(JToken json)
         {
             long id;
             bool isDeleted;
 
-            if (long.TryParse(twitchStreamData.SelectToken("id").ToString(), out id)) Id = id;
-            if (bool.TryParse(twitchStreamData.SelectToken("deleted").ToString(), out isDeleted) && isDeleted)
+            if (long.TryParse(json.SelectToken("id").ToString(), out id)) Id = id;
+            if (bool.TryParse(json.SelectToken("deleted").ToString(), out isDeleted) && isDeleted)
                 IsDeleted = true;
 
-            Body = twitchStreamData.SelectToken("body").ToString();
-            CreatedAt = twitchStreamData.SelectToken("created_at").ToString();
+            Body = json.SelectToken("body")?.ToString();
+            CreatedAt = json.SelectToken("created_at")?.ToString();
 
-            User = new TwitchUser((JObject) twitchStreamData.SelectToken("user"));
+            User = new TwitchUser((JObject)json.SelectToken("user"));
 
             var list = new List<Reaction>();
-            foreach (var item in (JObject) twitchStreamData.SelectToken("reactions"))
+            foreach (var item in (JObject)json.SelectToken("reactions"))
             {
                 list.Add(new Reaction(item.Value, item.Key));
             }
@@ -53,17 +53,17 @@ namespace TwitchLib
             public string Id { get; }
             public string Emote { get; }
             public int Count { get; }
-            public List<long> UserIds { get; set; }
+            public List<long> UserIds { get; }
 
-            public Reaction(JToken twitchStreamData, string reactionId)
+            public Reaction(JToken json, string reactionId)
             {
                 int count;
 
-                if (int.TryParse(twitchStreamData.SelectToken("count").ToString(), out count)) Count = count;
+                if (int.TryParse(json.SelectToken("count").ToString(), out count)) Count = count;
 
                 Id = reactionId;
-                Emote = twitchStreamData.SelectToken("emote").ToString();
-                UserIds = JsonConvert.DeserializeObject<List<long>>(twitchStreamData.SelectToken("user_ids").ToString());
+                Emote = json.SelectToken("emote")?.ToString();
+                UserIds = JsonConvert.DeserializeObject<List<long>>(json.SelectToken("user_ids")?.ToString());
             }
         }
     }

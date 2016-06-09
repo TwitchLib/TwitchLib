@@ -25,19 +25,19 @@ namespace TwitchLib
 
         public string UpdatedAt { get; }
 
-        public TwitchUser(JToken userData)
+        public TwitchUser(JToken json)
         {
             long id;
 
-            if (long.TryParse(userData.SelectToken("_id").ToString(), out id)) Id = id;
+            if (long.TryParse(json.SelectToken("_id").ToString(), out id)) Id = id;
 
-            Type = userData.SelectToken("type").ToString();
-            Bio = userData.SelectToken("bio").ToString();
-            Logo = userData.SelectToken("logo").ToString();
-            DisplayName = userData.SelectToken("display_name").ToString();
-            CreatedAt = userData.SelectToken("created_at").ToString();
-            UpdatedAt = userData.SelectToken("updated_at").ToString();
-            Name = userData.SelectToken("name").ToString();
+            Type = json.SelectToken("type")?.ToString();
+            Bio = json.SelectToken("bio")?.ToString();
+            Logo = json.SelectToken("logo")?.ToString();
+            DisplayName = json.SelectToken("display_name")?.ToString();
+            CreatedAt = json.SelectToken("created_at")?.ToString();
+            UpdatedAt = json.SelectToken("updated_at")?.ToString();
+            Name = json.SelectToken("name")?.ToString();
         }
     }
 }

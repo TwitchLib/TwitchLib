@@ -29,7 +29,7 @@ namespace TwitchLib
 
         public string DisplayName { get; }
 
-        public string Email { get; set; }
+        public string Email { get; }
 
         public string Game { get; }
 
@@ -43,7 +43,7 @@ namespace TwitchLib
 
         public string Status { get; }
 
-        public string StreamKey { get; set; }
+        public string StreamKey { get; }
 
         public string UpdatedAt { get; }
 
@@ -52,7 +52,7 @@ namespace TwitchLib
             ErrorOccured = true;
         }
 
-        public TwitchChannel(JObject json)
+        public TwitchChannel(JToken json)
         {
             bool isMature, isPartner;
             int views, followers;

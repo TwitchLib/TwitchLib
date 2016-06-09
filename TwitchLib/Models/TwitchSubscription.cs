@@ -5,15 +5,15 @@ namespace TwitchLib
 {
     public class TwitchSubscription
     {
-        public string Id { get; set; }
-        public string CreatedAt { get; set; }
-        public TwitchUser User { get; set; }
+        public string Id { get; }
+        public string CreatedAt { get; }
+        public TwitchUser User { get; }
 
-        public TwitchSubscription(JObject subscriptionData)
+        public TwitchSubscription(JObject json)
         {
-            CreatedAt = subscriptionData.SelectToken("created_at").ToString();
-            Id = subscriptionData.SelectToken("_id").ToString();
-            User = new TwitchUser(subscriptionData.SelectToken("user"));
+            CreatedAt = json.SelectToken("created_at")?.ToString();
+            Id = json.SelectToken("_id")?.ToString();
+            User = new TwitchUser(json.SelectToken("user"));
         }
     }
 }

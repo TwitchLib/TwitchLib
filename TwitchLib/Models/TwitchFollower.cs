@@ -10,12 +10,12 @@ namespace TwitchLib
 
         public TwitchUser User { get; }
 
-        public TwitchFollower(JToken followerData)
+        public TwitchFollower(JToken json)
         {
-            CreatedAt = followerData.SelectToken("created_at").ToString();
-            if (followerData.SelectToken("notifications").ToString() == "true")
+            CreatedAt = json.SelectToken("created_at").ToString();
+            if (json.SelectToken("notifications").ToString() == "true")
                 HasNotifications = true;
-            User = new TwitchUser(followerData.SelectToken("user"));
+            User = new TwitchUser(json.SelectToken("user"));
         }
     }
 }

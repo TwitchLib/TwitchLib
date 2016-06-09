@@ -26,24 +26,24 @@ namespace TwitchLib
 
         public string Title { get; }
 
-        public TwitchTeamMember(JToken data)
+        public TwitchTeamMember(JToken json)
         {
             int currentViews, followerCount, totalViews;
 
-            if (int.TryParse(data.SelectToken("current_viewers").ToString(), out currentViews)) CurrentViews = currentViews;
-            if (int.TryParse(data.SelectToken("followers_count").ToString(), out followerCount)) FollowerCount = followerCount;
-            if (int.TryParse(data.SelectToken("total_views").ToString(), out totalViews)) TotalViews = totalViews;
+            if (int.TryParse(json.SelectToken("current_viewers").ToString(), out currentViews)) CurrentViews = currentViews;
+            if (int.TryParse(json.SelectToken("followers_count").ToString(), out followerCount)) FollowerCount = followerCount;
+            if (int.TryParse(json.SelectToken("total_views").ToString(), out totalViews)) TotalViews = totalViews;
 
-            if (data.SelectToken("status").ToString().Trim().ToLower() == "live")
+            if (json.SelectToken("status").ToString().Trim().ToLower() == "live")
                 IsLive = true;
 
-            Description = data.SelectToken("description").ToString();
-            DisplayName = data.SelectToken("display_name").ToString();
-            ImageSizes = new ImgSizes(data.SelectToken("image"));
-            Link = data.SelectToken("link").ToString();
-            MetaGame = data.SelectToken("meta_game").ToString();
-            Name = data.SelectToken("name").ToString();
-            Title = data.SelectToken("title").ToString();
+            Description = json.SelectToken("description")?.ToString();
+            DisplayName = json.SelectToken("display_name")?.ToString();
+            ImageSizes = new ImgSizes(json.SelectToken("image"));
+            Link = json.SelectToken("link")?.ToString();
+            MetaGame = json.SelectToken("meta_game")?.ToString();
+            Name = json.SelectToken("name")?.ToString();
+            Title = json.SelectToken("title")?.ToString();
         }
 
         public class ImgSizes
@@ -60,14 +60,14 @@ namespace TwitchLib
 
             public string Size600 { get; }
 
-            public ImgSizes(JToken imageData)
+            public ImgSizes(JToken json)
             {
-                Size28 = imageData.SelectToken("size28").ToString();
-                Size50 = imageData.SelectToken("size50").ToString();
-                Size70 = imageData.SelectToken("size70").ToString();
-                Size150 = imageData.SelectToken("size150").ToString();
-                Size300 = imageData.SelectToken("size300").ToString();
-                Size600 = imageData.SelectToken("size600").ToString();
+                Size28 = json.SelectToken("size28").ToString();
+                Size50 = json.SelectToken("size50").ToString();
+                Size70 = json.SelectToken("size70").ToString();
+                Size150 = json.SelectToken("size150").ToString();
+                Size300 = json.SelectToken("size300").ToString();
+                Size600 = json.SelectToken("size600").ToString();
             }
         }
     }

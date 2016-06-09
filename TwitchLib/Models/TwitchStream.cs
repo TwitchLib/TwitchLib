@@ -24,25 +24,25 @@ namespace TwitchLib
 
         public TwitchChannel Channel { get; }
 
-        public TwitchStream(JToken twitchStreamData)
+        public TwitchStream(JToken json)
         {
             bool isPlaylist;
             long id;
             int viewers, videoHeight, delay;
             double averageFps;
 
-            if (bool.TryParse(twitchStreamData.SelectToken("is_playlist").ToString(), out isPlaylist) && isPlaylist) IsPlaylist = true;
-            if (long.TryParse(twitchStreamData.SelectToken("_id").ToString(), out id)) Id = id;
-            if (int.TryParse(twitchStreamData.SelectToken("viewers").ToString(), out viewers)) Viewers = viewers;
-            if (int.TryParse(twitchStreamData.SelectToken("video_height").ToString(), out videoHeight)) VideoHeight = videoHeight;
-            if (int.TryParse(twitchStreamData.SelectToken("delay").ToString(), out delay)) Delay = delay;
-            if (double.TryParse(twitchStreamData.SelectToken("average_fps").ToString(), out averageFps)) AverageFps = averageFps;
+            if (bool.TryParse(json.SelectToken("is_playlist").ToString(), out isPlaylist) && isPlaylist) IsPlaylist = true;
+            if (long.TryParse(json.SelectToken("_id").ToString(), out id)) Id = id;
+            if (int.TryParse(json.SelectToken("viewers").ToString(), out viewers)) Viewers = viewers;
+            if (int.TryParse(json.SelectToken("video_height").ToString(), out videoHeight)) VideoHeight = videoHeight;
+            if (int.TryParse(json.SelectToken("delay").ToString(), out delay)) Delay = delay;
+            if (double.TryParse(json.SelectToken("average_fps").ToString(), out averageFps)) AverageFps = averageFps;
 
-            Game = twitchStreamData.SelectToken("game").ToString();
-            CreatedAt = twitchStreamData.SelectToken("created_at").ToString();
+            Game = json.SelectToken("game")?.ToString();
+            CreatedAt = json.SelectToken("created_at")?.ToString();
 
-            Channel = new TwitchChannel((JObject) twitchStreamData.SelectToken("channel"));
-            Preview = new PreviewObj(twitchStreamData.SelectToken("preview"));
+            Channel = new TwitchChannel(json.SelectToken("channel"));
+            Preview = new PreviewObj(json.SelectToken("preview"));
         }
 
         public class PreviewObj
@@ -55,12 +55,12 @@ namespace TwitchLib
 
             public string Template { get; }
 
-            public PreviewObj(JToken previewData)
+            public PreviewObj(JToken json)
             {
-                Small = previewData.SelectToken("small").ToString();
-                Medium = previewData.SelectToken("medium").ToString();
-                Large = previewData.SelectToken("large").ToString();
-                Template = previewData.SelectToken("template").ToString();
+                Small = json.SelectToken("small").ToString();
+                Medium = json.SelectToken("medium").ToString();
+                Large = json.SelectToken("large").ToString();
+                Template = json.SelectToken("template").ToString();
             }
         }
     }
