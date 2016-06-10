@@ -36,7 +36,7 @@ namespace TwitchLib
         public bool ModFlag => _modFlag;
         public string RawIrcMessage => _rawIrcMessage;
 
-        //@color=#CC00C9;display-name=astickgamer;emotes=70803:6-11;sent-ts=1447446917994;subscriber=1;tmi-sent-ts=1447446957359;turbo=0;user-id=24549902;user-type= :astickgamer!astickgamer@astickgamer.tmi.twitch.tv PRIVMSG #cohhcarnage :cjb2, cohhHi
+        //@badges=;color=#CC00C9;display-name=astickgamer;emotes=70803:6-11;sent-ts=1447446917994;subscriber=1;tmi-sent-ts=1447446957359;turbo=0;user-id=24549902;user-type= :astickgamer!astickgamer@astickgamer.tmi.twitch.tv PRIVMSG #cohhcarnage :cjb2, cohhHi
         public ChatMessage(string ircString)
         {
             _rawIrcMessage = ircString;
@@ -49,8 +49,10 @@ namespace TwitchLib
                         _channel = part.Split('#')[1].Split(' ')[0];
                     if (_username == null)
                         _username = part.Split('!')[1].Split('@')[0];
+                } else if(part.Contains("@badges=")) {
+                    // Do some badge stuff here at some point.
                 }
-                else if (part.Contains("@color="))
+                else if (part.Contains("color="))
                 {
                     if (_colorHex == null)
                         _colorHex = part.Split('=')[1];
