@@ -82,6 +82,7 @@ namespace TwitchLib
             _commandIdentifier = commandIdentifier;
             _logging = logging;
 
+            _client.AutoReconnect = true;
             _client.OnConnected += Connected;
             _client.OnReadLine += OnReadLine;
         }
