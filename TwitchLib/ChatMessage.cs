@@ -23,6 +23,7 @@ namespace TwitchLib
         private string _username, _displayName, _colorHex, _message, _channel, _emoteSet, _rawIrcMessage;
         private bool _subscriber, _turbo, _modFlag;
         private UType _userType;
+        private List<KeyValuePair<string, string>> _badges = new List<KeyValuePair<string, string>>();
 
         public int UserId => _userId;
         public string Username => _username;
@@ -35,12 +36,12 @@ namespace TwitchLib
         public bool Turbo => _turbo;
         public bool ModFlag => _modFlag;
         public string RawIrcMessage => _rawIrcMessage;
+        public List<KeyValuePair<string,string>> Badges => _badges;
 
-        //@color=#CC00C9;display-name=astickgamer;emotes=70803:6-11;sent-ts=1447446917994;subscriber=1;tmi-sent-ts=1447446957359;turbo=0;user-id=24549902;user-type= :astickgamer!astickgamer@astickgamer.tmi.twitch.tv PRIVMSG #cohhcarnage :cjb2, cohhHi
+        //Example IRC message: @badges=moderator/1,warcraft/alliance;color=;display-name=Swiftyspiffyv4;emotes=;mod=1;room-id=40876073;subscriber=0;turbo=0;user-id=103325214;user-type=mod :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #swiftyspiffy :asd
         public ChatMessage(string ircString)
         {
             _rawIrcMessage = ircString;
-            //@color=asd;display-name=Swiftyspiffyv4;emotes=;subscriber=0;turbo=0;user-id=103325214;user-type=asd :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #burkeblack :this is a test lol
             foreach (var part in ircString.Split(';'))
             {
                 if (part.Contains("!"))
@@ -49,6 +50,15 @@ namespace TwitchLib
                         _channel = part.Split('#')[1].Split(' ')[0];
                     if (_username == null)
                         _username = part.Split('!')[1].Split('@')[0];
+                }
+                else if(part.Contains("@badges="))
+                {
+                    string badges = part.Split('=')[1];
+                    if (!badges.Contains(","))
+                        _badges.Add(new KeyValuePair<string, string>(badges.Split('/')[0], badges.Split('/')[1]));
+                    else
+                        foreach (string badge in badges.Split(','))
+                            _badges.Add(new KeyValuePair<string, string>(badge.Split('/')[0], badge.Split('/')[1]));
                 }
                 else if (part.Contains("@color="))
                 {
