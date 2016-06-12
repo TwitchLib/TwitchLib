@@ -80,6 +80,7 @@ I've recently taken to implementing this class into test applications and connec
 ### Contributors
  * Cole ([@swiftyspiffy](http://twitter.com/swiftyspiffy))
  * Nadermane ([@Nadermane](http://twitter.com/nadermane))
+ * BenWoodford ([BenWoodford](https://github.com/BenWoodford))
  
 ### License
 MIT License. &copy; 2016 Cole
