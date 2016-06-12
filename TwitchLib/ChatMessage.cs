@@ -60,7 +60,7 @@ namespace TwitchLib
                         foreach (string badge in badges.Split(','))
                             _badges.Add(new KeyValuePair<string, string>(badge.Split('/')[0], badge.Split('/')[1]));
                 }
-                else if (part.Contains("@color="))
+                else if (part.Contains("color="))
                 {
                     if (_colorHex == null)
                         _colorHex = part.Split('=')[1];
