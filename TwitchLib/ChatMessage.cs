@@ -54,11 +54,14 @@ namespace TwitchLib
                 else if(part.Contains("@badges="))
                 {
                     string badges = part.Split('=')[1];
-                    if (!badges.Contains(","))
-                        _badges.Add(new KeyValuePair<string, string>(badges.Split('/')[0], badges.Split('/')[1]));
-                    else
-                        foreach (string badge in badges.Split(','))
-                            _badges.Add(new KeyValuePair<string, string>(badge.Split('/')[0], badge.Split('/')[1]));
+                    if(badges.Contains('/'))
+                    {
+                        if (!badges.Contains(","))
+                            _badges.Add(new KeyValuePair<string, string>(badges.Split('/')[0], badges.Split('/')[1]));
+                        else
+                            foreach (string badge in badges.Split(','))
+                                _badges.Add(new KeyValuePair<string, string>(badge.Split('/')[0], badge.Split('/')[1]));
+                    }
                 }
                 else if (part.Contains("color="))
                 {
