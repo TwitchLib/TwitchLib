@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Meebey.SmartIrc4net;
 using System.Collections.Generic;
 using TwitchLib.Exceptions;
+using System.Text;
 
 namespace TwitchLib
 {
@@ -123,8 +124,10 @@ namespace TwitchLib
         public void SendWhisper(string receiver, string message, bool dryRun = false)
         {
             if (dryRun) return;
-            _client.WriteLine(string.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :/w {2} {3}",
-                _credentials.TwitchUsername, "jtv", receiver, message));
+            string twitchMessage = $":{_credentials.TwitchUsername}~{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" + 
+                $".tmi.twitch.tv PRIVMSG #jtv :/w {receiver} {message}";
+            // This is a makeshift hack to encode it with accomodations for at least cyrillic, and possibly others
+            _client.WriteLine(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
             OnWhisperSent?.Invoke(null, new OnWhisperSentArgs {Receiver = receiver, Message = message});
         }
 
@@ -146,19 +149,20 @@ namespace TwitchLib
 
         private void OnReadLine(object sender, ReadLineEventArgs e)
         {
+            string decodedMessage = Encoding.UTF8.GetString(Encoding.Default.GetBytes(e.Line));
             if (_logging)
-                Console.WriteLine(e.Line);
-            if (e.Line.Split(':').Length > 2)
+                Console.WriteLine(decodedMessage);
+            if (decodedMessage.Split(':').Length > 2)
             {
-                if (e.Line.Split(':')[2] == "You are in a maze of twisty passages, all alike.")
+                if (decodedMessage.Split(':')[2] == "You are in a maze of twisty passages, all alike.")
                 {
                     _connected = true;
                     OnConnected?.Invoke(null, new OnConnectedArgs {Username = TwitchUsername});
                 }
             }
-            if (e.Line.Split(' ').Length > 3 && e.Line.Split(' ')[2] == "WHISPER")
+            if (decodedMessage.Split(' ').Length > 3 && decodedMessage.Split(' ')[2] == "WHISPER")
             {
-                var whisperMessage = new WhisperMessage(e.Line, _credentials.TwitchUsername);
+                var whisperMessage = new WhisperMessage(decodedMessage, _credentials.TwitchUsername);
                 _previousWhisper = whisperMessage;
                 OnWhisperReceived?.Invoke(null, new OnWhisperReceivedArgs {WhisperMessage = whisperMessage});
                 if (_commandIdentifier == '\0' || whisperMessage.Message[0] != _commandIdentifier) return;
@@ -189,19 +193,19 @@ namespace TwitchLib
             else
             {
                 //Special cases
-                if (e.Line == ":tmi.twitch.tv NOTICE * :Error logging in")
+                if (decodedMessage == ":tmi.twitch.tv NOTICE * :Error logging in")
                 {
                     _client.Disconnect();
                     OnIncorrectLogin?.Invoke(null,
                         new OnIncorrectLoginArgs
                         {
-                            Exception = new ErrorLoggingInException(e.Line, _credentials.TwitchUsername)
+                            Exception = new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername)
                         });
                 }
                 else
                 {
                     if (_logging)
-                        Console.WriteLine("Not registered: " + e.Line);
+                        Console.WriteLine("Not registered: " + decodedMessage);
                 }
             }
         }

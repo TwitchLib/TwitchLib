@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Newtonsoft.Json.Serialization;
 using TwitchLib.Exceptions;
+using System.Text;
 
 namespace TwitchLib
 {
@@ -180,8 +181,10 @@ namespace TwitchLib
         public void SendMessage(string message, bool dryRun = false)
         {
             if (dryRun) return;
-            _client.WriteLine(string.Format(":{0}!{0}@{0}.tmi.twitch.tv PRIVMSG #{1} :{2}", _credentials.TwitchUsername,
-                _channel, message));
+            string twitchMessage = $":{_credentials.TwitchUsername}!{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" +
+                $".tmi.twitch.tv PRIVMSG #{_channel} :{message}";
+            // This is a makeshift hack to encode it with accomodations for at least cyrillic characters, and possibly others
+            _client.WriteLine(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
             OnMessageSent?.Invoke(null,
                 new OnMessageSentArgs {Username = _credentials.TwitchUsername, Channel = _channel, Message = message});
         }
@@ -237,33 +240,35 @@ namespace TwitchLib
 
         private void OnReadLine(object sender, ReadLineEventArgs e)
         {
+            // Hack to accomodate at least cyrillic characters, possibly more
+            string decodedMessage = Encoding.UTF8.GetString(Encoding.Default.GetBytes(e.Line));
             if (_logging)
-                Console.WriteLine(e.Line);
-            if (e.Line.Split(':').Length > 2)
+                Console.WriteLine(decodedMessage);
+            if (decodedMessage.Split(':').Length > 2)
             {
-                if (e.Line.Split(':')[2] == "You are in a maze of twisty passages, all alike.")
+                if (decodedMessage.Split(':')[2] == "You are in a maze of twisty passages, all alike.")
                 {
                     _connected = true;
                     OnConnected?.Invoke(null, new OnConnectedArgs {Channel = _channel, Username = TwitchUsername});
                 }
             }
-            if (e.Line.Contains($"#{_channel}"))
+            if (decodedMessage.Contains($"#{_channel}"))
             {
-                var splitter = Regex.Split(e.Line, $" #{_channel}");
+                var splitter = Regex.Split(decodedMessage, $" #{_channel}");
                 var readType = splitter[0].Split(' ')[splitter[0].Split(' ').Length - 1];
                 switch (readType)
                 {
                     case "PRIVMSG":
-                        if (e.Line.Split('!')[0] == ":twitchnotify" &&
-                            (e.Line.Contains("just subscribed!") || e.Line.Contains("subscribed for")))
+                        if (decodedMessage.Split('!')[0] == ":twitchnotify" &&
+                            (decodedMessage.Contains("just subscribed!") || decodedMessage.Contains("subscribed for")))
                         {
-                            var subscriber = new Subscriber(e.Line);
+                            var subscriber = new Subscriber(decodedMessage);
                             OnSubscriber?.Invoke(null,
                                 new OnSubscriberArgs {Subscriber = subscriber, Channel = _channel});
                         }
                         else
                         {
-                            var chatMessage = new ChatMessage(e.Line);
+                            var chatMessage = new ChatMessage(decodedMessage);
                             _previousMessage = chatMessage;
                             OnMessageReceived?.Invoke(null, new OnMessageReceivedArgs {ChatMessage = chatMessage});
                             if (_commandIdentifier != '\0' && chatMessage.Message[0] == _commandIdentifier)
@@ -300,73 +305,73 @@ namespace TwitchLib
                     case "JOIN":
                         //:the_kraken_bot!the_kraken_bot@the_kraken_bot.tmi.twitch.tv JOIN #swiftyspiffy
                         OnViewerJoined?.Invoke(null,
-                            new OnViewerJoinedArgs {Username = e.Line.Split('!')[1].Split('@')[0], Channel = _channel});
+                            new OnViewerJoinedArgs {Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = _channel});
                         break;
 
                     case "MODE":
                         //:jtv MODE #swiftyspiffy +o swiftyspiffy
-                        if (e.Line.Split(' ').Length == 4)
+                        if (decodedMessage.Split(' ').Length == 4)
                         {
                             OnModeratorJoined?.Invoke(null,
-                                new OnModeratorJoinedArgs {Username = e.Line.Split(' ')[4], Channel = _channel});
+                                new OnModeratorJoinedArgs {Username = decodedMessage.Split(' ')[4], Channel = _channel});
                         }
                         else
                         {
                             if (_logging)
-                                Console.WriteLine("FAILED PARSE: " + e.Line);
+                                Console.WriteLine("FAILED PARSE: " + decodedMessage);
                         }
                         break;
 
                     case "NOTICE":
-                        if (e.Line.Contains("Error logging in"))
+                        if (decodedMessage.Contains("Error logging in"))
                         {
                             _client.Disconnect();
                             OnIncorrectLogin?.Invoke(null,
                                 new OnIncorrectLoginArgs
                                 {
                                     Exception =
-                                        new ErrorLoggingInException(e.Line, _credentials.TwitchUsername)
+                                        new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername)
                                 });
                         }
-                        if (e.Line.Contains("has gone offline"))
+                        if (decodedMessage.Contains("has gone offline"))
                         {
                             OnHostLeft?.Invoke(null, null);
                         }
                         break;
 
                     case "ROOMSTATE":
-                        _state = new ChannelState(e.Line);
+                        _state = new ChannelState(decodedMessage);
                         OnChannelStateChanged?.Invoke(null, new OnChannelStateChangedArgs {ChannelState = _state});
                         break;
 
                     case "USERSTATE":
                         //@color=#8A2BE2;display-name=The_Kraken_Bot;emote-sets=0,5628;subscriber=0;turbo=0;user-type=mod :tmi.twitch.tv USERSTATE #swiftyspiffy
-                        var userState = new UserState(e.Line);
+                        var userState = new UserState(decodedMessage);
                         OnUserStateChanged?.Invoke(null, new OnUserStateChangedArgs {UserState = userState});
                         break;
 
                     default:
                         if (_logging)
-                            Console.WriteLine("Unaccounted for: {0}", e.Line);
+                            Console.WriteLine("Unaccounted for: {0}", decodedMessage);
                         break;
                 }
             }
             else
             {
                 //Special cases
-                if (e.Line == ":tmi.twitch.tv NOTICE * :Error logging in")
+                if (decodedMessage == ":tmi.twitch.tv NOTICE * :Error logging in")
                 {
                     _client.Disconnect();
                     OnIncorrectLogin?.Invoke(null,
                         new OnIncorrectLoginArgs
                         {
-                            Exception = new ErrorLoggingInException(e.Line, _credentials.TwitchUsername)
+                            Exception = new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername)
                         });
                 }
                 else
                 {
                     if (_logging)
-                        Console.WriteLine("Not registered: " + e.Line);
+                        Console.WriteLine("Not registered: " + decodedMessage);
                 }
             }
         }
