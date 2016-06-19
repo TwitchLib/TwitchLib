@@ -81,6 +81,7 @@ I've recently taken to implementing this class into test applications and connec
  * Cole ([@swiftyspiffy](http://twitter.com/swiftyspiffy))
  * Nadermane ([@Nadermane](http://twitter.com/nadermane))
  * BenWoodford ([BenWoodford](https://github.com/BenWoodford))
+ * igor523 ([igor523](https://github.com/igor523))
  
 ### License
 MIT License. &copy; 2016 Cole
