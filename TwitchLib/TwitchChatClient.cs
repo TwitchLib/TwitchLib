@@ -398,6 +398,7 @@ namespace TwitchLib
             }
         }
 
+        // Function immitates OnReadLine, and can be fired on demand to debug the parsing in the event
         public void testOnReadLine(string decodedMessage)
         {
             if (_logging)
