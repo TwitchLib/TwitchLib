@@ -11,7 +11,8 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnIncorrectLogin - Fires when an invalid login is returned by Twitch
   * OnConnected - Fires on listening and after joined channel, returns username and channel
   * OnMessageReceived - Fires when new chat message arrives, returns ChatMessage
-  * OnSubscriber - Fires when new subscriber is announced in chat, returns Subscriber
+  * OnNewSubscriber - Fires when new subscriber is announced in chat, returns Subscriber
+  * OnReSubscriber - Fires when existing subscriber resubscribes, returns ReSubscriber
   * OnChannelStateChanged - Fires when channel state is changed
   * OnViewerJoined - New viewer/chatter joined the chat channel room.
   * OnCommandReceived - Fires when command (uses custom command identifier) is received.
@@ -21,6 +22,7 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnHostLeft - Fires when a hosted channel goes offline
 - SendRaw(string message) - Sends RAW IRC message
 - SendMessage(string message) - Sends formatted Twitch channel chat message
+- testOnReadLine(string decodedMessage) - Test onReadLine event parsing on demand
 - Handled chat message types
 
 ### TwitchWhisperClient
