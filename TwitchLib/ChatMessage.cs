@@ -10,19 +10,10 @@ namespace TwitchLib
     //Should be fully functional
     public class ChatMessage
     {
-        public enum UType
-        {
-            Viewer,
-            Moderator,
-            GlobalModerator,
-            Admin,
-            Staff
-        }
-
         private int _userId;
         private string _username, _displayName, _colorHex, _message, _channel, _emoteSet, _rawIrcMessage;
         private bool _subscriber, _turbo, _modFlag;
-        private UType _userType;
+        private Common.UType _userType;
         private List<KeyValuePair<string, string>> _badges = new List<KeyValuePair<string, string>>();
 
         public int UserId => _userId;
@@ -30,7 +21,7 @@ namespace TwitchLib
         public string DisplayName => _displayName;
         public string ColorHex => _colorHex;
         public string Message => _message;
-        public UType UserType => _userType;
+        public Common.UType UserType => _userType;
         public string Channel => _channel;
         public bool Subscriber => _subscriber;
         public bool Turbo => _turbo;
@@ -95,19 +86,19 @@ namespace TwitchLib
                     switch (part.Split('=')[1].Split(' ')[0])
                     {
                         case "mod":
-                            _userType = UType.Moderator;
+                            _userType = Common.UType.Moderator;
                             break;
                         case "global_mod":
-                            _userType = UType.GlobalModerator;
+                            _userType = Common.UType.GlobalModerator;
                             break;
                         case "admin":
-                            _userType = UType.Admin;
+                            _userType = Common.UType.Admin;
                             break;
                         case "staff":
-                            _userType = UType.Staff;
+                            _userType = Common.UType.Staff;
                             break;
                         default:
-                            _userType = UType.Viewer;
+                            _userType = Common.UType.Viewer;
                             break;
                     }
                 }
