@@ -74,7 +74,12 @@ namespace TwitchLib
         /// <summary>
         /// Fires when new subscriber is announced in chat, returns Subscriber.
         /// </summary>
-        public event EventHandler<OnSubscriberArgs> OnSubscriber;
+        public event EventHandler<OnNewSubscriberArgs> OnNewSubscriber;
+
+        /// <summary>
+        /// Fires when current subscriber renews subscription, returns ReSubscriber.
+        /// </summary>
+        public event EventHandler<OnReSubscriberArgs> OnReSubscriber;
 
         /// <summary>
         /// Fires when a hosted streamer goes offline and hosting is killed.
@@ -129,12 +134,16 @@ namespace TwitchLib
             public string Username, Channel;
         }
 
-        public class OnSubscriberArgs : EventArgs
+        public class OnNewSubscriberArgs : EventArgs
         {
-            public Subscriber Subscriber;
+            public NewSubscriber Subscriber;
             public string Channel;
         }
 
+        public class OnReSubscriberArgs : EventArgs
+        {
+            public ReSubscriber ReSubscriber;
+        }
         /// <summary>
         /// Initializes the TwitchChatClient class.
         /// </summary>
@@ -260,11 +269,11 @@ namespace TwitchLib
                 {
                     case "PRIVMSG":
                         if (decodedMessage.Split('!')[0] == ":twitchnotify" &&
-                            (decodedMessage.Contains("just subscribed!") || decodedMessage.Contains("subscribed for")))
+                            (decodedMessage.Contains("just subscribed!")))
                         {
-                            var subscriber = new Subscriber(decodedMessage);
-                            OnSubscriber?.Invoke(null,
-                                new OnSubscriberArgs {Subscriber = subscriber, Channel = _channel});
+                            var subscriber = new NewSubscriber(decodedMessage);
+                            OnNewSubscriber?.Invoke(null,
+                                new OnNewSubscriberArgs {Subscriber = subscriber, Channel = _channel});
                         }
                         else
                         {
@@ -347,7 +356,169 @@ namespace TwitchLib
                     case "USERSTATE":
                         //@color=#8A2BE2;display-name=The_Kraken_Bot;emote-sets=0,5628;subscriber=0;turbo=0;user-type=mod :tmi.twitch.tv USERSTATE #swiftyspiffy
                         var userState = new UserState(decodedMessage);
-                        OnUserStateChanged?.Invoke(null, new OnUserStateChangedArgs {UserState = userState});
+                        OnUserStateChanged?.Invoke(null, new OnUserStateChangedArgs { UserState = userState });
+                        break;
+
+                    case "USERNOTICE":
+                        //@badges=subscriber/1,turbo/1;color=#2B119C;display-name=JustFunkIt;emotes=;login=justfunkit;mod=0;msg-id=resub;msg-param-months=2;room-id=44338537;subscriber=1;system-msg=JustFunkIt\ssubscribed\sfor\s2\smonths\sin\sa\srow!;turbo=1;user-id=26526370;user-type= :tmi.twitch.tv USERNOTICE #burkeblack :AVAST YEE SCURVY DOG
+                        switch (decodedMessage.Split(';')[6].Split('=')[1])
+                        {
+                            case "resub":
+                                var resubObj = new ReSubscriber(decodedMessage);
+                                OnReSubscriber?.Invoke(null, new OnReSubscriberArgs { ReSubscriber = resubObj });
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+
+                    default:
+                        if (_logging)
+                            Console.WriteLine("Unaccounted for: {0}", decodedMessage);
+                        break;
+                }
+            }
+            else
+            {
+                //Special cases
+                if (decodedMessage == ":tmi.twitch.tv NOTICE * :Error logging in")
+                {
+                    _client.Disconnect();
+                    OnIncorrectLogin?.Invoke(null,
+                        new OnIncorrectLoginArgs
+                        {
+                            Exception = new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername)
+                        });
+                }
+                else
+                {
+                    if (_logging)
+                        Console.WriteLine("Not registered: " + decodedMessage);
+                }
+            }
+        }
+
+        public void testOnReadLine(string decodedMessage)
+        {
+            if (_logging)
+                Console.WriteLine(decodedMessage);
+            if (decodedMessage.Split(':').Length > 2)
+            {
+                if (decodedMessage.Split(':')[2] == "You are in a maze of twisty passages, all alike.")
+                {
+                    _connected = true;
+                    OnConnected?.Invoke(null, new OnConnectedArgs { Channel = _channel, Username = TwitchUsername });
+                }
+            }
+            if (decodedMessage.Contains($"#{_channel}"))
+            {
+                var splitter = Regex.Split(decodedMessage, $" #{_channel}");
+                var readType = splitter[0].Split(' ')[splitter[0].Split(' ').Length - 1];
+                switch (readType)
+                {
+                    case "PRIVMSG":
+                        if (decodedMessage.Split('!')[0] == ":twitchnotify" &&
+                            (decodedMessage.Contains("just subscribed!")))
+                        {
+                            var subscriber = new NewSubscriber(decodedMessage);
+                            OnNewSubscriber?.Invoke(null,
+                                new OnNewSubscriberArgs { Subscriber = subscriber, Channel = _channel });
+                        }
+                        else
+                        {
+                            var chatMessage = new ChatMessage(decodedMessage);
+                            _previousMessage = chatMessage;
+                            OnMessageReceived?.Invoke(null, new OnMessageReceivedArgs { ChatMessage = chatMessage });
+                            if (_commandIdentifier != '\0' && chatMessage.Message[0] == _commandIdentifier)
+                            {
+                                string command;
+                                var argumentsAsString = "";
+                                var argumentsAsList = new List<string>();
+                                if (chatMessage.Message.Contains(" "))
+                                {
+                                    command = chatMessage.Message.Split(' ')[0].Substring(1,
+                                        chatMessage.Message.Split(' ')[0].Length - 1);
+                                    argumentsAsList.AddRange(
+                                        chatMessage.Message.Split(' ').Where(arg => arg != _commandIdentifier + command));
+                                    argumentsAsString =
+                                        chatMessage.Message.Replace(chatMessage.Message.Split(' ')[0] + " ", "");
+                                }
+                                else
+                                {
+                                    command = chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
+                                }
+                                OnCommandReceived?.Invoke(null,
+                                    new OnCommandReceivedArgs
+                                    {
+                                        Command = command,
+                                        ChatMessage = chatMessage,
+                                        Channel = _channel,
+                                        ArgumentsAsList = argumentsAsList,
+                                        ArgumentsAsString = argumentsAsString
+                                    });
+                            }
+                        }
+                        break;
+
+                    case "JOIN":
+                        //:the_kraken_bot!the_kraken_bot@the_kraken_bot.tmi.twitch.tv JOIN #swiftyspiffy
+                        OnViewerJoined?.Invoke(null,
+                            new OnViewerJoinedArgs { Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = _channel });
+                        break;
+
+                    case "MODE":
+                        //:jtv MODE #swiftyspiffy +o swiftyspiffy
+                        if (decodedMessage.Split(' ').Length == 4)
+                        {
+                            OnModeratorJoined?.Invoke(null,
+                                new OnModeratorJoinedArgs { Username = decodedMessage.Split(' ')[4], Channel = _channel });
+                        }
+                        else
+                        {
+                            if (_logging)
+                                Console.WriteLine("FAILED PARSE: " + decodedMessage);
+                        }
+                        break;
+
+                    case "NOTICE":
+                        if (decodedMessage.Contains("Error logging in"))
+                        {
+                            _client.Disconnect();
+                            OnIncorrectLogin?.Invoke(null,
+                                new OnIncorrectLoginArgs
+                                {
+                                    Exception =
+                                        new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername)
+                                });
+                        }
+                        if (decodedMessage.Contains("has gone offline"))
+                        {
+                            OnHostLeft?.Invoke(null, null);
+                        }
+                        break;
+
+                    case "ROOMSTATE":
+                        _state = new ChannelState(decodedMessage);
+                        OnChannelStateChanged?.Invoke(null, new OnChannelStateChangedArgs { ChannelState = _state });
+                        break;
+
+                    case "USERSTATE":
+                        //@color=#8A2BE2;display-name=The_Kraken_Bot;emote-sets=0,5628;subscriber=0;turbo=0;user-type=mod :tmi.twitch.tv USERSTATE #swiftyspiffy
+                        var userState = new UserState(decodedMessage);
+                        OnUserStateChanged?.Invoke(null, new OnUserStateChangedArgs { UserState = userState });
+                        break;
+
+                    case "USERNOTICE":
+                        //@badges=subscriber/1,turbo/1;color=#2B119C;display-name=JustFunkIt;emotes=;login=justfunkit;mod=0;msg-id=resub;msg-param-months=2;room-id=44338537;subscriber=1;system-msg=JustFunkIt\ssubscribed\sfor\s2\smonths\sin\sa\srow!;turbo=1;user-id=26526370;user-type= :tmi.twitch.tv USERNOTICE #burkeblack :AVAST YEE SCURVY DOG
+                        switch (decodedMessage.Split(';')[6].Split('=')[1])
+                        {
+                            case "resub":
+                                var resubObj = new ReSubscriber(decodedMessage);
+                                OnReSubscriber?.Invoke(null, new OnReSubscriberArgs { ReSubscriber = resubObj });
+                                break;
+                            default:
+                                break;
+                        }
                         break;
 
                     default:
