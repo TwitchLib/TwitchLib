@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +12,7 @@ namespace TwitchLib
     {
         private int _userId;
         private string _username, _displayName, _colorHex, _message, _channel, _emoteSet, _rawIrcMessage;
-        private bool _subscriber, _turbo, _modFlag;
+        private bool _subscriber, _turbo, _modFlag, _actionFlag;
         private Common.UType _userType;
         private List<KeyValuePair<string, string>> _badges = new List<KeyValuePair<string, string>>();
 
@@ -26,6 +26,7 @@ namespace TwitchLib
         public bool Subscriber => _subscriber;
         public bool Turbo => _turbo;
         public bool ModFlag => _modFlag;
+        publit bool ActionFlag => _actionFlag;
         public string RawIrcMessage => _rawIrcMessage;
         public List<KeyValuePair<string,string>> Badges => _badges;
 
@@ -108,6 +109,16 @@ namespace TwitchLib
                 }
             }
             _message = ircString.Split(new[] {$" PRIVMSG #{_channel} :"}, StringSplitOptions.None)[1];
+            if ((byte)_message[0] == 1 && (byte)_message[_message.Length-1] == 1)
+            {
+              //Actions (/me {action}) are wrapped by byte=1 and prepended with "ACTION "
+              //This setup clears all of that leaving just the action's text.
+              //If you want to clear just the nonstandard bytes, use:
+              //_message = _message.Substring(1, text.Length-2);
+              _message = _message.Substring(8, text.Length-9);
+              _actionFlag = true;
+            }
+            else _actionFlag = false;
         }
 
         private bool ConvertToBool(string data)
