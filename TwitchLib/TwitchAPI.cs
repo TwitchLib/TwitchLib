@@ -385,7 +385,7 @@ namespace TwitchLib
 
             using (var responseStream = await request.GetResponseAsync())
             {
-                return await new StreamReader(responseStream.GetResponseStream(), Encoding.UTF8).ReadToEndAsync();
+                return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
             }
         }
 
@@ -410,7 +410,7 @@ namespace TwitchLib
 
             using (var responseStream = await request.GetResponseAsync())
             {
-                return await new StreamReader(responseStream.GetResponseStream(), Encoding.UTF8).ReadToEndAsync();
+                return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
             }
         }
     }
