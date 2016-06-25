@@ -40,71 +40,82 @@ namespace TwitchLib
             _rawIrc = ircString;
             foreach(string section in ircString.Split(';'))
             {
-                string key = section.Split('=')[0];
-                string value = section.Split('=')[1];
-                switch(key)
+                if(section.Contains("="))
                 {
-                    case "@badges":
-                        foreach (string badgeValue in value.Split(','))
-                            _badges.Add(new KeyValuePair<string, string>(badgeValue.Split('/')[0], badgeValue.Split('/')[1]));
-                        break;
-                    case "color":
-                        _colorHex = value;
-                        break;
-                    case "display-name":
-                        _displayName = value;
-                        break;
-                    case "emotes":
-                        _emoteSet = value;
-                        break;
-                    case "login":
-                        _login = value;
-                        break;
-                    case "mod":
-                        _mod = value == "1";
-                        break;
-                    case "msg-param-months":
-                        _months = int.Parse(value);
-                        break;
-                    case "room-id":
-                        _roomId = int.Parse(value);
-                        break;
-                    case "subscriber":
-                        _sub = value == "1";
-                        break;
-                    case "system-msg":
-                        _systemMessage = value;
-                        break;
-                    case "turbo":
-                        _turbo = value == "1";
-                        break;
-                    case "user-id":
-                        _userId = int.Parse(value);
-                        break;
+                    string key = section.Split('=')[0];
+                    string value = section.Split('=')[1];
+                    switch (key)
+                    {
+                        case "@badges":
+                            foreach (string badgeValue in value.Split(','))
+                                _badges.Add(new KeyValuePair<string, string>(badgeValue.Split('/')[0], badgeValue.Split('/')[1]));
+                            break;
+                        case "color":
+                            _colorHex = value;
+                            break;
+                        case "display-name":
+                            _displayName = value;
+                            break;
+                        case "emotes":
+                            _emoteSet = value;
+                            break;
+                        case "login":
+                            _login = value;
+                            break;
+                        case "mod":
+                            _mod = value == "1";
+                            break;
+                        case "msg-param-months":
+                            _months = int.Parse(value);
+                            break;
+                        case "room-id":
+                            _roomId = int.Parse(value);
+                            break;
+                        case "subscriber":
+                            _sub = value == "1";
+                            break;
+                        case "system-msg":
+                            _systemMessage = value;
+                            break;
+                        case "turbo":
+                            _turbo = value == "1";
+                            break;
+                        case "user-id":
+                            _userId = int.Parse(value);
+                            break;
+                    }
                 }
             }
             // Parse user-type
-            switch (ircString.Split(' ')[0].Split(';')[13].Split('=')[1])
+            if(ircString.Contains("=") && ircString.Contains(" "))
             {
-                case "mod":
-                    _userType = Common.UType.Moderator;
-                    break;
-                case "global_mod":
-                    _userType = Common.UType.GlobalModerator;
-                    break;
-                case "admin":
-                    _userType = Common.UType.Admin;
-                    break;
-                case "staff":
-                    _userType = Common.UType.Staff;
-                    break;
-                default:
-                    _userType = Common.UType.Viewer;
-                    break;
+                switch (ircString.Split(' ')[0].Split(';')[13].Split('=')[1])
+                {
+                    case "mod":
+                        _userType = Common.UType.Moderator;
+                        break;
+                    case "global_mod":
+                        _userType = Common.UType.GlobalModerator;
+                        break;
+                    case "admin":
+                        _userType = Common.UType.Admin;
+                        break;
+                    case "staff":
+                        _userType = Common.UType.Staff;
+                        break;
+                    default:
+                        _userType = Common.UType.Viewer;
+                        break;
+                }
             }
 
+
             // Parse channel
-            _channel = ircString.Split('#')[2].Split(' ')[0];
+            if (ircString.Contains("#") && ircString.Split('#').Count() > 2)
+                if (ircString.Split('#')[2].Contains(" "))
+                    _channel = ircString.Split('#')[2].Split(' ')[0];
+                else
+                    _channel = ircString.Split('#')[2];
 
             // Parse sub message
             if(ircString.Contains($"{ircString.Split(':')[0]}:{ircString.Split(':')[1]}:"))
