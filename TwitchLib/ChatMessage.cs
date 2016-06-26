@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,30 +7,44 @@ using System.Text.RegularExpressions;
 
 namespace TwitchLib
 {
-    //Should be fully functional
+    /// <summary>Class represents ChatMessage in a Twitch channel.</summary>
     public class ChatMessage
     {
         private int _userId;
         private string _username, _displayName, _colorHex, _message, _channel, _emoteSet, _rawIrcMessage;
-        private bool _subscriber, _turbo, _modFlag, _actionFlag;
+        private bool _subscriber, _turbo, _modFlag, _meFlag;
         private Common.UType _userType;
         private List<KeyValuePair<string, string>> _badges = new List<KeyValuePair<string, string>>();
 
+        /// <summary>Twitch-unique integer assigned on per account basis.</summary>
         public int UserId => _userId;
+        /// <summary>Username of sender of chat message.</summary>
         public string Username => _username;
+        /// <summary>Case-sensitive username of sender of chat message.</summary>
         public string DisplayName => _displayName;
+        /// <summary>Hex representation of username color in chat.</summary>
         public string ColorHex => _colorHex;
+        /// <summary>Twitch chat message contents.</summary>
         public string Message => _message;
+        /// <summary>User type can be viewer, moderator, global mod, admin, or staff</summary>
         public Common.UType UserType => _userType;
+        /// <summary>Twitch channel message was sent from (useful for multi-channel bots).</summary>
         public string Channel => _channel;
+        /// <summary>Channel specific subscriber status.</summary>
         public bool Subscriber => _subscriber;
+        /// <summary>Twitch site-wide turbo status.</summary>
         public bool Turbo => _turbo;
+        /// <summary>Channel specific moderator status.</summary>
         public bool ModFlag => _modFlag;
-        publit bool ActionFlag => _actionFlag;
+        /// <summary>Chat message /me identifier flag.</summary>
+        public bool MeFlag => _meFlag;
+        /// <summary>Raw IRC-style text received from Twitch.</summary>
         public string RawIrcMessage => _rawIrcMessage;
+        /// <summary>List of key-value pair badges.</summary>
         public List<KeyValuePair<string,string>> Badges => _badges;
 
         //Example IRC message: @badges=moderator/1,warcraft/alliance;color=;display-name=Swiftyspiffyv4;emotes=;mod=1;room-id=40876073;subscriber=0;turbo=0;user-id=103325214;user-type=mod :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #swiftyspiffy :asd
+        /// <summary>Constructor for ChatMessage object.</summary>
         public ChatMessage(string ircString)
         {
             _rawIrcMessage = ircString;
@@ -115,10 +129,9 @@ namespace TwitchLib
               //This setup clears all of that leaving just the action's text.
               //If you want to clear just the nonstandard bytes, use:
               //_message = _message.Substring(1, text.Length-2);
-              _message = _message.Substring(8, text.Length-9);
-              _actionFlag = true;
+              _message = _message.Substring(8, _message.Length-9);
+              _meFlag = true;
             }
-            else _actionFlag = false;
         }
 
         private bool ConvertToBool(string data)
