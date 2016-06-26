@@ -8,6 +8,7 @@ using System.Text;
 
 namespace TwitchLib
 {
+    /// <summary>Represents a client connected to Twitch group chat.</summary>
     public class TwitchWhisperClient
     {
         private IrcConnection _client = new IrcConnection();
@@ -16,8 +17,11 @@ namespace TwitchLib
         private WhisperMessage _previousWhisper;
         private bool _logging, _connected;
 
+        /// <summary>The username of user connected via this library</summary>
         public string TwitchUsername => _credentials.TwitchUsername;
+        /// <summary>The most recent whisper received.</summary>
         public WhisperMessage PreviousWhisper => _previousWhisper;
+        /// <summary>Connection status of the client.</summary>
         public bool IsConnected => _connected;
 
         /// <summary>
@@ -145,6 +149,69 @@ namespace TwitchLib
             _client.WriteLine(Rfc2812.Join("#jtv"));
 
             Task.Factory.StartNew(() => _client.Listen());
+        }
+
+        /// <summary>This function allows for testing parsing in OnReadLine via call.</summary>
+        public void testOnReadLine(string decodedMessage)
+        {
+            if (_logging)
+                Console.WriteLine(decodedMessage);
+            if (decodedMessage.Split(':').Length > 2)
+            {
+                if (decodedMessage.Split(':')[2] == "You are in a maze of twisty passages, all alike.")
+                {
+                    _connected = true;
+                    OnConnected?.Invoke(null, new OnConnectedArgs { Username = TwitchUsername });
+                }
+            }
+            if (decodedMessage.Split(' ').Length > 3 && decodedMessage.Split(' ')[2] == "WHISPER")
+            {
+                var whisperMessage = new WhisperMessage(decodedMessage, _credentials.TwitchUsername);
+                _previousWhisper = whisperMessage;
+                OnWhisperReceived?.Invoke(null, new OnWhisperReceivedArgs { WhisperMessage = whisperMessage });
+                if (_commandIdentifier == '\0' || whisperMessage.Message[0] != _commandIdentifier) return;
+                string command;
+                var argumentsAsString = "";
+                var argumentsAsList = new List<string>();
+                if (whisperMessage.Message.Contains(" "))
+                {
+                    command = whisperMessage.Message.Split(' ')[0].Substring(1,
+                        whisperMessage.Message.Split(' ')[0].Length - 1);
+                    argumentsAsList.AddRange(
+                        whisperMessage.Message.Split(' ').Where(arg => arg != _commandIdentifier + command));
+                    argumentsAsString = whisperMessage.Message.Replace(whisperMessage.Message.Split(' ')[0] + " ", "");
+                }
+                else
+                {
+                    command = whisperMessage.Message.Substring(1, whisperMessage.Message.Length - 1);
+                }
+                OnCommandReceived?.Invoke(null,
+                    new OnCommandReceivedArgs
+                    {
+                        Command = command,
+                        Username = whisperMessage.Username,
+                        ArgumentsAsList = argumentsAsList,
+                        ArgumentsAsString = argumentsAsString
+                    });
+            }
+            else
+            {
+                //Special cases
+                if (decodedMessage == ":tmi.twitch.tv NOTICE * :Error logging in")
+                {
+                    _client.Disconnect();
+                    OnIncorrectLogin?.Invoke(null,
+                        new OnIncorrectLoginArgs
+                        {
+                            Exception = new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername)
+                        });
+                }
+                else
+                {
+                    if (_logging)
+                        Console.WriteLine("Not registered: " + decodedMessage);
+                }
+            }
         }
 
         private void OnReadLine(object sender, ReadLineEventArgs e)
