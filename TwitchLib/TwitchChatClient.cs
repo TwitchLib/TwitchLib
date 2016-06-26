@@ -10,6 +10,7 @@ using System.Text;
 
 namespace TwitchLib
 {
+    /// <summary>Represents a client connected to a Twitch channel.</summary>
     public class TwitchChatClient
     {
         private IrcConnection _client = new IrcConnection();
@@ -20,10 +21,15 @@ namespace TwitchLib
         private ChatMessage _previousMessage;
         private bool _logging, _connected;
 
+        /// <summary>Object representing current state of channel (r9k, slow, etc).</summary>
         public ChannelState ChannelState => _state;
+        /// <summary>The current channel the TwitcChatClient is connected to.</summary>
         public string Channel => _channel;
+        /// <summary>Username of the user connected via this library.</summary>
         public string TwitchUsername => _credentials.TwitchUsername;
+        /// <summary>The most recent message received.</summary>
         public ChatMessage PreviousMessage => _previousMessage;
+        /// <summary>The current connection status of the client.</summary>
         public bool IsConnected => _connected;
 
         /// <summary>
@@ -398,7 +404,9 @@ namespace TwitchLib
             }
         }
 
-        // Function immitates OnReadLine, and can be fired on demand to debug the parsing in the event
+        /// <summary>
+        /// This function allows for testing parsing in OnReadLine via call.
+        /// </summary>
         public void testOnReadLine(string decodedMessage)
         {
             if (_logging)
