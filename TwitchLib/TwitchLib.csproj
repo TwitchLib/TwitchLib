@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5D5746FD-63B3-4DB0-9389-7FEDA1A05A09}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TwitchLib</RootNamespace>
+    <AssemblyName>TwitchLib</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>2fa6d499</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\TwitchLib.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Meebey.SmartIrc4net">
+      <HintPath>..\packages\smartirc4net-2015.0.5.9\lib\net40\Meebey.SmartIrc4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChannelState.cs" />
+    <Compile Include="ChatMessage.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="Exceptions\BadScopeException.cs" />
+    <Compile Include="ReSubscriber.cs" />
+    <Compile Include="TwitchAPIClasses\Chatter.cs" />
+    <Compile Include="ConnectionCredentials.cs" />
+    <Compile Include="Exceptions\ErrorLoggingInException.cs" />
+    <Compile Include="Exceptions\InvalidChannelException.cs" />
+    <Compile Include="NewSubscriber.cs" />
+    <Compile Include="TwitchAPI.cs" />
+    <Compile Include="TwitchAPIClasses\Subscription.cs" />
+    <Compile Include="TwitchAPIClasses\TwitchChannel.cs" />
+    <Compile Include="TwitchAPIClasses\TwitchFollower.cs" />
+    <Compile Include="TwitchAPIClasses\TwitchStream.cs" />
+    <Compile Include="TwitchAPIClasses\TwitchTeamMember.cs" />
+    <Compile Include="TwitchAPIClasses\TwitchVideo.cs" />
+    <Compile Include="TwitchChatClient.cs" />
+    <Compile Include="TwitchIpAndPort.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TwitchWhisperClient.cs" />
+    <Compile Include="UserState.cs" />
+    <Compile Include="WhisperMessage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
