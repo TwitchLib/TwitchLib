@@ -85,6 +85,7 @@ I've recently taken to implementing this class into test applications and connec
  * BenWoodford ([BenWoodford](https://github.com/BenWoodford))
  * igor523 ([igor523](https://github.com/igor523))
  * jxlarrea ([jxlarrea](https://github.com/jxlarrea))
+ * GlitchHound ([GlitchHound](https://github.com/GlitchHound))
  
 ### License
 MIT License. &copy; 2016 Cole
