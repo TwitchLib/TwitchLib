@@ -53,6 +53,7 @@
     <Compile Include="ChatMessage.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Exceptions\BadScopeException.cs" />
+    <Compile Include="MessageEmote.cs" />
     <Compile Include="ReSubscriber.cs" />
     <Compile Include="TwitchAPIClasses\Chatter.cs" />
     <Compile Include="ConnectionCredentials.cs" />
