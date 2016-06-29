@@ -103,6 +103,16 @@ namespace TwitchLib
         /// </summary>
         public event EventHandler OnHostLeft;
 
+        /// <summary>
+        /// Fires when Twitch notifies client of existing users in chat.
+        /// </summary>
+        public event EventHandler<OnExistingUsersDetectedArgs> OnExistUsersDetected;
+
+        /// <summary>
+        /// Fires when a PART message is received from Twitch regarding a particular viewer
+        /// </summary>
+        public event EventHandler<OnViewerLeftArgs> OnViewerLeft;
+
         public class OnConnectedArgs : EventArgs
         {
             public string Username, Channel;
@@ -161,6 +171,18 @@ namespace TwitchLib
         {
             public ReSubscriber ReSubscriber;
         }
+
+        public class OnExistingUsersDetectedArgs : EventArgs
+        {
+            public List<string> ExistingUsers;
+            public string Channel;
+        }
+
+        public class OnViewerLeftArgs : EventArgs
+        {
+            public string Username, Channel;
+        }
+
         /// <summary>
         /// Initializes the TwitchChatClient class.
         /// </summary>
@@ -334,9 +356,15 @@ namespace TwitchLib
                             new OnViewerJoinedArgs {Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = _channel});
                         break;
 
+                    case "PART":
+                        //:sniper9115!sniper9115@sniper9115.tmi.twitch.tv PART #burkeblack
+                        OnViewerLeft?.Invoke(null,
+                            new OnViewerLeftArgs { Username = decodedMessage.Split(':')[1].Split('!')[0], Channel = _channel });
+                        break;
+
                     case "MODE":
                         //:jtv MODE #swiftyspiffy +o swiftyspiffy
-                        if (decodedMessage.Split(' ').Length == 4)
+                        if (decodedMessage.Contains(" ") && decodedMessage.Split(' ')[3] == "+o")
                         {
                             OnModeratorJoined?.Invoke(null,
                                 new OnModeratorJoinedArgs {Username = decodedMessage.Split(' ')[4], Channel = _channel});
@@ -388,11 +416,6 @@ namespace TwitchLib
                                 break;
                         }
                         break;
-
-                    default:
-                        if (_logging)
-                            Console.WriteLine("Unaccounted for: {0}", decodedMessage);
-                        break;
                 }
             }
             else
@@ -407,12 +430,24 @@ namespace TwitchLib
                             Exception = new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername)
                         });
                 }
-                else
-                {
-                    if (_logging)
-                        Console.WriteLine("Not registered: " + decodedMessage);
-                }
             }
+            if (decodedMessage.Split(' ').Count() > 2 && decodedMessage.Split(' ')[0] == $":{_credentials.TwitchUsername}.tmi.twitch.tv" 
+                && decodedMessage.Split(' ')[1] == "353")
+            {
+                List<string> detectedExistingUsernames = new List<string>();
+                foreach (string username in decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{_channel} :", "").Split(' '))
+                    detectedExistingUsernames.Add(username);
+                OnExistUsersDetected?.Invoke(null,
+                    new OnExistingUsersDetectedArgs
+                    {
+                        ExistingUsers = detectedExistingUsernames, Channel = _channel
+                    });
+            } else
+            {
+                if (_logging)
+                    Console.WriteLine("Unaccounted for: {0}", decodedMessage);
+            }
+            
         }
 
         /// <summary>
@@ -446,7 +481,7 @@ namespace TwitchLib
                         }
                         else
                         {
-                            var chatMessage = new ChatMessage(decodedMessage, ref _channelEmotes);
+                            var chatMessage = new ChatMessage(decodedMessage, ref _channelEmotes, WillReplaceEmotes);
                             _previousMessage = chatMessage;
                             OnMessageReceived?.Invoke(null, new OnMessageReceivedArgs { ChatMessage = chatMessage });
                             if (_commandIdentifier != '\0' && chatMessage.Message[0] == _commandIdentifier)
@@ -486,9 +521,15 @@ namespace TwitchLib
                             new OnViewerJoinedArgs { Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = _channel });
                         break;
 
+                    case "PART":
+                        //:sniper9115!sniper9115@sniper9115.tmi.twitch.tv PART #burkeblack
+                        OnViewerLeft?.Invoke(null,
+                            new OnViewerLeftArgs { Username = decodedMessage.Split(':')[1].Split('!')[0], Channel = _channel });
+                        break;
+
                     case "MODE":
                         //:jtv MODE #swiftyspiffy +o swiftyspiffy
-                        if (decodedMessage.Split(' ').Length == 4)
+                        if (decodedMessage.Contains(" ") && decodedMessage.Split(' ')[3] == "+o")
                         {
                             OnModeratorJoined?.Invoke(null,
                                 new OnModeratorJoinedArgs { Username = decodedMessage.Split(' ')[4], Channel = _channel });
@@ -540,11 +581,6 @@ namespace TwitchLib
                                 break;
                         }
                         break;
-
-                    default:
-                        if (_logging)
-                            Console.WriteLine("Unaccounted for: {0}", decodedMessage);
-                        break;
                 }
             }
             else
@@ -559,11 +595,24 @@ namespace TwitchLib
                             Exception = new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername)
                         });
                 }
-                else
-                {
-                    if (_logging)
-                        Console.WriteLine("Not registered: " + decodedMessage);
-                }
+            }
+            if (decodedMessage.Split(' ').Count() > 2 && decodedMessage.Split(' ')[0] == $":{_credentials.TwitchUsername}.tmi.twitch.tv"
+                && decodedMessage.Split(' ')[1] == "353")
+            {
+                List<string> detectedExistingUsernames = new List<string>();
+                foreach (string username in decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{_channel} :", "").Split(' '))
+                    detectedExistingUsernames.Add(username);
+                OnExistUsersDetected?.Invoke(null,
+                    new OnExistingUsersDetectedArgs
+                    {
+                        ExistingUsers = detectedExistingUsernames,
+                        Channel = _channel
+                    });
+            }
+            else
+            {
+                if (_logging)
+                    Console.WriteLine("Unaccounted for: {0}", decodedMessage);
             }
         }
     }
