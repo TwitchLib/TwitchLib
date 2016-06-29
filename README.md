@@ -15,11 +15,13 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnReSubscriber - Fires when existing subscriber resubscribes, returns ReSubscriber
   * OnChannelStateChanged - Fires when channel state is changed
   * OnViewerJoined - New viewer/chatter joined the chat channel room.
+  * OnViewerLeft - Viewer/chatter left (PARTed) the chat channel.
   * OnCommandReceived - Fires when command (uses custom command identifier) is received.
   * OnMessageSent - Fires when a chat message is sent.
   * OnUserStateChanged - Fires when a user state is received.
   * OnModeratorJoined - Fires when a moderator joins chat (not necessarily real time)
   * OnHostLeft - Fires when a hosted channel goes offline
+  * OnExistingUsersDetected - Fires when list of users message is received from Twitch (generally when entering the room)
 - SendRaw(string message) - Sends RAW IRC message
 - SendMessage(string message) - Sends formatted Twitch channel chat message
 - testOnReadLine(string decodedMessage) - Test onReadLine event parsing on demand
