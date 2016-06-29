@@ -106,7 +106,7 @@ namespace TwitchLib
         /// <summary>
         /// Fires when Twitch notifies client of existing users in chat.
         /// </summary>
-        public event EventHandler<OnExistingUsersDetectedArgs> OnExistUsersDetected;
+        public event EventHandler<OnExistingUsersDetectedArgs> OnExistingUsersDetected;
 
         /// <summary>
         /// Fires when a PART message is received from Twitch regarding a particular viewer
@@ -437,7 +437,7 @@ namespace TwitchLib
                 List<string> detectedExistingUsernames = new List<string>();
                 foreach (string username in decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{_channel} :", "").Split(' '))
                     detectedExistingUsernames.Add(username);
-                OnExistUsersDetected?.Invoke(null,
+                OnExistingUsersDetected?.Invoke(null,
                     new OnExistingUsersDetectedArgs
                     {
                         ExistingUsers = detectedExistingUsernames, Channel = _channel
@@ -602,7 +602,7 @@ namespace TwitchLib
                 List<string> detectedExistingUsernames = new List<string>();
                 foreach (string username in decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{_channel} :", "").Split(' '))
                     detectedExistingUsernames.Add(username);
-                OnExistUsersDetected?.Invoke(null,
+                OnExistingUsersDetected?.Invoke(null,
                     new OnExistingUsersDetectedArgs
                     {
                         ExistingUsers = detectedExistingUsernames,
