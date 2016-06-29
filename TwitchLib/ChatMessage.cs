@@ -11,10 +11,11 @@ namespace TwitchLib
     public class ChatMessage
     {
         private int _userId;
-        private string _username, _displayName, _colorHex, _message, _channel, _emoteSet, _rawIrcMessage;
+        private string _username, _displayName, _colorHex, _message, _channel, _emoteSet, _rawIrcMessage, _emoteReplacedMessage;
         private bool _subscriber, _turbo, _modFlag, _meFlag;
         private Common.UType _userType;
         private List<KeyValuePair<string, string>> _badges = new List<KeyValuePair<string, string>>();
+        private MessageEmoteCollection _emoteCollection;
 
         /// <summary>Twitch-unique integer assigned on per account basis.</summary>
         public int UserId => _userId;
@@ -40,14 +41,20 @@ namespace TwitchLib
         public bool MeFlag => _meFlag;
         /// <summary>Raw IRC-style text received from Twitch.</summary>
         public string RawIrcMessage => _rawIrcMessage;
+        /// <summary>Text after emotes have been handled (if desired). Will be null if replaceEmotes is false.</summary>
+        public string EmoteReplacedMessage => _emoteReplacedMessage;
         /// <summary>List of key-value pair badges.</summary>
         public List<KeyValuePair<string,string>> Badges => _badges;
 
         //Example IRC message: @badges=moderator/1,warcraft/alliance;color=;display-name=Swiftyspiffyv4;emotes=;mod=1;room-id=40876073;subscriber=0;turbo=0;user-id=103325214;user-type=mod :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #swiftyspiffy :asd
         /// <summary>Constructor for ChatMessage object.</summary>
-        public ChatMessage(string ircString)
+        /// <param name="ircString">The raw string received from Twitch to be processed.</param>
+        /// <param name="emoteCollection">The <see cref="MessageEmoteCollection"/> to register new emotes on and, if desired, use for emote replacement.</param>
+        /// <param name="replaceEmotes">Whether to replace emotes for this chat message. Defaults to false.</param>
+        public ChatMessage(string ircString, ref MessageEmoteCollection emoteCollection, bool replaceEmotes = false)
         {
             _rawIrcMessage = ircString;
+            _emoteCollection = emoteCollection;
             foreach (var part in ircString.Split(';'))
             {
                 if (part.Contains("!"))
@@ -82,7 +89,10 @@ namespace TwitchLib
                 else if (part.Contains("emotes="))
                 {
                     if (_emoteSet == null)
-                        _emoteSet = part.Split('=')[1];
+                    {
+                        _emoteSet = part.Split('=')[1]; ;
+                    }
+
                 }
                 else if (part.Contains("subscriber="))
                 {
@@ -131,6 +141,40 @@ namespace TwitchLib
               //_message = _message.Substring(1, text.Length-2);
               _message = _message.Substring(8, _message.Length-9);
               _meFlag = true;
+            }
+
+            //Parse the emoteSet
+            if (_emoteSet != null && _message != null)
+            {
+                string[] uniqueEmotes = _emoteSet.Split('/');
+                string id, text;
+                int firstColon, firstComma, firstDash, low, high;
+                foreach (string emote in uniqueEmotes)
+                {
+                    firstColon = emote.IndexOf(':');
+                    firstComma = emote.IndexOf(',');
+                    if (firstComma == -1) firstComma = emote.Length;
+                    firstDash = emote.IndexOf('-');
+                    if (firstColon > 0 && firstDash > firstColon && firstComma > firstDash)
+                    {
+                        if (Int32.TryParse(emote.Substring(firstColon + 1, (firstDash - firstColon) - 1), out low) &&
+                            Int32.TryParse(emote.Substring(firstDash + 1, (firstComma - firstDash) - 1), out high))
+                        {
+                            if (low >= 0 && low < high && high < _message.Length)
+                            {
+                                //Valid emote, let's parse
+                                id = emote.Substring(0, firstColon);
+                                //Pull the emote text from the message
+                                text = _message.Substring(low, (high - low) + 1);
+                                _emoteCollection.Add(new MessageEmote(id, text));
+                            }
+                        }
+                    }
+                }
+                if (replaceEmotes)
+                {
+                    _emoteReplacedMessage = _emoteCollection.ReplaceEmotes(_message);
+                }
             }
         }
 

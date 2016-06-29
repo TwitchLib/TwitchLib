@@ -20,6 +20,7 @@ namespace TwitchLib
         private char _commandIdentifier;
         private ChatMessage _previousMessage;
         private bool _logging, _connected;
+        private MessageEmoteCollection _channelEmotes = new MessageEmoteCollection();
 
         /// <summary>Object representing current state of channel (r9k, slow, etc).</summary>
         public ChannelState ChannelState => _state;
@@ -31,6 +32,16 @@ namespace TwitchLib
         public ChatMessage PreviousMessage => _previousMessage;
         /// <summary>The current connection status of the client.</summary>
         public bool IsConnected => _connected;
+        /// <summary>The emotes this channel replaces.</summary>
+        /// <remarks>
+        ///     Twitch-handled emotes are automatically added to this collection (which also accounts for
+        ///     managing user emote permissions such as sub-only emotes). Third-party emotes will have to be manually
+        ///     added according to the availability rules defined by the third-party.
+        /// </remarks>
+        public MessageEmoteCollection ChannelEmotes => _channelEmotes;
+
+        /// <summary>Determines whether Emotes will be replaced in messages.</summary>
+        public bool WillReplaceEmotes { get; set; } = false;
 
         /// <summary>
         /// Fires on listening and after joined channel, returns username and channel.
@@ -283,7 +294,7 @@ namespace TwitchLib
                         }
                         else
                         {
-                            var chatMessage = new ChatMessage(decodedMessage);
+                            var chatMessage = new ChatMessage(decodedMessage, ref _channelEmotes, WillReplaceEmotes);
                             _previousMessage = chatMessage;
                             OnMessageReceived?.Invoke(null, new OnMessageReceivedArgs {ChatMessage = chatMessage});
                             if (_commandIdentifier != '\0' && chatMessage.Message[0] == _commandIdentifier)
@@ -435,7 +446,7 @@ namespace TwitchLib
                         }
                         else
                         {
-                            var chatMessage = new ChatMessage(decodedMessage);
+                            var chatMessage = new ChatMessage(decodedMessage, ref _channelEmotes);
                             _previousMessage = chatMessage;
                             OnMessageReceived?.Invoke(null, new OnMessageReceivedArgs { ChatMessage = chatMessage });
                             if (_commandIdentifier != '\0' && chatMessage.Message[0] == _commandIdentifier)
