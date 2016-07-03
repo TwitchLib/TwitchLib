@@ -37,6 +37,44 @@ namespace TwitchLib
         }
 
         /// <summary>
+        /// Sets ClientId, which is required for all API calls going forward from August 3rd. Also validates ClientId.
+        /// <param name="clientId">Client-Id to bind to TwitchApi.</param>
+        /// <param name="disableClientIdValidation">Forcefully disables Client-Id validation.</param>
+        /// </summary>
+        public static void SetClientId(string clientId, bool disableClientIdValidation = false)
+        {
+            ClientId = clientId;
+            if(!disableClientIdValidation)
+                ValidClientId();
+        }
+
+        private static string ClientId { get; set; }
+
+        /// <summary>
+        /// Validates a Client-Id and optionally updates it.
+        /// </summary>
+        /// <param name="clientId">Client-Id string to be validated.</param>
+        /// <param name="updateClientIdOnSuccess">Updates Client-Id if passed Client-Id is valid.</param>
+        /// <returns>True or false depending on the validity of the Client-Id.</returns>
+        public static async Task<bool> ValidClientId(string clientId, bool updateClientIdOnSuccess = true)
+        {
+            string oldClientId;
+            if (!string.IsNullOrEmpty(ClientId))
+                oldClientId = ClientId;
+            var resp = await MakeGetRequest("https://api.twitch.tv/kraken");
+            var json = JObject.Parse(resp);
+            if (json.SelectToken("identified") != null && (bool)json.SelectToken("identified") == true)
+                return true;
+            return false;
+        }
+
+        private static async void ValidClientId()
+        {
+            if (await ValidClientId(ClientId, false) == false)
+                throw new InvalidCredentialException("The provided Client-Id is invalid. Create an application here and obtain a Client-Id from it here: https://www.twitch.tv/settings/connections");
+        }
+
+        /// <summary>
         /// Retrieves the current status of the broadcaster.
         /// </summary>
         /// <param name="channel">The name of the broadcaster to check.</param>
@@ -373,12 +411,16 @@ namespace TwitchLib
 
         private static async Task<string> MakeGetRequest(string url, string accessToken = null)
         {
+            if(string.IsNullOrEmpty(ClientId) && string.IsNullOrWhiteSpace(accessToken))
+                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token as of August 3rd. Set Client-Id by useing SetClientId()");
+
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
             var request = (HttpWebRequest) WebRequest.Create(new Uri(url));
             request.Method = "GET";
             request.Accept = "application/vnd.twitchtv.v3+json";
             request.ContentType = "application/json";
+            request.Headers.Add("Client-ID", ClientId);
 
             if (!string.IsNullOrWhiteSpace(accessToken))
                 request.Headers.Add("Authorization", $"OAuth {accessToken}");
@@ -392,6 +434,9 @@ namespace TwitchLib
         private static async Task<string> MakeRestRequest(string url, string method, string requestData = null,
             string accessToken = null)
         {
+            if (string.IsNullOrWhiteSpace(ClientId) && string.IsNullOrWhiteSpace(accessToken))
+                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token as of August 3rd.");
+
             var data = new UTF8Encoding().GetBytes(requestData ?? "");
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
@@ -399,6 +444,7 @@ namespace TwitchLib
             request.Method = method;
             request.Accept = "application/vnd.twitchtv.v3+json";
             request.ContentType = "application/json";
+            request.Headers.Add("Client-ID", ClientId);
 
             if (!string.IsNullOrWhiteSpace(accessToken))
                 request.Headers.Add("Authorization", $"OAuth {accessToken}");

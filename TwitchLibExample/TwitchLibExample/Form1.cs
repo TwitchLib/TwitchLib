@@ -349,5 +349,10 @@ namespace TwitchLibExample
         {
             MessageBox.Show("Current sub count: " + TwitchApi.GetSubscriberCount(textBox14.Text, textBox15.Text).ToString());
         }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            TwitchApi.SetClientId(Microsoft.VisualBasic.Interaction.InputBox("Submit your client-Id below.", "Submit Client-Id"));
+        }
     }
 }
