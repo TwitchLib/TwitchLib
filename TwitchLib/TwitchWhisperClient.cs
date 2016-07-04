@@ -97,6 +97,8 @@ namespace TwitchLib
         /// </summary>
         public void Connect()
         {
+            if (_logging)
+                Console.WriteLine("Connecting to: " + _credentials.Host + ":" + _credentials.Port);
             _client.Connect(_credentials.Host, _credentials.Port);
         }
 
@@ -107,6 +109,16 @@ namespace TwitchLib
         {
             _client.Disconnect();
             _connected = false;
+        }
+
+        /// <summary>
+        /// Reconnects to Twitch group chat given existing login credentials
+        /// </summary>
+        public void Reconnect()
+        {
+            if (_logging)
+                Console.WriteLine("Reconnecting to: " + _credentials.Host + ":" + _credentials.Port);
+            _client.Connect(_credentials.Host, _credentials.Port);
         }
 
         /// <summary>

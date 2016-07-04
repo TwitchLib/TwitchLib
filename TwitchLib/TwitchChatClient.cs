@@ -250,13 +250,22 @@ namespace TwitchLib
         /// <summary>
         /// Start disconnecting from the Twitch IRC chat.
         /// </summary>
-        /// <remarks>This has not been implemented yet.</remarks>
         public void Disconnect()
         {
-            //client.Disconnect();
-            //connected = false;
+            if (_logging)
+                Console.WriteLine("Disconnect Twitch Chat Client...");
+            _client.Disconnect();
+            _connected = false;
+        }
 
-            throw new NotImplementedException();
+        /// <summary>
+        /// Reconnects to Twitch channel given existing login credentials
+        /// </summary>
+        public void Reconnect()
+        {
+            if (_logging)
+                Console.WriteLine("Reconnecting to: " + _credentials.Host + ":" + _credentials.Port);
+            _client.Connect(_credentials.Host, _credentials.Port);
         }
 
         /// <summary>
