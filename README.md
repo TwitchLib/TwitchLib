@@ -26,6 +26,8 @@ Available via Nuget: `Install-Package TwitchLib`
 - SendMessage(string message) - Sends formatted Twitch channel chat message
 - testOnReadLine(string decodedMessage) - Test onReadLine event parsing on demand
 - Handled chat message types
+- Disconnect - Disconnects chat client from Twitch IRC
+- Reconnect - Reconnects chat client given existing credentials
 
 ### TwitchWhisperClient
 - Initialized using ConnectionCredentials
@@ -37,6 +39,8 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnWhisperSent - Fires when a whisper is sent.
 - SendRaw(string message) - Sends RAW IRC message
 - SendWhisper(string receiver, string message) - Sends formatted Twitch whisper message
+- Disconnect - Disconnects whisper client from group chat
+- Reconnect - Reconnects whisper client to group chat
 
 ### TwitchAPI
 - BroadcasterOnline(string channel) - Async function returns bool of whether or not streamer is streaming
@@ -55,6 +59,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - GetTwitchStream(string channel) - Returns TwitchStream object containing API data related to a stream
 - GetTwitchFollower(string channel) - Returns asc or desc list of followers from a specific channel, returns list of TwitchFollower objects.
 - GetUptime(string channel) - Returns TimeSpan object representing time between creation_at of stream, and now.
+- SetClientId(string clientId) - Sets ClientId for inclusion in all API calls per Twitch requirement.
 
 ### TwitchLibExample
 This project demonstrates a majority of the functionality that TwitchLib allows for.  Includes a basic UI that has textboxes and buttons that allow for required input in the various functions. Supports reading twitch account details from credentials.txt (one per line: username, oauth, channel).
