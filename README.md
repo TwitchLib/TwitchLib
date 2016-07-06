@@ -75,6 +75,7 @@ This project demonstrates a majority of the functionality that TwitchLib allows 
 - TwitchAPIClasses/TwitchVideo - Contains a Twitch video properties: Title, Description, Status, ID< Tag_List, Recorded_At, Game, Delete_At, Preview, Broadcast_ID, URL, Length, Views, Is_Muted, FPS, Resolutions, Channel
 - TwitchAPIClasses/TwitchTeamMember - Contains Twitch Team Member properties: Name, Description, Title, Meta_Game, Display_Name, Link, Follower_Count, Total_Views, Current_Views,
 Status, ImageSizes
+- TwitchAPIClasses/Follow - Represents the follow relationship between a user/viewer and channel/streamer.
 - UserState - Contains state of a user that recently connected, properties: ColorHEX, DisplayName, EmoteSet, Channel, Subscriber, Turbo, UserType
 
 ### Testing/Parsing Stability

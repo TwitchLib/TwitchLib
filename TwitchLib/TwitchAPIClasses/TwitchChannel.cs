@@ -39,7 +39,7 @@ namespace TwitchLib
         public string Status => _status;
         public string UpdatedAt => _updatedAt;
 
-        public TwitchChannel(JObject json)
+        public TwitchChannel(JToken json)
         {
             bool isMature, isPartner;
             int views, followers;

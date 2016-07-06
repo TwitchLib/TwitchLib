@@ -153,17 +153,17 @@ namespace TwitchLib
         /// </summary>
         /// <param name="username">The user to check the follow status of.</param>
         /// <param name="channel">The channel to check against.</param>
-        /// <returns>True if the user is following the channel, false otherwise.</returns>
-        public static async Task<bool> UserFollowsChannel(string username, string channel)
+        /// <returns>Returns Follow object representing follow relationship.</returns>
+        public static async Task<Follow> UserFollowsChannel(string username, string channel)
         {
             try
             {
-                await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}");
-                return true;
+                string resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}");
+                return new Follow(resp);
             }
             catch
             {
-                return false;
+                return new Follow(null, false);
             }
         }
 
