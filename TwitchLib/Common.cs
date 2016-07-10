@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TwitchLib
 {
     /// <summary>A common/utility class for frequently used functions and variables.</summary>
-    public class Common
+    public static class Common
     {
         /// <summary>Enum representing various user-types.</summary>
         public enum UType

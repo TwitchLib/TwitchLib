@@ -33,7 +33,7 @@ namespace TwitchLib
             _channel = ircString.Split('#')[1];
         }
 
-        private bool ConvertToBool(string data)
+        private static bool ConvertToBool(string data)
         {
             return data == "1";
         }

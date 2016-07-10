@@ -13,6 +13,7 @@ namespace TwitchLib
     /// <summary>Represents a client connected to a Twitch channel.</summary>
     public class TwitchChatClient
     {
+        
         private IrcConnection _client = new IrcConnection();
         private ConnectionCredentials _credentials;
         private ChannelState _state;
@@ -104,6 +105,16 @@ namespace TwitchLib
         public event EventHandler OnHostLeft;
 
         /// <summary>
+        /// Fires when a channel got hosted by another channel.
+        /// </summary>
+        public event EventHandler<OnHostingStartedArgs> OnHostingStarted;
+
+        /// <summary>
+        /// Fires when a channel is not being streamed by another channel anymore.
+        /// </summary>
+        public event EventHandler<OnHostingStoppedArgs> OnHostingStopped;
+
+        /// <summary>
         /// Fires when Twitch notifies client of existing users in chat.
         /// </summary>
         public event EventHandler<OnExistingUsersDetectedArgs> OnExistingUsersDetected;
@@ -182,6 +193,19 @@ namespace TwitchLib
         {
             public string Username, Channel;
         }
+
+        public class OnHostingStartedArgs
+        {
+            public string HostingChannel, TargetChannel;
+            public int Viewers;
+        }
+
+        public class OnHostingStoppedArgs
+        {
+            public string HostingChannel;
+            public int Viewers;
+        }
+
 
         /// <summary>
         /// Initializes the TwitchChatClient class.
@@ -422,6 +446,20 @@ namespace TwitchLib
                                 OnReSubscriber?.Invoke(null, new OnReSubscriberArgs { ReSubscriber = resubObj });
                                 break;
                             default:
+                                break;
+                        }
+                        break;
+                    case "HOSTTARGET":
+                        var channel = decodedMessage.Split(':')[1].Trim().Split(' ')[2].Remove(0, 1);
+                        var args = decodedMessage.Split(':')[2].Split(' ');
+                        switch (args[0])
+                        {
+                            case "-":
+                                OnHostingStopped?.Invoke(null, new OnHostingStoppedArgs { HostingChannel = channel, Viewers = int.Parse(args[1]) });
+                                break;
+                            default:
+                                OnHostingStarted?.Invoke(null, new OnHostingStartedArgs { HostingChannel = channel, Viewers = int.Parse(args[1]),
+                                    TargetChannel = args[0] });
                                 break;
                         }
                         break;
