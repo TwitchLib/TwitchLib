@@ -354,5 +354,37 @@ namespace TwitchLibExample
         {
             TwitchApi.SetClientId(Microsoft.VisualBasic.Interaction.InputBox("Submit your client-Id below.", "Submit Client-Id"));
         }
+
+        private TwitchLib.Services.FollowerService followerService;
+        private void button26_Click(object sender, EventArgs e)
+        {
+            followerService = new TwitchLib.Services.FollowerService(textBox28.Text, (int)numericUpDown2.Value);
+            followerService.OnServiceStarted += OnServiceStarted;
+            followerService.OnServiceStopped += OnServiceStopped;
+            followerService.OnNewFollowersDetected += OnNewFollowersDetected;
+            followerService.StartService();
+        }
+
+        private void OnServiceStarted(object sender, TwitchLib.Services.FollowerService.OnServiceStartedArgs e)
+        {
+            MessageBox.Show($"Follower service started with settings:\nChannel: {e.Channel}\nCheck Interval Seconds: {e.CheckIntervalSeconds}\nQuery Count: {e.QueryCount}");
+        }
+
+        private void OnServiceStopped(object sender, TwitchLib.Services.FollowerService.OnServiceStoppedArgs e)
+        {
+            MessageBox.Show($"Follower service stopped with settings:\nChannel: {e.Channel}\nCheck Interval Seconds: {e.CheckIntervalSeconds}\nQuery Count: {e.QueryCount}");
+        }
+
+        private void OnNewFollowersDetected(object sender, TwitchLib.Services.FollowerService.OnNewFollowersDetectedArgs e)
+        {
+            string newFollowers = "";
+            foreach(TwitchLib.TwitchAPIClasses.TwitchFollower follower in e.NewFollowers)
+                if (newFollowers == "")
+                    newFollowers = follower.User.Name;
+                else
+                    newFollowers += ", " + follower.User.Name;
+            MessageBox.Show($"Follower service detected new followers with settings:\nChannel: {e.Channel}\nCheck Interval Seconds: {e.CheckIntervalSeconds}\nQuery Count: {e.QueryCount}" +
+                $"\n\nNew followers: {newFollowers}");
+        }
     }
 }

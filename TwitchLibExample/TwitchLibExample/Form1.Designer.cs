@@ -111,6 +111,7 @@
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.groupBox23 = new System.Windows.Forms.GroupBox();
             this.button23 = new System.Windows.Forms.Button();
             this.textBox27 = new System.Windows.Forms.TextBox();
@@ -157,7 +158,13 @@
             this.button9 = new System.Windows.Forms.Button();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.groupBox26 = new System.Windows.Forms.GroupBox();
+            this.button26 = new System.Windows.Forms.Button();
+            this.textBox28 = new System.Windows.Forms.TextBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.button27 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -193,6 +200,8 @@
             this.groupBox9.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            this.groupBox26.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -661,7 +670,7 @@
             this.tabControl3.Margin = new System.Windows.Forms.Padding(5);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(1051, 1498);
+            this.tabControl3.Size = new System.Drawing.Size(1574, 1498);
             this.tabControl3.TabIndex = 12;
             // 
             // tabPage5
@@ -687,7 +696,7 @@
             this.tabPage6.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage6.Size = new System.Drawing.Size(1031, 1440);
+            this.tabPage6.Size = new System.Drawing.Size(1554, 1440);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Twitch API";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -710,7 +719,7 @@
             this.groupBox11.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Padding = new System.Windows.Forms.Padding(5);
-            this.groupBox11.Size = new System.Drawing.Size(1011, 617);
+            this.groupBox11.Size = new System.Drawing.Size(1533, 617);
             this.groupBox11.TabIndex = 1;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Auth Calls";
@@ -1080,6 +1089,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.groupBox26);
             this.groupBox6.Controls.Add(this.linkLabel1);
             this.groupBox6.Controls.Add(this.groupBox23);
             this.groupBox6.Controls.Add(this.groupBox22);
@@ -1096,10 +1106,21 @@
             this.groupBox6.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Padding = new System.Windows.Forms.Padding(5);
-            this.groupBox6.Size = new System.Drawing.Size(1011, 791);
+            this.groupBox6.Size = new System.Drawing.Size(1533, 791);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Non Auth Calls";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(581, 36);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(294, 32);
+            this.linkLabel1.TabIndex = 24;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Set Required Client-Id";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // groupBox23
             // 
@@ -1594,22 +1615,88 @@
             this.label12.TabIndex = 0;
             this.label12.Text = "Channel:";
             // 
-            // linkLabel1
+            // groupBox26
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(581, 36);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(294, 32);
-            this.linkLabel1.TabIndex = 24;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Set Required Client-Id";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.groupBox26.Controls.Add(this.button27);
+            this.groupBox26.Controls.Add(this.numericUpDown2);
+            this.groupBox26.Controls.Add(this.label33);
+            this.groupBox26.Controls.Add(this.button26);
+            this.groupBox26.Controls.Add(this.textBox28);
+            this.groupBox26.Controls.Add(this.label32);
+            this.groupBox26.Location = new System.Drawing.Point(969, 91);
+            this.groupBox26.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox26.Name = "groupBox26";
+            this.groupBox26.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox26.Size = new System.Drawing.Size(459, 154);
+            this.groupBox26.TabIndex = 19;
+            this.groupBox26.TabStop = false;
+            this.groupBox26.Text = "Follower Service";
+            // 
+            // button26
+            // 
+            this.button26.Location = new System.Drawing.Point(304, 29);
+            this.button26.Margin = new System.Windows.Forms.Padding(5);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(120, 48);
+            this.button26.TabIndex = 18;
+            this.button26.Text = "Start";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
+            // 
+            // textBox28
+            // 
+            this.textBox28.Location = new System.Drawing.Point(152, 36);
+            this.textBox28.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox28.Name = "textBox28";
+            this.textBox28.Size = new System.Drawing.Size(137, 38);
+            this.textBox28.TabIndex = 1;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(11, 36);
+            this.label32.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(130, 32);
+            this.label32.TabIndex = 0;
+            this.label32.Text = "Channel:";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(18, 98);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(116, 32);
+            this.label33.TabIndex = 19;
+            this.label33.Text = "Interval:";
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(169, 92);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(120, 38);
+            this.numericUpDown2.TabIndex = 20;
+            this.numericUpDown2.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            // 
+            // button27
+            // 
+            this.button27.Location = new System.Drawing.Point(304, 85);
+            this.button27.Margin = new System.Windows.Forms.Padding(5);
+            this.button27.Name = "button27";
+            this.button27.Size = new System.Drawing.Size(120, 48);
+            this.button27.TabIndex = 21;
+            this.button27.Text = "Stop";
+            this.button27.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1093, 1536);
+            this.ClientSize = new System.Drawing.Size(1612, 1536);
             this.Controls.Add(this.tabControl3);
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Form1";
@@ -1672,6 +1759,9 @@
             this.groupBox8.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
+            this.groupBox26.ResumeLayout(false);
+            this.groupBox26.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1808,6 +1898,13 @@
         private System.Windows.Forms.GroupBox groupBox25;
         private System.Windows.Forms.Button button25;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.GroupBox groupBox26;
+        private System.Windows.Forms.Button button27;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Button button26;
+        private System.Windows.Forms.TextBox textBox28;
+        private System.Windows.Forms.Label label32;
     }
 }
 
