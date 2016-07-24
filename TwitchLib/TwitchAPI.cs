@@ -86,7 +86,11 @@ namespace TwitchLib
                 var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
                 return resp.Contains("{\"stream\":{\"_id\":");
             }
-            catch
+            catch(InvalidCredentialException badCredentials)
+            {
+                throw badCredentials;
+            }
+            catch(Exception)
             {
                 return false;
             }
