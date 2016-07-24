@@ -12,7 +12,7 @@ using TwitchLib.TwitchAPIClasses;
 
 namespace TwitchLib
 {
-    public class TwitchApi
+    public static class TwitchApi
     {
         /// <summary>
         /// A list of valid commercial lengths.
@@ -416,7 +416,7 @@ namespace TwitchLib
         private static async Task<string> MakeGetRequest(string url, string accessToken = null)
         {
             if(string.IsNullOrEmpty(ClientId) && string.IsNullOrWhiteSpace(accessToken))
-                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token as of August 3rd. Set Client-Id by useing SetClientId()");
+                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token as of August 3rd. Set Client-Id by using SetClientId()");
 
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
