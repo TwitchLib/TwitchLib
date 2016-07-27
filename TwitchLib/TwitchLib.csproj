@@ -52,10 +52,12 @@
     <Compile Include="ChannelState.cs" />
     <Compile Include="ChatMessage.cs" />
     <Compile Include="Common.cs" />
+    <Compile Include="Exceptions\BadQueryCountException.cs" />
     <Compile Include="Exceptions\BadScopeException.cs" />
     <Compile Include="Exceptions\InvalidCredentialException.cs" />
     <Compile Include="MessageEmote.cs" />
     <Compile Include="ReSubscriber.cs" />
+    <Compile Include="Services\FollowerService.cs" />
     <Compile Include="TwitchAPIClasses\Chatter.cs" />
     <Compile Include="ConnectionCredentials.cs" />
     <Compile Include="Exceptions\ErrorLoggingInException.cs" />

@@ -17,7 +17,7 @@ namespace TwitchLib
         private ConnectionCredentials _credentials;
         private ChannelState _state;
         private string _channel;
-        private char _commandIdentifier;
+        private List<char> _commandIdentifiers = new List<char>();
         private ChatMessage _previousMessage;
         private bool _logging, _connected;
         private MessageEmoteCollection _channelEmotes = new MessageEmoteCollection();
@@ -149,6 +149,7 @@ namespace TwitchLib
             public ChatMessage ChatMessage;
             public string Channel, Command, ArgumentsAsString;
             public List<string> ArgumentsAsList;
+            public char CommandIdentifier;
         }
 
         public class OnViewerJoinedArgs : EventArgs
@@ -195,7 +196,8 @@ namespace TwitchLib
         {
             _channel = channel.ToLower();
             _credentials = credentials;
-            _commandIdentifier = commandIdentifier;
+            if(commandIdentifier != '\0')
+                _commandIdentifiers.Add(commandIdentifier);
             _logging = logging;
 
             _client.AutoReconnect = true;
@@ -269,6 +271,24 @@ namespace TwitchLib
         }
 
         /// <summary>
+        /// Adds a character to a list of characters that if found at the start of a message, fires command received event.
+        /// </summary>
+        /// <param name="identifier">Character, that if found at start of message, fires command received event.</param>
+        public void AddCommandIdentifier(char identifier)
+        {
+            _commandIdentifiers.Add(identifier);
+        }
+
+        /// <summary>
+        /// Adds a character to a list of characters that if found at the start of a message, fires command received event.
+        /// </summary>
+        /// <param name="identifier">Command identifier to removed from identifier list.</param>
+        public void RemoveCommandIdentifier(char identifier)
+        {
+            _commandIdentifiers.Remove(identifier);
+        }
+
+        /// <summary>
         /// Join the Twitch IRC chat of <paramref name="channel"/>.
         /// </summary>
         /// <param name="channel">The channel to join.</param>
@@ -328,7 +348,7 @@ namespace TwitchLib
                             var chatMessage = new ChatMessage(decodedMessage, ref _channelEmotes, WillReplaceEmotes);
                             _previousMessage = chatMessage;
                             OnMessageReceived?.Invoke(null, new OnMessageReceivedArgs {ChatMessage = chatMessage});
-                            if (_commandIdentifier != '\0' && chatMessage.Message[0] == _commandIdentifier)
+                            if (_commandIdentifiers.Count != 0 && _commandIdentifiers.Contains(chatMessage.Message[0]))
                             {
                                 string command;
                                 var argumentsAsString = "";
@@ -338,7 +358,7 @@ namespace TwitchLib
                                     command = chatMessage.Message.Split(' ')[0].Substring(1,
                                         chatMessage.Message.Split(' ')[0].Length - 1);
                                     argumentsAsList.AddRange(
-                                        chatMessage.Message.Split(' ').Where(arg => arg != _commandIdentifier + command));
+                                        chatMessage.Message.Split(' ').Where(arg => arg != chatMessage.Message[0] + command));
                                     argumentsAsString =
                                         chatMessage.Message.Replace(chatMessage.Message.Split(' ')[0] + " ", "");
                                 }
@@ -493,7 +513,7 @@ namespace TwitchLib
                             var chatMessage = new ChatMessage(decodedMessage, ref _channelEmotes, WillReplaceEmotes);
                             _previousMessage = chatMessage;
                             OnMessageReceived?.Invoke(null, new OnMessageReceivedArgs { ChatMessage = chatMessage });
-                            if (_commandIdentifier != '\0' && chatMessage.Message[0] == _commandIdentifier)
+                            if (_commandIdentifiers.Count != 0 && _commandIdentifiers.Contains(chatMessage.Message[0]))
                             {
                                 string command;
                                 var argumentsAsString = "";
@@ -503,7 +523,7 @@ namespace TwitchLib
                                     command = chatMessage.Message.Split(' ')[0].Substring(1,
                                         chatMessage.Message.Split(' ')[0].Length - 1);
                                     argumentsAsList.AddRange(
-                                        chatMessage.Message.Split(' ').Where(arg => arg != _commandIdentifier + command));
+                                        chatMessage.Message.Split(' ').Where(arg => arg != chatMessage.Message[0] + command));
                                     argumentsAsString =
                                         chatMessage.Message.Replace(chatMessage.Message.Split(' ')[0] + " ", "");
                                 }
@@ -518,7 +538,8 @@ namespace TwitchLib
                                         ChatMessage = chatMessage,
                                         Channel = _channel,
                                         ArgumentsAsList = argumentsAsList,
-                                        ArgumentsAsString = argumentsAsString
+                                        ArgumentsAsString = argumentsAsString,
+                                        CommandIdentifier = chatMessage.Message[0]
                                     });
                             }
                         }

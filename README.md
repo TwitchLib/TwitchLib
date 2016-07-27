@@ -61,6 +61,9 @@ Available via Nuget: `Install-Package TwitchLib`
 - GetUptime(string channel) - Returns TimeSpan object representing time between creation_at of stream, and now.
 - SetClientId(string clientId) - Sets ClientId for inclusion in all API calls per Twitch requirement.
 
+### Twitch Services
+- FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected.
+
 ### TwitchLibExample
 This project demonstrates a majority of the functionality that TwitchLib allows for.  Includes a basic UI that has textboxes and buttons that allow for required input in the various functions. Supports reading twitch account details from credentials.txt (one per line: username, oauth, channel).
 

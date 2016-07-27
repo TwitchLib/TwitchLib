@@ -212,7 +212,7 @@ namespace TwitchLibExample
 
         private async void button11_Click(object sender, EventArgs e)
         {
-            if (await TwitchApi.UserFollowsChannel(textBox11.Text, textBox12.Text))
+            if ((await TwitchApi.UserFollowsChannel(textBox11.Text, textBox12.Text)).IsFollowing)
             {
                 MessageBox.Show(String.Format("'{0}' follows the channel '{1}'!", textBox11.Text, textBox12.Text));
             } else
@@ -297,39 +297,39 @@ namespace TwitchLibExample
             }
         }
 
-        private void button19_Click(object sender, EventArgs e)
+        private async void button19_Click(object sender, EventArgs e)
         {
-            if (TwitchApi.ChannelHasUserSubscribed(textBox23.Text, textBox14.Text, textBox15.Text).Result)
+            if (await TwitchApi.ChannelHasUserSubscribed(textBox23.Text, textBox14.Text, textBox15.Text))
                 MessageBox.Show("User is subscribed!");
             else
                 MessageBox.Show("User is not subscribed!");
         }
 
-        private void button20_Click(object sender, EventArgs e)
+        private async void button20_Click(object sender, EventArgs e)
         {
-            List<TwitchLib.TwitchAPIClasses.TwitchFollower> followers = TwitchApi.GetTwitchFollowers(textBox24.Text).Result;
+            List<TwitchLib.TwitchAPIClasses.TwitchFollower> followers = await TwitchApi.GetTwitchFollowers(textBox24.Text);
             foreach(TwitchLib.TwitchAPIClasses.TwitchFollower follower in followers)
             {
                 MessageBox.Show(string.Format("notifications: {0}\ncreated at:{1}\n[user] name: {2}\n[user] display name: {3}\n[user] bio: {4}\n [user] logo: {5}\n[user] created at: {6}\n[user] updated at: {7}", follower.Notifications, follower.CreatedAt, follower.User.Name, follower.User.DisplayName, follower.User.Bio, follower.User.Logo, follower.User.CreatedAt, follower.User.UpdatedAt));
             }
         }
 
-        private void button21_Click(object sender, EventArgs e)
+        private async void button21_Click(object sender, EventArgs e)
         {
-            TwitchLib.TwitchAPIClasses.TwitchStream stream = TwitchApi.GetTwitchStream(textBox25.Text).Result;
+            TwitchLib.TwitchAPIClasses.TwitchStream stream = await TwitchApi.GetTwitchStream(textBox25.Text);
             MessageBox.Show(string.Format("average fps: {0}\nchannel name: {1}\ncreated at: {2}\ndelay: {3}\ngame: {4}\nid: {5}\nplaylist: {6}\npreview large: {7}\nvideo height: {8}\n viewers: {9}", 
                 stream.AverageFps, stream.Channel.Name, stream.CreatedAt, stream.Delay, stream.Game, stream.Id, stream.IsPlaylist, stream.Preview.Large, stream.VideoHeight, stream.Viewers));
         }
 
-        private void button22_Click(object sender, EventArgs e)
+        private async void button22_Click(object sender, EventArgs e)
         {
-            TimeSpan uptime = TwitchApi.GetUptime(textBox26.Text).Result;
+            TimeSpan uptime = await TwitchApi.GetUptime(textBox26.Text);
             MessageBox.Show(string.Format("uptime: {0} days, {1} hours, {2} minutes, {3} seconds", uptime.Days, uptime.Hours, uptime.Minutes, uptime.Seconds));
         }
 
-        private void button23_Click(object sender, EventArgs e)
+        private async void button23_Click(object sender, EventArgs e)
         {
-            List<TwitchChannel> results = TwitchApi.SearchChannels(textBox27.Text).Result;
+            List<TwitchChannel> results = await TwitchApi.SearchChannels(textBox27.Text);
             if (results.Count > 0)
                 foreach(TwitchChannel channel in results)
                     MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At: {6}\n" +
@@ -353,6 +353,38 @@ namespace TwitchLibExample
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             TwitchApi.SetClientId(Microsoft.VisualBasic.Interaction.InputBox("Submit your client-Id below.", "Submit Client-Id"));
+        }
+
+        private TwitchLib.Services.FollowerService followerService;
+        private void button26_Click(object sender, EventArgs e)
+        {
+            followerService = new TwitchLib.Services.FollowerService(textBox28.Text, (int)numericUpDown2.Value);
+            followerService.OnServiceStarted += OnServiceStarted;
+            followerService.OnServiceStopped += OnServiceStopped;
+            followerService.OnNewFollowersDetected += OnNewFollowersDetected;
+            followerService.StartService();
+        }
+
+        private void OnServiceStarted(object sender, TwitchLib.Services.FollowerService.OnServiceStartedArgs e)
+        {
+            MessageBox.Show($"Follower service started with settings:\nChannel: {e.Channel}\nCheck Interval Seconds: {e.CheckIntervalSeconds}\nQuery Count: {e.QueryCount}");
+        }
+
+        private void OnServiceStopped(object sender, TwitchLib.Services.FollowerService.OnServiceStoppedArgs e)
+        {
+            MessageBox.Show($"Follower service stopped with settings:\nChannel: {e.Channel}\nCheck Interval Seconds: {e.CheckIntervalSeconds}\nQuery Count: {e.QueryCount}");
+        }
+
+        private void OnNewFollowersDetected(object sender, TwitchLib.Services.FollowerService.OnNewFollowersDetectedArgs e)
+        {
+            string newFollowers = "";
+            foreach(TwitchLib.TwitchAPIClasses.TwitchFollower follower in e.NewFollowers)
+                if (newFollowers == "")
+                    newFollowers = follower.User.Name;
+                else
+                    newFollowers += ", " + follower.User.Name;
+            MessageBox.Show($"Follower service detected new followers with settings:\nChannel: {e.Channel}\nCheck Interval Seconds: {e.CheckIntervalSeconds}\nQuery Count: {e.QueryCount}" +
+                $"\n\nNew followers: {newFollowers}");
         }
     }
 }
