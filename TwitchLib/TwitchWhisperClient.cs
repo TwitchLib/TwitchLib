@@ -13,7 +13,7 @@ namespace TwitchLib
     {
         private IrcConnection _client = new IrcConnection();
         private ConnectionCredentials _credentials;
-        private char _commandIdentifier;
+        private List<char> _commandIdentifiers = new List<char>();
         private WhisperMessage _previousWhisper;
         private bool _logging, _connected;
 
@@ -73,6 +73,7 @@ namespace TwitchLib
         {
             public string Username, Command, ArgumentsAsString;
             public List<string> ArgumentsAsList;
+            public char CommandIdentifier;
         }
 
         /// <summary>
@@ -84,7 +85,8 @@ namespace TwitchLib
         public TwitchWhisperClient(ConnectionCredentials credentials, char commandIdentifier = '\0', bool logging = false)
         {
             _credentials = credentials;
-            _commandIdentifier = commandIdentifier;
+            if (commandIdentifier != '\0')
+                _commandIdentifiers.Add(commandIdentifier);
             _logging = logging;
 
             _client.AutoReconnect = true;
@@ -119,6 +121,24 @@ namespace TwitchLib
             if (_logging)
                 Console.WriteLine("Reconnecting to: " + _credentials.Host + ":" + _credentials.Port);
             _client.Connect(_credentials.Host, _credentials.Port);
+        }
+
+        /// <summary>
+        /// Adds a character to a list of characters that if found at the start of a message, fires command received event.
+        /// </summary>
+        /// <param name="identifier">Character, that if found at start of message, fires command received event.</param>
+        public void AddCommandIdentifier(char identifier)
+        {
+            _commandIdentifiers.Add(identifier);
+        }
+
+        /// <summary>
+        /// Adds a character to a list of characters that if found at the start of a message, fires command received event.
+        /// </summary>
+        /// <param name="identifier">Command identifier to removed from identifier list.</param>
+        public void RemoveCommandIdentifier(char identifier)
+        {
+            _commandIdentifiers.Remove(identifier);
         }
 
         /// <summary>
@@ -181,7 +201,7 @@ namespace TwitchLib
                 var whisperMessage = new WhisperMessage(decodedMessage, _credentials.TwitchUsername);
                 _previousWhisper = whisperMessage;
                 OnWhisperReceived?.Invoke(null, new OnWhisperReceivedArgs { WhisperMessage = whisperMessage });
-                if (_commandIdentifier == '\0' || whisperMessage.Message[0] != _commandIdentifier) return;
+                if (_commandIdentifiers.Count == 0 || !_commandIdentifiers.Contains(whisperMessage.Message[0])) return;
                 string command;
                 var argumentsAsString = "";
                 var argumentsAsList = new List<string>();
@@ -190,7 +210,7 @@ namespace TwitchLib
                     command = whisperMessage.Message.Split(' ')[0].Substring(1,
                         whisperMessage.Message.Split(' ')[0].Length - 1);
                     argumentsAsList.AddRange(
-                        whisperMessage.Message.Split(' ').Where(arg => arg != _commandIdentifier + command));
+                        whisperMessage.Message.Split(' ').Where(arg => arg != whisperMessage.Message[0] + command));
                     argumentsAsString = whisperMessage.Message.Replace(whisperMessage.Message.Split(' ')[0] + " ", "");
                 }
                 else
@@ -203,7 +223,8 @@ namespace TwitchLib
                         Command = command,
                         Username = whisperMessage.Username,
                         ArgumentsAsList = argumentsAsList,
-                        ArgumentsAsString = argumentsAsString
+                        ArgumentsAsString = argumentsAsString,
+                        CommandIdentifier = whisperMessage.Message[0]
                     });
             }
             else
@@ -244,7 +265,7 @@ namespace TwitchLib
                 var whisperMessage = new WhisperMessage(decodedMessage, _credentials.TwitchUsername);
                 _previousWhisper = whisperMessage;
                 OnWhisperReceived?.Invoke(null, new OnWhisperReceivedArgs {WhisperMessage = whisperMessage});
-                if (_commandIdentifier == '\0' || whisperMessage.Message[0] != _commandIdentifier) return;
+                if (_commandIdentifiers.Count == 0 || !_commandIdentifiers.Contains(whisperMessage.Message[0])) return;
                 string command;
                 var argumentsAsString = "";
                 var argumentsAsList = new List<string>();
@@ -253,7 +274,7 @@ namespace TwitchLib
                     command = whisperMessage.Message.Split(' ')[0].Substring(1,
                         whisperMessage.Message.Split(' ')[0].Length - 1);
                     argumentsAsList.AddRange(
-                        whisperMessage.Message.Split(' ').Where(arg => arg != _commandIdentifier + command));
+                        whisperMessage.Message.Split(' ').Where(arg => arg != whisperMessage.Message[0] + command));
                     argumentsAsString = whisperMessage.Message.Replace(whisperMessage.Message.Split(' ')[0] + " ", "");
                 }
                 else
@@ -266,7 +287,8 @@ namespace TwitchLib
                         Command = command,
                         Username = whisperMessage.Username,
                         ArgumentsAsList = argumentsAsList,
-                        ArgumentsAsString = argumentsAsString
+                        ArgumentsAsString = argumentsAsString,
+                        CommandIdentifier = whisperMessage.Message[0]
                     });
             }
             else
