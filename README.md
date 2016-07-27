@@ -97,6 +97,7 @@ I've recently taken to implementing this class into test applications and connec
  * igor523 ([igor523](https://github.com/igor523))
  * jxlarrea ([jxlarrea](https://github.com/jxlarrea))
  * GlitchHound ([GlitchHound](https://github.com/GlitchHound))
+ * PFCKrutonium ([PFCKrutonium](https://github.com/PFCKrutonium))
  
 ### License
 MIT License. &copy; 2016 Cole
