@@ -178,7 +178,7 @@ namespace TwitchLib
             }
         }
 
-        private bool ConvertToBool(string data)
+        private static bool ConvertToBool(string data)
         {
             return data == "1";
         }
