@@ -113,6 +113,16 @@ namespace TwitchLib
         /// </summary>
         public event EventHandler<OnViewerLeftArgs> OnViewerLeft;
 
+        /// <summary>
+        /// Fires when a channel got hosted by another channel.
+        /// </summary>
+        public event EventHandler<OnHostingStartedArgs> OnHostingStarted;
+
+        /// <summary>
+        /// Fires when a channel is not being streamed by another channel anymore.
+        /// </summary>
+        public event EventHandler<OnHostingStoppedArgs> OnHostingStopped;
+
         public class OnConnectedArgs : EventArgs
         {
             public string Username, Channel;
@@ -182,6 +192,18 @@ namespace TwitchLib
         public class OnViewerLeftArgs : EventArgs
         {
             public string Username, Channel;
+        }
+
+        public class OnHostingStartedArgs
+        {
+            public string HostingChannel, TargetChannel;
+            public int Viewers;
+        }
+
+        public class OnHostingStoppedArgs
+        {
+            public string HostingChannel;
+            public int Viewers;
         }
 
         /// <summary>
@@ -459,6 +481,25 @@ namespace TwitchLib
                             Exception = new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername)
                         });
                 }
+                if (decodedMessage.Split(' ')[1] == "HOSTTARGET")
+                {
+                    var splittedMessage = decodedMessage.Split(' ');
+                    int viewers;
+                    int.TryParse(splittedMessage[4], out viewers);
+                    if (splittedMessage[3] == ":-")
+                        OnHostingStopped?.Invoke(null, new OnHostingStoppedArgs()
+                        {
+                            Viewers = viewers,
+                            HostingChannel = splittedMessage[2].Remove(0, 1)
+                        });
+                    else
+                        OnHostingStarted?.Invoke(null, new OnHostingStartedArgs()
+                        {
+                            Viewers = viewers,
+                            TargetChannel = splittedMessage[3].Remove(0, 1),
+                            HostingChannel = splittedMessage[2].Remove(0, 1)
+                        });
+                }
             }
             if (decodedMessage.Split(' ').Count() > 2 && decodedMessage.Split(' ')[0] == $":{_credentials.TwitchUsername}.tmi.twitch.tv" 
                 && decodedMessage.Split(' ')[1] == "353")
@@ -623,6 +664,25 @@ namespace TwitchLib
                         new OnIncorrectLoginArgs
                         {
                             Exception = new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername)
+                        });
+                }
+                if (decodedMessage.Split(' ')[1] == "HOSTTARGET")
+                {
+                    var splittedMessage = decodedMessage.Split(' ');
+                    int viewers;
+                    int.TryParse(splittedMessage[4], out viewers);
+                    if (splittedMessage[3] == ":-")
+                        OnHostingStopped?.Invoke(null, new OnHostingStoppedArgs()
+                        {
+                            Viewers = viewers,
+                            HostingChannel = splittedMessage[2].Remove(0, 1)
+                        });
+                    else
+                        OnHostingStarted?.Invoke(null, new OnHostingStartedArgs()
+                        {
+                            Viewers = viewers,
+                            TargetChannel = splittedMessage[3].Remove(0, 1),
+                            HostingChannel = splittedMessage[2].Remove(0, 1)
                         });
                 }
             }
