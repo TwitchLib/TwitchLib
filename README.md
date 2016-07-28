@@ -22,6 +22,8 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnModeratorJoined - Fires when a moderator joins chat (not necessarily real time)
   * OnHostLeft - Fires when a hosted channel goes offline
   * OnExistingUsersDetected - Fires when list of users message is received from Twitch (generally when entering the room)
+  * OnHostingStarted - Fires when someone begins hosting the channel the client is connected to.
+  * OnHostingStopped - Fires when someone that is hosting channel that client is connected to, stops.
 - SendRaw(string message) - Sends RAW IRC message
 - SendMessage(string message) - Sends formatted Twitch channel chat message
 - testOnReadLine(string decodedMessage) - Test onReadLine event parsing on demand
