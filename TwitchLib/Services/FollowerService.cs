@@ -45,7 +45,8 @@ namespace TwitchLib.Services
         /// <summary>Downloads recent followers from Twitch, starts service, fires OnServiceStarted event.</summary>
         public async void StartService()
         {
-            ActiveCache = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
+            TwitchAPIClasses.TwitchFollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
+            ActiveCache = response.Followers;
             _followerServiceTimer.Start();
             OnServiceStarted?.Invoke(null, 
                 new OnServiceStartedArgs { Channel = Channel, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount });
@@ -62,7 +63,8 @@ namespace TwitchLib.Services
 
         private async void _followerServiceTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            List<TwitchAPIClasses.TwitchFollower> mostRecentFollowers = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
+            TwitchAPIClasses.TwitchFollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
+            List<TwitchAPIClasses.TwitchFollower> mostRecentFollowers = response.Followers;
             List<TwitchAPIClasses.TwitchFollower> newFollowers = new List<TwitchAPIClasses.TwitchFollower>();
             if(ActiveCache == null)
             {

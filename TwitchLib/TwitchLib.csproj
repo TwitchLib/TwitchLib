@@ -67,6 +67,7 @@
     <Compile Include="TwitchAPIClasses\Follow.cs" />
     <Compile Include="TwitchAPIClasses\TwitchChannel.cs" />
     <Compile Include="TwitchAPIClasses\TwitchFollower.cs" />
+    <Compile Include="TwitchAPIClasses\TwitchFollowersResponse.cs" />
     <Compile Include="TwitchAPIClasses\TwitchStream.cs" />
     <Compile Include="TwitchAPIClasses\TwitchTeamMember.cs" />
     <Compile Include="TwitchAPIClasses\TwitchVideo.cs" />
