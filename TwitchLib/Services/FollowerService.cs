@@ -72,9 +72,16 @@ namespace TwitchLib.Services
                 newFollowers = ActiveCache;
             } else
             {
-                foreach (TwitchAPIClasses.TwitchFollower follower in mostRecentFollowers)
-                    if (isNewFollower(follower))
-                        newFollowers.Add(follower);
+                if (ActiveCache[0].User.Name != mostRecentFollowers[0].User.Name)
+                {
+                    for (int i = 0; i < mostRecentFollowers.Count; i++)
+                    {
+                        if (mostRecentFollowers[i].User.Name != ActiveCache[0].User.Name)
+                            newFollowers.Add(mostRecentFollowers[i]);
+                        else break;
+                    }
+                    ActiveCache = mostRecentFollowers;
+                }
             }
             if(newFollowers.Count > 0)
                 OnNewFollowersDetected?.Invoke(null,
