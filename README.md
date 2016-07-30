@@ -65,6 +65,7 @@ Available via Nuget: `Install-Package TwitchLib`
 
 ### Twitch Services
 - FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected.
+- MessageThrottler - Property object that can be assigned to either Chat or Whisper clients, fires events and blocks sending of messages given a specific time period in order to prevent Twitch ToS violations. (OPTIONAL)
 
 ### Other Classes
 - ChannelState - Contains channel states for: R9K, SubOnly, SlowMode, BroadcasterLanguage, Channel
