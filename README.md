@@ -66,9 +66,6 @@ Available via Nuget: `Install-Package TwitchLib`
 ### Twitch Services
 - FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected.
 
-### TwitchLibExample
-This project demonstrates a majority of the functionality that TwitchLib allows for.  Includes a basic UI that has textboxes and buttons that allow for required input in the various functions. Supports reading twitch account details from credentials.txt (one per line: username, oauth, channel).
-
 ### Other Classes
 - ChannelState - Contains channel states for: R9K, SubOnly, SlowMode, BroadcasterLanguage, Channel
 - ChatMessage - Contains Twitch chat message properties: UserID, Username, DisplayName, ColorHEX, Message, UserType, Channel, Subscriber, Turbo
@@ -86,6 +83,10 @@ Status, ImageSizes
 ### Testing/Parsing Stability
 I've recently taken to implementing this class into test applications and connecting them to large Twitch channels to see how the class handles fast moving chat and large TwitchAPI usage.  These are the events/channels I've had the library connected to.
 - GamesDoneQuick (several days) - 80,000 - 200,000 concurrent, fixed a number of overflow and outofindex exceptions thrown when TwitchAPI returns service unavailable or TwitchIRC returns incomplete message data
+
+### Examples and Implementations
+- TwitchLibExample - This project is included in this repo as a master example project.
+- PFCKrutonium's ([TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot))
 
 ### Credits and Libraries Utilized
 - Costura.Fody / Fody - Takes the projects various DLL files and packages them all in the TwitchLib.dll file, combing and removing potential problems with not having all parts
