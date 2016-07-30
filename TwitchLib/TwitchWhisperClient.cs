@@ -23,7 +23,8 @@ namespace TwitchLib
         public WhisperMessage PreviousWhisper => _previousWhisper;
         /// <summary>Connection status of the client.</summary>
         public bool IsConnected => _connected;
-
+        /// <summary>Assign this property a valid MessageThrottler to apply message throttling.</summary>
+        public Services.MessageThrottler MessageThrottler;
         /// <summary>
         /// Fires on listening and after joined channel, returns username.
         /// </summary>
@@ -147,7 +148,8 @@ namespace TwitchLib
         /// <param name="message">The RAW whisper message to be sent.</param>
         public void SendRaw(string message)
         {
-            _client.WriteLine(message);
+            if (MessageThrottler == null || !MessageThrottler.ApplyThrottlingToRawMessages || MessageThrottler.MessagePermitted(message))
+                _client.WriteLine(message);
         }
 
         /// <summary>
@@ -160,6 +162,7 @@ namespace TwitchLib
         public void SendWhisper(string receiver, string message, bool dryRun = false)
         {
             if (dryRun) return;
+            if (MessageThrottler != null && !MessageThrottler.MessagePermitted(message)) return;
             string twitchMessage = $":{_credentials.TwitchUsername}~{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" + 
                 $".tmi.twitch.tv PRIVMSG #jtv :/w {receiver} {message}";
             // This is a makeshift hack to encode it with accomodations for at least cyrillic, and possibly others

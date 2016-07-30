@@ -58,6 +58,7 @@
     <Compile Include="MessageEmote.cs" />
     <Compile Include="ReSubscriber.cs" />
     <Compile Include="Services\FollowerService.cs" />
+    <Compile Include="Services\MessageThrottler.cs" />
     <Compile Include="TwitchAPIClasses\Chatter.cs" />
     <Compile Include="ConnectionCredentials.cs" />
     <Compile Include="Exceptions\ErrorLoggingInException.cs" />

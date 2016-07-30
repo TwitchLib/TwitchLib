@@ -32,6 +32,8 @@ namespace TwitchLib
         public ChatMessage PreviousMessage => _previousMessage;
         /// <summary>The current connection status of the client.</summary>
         public bool IsConnected => _connected;
+        /// <summary>Assign this property a valid MessageThrottler to apply message throttling.</summary>
+        public Services.MessageThrottler MessageThrottler;
         /// <summary>The emotes this channel replaces.</summary>
         /// <remarks>
         ///     Twitch-handled emotes are automatically added to this collection (which also accounts for
@@ -242,7 +244,8 @@ namespace TwitchLib
         /// <param name="message">The RAW message to be sent.</param>
         public void SendRaw(string message)
         {
-            _client.WriteLine(message);
+            if(MessageThrottler == null || !MessageThrottler.ApplyThrottlingToRawMessages || MessageThrottler.MessagePermitted(message))
+                _client.WriteLine(message);
         }
 
         /// <summary>
@@ -253,6 +256,7 @@ namespace TwitchLib
         public void SendMessage(string message, bool dryRun = false)
         {
             if (dryRun) return;
+            if (MessageThrottler != null && !MessageThrottler.MessagePermitted(message)) return;
             string twitchMessage = $":{_credentials.TwitchUsername}!{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" +
                 $".tmi.twitch.tv PRIVMSG #{_channel} :{message}";
             // This is a makeshift hack to encode it with accomodations for at least cyrillic characters, and possibly others

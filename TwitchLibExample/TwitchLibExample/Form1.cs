@@ -51,6 +51,10 @@ namespace TwitchLibExample
             newClient.OnCommandReceived += new EventHandler<TwitchChatClient.OnCommandReceivedArgs>(chatCommandReceived);
             newClient.OnIncorrectLogin += new EventHandler<TwitchChatClient.OnIncorrectLoginArgs>(incorrectChatLogin);
             newClient.OnConnected += new EventHandler<TwitchChatClient.OnConnectedArgs>(onChatConnected);
+            //Add message throttler
+            newClient.MessageThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
+            newClient.MessageThrottler.OnClientThrottled += onClientThrottled;
+            newClient.MessageThrottler.OnThrottledPeriodReset += onThrottlePeriodReset;
             newClient.Connect();
             chatClients.Add(newClient);
             ListViewItem lvi = new ListViewItem();
@@ -61,8 +65,6 @@ namespace TwitchLibExample
 
             if(!comboBox2.Items.Contains(textBox4.Text))
                 comboBox2.Items.Add(textBox4.Text);
-
-            
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -82,6 +84,16 @@ namespace TwitchLibExample
             lvi.SubItems.Add("N/A");
             listView1.Items.Add(lvi);
             comboBox1.Items.Add(textBox6.Text);
+        }
+
+        public void onClientThrottled(object sender, TwitchLib.Services.MessageThrottler.OnClientThrottledArgs e)
+        {
+            MessageBox.Show($"The message '{e.Message}' was blocked by a message throttler. Throttle period duration: {e.PeriodDuration.TotalSeconds}.\n\nMessage violation: {e.ThrottleViolation}");
+        }
+
+        public void onThrottlePeriodReset(object sender, TwitchLib.Services.MessageThrottler.OnThrottlePeriodResetArgs e)
+        {
+            MessageBox.Show($"The message throttle period was reset.");
         }
 
         public void onWhisperConnected(object sender, TwitchWhisperClient.OnConnectedArgs e)
