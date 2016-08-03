@@ -34,7 +34,7 @@ namespace TwitchLib
 
         public WhisperMessage(string ircString, string botUsername)
         {
-            if (ircString.Split(';').Length == 9)
+            if (ircString.Substring(0, 8) == "@badges=")
             {
                 //@badges=;color=#00FF7F;display-name=Dara226;emotes=;message-id=53;thread-id=62192703_66137196;turbo=0;user-id=62192703;user-type= :dara226!dara226@dara226.tmi.twitch.tv WHISPER the_kraken_bot :ahoy
                 _badges = ircString.Split(';')[0].Split('=')[1];
