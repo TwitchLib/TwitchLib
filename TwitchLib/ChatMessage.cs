@@ -12,7 +12,7 @@ namespace TwitchLib
     {
         private int _userId;
         private string _username, _displayName, _colorHex, _message, _channel, _emoteSet, _rawIrcMessage, _emoteReplacedMessage;
-        private bool _subscriber, _turbo, _modFlag, _meFlag;
+        private bool _subscriber, _turbo, _modFlag, _meFlag, _broadcasterFlag;
         private Common.UType _userType;
         private List<KeyValuePair<string, string>> _badges = new List<KeyValuePair<string, string>>();
         private MessageEmoteCollection _emoteCollection;
@@ -36,9 +36,11 @@ namespace TwitchLib
         /// <summary>Twitch site-wide turbo status.</summary>
         public bool Turbo => _turbo;
         /// <summary>Channel specific moderator status.</summary>
-        public bool ModFlag => _modFlag;
+        public bool IsModerator => _modFlag;
         /// <summary>Chat message /me identifier flag.</summary>
-        public bool MeFlag => _meFlag;
+        public bool IsMe => _meFlag;
+        /// <summary>Chat message from broadcaster identifier flag</summary>
+        public bool IsBroadcaster => _broadcasterFlag;
         /// <summary>Raw IRC-style text received from Twitch.</summary>
         public string RawIrcMessage => _rawIrcMessage;
         /// <summary>Text after emotes have been handled (if desired). Will be null if replaceEmotes is false.</summary>
@@ -175,6 +177,12 @@ namespace TwitchLib
                 {
                     _emoteReplacedMessage = _emoteCollection.ReplaceEmotes(_message);
                 }
+            }
+
+            if(_channel.ToLower() == _username.ToLower())
+            {
+                _userType = Common.UType.Broadcaster;
+                _broadcasterFlag = true;
             }
         }
 
