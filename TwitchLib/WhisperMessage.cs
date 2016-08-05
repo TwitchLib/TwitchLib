@@ -20,6 +20,7 @@ namespace TwitchLib
         public bool Turbo { get; protected set; }
         public string BotUsername { get; protected set; }
         public string Message { get; protected set; }
+        public string UserType { get; protected set; }
 
         public WhisperMessage(string ircString, string botUsername)
         {
@@ -35,7 +36,8 @@ namespace TwitchLib
                 ThreadId = ircString.Split(';')[5].Split('=')[1];
                 Turbo = ConvertToBool(ircString.Split(';')[6].Split('=')[1]);
                 UserId = int.Parse(ircString.Split(';')[7].Split('=')[1]);
-                var userTypeStr = ircString.Split(';')[8].Split('=')[1].Replace(" ", "");
+                // UserType should be converted to an enum value I think at somepoint
+                UserType = ircString.Split(';')[8].Split('=')[1].Replace(" ", "");
                 Message =
                     ircString.Replace(
                         ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" +
@@ -53,7 +55,8 @@ namespace TwitchLib
                 ThreadId = ircString.Split(';')[4].Split('=')[1];
                 Turbo = ConvertToBool(ircString.Split(';')[5].Split('=')[1]);
                 UserId = int.Parse(ircString.Split(';')[6].Split('=')[1]);
-                var userTypeStr = ircString.Split(';')[7].Split('=')[1].Replace(" ", "");
+                // UserType should be converted to an enum value I think at somepoint
+                UserType = ircString.Split(';')[7].Split('=')[1].Replace(" ", "");
                 Message =
                     ircString.Replace(
                         ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" +
