@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitchLib.TwitchAPIClasses
 {
-    public class TwitchVideo
+    public class Video
     {
         string _title, _description, _status, _id, _tagList, _recordedAt, _game, _preview, _broadcastId, _url;
         int _length, _views;
@@ -46,7 +46,7 @@ namespace TwitchLib.TwitchAPIClasses
         /// <summary>Twitch URL to video.</summary>
         public string Url => _url;
 
-        public TwitchVideo(JToken apiResponse)
+        public Video(JToken apiResponse)
         {
             int length = -1;
             int views = -1;

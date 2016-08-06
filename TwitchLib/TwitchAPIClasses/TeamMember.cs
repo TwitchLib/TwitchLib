@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitchLib.TwitchAPIClasses
 {
-    public class TwitchTeamMember
+    public class TeamMember
     {
         private bool _isLive;
         private ImgSizes _imageSizes;
@@ -26,7 +26,7 @@ namespace TwitchLib.TwitchAPIClasses
         public string Name => _name;
         public string Title => _title;
 
-        public TwitchTeamMember(JToken data)
+        public TeamMember(JToken data)
         {
             int currentViews, followerCount, totalViews;
 

@@ -22,7 +22,7 @@ namespace TwitchLib.Services
         /// <exception cref="Exceptions.BadQueryCountException">Throws BadQueryCountException if queryCount is larger than 100 or smaller than 1.</exception>
         public int QueryCount { get { return _queryCount; } set { if (value < 1 || value > 100) { throw new Exceptions.BadQueryCountException("Query count was smaller than 1 or exceeded 100"); } _queryCount = value; } }
         /// <summary>Property representing the cache where detected followers are stored and compared against.</summary>
-        public List<TwitchAPIClasses.TwitchFollower> ActiveCache { get; set; }
+        public List<TwitchAPIClasses.Follower> ActiveCache { get; set; }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _followerServiceTimer.Interval = value * 1000; } }
 
@@ -45,7 +45,7 @@ namespace TwitchLib.Services
         /// <summary>Downloads recent followers from Twitch, starts service, fires OnServiceStarted event.</summary>
         public async void StartService()
         {
-            TwitchAPIClasses.TwitchFollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
+            TwitchAPIClasses.FollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
             ActiveCache = response.Followers;
             _followerServiceTimer.Start();
             OnServiceStarted?.Invoke(null, 
@@ -63,9 +63,9 @@ namespace TwitchLib.Services
 
         private async void _followerServiceTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            TwitchAPIClasses.TwitchFollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
-            List<TwitchAPIClasses.TwitchFollower> mostRecentFollowers = response.Followers;
-            List<TwitchAPIClasses.TwitchFollower> newFollowers = new List<TwitchAPIClasses.TwitchFollower>();
+            TwitchAPIClasses.FollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
+            List<TwitchAPIClasses.Follower> mostRecentFollowers = response.Followers;
+            List<TwitchAPIClasses.Follower> newFollowers = new List<TwitchAPIClasses.Follower>();
             if(ActiveCache == null)
             {
                 ActiveCache = mostRecentFollowers;
@@ -89,9 +89,9 @@ namespace TwitchLib.Services
         }
 
         #region HELPERS
-        private bool isNewFollower(TwitchAPIClasses.TwitchFollower follower)
+        private bool isNewFollower(TwitchAPIClasses.Follower follower)
         {
-            foreach (TwitchAPIClasses.TwitchFollower oldFollower in ActiveCache)
+            foreach (TwitchAPIClasses.Follower oldFollower in ActiveCache)
                 if (oldFollower.User.Name.ToLower() == follower.User.Name.ToLower())
                     return false;
             return true;
@@ -138,7 +138,7 @@ namespace TwitchLib.Services
             /// <summary>Event property representing seconds between queries to Twitch Api.</summary>
             public int CheckIntervalSeconds;
             /// <summary>Event property representing all new followers detected.</summary>
-            public List<TwitchAPIClasses.TwitchFollower> NewFollowers;
+            public List<TwitchAPIClasses.Follower> NewFollowers;
         }
 
         #endregion

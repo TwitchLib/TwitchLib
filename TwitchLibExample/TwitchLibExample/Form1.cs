@@ -281,8 +281,8 @@ namespace TwitchLibExample
 
         private async void button16_Click(object sender, EventArgs e)
         {
-            List<TwitchLib.TwitchAPIClasses.TwitchVideo> videos = await TwitchApi.GetChannelVideos(textBox20.Text);
-            foreach(TwitchLib.TwitchAPIClasses.TwitchVideo vid in videos)
+            List<TwitchLib.TwitchAPIClasses.Video> videos = await TwitchApi.GetChannelVideos(textBox20.Text);
+            foreach(TwitchLib.TwitchAPIClasses.Video vid in videos)
             {
                 MessageBox.Show($"Title: {vid.Title}\nDescription: {vid.Description}\nStatus: {vid.Status}\nId: {vid.Id}\nTag List: {vid.TagList}\n Recorded At: {vid.RecordedAt}\n" +
                     $"Game: {vid.Game}\nPreview: {vid.Preview}\nBroadcast Id: {vid.BroadcastId}\nLength: {vid.Length}\nUrl: {vid.Url}\nViews: {vid.Views}\n");
@@ -301,8 +301,8 @@ namespace TwitchLibExample
 
         private async void button18_Click(object sender, EventArgs e)
         {
-            List<TwitchLib.TwitchAPIClasses.TwitchTeamMember> members = await TwitchApi.GetTeamMembers(textBox22.Text);
-            foreach(TwitchLib.TwitchAPIClasses.TwitchTeamMember member in members)
+            List<TwitchLib.TwitchAPIClasses.TeamMember> members = await TwitchApi.GetTeamMembers(textBox22.Text);
+            foreach(TwitchLib.TwitchAPIClasses.TeamMember member in members)
             {
                 MessageBox.Show($"Name: {member.Name}\nDescription: {member.Description}\nTitle: {member.Title}\nMeta Game: {member.MetaGame}\nDisplay Name: {member.DisplayName}\n" +
                     $"Link: {member.Link}\nFollower Count: {member.FollowerCount}\nTotal Views: {member.TotalViews}\nCurrent Views: {member.CurrentViews}");
@@ -319,9 +319,9 @@ namespace TwitchLibExample
 
         private async void button20_Click(object sender, EventArgs e)
         {
-            TwitchLib.TwitchAPIClasses.TwitchFollowersResponse response = await TwitchApi.GetTwitchFollowers(textBox24.Text);
+            TwitchLib.TwitchAPIClasses.FollowersResponse response = await TwitchApi.GetTwitchFollowers(textBox24.Text);
             MessageBox.Show($"Cursor: {response.Cursor}\nFollower Count: {response.TotalFollowerCount}");
-            foreach(TwitchLib.TwitchAPIClasses.TwitchFollower follower in response.Followers)
+            foreach(TwitchLib.TwitchAPIClasses.Follower follower in response.Followers)
             {
                 MessageBox.Show(string.Format("notifications: {0}\ncreated at:{1}\n[user] name: {2}\n[user] display name: {3}\n[user] bio: {4}\n [user] logo: {5}\n[user] created at: {6}\n[user] updated at: {7}", follower.Notifications, follower.CreatedAt, follower.User.Name, follower.User.DisplayName, follower.User.Bio, follower.User.Logo, follower.User.CreatedAt, follower.User.UpdatedAt));
             }
@@ -329,7 +329,7 @@ namespace TwitchLibExample
 
         private async void button21_Click(object sender, EventArgs e)
         {
-            TwitchLib.TwitchAPIClasses.TwitchStream stream = await TwitchApi.GetTwitchStream(textBox25.Text);
+            TwitchLib.TwitchAPIClasses.Stream stream = await TwitchApi.GetTwitchStream(textBox25.Text);
             MessageBox.Show(string.Format("average fps: {0}\nchannel name: {1}\ncreated at: {2}\ndelay: {3}\ngame: {4}\nid: {5}\nplaylist: {6}\npreview large: {7}\nvideo height: {8}\n viewers: {9}", 
                 stream.AverageFps, stream.Channel.Name, stream.CreatedAt, stream.Delay, stream.Game, stream.Id, stream.IsPlaylist, stream.Preview.Large, stream.VideoHeight, stream.Viewers));
         }
@@ -391,7 +391,7 @@ namespace TwitchLibExample
         private void OnNewFollowersDetected(object sender, TwitchLib.Services.FollowerService.OnNewFollowersDetectedArgs e)
         {
             string newFollowers = "";
-            foreach(TwitchLib.TwitchAPIClasses.TwitchFollower follower in e.NewFollowers)
+            foreach(TwitchLib.TwitchAPIClasses.Follower follower in e.NewFollowers)
                 if (newFollowers == "")
                     newFollowers = follower.User.Name;
                 else

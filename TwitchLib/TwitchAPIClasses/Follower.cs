@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitchLib.TwitchAPIClasses
 {
-    public class TwitchFollower
+    public class Follower
     {
         private bool _notifications;
         private string _createdAt;
@@ -17,7 +17,7 @@ namespace TwitchLib.TwitchAPIClasses
         public string CreatedAt => _createdAt;
         public UserObj User => _user;
 
-        public TwitchFollower(JToken followerData)
+        public Follower(JToken followerData)
         {
             _createdAt = followerData.SelectToken("created_at").ToString();
             if (followerData.SelectToken("notifications").ToString() == "true")

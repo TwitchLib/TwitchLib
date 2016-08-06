@@ -121,13 +121,13 @@ namespace TwitchLib
         /// </summary>
         /// <param name="teamName">The name of the Twitch team to search for.</param>
         /// <returns>A TwitchTeamMember list of all members in a Twitch team.</returns>
-        public static async Task<List<TwitchTeamMember>> GetTeamMembers(string teamName)
+        public static async Task<List<TeamMember>> GetTeamMembers(string teamName)
         {
             var resp = await MakeGetRequest($"http://api.twitch.tv/api/team/{teamName}/all_channels.json");
             var json = JObject.Parse(resp);
             return
                 json.SelectToken("channels")
-                    .Select(member => new TwitchTeamMember(member.SelectToken("channel")))
+                    .Select(member => new TeamMember(member.SelectToken("channel")))
                     .ToList();
         }
 
@@ -179,7 +179,7 @@ namespace TwitchLib
         /// <param name="cursor">Twitch uses cursoring to paginate long lists of followers. Check <code>_cursor</code> in response body and set <code>cursor</code> to this value to get the next page of results, or use <code>_links.next</code> to navigate to the next page of results.</param>
         /// <param name="direction">Creation date sorting direction.</param>
         /// <returns>A list of TwitchFollower objects.</returns>
-        public static async Task<TwitchFollowersResponse> GetTwitchFollowers(string channel, int limit = 25,
+        public static async Task<FollowersResponse> GetTwitchFollowers(string channel, int limit = 25,
             int cursor = -1, SortDirection direction = SortDirection.Descending)
         {
             string args = "";
@@ -189,7 +189,7 @@ namespace TwitchLib
             args += "&direction=" + (direction == SortDirection.Descending ? "desc" : "asc");
 
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
-            return new TwitchFollowersResponse(resp);
+            return new FollowersResponse(resp);
         }
 
         /// <summary>
@@ -241,14 +241,14 @@ namespace TwitchLib
         /// </summary>
         /// <param name="channel">The channel to retrieve the data for.</param>
         /// <returns>A TwitchStream object containing API data related to a stream.</returns>
-        public static async Task<TwitchStream> GetTwitchStream(string channel)
+        public static async Task<TwitchAPIClasses.Stream> GetTwitchStream(string channel)
         {
             try
             {
                 var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
                 var json = JObject.Parse(resp);
                 return json.SelectToken("stream").SelectToken("_id") != null
-                    ? new TwitchStream(json.SelectToken("stream"))
+                    ? new TwitchAPIClasses.Stream(json.SelectToken("stream"))
                     : null;
             }
             catch
@@ -419,14 +419,14 @@ namespace TwitchLib
         /// <param name="onlyBroadcasts">Returns only broadcasts when true. Otherwise only highlights are returned. Default is false.</param>
         /// <param name="onlyHls">Returns only HLS VoDs when true. Otherwise only non-HLS VoDs are returned. Default is false.</param>
         /// <returns>A list of TwitchVideo objects the channel has available.</returns>
-        public static async Task<List<TwitchVideo>> GetChannelVideos(string channel, int limit = 10,
+        public static async Task<List<Video>> GetChannelVideos(string channel, int limit = 10,
             int offset = 0, bool onlyBroadcasts = false, bool onlyHls = false)
         {
             var args = $"?limit={limit}&offset={offset}&broadcasts={onlyBroadcasts}&hls={onlyHls}";
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/videos{args}");
             var vids = JObject.Parse(resp).SelectToken("videos");
 
-            return vids.Select(vid => new TwitchVideo(vid)).ToList();
+            return vids.Select(vid => new Video(vid)).ToList();
         }
 
         /// <summary>

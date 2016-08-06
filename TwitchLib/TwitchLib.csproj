@@ -49,36 +49,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChannelState.cs" />
-    <Compile Include="ChatMessage.cs" />
+    <Compile Include="TwitchClientClasses\ChannelState.cs" />
+    <Compile Include="TwitchClientClasses\ChatMessage.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Exceptions\BadQueryCountException.cs" />
     <Compile Include="Exceptions\BadScopeException.cs" />
     <Compile Include="Exceptions\InvalidCredentialException.cs" />
-    <Compile Include="MessageEmote.cs" />
-    <Compile Include="ReSubscriber.cs" />
+    <Compile Include="TwitchClientClasses\MessageEmote.cs" />
+    <Compile Include="TwitchClientClasses\ReSubscriber.cs" />
     <Compile Include="Services\FollowerService.cs" />
     <Compile Include="Services\MessageThrottler.cs" />
     <Compile Include="TwitchAPIClasses\Chatter.cs" />
-    <Compile Include="ConnectionCredentials.cs" />
+    <Compile Include="TwitchClientClasses\ConnectionCredentials.cs" />
     <Compile Include="Exceptions\ErrorLoggingInException.cs" />
     <Compile Include="Exceptions\InvalidChannelException.cs" />
-    <Compile Include="NewSubscriber.cs" />
+    <Compile Include="TwitchClientClasses\NewSubscriber.cs" />
     <Compile Include="TwitchAPI.cs" />
     <Compile Include="TwitchAPIClasses\Follow.cs" />
     <Compile Include="TwitchAPIClasses\FollowedUsersResponse.cs" />
-    <Compile Include="TwitchAPIClasses\TwitchChannel.cs" />
-    <Compile Include="TwitchAPIClasses\TwitchFollower.cs" />
-    <Compile Include="TwitchAPIClasses\TwitchFollowersResponse.cs" />
-    <Compile Include="TwitchAPIClasses\TwitchStream.cs" />
-    <Compile Include="TwitchAPIClasses\TwitchTeamMember.cs" />
-    <Compile Include="TwitchAPIClasses\TwitchVideo.cs" />
+    <Compile Include="TwitchAPIClasses\Channel.cs" />
+    <Compile Include="TwitchAPIClasses\Follower.cs" />
+    <Compile Include="TwitchAPIClasses\FollowersResponse.cs" />
+    <Compile Include="TwitchAPIClasses\Stream.cs" />
+    <Compile Include="TwitchAPIClasses\TeamMember.cs" />
+    <Compile Include="TwitchAPIClasses\Video.cs" />
     <Compile Include="TwitchChatClient.cs" />
-    <Compile Include="TwitchIpAndPort.cs" />
+    <Compile Include="TwitchClientClasses\TwitchIpAndPort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TwitchWhisperClient.cs" />
-    <Compile Include="UserState.cs" />
-    <Compile Include="WhisperMessage.cs" />
+    <Compile Include="TwitchClientClasses\UserState.cs" />
+    <Compile Include="TwitchClientClasses\WhisperMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

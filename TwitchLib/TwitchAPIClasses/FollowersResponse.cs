@@ -7,16 +7,16 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitchLib.TwitchAPIClasses
 {
-    public class TwitchFollowersResponse
+    public class FollowersResponse
     {
-        public List<TwitchFollower> Followers { get; protected set; } = new List<TwitchFollower>();
+        public List<Follower> Followers { get; protected set; } = new List<Follower>();
         public int TotalFollowerCount { get; protected set; }
         public string Cursor { get; protected set; }
-        public TwitchFollowersResponse(string apiResponse)
+        public FollowersResponse(string apiResponse)
         {
             JObject json = JObject.Parse(apiResponse);
             foreach (JToken follower in json.SelectToken("follows"))
-                Followers.Add(new TwitchFollower(follower));
+                Followers.Add(new Follower(follower));
             TotalFollowerCount = int.Parse(json.SelectToken("_total").ToString());
             Cursor = json.SelectToken("_cursor").ToString();
         }

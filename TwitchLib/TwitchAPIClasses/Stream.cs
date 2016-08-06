@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitchLib.TwitchAPIClasses
 {
-    public class TwitchStream
+    public class Stream
     {
         private long _id;
         int _viewers, _videoHeight, _delay;
@@ -28,7 +28,7 @@ namespace TwitchLib.TwitchAPIClasses
         public string Game => _game;
         public TwitchChannel Channel => _channel;
 
-        public TwitchStream(JToken twitchStreamData)
+        public Stream(JToken twitchStreamData)
         {
             bool isPlaylist;
             long id;
