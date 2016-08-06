@@ -192,6 +192,28 @@ namespace TwitchLib
             return new TwitchFollowersResponse(resp);
         }
 
+        public static async Task<FollowedUsersResponse> GetFollowedUsers(string channel, int limit = 25, int offset = 0, Common.SortKey sortKey = Common.SortKey.CreatedAt)
+        {
+            string args = "";
+            args += "?limit=" + limit;
+            args += "&offset=" + offset;
+            switch(sortKey)
+            {
+                case Common.SortKey.CreatedAt:
+                    args += "&sortby=created_at";
+                    break;
+                case Common.SortKey.LastBroadcaster:
+                    args += "&sortby=last_broadcast";
+                    break;
+                case Common.SortKey.Login:
+                    args += "&sortby=login";
+                    break;
+            }
+
+            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{channel}/follows/channels{args}");
+            return new FollowedUsersResponse(resp);
+        }
+
         /// <summary>
         /// Retrieves the current uptime of a stream, if it is online.
         /// </summary>

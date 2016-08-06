@@ -399,5 +399,14 @@ namespace TwitchLibExample
             MessageBox.Show($"Follower service detected new followers with settings:\nChannel: {e.Channel}\nCheck Interval Seconds: {e.CheckIntervalSeconds}\nQuery Count: {e.QueryCount}" +
                 $"\n\nNew followers: {newFollowers}");
         }
+
+        private async void button29_Click(object sender, EventArgs e)
+        {
+            //textbox29
+            TwitchLib.TwitchAPIClasses.FollowedUsersResponse response = await TwitchApi.GetFollowedUsers(textBox29.Text);
+            MessageBox.Show($"Channe: {textBox29.Text}\nTotal followed users: {response.TotalFollowCount}");
+            foreach (TwitchLib.TwitchAPIClasses.Follow follow in response.Follows)
+                MessageBox.Show($"Followed user: {follow.Channel.DisplayName}\nFollow created at: {follow.CreatedAt}");
+        }
     }
 }
