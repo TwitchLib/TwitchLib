@@ -127,7 +127,7 @@ namespace TwitchLib
             Large = 2
         }
 
-        private string _id, _text, _escapedText, _replacementString;
+        private string _id, _text, _escapedText;
         private EmoteSource _source;
         private EmoteSize _size;
 
