@@ -9,43 +9,41 @@ namespace TwitchLib.TwitchAPIClasses
 {
     public class Video
     {
-        string _title, _description, _status, _id, _tagList, _recordedAt, _game, _preview, _broadcastId, _url;
-        int _length, _views;
-        FpsData _fps;
-        ResolutionsData _resolutions;
-        ChannelData _channel;
-
         /// <summary>Object representing all channel data returned by this request.</summary>
-        public ChannelData Channel => _channel;
+        public ChannelData Channel { get; protected set; }
         /// <summary>Object representing the available FPSs of versions of the video (-1 representings property doesnt exist)</summary>
-        public FpsData Fps => _fps;
+        public FpsData Fps { get; protected set; }
         /// <summary>Length of video in seconds.</summary>
-        public int Length => _length;
+        public int Length { get; protected set; }
         /// <summary>Number of recorded views.</summary>
-        public int Views => _views;
+        public int Views { get; protected set; }
         /// <summary>All available resolutions of video.</summary>
-        public ResolutionsData Resolutions => _resolutions;
+        public ResolutionsData Resolutions { get; protected set; }
         /// <summary>Unique identifier assigned to broadcast video originated from.</summary>
-        public string BroadcastId => _broadcastId;
+        public string BroadcastId { get; protected set; }
         /// <summary>Creator's description of video.</summary>
-        public string Description => _description;
+        public string Description { get; protected set; }
         /// <summary>Game being played in the video.</summary>
-        public string Game => _game;
+        public string Game { get; protected set; }
         /// <summary>Id of the particular video.</summary>
-        public string Id => _id;
+        public string Id { get; protected set; }
         /// <summary>Video preview image link.</summary>
-        public string Preview => _preview;
+        public string Preview { get; protected set; }
         /// <summary>Date and time string representing recorded date.</summary>
-        public string RecordedAt => _recordedAt;
+        public string RecordedAt { get; protected set; }
         /// <summary>Current status of the recorded video.</summary>
-        public string Status => _status;
+        public string Status { get; protected set; }
         /// <summary>Tags assigned to video either automatically or by content creator.</summary>
-        public string TagList => _tagList;
+        public string TagList { get; protected set; }
         /// <summary>Title of video.</summary>
-        public string Title => _title;
+        public string Title { get; protected set; }
         /// <summary>Twitch URL to video.</summary>
-        public string Url => _url;
+        public string Url { get; protected set; }
 
+        /// <summary>
+        /// Video constructor
+        /// </summary>
+        /// <param name="apiResponse">API response string from Twitch call.</param>
         public Video(JToken apiResponse)
         {
             int length = -1;
@@ -57,8 +55,8 @@ namespace TwitchLib.TwitchAPIClasses
             double lowFps = -1;
             double chunkedFps = -1;
 
-            if (int.TryParse(apiResponse.SelectToken("length").ToString(), out length)) _length = length;
-            if (int.TryParse(apiResponse.SelectToken("views").ToString(), out views)) _views = views;
+            if (int.TryParse(apiResponse.SelectToken("length").ToString(), out length)) Length = length;
+            if (int.TryParse(apiResponse.SelectToken("views").ToString(), out views)) Views = views;
 
             if(apiResponse.SelectToken("fps").SelectToken("audio_only") != null)
                 int.TryParse(apiResponse.SelectToken("fps").SelectToken("audio_only").ToString(), out audioFps);
@@ -73,96 +71,126 @@ namespace TwitchLib.TwitchAPIClasses
             if(apiResponse.SelectToken("fps").SelectToken("chunked") != null)
                 double.TryParse(apiResponse.SelectToken("fps").SelectToken("chunked").ToString(), out chunkedFps);
 
-            _broadcastId = apiResponse.SelectToken("broadcast_id").ToString();
-            _description = apiResponse.SelectToken("description").ToString();
-            _fps = new FpsData(audioFps, mediumFps, mobileFps, highFps, lowFps, chunkedFps);
-            _game = apiResponse.SelectToken("game").ToString();
-            _id = apiResponse.SelectToken("_id").ToString();
-            _preview = apiResponse.SelectToken("preview").ToString();
-            _recordedAt = apiResponse.SelectToken("recorded_at").ToString();
-            _status = apiResponse.SelectToken("status").ToString();
-            _tagList = apiResponse.SelectToken("tag_list").ToString();
-            _title = apiResponse.SelectToken("title").ToString();
-            _url = apiResponse.SelectToken("url").ToString();
+            BroadcastId = apiResponse.SelectToken("broadcast_id").ToString();
+            Description = apiResponse.SelectToken("description").ToString();
+            Fps = new FpsData(audioFps, mediumFps, mobileFps, highFps, lowFps, chunkedFps);
+            Game = apiResponse.SelectToken("game").ToString();
+            Id = apiResponse.SelectToken("_id").ToString();
+            Preview = apiResponse.SelectToken("preview").ToString();
+            RecordedAt = apiResponse.SelectToken("recorded_at").ToString();
+            Status = apiResponse.SelectToken("status").ToString();
+            TagList = apiResponse.SelectToken("tag_list").ToString();
+            Title = apiResponse.SelectToken("title").ToString();
+            Url = apiResponse.SelectToken("url").ToString();
 
-            _resolutions = new ResolutionsData(apiResponse.SelectToken("resolutions").SelectToken("medium").ToString(),
+            Resolutions = new ResolutionsData(apiResponse.SelectToken("resolutions").SelectToken("medium").ToString(),
                 apiResponse.SelectToken("resolutions").SelectToken("mobile").ToString(),
                 apiResponse.SelectToken("resolutions").SelectToken("high").ToString(),
                 apiResponse.SelectToken("resolutions").SelectToken("low").ToString(),
                 apiResponse.SelectToken("resolutions").SelectToken("chunked").ToString());
-            _channel = new ChannelData(apiResponse.SelectToken("channel").SelectToken("name").ToString(),
+            Channel = new ChannelData(apiResponse.SelectToken("channel").SelectToken("name").ToString(),
                 apiResponse.SelectToken("channel").SelectToken("display_name").ToString());
         }
-
+        /// <summary>Class representing FPS data.</summary>
         public class FpsData
         {
-            private double _audioOnly, _medium, _mobile, _high, _low, _chunked;
+            /// <summary>Property representing FPS for audio only.</summary>
+            public double AudioOnly { get; protected set; }
+            /// <summary>Property representing FPS for medium quality.</summary>
+            public double Medium { get; protected set; }
+            /// <summary>Property representing FPS for mobile quality.</summary>
+            public double Mobile { get; protected set; }
+            /// <summary>Property representing FPS for high quality.</summary>
+            public double High { get; protected set; }
+            /// <summary>Property representing FPS for low quality.</summary>
+            public double Low { get; protected set; }
+            /// <summary>Property representing FPS for chunked quality.</summary>
+            public double Chunked { get; protected set; }
 
-            public double AudioOnly => _audioOnly;
-            public double Medium => _medium;
-            public double Mobile => _mobile;
-            public double High => _high;
-            public double Low => _low;
-            public double Chunked => _chunked;
-
+            /// <summary>
+            /// FPS Data constructor.
+            /// </summary>
+            /// <param name="audioOnly"></param>
+            /// <param name="medium"></param>
+            /// <param name="mobile"></param>
+            /// <param name="high"></param>
+            /// <param name="low"></param>
+            /// <param name="chunked"></param>
             public FpsData(double audioOnly, double medium, double mobile, double high, double low, double chunked)
             {
-                _audioOnly = audioOnly;
-                _low = low;
-                _medium = medium;
-                _mobile = mobile;
-                _high = high;
-                _chunked = chunked;
+                AudioOnly = audioOnly;
+                Low = low;
+                Medium = medium;
+                Mobile = mobile;
+                High = high;
+                Chunked = chunked;
             }
 
+            /// <summary>Returns string in format: audio only: {}, mobile: {} etc.</summary>
             public override string ToString()
             {
                 return
-                    $"audio only: {_audioOnly}, mobile: {_mobile}, low: {_low}, medium: {_medium}, high: {_high}, chunked: {_chunked}";
+                    $"audio only: {AudioOnly}, mobile: {Mobile}, low: {Low}, medium: {Medium}, high: {High}, chunked: {Chunked}";
             }
         }
 
+        /// <summary>Class representing resolution data.</summary>
         public class ResolutionsData
         {
-            string _medium, _mobile, _high, _low, _chunked;
+            /// <summary>Property representing relation for medium quality.</summary>
+            public string Medium { get; protected set; }
+            /// <summary>Property representing relation for mobile quality.</summary>
+            public string Mobile { get; protected set; }
+            /// <summary>Property representing relation for high quality.</summary>
+            public string High { get; protected set; }
+            /// <summary>Property representing relation for low quality.</summary>
+            public string Low { get; protected set; }
+            /// <summary>Property representing relation for chunked quality.</summary>
+            public string Chunked { get; protected set; }
 
-            public string Medium => _medium;
-            public string Mobile => _mobile;
-            public string High => _high;
-            public string Low => _low;
-            public string Chunked => _chunked;
-
+            /// <summary>
+            /// Resolutions data constructor
+            /// </summary>
+            /// <param name="medium"></param>
+            /// <param name="mobile"></param>
+            /// <param name="high"></param>
+            /// <param name="low"></param>
+            /// <param name="chunked"></param>
             public ResolutionsData(string medium, string mobile, string high, string low, string chunked)
             {
-                _medium = medium;
-                _mobile = mobile;
-                _high = high;
-                _low = low;
-                _chunked = chunked;
+                Medium = medium;
+                Mobile = mobile;
+                High = high;
+                Low = low;
+                Chunked = chunked;
             }
 
+            /// <summary>Returns string in format: mobile: {}, low: {} etc</summary>
             public override string ToString()
             {
-                return $"mobile: {_mobile}, low: {_low}, medium: {_medium}, high: {_high}, chunked: {_chunked}";
+                return $"mobile: {Mobile}, low: {Low}, medium: {Medium}, high: {High}, chunked: {Chunked}";
             }
         }
 
+        /// <summary>Class representing channel data.</summary>
         public class ChannelData
         {
-            string _name, _displayName;
+            /// <summary>Property representing Name of channel.</summary>
+            public string Name { get; protected set; }
+            /// <summary>Property representing DisplayName of channel.</summary>
+            public string DisplayName { get; protected set; }
 
-            public string Name => _name;
-            public string DisplayName => _displayName;
-
+            /// <summary>Channel data construcotr.</summary>
             public ChannelData(string name, string displayName)
             {
-                _name = name;
-                _displayName = displayName;
+                Name = name;
+                DisplayName = displayName;
             }
 
+            /// <summary>Returns string in format: {name}, {displayname}</summary>
             public override string ToString()
             {
-                return $"{_name}, {_displayName}";
+                return $"{Name}, {DisplayName}";
             }
         }
     }

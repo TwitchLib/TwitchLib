@@ -6,22 +6,41 @@ using System.Threading.Tasks;
 
 namespace TwitchLib
 {
-
+    /// <summary>
+    /// Class representing a received whisper from TwitchWhisperClient
+    /// </summary>
     public class WhisperMessage
     {
+        /// <summary>Property representing dynamic badges assigned to message.</summary>
         public string Badges { get; protected set; }
+        /// <summary>Property representing HEX representation of color of username.</summary>
         public string ColorHex { get; protected set; }
+        /// <summary>Property representing sender Username.</summary>
         public string Username { get; protected set; }
+        /// <summary>Property representing sender DisplayName (can be null/blank).</summary>
         public string DisplayName { get; protected set; }
+        /// <summary>Property representing list of string emotes in message.</summary>
         public string EmoteSet { get; protected set; }
+        /// <summary>Property representing identifier of the message thread.</summary>
         public string ThreadId { get; protected set; }
+        /// <summary>Property representing message identifier.</summary>
         public int MessageId { get; protected set; }
+        /// <summary>Property representing sender identifier.</summary>
         public int UserId { get; protected set; }
+        /// <summary>Property representing whether or not sender has Turbo.</summary>
         public bool Turbo { get; protected set; }
+        /// <summary>Property representing bot's username.</summary>
         public string BotUsername { get; protected set; }
+        /// <summary>Property representing message contents.</summary>
         public string Message { get; protected set; }
+        /// <summary>Property representing user type of sender.</summary>
         public string UserType { get; protected set; }
 
+        /// <summary>
+        /// WhisperMessage constructor.
+        /// </summary>
+        /// <param name="ircString">Received IRC string from Twitch server.</param>
+        /// <param name="botUsername">Active bot username receiving message.</param>
         public WhisperMessage(string ircString, string botUsername)
         {
             if (ircString.Substring(0, 8) == "@badges=")
