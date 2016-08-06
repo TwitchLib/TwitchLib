@@ -192,6 +192,14 @@ namespace TwitchLib
             return new TwitchFollowersResponse(resp);
         }
 
+        /// <summary>
+        /// Retrieves a list of followed users a specific user has.
+        /// </summary>
+        /// <param name="channel">Channel to fetch followed users</param>
+        /// <param name="limit">Default is 25, max is 100, min is 0</param>
+        /// <param name="offset">Integer representing list offset</param>
+        /// <param name="sortKey">Enum representing sort order.</param>
+        /// <returns></returns>
         public static async Task<FollowedUsersResponse> GetFollowedUsers(string channel, int limit = 25, int offset = 0, Common.SortKey sortKey = Common.SortKey.CreatedAt)
         {
             string args = "";

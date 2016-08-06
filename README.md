@@ -62,6 +62,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - GetTwitchFollower(string channel) - Returns asc or desc list of followers from a specific channel, returns list of TwitchFollower objects.
 - GetUptime(string channel) - Returns TimeSpan object representing time between creation_at of stream, and now.
 - SetClientId(string clientId) - Sets ClientId for inclusion in all API calls per Twitch requirement.
+- GetFollowedUsers(string channel, int limit = 25, int offset = 0, Common.SortKey sortKey) - Gets a list of users a user follows.
 
 ### Twitch Services
 - FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected.
