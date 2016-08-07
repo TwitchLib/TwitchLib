@@ -10,7 +10,7 @@ namespace TwitchLib
     public static class Common
     {
         /// <summary>Enum representing various user-types.</summary>
-        public enum UType
+        public enum UserType
         {
             /// <summary>The standard user-type representing a standard viewer.</summary>
             Viewer,

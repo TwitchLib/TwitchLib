@@ -13,7 +13,7 @@ namespace TwitchLib.TwitchAPIClasses
         private bool _isFollowing;
         private DateTime _createdAt;
         private bool _notifications;
-        private TwitchChannel _channel;
+        private Channel _channel;
 
         /// <summary>Bool representing if user follows channel. If false, all other properties are null.</summary>
         public bool IsFollowing => _isFollowing;
@@ -22,7 +22,7 @@ namespace TwitchLib.TwitchAPIClasses
         /// <summary>Bool representing whether or not the user receives notificaitons for their follow.</summary>
         public bool Notifications => _notifications;
         /// <summary>Channel details returned along with the request.</summary>
-        public TwitchChannel Channel => _channel;
+        public Channel Channel => _channel;
 
         /// <summary>Constructor for follow</summary>
         public Follow(string apiResponse, bool successful = true)
@@ -34,7 +34,7 @@ namespace TwitchLib.TwitchAPIClasses
                 _createdAt = Convert.ToDateTime(json.SelectToken("created_at").ToString());
                 if ((bool)json.SelectToken("notifications"))
                     _notifications = true;
-                _channel = new TwitchChannel(json.SelectToken("channel"));
+                _channel = new Channel(json.SelectToken("channel"));
             }
         }
     }

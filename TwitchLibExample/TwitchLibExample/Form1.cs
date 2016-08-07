@@ -194,7 +194,7 @@ namespace TwitchLibExample
         {
             try
             {
-                TwitchChannel channel = await TwitchApi.GetTwitchChannel(textBox9.Text);
+                TwitchLib.TwitchAPIClasses.Channel channel = await TwitchApi.GetTwitchChannel(textBox9.Text);
                 MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At: {6}\n" +
                 "Updated At: {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
                 channel.Status, channel.BroadcasterLanguage, channel.DisplayName, channel.Game, channel.Language, channel.Name, channel.CreatedAt, channel.UpdatedAt,
@@ -207,9 +207,9 @@ namespace TwitchLibExample
 
         private async void button10_Click(object sender, EventArgs e)
         {
-            List<Chatter> chatters = await TwitchApi.GetChatters(textBox10.Text);
+            List<TwitchLib.TwitchAPIClasses.Chatter> chatters = await TwitchApi.GetChatters(textBox10.Text);
             string messageContents = "";
-            foreach(Chatter user in chatters)
+            foreach(TwitchLib.TwitchAPIClasses.Chatter user in chatters)
             {
                 if(messageContents == "")
                 {
@@ -342,9 +342,9 @@ namespace TwitchLibExample
 
         private async void button23_Click(object sender, EventArgs e)
         {
-            List<TwitchChannel> results = await TwitchApi.SearchChannels(textBox27.Text);
+            List<TwitchLib.TwitchAPIClasses.Channel> results = await TwitchApi.SearchChannels(textBox27.Text);
             if (results.Count > 0)
-                foreach(TwitchChannel channel in results)
+                foreach(TwitchLib.TwitchAPIClasses.Channel channel in results)
                     MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At: {6}\n" +
                     "Updated At: {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
                     channel.Status, channel.BroadcasterLanguage, channel.DisplayName, channel.Game, channel.Language, channel.Name, channel.CreatedAt, channel.UpdatedAt,

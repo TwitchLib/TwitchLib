@@ -125,86 +125,141 @@ namespace TwitchLib
         /// </summary>
         public event EventHandler<OnHostingStoppedArgs> OnHostingStopped;
 
+        /// <summary>Args representing on connected event.</summary>
         public class OnConnectedArgs : EventArgs
         {
-            public string Username, Channel;
+            /// <summary>Property representing bot username.</summary>
+            public string Username;
+            /// <summary>Property representing connected channel.</summary>
+            public string Channel;
         }
 
+        /// <summary>Args representing an incorrect login event.</summary>
         public class OnIncorrectLoginArgs : EventArgs
         {
+            /// <summary>Property representing exception object.</summary>
             public ErrorLoggingInException Exception;
         }
 
+        /// <summary>Args representing on channel state changed event.</summary>
         public class OnChannelStateChangedArgs : EventArgs
         {
+            /// <summary>Property representing the current channel state.</summary>
             public ChannelState ChannelState;
+            /// <summary>Property representing the channel received state from.</summary>
             public string Channel;
         }
 
+        /// <summary>Args representing on user state changed event.</summary>
         public class OnUserStateChangedArgs : EventArgs
         {
+            /// <summary>Property representing user state object.</summary>
             public UserState UserState;
         }
 
+        /// <summary>Args representing message received event.</summary>
         public class OnMessageReceivedArgs : EventArgs
         {
+            /// <summary>Property representing received chat message.</summary>
             public ChatMessage ChatMessage;
         }
 
+        /// <summary>Args representing message sent event.</summary>
         public class OnMessageSentArgs : EventArgs
         {
-            public string Username, Channel, Message;
+            /// <summary>Property representing username of bot.</summary>
+            public string Username;
+            /// <summary>Property representing channel of connected bot.</summary>
+            public string Channel;
+            /// <summary>Property representing sent message contents.</summary>
+            public string Message;
         }
 
+        /// <summary>Args representing command received event.</summary>
         public class OnCommandReceivedArgs : EventArgs
         {
+            /// <summary>Property representing chat message object.</summary>
             public ChatMessage ChatMessage;
-            public string Channel, Command, ArgumentsAsString;
+            /// <summary>Property representing channel of connected bot.</summary>
+            public string Channel;
+            /// <summary>Property representing received command.</summary>
+            public string Command;
+            /// <summary>Property representing arguements in form of string.</summary>
+            public string ArgumentsAsString;
+            /// <summary>Property representing arguements in form of string list.</summary>
             public List<string> ArgumentsAsList;
+            /// <summary>Property representing the character command identifier.</summary>
             public char CommandIdentifier;
         }
 
+        /// <summary>Args representing viewer joined event.</summary>
         public class OnViewerJoinedArgs : EventArgs
         {
-            public string Username, Channel;
-        }
-
-        public class OnModeratorJoinedArgs : EventArgs
-        {
-            public string Username, Channel;
-        }
-
-        public class OnNewSubscriberArgs : EventArgs
-        {
-            public NewSubscriber Subscriber;
+            /// <summary>Property representing username of joined viewer.</summary>
+            public string Username;
+            /// <summary>Property representing channel bot is connected to.</summary>
             public string Channel;
         }
 
+        /// <summary>Args representing moderator joined event.</summary>
+        public class OnModeratorJoinedArgs : EventArgs
+        {
+            /// <summary>Property representing username of joined moderator.</summary>
+            public string Username;
+            /// <summary>Property representing channel bot is connected to.</summary>
+            public string Channel;
+        }
+        /// <summary>Args representing new subscriber event.</summary>
+        public class OnNewSubscriberArgs : EventArgs
+        {
+            /// <summary>Property representing subscriber object.</summary>
+            public NewSubscriber Subscriber;
+            /// <summary>Property representing channel bot is connected to.</summary>
+            public string Channel;
+        }
+
+        /// <summary>Args representing resubscriber event.</summary>
         public class OnReSubscriberArgs : EventArgs
         {
+            /// <summary>Property representing resubscriber object.</summary>
             public ReSubscriber ReSubscriber;
         }
 
+        /// <summary>Args representing existing user(s) detected event.</summary>
         public class OnExistingUsersDetectedArgs : EventArgs
         {
+            /// <summary>Property representing string list of existing users.</summary>
             public List<string> ExistingUsers;
+            /// <summary>Property representing channel bot is connected to.</summary>
             public string Channel;
         }
 
+        /// <summary>Args representing viewer left event.</summary>
         public class OnViewerLeftArgs : EventArgs
         {
-            public string Username, Channel;
+            /// <summary>Property representing username of user that left.</summary>
+            public string Username;
+            /// <summary>Property representing channel bot is connected to.</summary>
+            public string Channel;
         }
 
+        /// <summary>Args representing hosting started event.</summary>
         public class OnHostingStartedArgs
         {
-            public string HostingChannel, TargetChannel;
+            /// <summary>Property representing channel that started hosting.</summary>
+            public string HostingChannel;
+            /// <summary>Property representing targeted channel, channel being hosted.</summary>
+            public string TargetChannel;
+            /// <summary>Property representing number of viewers in channel hosting target channel.</summary>
             public int Viewers;
         }
 
+        /// <summary>Args representing hosting stopped event.</summary>
         public class OnHostingStoppedArgs
         {
+            /// <summary>Property representing hosting channel.</summary>
             public string HostingChannel;
+            /// <summary>Property representing number of viewers that were in hosting channel.</summary>
             public int Viewers;
         }
 

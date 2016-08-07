@@ -50,30 +50,48 @@ namespace TwitchLib
         /// </summary>
         public event EventHandler<OnCommandReceivedArgs> OnCommandReceived;
 
+        /// <summary>Args representing an on connected event.</summary>
         public class OnConnectedArgs : EventArgs
         {
+            /// <summary>Property representing bot username.</summary>
             public string Username;
         }
 
+        /// <summary>Args representing an incorrect login event</summary>
         public class OnIncorrectLoginArgs : EventArgs
         {
+            /// <summary>Property representing login exception.</summary>
             public ErrorLoggingInException Exception;
         }
 
+        /// <summary>Args representing receiving a whisper message.</summary>
         public class OnWhisperReceivedArgs : EventArgs
         {
+            /// <summary>Property representing whisper message object.</summary>
             public WhisperMessage WhisperMessage;
         }
 
+        /// <summary>Args representing the completion of sending a whisper.</summary>
         public class OnWhisperSentArgs : EventArgs
         {
-            public string Receiver, Message;
+            /// <summary>Property representing the username of the receiver.</summary>
+            public string Receiver;
+            /// <summary>Property representing the content of the whisper message.</summary>
+            public string Message;
         }
 
+        /// <summary>Args representing a command was received in chat.</summary>
         public class OnCommandReceivedArgs : EventArgs
         {
-            public string Username, Command, ArgumentsAsString;
+            /// <summary>Property representing username of command sender.</summary>
+            public string Username;
+            /// <summary>Property representing command received.</summary>
+            public string Command;
+            /// <summary>Property representing arguements in form of a string.</summary>
+            public string ArgumentsAsString;
+            /// <summary>Property representing arguements in form of a string list.</summary>
             public List<string> ArgumentsAsList;
+            /// <summary>Property representing character command identifier.</summary>
             public char CommandIdentifier;
         }
 

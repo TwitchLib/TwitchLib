@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitchLib
+namespace TwitchLib.TwitchAPIClasses
 {
     public class Chatter
     {

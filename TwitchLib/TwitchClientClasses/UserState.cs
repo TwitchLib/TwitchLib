@@ -6,62 +6,60 @@ using System.Threading.Tasks;
 
 namespace TwitchLib
 {
+    /// <summary>Class representing state of a specific user.</summary>
     public class UserState
     {
-        public enum UType
-        {
-            Viewer,
-            Moderator,
-            GlobalModerator,
-            Admin,
-            Staff
-        }
+        /// <summary>Properrty representing HEX user's name.</summary>
+        public string ColorHex { get; protected set; }
+        /// <summary>Property representing user's display name.</summary>
+        public string DisplayName { get; protected set; }
+        /// <summary>Property representing emote sets available to user.</summary>
+        public string EmoteSet { get; protected set; }
+        /// <summary>Property representing channel.</summary>
+        public string Channel { get; protected set; }
+        /// <summary>Property representing subscriber status.</summary>
+        public bool Subscriber { get; protected set; }
+        /// <summary>Property representing Turbo status.</summary>
+        public bool Turbo { get; protected set; }
+        /// <summary>Property representing returned user type of user.</summary>
+        public Common.UserType UserType { get; protected set; }
 
-        private string _colorHex, _displayName, _emoteSet, _channel;
-        private bool _subscriber, _turbo;
-        private UType _userType;
-
-        // Reversing issue noticed by SimpleVar
-        public string ColorHex => _colorHex;
-        public string DisplayName => _displayName;
-        public string EmoteSet => _emoteSet;
-        public string Channel => _channel;
-        public bool Subscriber => _subscriber;
-        public bool Turbo => _turbo;
-        public UType UserType => _userType;
-
+        /// <summary>
+        /// Constructor for UserState.
+        /// </summary>
+        /// <param name="ircString"></param>
         public UserState(string ircString)
         {
-            _colorHex = ircString.Split(';')[0].Contains("#") ? ircString.Split(';')[0].Split('#')[1] : "";
-            _displayName = ircString.Split(';')[1].Split('=')[1];
-            _emoteSet = ircString.Split(';')[2].Split('=')[1];
+            ColorHex = ircString.Split(';')[0].Contains("#") ? ircString.Split(';')[0].Split('#')[1] : "";
+            DisplayName = ircString.Split(';')[1].Split('=')[1];
+            EmoteSet = ircString.Split(';')[2].Split('=')[1];
             if (ircString.Split(';')[3].Split('=')[1] == "1")
-                _subscriber = true;
+                Subscriber = true;
             if (ircString.Split(';')[4].Split('=')[1] == "1")
-                _turbo = true;
+                Turbo = true;
             switch (ircString.Split('=')[6].Split(' ')[0])
             {
                 case "mod":
-                    _userType = UType.Moderator;
+                    UserType = Common.UserType.Moderator;
                     break;
 
                 case "global_mod":
-                    _userType = UType.GlobalModerator;
+                    UserType = Common.UserType.GlobalModerator;
                     break;
 
                 case "admin":
-                    _userType = UType.Admin;
+                    UserType = Common.UserType.Admin;
                     break;
 
                 case "staff":
-                    _userType = UType.Staff;
+                    UserType = Common.UserType.Staff;
                     break;
 
                 default:
-                    _userType = UType.Viewer;
+                    UserType = Common.UserType.Viewer;
                     break;
             }
-            _channel = ircString.Split(' ')[3].Replace("#", "");
+            Channel = ircString.Split(' ')[3].Replace("#", "");
         }
     }
 }

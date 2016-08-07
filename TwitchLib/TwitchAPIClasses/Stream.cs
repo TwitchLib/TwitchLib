@@ -9,24 +9,16 @@ namespace TwitchLib.TwitchAPIClasses
 {
     public class Stream
     {
-        private long _id;
-        int _viewers, _videoHeight, _delay;
-        private string _game, _createdAt;
-        private bool _isPlaylist;
-        private double _averageFps;
-        private TwitchChannel _channel;
-        private PreviewObj _preview;
-
-        public bool IsPlaylist => _isPlaylist;
-        public double AverageFps => _averageFps;
-        public int Delay => _delay;
-        public int VideoHeight => _videoHeight;
-        public int Viewers => _viewers;
-        public long Id => _id;
-        public PreviewObj Preview => _preview;
-        public string CreatedAt => _createdAt;
-        public string Game => _game;
-        public TwitchChannel Channel => _channel;
+        public bool IsPlaylist { get; protected set; }
+        public double AverageFps { get; protected set; }
+        public int Delay { get; protected set; }
+        public int VideoHeight { get; protected set; }
+        public int Viewers { get; protected set; }
+        public long Id { get; protected set; }
+        public PreviewObj Preview { get; protected set; }
+        public string CreatedAt { get; protected set; }
+        public string Game { get; protected set; }
+        public Channel Channel { get; protected set; }
 
         public Stream(JToken twitchStreamData)
         {
@@ -35,35 +27,33 @@ namespace TwitchLib.TwitchAPIClasses
             int viewers, videoHeight, delay;
             double averageFps;
 
-            if (bool.TryParse(twitchStreamData.SelectToken("is_playlist").ToString(), out isPlaylist) && isPlaylist) _isPlaylist = true;
-            if (long.TryParse(twitchStreamData.SelectToken("_id").ToString(), out id)) _id = id;
-            if (int.TryParse(twitchStreamData.SelectToken("viewers").ToString(), out viewers)) _viewers = viewers;
-            if (int.TryParse(twitchStreamData.SelectToken("video_height").ToString(), out videoHeight)) _videoHeight = videoHeight;
-            if (int.TryParse(twitchStreamData.SelectToken("delay").ToString(), out delay)) _delay = delay;
-            if (double.TryParse(twitchStreamData.SelectToken("average_fps").ToString(), out averageFps)) _averageFps = averageFps;
+            if (bool.TryParse(twitchStreamData.SelectToken("is_playlist").ToString(), out isPlaylist) && isPlaylist) IsPlaylist = true;
+            if (long.TryParse(twitchStreamData.SelectToken("_id").ToString(), out id)) Id = id;
+            if (int.TryParse(twitchStreamData.SelectToken("viewers").ToString(), out viewers)) Viewers = viewers;
+            if (int.TryParse(twitchStreamData.SelectToken("video_height").ToString(), out videoHeight)) VideoHeight = videoHeight;
+            if (int.TryParse(twitchStreamData.SelectToken("delay").ToString(), out delay)) Delay = delay;
+            if (double.TryParse(twitchStreamData.SelectToken("average_fps").ToString(), out averageFps)) AverageFps = averageFps;
 
-            _game = twitchStreamData.SelectToken("game").ToString();
-            _createdAt = twitchStreamData.SelectToken("created_at").ToString();
+            Game = twitchStreamData.SelectToken("game").ToString();
+            CreatedAt = twitchStreamData.SelectToken("created_at").ToString();
 
-            _channel = new TwitchChannel((JObject) twitchStreamData.SelectToken("channel"));
-            _preview = new PreviewObj(twitchStreamData.SelectToken("preview"));
+            Channel = new Channel((JObject) twitchStreamData.SelectToken("channel"));
+            Preview = new PreviewObj(twitchStreamData.SelectToken("preview"));
         }
 
         public class PreviewObj
         {
-            private string _small, _medium, _large, _template;
-
-            public string Small => _small;
-            public string Medium => _medium;
-            public string Large => _large;
-            public string Template => _template;
+            public string Small { get; protected set; }
+            public string Medium { get; protected set; }
+            public string Large { get; protected set; }
+            public string Template { get; protected set; }
 
             public PreviewObj(JToken previewData)
             {
-                _small = previewData.SelectToken("small").ToString();
-                _medium = previewData.SelectToken("medium").ToString();
-                _large = previewData.SelectToken("large").ToString();
-                _template = previewData.SelectToken("template").ToString();
+                Small = previewData.SelectToken("small").ToString();
+                Medium = previewData.SelectToken("medium").ToString();
+                Large = previewData.SelectToken("large").ToString();
+                Template = previewData.SelectToken("template").ToString();
             }
         }
     }

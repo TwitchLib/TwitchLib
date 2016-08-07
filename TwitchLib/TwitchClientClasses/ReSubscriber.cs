@@ -13,7 +13,7 @@ namespace TwitchLib
         private string _resubMessage = "";
         private int _months, _roomId, _userId;
         private bool _mod, _turbo, _sub;
-        private Common.UType _userType;
+        private Common.UserType _userType;
         private List<KeyValuePair<string, string>> _unknownProperties = new List<KeyValuePair<string, string>>();
 
         public List<KeyValuePair<string, string>> Badges => _badges;
@@ -29,7 +29,7 @@ namespace TwitchLib
         public bool Mod => _mod;
         public bool Turbo => _turbo;
         public bool Sub => _sub;
-        public Common.UType UserType => _userType;
+        public Common.UserType UserType => _userType;
         public string RawIrc => _rawIrc;
         public List<KeyValuePair<string, string>> UnknownProperties => _unknownProperties;
         public string Channel => _channel;
@@ -92,19 +92,19 @@ namespace TwitchLib
                 switch (ircString.Split(' ')[0].Split(';')[13].Split('=')[1])
                 {
                     case "mod":
-                        _userType = Common.UType.Moderator;
+                        _userType = Common.UserType.Moderator;
                         break;
                     case "global_mod":
-                        _userType = Common.UType.GlobalModerator;
+                        _userType = Common.UserType.GlobalModerator;
                         break;
                     case "admin":
-                        _userType = Common.UType.Admin;
+                        _userType = Common.UserType.Admin;
                         break;
                     case "staff":
-                        _userType = Common.UType.Staff;
+                        _userType = Common.UserType.Staff;
                         break;
                     default:
-                        _userType = Common.UType.Viewer;
+                        _userType = Common.UserType.Viewer;
                         break;
                 }
             }

@@ -8,10 +8,16 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitchLib
 {
+    /// <summary>Class representing ip and port connection details.</summary>
     public class TwitchIpAndPort
     {
         private IpPort[] _chatServers, _whisperServers;
 
+        /// <summary>
+        /// Constructor for TwitchIpAndPort requiring channel and bool for autodownload.
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="autoDownloadServerData"></param>
         public TwitchIpAndPort(string channel, bool autoDownloadServerData = false)
         {
             if (!autoDownloadServerData) return;
@@ -19,6 +25,10 @@ namespace TwitchLib
             GetWhisperServers();
         }
 
+        /// <summary>
+        /// Constructor for TwitchIpAndPort requiring simply a bool for auto download.
+        /// </summary>
+        /// <param name="autoDownloadServerData"></param>
         public TwitchIpAndPort(bool autoDownloadServerData = false)
         {
             if (autoDownloadServerData)
@@ -27,16 +37,19 @@ namespace TwitchLib
             }
         }
 
+        /// <summary>Returns first chat server found, can be null.</summary>
         public IpPort GetFirstChatServer()
         {
             return _chatServers?[0];
         }
 
+        /// <summary>Returns first whisper server found, can be null.</summary>
         public IpPort GetFirstWhisperServer()
         {
             return _whisperServers?[0];
         }
 
+        /// <summary>Downloads array of IpPort objects for chat servers.</summary>
         public IpPort[] GetChatServers(string channel)
         {
             var resp = new WebClient().DownloadString(
@@ -51,6 +64,7 @@ namespace TwitchLib
             return _chatServers;
         }
 
+        /// <summary>Downloads array of IpPort objects for whisper servers.</summary>
         public IpPort[] GetWhisperServers()
         {
             var resp = new WebClient().DownloadString("http://tmi.twitch.tv/servers?cluster=group");
@@ -65,18 +79,19 @@ namespace TwitchLib
         }
     }
 
+    /// <summary>Class representing Ip and Port for connections.</summary>
     public class IpPort
     {
-        private string _ip;
-        private int _port;
+        /// <summary>Property representing Ip.</summary>
+        public string Ip { get; protected set; }
+        /// <summary>Property representing Port</summary>
+        public int Port { get; protected set; }
 
-        public string Ip => _ip;
-        public int Port => _port;
-
+        /// <summary>Constructor for IpPort requiring data string.</summary>
         public IpPort(string data)
         {
-            _ip = data.Split(':')[0];
-            _port = int.Parse(data.Split(':')[1]);
+            Ip = data.Split(':')[0];
+            Port = int.Parse(data.Split(':')[1]);
         }
     }
 }

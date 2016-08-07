@@ -136,7 +136,7 @@ namespace TwitchLib
         /// </summary>
         /// <param name="channel">The name of the channel to search for.</param>
         /// <returns>A TwitchStream object containing API data related to a stream.</returns>
-        public static async Task<TwitchChannel> GetTwitchChannel(string channel)
+        public static async Task<Channel> GetTwitchChannel(string channel)
         {
             var resp = "";
             try
@@ -149,7 +149,7 @@ namespace TwitchLib
             }
             var json = JObject.Parse(resp);
             if (json.SelectToken("error") != null) throw new InvalidChannelException(resp);
-            return new TwitchChannel(json);
+            return new Channel(json);
         }
 
         /// <summary>
@@ -264,16 +264,16 @@ namespace TwitchLib
         /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
         /// <param name="offset">Object offset for pagination. Default is 0.</param>
         /// <returns>A list of TwitchChannel objects matching the query.</returns>
-        public static async Task<List<TwitchChannel>> SearchChannels(string query, int limit = 25, int offset = 0)
+        public static async Task<List<Channel>> SearchChannels(string query, int limit = 25, int offset = 0)
         {
-            var returnedChannels = new List<TwitchChannel>();
+            var returnedChannels = new List<Channel>();
             var args = $"?query={query}&limit={limit}&offset={offset}";
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/search/channels{args}");
 
             var json = JObject.Parse(resp);
             if (json.SelectToken("_total").ToString() == "0") return returnedChannels;
             returnedChannels.AddRange(
-                json.SelectToken("channels").Select(channelToken => new TwitchChannel((JObject) channelToken)));
+                json.SelectToken("channels").Select(channelToken => new Channel((JObject) channelToken)));
             return returnedChannels;
         }
 

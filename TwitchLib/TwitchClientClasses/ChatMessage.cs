@@ -25,7 +25,7 @@ namespace TwitchLib
         /// <summary>Twitch chat message contents.</summary>
         public string Message { get; protected set; }
         /// <summary>User type can be viewer, moderator, global mod, admin, or staff</summary>
-        public Common.UType UserType { get; protected set; }
+        public Common.UserType UserType { get; protected set; }
         /// <summary>Twitch channel message was sent from (useful for multi-channel bots).</summary>
         public string Channel { get; protected set; }
         /// <summary>Channel specific subscriber status.</summary>
@@ -110,19 +110,19 @@ namespace TwitchLib
                     switch (part.Split('=')[1].Split(' ')[0])
                     {
                         case "mod":
-                            UserType = Common.UType.Moderator;
+                            UserType = Common.UserType.Moderator;
                             break;
                         case "global_mod":
-                            UserType = Common.UType.GlobalModerator;
+                            UserType = Common.UserType.GlobalModerator;
                             break;
                         case "admin":
-                            UserType = Common.UType.Admin;
+                            UserType = Common.UserType.Admin;
                             break;
                         case "staff":
-                            UserType = Common.UType.Staff;
+                            UserType = Common.UserType.Staff;
                             break;
                         default:
-                            UserType = Common.UType.Viewer;
+                            UserType = Common.UserType.Viewer;
                             break;
                     }
                 }
@@ -178,7 +178,7 @@ namespace TwitchLib
 
             if(Channel.ToLower() == Channel.ToLower())
             {
-                UserType = Common.UType.Broadcaster;
+                UserType = Common.UserType.Broadcaster;
                 IsBroadcaster = true;
             }
         }

@@ -7,6 +7,9 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitchLib.TwitchAPIClasses
 {
+    /// <summary>
+    /// Class representing returned Video object.
+    /// </summary>
     public class Video
     {
         /// <summary>Object representing all channel data returned by this request.</summary>
