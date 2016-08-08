@@ -44,6 +44,12 @@ namespace TwitchLib
         public string EmoteReplacedMessage { get; protected set; }
         /// <summary>List of key-value pair badges.</summary>
         public List<KeyValuePair<string,string>> Badges { get; protected set; }
+        /// <summary>If a cheer badge exists, this property represents the raw value and color (more later). Can be null.</summary>
+        public TwitchClientClasses.CheerBadge CheerBadge { get; protected set; }
+        /// <summary>If viewer sent bits in their message, total amount will be here.</summary>
+        public int Bits { get; protected set; }
+        /// <summary>Number of USD (United States Dollars) spent on bits.</summary>
+        public double BitsInDollars { get; protected set; }
 
         //Example IRC message: @badges=moderator/1,warcraft/alliance;color=;display-name=Swiftyspiffyv4;emotes=;mod=1;room-id=40876073;subscriber=0;turbo=0;user-id=103325214;user-type=mod :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #swiftyspiffy :asd
         /// <summary>Constructor for ChatMessage object.</summary>
@@ -65,6 +71,7 @@ namespace TwitchLib
                 }
                 else if(part.Contains("@badges="))
                 {
+                    Badges = new List<KeyValuePair<string, string>>();
                     string badges = part.Split('=')[1];
                     if(badges.Contains('/'))
                     {
@@ -74,6 +81,17 @@ namespace TwitchLib
                             foreach (string badge in badges.Split(','))
                                 Badges.Add(new KeyValuePair<string, string>(badge.Split('/')[0], badge.Split('/')[1]));
                     }
+                    // Iterate through saved badges for special circumstances
+                    foreach(KeyValuePair<string, string> badge in Badges)
+                    {
+                        if (badge.Key == "bits")
+                            CheerBadge = new TwitchClientClasses.CheerBadge(int.Parse(badge.Value));
+                    }
+                }
+                else if(part.Contains("bits="))
+                {
+                    Bits = int.Parse(part.Split('=')[1]);
+                    BitsInDollars = ConvertBitsToUSD(Bits);
                 }
                 else if (part.Contains("color="))
                 {
@@ -186,6 +204,36 @@ namespace TwitchLib
         private static bool ConvertToBool(string data)
         {
             return data == "1";
+        }
+
+        private static double ConvertBitsToUSD(int bits)
+        {
+            /*
+            Conversion Rates
+            100 bits = $1.40
+            500 bits = $7.00
+            1500 bits = $19.95 (5%)
+            5000 bits = $64.40 (8%)
+            10000 bits = $126.00 (10%)
+            25000 bits = $308.00 (12%)
+            */
+            if(bits < 1500)
+            {
+                return (bits / 100) * 1.4;
+            }
+            if(bits < 5000)
+            {
+                return (bits / 1500) * 19.95;
+            }
+            if(bits < 10000)
+            {
+                return (bits / 5000) * 64.40;
+            }
+            if(bits < 25000)
+            {
+                return (bits / 10000) * 126;
+            }
+            return (bits / 25000) * 308;
         }
     }
 }

@@ -24,7 +24,9 @@ namespace TwitchLibExample
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if(File.Exists("credentials.txt"))
+            TwitchLib.MessageEmoteCollection collection = new MessageEmoteCollection();
+
+            if (File.Exists("credentials.txt"))
             {
                 StreamReader file = new StreamReader("credentials.txt");
                 string twitchUser = file.ReadLine();
@@ -47,6 +49,7 @@ namespace TwitchLibExample
             ConnectionCredentials credentials = new ConnectionCredentials(ConnectionCredentials.ClientType.Chat, new TwitchIpAndPort(textBox8.Text, true), 
                 textBox4.Text, textBox5.Text);
             TwitchChatClient newClient = new TwitchChatClient(textBox8.Text, credentials, '!');
+
             newClient.OnMessageReceived += new EventHandler<TwitchChatClient.OnMessageReceivedArgs>(globalChatMessageReceived);
             newClient.OnCommandReceived += new EventHandler<TwitchChatClient.OnCommandReceivedArgs>(chatCommandReceived);
             newClient.OnIncorrectLogin += new EventHandler<TwitchChatClient.OnIncorrectLoginArgs>(incorrectChatLogin);
