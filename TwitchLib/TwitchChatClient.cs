@@ -42,6 +42,9 @@ namespace TwitchLib
         /// </remarks>
         public MessageEmoteCollection ChannelEmotes => _channelEmotes;
 
+        /// <summary>Will disable the client from sending automatic PONG responses to PING</summary>
+        public bool DisableAutoPong { get; set; } = false;
+
         /// <summary>Determines whether Emotes will be replaced in messages.</summary>
         public bool WillReplaceEmotes { get; set; } = false;
 
@@ -531,6 +534,13 @@ namespace TwitchLib
             else
             {
                 //Special cases
+                if(decodedMessage == "PING :tmi.twitch.tv" && !DisableAutoPong)
+                {
+                    SendRaw("PONG :tmi.twitch.tv");
+                    if (_logging)
+                        Console.WriteLine("Sent raw: PONG :tmi.twitch.tv");
+                    return;
+                }
                 if (decodedMessage == ":tmi.twitch.tv NOTICE * :Error logging in")
                 {
                     _client.Disconnect();
