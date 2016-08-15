@@ -20,6 +20,7 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnMessageSent - Fires when a chat message is sent.
   * OnUserStateChanged - Fires when a user state is received.
   * OnModeratorJoined - Fires when a moderator joins chat (not necessarily real time)
+  * OnModeratorLeft - Fires when a moderator leaves chat (not necessarily real time)
   * OnHostLeft - Fires when a hosted channel goes offline
   * OnExistingUsersDetected - Fires when list of users message is received from Twitch (generally when entering the room)
   * OnHostingStarted - Fires when someone begins hosting the channel the client is connected to.
