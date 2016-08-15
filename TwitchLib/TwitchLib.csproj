@@ -55,6 +55,7 @@
     <Compile Include="Exceptions\BadQueryCountException.cs" />
     <Compile Include="Exceptions\BadScopeException.cs" />
     <Compile Include="Exceptions\InvalidCredentialException.cs" />
+    <Compile Include="TwitchClientClasses\ChatParsing.cs" />
     <Compile Include="TwitchClientClasses\CheerBadge.cs" />
     <Compile Include="TwitchClientClasses\MessageEmote.cs" />
     <Compile Include="TwitchClientClasses\ReSubscriber.cs" />
