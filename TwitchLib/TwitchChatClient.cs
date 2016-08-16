@@ -12,7 +12,7 @@ using TwitchLib.TwitchClientClasses;
 namespace TwitchLib
 {
     /// <summary>Represents a client connected to a Twitch channel.</summary>
-    public class TwitchChatClient
+    public class TwitchClient
     {
         private IrcConnection _client = new IrcConnection();
         private ConnectionCredentials _credentials;
@@ -283,13 +283,13 @@ namespace TwitchLib
         }
 
         /// <summary>
-        /// Initializes the TwitchChatClient class.
+        /// Initializes the TwitchClient class.
         /// </summary>
         /// <param name="channel">The channel to connect to.</param>
         /// <param name="credentials">The credentials to use to log in.</param>
         /// <param name="commandIdentifier">The identifier to be used for reading and writing commands.</param>
         /// <param name="logging">Whether or not logging to console should be enabled.</param>
-        public TwitchChatClient(string channel, ConnectionCredentials credentials, char commandIdentifier = '\0',
+        public TwitchClient(string channel, ConnectionCredentials credentials, char commandIdentifier = '\0',
             bool logging = false)
         {
             _channel = channel.ToLower();

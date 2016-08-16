@@ -75,10 +75,10 @@
     <Compile Include="TwitchAPIClasses\Stream.cs" />
     <Compile Include="TwitchAPIClasses\TeamMember.cs" />
     <Compile Include="TwitchAPIClasses\Video.cs" />
-    <Compile Include="TwitchChatClient.cs" />
+    <Compile Include="TwitchClient.cs" />
     <Compile Include="TwitchClientClasses\TwitchIpAndPort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TwitchWhisperClient.cs" />
+    <Compile Include="TwitchClientClasses\WhisperParsing.cs" />
     <Compile Include="TwitchClientClasses\UserState.cs" />
     <Compile Include="TwitchClientClasses\WhisperMessage.cs" />
   </ItemGroup>
