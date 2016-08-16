@@ -7,7 +7,7 @@ Available via Nuget: `Install-Package TwitchLib`
 
 ### TwitchChatClient
 - Initiailized using channel and ConnectionCredentials
-- Events:
+- Chat Events:
   * OnIncorrectLogin - Fires when an invalid login is returned by Twitch
   * OnConnected - Fires on listening and after joined channel, returns username and channel
   * OnMessageReceived - Fires when new chat message arrives, returns ChatMessage
@@ -16,7 +16,7 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnChannelStateChanged - Fires when channel state is changed
   * OnViewerJoined - New viewer/chatter joined the chat channel room.
   * OnViewerLeft - Viewer/chatter left (PARTed) the chat channel.
-  * OnCommandReceived - Fires when command (uses custom command identifier) is received.
+  * OnChatCommandReceived - Fires when command (uses custom command identifier) is received.
   * OnMessageSent - Fires when a chat message is sent.
   * OnUserStateChanged - Fires when a user state is received.
   * OnModeratorJoined - Fires when a moderator joins chat (not necessarily real time)
@@ -25,25 +25,16 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnExistingUsersDetected - Fires when list of users message is received from Twitch (generally when entering the room)
   * OnHostingStarted - Fires when someone begins hosting the channel the client is connected to.
   * OnHostingStopped - Fires when someone that is hosting channel that client is connected to, stops.
+- Whisper Events:
+  * OnWhisperReceived - Fires when a new whisper message is received, returns WhisperMessage
+  * OnWhisperCommandReceived - Fires when command (uses custom command identifier) is received.
+  * OnWhisperSent - Fires when a whisper is sent.
 - SendRaw(string message) - Sends RAW IRC message
 - SendMessage(string message) - Sends formatted Twitch channel chat message
-- testOnReadLine(string decodedMessage) - Test onReadLine event parsing on demand
+- SendWhisper(string receiver, string message) - Sends formatted Twitch whisper message
 - Handled chat message types
 - Disconnect - Disconnects chat client from Twitch IRC
 - Reconnect - Reconnects chat client given existing credentials
-
-### TwitchWhisperClient
-- Initialized using ConnectionCredentials
-- Events:
-  * OnIncorrectLogin - Fires when an invalid login is returned by Twitch
-  * OnConnected - Fires on listening and after joined channel, returns username
-  * OnWhisperReceived - Fires when a new whisper message is received, returns WhisperMessage
-  * OnCommandReceived - Fires when command (uses custom command identifier) is received.
-  * OnWhisperSent - Fires when a whisper is sent.
-- SendRaw(string message) - Sends RAW IRC message
-- SendWhisper(string receiver, string message) - Sends formatted Twitch whisper message
-- Disconnect - Disconnects whisper client from group chat
-- Reconnect - Reconnects whisper client to group chat
 
 ### TwitchAPI
 - BroadcasterOnline(string channel) - Async function returns bool of whether or not streamer is streaming
