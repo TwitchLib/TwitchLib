@@ -79,7 +79,7 @@ I've recently taken to implementing this class into test applications and connec
 - GamesDoneQuick (several days) - 80,000 - 200,000 concurrent, fixed a number of overflow and outofindex exceptions thrown when TwitchAPI returns service unavailable or TwitchIRC returns incomplete message data
 
 ### Examples and Implementations
-- TwitchLibExample - This project is included in this repo as a master example project.
+- TwitchLibExample[BROKEN/NOT UPDATED] - This project is included in this repo as a master example project.
 - PFCKrutonium's ([TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot))
 
 ### Credits and Libraries Utilized
