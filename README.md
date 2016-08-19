@@ -5,7 +5,7 @@ TwitchLib is a C# library that attempts to harness the Twitch Chat and Twitch AP
 ### Availability
 Available via Nuget: `Install-Package TwitchLib`
 
-### TwitchChatClient
+### TwitchClient
 - Initiailized using channel and ConnectionCredentials
 - Chat Events:
   * OnIncorrectLogin - Fires when an invalid login is returned by Twitch
