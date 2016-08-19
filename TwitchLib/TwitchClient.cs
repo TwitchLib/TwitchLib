@@ -37,9 +37,9 @@ namespace TwitchLib
         public WhisperMessage PreviousWhisper => _previousWhisper;
         /// <summary>The current connection status of the client.</summary>
         public bool IsConnected => _connected;
-        /// <summary>Assign this property a valid MessageThrottler to apply message throttling.</summary>
+        /// <summary>Assign this property a valid MessageThrottler to apply message throttling on chat messages.</summary>
         public Services.MessageThrottler ChatThrottler;
-
+        /// <summary>Assign this property a valid MessageThrottler to apply message throttling on whispers.</summary>
         public Services.MessageThrottler WhisperThrottler;
         /// <summary>The emotes this channel replaces.</summary>
         /// <remarks>
@@ -416,8 +416,8 @@ namespace TwitchLib
         public void Connect()
         {
             if (_logging)
-                Console.WriteLine("Connecting to: " + _credentials.Host + ":" + _credentials.Port);
-            _client.Connect(_credentials.Host, _credentials.Port);
+                Console.WriteLine("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
+            _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
         }
 
         /// <summary>
@@ -437,8 +437,8 @@ namespace TwitchLib
         public void Reconnect()
         {
             if (_logging)
-                Console.WriteLine("Reconnecting to: " + _credentials.Host + ":" + _credentials.Port);
-            _client.Connect(_credentials.Host, _credentials.Port);
+                Console.WriteLine("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
+            _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
         }
 
         /// <summary>
