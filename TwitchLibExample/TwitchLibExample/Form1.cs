@@ -15,8 +15,7 @@ namespace TwitchLibExample
 {
     public partial class Form1 : Form
     {
-        List<TwitchChatClient> chatClients = new List<TwitchChatClient>();
-        List<TwitchWhisperClient> whisperClients = new List<TwitchWhisperClient>();
+        List<TwitchClient> clients = new List<TwitchClient>();
         public Form1()
         {
             InitializeComponent();
@@ -33,9 +32,7 @@ namespace TwitchLibExample
                 string twitchOAuth = file.ReadLine();
                 string twitchChannel = file.ReadLine();
                 textBox4.Text = twitchUser;
-                textBox6.Text = twitchUser;
                 textBox5.Text = twitchOAuth;
-                textBox7.Text = twitchOAuth;
                 textBox8.Text = twitchChannel;
                 textBox14.Text = twitchChannel;
                 textBox15.Text = twitchOAuth;
@@ -46,47 +43,30 @@ namespace TwitchLibExample
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ConnectionCredentials credentials = new ConnectionCredentials(ConnectionCredentials.ClientType.Chat, new TwitchIpAndPort(textBox8.Text, true), 
-                textBox4.Text, textBox5.Text);
-            TwitchChatClient newClient = new TwitchChatClient(textBox8.Text, credentials, '!');
+            ConnectionCredentials credentials = new ConnectionCredentials(textBox4.Text, textBox5.Text);
+            TwitchClient newClient = new TwitchClient(textBox8.Text, credentials, '!', true);
 
-            newClient.OnMessageReceived += new EventHandler<TwitchChatClient.OnMessageReceivedArgs>(globalChatMessageReceived);
-            newClient.OnCommandReceived += new EventHandler<TwitchChatClient.OnCommandReceivedArgs>(chatCommandReceived);
-            newClient.OnIncorrectLogin += new EventHandler<TwitchChatClient.OnIncorrectLoginArgs>(incorrectChatLogin);
-            newClient.OnConnected += new EventHandler<TwitchChatClient.OnConnectedArgs>(onChatConnected);
+            newClient.OnMessageReceived += new EventHandler<TwitchClient.OnMessageReceivedArgs>(globalChatMessageReceived);
+            newClient.OnChatCommandReceived += new EventHandler<TwitchClient.OnChatCommandReceivedArgs>(chatCommandReceived);
+            newClient.OnIncorrectLogin += new EventHandler<TwitchClient.OnIncorrectLoginArgs>(incorrectLogin);
+            newClient.OnConnected += new EventHandler<TwitchClient.OnConnectedArgs>(onConnected);
+            newClient.OnWhisperReceived += new EventHandler<TwitchClient.OnWhisperReceivedArgs>(globalWhisperReceived);
             //Add message throttler
-            newClient.MessageThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
-            newClient.MessageThrottler.OnClientThrottled += onClientThrottled;
-            newClient.MessageThrottler.OnThrottledPeriodReset += onThrottlePeriodReset;
+            newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
+            newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
+            newClient.ChatThrottler.OnThrottledPeriodReset += onThrottlePeriodReset;
+            newClient.WhisperThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.Connect();
-            chatClients.Add(newClient);
+            clients.Add(newClient);
             ListViewItem lvi = new ListViewItem();
             lvi.Text = textBox4.Text;
-            lvi.SubItems.Add("CHAT");
             lvi.SubItems.Add(textBox8.Text);
             listView1.Items.Add(lvi);
 
             if(!comboBox2.Items.Contains(textBox4.Text))
                 comboBox2.Items.Add(textBox4.Text);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            ConnectionCredentials credentials = new ConnectionCredentials(ConnectionCredentials.ClientType.Whisper, new TwitchIpAndPort(true),
-                textBox6.Text, textBox7.Text);
-            TwitchWhisperClient newClient = new TwitchWhisperClient(credentials, '!');
-            newClient.OnWhisperReceived += new EventHandler<TwitchWhisperClient.OnWhisperReceivedArgs>(globalWhisperReceived);
-            newClient.OnCommandReceived += new EventHandler<TwitchWhisperClient.OnCommandReceivedArgs>(whisperCommandReceived);
-            newClient.OnIncorrectLogin += new EventHandler<TwitchWhisperClient.OnIncorrectLoginArgs>(incorrectWhisperLogin);
-            newClient.OnConnected += new EventHandler<TwitchWhisperClient.OnConnectedArgs>(onWhisperConnected);
-            newClient.Connect();
-            whisperClients.Add(newClient);
-            ListViewItem lvi = new ListViewItem();
-            lvi.Text = textBox6.Text;
-            lvi.SubItems.Add("WHISPER");
-            lvi.SubItems.Add("N/A");
-            listView1.Items.Add(lvi);
-            comboBox1.Items.Add(textBox6.Text);
+            if (!comboBox1.Items.Contains(textBox4.Text))
+                comboBox1.Items.Add(textBox4.Text);
         }
 
         public void onClientThrottled(object sender, TwitchLib.Services.MessageThrottler.OnClientThrottledArgs e)
@@ -99,27 +79,17 @@ namespace TwitchLibExample
             MessageBox.Show($"The message throttle period was reset.");
         }
 
-        public void onWhisperConnected(object sender, TwitchWhisperClient.OnConnectedArgs e)
-        {
-            MessageBox.Show("Connected to whisper group chat under username: " + e.Username);
-        }
-
-        public void onChatConnected(object sender, TwitchChatClient.OnConnectedArgs e)
+        public void onConnected(object sender, TwitchClient.OnConnectedArgs e)
         {
             MessageBox.Show("Connected to channel: " + e.Channel + "\nUnder username: " + e.Username);
         }
 
-        public void incorrectChatLogin(object sender, TwitchChatClient.OnIncorrectLoginArgs e)
+        public void incorrectLogin(object sender, TwitchClient.OnIncorrectLoginArgs e)
         {
             MessageBox.Show("Failed login as chat client!!!\nException: " + e.Exception + "\nUsername: " + e.Exception.Username);
         }
 
-        public void incorrectWhisperLogin(object sender, TwitchWhisperClient.OnIncorrectLoginArgs e)
-        {
-            MessageBox.Show("Failed login as whisper client!!!\nException: " + e.Exception + "\nUsername: " + e.Exception.Username);
-        }
-
-        private void chatCommandReceived(object sender, TwitchChatClient.OnCommandReceivedArgs e)
+        private void chatCommandReceived(object sender, TwitchClient.OnChatCommandReceivedArgs e)
         {
             listBox1.Items.Add(e.ChatMessage.Username + ": " + e.Command + "; args: " + e.ArgumentsAsString + ";");
             foreach(string arg in e.ArgumentsAsList)
@@ -129,9 +99,9 @@ namespace TwitchLibExample
             Console.WriteLine("[chat] args as string: " + e.ArgumentsAsString);
         }
 
-        private void whisperCommandReceived(object sender, TwitchWhisperClient.OnCommandReceivedArgs e)
+        private void whisperCommandReceived(object sender, TwitchClient.OnWhisperCommandReceivedArgs e)
         {
-            listBox2.Items.Add(e.Username + ": " + e.Command + "; args: " + e.ArgumentsAsString + ";");
+            listBox2.Items.Add(e.WhisperMessage.Username + ": " + e.Command + "; args: " + e.ArgumentsAsString + ";");
             foreach (string arg in e.ArgumentsAsList)
             {
                 Console.WriteLine("[whisper] arg: " + arg);
@@ -139,7 +109,7 @@ namespace TwitchLibExample
             Console.WriteLine("[whisper] args as string: " + e.ArgumentsAsString);
         }
 
-        private void globalChatMessageReceived(object sender, TwitchChatClient.OnMessageReceivedArgs e)
+        private void globalChatMessageReceived(object sender, TwitchClient.OnMessageReceivedArgs e)
         {
             //Don't do this in production
             CheckForIllegalCrossThreadCalls = false;
@@ -148,7 +118,7 @@ namespace TwitchLibExample
                 "\n" + richTextBox1.Text;
         }
 
-        private void globalWhisperReceived(object sender, TwitchWhisperClient.OnWhisperReceivedArgs e)
+        private void globalWhisperReceived(object sender, TwitchClient.OnWhisperReceivedArgs e)
         {
             //Don't do this in production
             CheckForIllegalCrossThreadCalls = false;
@@ -160,7 +130,7 @@ namespace TwitchLibExample
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboBox3.Items.Clear();
-            foreach (TwitchChatClient client in chatClients)
+            foreach (TwitchClient client in clients)
             {
                 if(client.TwitchUsername.ToLower() == comboBox2.Text.ToLower()) {
                     comboBox3.Items.Add(client.Channel);
@@ -170,7 +140,7 @@ namespace TwitchLibExample
 
         private void button4_Click(object sender, EventArgs e)
         {
-            foreach (TwitchChatClient client in chatClients)
+            foreach (TwitchClient client in clients)
             {
                 if (client.TwitchUsername.ToLower() == comboBox2.Text.ToLower())
                 {
@@ -184,7 +154,7 @@ namespace TwitchLibExample
 
         private void button1_Click(object sender, EventArgs e)
         {
-            foreach (TwitchWhisperClient client in whisperClients)
+            foreach (TwitchClient client in clients)
             {
                 if (client.TwitchUsername == comboBox1.Text.ToLower())
                 {

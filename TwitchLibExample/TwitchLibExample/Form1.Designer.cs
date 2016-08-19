@@ -43,12 +43,6 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -70,7 +64,6 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -111,6 +104,10 @@
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox27 = new System.Windows.Forms.GroupBox();
+            this.button29 = new System.Windows.Forms.Button();
+            this.textBox29 = new System.Windows.Forms.TextBox();
+            this.label35 = new System.Windows.Forms.Label();
             this.groupBox26 = new System.Windows.Forms.GroupBox();
             this.button27 = new System.Windows.Forms.Button();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
@@ -165,15 +162,10 @@
             this.button9 = new System.Windows.Forms.Button();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.groupBox27 = new System.Windows.Forms.GroupBox();
-            this.button29 = new System.Windows.Forms.Button();
-            this.textBox29 = new System.Windows.Forms.TextBox();
-            this.label35 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
@@ -193,6 +185,7 @@
             this.groupBox12.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox27.SuspendLayout();
             this.groupBox26.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.groupBox23.SuspendLayout();
@@ -206,7 +199,6 @@
             this.groupBox9.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
-            this.groupBox27.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -297,7 +289,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(5);
-            this.groupBox1.Size = new System.Drawing.Size(536, 217);
+            this.groupBox1.Size = new System.Drawing.Size(987, 217);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add Chat Twitch Account";
@@ -307,7 +299,7 @@
             this.textBox8.Location = new System.Drawing.Point(155, 114);
             this.textBox8.Margin = new System.Windows.Forms.Padding(5);
             this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(252, 38);
+            this.textBox8.Size = new System.Drawing.Size(487, 38);
             this.textBox8.TabIndex = 6;
             // 
             // label5
@@ -322,10 +314,10 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(427, 114);
+            this.button2.Location = new System.Drawing.Point(671, 119);
             this.button2.Margin = new System.Windows.Forms.Padding(5);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(96, 45);
+            this.button2.Size = new System.Drawing.Size(292, 71);
             this.button2.TabIndex = 4;
             this.button2.Text = "Add";
             this.button2.UseVisualStyleBackColor = true;
@@ -333,10 +325,10 @@
             // 
             // textBox5
             // 
-            this.textBox5.Location = new System.Drawing.Point(379, 48);
+            this.textBox5.Location = new System.Drawing.Point(516, 41);
             this.textBox5.Margin = new System.Windows.Forms.Padding(5);
             this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(143, 38);
+            this.textBox5.Size = new System.Drawing.Size(447, 38);
             this.textBox5.TabIndex = 3;
             this.textBox5.UseSystemPasswordChar = true;
             // 
@@ -351,7 +343,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(261, 55);
+            this.label2.Location = new System.Drawing.Point(398, 48);
             this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(104, 32);
@@ -367,70 +359,6 @@
             this.label1.Size = new System.Drawing.Size(82, 32);
             this.label1.TabIndex = 0;
             this.label1.Text = "User:";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.button3);
-            this.groupBox2.Controls.Add(this.textBox7);
-            this.groupBox2.Controls.Add(this.textBox6);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Location = new System.Drawing.Point(560, 12);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(5);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(5);
-            this.groupBox2.Size = new System.Drawing.Size(443, 217);
-            this.groupBox2.TabIndex = 3;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Add Whisper Twitch Account";
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(333, 114);
-            this.button3.Margin = new System.Windows.Forms.Padding(5);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(96, 45);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "Add";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // textBox7
-            // 
-            this.textBox7.Location = new System.Drawing.Point(155, 114);
-            this.textBox7.Margin = new System.Windows.Forms.Padding(5);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(161, 38);
-            this.textBox7.TabIndex = 4;
-            this.textBox7.UseSystemPasswordChar = true;
-            // 
-            // textBox6
-            // 
-            this.textBox6.Location = new System.Drawing.Point(155, 48);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(5);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(271, 38);
-            this.textBox6.TabIndex = 4;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(11, 119);
-            this.label3.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(104, 32);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "OAuth:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(11, 55);
-            this.label4.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 32);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "User:";
             // 
             // comboBox1
             // 
@@ -642,7 +570,6 @@
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
-            this.columnHeader2,
             this.columnHeader3});
             this.listView1.Location = new System.Drawing.Point(11, 241);
             this.listView1.Margin = new System.Windows.Forms.Padding(5);
@@ -656,11 +583,6 @@
             // 
             this.columnHeader1.Text = "Twitch Name";
             this.columnHeader1.Width = 130;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Connection Type";
-            this.columnHeader2.Width = 120;
             // 
             // columnHeader3
             // 
@@ -681,7 +603,6 @@
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.groupBox1);
-            this.tabPage5.Controls.Add(this.groupBox2);
             this.tabPage5.Controls.Add(this.listView1);
             this.tabPage5.Controls.Add(this.tabControl2);
             this.tabPage5.Location = new System.Drawing.Point(10, 48);
@@ -1116,6 +1037,49 @@
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Non Auth Calls";
+            // 
+            // groupBox27
+            // 
+            this.groupBox27.Controls.Add(this.button29);
+            this.groupBox27.Controls.Add(this.textBox29);
+            this.groupBox27.Controls.Add(this.label35);
+            this.groupBox27.Location = new System.Drawing.Point(969, 263);
+            this.groupBox27.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox27.Name = "groupBox27";
+            this.groupBox27.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox27.Size = new System.Drawing.Size(459, 93);
+            this.groupBox27.TabIndex = 22;
+            this.groupBox27.TabStop = false;
+            this.groupBox27.Text = "Get user\'s followed channels";
+            // 
+            // button29
+            // 
+            this.button29.Location = new System.Drawing.Point(304, 29);
+            this.button29.Margin = new System.Windows.Forms.Padding(5);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(120, 48);
+            this.button29.TabIndex = 18;
+            this.button29.Text = "Fetch";
+            this.button29.UseVisualStyleBackColor = true;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
+            // 
+            // textBox29
+            // 
+            this.textBox29.Location = new System.Drawing.Point(152, 36);
+            this.textBox29.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox29.Name = "textBox29";
+            this.textBox29.Size = new System.Drawing.Size(137, 38);
+            this.textBox29.TabIndex = 1;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(11, 36);
+            this.label35.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(130, 32);
+            this.label35.TabIndex = 0;
+            this.label35.Text = "Channel:";
             // 
             // groupBox26
             // 
@@ -1698,49 +1662,6 @@
             this.label12.TabIndex = 0;
             this.label12.Text = "Channel:";
             // 
-            // groupBox27
-            // 
-            this.groupBox27.Controls.Add(this.button29);
-            this.groupBox27.Controls.Add(this.textBox29);
-            this.groupBox27.Controls.Add(this.label35);
-            this.groupBox27.Location = new System.Drawing.Point(969, 263);
-            this.groupBox27.Margin = new System.Windows.Forms.Padding(5);
-            this.groupBox27.Name = "groupBox27";
-            this.groupBox27.Padding = new System.Windows.Forms.Padding(5);
-            this.groupBox27.Size = new System.Drawing.Size(459, 93);
-            this.groupBox27.TabIndex = 22;
-            this.groupBox27.TabStop = false;
-            this.groupBox27.Text = "Get user\'s followed channels";
-            // 
-            // button29
-            // 
-            this.button29.Location = new System.Drawing.Point(304, 29);
-            this.button29.Margin = new System.Windows.Forms.Padding(5);
-            this.button29.Name = "button29";
-            this.button29.Size = new System.Drawing.Size(120, 48);
-            this.button29.TabIndex = 18;
-            this.button29.Text = "Fetch";
-            this.button29.UseVisualStyleBackColor = true;
-            this.button29.Click += new System.EventHandler(this.button29_Click);
-            // 
-            // textBox29
-            // 
-            this.textBox29.Location = new System.Drawing.Point(152, 36);
-            this.textBox29.Margin = new System.Windows.Forms.Padding(5);
-            this.textBox29.Name = "textBox29";
-            this.textBox29.Size = new System.Drawing.Size(137, 38);
-            this.textBox29.TabIndex = 1;
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(11, 36);
-            this.label35.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(130, 32);
-            this.label35.TabIndex = 0;
-            this.label35.Text = "Channel:";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -1756,8 +1677,6 @@
             this.tabPage2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
@@ -1786,6 +1705,8 @@
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.groupBox27.ResumeLayout(false);
+            this.groupBox27.PerformLayout();
             this.groupBox26.ResumeLayout(false);
             this.groupBox26.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
@@ -1811,8 +1732,6 @@
             this.groupBox8.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
-            this.groupBox27.ResumeLayout(false);
-            this.groupBox27.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1827,9 +1746,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
@@ -1850,14 +1766,10 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button4;
