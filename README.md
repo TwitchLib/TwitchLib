@@ -2,6 +2,23 @@
 ### Overview
 TwitchLib is a C# library that attempts to harness the Twitch Chat and Twitch API into a single package. Using Costura.Fody, all required files are included in a single DLL file that can be imported into a .NET project.  Using TwitchLib, you can connect to a Twitch channel's chat or Twitch's group chat servers to setup chat and whisper bots in just a few lines of code. At the present time, you can also make channel modifications like stream title and game, as well as actions like commercials and and resetting of the stream key. Additionally, the TwitchLib project contains an example project that demonstrates the majority of functionality presented in the library.
 
+### Sample Implementation
+```
+TwitchClient client = new TwitchClient("my_channel", new ConnectionCredentials("my_username", "my_oauth"));
+
+client.OnConnected += clientConnected;
+client.OnMessageReceived += clientMessageReceived;
+client.OnWhisperCommandReceived += clientWhsiperReceived;
+
+client.SendMessage("A chat message.");
+client.SendWhisper("whisper_receiver", "A whisper message.");
+
+TwitchApi.BroadcasterOnline("my_favorite_streamer");
+TwitchApi.GetTwitchFollowers("my_favorite_streamer");
+TwitchApi.GetSubscriberCount("my_favorite_streamer", "my_favorite_streamer's_access_token");
+TwitchApi.RunCommercial(TwitchApi.CommercialLength.Seconds180, "my_favorite_streamer", "my_favorite_streamer's_access_token");
+```
+
 ### Availability
 Available via Nuget: `Install-Package TwitchLib`
 
@@ -60,29 +77,15 @@ Available via Nuget: `Install-Package TwitchLib`
 - FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected.
 - MessageThrottler - Property object that can be assigned to either Chat or Whisper clients, fires events and blocks sending of messages given a specific time period in order to prevent Twitch ToS violations. (OPTIONAL)
 
-### Other Classes
-- ChannelState - Contains channel states for: R9K, SubOnly, SlowMode, BroadcasterLanguage, Channel
-- ChatMessage - Contains Twitch chat message properties: UserID, Username, DisplayName, ColorHEX, Message, UserType, Channel, Subscriber, Turbo
-- ConnectionCredentials - Contains Twitch account credential properties: Host, TwitchUsername, TwitchOAuth, Port
-- Subscriber - Contains Subscription announcement properties: Channel, Name, Months
-- WhisperMessage - Contains Twitch whisper message properties: ColorHEX, Username, DisplayName, EmoteSet, ThreadID, MessageID, UserID, Turbo, BotUsername, Message
-- TwitchAPIClasses/Chatter - Contains chat user properties: Username, UserType
-- TwitchAPIClasses/TwitchChannel - Contains Twitch Channel properties: Status, Broadcaster_Language, Display_name, Game, Language, Name, Created_At, Updated_At, Delay, Logo, Background, Profile_Banner, Mature, Partner, ID, Views, Followers
-- TwitchAPIClasses/TwitchVideo - Contains a Twitch video properties: Title, Description, Status, ID< Tag_List, Recorded_At, Game, Delete_At, Preview, Broadcast_ID, URL, Length, Views, Is_Muted, FPS, Resolutions, Channel
-- TwitchAPIClasses/TwitchTeamMember - Contains Twitch Team Member properties: Name, Description, Title, Meta_Game, Display_Name, Link, Follower_Count, Total_Views, Current_Views,
-Status, ImageSizes
-- TwitchAPIClasses/Follow - Represents the follow relationship between a user/viewer and channel/streamer.
-- UserState - Contains state of a user that recently connected, properties: ColorHEX, DisplayName, EmoteSet, Channel, Subscriber, Turbo, UserType
-
 ### Testing/Parsing Stability
 I've recently taken to implementing this class into test applications and connecting them to large Twitch channels to see how the class handles fast moving chat and large TwitchAPI usage.  These are the events/channels I've had the library connected to.
 - GamesDoneQuick (several days) - 80,000 - 200,000 concurrent, fixed a number of overflow and outofindex exceptions thrown when TwitchAPI returns service unavailable or TwitchIRC returns incomplete message data
 
 ### Examples and Implementations
-- TwitchLibExample[BROKEN/NOT UPDATED] - This project is included in this repo as a master example project.
-- PFCKrutonium's ([TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot))
+- TwitchLibExample - This project is included in this repo as a master example project.
+- PFCKrutonium's [TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot) - This project implements the bot using VisualBasic.
 
-### Credits and Libraries Utilized
+### Libraries Utilized
 - Costura.Fody / Fody - Takes the projects various DLL files and packages them all in the TwitchLib.dll file, combing and removing potential problems with not having all parts
 - Newtonsoft.Json - JSON parsing class.  Used to parse Twitch API calls.
 - SmartIRC4Net - Base IRC class.
