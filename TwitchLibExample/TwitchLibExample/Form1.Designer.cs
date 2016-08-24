@@ -166,6 +166,10 @@
             this.button3 = new System.Windows.Forms.Button();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.groupBox28 = new System.Windows.Forms.GroupBox();
+            this.button28 = new System.Windows.Forms.Button();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -204,6 +208,7 @@
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox28.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -1020,6 +1025,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.groupBox28);
             this.groupBox6.Controls.Add(this.groupBox2);
             this.groupBox6.Controls.Add(this.groupBox27);
             this.groupBox6.Controls.Add(this.groupBox26);
@@ -1711,6 +1717,49 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Stream:";
             // 
+            // groupBox28
+            // 
+            this.groupBox28.Controls.Add(this.button28);
+            this.groupBox28.Controls.Add(this.textBox7);
+            this.groupBox28.Controls.Add(this.label4);
+            this.groupBox28.Location = new System.Drawing.Point(969, 505);
+            this.groupBox28.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox28.Name = "groupBox28";
+            this.groupBox28.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox28.Size = new System.Drawing.Size(459, 107);
+            this.groupBox28.TabIndex = 25;
+            this.groupBox28.TabStop = false;
+            this.groupBox28.Text = "Search Game";
+            // 
+            // button28
+            // 
+            this.button28.Location = new System.Drawing.Point(304, 29);
+            this.button28.Margin = new System.Windows.Forms.Padding(5);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(120, 48);
+            this.button28.TabIndex = 18;
+            this.button28.Text = "Fetch";
+            this.button28.UseVisualStyleBackColor = true;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(152, 36);
+            this.textBox7.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(137, 38);
+            this.textBox7.TabIndex = 1;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(11, 36);
+            this.label4.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(92, 32);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Game";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -1783,6 +1832,8 @@
             this.groupBox7.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox28.ResumeLayout(false);
+            this.groupBox28.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1927,6 +1978,10 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox groupBox28;
+        private System.Windows.Forms.Button button28;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.Label label4;
     }
 }
 

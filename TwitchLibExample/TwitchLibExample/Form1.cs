@@ -394,5 +394,20 @@ namespace TwitchLibExample
                 MessageBox.Show("No results!");
             }
         }
+
+        private async void button28_Click(object sender, EventArgs e)
+        {
+            //textbox7
+            List<TwitchLib.TwitchAPIClasses.Game> results = await TwitchApi.SearchGames(textBox7.Text);
+            if (results.Count > 0)
+            {
+                foreach (TwitchLib.TwitchAPIClasses.Game game in results)
+                    MessageBox.Show($"Result: {game.Name}\n\nPopularity: {game.Popularity}");
+            }
+            else
+            {
+                MessageBox.Show("No results!");
+            }
+        }
     }
 }
