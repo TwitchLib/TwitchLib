@@ -18,7 +18,7 @@ namespace TwitchLib
         public string Username { get; protected set; }
         /// <summary>Case-sensitive username of sender of chat message.</summary>
         public string DisplayName { get; protected set; }
-        /// <summary>Hex representation of username color in chat.</summary>
+        /// <summary>Hex representation of username color in chat (THIS CAN BE NULL IF VIEWER HASN'T SET COLOR).</summary>
         public string ColorHex { get; protected set; }
         /// <summary>Emote Ids that exist in message.</summary>
         public string EmoteSet { get; protected set; }
