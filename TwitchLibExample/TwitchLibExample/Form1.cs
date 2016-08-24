@@ -113,7 +113,6 @@ namespace TwitchLibExample
         {
             //Don't do this in production
             CheckForIllegalCrossThreadCalls = false;
-
             richTextBox1.Text = String.Format("#{0} {1}[isSub: {2}]: {3}", e.ChatMessage.Channel, e.ChatMessage.DisplayName, e.ChatMessage.Subscriber, e.ChatMessage.Message) + 
                 "\n" + richTextBox1.Text;
         }
@@ -380,6 +379,20 @@ namespace TwitchLibExample
             MessageBox.Show($"Channe: {textBox29.Text}\nTotal followed users: {response.TotalFollowCount}");
             foreach (TwitchLib.TwitchAPIClasses.Follow follow in response.Follows)
                 MessageBox.Show($"Followed user: {follow.Channel.DisplayName}\nFollow created at: {follow.CreatedAt}");
+        }
+
+        private async void button3_Click(object sender, EventArgs e)
+        {
+            //textbox6
+            List<TwitchLib.TwitchAPIClasses.Stream> results = await TwitchApi.SearchStreams(textBox6.Text);
+            if (results.Count > 0)
+            {
+                foreach (TwitchLib.TwitchAPIClasses.Stream stream in results)
+                    MessageBox.Show($"Result: {stream.Channel.Name}\n\nStarted at: {stream.CreatedAt}\nGame: {stream.Game}");
+            } else
+            {
+                MessageBox.Show("No results!");
+            }
         }
     }
 }
