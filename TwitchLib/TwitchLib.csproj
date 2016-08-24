@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TwitchAPIClasses\Game.cs" />
     <Compile Include="TwitchClientClasses\ChannelState.cs" />
     <Compile Include="TwitchClientClasses\ChatMessage.cs" />
     <Compile Include="Common.cs" />
