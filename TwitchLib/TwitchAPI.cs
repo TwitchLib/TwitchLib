@@ -263,7 +263,7 @@ namespace TwitchLib
         /// <param name="query">A url-encoded search query.</param>
         /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
         /// <param name="offset">Object offset for pagination. Default is 0.</param>
-        /// <returns>A list of TwitchChannel objects matching the query.</returns>
+        /// <returns>A list of Channel objects matching the query.</returns>
         public static async Task<List<Channel>> SearchChannels(string query, int limit = 25, int offset = 0)
         {
             var returnedChannels = new List<Channel>();
@@ -284,7 +284,7 @@ namespace TwitchLib
         /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
         /// <param name="offset">Object offset for pagination. Default is 0.</param>
         /// <param name="hls">If set to true, only returns streams using HLS, if set to false only returns non-HLS streams. Default is null.</param>
-        /// <returns>A list of TwitchChannel objects matching the query.</returns>
+        /// <returns>A list of Stream objects matching the query.</returns>
         public static async Task<List<TwitchAPIClasses.Stream>> SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
         {
             var returnedStreams = new List<TwitchAPIClasses.Stream>();
@@ -299,6 +299,25 @@ namespace TwitchLib
             returnedStreams.AddRange(
                 json.SelectToken("streams").Select(streamToken => new TwitchAPIClasses.Stream((JObject)streamToken)));
             return returnedStreams;
+        }
+
+        /// <summary>
+        /// Execute a search query on Twitch to find a list of games.
+        /// </summary>
+        /// <param name="query">A url-encoded search query.</param>
+        /// <param name="live">If set to true, only games with active streams will be found.</param>
+        /// <returns>A list of Game objects matching the query.</returns>
+        public static async Task<List<TwitchAPIClasses.Game>> SearchGames(string query, bool live = false)
+        {
+            var returnedGames = new List<TwitchAPIClasses.Game>();
+            
+            var args = $"?query={query}&type=suggest&live=" + live.ToString();
+            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/search/games{args}");
+
+            var json = JObject.Parse(resp);
+            returnedGames.AddRange(
+                json.SelectToken("games").Select(gameToken => new TwitchAPIClasses.Game((JObject)gameToken)));
+            return returnedGames;
         }
 
         /// <summary>
