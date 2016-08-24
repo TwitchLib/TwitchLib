@@ -278,6 +278,30 @@ namespace TwitchLib
         }
 
         /// <summary>
+        /// Execute a search query on Twitch to find a list of streams.
+        /// </summary>
+        /// <param name="query">A url-encoded search query.</param>
+        /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
+        /// <param name="offset">Object offset for pagination. Default is 0.</param>
+        /// <param name="hls">If set to true, only returns streams using HLS, if set to false only returns non-HLS streams. Default is null.</param>
+        /// <returns>A list of TwitchChannel objects matching the query.</returns>
+        public static async Task<List<TwitchAPIClasses.Stream>> SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
+        {
+            var returnedStreams = new List<TwitchAPIClasses.Stream>();
+            var hlsStr = "";
+            if (hls == true) hlsStr = "&hls=true";
+            if (hls == false) hlsStr = "&hls=false";
+            var args = $"?query={query}&limit={limit}&offset={offset}{hlsStr}";
+            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/search/streams{args}");
+
+            var json = JObject.Parse(resp);
+            if (json.SelectToken("_total").ToString() == "0") return returnedStreams;
+            returnedStreams.AddRange(
+                json.SelectToken("streams").Select(streamToken => new TwitchAPIClasses.Stream((JObject)streamToken)));
+            return returnedStreams;
+        }
+
+        /// <summary>
         /// Retrieves a list of all people currently chatting in a channel's chat.
         /// </summary>
         /// <param name="channel">The channel to retrieve the chatting people for.</param>
