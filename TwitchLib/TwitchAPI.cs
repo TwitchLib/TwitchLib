@@ -223,6 +223,26 @@ namespace TwitchLib
         }
 
         /// <summary>
+        /// Retrieves a re User object from Twitch Api and returns User object.
+        /// </summary>
+        /// <param name="username">Name of the user you wish to fetch from Twitch.</param>
+        /// <returns>User object containing details about the searched for user. Returns null if invalid user/error.</returns>
+        public static async Task<User> GetUser(string username)
+        {
+            try
+            {
+                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}");
+                JObject j = JObject.Parse(resp);
+                if (j.SelectToken("error") != null)
+                    return null;
+                return new User(resp);
+            } catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Retrieves the current uptime of a stream, if it is online.
         /// </summary>
         /// <param name="channel">The channel to retrieve the uptime for.</param>
