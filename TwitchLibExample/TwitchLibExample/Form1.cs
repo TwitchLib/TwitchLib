@@ -409,5 +409,15 @@ namespace TwitchLibExample
                 MessageBox.Show("No results!");
             }
         }
+
+        private async void button30_Click(object sender, EventArgs e)
+        {
+            //textbox30
+            var user = await TwitchApi.GetUser(textBox30.Text);
+            if (user != null)
+                MessageBox.Show($"User: {user.Name}\nDisplay Name: {user.DisplayName}\nBio: {user.Bio}");
+            else
+                MessageBox.Show("Invalid user!");
+        }
     }
 }
