@@ -69,6 +69,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - ChannelHasUserSubscribed(string username, string channel, string access_token) - Returns true or false on whether or not a user is subscribed to a channel.
 - GetTwitchStream(string channel) - Returns TwitchStream object containing API data related to a stream
 - GetTwitchFollower(string channel) - Returns asc or desc list of followers from a specific channel, returns list of TwitchFollower objects.
+- GetUser(string username) - Returns a User object which represents a User object Twitch has.
 - GetUptime(string channel) - Returns TimeSpan object representing time between creation_at of stream, and now.
 - SetClientId(string clientId) - Sets ClientId for inclusion in all API calls per Twitch requirement.
 - GetFollowedUsers(string channel, int limit = 25, int offset = 0, Common.SortKey sortKey) - Gets a list of users a user follows.
