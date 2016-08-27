@@ -71,6 +71,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - GetTwitchFollower(string channel) - Returns asc or desc list of followers from a specific channel, returns list of TwitchFollower objects.
 - GetUser(string username) - Returns a User object which represents a User object Twitch has.
 - GetUptime(string channel) - Returns TimeSpan object representing time between creation_at of stream, and now.
+- GetChannelFeed(string channel, int limit = 10, string cursor = null) - Returns a FeedResponse which houses all feed posts, comments, reactions, etc.
 - SetClientId(string clientId) - Sets ClientId for inclusion in all API calls per Twitch requirement.
 - GetFollowedUsers(string channel, int limit = 25, int offset = 0, Common.SortKey sortKey) - Gets a list of users a user follows.
 - SearchChannels(string query, int limit = 25, int offset = 0) - Search uses a term for channels and returns a list of channel objects.
