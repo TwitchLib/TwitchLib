@@ -419,5 +419,17 @@ namespace TwitchLibExample
             else
                 MessageBox.Show("Invalid user!");
         }
+
+        private async void button31_Click(object sender, EventArgs e)
+        {
+            //textbox31
+            var feed = await TwitchApi.GetChannelFeed(textBox31.Text);
+            foreach(TwitchLib.TwitchAPIClasses.FeedResponse.Post post in feed.Posts)
+            {
+                foreach (TwitchLib.TwitchAPIClasses.FeedResponse.Post.Comment comment in post.Comments)
+                    MessageBox.Show($"Comment author: {comment.User.Name}\n\nComment: {comment.Body}");
+                MessageBox.Show($"Post: {post.Body}");
+            }
+        }
     }
 }
