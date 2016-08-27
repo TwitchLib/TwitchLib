@@ -223,7 +223,7 @@ namespace TwitchLib
         }
 
         /// <summary>
-        /// Retrieves a re User object from Twitch Api and returns User object.
+        /// Retrieves a User object from Twitch Api and returns User object.
         /// </summary>
         /// <param name="username">Name of the user you wish to fetch from Twitch.</param>
         /// <returns>User object containing details about the searched for user. Returns null if invalid user/error.</returns>
@@ -254,6 +254,22 @@ namespace TwitchLib
                 return TimeSpan.Zero;
             var time = Convert.ToDateTime(stream.CreatedAt);
             return DateTime.UtcNow - time;
+        }
+
+        /// <summary>
+        /// Retrieves channel feed posts.
+        /// </summary>
+        /// <param name="channel">Channel to fetch feed posts from.</param>
+        /// <param name="limit">Applied limit (default 10, max 100)</param>
+        /// <param name="cursor">Used for pagination.</param>
+        /// <returns></returns>
+        public static async Task<FeedResponse> GetChannelFeed(string channel, int limit = 10, string cursor = null)
+        {
+            var args = $"?limit={limit}";
+            if (cursor != null)
+                args += $"&cursor={cursor};";
+            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts{args}");
+            return new FeedResponse(JObject.Parse(resp));
         }
 
         /// <summary>
