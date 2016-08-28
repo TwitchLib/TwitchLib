@@ -341,15 +341,18 @@ namespace TwitchLib
         /// </summary>
         /// <param name="channel">The channel to connect to.</param>
         /// <param name="credentials">The credentials to use to log in.</param>
-        /// <param name="commandIdentifier">The identifier to be used for reading and writing commands.</param>
+        /// <param name="chatCommandIdentifier">The identifier to be used for reading and writing commands from chat.</param>
+        /// <param name="whisperCommandIdentifier">The identifier to be used for reading and writing commands from whispers.</param>
         /// <param name="logging">Whether or not logging to console should be enabled.</param>
-        public TwitchClient(string channel, ConnectionCredentials credentials, char commandIdentifier = '\0',
+        public TwitchClient(string channel, ConnectionCredentials credentials, char chatCommandIdentifier = '\0', char whisperCommandIdentifier = '\0',
             bool logging = false)
         {
             _channel = channel.ToLower();
             _credentials = credentials;
-            if(commandIdentifier != '\0')
-                _chatCommandIdentifiers.Add(commandIdentifier);
+            if(chatCommandIdentifier != '\0')
+                _chatCommandIdentifiers.Add(chatCommandIdentifier);
+            if (whisperCommandIdentifier != '\0')
+                _whisperCommandIdentifiers.Add(whisperCommandIdentifier);
             _logging = logging;
 
             _client.AutoReconnect = true;
@@ -653,7 +656,7 @@ namespace TwitchLib
                 if(WhisperParsing.detectedWhisperReceived(decodedMessage, _credentials.TwitchUsername))
                 {
                     OnWhisperReceived?.Invoke(null, new OnWhisperReceivedArgs { WhisperMessage = new WhisperMessage(decodedMessage, _credentials.TwitchUsername) });
-                    return;
+                    // Fall through to detect command as well
                 }
 
                 // On Whisper Command Received
@@ -664,6 +667,7 @@ namespace TwitchLib
                     var argumentsAsList = whisperMessage.Message.Split(' ')?.Where(arg => arg != whisperMessage.Message[0] + command).ToList<string>() ?? new List<string>();
                     string argumentsAsString = whisperMessage.Message.Replace(whisperMessage.Message.Split(' ')?[0] + " ", "") ?? "";
                     OnWhisperCommandReceived?.Invoke(null, new OnWhisperCommandReceivedArgs { Command = command, WhisperMessage = whisperMessage, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
+                    return;
                 }
                 
             }

@@ -44,13 +44,14 @@ namespace TwitchLibExample
         private void button2_Click(object sender, EventArgs e)
         {
             ConnectionCredentials credentials = new ConnectionCredentials(textBox4.Text, textBox5.Text);
-            TwitchClient newClient = new TwitchClient(textBox8.Text, credentials, '!', true);
+            TwitchClient newClient = new TwitchClient(textBox8.Text, credentials, '!', '!', true);
 
             newClient.OnMessageReceived += new EventHandler<TwitchClient.OnMessageReceivedArgs>(globalChatMessageReceived);
             newClient.OnChatCommandReceived += new EventHandler<TwitchClient.OnChatCommandReceivedArgs>(chatCommandReceived);
             newClient.OnIncorrectLogin += new EventHandler<TwitchClient.OnIncorrectLoginArgs>(incorrectLogin);
             newClient.OnConnected += new EventHandler<TwitchClient.OnConnectedArgs>(onConnected);
             newClient.OnWhisperReceived += new EventHandler<TwitchClient.OnWhisperReceivedArgs>(globalWhisperReceived);
+            newClient.OnWhisperCommandReceived += new EventHandler<TwitchClient.OnWhisperCommandReceivedArgs>(whisperCommandReceived);
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
