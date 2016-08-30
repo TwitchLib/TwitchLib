@@ -432,5 +432,17 @@ namespace TwitchLibExample
                 MessageBox.Show($"Post: {post.Body}");
             }
         }
+
+        private async void button32_Click(object sender, EventArgs e)
+        {
+            //textbox32
+            var follow = await TwitchApi.FollowChannel(textBox14.Text, textBox32.Text, textBox15.Text);
+            MessageBox.Show($"Channel: {follow.Channel.Name}\nIsFollowing: {follow.IsFollowing}\nCreated at: {follow.CreatedAt}");
+        }
+
+        private void button33_Click(object sender, EventArgs e)
+        {
+            TwitchApi.UnfollowChannel(textBox14.Text, textBox32.Text, textBox15.Text);
+        }
     }
 }
