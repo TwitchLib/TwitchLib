@@ -77,6 +77,8 @@ Available via Nuget: `Install-Package TwitchLib`
 - SearchChannels(string query, int limit = 25, int offset = 0) - Search uses a term for channels and returns a list of channel objects.
 - SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null) - Search uses a term for streams and returns a list of stream objects.
 - SearchGames(string query, bool live = false) - Search uses a term for games and returns a list of game objects.
+- FollowChannel(string username, string channel, string accessToken) - Follows a specific channel.
+- UnfollowChannel(string username, string channel, string accessToken) - Unfollows a specific channel.
 
 ### Twitch Services
 - FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected.
