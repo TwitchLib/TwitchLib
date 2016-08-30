@@ -14,6 +14,7 @@ namespace TwitchLib
 {
     public static class TwitchApi
     {
+        #region Enums
         /// <summary>
         /// A list of valid commercial lengths.
         /// </summary>
@@ -35,67 +36,9 @@ namespace TwitchLib
             Descending,
             Ascending
         }
+        #endregion
 
-        /// <summary>
-        /// Sets ClientId, which is required for all API calls going forward from August 3rd. Also validates ClientId.
-        /// <param name="clientId">Client-Id to bind to TwitchApi.</param>
-        /// <param name="disableClientIdValidation">Forcefully disables Client-Id validation.</param>
-        /// </summary>
-        public static void SetClientId(string clientId, bool disableClientIdValidation = false)
-        {
-            ClientId = clientId;
-            if(!disableClientIdValidation)
-                ValidClientId();
-        }
-
-        private static string ClientId { get; set; }
-
-        /// <summary>
-        /// Validates a Client-Id and optionally updates it.
-        /// </summary>
-        /// <param name="clientId">Client-Id string to be validated.</param>
-        /// <param name="updateClientIdOnSuccess">Updates Client-Id if passed Client-Id is valid.</param>
-        /// <returns>True or false depending on the validity of the Client-Id.</returns>
-        public static async Task<bool> ValidClientId(string clientId, bool updateClientIdOnSuccess = true)
-        {
-            string oldClientId;
-            if (!string.IsNullOrEmpty(ClientId))
-                oldClientId = ClientId;
-            var resp = await MakeGetRequest("https://api.twitch.tv/kraken");
-            var json = JObject.Parse(resp);
-            if (json.SelectToken("identified") != null && (bool)json.SelectToken("identified") == true)
-                return true;
-            return false;
-        }
-
-        private static async void ValidClientId()
-        {
-            if (await ValidClientId(ClientId, false) == false)
-                throw new InvalidCredentialException("The provided Client-Id is invalid. Create an application here and obtain a Client-Id from it here: https://www.twitch.tv/settings/connections");
-        }
-
-        /// <summary>
-        /// Retrieves the current status of the broadcaster.
-        /// </summary>
-        /// <param name="channel">The name of the broadcaster to check.</param>
-        /// <returns>True if the broadcaster is online, false otherwise.</returns>
-        public static async Task<bool> BroadcasterOnline(string channel)
-        {
-            try
-            {
-                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
-                return resp.Contains("{\"stream\":{\"_id\":");
-            }
-            catch(InvalidCredentialException badCredentials)
-            {
-                throw badCredentials;
-            }
-            catch(Exception)
-            {
-                return false;
-            }
-        }
-
+        #region Get Objects
         /// <summary>
         /// Retrieves a string list of channels hosting a specified channel.
         /// <para>Note: This uses an undocumented API endpoint and reliability is not guaranteed. Additionally, this makes 2 API calls so limited use is recommended.</para>
@@ -153,76 +96,6 @@ namespace TwitchLib
         }
 
         /// <summary>
-        /// Retrieves whether a specified user is following the specified user.
-        /// </summary>
-        /// <param name="username">The user to check the follow status of.</param>
-        /// <param name="channel">The channel to check against.</param>
-        /// <returns>Returns Follow object representing follow relationship.</returns>
-        public static async Task<Follow> UserFollowsChannel(string username, string channel)
-        {
-            try
-            {
-                string resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}");
-                return new Follow(resp);
-            }
-            catch
-            {
-                return new Follow(null, false);
-            }
-        }
-
-        /// <summary>
-        /// Retrieves an ascending or descending list of followers from a specific channel.
-        /// </summary>
-        /// <param name="channel">The channel to retrieve the followers from.</param>
-        /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
-        /// <param name="cursor">Twitch uses cursoring to paginate long lists of followers. Check <code>_cursor</code> in response body and set <code>cursor</code> to this value to get the next page of results, or use <code>_links.next</code> to navigate to the next page of results.</param>
-        /// <param name="direction">Creation date sorting direction.</param>
-        /// <returns>A list of TwitchFollower objects.</returns>
-        public static async Task<FollowersResponse> GetTwitchFollowers(string channel, int limit = 25,
-            int cursor = -1, SortDirection direction = SortDirection.Descending)
-        {
-            string args = "";
-
-            args += "?limit=" + limit;
-            args += cursor != -1 ? $"&cursor={cursor}" : "";
-            args += "&direction=" + (direction == SortDirection.Descending ? "desc" : "asc");
-
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
-            return new FollowersResponse(resp);
-        }
-
-        /// <summary>
-        /// Retrieves a list of followed users a specific user has.
-        /// </summary>
-        /// <param name="channel">Channel to fetch followed users</param>
-        /// <param name="limit">Default is 25, max is 100, min is 0</param>
-        /// <param name="offset">Integer representing list offset</param>
-        /// <param name="sortKey">Enum representing sort order.</param>
-        /// <returns></returns>
-        public static async Task<FollowedUsersResponse> GetFollowedUsers(string channel, int limit = 25, int offset = 0, Common.SortKey sortKey = Common.SortKey.CreatedAt)
-        {
-            string args = "";
-            args += "?limit=" + limit;
-            args += "&offset=" + offset;
-            switch(sortKey)
-            {
-                case Common.SortKey.CreatedAt:
-                    args += "&sortby=created_at";
-                    break;
-                case Common.SortKey.LastBroadcaster:
-                    args += "&sortby=last_broadcast";
-                    break;
-                case Common.SortKey.Login:
-                    args += "&sortby=login";
-                    break;
-            }
-
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{channel}/follows/channels{args}");
-            return new FollowedUsersResponse(resp);
-        }
-
-        /// <summary>
         /// Retrieves a User object from Twitch Api and returns User object.
         /// </summary>
         /// <param name="username">Name of the user you wish to fetch from Twitch.</param>
@@ -236,7 +109,8 @@ namespace TwitchLib
                 if (j.SelectToken("error") != null)
                     return null;
                 return new User(resp);
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 return null;
             }
@@ -292,7 +166,9 @@ namespace TwitchLib
                 return null;
             }
         }
+        #endregion
 
+        #region Searching
         /// <summary>
         /// Execute a search query on Twitch to find a list of channels.
         /// </summary>
@@ -309,7 +185,7 @@ namespace TwitchLib
             var json = JObject.Parse(resp);
             if (json.SelectToken("_total").ToString() == "0") return returnedChannels;
             returnedChannels.AddRange(
-                json.SelectToken("channels").Select(channelToken => new Channel((JObject) channelToken)));
+                json.SelectToken("channels").Select(channelToken => new Channel((JObject)channelToken)));
             return returnedChannels;
         }
 
@@ -346,7 +222,7 @@ namespace TwitchLib
         public static async Task<List<TwitchAPIClasses.Game>> SearchGames(string query, bool live = false)
         {
             var returnedGames = new List<TwitchAPIClasses.Game>();
-            
+
             var args = $"?query={query}&type=suggest&live=" + live.ToString();
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/search/games{args}");
 
@@ -355,7 +231,9 @@ namespace TwitchLib
                 json.SelectToken("games").Select(gameToken => new TwitchAPIClasses.Game((JObject)gameToken)));
             return returnedGames;
         }
+        #endregion
 
+        #region Chatters
         /// <summary>
         /// Retrieves a list of all people currently chatting in a channel's chat.
         /// </summary>
@@ -380,36 +258,9 @@ namespace TwitchLib
                 chatters.SelectToken("viewers").Select(user => new Chatter(user.ToString(), Chatter.UType.Viewer)));
             return chatterList;
         }
+        #endregion
 
-        /// <summary>
-        /// Returns the amount of subscribers <paramref name="channel"/> has.
-        /// <para>Authenticated, required scope: <code>channel_subscriptions</code></para>
-        /// </summary>
-        /// <param name="channel">The channel to retrieve the subscriptions from.</param>
-        /// <param name="accessToken">An oauth token with the required scope.</param>
-        /// <returns>An integer of the total subscription count.</returns>
-        public static async Task<int> GetSubscriberCount(string channel, string accessToken)
-        {
-            var resp =
-                await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions", accessToken);
-            var json = JObject.Parse(resp);
-            return int.Parse(json.SelectToken("_total").ToString());
-        }
-
-        /// <summary>
-        /// Updates the <paramref name="delay"/> of a <paramref name="channel"/>.
-        /// <para>Authenticated, required scope: <code>channel_editor</code></para>
-        /// </summary>
-        /// <param name="delay">Channel delay in seconds.</param>
-        /// <param name="channel">The channel to update.</param>
-        /// <param name="accessToken">The channel owner's access token and the required scope.</param>
-        /// <returns>The response of the request.</returns>
-        public static async Task<string> UpdateStreamDelay(int delay, string channel, string accessToken)
-        {
-            var data = "{\"channel\":{\"delay\":" + delay + "}}";
-            return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
-        }
-
+        #region TitleAndGame
         /// <summary>
         /// Update the <paramref name="status"/> of a <paramref name="channel"/>.
         /// <para>Authenticated, required scope: <code>channel_editor</code></para>
@@ -452,7 +303,9 @@ namespace TwitchLib
             var data = "{\"channel\":{\"status\":\"" + status + "\",\"game\":\"" + game + "\"}}";
             return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
         }
+        #endregion
 
+        #region Streaming
         /// <summary>
         /// Resets the stream key of the <paramref name="channel"/>.
         /// <para>Authenticated, required scope: <code>channel_stream</code></para>
@@ -464,6 +317,92 @@ namespace TwitchLib
         {
             return await
                 MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}/streamkey", "DELETE", "", accessToken);
+        }
+
+        /// <summary>
+        /// Updates the <paramref name="delay"/> of a <paramref name="channel"/>.
+        /// <para>Authenticated, required scope: <code>channel_editor</code></para>
+        /// </summary>
+        /// <param name="delay">Channel delay in seconds.</param>
+        /// <param name="channel">The channel to update.</param>
+        /// <param name="accessToken">The channel owner's access token and the required scope.</param>
+        /// <returns>The response of the request.</returns>
+        public static async Task<string> UpdateStreamDelay(int delay, string channel, string accessToken)
+        {
+            var data = "{\"channel\":{\"delay\":" + delay + "}}";
+            return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
+        }
+        #endregion
+
+        #region Follows
+        /// <summary>
+        /// Retrieves whether a specified user is following the specified user.
+        /// </summary>
+        /// <param name="username">The user to check the follow status of.</param>
+        /// <param name="channel">The channel to check against.</param>
+        /// <returns>Returns Follow object representing follow relationship.</returns>
+        public static async Task<Follow> UserFollowsChannel(string username, string channel)
+        {
+            try
+            {
+                string resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}");
+                return new Follow(resp);
+            }
+            catch
+            {
+                return new Follow(null, false);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves an ascending or descending list of followers from a specific channel.
+        /// </summary>
+        /// <param name="channel">The channel to retrieve the followers from.</param>
+        /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
+        /// <param name="cursor">Twitch uses cursoring to paginate long lists of followers. Check <code>_cursor</code> in response body and set <code>cursor</code> to this value to get the next page of results, or use <code>_links.next</code> to navigate to the next page of results.</param>
+        /// <param name="direction">Creation date sorting direction.</param>
+        /// <returns>A list of TwitchFollower objects.</returns>
+        public static async Task<FollowersResponse> GetTwitchFollowers(string channel, int limit = 25,
+            int cursor = -1, SortDirection direction = SortDirection.Descending)
+        {
+            string args = "";
+
+            args += "?limit=" + limit;
+            args += cursor != -1 ? $"&cursor={cursor}" : "";
+            args += "&direction=" + (direction == SortDirection.Descending ? "desc" : "asc");
+
+            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
+            return new FollowersResponse(resp);
+        }
+
+        /// <summary>
+        /// Retrieves a list of followed users a specific user has.
+        /// </summary>
+        /// <param name="channel">Channel to fetch followed users</param>
+        /// <param name="limit">Default is 25, max is 100, min is 0</param>
+        /// <param name="offset">Integer representing list offset</param>
+        /// <param name="sortKey">Enum representing sort order.</param>
+        /// <returns></returns>
+        public static async Task<FollowedUsersResponse> GetFollowedUsers(string channel, int limit = 25, int offset = 0, Common.SortKey sortKey = Common.SortKey.CreatedAt)
+        {
+            string args = "";
+            args += "?limit=" + limit;
+            args += "&offset=" + offset;
+            switch (sortKey)
+            {
+                case Common.SortKey.CreatedAt:
+                    args += "&sortby=created_at";
+                    break;
+                case Common.SortKey.LastBroadcaster:
+                    args += "&sortby=last_broadcast";
+                    break;
+                case Common.SortKey.Login:
+                    args += "&sortby=login";
+                    break;
+            }
+
+            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{channel}/follows/channels{args}");
+            return new FollowedUsersResponse(resp);
         }
 
         /// <summary>
@@ -490,6 +429,23 @@ namespace TwitchLib
         {
             await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}", "DELETE", "", accessToken);
         }
+        #endregion  
+
+        #region Subscriptions
+        /// <summary>
+        /// Returns the amount of subscribers <paramref name="channel"/> has.
+        /// <para>Authenticated, required scope: <code>channel_subscriptions</code></para>
+        /// </summary>
+        /// <param name="channel">The channel to retrieve the subscriptions from.</param>
+        /// <param name="accessToken">An oauth token with the required scope.</param>
+        /// <returns>An integer of the total subscription count.</returns>
+        public static async Task<int> GetSubscriberCount(string channel, string accessToken)
+        {
+            var resp =
+                await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions", accessToken);
+            var json = JObject.Parse(resp);
+            return int.Parse(json.SelectToken("_total").ToString());
+        }
 
         /// <summary>
         /// Retrieves whether a <paramref name="username"/> is subscribed to a <paramref name="channel"/>.
@@ -513,7 +469,9 @@ namespace TwitchLib
                 return false;
             }
         }
+        #endregion
 
+        #region Videos
         /// <summary>
         /// Returns a list of videos ordered by time of creation, starting with the most recent.
         /// </summary>
@@ -532,7 +490,9 @@ namespace TwitchLib
 
             return vids.Select(vid => new Video(vid)).ToList();
         }
+        #endregion
 
+        #region Commercials
         /// <summary>
         /// Start a commercial on <paramref name="channel"/>.
         /// <para>Authenticated, required scope: <code>channel_commercial</code></para>
@@ -548,15 +508,17 @@ namespace TwitchLib
                 MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}/commercial", "POST",
                     $"length={length}", accessToken);
         }
+        #endregion
 
+        #region Internal Calls
         private static async Task<string> MakeGetRequest(string url, string accessToken = null)
         {
-            if(string.IsNullOrEmpty(ClientId) && string.IsNullOrWhiteSpace(accessToken))
+            if (string.IsNullOrEmpty(ClientId) && string.IsNullOrWhiteSpace(accessToken))
                 throw new InvalidCredentialException("All API calls require Client-Id or OAuth token as of August 3rd. Set Client-Id by using SetClientId()");
 
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
-            var request = (HttpWebRequest) WebRequest.Create(new Uri(url));
+            var request = (HttpWebRequest)WebRequest.Create(new Uri(url));
             request.Method = "GET";
             request.Accept = "application/vnd.twitchtv.v3+json";
             request.ContentType = "application/json";
@@ -580,7 +542,7 @@ namespace TwitchLib
             var data = new UTF8Encoding().GetBytes(requestData ?? "");
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
-            var request = (HttpWebRequest) WebRequest.Create(new Uri(url));
+            var request = (HttpWebRequest)WebRequest.Create(new Uri(url));
             request.Method = method;
             request.Accept = "application/vnd.twitchtv.v3+json";
             request.ContentType = "application/json";
@@ -599,5 +561,68 @@ namespace TwitchLib
                 return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
             }
         }
+        #endregion
+
+        #region Other
+        /// <summary>
+        /// Sets ClientId, which is required for all API calls going forward from August 3rd. Also validates ClientId.
+        /// <param name="clientId">Client-Id to bind to TwitchApi.</param>
+        /// <param name="disableClientIdValidation">Forcefully disables Client-Id validation.</param>
+        /// </summary>
+        public static void SetClientId(string clientId, bool disableClientIdValidation = false)
+        {
+            ClientId = clientId;
+            if (!disableClientIdValidation)
+                ValidClientId();
+        }
+
+        private static string ClientId { get; set; }
+
+        /// <summary>
+        /// Validates a Client-Id and optionally updates it.
+        /// </summary>
+        /// <param name="clientId">Client-Id string to be validated.</param>
+        /// <param name="updateClientIdOnSuccess">Updates Client-Id if passed Client-Id is valid.</param>
+        /// <returns>True or false depending on the validity of the Client-Id.</returns>
+        public static async Task<bool> ValidClientId(string clientId, bool updateClientIdOnSuccess = true)
+        {
+            string oldClientId;
+            if (!string.IsNullOrEmpty(ClientId))
+                oldClientId = ClientId;
+            var resp = await MakeGetRequest("https://api.twitch.tv/kraken");
+            var json = JObject.Parse(resp);
+            if (json.SelectToken("identified") != null && (bool)json.SelectToken("identified") == true)
+                return true;
+            return false;
+        }
+
+        private static async void ValidClientId()
+        {
+            if (await ValidClientId(ClientId, false) == false)
+                throw new InvalidCredentialException("The provided Client-Id is invalid. Create an application here and obtain a Client-Id from it here: https://www.twitch.tv/settings/connections");
+        }
+
+        /// <summary>
+        /// Retrieves the current status of the broadcaster.
+        /// </summary>
+        /// <param name="channel">The name of the broadcaster to check.</param>
+        /// <returns>True if the broadcaster is online, false otherwise.</returns>
+        public static async Task<bool> BroadcasterOnline(string channel)
+        {
+            try
+            {
+                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
+                return resp.Contains("{\"stream\":{\"_id\":");
+            }
+            catch (InvalidCredentialException badCredentials)
+            {
+                throw badCredentials;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        #endregion
     }
 }
