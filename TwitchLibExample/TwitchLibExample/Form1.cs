@@ -444,5 +444,25 @@ namespace TwitchLibExample
         {
             TwitchApi.UnfollowChannel(textBox14.Text, textBox32.Text, textBox15.Text);
         }
+
+        private async void button35_Click(object sender, EventArgs e)
+        {
+            //textbox33
+            var block = await TwitchApi.BlockUser(textBox14.Text, textBox33.Text, textBox15.Text);
+            MessageBox.Show($"Updated at: {block.UpdatedAt}\nUser: {block.User.Name}");
+        }
+
+        private void button34_Click(object sender, EventArgs e)
+        {
+            TwitchApi.UnblockUser(textBox14.Text, textBox33.Text, textBox15.Text);
+        }
+
+        private async void button36_Click(object sender, EventArgs e)
+        {
+            //textbox34
+            var blocks = await TwitchApi.GetBlockedList(textBox14.Text, textBox15.Text);
+            foreach (TwitchLib.TwitchAPIClasses.Block block in blocks)
+                MessageBox.Show($"Updated at: {block.UpdatedAt}\nUsername: {block.User.Name}");
+        }
     }
 }

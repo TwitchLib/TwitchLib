@@ -183,6 +183,13 @@
             this.textBox32 = new System.Windows.Forms.TextBox();
             this.label37 = new System.Windows.Forms.Label();
             this.button33 = new System.Windows.Forms.Button();
+            this.groupBox32 = new System.Windows.Forms.GroupBox();
+            this.button34 = new System.Windows.Forms.Button();
+            this.button35 = new System.Windows.Forms.Button();
+            this.textBox33 = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.groupBox33 = new System.Windows.Forms.GroupBox();
+            this.button36 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -225,6 +232,8 @@
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox31.SuspendLayout();
+            this.groupBox32.SuspendLayout();
+            this.groupBox33.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -655,6 +664,8 @@
             // 
             // groupBox11
             // 
+            this.groupBox11.Controls.Add(this.groupBox33);
+            this.groupBox11.Controls.Add(this.groupBox32);
             this.groupBox11.Controls.Add(this.groupBox31);
             this.groupBox11.Controls.Add(this.groupBox25);
             this.groupBox11.Controls.Add(this.groupBox24);
@@ -1920,6 +1931,84 @@
             this.button33.UseVisualStyleBackColor = true;
             this.button33.Click += new System.EventHandler(this.button33_Click);
             // 
+            // groupBox32
+            // 
+            this.groupBox32.Controls.Add(this.button34);
+            this.groupBox32.Controls.Add(this.button35);
+            this.groupBox32.Controls.Add(this.textBox33);
+            this.groupBox32.Controls.Add(this.label38);
+            this.groupBox32.Location = new System.Drawing.Point(969, 271);
+            this.groupBox32.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox32.Name = "groupBox32";
+            this.groupBox32.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox32.Size = new System.Drawing.Size(459, 151);
+            this.groupBox32.TabIndex = 21;
+            this.groupBox32.TabStop = false;
+            this.groupBox32.Text = "Block/Unfollow User";
+            // 
+            // button34
+            // 
+            this.button34.Location = new System.Drawing.Point(258, 87);
+            this.button34.Margin = new System.Windows.Forms.Padding(5);
+            this.button34.Name = "button34";
+            this.button34.Size = new System.Drawing.Size(166, 48);
+            this.button34.TabIndex = 19;
+            this.button34.Text = "Unblock";
+            this.button34.UseVisualStyleBackColor = true;
+            this.button34.Click += new System.EventHandler(this.button34_Click);
+            // 
+            // button35
+            // 
+            this.button35.Location = new System.Drawing.Point(304, 29);
+            this.button35.Margin = new System.Windows.Forms.Padding(5);
+            this.button35.Name = "button35";
+            this.button35.Size = new System.Drawing.Size(120, 48);
+            this.button35.TabIndex = 18;
+            this.button35.Text = "Block";
+            this.button35.UseVisualStyleBackColor = true;
+            this.button35.Click += new System.EventHandler(this.button35_Click);
+            // 
+            // textBox33
+            // 
+            this.textBox33.Location = new System.Drawing.Point(152, 36);
+            this.textBox33.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox33.Name = "textBox33";
+            this.textBox33.Size = new System.Drawing.Size(137, 38);
+            this.textBox33.TabIndex = 1;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(11, 36);
+            this.label38.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(82, 32);
+            this.label38.TabIndex = 0;
+            this.label38.Text = "User:";
+            // 
+            // groupBox33
+            // 
+            this.groupBox33.Controls.Add(this.button36);
+            this.groupBox33.Location = new System.Drawing.Point(969, 432);
+            this.groupBox33.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox33.Name = "groupBox33";
+            this.groupBox33.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox33.Size = new System.Drawing.Size(459, 107);
+            this.groupBox33.TabIndex = 20;
+            this.groupBox33.TabStop = false;
+            this.groupBox33.Text = "User blocked list";
+            // 
+            // button36
+            // 
+            this.button36.Location = new System.Drawing.Point(24, 34);
+            this.button36.Margin = new System.Windows.Forms.Padding(5);
+            this.button36.Name = "button36";
+            this.button36.Size = new System.Drawing.Size(400, 48);
+            this.button36.TabIndex = 18;
+            this.button36.Text = "Fetch";
+            this.button36.UseVisualStyleBackColor = true;
+            this.button36.Click += new System.EventHandler(this.button36_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -2000,6 +2089,9 @@
             this.groupBox7.PerformLayout();
             this.groupBox31.ResumeLayout(false);
             this.groupBox31.PerformLayout();
+            this.groupBox32.ResumeLayout(false);
+            this.groupBox32.PerformLayout();
+            this.groupBox33.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2161,6 +2253,13 @@
         private System.Windows.Forms.Button button32;
         private System.Windows.Forms.TextBox textBox32;
         private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.GroupBox groupBox32;
+        private System.Windows.Forms.Button button34;
+        private System.Windows.Forms.Button button35;
+        private System.Windows.Forms.TextBox textBox33;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.GroupBox groupBox33;
+        private System.Windows.Forms.Button button36;
     }
 }
 
