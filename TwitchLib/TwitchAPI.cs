@@ -334,6 +334,54 @@ namespace TwitchLib
         }
         #endregion
 
+        #region Blocking
+        /// <summary>
+        /// Retrieves a list of blocked users a specific user has.
+        /// <para>Authenticated, required scope: <code>user_blocks_read</code></para>
+        /// </summary>
+        /// <param name="username">Username of user to fetch blocked list of.</param>
+        /// <param name="accessToken">This call requires an access token.</param>
+        /// <param name="limit">Limit output from Twitch Api. Default 25, max 100.</param>
+        /// <param name="offset">Offset out from Twitch Api. Default 0.</param>
+        /// <returns>List of Block objects.</returns>
+        public static async Task<List<Block>> GetBlockedList(string username, string accessToken, int limit = 25, int offset = 0)
+        {
+            string args = $"?limit={limit}&offset={offset}";
+            string resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}/blocks{args}", accessToken);
+            JObject json = JObject.Parse(resp);
+            List<Block> blocks = new List<Block>();
+            if (json.SelectToken("blocks") != null)
+                foreach (JToken block in json.SelectToken("blocks"))
+                    blocks.Add(new Block(block));
+            return blocks;
+        }
+
+        /// <summary>
+        /// Blocks a user.
+        /// <para>Authenticated, required scope: <code>user_blocks_edit</code></para>
+        /// </summary>
+        /// <param name="username">User who's blocked list to add to.</param>
+        /// <param name="blockedUsername">User to block.</param>
+        /// <param name="accessToken">This call requires an access token.</param>
+        /// <returns>Block object.</returns>
+        public static async Task<Block> BlockUser(string username, string blockedUsername, string accessToken)
+        {
+            return new Block(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/blocks/{blockedUsername}", "PUT", "", accessToken)));
+        }
+
+        /// <summary>
+        /// Unblocks a user.
+        /// <para>Authenticated, required scope: <code>user_blocks_edit</code></para>
+        /// </summary>
+        /// <param name="username">User who's blocked list to unblock from.</param>
+        /// <param name="blockedUsername">User to unblock.</param>
+        /// <param name="accessToken">This call requires an access token.</param>
+        public static async void UnblockUser(string username, string blockedUsername, string accessToken)
+        {
+            await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/blocks/{blockedUsername}", "DELETE", "", accessToken);
+        }
+        #endregion
+
         #region Follows
         /// <summary>
         /// Retrieves whether a specified user is following the specified user.
@@ -382,7 +430,7 @@ namespace TwitchLib
         /// <param name="limit">Default is 25, max is 100, min is 0</param>
         /// <param name="offset">Integer representing list offset</param>
         /// <param name="sortKey">Enum representing sort order.</param>
-        /// <returns></returns>
+        /// <returns>FollowedUsersResponse object.</returns>
         public static async Task<FollowedUsersResponse> GetFollowedUsers(string channel, int limit = 25, int offset = 0, Common.SortKey sortKey = Common.SortKey.CreatedAt)
         {
             string args = "";
@@ -510,59 +558,6 @@ namespace TwitchLib
         }
         #endregion
 
-        #region Internal Calls
-        private static async Task<string> MakeGetRequest(string url, string accessToken = null)
-        {
-            if (string.IsNullOrEmpty(ClientId) && string.IsNullOrWhiteSpace(accessToken))
-                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token as of August 3rd. Set Client-Id by using SetClientId()");
-
-            accessToken = accessToken?.ToLower().Replace("oauth:", "");
-
-            var request = (HttpWebRequest)WebRequest.Create(new Uri(url));
-            request.Method = "GET";
-            request.Accept = "application/vnd.twitchtv.v3+json";
-            request.ContentType = "application/json";
-            request.Headers.Add("Client-ID", ClientId);
-
-            if (!string.IsNullOrWhiteSpace(accessToken))
-                request.Headers.Add("Authorization", $"OAuth {accessToken}");
-
-            using (var responseStream = await request.GetResponseAsync())
-            {
-                return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
-            }
-        }
-
-        private static async Task<string> MakeRestRequest(string url, string method, string requestData = null,
-            string accessToken = null)
-        {
-            if (string.IsNullOrWhiteSpace(ClientId) && string.IsNullOrWhiteSpace(accessToken))
-                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token as of August 3rd.");
-
-            var data = new UTF8Encoding().GetBytes(requestData ?? "");
-            accessToken = accessToken?.ToLower().Replace("oauth:", "");
-
-            var request = (HttpWebRequest)WebRequest.Create(new Uri(url));
-            request.Method = method;
-            request.Accept = "application/vnd.twitchtv.v3+json";
-            request.ContentType = "application/json";
-            request.Headers.Add("Client-ID", ClientId);
-
-            if (!string.IsNullOrWhiteSpace(accessToken))
-                request.Headers.Add("Authorization", $"OAuth {accessToken}");
-
-            using (var requestStream = await request.GetRequestStreamAsync())
-            {
-                await requestStream.WriteAsync(data, 0, data.Length);
-            }
-
-            using (var responseStream = await request.GetResponseAsync())
-            {
-                return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
-            }
-        }
-        #endregion
-
         #region Other
         /// <summary>
         /// Sets ClientId, which is required for all API calls going forward from August 3rd. Also validates ClientId.
@@ -621,6 +616,59 @@ namespace TwitchLib
             catch (Exception)
             {
                 return false;
+            }
+        }
+        #endregion
+
+        #region Internal Calls
+        private static async Task<string> MakeGetRequest(string url, string accessToken = null)
+        {
+            if (string.IsNullOrEmpty(ClientId) && string.IsNullOrWhiteSpace(accessToken))
+                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token as of August 3rd. Set Client-Id by using SetClientId()");
+
+            accessToken = accessToken?.ToLower().Replace("oauth:", "");
+
+            var request = (HttpWebRequest)WebRequest.Create(new Uri(url));
+            request.Method = "GET";
+            request.Accept = "application/vnd.twitchtv.v3+json";
+            request.ContentType = "application/json";
+            request.Headers.Add("Client-ID", ClientId);
+
+            if (!string.IsNullOrWhiteSpace(accessToken))
+                request.Headers.Add("Authorization", $"OAuth {accessToken}");
+
+            using (var responseStream = await request.GetResponseAsync())
+            {
+                return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
+            }
+        }
+
+        private static async Task<string> MakeRestRequest(string url, string method, string requestData = null,
+            string accessToken = null)
+        {
+            if (string.IsNullOrWhiteSpace(ClientId) && string.IsNullOrWhiteSpace(accessToken))
+                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token as of August 3rd.");
+
+            var data = new UTF8Encoding().GetBytes(requestData ?? "");
+            accessToken = accessToken?.ToLower().Replace("oauth:", "");
+
+            var request = (HttpWebRequest)WebRequest.Create(new Uri(url));
+            request.Method = method;
+            request.Accept = "application/vnd.twitchtv.v3+json";
+            request.ContentType = "application/json";
+            request.Headers.Add("Client-ID", ClientId);
+
+            if (!string.IsNullOrWhiteSpace(accessToken))
+                request.Headers.Add("Authorization", $"OAuth {accessToken}");
+
+            using (var requestStream = await request.GetRequestStreamAsync())
+            {
+                await requestStream.WriteAsync(data, 0, data.Length);
+            }
+
+            using (var responseStream = await request.GetResponseAsync())
+            {
+                return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
             }
         }
         #endregion
