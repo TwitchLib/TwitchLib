@@ -467,6 +467,31 @@ namespace TwitchLib
         }
 
         /// <summary>
+        /// Follows a channel given by <paramref name="channel"/>.
+        /// <para>Authenticated, required scope: <code>user_follows_edit</code></para>
+        /// </summary>
+        /// <param name="username">The username of the user trying to follow the given channel.</param>
+        /// <param name="channel">The channel to follow.</param>
+        /// <param name="accessToken">An oauth token with the required scope.</param>
+        /// <returns>A follow object representing the follow action.</returns>
+        public static async Task<Follow> FollowChannel(string username, string channel, string accessToken)
+        {
+            return new Follow(await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}", "PUT", "", accessToken));
+        }
+
+        /// <summary>
+        /// Unfollows a channel given by <paramref name="channel"/>.
+        /// <para>Authenticated, required scope: <code>user_follows_edit</code></para>
+        /// </summary>
+        /// <param name="username">The username of the user trying to follow the given channel.</param>
+        /// <param name="channel">The channel to unfollow.</param>
+        /// <param name="accessToken">An oauth token with the required scope.</param>
+        public static async void UnfollowChannel(string username, string channel, string accessToken)
+        {
+            await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}", "DELETE", "", accessToken);
+        }
+
+        /// <summary>
         /// Retrieves whether a <paramref name="username"/> is subscribed to a <paramref name="channel"/>.
         /// <para>Authenticated, required scope: <code>channel_check_subscription</code></para>
         /// </summary>
