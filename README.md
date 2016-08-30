@@ -79,6 +79,9 @@ Available via Nuget: `Install-Package TwitchLib`
 - SearchGames(string query, bool live = false) - Search uses a term for games and returns a list of game objects.
 - FollowChannel(string username, string channel, string accessToken) - Follows a specific channel.
 - UnfollowChannel(string username, string channel, string accessToken) - Unfollows a specific channel.
+- GetBlockedList(string username, string accessToken, int limit = 25, int offset = 0) - Returns a list of Block objects, each featuring a user object and an update date/time.
+- BlockUser(string username, string blockedUsername, string accessToken) - Blocks user, returns a Block object.
+- UnblockUser(string username, string blockedUsername, string accessToken) - Unblocks user.
 
 ### Twitch Services
 - FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected.
