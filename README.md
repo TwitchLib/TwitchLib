@@ -82,6 +82,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - GetBlockedList(string username, string accessToken, int limit = 25, int offset = 0) - Returns a list of Block objects, each featuring a user object and an update date/time.
 - BlockUser(string username, string blockedUsername, string accessToken) - Blocks user, returns a Block object.
 - UnblockUser(string username, string blockedUsername, string accessToken) - Unblocks user.
+- GetChannelEditors(string channel, string accessToken) - Retrieves a list of User objects representing users that are channel editors.
 
 ### Twitch Services
 - FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected.
