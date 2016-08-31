@@ -464,5 +464,12 @@ namespace TwitchLibExample
             foreach (TwitchLib.TwitchAPIClasses.Block block in blocks)
                 MessageBox.Show($"Updated at: {block.UpdatedAt}\nUsername: {block.User.Name}");
         }
+
+        private async void button37_Click(object sender, EventArgs e)
+        {
+            var editors = await TwitchApi.GetChannelEditors(textBox14.Text, textBox15.Text);
+            foreach (TwitchLib.TwitchAPIClasses.User user in editors)
+                MessageBox.Show($"User: {user.Name}");
+        }
     }
 }
