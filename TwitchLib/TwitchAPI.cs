@@ -40,6 +40,22 @@ namespace TwitchLib
 
         #region Get Objects
         /// <summary>
+        /// Retrieves a string list of channel editor users.
+        /// <para>Authenticated, required scope: <code>channel_read</code></para>
+        /// </summary>
+        /// <param name="channel">The channel to fetch editors from.</param>
+        /// <param name="accessToken">An access token with the required scope.</param>
+        /// <returns>A list of User objects that are channel editors.</returns>
+        public static async Task<List<User>> GetChannelEditors(string channel, string accessToken)
+        {
+            var json = JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/editors", accessToken));
+            List<User> editors = new List<User>();
+            foreach (JToken editor in json.SelectToken("users"))
+                editors.Add(new User(editor.ToString()));
+            return editors;
+        }
+
+        /// <summary>
         /// Retrieves a string list of channels hosting a specified channel.
         /// <para>Note: This uses an undocumented API endpoint and reliability is not guaranteed. Additionally, this makes 2 API calls so limited use is recommended.</para>
         /// </summary>
