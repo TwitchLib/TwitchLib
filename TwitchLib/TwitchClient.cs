@@ -600,6 +600,14 @@ namespace TwitchLib
                 return;
             }
 
+            // On Malformed OAuth
+            if (ChatParsing.detectedMalformedOAuth(decodedMessage, _channel))
+            {
+                _client.Disconnect();
+                OnIncorrectLogin?.Invoke(null, new OnIncorrectLoginArgs { Exception = new ErrorLoggingInException("Invalid OAuth key. Remember to add 'oauth:' as a prefix. Example: oauth:19nds9sbnga9asd", _credentials.TwitchUsername) });
+                return;
+            }
+
             // On Host Left
             if (ChatParsing.detectedHostLeft(decodedMessage, _channel))
             {

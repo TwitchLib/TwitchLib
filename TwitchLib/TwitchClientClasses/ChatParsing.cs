@@ -140,6 +140,18 @@ namespace TwitchLib.TwitchClientClasses
             return false;
         }
 
+        /// <summary>[Works] Parse function to detect malformed oauth error.</summary>
+        /// <param name="message"></param>
+        /// <param name="channel"></param>
+        /// <returns></returns>
+        public static bool detectedMalformedOAuth(string message, string channel)
+        {
+            var readType = getReadType(message, channel);
+            if (readType != null && readType == "NOTICE")
+                return message.Contains("Improperly formatted auth");
+            return false;
+        }
+
         /// <summary>[Untested] Parse function to detect host leaving.</summary>
         /// <param name="message"></param>
         /// <param name="channel"></param>
