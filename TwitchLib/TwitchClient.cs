@@ -491,6 +491,15 @@ namespace TwitchLib
             _client.WriteLine($"/join #{channel}");
         }
 
+        /// <summary>
+        /// This method allows firing the message parser with a custom irc string allowing for easy testing
+        /// </summary>
+        /// <param name="rawIrc">This should be a raw IRC message resembling one received from Twitch IRC.</param>
+        public void OnReadLineTest(string rawIrc)
+        {
+            ParseIrcMessage(rawIrc);
+        }
+
         private void Connected(object sender, EventArgs e)
         {
             _client.WriteLine(Rfc2812.Pass(_credentials.TwitchOAuth), Priority.Critical);
@@ -509,8 +518,13 @@ namespace TwitchLib
 
         private void OnReadLine(object sender, ReadLineEventArgs e)
         {
+            ParseIrcMessage(e.Line);
+        }
+
+        private void ParseIrcMessage(string ircMessage)
+        {
             // Hack to accomodate at least cyrillic characters, possibly more
-            string decodedMessage = Encoding.UTF8.GetString(Encoding.Default.GetBytes(e.Line));
+            string decodedMessage = Encoding.UTF8.GetString(Encoding.Default.GetBytes(ircMessage));
             if (_logging)
                 Console.WriteLine(decodedMessage);
             
