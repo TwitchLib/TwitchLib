@@ -471,5 +471,16 @@ namespace TwitchLibExample
             foreach (TwitchLib.TwitchAPIClasses.User user in editors)
                 MessageBox.Show($"User: {user.Name}");
         }
+
+        private void button38_Click(object sender, EventArgs e)
+        {
+            if(clients.Count > 0 )
+            {
+                clients[0].OnReadLineTest(textBox34.Text);
+            } else
+            {
+                MessageBox.Show("At least one connected client is required to test an IRC message parsing.");
+            }
+        }
     }
 }
