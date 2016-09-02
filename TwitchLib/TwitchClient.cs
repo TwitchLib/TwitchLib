@@ -632,7 +632,8 @@ namespace TwitchLib
             // On ReSubscriber
             if (ChatParsing.detectedReSubscriber(decodedMessage, _channel))
             {
-                OnReSubscriber?.Invoke(null, new OnReSubscriberArgs { ReSubscriber = new ReSubscriber(decodedMessage) });
+                var resub = new ReSubscriber(decodedMessage);
+                OnReSubscriber?.Invoke(null, new OnReSubscriberArgs { ReSubscriber = resub });
                 return;
             }
 

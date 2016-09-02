@@ -110,8 +110,13 @@ namespace TwitchLib
                     Channel = ircString.Split('#')[2];
 
             // Parse sub message
-            string rawParsedIrc = ircString.Split(new string[] { $"#{Channel} :" }, StringSplitOptions.None)[0];
-            ResubMessage = ircString.Replace($"{rawParsedIrc}#{Channel} :", "");
+            ResubMessage = "";
+            if(ircString.Contains($"#{Channel} :"))
+            {
+                string rawParsedIrc = ircString.Split(new string[] { $"#{Channel} :" }, StringSplitOptions.None)[0];
+                ResubMessage = ircString.Replace($"{rawParsedIrc}#{Channel} :", "");
+            }
+            
         }
 
         public override string ToString()
