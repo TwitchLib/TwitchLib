@@ -68,6 +68,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - GetTeamMembers(string teamName) - Async function that returns a TwitchTeamMember list of all members in a Twitch team (undocumented)
 - ChannelHasUserSubscribed(string username, string channel, string access_token) - Returns true or false on whether or not a user is subscribed to a channel.
 - GetTwitchStream(string channel) - Returns TwitchStream object containing API data related to a stream
+- GetTwitchStreams(List<string> channels) - Returns list of Stream objects for each channel passed in.
 - GetTwitchFollower(string channel) - Returns asc or desc list of followers from a specific channel, returns list of TwitchFollower objects.
 - GetUser(string username) - Returns a User object which represents a User object Twitch has.
 - GetUptime(string channel) - Returns TimeSpan object representing time between creation_at of stream, and now.
