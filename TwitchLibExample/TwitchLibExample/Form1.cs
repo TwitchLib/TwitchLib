@@ -482,5 +482,18 @@ namespace TwitchLibExample
                 MessageBox.Show("At least one connected client is required to test an IRC message parsing.");
             }
         }
+
+        private async void button39_Click(object sender, EventArgs e)
+        {
+            if(textBox35.Text.Contains(","))
+            {
+                var streams = await TwitchApi.GetTwitchStreams(textBox35.Text.Split(',').ToList());
+                foreach (var stream in streams)
+                    MessageBox.Show($"{stream.Channel.Name} currently has {stream.Viewers.ToString()} viewers!");
+            } else
+            {
+                MessageBox.Show("Seperate streams with a comma.");
+            }
+        }
     }
 }
