@@ -182,6 +182,28 @@ namespace TwitchLib
                 return null;
             }
         }
+
+        /// <summary>
+        /// Retrieves a collection of API data from multiple streams
+        /// </summary>
+        /// <param name="channels">List of channels.</param>
+        /// <returns>A list of stream objects for each stream.</returns>
+        public static async Task<List<TwitchAPIClasses.Stream>> GetTwitchStreams(List<string> channels)
+        {
+            try
+            {
+                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams?channel={string.Join(",", channels)}");
+                var json = JObject.Parse(resp);
+                List<TwitchAPIClasses.Stream> streams = new List<TwitchAPIClasses.Stream>();
+                foreach (JToken channel in json.SelectToken("streams"))
+                    streams.Add(new TwitchAPIClasses.Stream(channel));
+                return streams;
+            }
+            catch
+            {
+                return null;
+            }
+        }
         #endregion
 
         #region Searching
