@@ -279,7 +279,7 @@ namespace TwitchLib
         /// <returns>A list of Chatter objects detailing each chatter in a channel.</returns>
         public static async Task<List<Chatter>> GetChatters(string channel)
         {
-            var resp = await MakeGetRequest($"https://tmi.twitch.tv/group/user/{channel}/chatters");
+            var resp = await MakeGetRequest($"https://tmi.twitch.tv/group/user/{channel.ToLower()}/chatters");
             var chatters = JObject.Parse(resp).SelectToken("chatters");
             var chatterList =
                 chatters.SelectToken("moderators")
