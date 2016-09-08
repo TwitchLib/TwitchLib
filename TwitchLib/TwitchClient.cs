@@ -19,6 +19,7 @@ namespace TwitchLib
         private List<char> _chatCommandIdentifiers = new List<char>();
         private List<char> _whisperCommandIdentifiers = new List<char>();
         private bool _logging;
+        private MessageEmoteCollection _channelEmotes = new MessageEmoteCollection();
 
         /// <summary>Object representing current state of channel (r9k, slow, etc).</summary>
         public ChannelState ChannelState { get; protected set; }
@@ -42,7 +43,7 @@ namespace TwitchLib
         ///     managing user emote permissions such as sub-only emotes). Third-party emotes will have to be manually
         ///     added according to the availability rules defined by the third-party.
         /// </remarks>
-        public MessageEmoteCollection ChannelEmotes { get; protected set; }
+        public MessageEmoteCollection ChannelEmotes { get { return _channelEmotes; } protected set { _channelEmotes = value; } }
 
         /// <summary>Will disable the client from sending automatic PONG responses to PING</summary>
         public bool DisableAutoPong { get; set; } = false;
@@ -538,8 +539,6 @@ namespace TwitchLib
 
         private void ParseIrcMessage(string ircMessage)
         {
-            var _channelEmotes = ChannelEmotes;
-
             // Hack to accomodate at least cyrillic characters, possibly more
             string decodedMessage = Encoding.UTF8.GetString(Encoding.Default.GetBytes(ircMessage));
             if (_logging)
