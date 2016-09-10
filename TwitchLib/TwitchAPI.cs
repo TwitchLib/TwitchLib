@@ -12,6 +12,7 @@ using TwitchLib.TwitchAPIClasses;
 
 namespace TwitchLib
 {
+    /// <summary>Static class with functionality for Twitch API calls.</summary>
     public static class TwitchApi
     {
         #region Enums
@@ -20,11 +21,17 @@ namespace TwitchLib
         /// </summary>
         public enum CommercialLength
         {
+            /// <summary>30 second commercial</summary>
             Seconds30 = 30,
+            /// <summary>60 second commercial</summary>
             Seconds60 = 60,
+            /// <summary>90 second commercial</summary>
             Seconds90 = 90,
+            /// <summary>120 second commercial</summary>
             Second120 = 120,
+            /// <summary>150 second commercial</summary>
             Seconds150 = 150,
+            /// <summary>180 second commercial</summary>
             Seconds180 = 180
         }
 
@@ -33,7 +40,9 @@ namespace TwitchLib
         /// </summary>
         public enum SortDirection
         {
+            /// <summary>Descending sort direction.</summary>
             Descending,
+            /// <summary>Ascending sort direction.</summary>
             Ascending
         }
         #endregion
@@ -283,17 +292,17 @@ namespace TwitchLib
             var chatters = JObject.Parse(resp).SelectToken("chatters");
             var chatterList =
                 chatters.SelectToken("moderators")
-                    .Select(user => new Chatter(user.ToString(), Chatter.UType.Moderator))
+                    .Select(user => new Chatter(user.ToString(), Common.UserType.Moderator))
                     .ToList();
             chatterList.AddRange(
-                chatters.SelectToken("staff").Select(user => new Chatter(user.ToString(), Chatter.UType.Staff)));
+                chatters.SelectToken("staff").Select(user => new Chatter(user.ToString(), Common.UserType.Staff)));
             chatterList.AddRange(
-                chatters.SelectToken("admins").Select(user => new Chatter(user.ToString(), Chatter.UType.Admin)));
+                chatters.SelectToken("admins").Select(user => new Chatter(user.ToString(), Common.UserType.Admin)));
             chatterList.AddRange(
                 chatters.SelectToken("global_mods")
-                    .Select(user => new Chatter(user.ToString(), Chatter.UType.GlobalModerator)));
+                    .Select(user => new Chatter(user.ToString(), Common.UserType.GlobalModerator)));
             chatterList.AddRange(
-                chatters.SelectToken("viewers").Select(user => new Chatter(user.ToString(), Chatter.UType.Viewer)));
+                chatters.SelectToken("viewers").Select(user => new Chatter(user.ToString(), Common.UserType.Viewer)));
             return chatterList;
         }
         #endregion

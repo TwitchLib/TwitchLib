@@ -7,23 +7,33 @@ using System.Timers;
 
 namespace TwitchLib.Services
 {
+    /// <summary>Class used to throttle chat and whsiper messages to enforce guidelines.</summary>
     public class MessageThrottler
     {
         private Timer _periodTimer = new Timer();
         private TimeSpan _periodDuration;
         private int _currentMessageCount;
 
+        /// <summary>Enum representing the available throttle types.</summary>
         public enum ThrottleType
         {
+            /// <summary>Throttle based on too many messages.</summary>
             TooManyMessages = 0,
+            /// <summary>Throttle based on message being too short.</summary>
             MessageTooShort = 1,
+            /// <summary>Throttle based on message being too long.</summary>
             MessageTooLong = 2
         }
 
+        /// <summary>Property representing number of messages allowed before throttling in a period.</summary>
         public int MessagesAllowedInPeriod { get; set; }
+        /// <summary>Property representing the time period for throttling.</summary>
         public TimeSpan PeriodDuration { get { return _periodDuration; } set { _periodDuration = value; _periodTimer.Interval = value.TotalMilliseconds; } }
+        /// <summary>Property representing minimum message length for throttling.</summary>
         public int MinimumMessageLengthAllowed { get; set; }
+        /// <summary>Property representing maximum message length before throttling.</summary>
         public int MaximumMessageLengthAllowed { get; set; }
+        /// <summary>Property representing whether throttling should be applied to raw messages.</summary>
         public bool ApplyThrottlingToRawMessages { get; set; }
 
         /// <summary>messageThrottler constructor.</summary>

@@ -6,26 +6,45 @@ using System.Threading.Tasks;
 
 namespace TwitchLib
 {
+    /// <summary>Class representing a resubscriber.</summary>
     public class ReSubscriber
     {
+        /// <summary>Property representing list of badges assigned.</summary>
         public List<KeyValuePair<string, string>> Badges { get; protected set; }
+        /// <summary>Property representing the colorhex of the resubscriber.</summary>
         public string ColorHex { get; protected set; }
+        /// <summary>Property representing resubscriber's customized display name.</summary>
         public string DisplayName { get; protected set; }
+        /// <summary>Property representing emote set of resubscriber.</summary>
         public string EmoteSet { get; protected set; }
+        /// <summary>Property representing login of resubscription event.</summary>
         public string Login { get; protected set; }
+        /// <summary>Property representing internval system message value.</summary>
         public string SystemMessage { get; protected set; }
+        /// <summary>Property representing </summary>
         public string ResubMessage { get; protected set; }
+        /// <summary>Property representing number of months of being subscribed.</summary>
         public int Months { get; protected set; }
+        /// <summary>Property representing the room id.</summary>
         public int RoomId { get; protected set; }
+        /// <summary>Property representing the user's id.</summary>
         public int UserId { get; protected set; }
+        /// <summary>Property representing whether or not the resubscriber is a moderator.</summary>
         public bool Mod { get; protected set; }
+        /// <summary>Property representing whether or not the resubscriber is a turbo member.</summary>
         public bool Turbo { get; protected set; }
+        /// <summary>Property representing whether or not the resubscriber is a subscriber (YES).</summary>
         public bool Sub { get; protected set; }
+        /// <summary>Property representing the user type of the resubscriber.</summary>
         public Common.UserType UserType { get; protected set; }
+        /// <summary>Property representing the raw IRC message (for debugging/customized parsing)</summary>
         public string RawIrc { get; protected set; }
+        /// <summary>Property representing the channel the resubscription happened in.</summary>
         public string Channel { get; protected set; }
 
         // @badges=subscriber/1,turbo/1;color=#2B119C;display-name=JustFunkIt;emotes=;login=justfunkit;mod=0;msg-id=resub;msg-param-months=2;room-id=44338537;subscriber=1;system-msg=JustFunkIt\ssubscribed\sfor\s2\smonths\sin\sa\srow!;turbo=1;user-id=26526370;user-type= :tmi.twitch.tv USERNOTICE #burkeblack :AVAST YEE SCURVY DOG
+
+        /// <summary>ReSubscriber object constructor.</summary>
         public ReSubscriber(string ircString)
         {
             RawIrc = ircString;
@@ -119,6 +138,7 @@ namespace TwitchLib
             
         }
 
+        /// <summary>Overriden ToString method, prints out all properties related to resub.</summary>
         public override string ToString()
         {
             return $"Badges: {Badges.Count}, color hex: {ColorHex}, display name: {DisplayName}, emote set: {EmoteSet}, login: {Login}, system message: {SystemMessage}, " + 

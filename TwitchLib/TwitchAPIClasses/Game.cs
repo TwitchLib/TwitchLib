@@ -68,6 +68,7 @@ namespace TwitchLib.TwitchAPIClasses
             /// <summary>Template game logo.</summary>
             public string Template { get; protected set; }
 
+            /// <summary>LogoUrls object constructor.</summary>
             public LogoUrls(JToken j)
             {
                 Large = j.SelectToken("large")?.ToString();

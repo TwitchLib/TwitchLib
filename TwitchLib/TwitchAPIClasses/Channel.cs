@@ -2,26 +2,45 @@
 
 namespace TwitchLib.TwitchAPIClasses
 {
+    /// <summary>Class representing a channel object from Twitch API.</summary>
     public class Channel
     {
+        /// <summary>Property representing whether channel is mature or not.</summary>
         public bool Mature { get; protected set; }
+        /// <summary>Property representing whether channel is partnered or not.</summary>
         public bool Partner { get; protected set; }
+        /// <summary>Property representing number of followers the channel has.</summary>
         public int Followers { get; protected set; }
+        /// <summary>Property representing number of views channel has.</summary>
         public int Views { get; protected set; }
+        /// <summary>Property representing channel Id.</summary>
         public long Id { get; protected set; }
+        /// <summary>Property representing background image url.</summary>
         public string Background { get; protected set; }
+        /// <summary>Property representing the language the broadcaster has flagged their channel as.</summary>
         public string BroadcasterLanguage { get; protected set; }
+        /// <summary>Property representing date time string of channel creation.</summary>
         public string CreatedAt { get; protected set; }
+        /// <summary>Property representing channel delay, if applied.</summary>
         public string Delay { get; protected set; }
+        /// <summary>Property representing customized display name.</summary>
         public string DisplayName { get; protected set; }
+        /// <summary>Property representing the game the channel is playing.</summary>
         public string Game { get; protected set; }
+        /// <summary>Property representing the signed language.</summary>
         public string Language { get; protected set; }
+        /// <summary>Property representing the logo of the channel.</summary>
         public string Logo { get; protected set; }
+        /// <summary>Property representing the channel name.</summary>
         public string Name { get; protected set; }
+        /// <summary>Property representing the banner that stretches across the top.</summary>
         public string ProfileBanner { get; protected set; }
+        /// <summary>Property representing current channel status.</summary>
         public string Status { get; protected set; }
+        /// <summary>Property representing date time of last channel update.</summary>
         public string UpdatedAt { get; protected set; }
 
+        /// <summary>Constructor for channel object.</summary>
         public Channel(JToken json)
         {
             bool isMature, isPartner;

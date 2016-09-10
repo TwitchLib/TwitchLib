@@ -6,27 +6,19 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.TwitchAPIClasses
 {
+    /// <summary>Class representing a chatter as returned by the Twitch Api.</summary>
     public class Chatter
     {
-        public enum UType
+        /// <summary>Property representing the username of a chatter.</summary>
+        public string Username { get; protected set; }
+        /// <summary>Property representing the user type of a chatter.</summary>
+        public Common.UserType UserType { get; protected set; }
+
+        /// <summary>Constructor of Chatter.</summary>
+        public Chatter(string username, Common.UserType userType)
         {
-            Viewer,
-            Moderator,
-            GlobalModerator,
-            Admin,
-            Staff
-        }
-
-        private string _username;
-        private UType _userType;
-
-        public string Username => _username;
-        public UType UserType => _userType;
-
-        public Chatter(string username, UType userType)
-        {
-            _username = username;
-            _userType = userType;
+            Username = username;
+            UserType = userType;
         }
     }
 }

@@ -7,19 +7,31 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitchLib.TwitchAPIClasses
 {
+    /// <summary>Class representing a stream as returned by Twitch API</summary>
     public class Stream
     {
+        /// <summary>Property representing whether or not the stream is playlist or live.</summary>
         public bool IsPlaylist { get; protected set; }
+        /// <summary>Property representing average frames per second.</summary>
         public double AverageFps { get; protected set; }
+        /// <summary>Property representing any delay on the stream (in seconds)</summary>
         public int Delay { get; protected set; }
+        /// <summary>Property representing height dimension.</summary>
         public int VideoHeight { get; protected set; }
+        /// <summary>Property representing number of current viewers.</summary>
         public int Viewers { get; protected set; }
+        /// <summary>Property representing the stream id.</summary>
         public long Id { get; protected set; }
+        /// <summary>Property representing the preview images in an object.</summary>
         public PreviewObj Preview { get; protected set; }
+        /// <summary>Property representing the date time the stream was created.</summary>
         public string CreatedAt { get; protected set; }
+        /// <summary>Property representing the current game.</summary>
         public string Game { get; protected set; }
+        /// <summary>Property representing the channel the stream is from.</summary>
         public Channel Channel { get; protected set; }
 
+        /// <summary>Stream object constructor.</summary>
         public Stream(JToken twitchStreamData)
         {
             bool isPlaylist;
@@ -41,13 +53,19 @@ namespace TwitchLib.TwitchAPIClasses
             Preview = new PreviewObj(twitchStreamData.SelectToken("preview"));
         }
 
+        /// <summary>Class representing the various sizes of previews.</summary>
         public class PreviewObj
         {
+            /// <summary>Property representing the small preview size.</summary>
             public string Small { get; protected set; }
+            /// <summary>Property representing the medium preview size.</summary>
             public string Medium { get; protected set; }
+            /// <summary>Property representing the large preview size.</summary>
             public string Large { get; protected set; }
+            /// <summary>Property representing the template preview size.</summary>
             public string Template { get; protected set; }
 
+            /// <summary>PreviewObj object constructor.</summary>
             public PreviewObj(JToken previewData)
             {
                 Small = previewData.SelectToken("small").ToString();
