@@ -61,6 +61,8 @@
     <Compile Include="Exceptions\InvalidCredentialException.cs" />
     <Compile Include="TwitchClientClasses\ChatParsing.cs" />
     <Compile Include="TwitchClientClasses\CheerBadge.cs" />
+    <Compile Include="TwitchClientClasses\DetectionReturn.cs" />
+    <Compile Include="TwitchClientClasses\JoinedChannel.cs" />
     <Compile Include="TwitchClientClasses\MessageEmote.cs" />
     <Compile Include="TwitchClientClasses\ReSubscriber.cs" />
     <Compile Include="Services\FollowerService.cs" />
