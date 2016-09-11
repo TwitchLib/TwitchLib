@@ -44,164 +44,307 @@ namespace TwitchLib.TwitchClientClasses
 
         /// <summary>[Untested] Parse function to detect new subscriber</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectNewSubscriber(string message, string channel)
+        public static DetectionReturn detectNewSubscriber(string message, List<JoinedChannel> channels)
         {
-            var readType = getReadType(message, channel);
+            string readType = null;
+            string channelRet = null;
+            foreach(JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+                
             if (readType != null && readType == "PRIVMSG")
-                return (message.Split('!')[0] == ":twitchnotify" && (message.Contains("just subscribed!")));
-            return false; 
+                return new DetectionReturn((message.Split('!')[0] == ":twitchnotify" && (message.Contains("just subscribed!"))), channelRet);
+            return new DetectionReturn(false);
         }
 
         /// <summary>[Works] Parse function to detect new messages.</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectMessageReceived(string message, string channel)
+        public static DetectionReturn detectMessageReceived(string message, List<JoinedChannel> channels)
         {
-            var readType = getReadType(message, channel);
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
             if (readType != null && readType == "PRIVMSG")
-                return !(message.Split('!')[0] == ":twitchnotify");
-            return false;
+                return new DetectionReturn(!(message.Split('!')[0] == ":twitchnotify"), channelRet);
+            return new DetectionReturn(false);
         }
 
         /// <summary>[Works] Parse function to detect new commands.</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <param name="_channelEmotes"></param>
         /// <param name="WillReplaceEmotes"></param>
         /// <param name="_commandIdentifiers"></param>
         /// <returns></returns>
-        public static bool detectCommandReceived(string message, string channel, MessageEmoteCollection _channelEmotes, bool WillReplaceEmotes, List<char> _commandIdentifiers)
+        public static DetectionReturn detectCommandReceived(string message, List<JoinedChannel> channels, MessageEmoteCollection _channelEmotes, bool WillReplaceEmotes, List<char> _commandIdentifiers)
         {
-            var readType = getReadType(message, channel);
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
             if (readType != null && readType == "PRIVMSG")
             {
                 var chatMessage = new ChatMessage(message, ref _channelEmotes, WillReplaceEmotes);
-                return (_commandIdentifiers.Count != 0 && _commandIdentifiers.Contains(chatMessage.Message[0]));
+                return new DetectionReturn((_commandIdentifiers.Count != 0 && _commandIdentifiers.Contains(chatMessage.Message[0])), channelRet);
             }
-            return false;
+            return new DetectionReturn(false);
         }
 
         /// <summary>[Works] Parse function to detect new viewers.</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectViewerJoined(string message, string channel)
+        public static DetectionReturn detectViewerJoined(string message, List<JoinedChannel> channels)
         {
-            var readType = getReadType(message, channel);
-            return (readType != null && readType == "JOIN");
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
+            return new DetectionReturn((readType != null && readType == "JOIN"), channelRet);
         }
 
         /// <summary>[Works] Parse function to detect leaving viewers.</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectedViewerLeft(string message, string channel)
+        public static DetectionReturn detectedViewerLeft(string message, List<JoinedChannel> channels)
         {
-            var readType = getReadType(message, channel);
-            return (readType != null && readType == "PART");
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
+            return new DetectionReturn((readType != null && readType == "PART"), channelRet);
         }
 
         /// <summary>[Works] Parse function to detect new moderators.</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectedModeratorJoined(string message, string channel)
+        public static DetectionReturn detectedModeratorJoined(string message, List<JoinedChannel> channels)
         {
-            var readType = getReadType(message, channel);
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
             if (readType != null && readType == "MODE")
-                return (message.Contains(" ") && message.Split(' ')[3] == "+o");
-            return false;
+                return new DetectionReturn((message.Contains(" ") && message.Split(' ')[3] == "+o"), channelRet);
+            return new DetectionReturn(false);
         }
 
         /// <summary>[Works] Parse function to detect leaving moderators.</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectedModeatorLeft(string message, string channel)
+        public static DetectionReturn detectedModeatorLeft(string message, List<JoinedChannel> channels)
         {
-            var readType = getReadType(message, channel);
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
             if (readType != null && readType == "MODE")
-                return (message.Contains(" ") && message.Split(' ')[3] == "-o");
-            return false;
+                return new DetectionReturn((message.Contains(" ") && message.Split(' ')[3] == "-o"), channelRet);
+            return new DetectionReturn(false);
         }
 
         /// <summary>[Works] Parse function to detect failed login.</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectedIncorrectLogin(string message, string channel)
+        public static DetectionReturn detectedIncorrectLogin(string message, List<JoinedChannel> channels)
         {
-            var readType = getReadType(message, channel);
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
             if (readType != null && readType == "NOTICE")
-                return (message.Contains("Error logging in") || message.Contains("Login authentication failed"));
-            return false;
+                return new DetectionReturn((message.Contains("Error logging in") || message.Contains("Login authentication failed")), channelRet);
+            return new DetectionReturn(false);
         }
 
         /// <summary>[Works] Parse function to detect malformed oauth error.</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectedMalformedOAuth(string message, string channel)
+        public static DetectionReturn detectedMalformedOAuth(string message, List<JoinedChannel> channels)
         {
-            var readType = getReadType(message, channel);
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
             if (readType != null && readType == "NOTICE")
-                return message.Contains("Improperly formatted auth");
-            return false;
+                return new DetectionReturn(message.Contains("Improperly formatted auth"), channelRet);
+            return new DetectionReturn(false);
         }
 
         /// <summary>[Untested] Parse function to detect host leaving.</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectedHostLeft(string message, string channel)
+        public static DetectionReturn detectedHostLeft(string message, List<JoinedChannel> channels)
         {
-            var readType = getReadType(message, channel);
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
             if (readType != null && readType == "NOTICE")
-                return (message.Contains("has gone offline"));
-            return false;
+                return new DetectionReturn((message.Contains("has gone offline")), channelRet);
+            return new DetectionReturn(false);
         }
 
         /// <summary>[Works] Parse function to detect new channel state.</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectedChannelStateChanged(string message, string channel)
+        public static DetectionReturn detectedChannelStateChanged(string message, List<JoinedChannel> channels)
         {
-            var readType = getReadType(message, channel);
-            return (readType != null && readType == "ROOMSTATE");
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
+            return new DetectionReturn((readType != null && readType == "ROOMSTATE"), channelRet);
         }
 
         /// <summary>[Works] Parse function to detect new user states.</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectedUserStateChanged(string message, string channel)
+        public static DetectionReturn detectedUserStateChanged(string message, List<JoinedChannel> channels)
         {
-            var readType = getReadType(message, channel);
-            return (readType != null && readType == "USERSTATE");
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
+            return new DetectionReturn((readType != null && readType == "USERSTATE"), channelRet);
         }
 
         /// <summary>[Untested] Parse function to detect resubscriptions.</summary>
         /// <param name="message"></param>
-        /// <param name="channel"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectedReSubscriber(string message, string channel)
+        public static DetectionReturn detectedReSubscriber(string message, List<JoinedChannel> channels)
         {
-            var readType = getReadType(message, channel);
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
             if (readType != null && readType == "USERNOTICE")
-                return (message.Split(';')[6].Split('=')[1] == "resub");
-            return false;
+                return new DetectionReturn((message.Split(';')[6].Split('=')[1] == "resub"), channelRet);
+            return new DetectionReturn(false);
         }
 
         /// <summary>[Works] Parse function to detect PING messages.</summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static bool detectedPing(string message)
+        public static DetectionReturn detectedPing(string message)
         {
-            return message == "PING :tmi.twitch.tv";
+            return new DetectionReturn(message == "PING :tmi.twitch.tv");
         }
 
         /// <summary>[Untested] Parse function to stopped hosting.</summary>
@@ -227,11 +370,13 @@ namespace TwitchLib.TwitchClientClasses
         /// <summary>[Works] Parse function to detect existing user messages.</summary>
         /// <param name="message"></param>
         /// <param name="username"></param>
+        /// <param name="channels"></param>
         /// <returns></returns>
-        public static bool detectedExistingUsers(string message, string username)
+        public static DetectionReturn detectedExistingUsers(string message, string username, List<JoinedChannel> channels)
         {
-            return (message.Split(' ').Count() > 5 && message.Split(' ')[0] == $":{username}.tmi.twitch.tv") && message.Split(' ')[1] == "353" &&
-                message.Split(' ')[2] == username;
+            //This assumes the existing users came from the most recently joined channel. Could be a source of bug(s)
+            return new DetectionReturn((message.Split(' ').Count() > 5 && message.Split(' ')[0] == $":{username}.tmi.twitch.tv") && message.Split(' ')[1] == "353" &&
+                message.Split(' ')[2] == username, channels[channels.Count - 1].Channel);
         }
     }
 }

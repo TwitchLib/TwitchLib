@@ -20,15 +20,12 @@ namespace TwitchLib
         private List<char> _whisperCommandIdentifiers = new List<char>();
         private bool _logging;
         private MessageEmoteCollection _channelEmotes = new MessageEmoteCollection();
+        private string _autoJoinChannel = null;
 
-        /// <summary>Object representing current state of channel (r9k, slow, etc).</summary>
-        public ChannelState ChannelState { get; protected set; }
-        /// <summary>The current channel the TwitcChatClient is connected to.</summary>
-        public string Channel { get; protected set; }
+        /// <summary>A list of all channels the client is currently in.</summary>
+        public List<JoinedChannel> JoinedChannels { get; protected set; } = new List<JoinedChannel>();
         /// <summary>Username of the user connected via this library.</summary>
         public string TwitchUsername { get; protected set; }
-        /// <summary>The most recent message received.</summary>
-        public ChatMessage PreviousMessage { get; protected set; }
         /// <summary>The most recent whisper received.</summary>
         public WhisperMessage PreviousWhisper { get; protected set; }
         /// <summary>The current connection status of the client.</summary>
@@ -162,7 +159,7 @@ namespace TwitchLib
             /// <summary>Property representing bot username.</summary>
             public string Username;
             /// <summary>Property representing connected channel.</summary>
-            public string Channel;
+            public string AutoJoinChannel;
         }
 
         /// <summary>Args representing an incorrect login event.</summary>
@@ -342,8 +339,6 @@ namespace TwitchLib
         {
             /// <summary>Username of the bot that was disconnected.</summary>
             public string Username;
-            /// <summary>Channel that bot was disconnected from.</summary>
-            public string Channel;
         }
 
         /// <summary>
@@ -354,11 +349,11 @@ namespace TwitchLib
         /// <param name="chatCommandIdentifier">The identifier to be used for reading and writing commands from chat.</param>
         /// <param name="whisperCommandIdentifier">The identifier to be used for reading and writing commands from whispers.</param>
         /// <param name="logging">Whether or not logging to console should be enabled.</param>
-        public TwitchClient(string channel, ConnectionCredentials credentials, char chatCommandIdentifier = '\0', char whisperCommandIdentifier = '\0',
+        public TwitchClient(ConnectionCredentials credentials, string channel = null, char chatCommandIdentifier = '\0', char whisperCommandIdentifier = '\0',
             bool logging = false)
         {
-            Channel = channel.ToLower();
             _credentials = credentials;
+            _autoJoinChannel = channel;
             if(chatCommandIdentifier != '\0')
                 _chatCommandIdentifiers.Add(chatCommandIdentifier);
             if (whisperCommandIdentifier != '\0')
@@ -395,16 +390,17 @@ namespace TwitchLib
         /// </summary>
         /// <param name="message">The message to be sent.</param>
         /// <param name="dryRun">If set to true, the message will not actually be sent for testing purposes.</param>
-        public void SendMessage(string message, bool dryRun = false)
+        /// <param name="channel">Channel to send message to.</param>
+        public void SendMessage(JoinedChannel channel, string message, bool dryRun = false)
         {
             if (dryRun) return;
             if (ChatThrottler != null && !ChatThrottler.MessagePermitted(message)) return;
             string twitchMessage = $":{_credentials.TwitchUsername}!{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" +
-                $".tmi.twitch.tv PRIVMSG #{Channel} :{message}";
+                $".tmi.twitch.tv PRIVMSG #{channel.Channel} :{message}";
             // This is a makeshift hack to encode it with accomodations for at least cyrillic characters, and possibly others
             _client.WriteLine(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
             OnMessageSent?.Invoke(null,
-                new OnMessageSentArgs {Username = _credentials.TwitchUsername, Channel = Channel, Message = message});
+                new OnMessageSentArgs {Username = _credentials.TwitchUsername, Channel = channel.Channel, Message = message});
         }
 
         /// <summary>
@@ -499,7 +495,8 @@ namespace TwitchLib
         {
             if (_logging)
                 Console.WriteLine("[TwitchLib] Joining channel: " + channel);
-            _client.WriteLine($"/join #{channel}");
+            _client.WriteLine(Rfc2812.Join($"#{channel}"));
+            JoinedChannels.Add(new JoinedChannel(channel));
         }
 
         /// <summary>
@@ -522,14 +519,18 @@ namespace TwitchLib
             _client.WriteLine("CAP REQ twitch.tv/commands");
             _client.WriteLine("CAP REQ twitch.tv/tags");
 
-            _client.WriteLine(Rfc2812.Join($"#{Channel}"));
+            if(_autoJoinChannel != null)
+            {
+                JoinedChannels.Add(new JoinedChannel(_autoJoinChannel));
+                _client.WriteLine(Rfc2812.Join($"#{_autoJoinChannel}"));
+            }
 
             Task.Factory.StartNew(() => _client.Listen());
         }
 
         private void Disconnected(object sender, EventArgs e)
         {
-            OnDisconnected?.Invoke(null, new OnDisconnectedArgs { Channel = Channel, Username = TwitchUsername });
+            OnDisconnected?.Invoke(null, new OnDisconnectedArgs { Username = TwitchUsername });
         }
 
         private void OnReadLine(object sender, ReadLineEventArgs e)
@@ -543,73 +544,83 @@ namespace TwitchLib
             string decodedMessage = Encoding.UTF8.GetString(Encoding.Default.GetBytes(ircMessage));
             if (_logging)
                 Console.WriteLine(decodedMessage);
-            
+
             #region Chat Parsing
+            DetectionReturn response;
+
             // On Connected
             if (ChatParsing.detectConnected(decodedMessage))
             {
                 IsConnected = true;
-                OnConnected?.Invoke(null, new OnConnectedArgs { Channel = Channel, Username = TwitchUsername });
+                OnConnected?.Invoke(null, new OnConnectedArgs { AutoJoinChannel = "", Username = TwitchUsername });
                 return;
             }
 
             // On New Subscriber
-            if (ChatParsing.detectNewSubscriber(decodedMessage, Channel))
+            response = ChatParsing.detectNewSubscriber(decodedMessage, JoinedChannels);
+            if (response.Successful)
             {
-                OnNewSubscriber?.Invoke(null, new OnNewSubscriberArgs { Subscriber = new NewSubscriber(decodedMessage), Channel = Channel });
+                OnNewSubscriber?.Invoke(null, new OnNewSubscriberArgs { Subscriber = new NewSubscriber(decodedMessage), Channel = response.Channel });
                 return;
             }
 
             // On Command Received (PURPOSELY DROP THROUGH WITHOUT RETURN)
-            if (ChatParsing.detectCommandReceived(decodedMessage, Channel, ChannelEmotes, WillReplaceEmotes, _chatCommandIdentifiers))
+            response = ChatParsing.detectCommandReceived(decodedMessage, JoinedChannels, ChannelEmotes, WillReplaceEmotes, _chatCommandIdentifiers);
+            if (response.Successful)
             {
                 var chatMessage = new ChatMessage(decodedMessage, ref _channelEmotes, WillReplaceEmotes);
                 string command = chatMessage.Message.Split(' ')?[0].Substring(1, chatMessage.Message.Split(' ')[0].Length - 1) ?? chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
                 var argumentsAsList = chatMessage.Message.Split(' ')?.Where(arg => arg != chatMessage.Message[0] + command).ToList<string>() ?? new List<string>();
                 string argumentsAsString = chatMessage.Message.Replace(chatMessage.Message.Split(' ')?[0] + " ", "") ?? "";
-                OnChatCommandReceived?.Invoke(null, new OnChatCommandReceivedArgs { Command = command, ChatMessage = chatMessage, Channel = Channel, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
+                OnChatCommandReceived?.Invoke(null, new OnChatCommandReceivedArgs { Command = command, ChatMessage = chatMessage, Channel = response.Channel, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
                 // purposely drop through without return
             }
 
             // On Message Received
-            if (ChatParsing.detectMessageReceived(decodedMessage, Channel))
+            response = ChatParsing.detectMessageReceived(decodedMessage, JoinedChannels);
+            if (response.Successful)
             {
                 var chatMessage = new ChatMessage(decodedMessage, ref _channelEmotes, WillReplaceEmotes);
-                PreviousMessage = chatMessage;
+                JoinedChannels.Single(x => x.Channel == response.Channel).HandleMessage(chatMessage);
                 OnMessageReceived?.Invoke(null, new OnMessageReceivedArgs { ChatMessage = chatMessage });
                 return;
             }
 
             // On Viewer Joined
-            if (ChatParsing.detectViewerJoined(decodedMessage, Channel))
+            response = ChatParsing.detectViewerJoined(decodedMessage, JoinedChannels);
+            if (response.Successful)
             {
-                OnViewerJoined?.Invoke(null, new OnViewerJoinedArgs { Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = Channel });
+                OnViewerJoined?.Invoke(null, new OnViewerJoinedArgs { Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = response.Channel });
                 return;
             }
 
             // On Viewer Left
-            if (ChatParsing.detectedViewerLeft(decodedMessage, Channel))
+            response = ChatParsing.detectedViewerLeft(decodedMessage, JoinedChannels);
+            if (response.Successful)
             {
-                OnViewerLeft?.Invoke(null, new OnViewerLeftArgs { Username = decodedMessage.Split(':')[1].Split('!')[0], Channel = Channel });
+                OnViewerLeft?.Invoke(null, new OnViewerLeftArgs { Username = decodedMessage.Split(':')[1].Split('!')[0], Channel = response.Channel });
                 return;
             }
 
             // On Moderator Joined
-            if (ChatParsing.detectedModeratorJoined(decodedMessage, Channel))
+            response = ChatParsing.detectedModeratorJoined(decodedMessage, JoinedChannels);
+            if(response.Successful)
             {
-                OnModeratorJoined?.Invoke(null, new OnModeratorJoinedArgs { Username = decodedMessage.Split(' ')[4], Channel = Channel });
+                OnModeratorJoined?.Invoke(null, new OnModeratorJoinedArgs { Username = decodedMessage.Split(' ')[4], Channel = response.Channel });
                 return;
             }
 
             // On Moderator Left
-            if(ChatParsing.detectedModeatorLeft(decodedMessage, Channel))
+            response = ChatParsing.detectedModeatorLeft(decodedMessage, JoinedChannels);
+            if (response.Successful)
             {
-                OnModeratorLeft?.Invoke(null, new OnModeratorLeftArgs { Username = decodedMessage.Split(' ')[4], Channel = Channel });
+                OnModeratorLeft?.Invoke(null, new OnModeratorLeftArgs { Username = decodedMessage.Split(' ')[4], Channel = response.Channel });
                 return;
             }
 
             // On Incorrect login
-            if (ChatParsing.detectedIncorrectLogin(decodedMessage, Channel))
+            response = ChatParsing.detectedIncorrectLogin(decodedMessage, JoinedChannels);
+            if (response.Successful)
             {
                 _client.Disconnect();
                 OnIncorrectLogin?.Invoke(null, new OnIncorrectLoginArgs { Exception = new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername) });
@@ -617,7 +628,8 @@ namespace TwitchLib
             }
 
             // On Malformed OAuth
-            if (ChatParsing.detectedMalformedOAuth(decodedMessage, Channel))
+            response = ChatParsing.detectedMalformedOAuth(decodedMessage, JoinedChannels);
+            if (response.Successful)
             {
                 _client.Disconnect();
                 OnIncorrectLogin?.Invoke(null, new OnIncorrectLoginArgs { Exception = new ErrorLoggingInException("Invalid OAuth key. Remember to add 'oauth:' as a prefix. Example: oauth:19nds9sbnga9asd", _credentials.TwitchUsername) });
@@ -625,28 +637,32 @@ namespace TwitchLib
             }
 
             // On Host Left
-            if (ChatParsing.detectedHostLeft(decodedMessage, Channel))
+            response = ChatParsing.detectedHostLeft(decodedMessage, JoinedChannels);
+            if (response.Successful)
             {
                 OnHostLeft?.Invoke(null, null);
                 return;
             }
 
             // On Channel State Changed
-            if (ChatParsing.detectedChannelStateChanged(decodedMessage, Channel))
+            response = ChatParsing.detectedChannelStateChanged(decodedMessage, JoinedChannels);
+            if (response.Successful)
             {
                 OnChannelStateChanged?.Invoke(null, new OnChannelStateChangedArgs { ChannelState = new ChannelState(decodedMessage) });
                 return;
             }
 
             // On User State Changed
-            if(ChatParsing.detectedUserStateChanged(decodedMessage, Channel))
+            response = ChatParsing.detectedUserStateChanged(decodedMessage, JoinedChannels);
+            if (response.Successful)
             {
                 OnUserStateChanged?.Invoke(null, new OnUserStateChangedArgs { UserState = new UserState(decodedMessage) });
                 return;
             }
 
             // On ReSubscriber
-            if (ChatParsing.detectedReSubscriber(decodedMessage, Channel))
+            response = ChatParsing.detectedReSubscriber(decodedMessage, JoinedChannels);
+            if (response.Successful)
             {
                 var resub = new ReSubscriber(decodedMessage);
                 OnReSubscriber?.Invoke(null, new OnReSubscriberArgs { ReSubscriber = resub });
@@ -654,7 +670,8 @@ namespace TwitchLib
             }
 
             // On PING received
-            if(ChatParsing.detectedPing(decodedMessage) && !DisableAutoPong)
+            response = ChatParsing.detectedPing(decodedMessage);
+            if (response.Successful && !DisableAutoPong)
             {
                 SendRaw("PONG :tmi.twitch.tv");
                 return;
@@ -679,11 +696,12 @@ namespace TwitchLib
             }
 
             // On Existing Users Detected
-            if(ChatParsing.detectedExistingUsers(decodedMessage, _credentials.TwitchUsername))
+            response = ChatParsing.detectedExistingUsers(decodedMessage, _credentials.TwitchUsername, JoinedChannels);
+            if (response.Successful)
             {
-                var parsedUsers = decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{Channel} :", "").Split(' ');
-                OnExistingUsersDetected?.Invoke(null, new OnExistingUsersDetectedArgs { Channel = Channel,
-                    ExistingUsers = decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{Channel} :", "").Split(' ').ToList<string>() });
+                var parsedUsers = decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ');
+                OnExistingUsersDetected?.Invoke(null, new OnExistingUsersDetectedArgs { Channel = response.Channel,
+                    ExistingUsers = decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ').ToList<string>() });
                 return;
             }
             #endregion
