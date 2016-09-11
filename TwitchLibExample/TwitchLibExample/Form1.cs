@@ -44,7 +44,7 @@ namespace TwitchLibExample
         private void button2_Click(object sender, EventArgs e)
         {
             ConnectionCredentials credentials = new ConnectionCredentials(textBox4.Text, textBox5.Text);
-            TwitchClient newClient = new TwitchClient(textBox8.Text, credentials, '!', '!', true);
+            TwitchClient newClient = new TwitchClient(credentials, textBox8.Text, '!', '!', true);
 
             newClient.OnMessageReceived += new EventHandler<TwitchClient.OnMessageReceivedArgs>(globalChatMessageReceived);
             newClient.OnChatCommandReceived += new EventHandler<TwitchClient.OnChatCommandReceivedArgs>(chatCommandReceived);
@@ -82,7 +82,7 @@ namespace TwitchLibExample
 
         public void onConnected(object sender, TwitchClient.OnConnectedArgs e)
         {
-            MessageBox.Show("Connected to channel: " + e.Channel + "\nUnder username: " + e.Username);
+            MessageBox.Show("Connected under username: " + e.Username);
         }
 
         public void incorrectLogin(object sender, TwitchClient.OnIncorrectLoginArgs e)
@@ -133,7 +133,8 @@ namespace TwitchLibExample
             foreach (TwitchClient client in clients)
             {
                 if(client.TwitchUsername.ToLower() == comboBox2.Text.ToLower()) {
-                    comboBox3.Items.Add(client.Channel);
+                    foreach(TwitchLib.TwitchClientClasses.JoinedChannel channel in client.JoinedChannels)
+                        comboBox3.Items.Add(channel.Channel);
                 }
             }
         }
@@ -144,10 +145,9 @@ namespace TwitchLibExample
             {
                 if (client.TwitchUsername.ToLower() == comboBox2.Text.ToLower())
                 {
-                    if (client.Channel.ToLower() == comboBox3.Text.ToLower())
-                    {
-                        client.SendMessage(textBox3.Text);
-                    }
+                    foreach(TwitchLib.TwitchClientClasses.JoinedChannel channel in client.JoinedChannels)
+                        if(channel.Channel.ToLower() == comboBox3.Text.ToLower())
+                            client.SendMessage(channel, textBox3.Text);
                 }
             }
         }
