@@ -494,9 +494,38 @@ namespace TwitchLib
         public void JoinChannel(string channel)
         {
             if (_logging)
-                Console.WriteLine("[TwitchLib] Joining channel: " + channel);
+                Console.WriteLine($"[TwitchLib] Joining channel: {channel}");
             _client.WriteLine(Rfc2812.Join($"#{channel}"));
             JoinedChannels.Add(new JoinedChannel(channel));
+        }
+
+        /// <summary>
+        /// Leaves (PART) the Twitch IRC chat of <paramref name="channel"/>.
+        /// </summary>
+        /// <param name="channel">The channel to leave.</param>
+        /// <returns>True is returned if the passed channel was found, false if channel not found.</returns>
+        public bool LeaveChannel(string channel)
+        {
+            if (_logging)
+                Console.WriteLine($"[TwitchLib] Leaving channel: {channel}");
+            JoinedChannel joinedChannel = JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
+            if(joinedChannel != null)
+            {
+                _client.WriteLine(Rfc2812.Part($"#{channel}"));
+                JoinedChannels.Remove(joinedChannel);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Leaves (PART) the Twitch IRC chat of <paramref name="channel"/>.
+        /// </summary>
+        /// <param name="channel">The JoinedChannel object to leave.</param>
+        /// <returns>True is returned if the passed channel was found, false if channel not found.</returns>
+        public bool LeaveChannel(JoinedChannel channel)
+        {
+            return LeaveChannel(channel.Channel);
         }
 
         /// <summary>
