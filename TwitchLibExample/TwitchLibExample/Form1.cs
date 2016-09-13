@@ -495,5 +495,13 @@ namespace TwitchLibExample
                 MessageBox.Show("Seperate streams with a comma.");
             }
         }
+
+        private async void button40_Click(object sender, EventArgs e)
+        {
+            //textbox36
+            List<TwitchLib.TwitchAPIClasses.BadgeResponse.Badge> badges = (await TwitchApi.GetChannelBadges(textBox36.Text)).ChannelBadges;
+            foreach (TwitchLib.TwitchAPIClasses.BadgeResponse.Badge badge in badges)
+                MessageBox.Show($"Available images for: {badge.BadgeName}\nAlpha: {badge.Alpha}\nImage: {badge.Image}\nSVG: {badge.SVG}");
+        }
     }
 }
