@@ -35,7 +35,7 @@ namespace TwitchLib.Tests
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(String.Format("{0, 5} {1, 20} {2, 20} {3, 20} {4, 20}", "Test #", "Test Name", "Test Result", "Exception", "Extra Info"));
-            int currentTest = 1;
+            /*int currentTest = 1;
             int testsRun = 0;
             int testsPassed = 0;
             int testsFailed = 0;
@@ -43,7 +43,7 @@ namespace TwitchLib.Tests
             {
                 Console.WriteLine(String.Format("{0, 5} {1, 20} {2, 20} {3, 20} {4, 20}", currentTest, ((ChatClientTest)result).TestType, ((ChatClientTest)result).Successful, ((ChatClientTest)result).FailedException?.ToString() ?? "N/A", ((ChatClientTest)result).ExtraInfo));
                 currentTest++;
-            }
+            }*/
         }
     }
 }
