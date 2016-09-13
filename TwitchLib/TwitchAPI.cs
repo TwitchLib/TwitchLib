@@ -49,6 +49,16 @@ namespace TwitchLib
 
         #region Get Objects
         /// <summary>
+        /// Retrieves a channel's list of available chat badges.
+        /// </summary>
+        /// <param name="channel">The channel to fetch available badges from.</param>
+        /// <returns>BadgeResponse object containing list of available badges.</returns>
+        public static async Task<BadgeResponse> GetChannelBadges(string channel)
+        {
+            return new BadgeResponse(await MakeGetRequest($"https://api.twitch.tv/kraken/chat/{channel}/badges"));
+        }
+
+        /// <summary>
         /// Retrieves a string list of channel editor users.
         /// <para>Authenticated, required scope: <code>channel_read</code></para>
         /// </summary>
