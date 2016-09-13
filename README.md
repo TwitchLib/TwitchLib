@@ -22,6 +22,8 @@ TwitchApi.RunCommercial(TwitchApi.CommercialLength.Seconds180, "my_favorite_stre
 ### Availability
 Available via Nuget: `Install-Package TwitchLib`
 
+[![NuGet Pre Release](https://img.shields.io/nuget/vpre/TwitchLib.svg)](https://www.nuget.org/packages/TwitchLib)
+
 ### TwitchClient
 - Initiailized using channel and ConnectionCredentials
 - Chat Events:
@@ -86,6 +88,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - BlockUser(string username, string blockedUsername, string accessToken) - Blocks user, returns a Block object.
 - UnblockUser(string username, string blockedUsername, string accessToken) - Unblocks user.
 - GetChannelEditors(string channel, string accessToken) - Retrieves a list of User objects representing users that are channel editors.
+- GetChannelBadges(string channel) - Fetches a list of Badge objects representing each badge available in a channel.
 
 ### Twitch Services
 - FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected.
@@ -102,6 +105,10 @@ I've recently taken to implementing this class into test applications and connec
 ### Libraries Utilized
 - Newtonsoft.Json - JSON parsing class.  Used to parse Twitch API calls.
 - SmartIRC4Net - Base IRC class.
+
+### Support/Discussion
+The Twitch Discord server has a #developer channel that has constant discussion about developing for the Twitch platform. You can likely get support and discuss ideas there. A link is below:
+https://discord.gg/0gHwecaLRAzrRYWi
 
 ### Contributors
  * Cole ([@swiftyspiffy](http://twitter.com/swiftyspiffy))
