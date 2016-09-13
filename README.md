@@ -52,6 +52,8 @@ Available via Nuget: `Install-Package TwitchLib`
 - Handled chat message types
 - Disconnect - Disconnects chat client from Twitch IRC
 - Reconnect - Reconnects chat client given existing credentials
+- JoinedChannel(string channel) - Client will attempt to join passed in channel.
+- LeaveChannel(string channel) - Client will attempt to leave channel.
 
 ### TwitchAPI
 - BroadcasterOnline(string channel) - Async function returns bool of whether or not streamer is streaming
