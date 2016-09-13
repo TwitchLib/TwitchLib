@@ -100,7 +100,6 @@ I've recently taken to implementing this class into test applications and connec
 - PFCKrutonium's [TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot) - This project implements the bot using VisualBasic.
 
 ### Libraries Utilized
-- Costura.Fody / Fody - Takes the projects various DLL files and packages them all in the TwitchLib.dll file, combing and removing potential problems with not having all parts
 - Newtonsoft.Json - JSON parsing class.  Used to parse Twitch API calls.
 - SmartIRC4Net - Base IRC class.
 
