@@ -617,7 +617,7 @@ namespace TwitchLib
 
         #region Other
         /// <summary>
-        /// Sets ClientId, which is required for all API calls going forward from August 3rd. Also validates ClientId.
+        /// Sets ClientId, which is required for all API calls. Also validates ClientId.
         /// <param name="clientId">Client-Id to bind to TwitchApi.</param>
         /// <param name="disableClientIdValidation">Forcefully disables Client-Id validation.</param>
         /// </summary>
@@ -681,7 +681,7 @@ namespace TwitchLib
         private static async Task<string> MakeGetRequest(string url, string accessToken = null)
         {
             if (string.IsNullOrEmpty(ClientId) && string.IsNullOrWhiteSpace(accessToken))
-                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token as of August 3rd. Set Client-Id by using SetClientId()");
+                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId()");
 
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
