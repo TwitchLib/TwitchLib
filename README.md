@@ -29,6 +29,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - Chat Events:
   * OnIncorrectLogin - Fires when an invalid login is returned by Twitch
   * OnConnected - Fires on listening and after joined channel, returns username and channel
+  * OnDisconnected - Fires when TwitchClient disconnects.
   * OnMessageReceived - Fires when new chat message arrives, returns ChatMessage
   * OnNewSubscriber - Fires when new subscriber is announced in chat, returns Subscriber
   * OnReSubscriber - Fires when existing subscriber resubscribes, returns ReSubscriber
@@ -44,6 +45,9 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnExistingUsersDetected - Fires when list of users message is received from Twitch (generally when entering the room)
   * OnHostingStarted - Fires when someone begins hosting the channel the client is connected to.
   * OnHostingStopped - Fires when someone that is hosting channel that client is connected to, stops.
+  * OnChatCleared - Fires when a moderator sends a clear chat command (channel).
+  * OnViewerTimedout - Fires when client detects a viewer was timedout (moderator, viewer, timeout duration, timeout reason, channel).
+  * OnViewerBanned - Fires when client detects a viewer was banned (moderator, viewer, ban reason, channel).
 - Whisper Events:
   * OnWhisperReceived - Fires when a new whisper message is received, returns WhisperMessage
   * OnWhisperCommandReceived - Fires when command (uses custom command identifier) is received.
