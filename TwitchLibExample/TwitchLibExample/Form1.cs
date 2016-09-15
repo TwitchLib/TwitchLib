@@ -23,6 +23,8 @@ namespace TwitchLibExample
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //DO NOT USE IN PRODUCTION, UNSAFE PRACTICE
+            CheckForIllegalCrossThreadCalls = false;
             TwitchLib.MessageEmoteCollection collection = new MessageEmoteCollection();
 
             if (File.Exists("credentials.txt"))
@@ -115,6 +117,7 @@ namespace TwitchLibExample
             {
                 Console.WriteLine("[chat] arg: " + arg);
             }
+            Console.WriteLine($"[chat] arg count: {e.ArgumentsAsList.Count}");
             Console.WriteLine("[chat] args as string: " + e.ArgumentsAsString);
         }
 
