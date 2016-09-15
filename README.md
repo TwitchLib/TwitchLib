@@ -4,7 +4,7 @@ TwitchLib is a C# library that attempts to harness Twitch Chat and Twitch API in
 
 ### Sample Implementation
 ```
-TwitchClient client = new TwitchClient("my_channel", new ConnectionCredentials("my_username", "my_oauth"));
+TwitchClient client = new TwitchClient(new ConnectionCredentials("my_username", "my_oauth"), "my_channel");
 
 client.OnConnected += clientConnected;
 client.OnMessageReceived += clientMessageReceived;
