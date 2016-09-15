@@ -12,6 +12,8 @@ namespace TwitchLib
     {
         private MessageEmoteCollection _emoteCollection;
 
+        /// <summary>Twitch username of the bot that received the message.</summary>
+        public string BotUsername { get; protected set; }
         /// <summary>Twitch-unique integer assigned on per account basis.</summary>
         public int UserId { get; protected set; }
         /// <summary>Username of sender of chat message.</summary>
@@ -53,11 +55,13 @@ namespace TwitchLib
 
         //Example IRC message: @badges=moderator/1,warcraft/alliance;color=;display-name=Swiftyspiffyv4;emotes=;mod=1;room-id=40876073;subscriber=0;turbo=0;user-id=103325214;user-type=mod :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #swiftyspiffy :asd
         /// <summary>Constructor for ChatMessage object.</summary>
+        /// <param name="botUsername">The username of the bot that received the message.</param>
         /// <param name="ircString">The raw string received from Twitch to be processed.</param>
         /// <param name="emoteCollection">The <see cref="MessageEmoteCollection"/> to register new emotes on and, if desired, use for emote replacement.</param>
         /// <param name="replaceEmotes">Whether to replace emotes for this chat message. Defaults to false.</param>
-        public ChatMessage(string ircString, ref MessageEmoteCollection emoteCollection, bool replaceEmotes = false)
+        public ChatMessage(string botUsername, string ircString, ref MessageEmoteCollection emoteCollection, bool replaceEmotes = false)
         {
+            BotUsername = botUsername;
             RawIrcMessage = ircString;
             _emoteCollection = emoteCollection;
             foreach (var part in ircString.Split(';'))

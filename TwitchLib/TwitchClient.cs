@@ -640,10 +640,10 @@ namespace TwitchLib
             }
 
             // On Command Received (PURPOSELY DROP THROUGH WITHOUT RETURN)
-            response = ChatParsing.detectCommandReceived(decodedMessage, JoinedChannels, ChannelEmotes, WillReplaceEmotes, _chatCommandIdentifiers);
+            response = ChatParsing.detectCommandReceived(TwitchUsername, decodedMessage, JoinedChannels, ChannelEmotes, WillReplaceEmotes, _chatCommandIdentifiers);
             if (response.Successful)
             {
-                var chatMessage = new ChatMessage(decodedMessage, ref _channelEmotes, WillReplaceEmotes);
+                var chatMessage = new ChatMessage(TwitchUsername, decodedMessage, ref _channelEmotes, WillReplaceEmotes);
                 string command = chatMessage.Message.Split(' ')?[0].Substring(1, chatMessage.Message.Split(' ')[0].Length - 1) ?? chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
                 var argumentsAsList = chatMessage.Message.Split(' ')?.Where(arg => arg != chatMessage.Message[0] + command).ToList<string>() ?? new List<string>();
                 string argumentsAsString = chatMessage.Message.Replace(chatMessage.Message.Split(' ')?[0] + " ", "") ?? "";
@@ -655,7 +655,7 @@ namespace TwitchLib
             response = ChatParsing.detectMessageReceived(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                var chatMessage = new ChatMessage(decodedMessage, ref _channelEmotes, WillReplaceEmotes);
+                var chatMessage = new ChatMessage(TwitchUsername, decodedMessage, ref _channelEmotes, WillReplaceEmotes);
                 JoinedChannels.Single(x => x.Channel == response.Channel).HandleMessage(chatMessage);
                 OnMessageReceived?.Invoke(this, new OnMessageReceivedArgs { ChatMessage = chatMessage });
                 return;

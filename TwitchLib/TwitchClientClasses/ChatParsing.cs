@@ -89,13 +89,14 @@ namespace TwitchLib.TwitchClientClasses
         }
 
         /// <summary>[Works] Parse function to detect new commands.</summary>
+        /// <param name="botUsername"></param>
         /// <param name="message"></param>
         /// <param name="channels"></param>
         /// <param name="_channelEmotes"></param>
         /// <param name="WillReplaceEmotes"></param>
         /// <param name="_commandIdentifiers"></param>
         /// <returns></returns>
-        public static DetectionReturn detectCommandReceived(string message, List<JoinedChannel> channels, MessageEmoteCollection _channelEmotes, bool WillReplaceEmotes, List<char> _commandIdentifiers)
+        public static DetectionReturn detectCommandReceived(string botUsername, string message, List<JoinedChannel> channels, MessageEmoteCollection _channelEmotes, bool WillReplaceEmotes, List<char> _commandIdentifiers)
         {
             string readType = null;
             string channelRet = null;
@@ -111,7 +112,7 @@ namespace TwitchLib.TwitchClientClasses
 
             if (readType != null && readType == "PRIVMSG")
             {
-                var chatMessage = new ChatMessage(message, ref _channelEmotes, WillReplaceEmotes);
+                var chatMessage = new ChatMessage(botUsername, message, ref _channelEmotes, WillReplaceEmotes);
                 return new DetectionReturn((_commandIdentifiers.Count != 0 && _commandIdentifiers.Contains(chatMessage.Message[0])), channelRet);
             }
             return new DetectionReturn(false);
