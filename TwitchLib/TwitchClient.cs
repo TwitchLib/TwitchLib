@@ -399,6 +399,7 @@ namespace TwitchLib
             bool logging = false)
         {
             _credentials = credentials;
+            TwitchUsername = _credentials.TwitchUsername;
             _autoJoinChannel = channel;
             if(chatCommandIdentifier != '\0')
                 _chatCommandIdentifiers.Add(chatCommandIdentifier);
