@@ -797,7 +797,6 @@ namespace TwitchLib
             response = ChatParsing.detectedExistingUsers(decodedMessage, _credentials.TwitchUsername, JoinedChannels);
             if (response.Successful)
             {
-                var parsedUsers = decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ');
                 OnExistingUsersDetected?.Invoke(this, new OnExistingUsersDetectedArgs { Channel = response.Channel,
                     ExistingUsers = decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ').ToList<string>() });
                 return;

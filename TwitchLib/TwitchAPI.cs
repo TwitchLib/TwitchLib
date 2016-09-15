@@ -83,7 +83,6 @@ namespace TwitchLib
         public static async Task<List<string>> GetChannelHosts(string channel)
         {
             var hosts = new List<string>();
-            var client = new WebClient();
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{channel}");
             var json = JObject.Parse(resp);
             if (json.SelectToken("_id") == null) return hosts;
