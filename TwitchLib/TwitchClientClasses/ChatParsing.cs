@@ -378,5 +378,60 @@ namespace TwitchLib.TwitchClientClasses
             return new DetectionReturn((message.Split(' ').Count() > 5 && message.Split(' ')[0] == $":{username}.tmi.twitch.tv") && message.Split(' ')[1] == "353" &&
                 message.Split(' ')[2] == username, channels[channels.Count - 1].Channel);
         }
+
+        /// <summary>Parse function to detect clearchat.</summary>
+        /// <param name="message"></param>
+        /// <param name="channels"></param>
+        /// <returns></returns>
+        public static DetectionReturn detectedClearedChat(string message, List<JoinedChannel> channels)
+        {
+            foreach (JoinedChannel channel in channels)
+                if (message == $":tmi.twitch.tv CLEARCHAT #{channel.Channel.ToLower()}")
+                    return new DetectionReturn(true, channel.Channel);
+
+            return new DetectionReturn(false);
+        }
+
+        /// <summary>Parse function to detect a viewer was timedout.</summary>
+        /// <param name="message"></param>
+        /// <param name="channels"></param>
+        /// <returns></returns>
+        public static DetectionReturn detectedViewerTimedout(string message, List<JoinedChannel> channels)
+        {
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
+            return new DetectionReturn(readType == "CLEARCHAT" && message.Substring(0, 14) == "@ban-duration=", channelRet);
+        }
+
+        /// <summary>Parse function to detect viewer was banned.</summary>
+        /// <param name="message"></param>
+        /// <param name="channels"></param>
+        /// <returns></returns>
+        public static DetectionReturn detectedViewerBanned(string message, List<JoinedChannel> channels)
+        {
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
+            return new DetectionReturn(readType == "CLEARCHAT" && message.Substring(0, 12) == "@ban-reason=", channelRet);
+        }
     }
 }

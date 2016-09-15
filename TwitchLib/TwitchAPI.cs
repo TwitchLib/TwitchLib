@@ -704,7 +704,7 @@ namespace TwitchLib
             string accessToken = null)
         {
             if (string.IsNullOrWhiteSpace(ClientId) && string.IsNullOrWhiteSpace(accessToken))
-                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token as of August 3rd.");
+                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token.");
 
             var data = new UTF8Encoding().GetBytes(requestData ?? "");
             accessToken = accessToken?.ToLower().Replace("oauth:", "");

@@ -153,6 +153,21 @@ namespace TwitchLib
         /// </summary>
         public event EventHandler<OnDisconnectedArgs> OnDisconnected;
 
+        /// <summary>
+        /// Fires when a channel's chat is cleared.
+        /// </summary>
+        public event EventHandler<OnChatClearedArgs> OnChatCleared;
+
+        /// <summary>
+        /// Fires when a viewer gets timedout by any moderator.
+        /// </summary>
+        public event EventHandler<OnViewerTimedoutArgs> OnViewerTimedout;
+
+        /// <summary>
+        /// Fires when a viewer gets banned by any moderator.
+        /// </summary>
+        public event EventHandler<OnViewerBannedArgs> OnViewerBanned;
+
         /// <summary>Args representing on connected event.</summary>
         public class OnConnectedArgs : EventArgs
         {
@@ -339,6 +354,37 @@ namespace TwitchLib
         {
             /// <summary>Username of the bot that was disconnected.</summary>
             public string Username;
+        }
+
+        /// <summary>Args representing a cleared chat event.</summary>
+        public class OnChatClearedArgs : EventArgs
+        {
+            /// <summary>Channel that had chat cleared event.</summary>
+            public string Channel;
+        }
+
+        /// <summary>Args representing a user was timed out event.</summary>
+        public class OnViewerTimedoutArgs : EventArgs
+        {
+            /// <summary>Channel that had timeout event.</summary>
+            public string Channel;
+            /// <summary>Viewer that was timedout.</summary>
+            public string Viewer;
+            /// <summary>Duration of timeout IN SECONDS.</summary>
+            public int TimeoutDuration;
+            /// <summary>Reason for timeout, if it was provided.</summary>
+            public string TimeoutReason;
+        }
+
+        /// <summary>Args representing a user was banned event.</summary>
+        public class OnViewerBannedArgs : EventArgs
+        {
+            /// <summary>Channel that had ban event.</summary>
+            public string Channel;
+            /// <summary>Viewer that was banned.</summary>
+            public string Viewer;
+            /// <summary>Reason for ban, if it was provided.</summary>
+            public string BanReason;
         }
 
         /// <summary>
@@ -733,6 +779,29 @@ namespace TwitchLib
                     ExistingUsers = decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ').ToList<string>() });
                 return;
             }
+            #endregion
+
+            #region Clear Chat, Timeouts, and Bans
+            // On clear chat detected
+            response = ChatParsing.detectedClearedChat(decodedMessage, JoinedChannels);
+            if (response.Successful)
+                OnChatCleared?.Invoke(null, new OnChatClearedArgs { Channel = response.Channel });
+
+
+            // On timeout detected
+            response = ChatParsing.detectedViewerTimedout(decodedMessage, JoinedChannels);
+            if (response.Successful)
+                OnViewerTimedout?.Invoke(null, new OnViewerTimedoutArgs { Channel = response.Channel,
+                    TimeoutDuration = int.Parse(decodedMessage.Split(';')[0].Split('=')[1]), TimeoutReason = decodedMessage.Split(' ')[0].Split('=')[2].Replace("\\s", " "),
+                    Viewer = decodedMessage.Split(':')[2]});
+
+
+            // On ban detected
+            response = ChatParsing.detectedViewerBanned(decodedMessage, JoinedChannels);
+            if (response.Successful)
+                OnViewerBanned?.Invoke(null, new OnViewerBannedArgs { Channel = response.Channel,
+                    BanReason = decodedMessage.Split(' ')[0].Split('=')[1].Replace("\\s", " "), Viewer = decodedMessage.Split(':')[2] });
+
             #endregion
 
             #region Whisper Parsing
