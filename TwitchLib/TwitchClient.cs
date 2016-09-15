@@ -164,6 +164,11 @@ namespace TwitchLib
         public event EventHandler<OnViewerTimedoutArgs> OnViewerTimedout;
 
         /// <summary>
+        /// Fires when client successfully leaves a channel.
+        /// </summary>
+        public event EventHandler<OnClientLeftChannelArgs> OnClientLeftChannel;
+
+        /// <summary>
         /// Fires when a viewer gets banned by any moderator.
         /// </summary>
         public event EventHandler<OnViewerBannedArgs> OnViewerBanned;
@@ -387,6 +392,15 @@ namespace TwitchLib
             public string BanReason;
         }
 
+        /// <summary>Args representing the client left a channel event.</summary>
+        public class OnClientLeftChannelArgs : EventArgs
+        {
+            /// <summary>The username of the bot that left the channel.</summary>
+            public string BotUsername;
+            /// <summary>Channel that bot just left (parted).</summary>
+            public string Channel;
+        }
+
         /// <summary>
         /// Initializes the TwitchChatClient class.
         /// </summary>
@@ -538,8 +552,12 @@ namespace TwitchLib
         /// Join the Twitch IRC chat of <paramref name="channel"/>.
         /// </summary>
         /// <param name="channel">The channel to join.</param>
-        public void JoinChannel(string channel)
+        /// <param name="overrideCheck">Override a join check.</param>
+        public void JoinChannel(string channel, bool overrideCheck = false)
         {
+            // Check to see if client is already in channel
+            if (JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel && !overrideCheck) != null)
+                return;
             if (_logging)
                 Console.WriteLine($"[TwitchLib] Joining channel: {channel}");
             _client.WriteLine(Rfc2812.Join($"#{channel}"));
@@ -551,18 +569,13 @@ namespace TwitchLib
         /// </summary>
         /// <param name="channel">The channel to leave.</param>
         /// <returns>True is returned if the passed channel was found, false if channel not found.</returns>
-        public bool LeaveChannel(string channel)
+        public void LeaveChannel(string channel)
         {
             if (_logging)
                 Console.WriteLine($"[TwitchLib] Leaving channel: {channel}");
             JoinedChannel joinedChannel = JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
             if(joinedChannel != null)
-            {
                 _client.WriteLine(Rfc2812.Part($"#{channel}"));
-                JoinedChannels.Remove(joinedChannel);
-                return true;
-            }
-            return false;
         }
 
         /// <summary>
@@ -570,9 +583,9 @@ namespace TwitchLib
         /// </summary>
         /// <param name="channel">The JoinedChannel object to leave.</param>
         /// <returns>True is returned if the passed channel was found, false if channel not found.</returns>
-        public bool LeaveChannel(JoinedChannel channel)
+        public void LeaveChannel(JoinedChannel channel)
         {
-            return LeaveChannel(channel.Channel);
+            LeaveChannel(channel.Channel);
         }
 
         /// <summary>
@@ -674,7 +687,16 @@ namespace TwitchLib
             response = ChatParsing.detectedViewerLeft(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnViewerLeft?.Invoke(this, new OnViewerLeftArgs { Username = decodedMessage.Split(':')[1].Split('!')[0], Channel = response.Channel });
+                string username = decodedMessage.Split(':')[1].Split('!')[0];
+                if (username.ToLower() == TwitchUsername)
+                {
+                    JoinedChannels.Remove(JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == response.Channel));
+                    OnClientLeftChannel?.Invoke(this, new OnClientLeftChannelArgs { BotUsername = username, Channel = response.Channel });
+                }
+                else
+                {
+                    OnViewerLeft?.Invoke(this, new OnViewerLeftArgs { Username = username, Channel = response.Channel });
+                }
                 return;
             }
 
