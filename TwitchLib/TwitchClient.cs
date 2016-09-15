@@ -445,7 +445,7 @@ namespace TwitchLib
                 $".tmi.twitch.tv PRIVMSG #{channel.Channel} :{message}";
             // This is a makeshift hack to encode it with accomodations for at least cyrillic characters, and possibly others
             _client.WriteLine(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
-            OnMessageSent?.Invoke(null,
+            OnMessageSent?.Invoke(this,
                 new OnMessageSentArgs {Username = _credentials.TwitchUsername, Channel = channel.Channel, Message = message});
         }
 
@@ -463,7 +463,7 @@ namespace TwitchLib
                 $".tmi.twitch.tv PRIVMSG #jtv :/w {receiver} {message}";
             // This is a makeshift hack to encode it with accomodations for at least cyrillic, and possibly others
             _client.WriteLine(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
-            OnWhisperSent?.Invoke(null, new OnWhisperSentArgs { Receiver = receiver, Message = message });
+            OnWhisperSent?.Invoke(this, new OnWhisperSentArgs { Receiver = receiver, Message = message });
         }
 
         /// <summary>
@@ -605,7 +605,7 @@ namespace TwitchLib
 
         private void Disconnected(object sender, EventArgs e)
         {
-            OnDisconnected?.Invoke(null, new OnDisconnectedArgs { Username = TwitchUsername });
+            OnDisconnected?.Invoke(this, new OnDisconnectedArgs { Username = TwitchUsername });
         }
 
         private void OnReadLine(object sender, ReadLineEventArgs e)
@@ -627,7 +627,7 @@ namespace TwitchLib
             if (ChatParsing.detectConnected(decodedMessage))
             {
                 IsConnected = true;
-                OnConnected?.Invoke(null, new OnConnectedArgs { AutoJoinChannel = "", Username = TwitchUsername });
+                OnConnected?.Invoke(this, new OnConnectedArgs { AutoJoinChannel = "", Username = TwitchUsername });
                 return;
             }
 
@@ -635,7 +635,7 @@ namespace TwitchLib
             response = ChatParsing.detectNewSubscriber(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnNewSubscriber?.Invoke(null, new OnNewSubscriberArgs { Subscriber = new NewSubscriber(decodedMessage), Channel = response.Channel });
+                OnNewSubscriber?.Invoke(this, new OnNewSubscriberArgs { Subscriber = new NewSubscriber(decodedMessage), Channel = response.Channel });
                 return;
             }
 
@@ -647,7 +647,7 @@ namespace TwitchLib
                 string command = chatMessage.Message.Split(' ')?[0].Substring(1, chatMessage.Message.Split(' ')[0].Length - 1) ?? chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
                 var argumentsAsList = chatMessage.Message.Split(' ')?.Where(arg => arg != chatMessage.Message[0] + command).ToList<string>() ?? new List<string>();
                 string argumentsAsString = chatMessage.Message.Replace(chatMessage.Message.Split(' ')?[0] + " ", "") ?? "";
-                OnChatCommandReceived?.Invoke(null, new OnChatCommandReceivedArgs { Command = command, ChatMessage = chatMessage, Channel = response.Channel, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
+                OnChatCommandReceived?.Invoke(this, new OnChatCommandReceivedArgs { Command = command, ChatMessage = chatMessage, Channel = response.Channel, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
                 // purposely drop through without return
             }
 
@@ -657,7 +657,7 @@ namespace TwitchLib
             {
                 var chatMessage = new ChatMessage(decodedMessage, ref _channelEmotes, WillReplaceEmotes);
                 JoinedChannels.Single(x => x.Channel == response.Channel).HandleMessage(chatMessage);
-                OnMessageReceived?.Invoke(null, new OnMessageReceivedArgs { ChatMessage = chatMessage });
+                OnMessageReceived?.Invoke(this, new OnMessageReceivedArgs { ChatMessage = chatMessage });
                 return;
             }
 
@@ -665,7 +665,7 @@ namespace TwitchLib
             response = ChatParsing.detectViewerJoined(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnViewerJoined?.Invoke(null, new OnViewerJoinedArgs { Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = response.Channel });
+                OnViewerJoined?.Invoke(this, new OnViewerJoinedArgs { Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = response.Channel });
                 return;
             }
 
@@ -673,7 +673,7 @@ namespace TwitchLib
             response = ChatParsing.detectedViewerLeft(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnViewerLeft?.Invoke(null, new OnViewerLeftArgs { Username = decodedMessage.Split(':')[1].Split('!')[0], Channel = response.Channel });
+                OnViewerLeft?.Invoke(this, new OnViewerLeftArgs { Username = decodedMessage.Split(':')[1].Split('!')[0], Channel = response.Channel });
                 return;
             }
 
@@ -681,7 +681,7 @@ namespace TwitchLib
             response = ChatParsing.detectedModeratorJoined(decodedMessage, JoinedChannels);
             if(response.Successful)
             {
-                OnModeratorJoined?.Invoke(null, new OnModeratorJoinedArgs { Username = decodedMessage.Split(' ')[4], Channel = response.Channel });
+                OnModeratorJoined?.Invoke(this, new OnModeratorJoinedArgs { Username = decodedMessage.Split(' ')[4], Channel = response.Channel });
                 return;
             }
 
@@ -689,7 +689,7 @@ namespace TwitchLib
             response = ChatParsing.detectedModeatorLeft(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnModeratorLeft?.Invoke(null, new OnModeratorLeftArgs { Username = decodedMessage.Split(' ')[4], Channel = response.Channel });
+                OnModeratorLeft?.Invoke(this, new OnModeratorLeftArgs { Username = decodedMessage.Split(' ')[4], Channel = response.Channel });
                 return;
             }
 
@@ -698,7 +698,7 @@ namespace TwitchLib
             if (response.Successful)
             {
                 _client.Disconnect();
-                OnIncorrectLogin?.Invoke(null, new OnIncorrectLoginArgs { Exception = new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername) });
+                OnIncorrectLogin?.Invoke(this, new OnIncorrectLoginArgs { Exception = new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername) });
                 return;
             }
 
@@ -707,7 +707,7 @@ namespace TwitchLib
             if (response.Successful)
             {
                 _client.Disconnect();
-                OnIncorrectLogin?.Invoke(null, new OnIncorrectLoginArgs { Exception = new ErrorLoggingInException("Invalid OAuth key. Remember to add 'oauth:' as a prefix. Example: oauth:19nds9sbnga9asd", _credentials.TwitchUsername) });
+                OnIncorrectLogin?.Invoke(this, new OnIncorrectLoginArgs { Exception = new ErrorLoggingInException("Invalid OAuth key. Remember to add 'oauth:' as a prefix. Example: oauth:19nds9sbnga9asd", _credentials.TwitchUsername) });
                 return;
             }
 
@@ -715,7 +715,7 @@ namespace TwitchLib
             response = ChatParsing.detectedHostLeft(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnHostLeft?.Invoke(null, null);
+                OnHostLeft?.Invoke(this, null);
                 return;
             }
 
@@ -723,7 +723,7 @@ namespace TwitchLib
             response = ChatParsing.detectedChannelStateChanged(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnChannelStateChanged?.Invoke(null, new OnChannelStateChangedArgs { ChannelState = new ChannelState(decodedMessage) });
+                OnChannelStateChanged?.Invoke(this, new OnChannelStateChangedArgs { ChannelState = new ChannelState(decodedMessage) });
                 return;
             }
 
@@ -731,7 +731,7 @@ namespace TwitchLib
             response = ChatParsing.detectedUserStateChanged(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnUserStateChanged?.Invoke(null, new OnUserStateChangedArgs { UserState = new UserState(decodedMessage) });
+                OnUserStateChanged?.Invoke(this, new OnUserStateChangedArgs { UserState = new UserState(decodedMessage) });
                 return;
             }
 
@@ -740,7 +740,7 @@ namespace TwitchLib
             if (response.Successful)
             {
                 var resub = new ReSubscriber(decodedMessage);
-                OnReSubscriber?.Invoke(null, new OnReSubscriberArgs { ReSubscriber = resub });
+                OnReSubscriber?.Invoke(this, new OnReSubscriberArgs { ReSubscriber = resub });
                 return;
             }
 
@@ -757,7 +757,7 @@ namespace TwitchLib
             {
                 int viewers;
                 int.TryParse(decodedMessage.Split(' ')[4], out viewers);
-                OnHostingStopped?.Invoke(null, new OnHostingStoppedArgs() { Viewers = viewers, HostingChannel = decodedMessage.Split(' ')[2].Remove(0, 1) });
+                OnHostingStopped?.Invoke(this, new OnHostingStoppedArgs() { Viewers = viewers, HostingChannel = decodedMessage.Split(' ')[2].Remove(0, 1) });
                 return;
             }
 
@@ -766,7 +766,7 @@ namespace TwitchLib
             {
                 int viewers;
                 int.TryParse(decodedMessage.Split(' ')[4], out viewers);
-                OnHostingStarted?.Invoke(null, new OnHostingStartedArgs() { Viewers = viewers, HostingChannel = decodedMessage.Split(' ')[2].Remove(0, 1), TargetChannel = decodedMessage.Split(' ')[3].Remove(0, 1) });
+                OnHostingStarted?.Invoke(this, new OnHostingStartedArgs() { Viewers = viewers, HostingChannel = decodedMessage.Split(' ')[2].Remove(0, 1), TargetChannel = decodedMessage.Split(' ')[3].Remove(0, 1) });
                 return;
             }
 
@@ -775,7 +775,7 @@ namespace TwitchLib
             if (response.Successful)
             {
                 var parsedUsers = decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ');
-                OnExistingUsersDetected?.Invoke(null, new OnExistingUsersDetectedArgs { Channel = response.Channel,
+                OnExistingUsersDetected?.Invoke(this, new OnExistingUsersDetectedArgs { Channel = response.Channel,
                     ExistingUsers = decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ').ToList<string>() });
                 return;
             }
@@ -785,13 +785,13 @@ namespace TwitchLib
             // On clear chat detected
             response = ChatParsing.detectedClearedChat(decodedMessage, JoinedChannels);
             if (response.Successful)
-                OnChatCleared?.Invoke(null, new OnChatClearedArgs { Channel = response.Channel });
+                OnChatCleared?.Invoke(this, new OnChatClearedArgs { Channel = response.Channel });
 
 
             // On timeout detected
             response = ChatParsing.detectedViewerTimedout(decodedMessage, JoinedChannels);
             if (response.Successful)
-                OnViewerTimedout?.Invoke(null, new OnViewerTimedoutArgs { Channel = response.Channel,
+                OnViewerTimedout?.Invoke(this, new OnViewerTimedoutArgs { Channel = response.Channel,
                     TimeoutDuration = int.Parse(decodedMessage.Split(';')[0].Split('=')[1]), TimeoutReason = decodedMessage.Split(' ')[0].Split('=')[2].Replace("\\s", " "),
                     Viewer = decodedMessage.Split(':')[2]});
 
@@ -799,7 +799,7 @@ namespace TwitchLib
             // On ban detected
             response = ChatParsing.detectedViewerBanned(decodedMessage, JoinedChannels);
             if (response.Successful)
-                OnViewerBanned?.Invoke(null, new OnViewerBannedArgs { Channel = response.Channel,
+                OnViewerBanned?.Invoke(this, new OnViewerBannedArgs { Channel = response.Channel,
                     BanReason = decodedMessage.Split(' ')[0].Split('=')[1].Replace("\\s", " "), Viewer = decodedMessage.Split(':')[2] });
 
             #endregion
@@ -812,7 +812,7 @@ namespace TwitchLib
                 {
                     WhisperMessage receivedMessage = new WhisperMessage(decodedMessage, _credentials.TwitchUsername);
                     PreviousWhisper = receivedMessage;
-                    OnWhisperReceived?.Invoke(null, new OnWhisperReceivedArgs { WhisperMessage = receivedMessage });
+                    OnWhisperReceived?.Invoke(this, new OnWhisperReceivedArgs { WhisperMessage = receivedMessage });
                     // Fall through to detect command as well
                 }
 
@@ -823,7 +823,7 @@ namespace TwitchLib
                     string command = whisperMessage.Message.Split(' ')?[0].Substring(1, whisperMessage.Message.Split(' ')[0].Length - 1) ?? whisperMessage.Message.Substring(1, whisperMessage.Message.Length - 1);
                     var argumentsAsList = whisperMessage.Message.Split(' ')?.Where(arg => arg != whisperMessage.Message[0] + command).ToList<string>() ?? new List<string>();
                     string argumentsAsString = whisperMessage.Message.Replace(whisperMessage.Message.Split(' ')?[0] + " ", "") ?? "";
-                    OnWhisperCommandReceived?.Invoke(null, new OnWhisperCommandReceivedArgs { Command = command, WhisperMessage = whisperMessage, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
+                    OnWhisperCommandReceived?.Invoke(this, new OnWhisperCommandReceivedArgs { Command = command, WhisperMessage = whisperMessage, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
                     return;
                 }
                 

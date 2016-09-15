@@ -48,7 +48,7 @@ namespace TwitchLib.Services
             TwitchAPIClasses.FollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
             ActiveCache = response.Followers;
             _followerServiceTimer.Start();
-            OnServiceStarted?.Invoke(null, 
+            OnServiceStarted?.Invoke(this, 
                 new OnServiceStartedArgs { Channel = Channel, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount });
         }
 
@@ -56,7 +56,7 @@ namespace TwitchLib.Services
         public void StopService()
         {
             _followerServiceTimer.Stop();
-            OnServiceStopped?.Invoke(null,
+            OnServiceStopped?.Invoke(this,
                 new OnServiceStoppedArgs { Channel = Channel, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount });
         }
         #endregion
@@ -84,7 +84,7 @@ namespace TwitchLib.Services
                 }
             }
             if(newFollowers.Count > 0)
-                OnNewFollowersDetected?.Invoke(null,
+                OnNewFollowersDetected?.Invoke(this,
                     new OnNewFollowersDetectedArgs { Channel = Channel, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount, NewFollowers = newFollowers });
         }
 

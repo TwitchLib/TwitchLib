@@ -54,21 +54,21 @@ namespace TwitchLib.Services
                 _periodTimer.Start();
             if(message.Length > MaximumMessageLengthAllowed && MaximumMessageLengthAllowed != -1)
             {
-                OnClientThrottled?.Invoke(null,
+                OnClientThrottled?.Invoke(this,
                     new OnClientThrottledArgs { Message = message, PeriodDuration = PeriodDuration,
                         ThrottleViolation = ThrottleType.MessageTooLong });
                 return false;
             }
             if(message.Length < MinimumMessageLengthAllowed)
             {
-                OnClientThrottled?.Invoke(null,
+                OnClientThrottled?.Invoke(this,
                     new OnClientThrottledArgs { Message = message, PeriodDuration = PeriodDuration,
                         ThrottleViolation = ThrottleType.MessageTooShort });
                 return false;
             }
             if(_currentMessageCount == MessagesAllowedInPeriod)
             {
-                OnClientThrottled?.Invoke(null,
+                OnClientThrottled?.Invoke(this,
                     new OnClientThrottledArgs { Message = message, PeriodDuration = PeriodDuration,
                         ThrottleViolation = ThrottleType.TooManyMessages });
                 return false;
@@ -82,7 +82,7 @@ namespace TwitchLib.Services
         private void periodTimerElapsed(object sender, ElapsedEventArgs e)
         {
             _periodTimer.Stop();
-            OnThrottledPeriodReset?.Invoke(null,
+            OnThrottledPeriodReset?.Invoke(this,
                 new OnThrottlePeriodResetArgs { TimeInPeriod = PeriodDuration });
             _currentMessageCount = 0;
         }
