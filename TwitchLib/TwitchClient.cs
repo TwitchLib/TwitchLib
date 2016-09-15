@@ -646,7 +646,7 @@ namespace TwitchLib
                 var chatMessage = new ChatMessage(TwitchUsername, decodedMessage, ref _channelEmotes, WillReplaceEmotes);
                 string command = chatMessage.Message.Split(' ')?[0].Substring(1, chatMessage.Message.Split(' ')[0].Length - 1) ?? chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
                 var argumentsAsList = chatMessage.Message.Split(' ')?.Where(arg => arg != chatMessage.Message[0] + command).ToList<string>() ?? new List<string>();
-                string argumentsAsString = chatMessage.Message.Replace(chatMessage.Message.Split(' ')?[0] + " ", "") ?? "";
+                string argumentsAsString = chatMessage.Message.Contains(" ") ? chatMessage.Message.Replace(chatMessage.Message.Split(' ')?[0] + " ", "") ?? "" : "";
                 OnChatCommandReceived?.Invoke(this, new OnChatCommandReceivedArgs { Command = command, ChatMessage = chatMessage, Channel = response.Channel, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
                 // purposely drop through without return
             }
