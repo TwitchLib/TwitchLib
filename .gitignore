@@ -5,6 +5,7 @@
 credentials.txt
 TwitchLib/TwitchLib.nuspec
 .travis.yml
+TwitchLib.Tests/
 
 # User-specific files
 *.suo
