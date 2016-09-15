@@ -52,6 +52,9 @@ namespace TwitchLibExample
             newClient.OnConnected += new EventHandler<TwitchClient.OnConnectedArgs>(onConnected);
             newClient.OnWhisperReceived += new EventHandler<TwitchClient.OnWhisperReceivedArgs>(globalWhisperReceived);
             newClient.OnWhisperCommandReceived += new EventHandler<TwitchClient.OnWhisperCommandReceivedArgs>(whisperCommandReceived);
+            newClient.OnChatCleared += new EventHandler<TwitchClient.OnChatClearedArgs>(onChatCleared);
+            newClient.OnViewerTimedout += new EventHandler<TwitchClient.OnViewerTimedoutArgs>(onViewerTimedout);
+            newClient.OnViewerBanned += new EventHandler<TwitchClient.OnViewerBannedArgs>(onViewerBanned);
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
@@ -68,6 +71,21 @@ namespace TwitchLibExample
                 comboBox2.Items.Add(textBox4.Text);
             if (!comboBox1.Items.Contains(textBox4.Text))
                 comboBox1.Items.Add(textBox4.Text);
+        }
+
+        public void onChatCleared(object sender, TwitchLib.TwitchClient.OnChatClearedArgs e)
+        {
+            MessageBox.Show($"Chat cleared in channel: {e.Channel}");
+        }
+
+        public void onViewerTimedout(object sender, TwitchClient.OnViewerTimedoutArgs e)
+        {
+            MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was timedout for {e.TimeoutDuration} seconds with reasoning: {e.TimeoutReason}");
+        }
+
+        public void onViewerBanned(object sender, TwitchClient.OnViewerBannedArgs e)
+        {
+            MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was banned with reasoning: {e.BanReason}");
         }
 
         public void onClientThrottled(object sender, TwitchLib.Services.MessageThrottler.OnClientThrottledArgs e)
