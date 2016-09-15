@@ -16,18 +16,28 @@ namespace TwitchLib.TwitchClientClasses
         /// <returns>Message type (ie NOTICE, PRIVMSG, JOIN, etc)</returns>
         public static string getReadType(string message, string channel)
         {
-            if (message.Contains($"#{channel}"))
+            if(message.Contains(" "))
             {
-                var splitter = Regex.Split(message, $" #{channel}");
-                var readType = splitter[0].Split(' ')[splitter[0].Split(' ').Length - 1];
-                return readType;
-            } else
-            {
-                // Other cases
-                if (message.Split(' ').Count() > 1 && message.Split(' ')[1] == "NOTICE")
-                    return "NOTICE";
+                bool found = false;
+                foreach(string word in message.Split(' '))
+                {
+                    if(word[0] == '#')
+                    {
+                        if (word == $"#{channel}")
+                            found = true;
+                    }
+                }
+                if(found)
+                {
+                    var splitter = Regex.Split(message, $" #{channel}");
+                    var readType = splitter[0].Split(' ')[splitter[0].Split(' ').Length - 1];
+                    return readType;
+                } else
+                {
+                    if (message.Split(' ').Count() > 1 && message.Split(' ')[1] == "NOTICE")
+                        return "NOTICE";
+                }
             }
-
             return null;
         }
 
@@ -375,6 +385,8 @@ namespace TwitchLib.TwitchClientClasses
         /// <returns></returns>
         public static DetectionReturn detectedExistingUsers(string message, string username, List<JoinedChannel> channels)
         {
+            if (channels.Count == 0)
+                return new DetectionReturn(false);
             //This assumes the existing users came from the most recently joined channel. Could be a source of bug(s)
             return new DetectionReturn((message.Split(' ').Count() > 5 && message.Split(' ')[0] == $":{username}.tmi.twitch.tv") && message.Split(' ')[1] == "353" &&
                 message.Split(' ')[2] == username, channels[channels.Count - 1].Channel);
