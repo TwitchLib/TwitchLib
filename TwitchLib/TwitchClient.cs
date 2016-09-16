@@ -244,18 +244,8 @@ namespace TwitchLib
         /// <summary>Args representing chat command received event.</summary>
         public class OnChatCommandReceivedArgs : EventArgs
         {
-            /// <summary>Property representing chat message object.</summary>
-            public ChatMessage ChatMessage;
-            /// <summary>Property representing channel of connected bot.</summary>
-            public string Channel;
-            /// <summary>Property representing received command.</summary>
-            public string Command;
-            /// <summary>Property representing arguements in form of string.</summary>
-            public string ArgumentsAsString;
-            /// <summary>Property representing arguements in form of string list.</summary>
-            public List<string> ArgumentsAsList;
-            /// <summary>Property representing the character command identifier.</summary>
-            public char CommandIdentifier;
+            /// Property representing received command.
+            public ChatCommand Command;
         }
 
         /// <summary>Args representing whisper command received event.</summary>
@@ -658,10 +648,7 @@ namespace TwitchLib
             if (response.Successful)
             {
                 var chatMessage = new ChatMessage(TwitchUsername, decodedMessage, ref _channelEmotes, WillReplaceEmotes);
-                string command = chatMessage.Message.Split(' ')?[0].Substring(1, chatMessage.Message.Split(' ')[0].Length - 1) ?? chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
-                var argumentsAsList = chatMessage.Message.Split(' ')?.Where(arg => arg != chatMessage.Message[0] + command).ToList<string>() ?? new List<string>();
-                string argumentsAsString = chatMessage.Message.Contains(" ") ? chatMessage.Message.Replace(chatMessage.Message.Split(' ')?[0] + " ", "") ?? "" : "";
-                OnChatCommandReceived?.Invoke(this, new OnChatCommandReceivedArgs { Command = command, ChatMessage = chatMessage, Channel = response.Channel, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
+                OnChatCommandReceived?.Invoke(this, new OnChatCommandReceivedArgs { Command = new ChatCommand(decodedMessage, chatMessage) });
                 // purposely drop through without return
             }
 
