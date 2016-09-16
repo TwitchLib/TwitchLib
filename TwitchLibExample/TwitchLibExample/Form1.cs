@@ -112,13 +112,14 @@ namespace TwitchLibExample
 
         private void chatCommandReceived(object sender, TwitchClient.OnChatCommandReceivedArgs e)
         {
-            listBox1.Items.Add(e.ChatMessage.Username + ": " + e.Command + "; args: " + e.ArgumentsAsString + ";");
-            foreach(string arg in e.ArgumentsAsList)
+            listBox1.Items.Add(e.Command.ChatMessage.Username + ": " + e.Command + "; args: " + e.Command.ArgumentsAsString + ";");
+            foreach(string arg in e.Command.ArgumentsAsList)
             {
                 Console.WriteLine("[chat] arg: " + arg);
             }
-            Console.WriteLine($"[chat] arg count: {e.ArgumentsAsList.Count}");
-            Console.WriteLine("[chat] args as string: " + e.ArgumentsAsString);
+            Console.WriteLine($"[chat] command identifier: {e.Command.CommandIdentifier}");
+            Console.WriteLine($"[chat] arg count: {e.Command.ArgumentsAsList.Count}");
+            Console.WriteLine("[chat] args as string: " + e.Command.ArgumentsAsString);
         }
 
         private void whisperCommandReceived(object sender, TwitchClient.OnWhisperCommandReceivedArgs e)
