@@ -36,5 +36,42 @@ namespace TwitchLib
             /// <summary>SortKey representing the alphabetical sort based on usernames</summary>
             Login
         }
+
+        public static List<string> ParseQuotesAndNonQuotes(string message)
+        {
+            // Return if empty string
+            if (message == "")
+                return new List<string>();
+
+            List<string> args = new List<string>();
+            bool previousQuoted = message[0] != '"';
+            // Parse quoted text as a single argument
+            foreach (string arg in message.Split('"'))
+            {
+                if (string.IsNullOrEmpty(arg))
+                    continue;
+
+                if (previousQuoted)
+                {
+                    if (arg.Contains(" "))
+                    {
+                        foreach (string dynArg in arg.Split(' '))
+                        {
+                            if (!string.IsNullOrWhiteSpace(dynArg))
+                            {
+                                args.Add(dynArg);
+                                previousQuoted = false;
+                            }
+                        }
+                    }       
+                }
+                else
+                {
+                    args.Add(arg);
+                    previousQuoted = true;
+                }
+            }
+            return args;
+        }
     }
 }
