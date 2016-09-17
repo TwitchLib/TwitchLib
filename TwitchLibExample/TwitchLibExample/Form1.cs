@@ -57,6 +57,7 @@ namespace TwitchLibExample
             newClient.OnChatCleared += new EventHandler<TwitchClient.OnChatClearedArgs>(onChatCleared);
             newClient.OnViewerTimedout += new EventHandler<TwitchClient.OnViewerTimedoutArgs>(onViewerTimedout);
             newClient.OnViewerBanned += new EventHandler<TwitchClient.OnViewerBannedArgs>(onViewerBanned);
+            newClient.OnClientLeftChannel += new EventHandler<TwitchClient.OnClientLeftChannelArgs>(onLeftChannel);
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
@@ -73,6 +74,15 @@ namespace TwitchLibExample
                 comboBox2.Items.Add(textBox4.Text);
             if (!comboBox1.Items.Contains(textBox4.Text))
                 comboBox1.Items.Add(textBox4.Text);
+            if (!comboBox4.Items.Contains(textBox4.Text))
+                comboBox4.Items.Add(textBox4.Text);
+            if (!comboBox6.Items.Contains(textBox4.Text))
+                comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onLeftChannel(object sender, TwitchLib.TwitchClient.OnClientLeftChannelArgs e)
+        {
+            populateLeaveChannelsDropdown();
         }
 
         public void onChatCleared(object sender, TwitchLib.TwitchClient.OnChatClearedArgs e)
@@ -112,7 +122,7 @@ namespace TwitchLibExample
 
         private void chatCommandReceived(object sender, TwitchClient.OnChatCommandReceivedArgs e)
         {
-            listBox1.Items.Add(e.Command.ChatMessage.Username + ": " + e.Command + "; args: " + e.Command.ArgumentsAsString + ";");
+            listBox1.Items.Add("[#" + e.Command.ChatMessage.Channel + "]" + e.Command.ChatMessage.Username + ": " + e.Command + "; args: " + e.Command.ArgumentsAsString + ";");
             foreach(string arg in e.Command.ArgumentsAsList)
             {
                 Console.WriteLine("[chat] arg: " + arg);
@@ -524,6 +534,59 @@ namespace TwitchLibExample
             List<TwitchLib.TwitchAPIClasses.BadgeResponse.Badge> badges = (await TwitchApi.GetChannelBadges(textBox36.Text)).ChannelBadges;
             foreach (TwitchLib.TwitchAPIClasses.BadgeResponse.Badge badge in badges)
                 MessageBox.Show($"Available images for: {badge.BadgeName}\nAlpha: {badge.Alpha}\nImage: {badge.Image}\nSVG: {badge.SVG}");
+        }
+
+        private void populateLeaveChannelsDropdown()
+        {
+            comboBox5.Items.Clear();
+            foreach (TwitchClient client in clients)
+            {
+                if (comboBox4.Text.ToLower() == client.TwitchUsername.ToLower())
+                {
+                    foreach (TwitchLib.TwitchClientClasses.JoinedChannel channel in client.JoinedChannels)
+                        comboBox5.Items.Add(channel.Channel);
+                }
+            }
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            populateLeaveChannelsDropdown();
+        }
+
+        private void button41_Click(object sender, EventArgs e)
+        {
+            foreach(TwitchClient client in clients)
+                if (comboBox4.Text.ToLower() == client.TwitchUsername.ToLower())
+                    client.JoinChannel(textBox37.Text);
+
+            System.Threading.Thread.Sleep(2000);
+            populateLeaveChannelsDropdown();
+        }
+
+        private void button42_Click(object sender, EventArgs e)
+        {
+            foreach (TwitchClient client in clients)
+                if (comboBox4.Text.ToLower() == client.TwitchUsername.ToLower())
+                    client.LeaveChannel(comboBox5.Text);
+
+            populateLeaveChannelsDropdown();
+        }
+
+        private void button43_Click(object sender, EventArgs e)
+        {
+            comboBox4.Items.Clear();
+            foreach(TwitchClient client in clients)
+            {
+                comboBox4.Items.Add(client.TwitchUsername);
+            }
+        }
+
+        private void button44_Click(object sender, EventArgs e)
+        {
+            foreach (TwitchClient client in clients)
+                if (comboBox6.Text.ToLower() == client.TwitchUsername.ToLower())
+                    client.Disconnect();
         }
     }
 }
