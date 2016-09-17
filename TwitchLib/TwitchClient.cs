@@ -547,6 +547,8 @@ namespace TwitchLib
         /// <param name="overrideCheck">Override a join check.</param>
         public void JoinChannel(string channel, bool overrideCheck = false)
         {
+            // Channel MUST be lower case
+            channel = channel.ToLower();
             // Check to see if client is already in channel
             if (JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel && !overrideCheck) != null)
                 return;
@@ -563,6 +565,8 @@ namespace TwitchLib
         /// <returns>True is returned if the passed channel was found, false if channel not found.</returns>
         public void LeaveChannel(string channel)
         {
+            // Channel MUST be lower case
+            channel = channel.ToLower();
             if (_logging)
                 Console.WriteLine($"[TwitchLib] Leaving channel: {channel}");
             JoinedChannel joinedChannel = JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
