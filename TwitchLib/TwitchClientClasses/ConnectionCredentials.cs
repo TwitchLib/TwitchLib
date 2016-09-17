@@ -14,15 +14,17 @@ namespace TwitchLib
         /// <summary>Property representing bot's oauth.</summary>
         public string TwitchOAuth { get; set; }
         /// <summary>Property representing Twitch's host address</summary>
-        public string TwitchHost { get; set; } = "irc.chat.twitch.tv";
+        public string TwitchHost { get; set; }
         /// <summary>Property representing Twitch's host port</summary>
-        public int TwitchPort { get; set; } = 6667;
+        public int TwitchPort { get; set; }
 
         /// <summary>Constructor for ConnectionCredentials object.</summary>
-        public ConnectionCredentials(string twitchUsername, string twitchOAuth)
+        public ConnectionCredentials(string twitchUsername, string twitchOAuth, string twitchHost = "irc.chat.twitch.tv", int twitchPort = 6667)
         {
             TwitchUsername = twitchUsername.ToLower();
             TwitchOAuth = twitchOAuth;
+            TwitchHost = twitchHost;
+            TwitchPort = twitchPort;
         }
     }
 }
