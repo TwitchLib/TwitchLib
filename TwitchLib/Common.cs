@@ -39,11 +39,12 @@ namespace TwitchLib
 
         public static List<string> ParseQuotesAndNonQuotes(string message)
         {
+            List<string> args = new List<string>();
+
             // Return if empty string
             if (message == "")
                 return new List<string>();
 
-            List<string> args = new List<string>();
             bool previousQuoted = message[0] != '"';
             // Parse quoted text as a single argument
             foreach (string arg in message.Split('"'))
@@ -51,24 +52,25 @@ namespace TwitchLib
                 if (string.IsNullOrEmpty(arg))
                     continue;
 
-                if (previousQuoted)
-                {
-                    if (arg.Contains(" "))
-                    {
-                        foreach (string dynArg in arg.Split(' '))
-                        {
-                            if (!string.IsNullOrWhiteSpace(dynArg))
-                            {
-                                args.Add(dynArg);
-                                previousQuoted = false;
-                            }
-                        }
-                    }       
-                }
-                else
+                // This arg is a quoted arg, add it right away
+                if(!previousQuoted)
                 {
                     args.Add(arg);
                     previousQuoted = true;
+                    continue;
+                }
+
+                if (!arg.Contains(" "))
+                    continue;
+
+                // This arg is non-quoted, iterate through each split and add it if it's not empty/whitespace
+                foreach (string dynArg in arg.Split(' '))
+                {
+                    if (string.IsNullOrWhiteSpace(dynArg))
+                        continue;
+
+                    args.Add(dynArg);
+                    previousQuoted = false;
                 }
             }
             return args;
