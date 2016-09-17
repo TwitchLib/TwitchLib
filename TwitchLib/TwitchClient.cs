@@ -488,7 +488,9 @@ namespace TwitchLib
         {
             if (_logging)
                 Console.WriteLine("Disconnect Twitch Chat Client...");
-            _client.Disconnect();
+
+            // Not sure if this is the proper way to handle this. It is UI blocking, so in order to presrve UI functionality, I delegated it to a task.
+            Task.Factory.StartNew(() => { _client.Disconnect(); });
             IsConnected = false;
         }
 
