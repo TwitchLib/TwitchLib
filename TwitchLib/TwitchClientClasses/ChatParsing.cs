@@ -358,6 +358,14 @@ namespace TwitchLib.TwitchClientClasses
             return new DetectionReturn(message == "PING :tmi.twitch.tv");
         }
 
+        /// <summary>[Works] Parse function to detect PONG messages.</summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static DetectionReturn detectedPong(string message)
+        {
+            return new DetectionReturn(message == ":tmi.twitch.tv PONG tmi.twitch.tv :irc.chat.twitch.tv");
+        }
+
         /// <summary>[Untested] Parse function to stopped hosting.</summary>
         /// <param name="message"></param>
         /// <returns></returns>

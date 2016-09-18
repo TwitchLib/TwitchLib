@@ -768,6 +768,11 @@ namespace TwitchLib
                 return;
             }
 
+            // On PONG received (don't do anything)
+            response = ChatParsing.detectedPong(decodedMessage);
+            if (response.Successful)
+                return;
+
             // On Hosting Stopped
             if(ChatParsing.detectedHostingStopped(decodedMessage))
             {
