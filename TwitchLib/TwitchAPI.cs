@@ -684,7 +684,7 @@ namespace TwitchLib
 
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
-            var request = (HttpWebRequest)WebRequest.Create(new Uri(url));
+            var request = (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={ClientId}"));
             request.Method = "GET";
             request.Accept = "application/vnd.twitchtv.v3+json";
             request.ContentType = "application/json";
@@ -708,7 +708,7 @@ namespace TwitchLib
             var data = new UTF8Encoding().GetBytes(requestData ?? "");
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
-            var request = (HttpWebRequest)WebRequest.Create(new Uri(url));
+            var request = (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={ClientId}"));
             request.Method = method;
             request.Accept = "application/vnd.twitchtv.v3+json";
             request.ContentType = "application/json";
