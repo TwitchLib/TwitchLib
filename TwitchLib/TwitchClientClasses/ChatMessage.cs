@@ -198,7 +198,7 @@ namespace TwitchLib
                 }
             }
 
-            if(Channel.ToLower() == Channel.ToLower())
+            if(Channel.ToLower() == Username.ToLower())
             {
                 UserType = Common.UserType.Broadcaster;
                 IsBroadcaster = true;
