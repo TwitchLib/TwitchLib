@@ -49,6 +49,16 @@ namespace TwitchLib
 
         #region Get Objects
         /// <summary>
+        /// Retrieves a Channels object regarding a specific channel.
+        /// </summary>
+        /// <param name="channel">The channel to fetch Channels object about.</param>
+        /// <returns>Channels object.</returns>
+        public static async Task<Channels> GetChannelsObject(string channel)
+        {
+            return new Channels(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/api/channels/{channel}")));
+        }
+
+        /// <summary>
         /// Retrieves a channel's list of available chat badges.
         /// </summary>
         /// <param name="channel">The channel to fetch available badges from.</param>
@@ -672,6 +682,23 @@ namespace TwitchLib
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Fetches Twitch channel name from a steam Id, if their Steam is connected to their Twitch.
+        /// </summary>
+        /// <param name="channel">The steam id of the user whose Twitch channel is requested.</param>
+        /// <returns>Returns channel name if available, or null.</returns>
+        public static async Task<string> GetChannelFromSteamId(string channel)
+        {
+            try
+            {
+                string resp = await MakeGetRequest($"https://api.twitch.tv/api/steam/{channel}");
+                return JObject.Parse(resp).SelectToken("name").ToString();
+            } catch(Exception)
+            {
+                return null;
             }
         }
         #endregion
