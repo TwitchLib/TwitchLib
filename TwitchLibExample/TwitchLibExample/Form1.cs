@@ -605,5 +605,11 @@ namespace TwitchLibExample
             else
                 MessageBox.Show($"Channel: {channelName}");
         }
+
+        TwitchLib.TwitchPubSub pubsub = new TwitchPubSub(44338537);
+        private void button47_Click(object sender, EventArgs e)
+        {
+            pubsub.Connect();
+        }
     }
 }

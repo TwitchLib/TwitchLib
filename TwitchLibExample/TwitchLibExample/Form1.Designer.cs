@@ -225,6 +225,7 @@
             this.button46 = new System.Windows.Forms.Button();
             this.textBox39 = new System.Windows.Forms.TextBox();
             this.label47 = new System.Windows.Forms.Label();
+            this.button47 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -1286,6 +1287,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.button47);
             this.groupBox6.Controls.Add(this.groupBox38);
             this.groupBox6.Controls.Add(this.groupBox37);
             this.groupBox6.Controls.Add(this.groupBox36);
@@ -2427,6 +2429,16 @@
             this.label47.TabIndex = 0;
             this.label47.Text = "Steam Id:";
             // 
+            // button47
+            // 
+            this.button47.Location = new System.Drawing.Point(1438, 638);
+            this.button47.Name = "button47";
+            this.button47.Size = new System.Drawing.Size(459, 117);
+            this.button47.TabIndex = 29;
+            this.button47.Text = "Test Connection to PubSub";
+            this.button47.UseVisualStyleBackColor = true;
+            this.button47.Click += new System.EventHandler(this.button47_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -2726,6 +2738,7 @@
         private System.Windows.Forms.Button button46;
         private System.Windows.Forms.TextBox textBox39;
         private System.Windows.Forms.Label label47;
+        private System.Windows.Forms.Button button47;
     }
 }
 
