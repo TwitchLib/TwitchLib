@@ -632,6 +632,8 @@ namespace TwitchLib
         /// </summary>
         public static void SetClientId(string clientId, bool disableClientIdValidation = false)
         {
+            if (ClientId != null && clientId == ClientId)
+                return;
             ClientId = clientId;
             if (!disableClientIdValidation)
                 ValidClientId();
