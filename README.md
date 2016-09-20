@@ -92,6 +92,8 @@ Available via Nuget: `Install-Package TwitchLib`
 - UnblockUser(string username, string blockedUsername, string accessToken) - Unblocks user.
 - GetChannelEditors(string channel, string accessToken) - Retrieves a list of User objects representing users that are channel editors.
 - GetChannelBadges(string channel) - Fetches a list of Badge objects representing each badge available in a channel.
+- GetChannelsObject(string channel) - Fetches a Channels object from an undocumented endpoint (I think), which contains steam Id and other interesting properties.
+- GetChannelFromSteamId(string steamId) - Fetches the name of a channel given a user's Steam Id (if their Steam is linked to their Twitch).
 
 ### Twitch Services
 - FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected.
