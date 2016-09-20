@@ -217,6 +217,14 @@
             this.label45 = new System.Windows.Forms.Label();
             this.button44 = new System.Windows.Forms.Button();
             this.comboBox6 = new System.Windows.Forms.ComboBox();
+            this.groupBox37 = new System.Windows.Forms.GroupBox();
+            this.button45 = new System.Windows.Forms.Button();
+            this.textBox38 = new System.Windows.Forms.TextBox();
+            this.label46 = new System.Windows.Forms.Label();
+            this.groupBox38 = new System.Windows.Forms.GroupBox();
+            this.button46 = new System.Windows.Forms.Button();
+            this.textBox39 = new System.Windows.Forms.TextBox();
+            this.label47 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -266,6 +274,8 @@
             this.groupBox7.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.tabPage8.SuspendLayout();
+            this.groupBox37.SuspendLayout();
+            this.groupBox38.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -1276,6 +1286,8 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.groupBox38);
+            this.groupBox6.Controls.Add(this.groupBox37);
             this.groupBox6.Controls.Add(this.groupBox36);
             this.groupBox6.Controls.Add(this.groupBox35);
             this.groupBox6.Controls.Add(this.groupBox30);
@@ -2329,6 +2341,92 @@
             this.comboBox6.Size = new System.Drawing.Size(414, 39);
             this.comboBox6.TabIndex = 2;
             // 
+            // groupBox37
+            // 
+            this.groupBox37.Controls.Add(this.button45);
+            this.groupBox37.Controls.Add(this.textBox38);
+            this.groupBox37.Controls.Add(this.label46);
+            this.groupBox37.Location = new System.Drawing.Point(1438, 171);
+            this.groupBox37.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox37.Name = "groupBox37";
+            this.groupBox37.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox37.Size = new System.Drawing.Size(459, 107);
+            this.groupBox37.TabIndex = 27;
+            this.groupBox37.TabStop = false;
+            this.groupBox37.Text = "Get Channels Object";
+            // 
+            // button45
+            // 
+            this.button45.Location = new System.Drawing.Point(304, 29);
+            this.button45.Margin = new System.Windows.Forms.Padding(5);
+            this.button45.Name = "button45";
+            this.button45.Size = new System.Drawing.Size(120, 48);
+            this.button45.TabIndex = 18;
+            this.button45.Text = "Fetch";
+            this.button45.UseVisualStyleBackColor = true;
+            this.button45.Click += new System.EventHandler(this.button45_Click);
+            // 
+            // textBox38
+            // 
+            this.textBox38.Location = new System.Drawing.Point(152, 36);
+            this.textBox38.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox38.Name = "textBox38";
+            this.textBox38.Size = new System.Drawing.Size(137, 38);
+            this.textBox38.TabIndex = 1;
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(11, 36);
+            this.label46.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(130, 32);
+            this.label46.TabIndex = 0;
+            this.label46.Text = "Channel:";
+            // 
+            // groupBox38
+            // 
+            this.groupBox38.Controls.Add(this.button46);
+            this.groupBox38.Controls.Add(this.textBox39);
+            this.groupBox38.Controls.Add(this.label47);
+            this.groupBox38.Location = new System.Drawing.Point(1438, 296);
+            this.groupBox38.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox38.Name = "groupBox38";
+            this.groupBox38.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox38.Size = new System.Drawing.Size(459, 107);
+            this.groupBox38.TabIndex = 28;
+            this.groupBox38.TabStop = false;
+            this.groupBox38.Text = "Get Channel From Steam ID";
+            // 
+            // button46
+            // 
+            this.button46.Location = new System.Drawing.Point(304, 29);
+            this.button46.Margin = new System.Windows.Forms.Padding(5);
+            this.button46.Name = "button46";
+            this.button46.Size = new System.Drawing.Size(120, 48);
+            this.button46.TabIndex = 18;
+            this.button46.Text = "Fetch";
+            this.button46.UseVisualStyleBackColor = true;
+            this.button46.Click += new System.EventHandler(this.button46_Click);
+            // 
+            // textBox39
+            // 
+            this.textBox39.Location = new System.Drawing.Point(152, 36);
+            this.textBox39.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox39.Name = "textBox39";
+            this.textBox39.Size = new System.Drawing.Size(137, 38);
+            this.textBox39.TabIndex = 1;
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(11, 36);
+            this.label47.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(135, 32);
+            this.label47.TabIndex = 0;
+            this.label47.Text = "Steam Id:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -2421,6 +2519,10 @@
             this.tabPage7.PerformLayout();
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
+            this.groupBox37.ResumeLayout(false);
+            this.groupBox37.PerformLayout();
+            this.groupBox38.ResumeLayout(false);
+            this.groupBox38.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2616,6 +2718,14 @@
         private System.Windows.Forms.ComboBox comboBox6;
         private System.Windows.Forms.Button button44;
         private System.Windows.Forms.Label label45;
+        private System.Windows.Forms.GroupBox groupBox37;
+        private System.Windows.Forms.Button button45;
+        private System.Windows.Forms.TextBox textBox38;
+        private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.GroupBox groupBox38;
+        private System.Windows.Forms.Button button46;
+        private System.Windows.Forms.TextBox textBox39;
+        private System.Windows.Forms.Label label47;
     }
 }
 

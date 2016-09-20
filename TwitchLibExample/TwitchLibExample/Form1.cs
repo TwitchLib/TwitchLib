@@ -585,8 +585,25 @@ namespace TwitchLibExample
         private void button44_Click(object sender, EventArgs e)
         {
             foreach (TwitchClient client in clients)
-                if (comboBox6.Text.ToLower() == client.TwitchUsername.ToLower())
+                if (client.TwitchUsername.ToLower() == comboBox6.Text.ToLower())
                     client.Disconnect();
+        }
+
+        private async void button45_Click(object sender, EventArgs e)
+        {
+            //textbox38
+            TwitchLib.TwitchAPIClasses.Channels channels = await TwitchApi.GetChannelsObject(textBox38.Text);
+            MessageBox.Show($"Display name: {channels.DisplayName}\n Fighting Ad Block: {channels.FightAdBlock}\nSteam Id: {channels.SteamId}");
+        }
+
+        private async void button46_Click(object sender, EventArgs e)
+        {
+            //textbox 39
+            string channelName = await TwitchApi.GetChannelFromSteamId(textBox39.Text);
+            if (channelName == null)
+                MessageBox.Show("Channel not found!");
+            else
+                MessageBox.Show($"Channel: {channelName}");
         }
     }
 }
