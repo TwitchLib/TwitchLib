@@ -688,13 +688,13 @@ namespace TwitchLib
         /// <summary>
         /// Fetches Twitch channel name from a steam Id, if their Steam is connected to their Twitch.
         /// </summary>
-        /// <param name="channel">The steam id of the user whose Twitch channel is requested.</param>
+        /// <param name="steamId">The steam id of the user whose Twitch channel is requested.</param>
         /// <returns>Returns channel name if available, or null.</returns>
-        public static async Task<string> GetChannelFromSteamId(string channel)
+        public static async Task<string> GetChannelFromSteamId(string steamId)
         {
             try
             {
-                string resp = await MakeGetRequest($"https://api.twitch.tv/api/steam/{channel}");
+                string resp = await MakeGetRequest($"https://api.twitch.tv/api/steam/{steamId}");
                 return JObject.Parse(resp).SelectToken("name").ToString();
             } catch(Exception)
             {
