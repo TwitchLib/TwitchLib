@@ -95,6 +95,9 @@ Available via Nuget: `Install-Package TwitchLib`
 - GetChannelsObject(string channel) - Fetches a Channels object from an undocumented endpoint (I think), which contains steam Id and other interesting properties.
 - GetChannelFromSteamId(string steamId) - Fetches the name of a channel given a user's Steam Id (if their Steam is linked to their Twitch).
 
+### TwitchPubSub
+- Groundword done(?)
+
 ### Twitch Services
 - FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected.
 - MessageThrottler - Property object that can be assigned to either Chat or Whisper clients, fires events and blocks sending of messages given a specific time period in order to prevent Twitch ToS violations. (OPTIONAL)
@@ -110,6 +113,7 @@ I've recently taken to implementing this class into test applications and connec
 ### Libraries Utilized
 - Newtonsoft.Json - JSON parsing class.  Used to parse Twitch API calls.
 - SmartIRC4Net - Base IRC class.
+- WebSocket4Net - Base Socket class.
 
 ### Support/Discussion
 The Twitch Discord server has a #developer channel that has constant discussion about developing for the Twitch platform. You can likely get support and discuss ideas there. A link is below:
