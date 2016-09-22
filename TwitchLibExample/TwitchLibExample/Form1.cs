@@ -58,6 +58,7 @@ namespace TwitchLibExample
             newClient.OnViewerTimedout += new EventHandler<TwitchClient.OnViewerTimedoutArgs>(onViewerTimedout);
             newClient.OnViewerBanned += new EventHandler<TwitchClient.OnViewerBannedArgs>(onViewerBanned);
             newClient.OnClientLeftChannel += new EventHandler<TwitchClient.OnClientLeftChannelArgs>(onLeftChannel);
+            newClient.OnJoinedChannel += new EventHandler<TwitchClient.OnJoinedChannelArgs>(onJoinedChannel);
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
@@ -78,6 +79,11 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onJoinedChannel(object sender, TwitchLib.TwitchClient.OnJoinedChannelArgs e)
+        {
+            MessageBox.Show($"Joined channel: {e.Channel}\nAs username: {e.Username}");
         }
 
         private void onLeftChannel(object sender, TwitchLib.TwitchClient.OnClientLeftChannelArgs e)
