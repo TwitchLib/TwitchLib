@@ -49,9 +49,14 @@ namespace TwitchLib
         public bool WillReplaceEmotes { get; set; } = false;
 
         /// <summary>
-        /// Fires on listening and after joined channel, returns username and channel.
+        /// Fires when client connects to Twitch.
         /// </summary>
         public event EventHandler<OnConnectedArgs> OnConnected;
+
+        /// <summary>
+        /// Fires when client joins a channel.
+        /// </summary>
+        public event EventHandler<OnJoinedChannelArgs> OnJoinedChannel;
 
         /// <summary>
         /// Fires on logging in with incorrect details, returns ErrorLoggingInException.
@@ -180,6 +185,15 @@ namespace TwitchLib
             public string Username;
             /// <summary>Property representing connected channel.</summary>
             public string AutoJoinChannel;
+        }
+
+        /// <summary>Args representing on channel joined event.</summary>
+        public class OnJoinedChannelArgs : EventArgs
+        {
+            /// <summary>Property representing bot username.</summary>
+            public string Username;
+            /// <summary>Property representing the channel that was joined.</summary>
+            public string Channel;
         }
 
         /// <summary>Args representing an incorrect login event.</summary>
@@ -444,7 +458,7 @@ namespace TwitchLib
         /// <param name="channel">Channel to send message to.</param>
         public void SendMessage(JoinedChannel channel, string message, bool dryRun = false)
         {
-            if (dryRun) return;
+            if (channel == null || message == null || dryRun) return;
             if (ChatThrottler != null && !ChatThrottler.MessagePermitted(message)) return;
             string twitchMessage = $":{_credentials.TwitchUsername}!{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" +
                 $".tmi.twitch.tv PRIVMSG #{channel.Channel} :{message}";
@@ -452,6 +466,23 @@ namespace TwitchLib
             _client.WriteLine(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
             OnMessageSent?.Invoke(this,
                 new OnMessageSentArgs {Username = _credentials.TwitchUsername, Channel = channel.Channel, Message = message});
+        }
+
+        /// <summary>
+        /// SendMessage wrapper that accepts channel in string form.
+        /// </summary>
+        public void SendMessage(string channel, string message, bool dryRun = false)
+        {
+            SendMessage(GetJoinedChannel(channel), message, dryRun);
+        }
+
+        /// <summary>
+        /// SendMessage wrapper that sends message to first joined channel.
+        /// </summary>
+        public void SendMessage(string message, bool dryRun = false)
+        {
+            if (JoinedChannels.Count > 0)
+                SendMessage(JoinedChannels[0], message, dryRun);
         }
 
         /// <summary>
@@ -469,6 +500,15 @@ namespace TwitchLib
             // This is a makeshift hack to encode it with accomodations for at least cyrillic, and possibly others
             _client.WriteLine(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
             OnWhisperSent?.Invoke(this, new OnWhisperSentArgs { Receiver = receiver, Message = message });
+        }
+
+        /// <summary>
+        /// SendWhisper wrapper method that will send a whisper back to the user who most recently sent a whisper to this bot.
+        /// </summary>
+        public void ReplyWhisper(string message, bool dryRun = false)
+        {
+            if (PreviousWhisper != null)
+                SendWhisper(PreviousWhisper.Username, message, dryRun);
         }
 
         /// <summary>
@@ -560,6 +600,15 @@ namespace TwitchLib
                 Console.WriteLine($"[TwitchLib] Joining channel: {channel}");
             _client.WriteLine(Rfc2812.Join($"#{channel}"));
             JoinedChannels.Add(new JoinedChannel(channel));
+        }
+
+        /// <summary>
+        /// Returns a JoinedChannel object using a passed string/>.
+        /// </summary>
+        /// <param name="channel">String channel to search for.</param>
+        public JoinedChannel GetJoinedChannel(string channel)
+        {
+            return JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
         }
 
         /// <summary>
@@ -676,7 +725,10 @@ namespace TwitchLib
             response = ChatParsing.detectViewerJoined(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnViewerJoined?.Invoke(this, new OnViewerJoinedArgs { Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = response.Channel });
+                if (TwitchUsername.ToLower() == decodedMessage.Split('!')[1].Split('@')[0].ToLower())
+                    OnJoinedChannel?.Invoke(this, new OnJoinedChannelArgs { Channel = response.Channel, Username = decodedMessage.Split('!')[1].Split('@')[0] });
+                else
+                    OnViewerJoined?.Invoke(this, new OnViewerJoinedArgs { Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = response.Channel });
                 return;
             }
 
