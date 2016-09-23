@@ -95,6 +95,9 @@
     <Compile Include="TwitchClientClasses\UserState.cs" />
     <Compile Include="TwitchClientClasses\WhisperMessage.cs" />
     <Compile Include="TwitchPubSub.cs" />
+    <Compile Include="TwitchPubSubClasses\PreviousRequest.cs" />
+    <Compile Include="TwitchPubSubClasses\Responses\Message.cs" />
+    <Compile Include="TwitchPubSubClasses\Responses\Response.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

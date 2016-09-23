@@ -37,6 +37,12 @@ namespace TwitchLib
             Login
         }
 
+        /// <summary>Enum representing various request types for PubSub service</summary>
+        public enum PubSubRequestType
+        {
+            ListenToTopic
+        }
+
         public static List<string> ParseQuotesAndNonQuotes(string message)
         {
             List<string> args = new List<string>();
