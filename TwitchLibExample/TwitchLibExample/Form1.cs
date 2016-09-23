@@ -626,7 +626,7 @@ namespace TwitchLibExample
         private void pubsubOnConnected(object sender, object e)
         {
             // MODERATOR ACCOUNT ID, CHANNEL ACCOUNT ID, MODERATOR OAUTH
-            pubsub.ListenToChatModeratorActions(0, 0, "moderator_oauth");
+            pubsub.ListenToChatModeratorActions(0, 0, "moderators_oauth");
         }
 
         private void pubsubOnListenSuccessful(object sender, TwitchPubSub.onListenSuccessfulArgs e)

@@ -118,20 +118,23 @@ namespace TwitchLib
                     break;
                 case "message":
                     TwitchPubSubClasses.Responses.Message msg = new TwitchPubSubClasses.Responses.Message(message);
-                    Console.WriteLine("Success #1 - " + msg.ModerationAction);
-                    switch(msg.ModerationAction.ToLower())
+                    string reason = "";
+                    switch (msg.ModerationAction.ToLower())
                     {
                         case "timeout":
-                            onTimeout?.Invoke(this, new onTimeoutArgs { TimedoutBy = msg.CreatedBy, TimedoutUser = msg.Args[0], TimeoutDuration = TimeSpan.FromSeconds(int.Parse(msg.Args[1])), TimeoutReason = msg.Args[2] });
+                            if (msg.Args.Count > 2)
+                                reason = msg.Args[2];
+                            onTimeout?.Invoke(this, new onTimeoutArgs { TimedoutBy = msg.CreatedBy, TimedoutUser = msg.Args[0], TimeoutDuration = TimeSpan.FromSeconds(int.Parse(msg.Args[1])), TimeoutReason = reason });
                             return;
                         case "ban":
-                            onBan?.Invoke(this, new onBanArgs { BannedBy = msg.CreatedBy, BannedUser = msg.Args[0], BanReason = msg.Args[1] });
+                            if (msg.Args.Count > 1)
+                                reason = msg.Args[1];
+                            onBan?.Invoke(this, new onBanArgs { BannedBy = msg.CreatedBy, BannedUser = msg.Args[0], BanReason = reason });
                             return;
                         case "unban":
                             onUnban?.Invoke(this, new onUnbanArgs { UnbannedBy = msg.CreatedBy, UnbannedUser = msg.Args[0] });
                             return;
                     }
-                    Console.WriteLine("Success #2");
                     break;
             }
             if (logging)
