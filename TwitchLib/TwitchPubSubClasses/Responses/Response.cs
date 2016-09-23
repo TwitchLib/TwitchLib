@@ -13,11 +13,14 @@ namespace TwitchLib.TwitchPubSubClasses.Responses
 
         public string Error { get; protected set; }
         public string Nonce { get; protected set; }
+        public bool Successful { get; protected set; }
 
         public Response(string json)
         {
             Error = JObject.Parse(json).SelectToken("error")?.ToString();
             Nonce = JObject.Parse(json).SelectToken("nonce")?.ToString();
+            if (string.IsNullOrWhiteSpace(Error))
+                Successful = true;
         }
     }
 }
