@@ -16,6 +16,7 @@ namespace TwitchLibExample
     public partial class Form1 : Form
     {
         List<TwitchClient> clients = new List<TwitchClient>();
+        TwitchPubSub pubsub;
         public Form1()
         {
             InitializeComponent();
@@ -612,9 +613,52 @@ namespace TwitchLibExample
                 MessageBox.Show($"Channel: {channelName}");
         }
 
-        TwitchLib.TwitchPubSub pubsub = new TwitchPubSub(44338537);
+        private void pubsubOnError(object sender, TwitchPubSub.onPubSubServiceErrorArgs e)
+        {
+            MessageBox.Show($"PubSub error! {e.Exception.Message}");
+        }
+
+        private void pubsubOnClose(object sender, object e)
+        {
+            MessageBox.Show("PubSub service closed!");
+        }
+
+        private void pubsubOnConnected(object sender, object e)
+        {
+            // MODERATOR ACCOUNT ID, CHANNEL ACCOUNT ID, MODERATOR OAUTH
+            pubsub.ListenToChatModeratorActions(0, 0, "moderator_oauth");
+        }
+
+        private void pubsubOnListenSuccessful(object sender, TwitchPubSub.onListenSuccessfulArgs e)
+        {
+            MessageBox.Show($"Successfully verified listening to topic: {e.Topic}");
+        }
+
+        private void pubsubOnTimeout(object sender, TwitchPubSub.onTimeoutArgs e)
+        {
+            Console.WriteLine("Test");
+            MessageBox.Show($"New timeout event! Details below:\nTimedout user: {e.TimedoutUser}\nTimeout duration: {e.TimeoutDuration} seconds\nTimeout reason: {e.TimeoutReason}\nTimeout by: {e.TimedoutBy}");
+        }
+
+        private void pubsubOnBan(object sender, TwitchPubSub.onBanArgs e)
+        {
+            MessageBox.Show($"New ban event! Details below:\nBanned user: {e.BannedUser}\nBan reason: {e.BanReason}\nBanned by: {e.BannedBy}");
+        }
+
+        private void pubsubOnUnban(object sender, TwitchPubSub.onUnbanArgs e)
+        {
+            MessageBox.Show($"New unban event! Details below:\nUnbanned user:{e.UnbannedUser}\nUnbanned by: {e.UnbannedBy}");
+        }
+
         private void button47_Click(object sender, EventArgs e)
         {
+            pubsub = new TwitchPubSub(true);
+            pubsub.onListenSuccessful += new EventHandler<TwitchPubSub.onListenSuccessfulArgs>(pubsubOnListenSuccessful);
+            pubsub.onPubSubServiceConnected += new EventHandler(pubsubOnConnected);
+            pubsub.onPubSubServiceClosed += new EventHandler(pubsubOnClose);
+            pubsub.onTimeout += new EventHandler<TwitchPubSub.onTimeoutArgs>(pubsubOnTimeout);
+            pubsub.onBan += new EventHandler<TwitchPubSub.onBanArgs>(pubsubOnBan);
+            pubsub.onUnban += new EventHandler<TwitchPubSub.onUnbanArgs>(pubsubOnUnban);
             pubsub.Connect();
         }
     }

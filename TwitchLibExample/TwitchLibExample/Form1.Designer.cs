@@ -714,6 +714,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.button47);
             this.tabPage5.Controls.Add(this.groupBox1);
             this.tabPage5.Controls.Add(this.listView1);
             this.tabPage5.Controls.Add(this.tabControl2);
@@ -1287,7 +1288,6 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.button47);
             this.groupBox6.Controls.Add(this.groupBox38);
             this.groupBox6.Controls.Add(this.groupBox37);
             this.groupBox6.Controls.Add(this.groupBox36);
@@ -2431,11 +2431,11 @@
             // 
             // button47
             // 
-            this.button47.Location = new System.Drawing.Point(1438, 638);
+            this.button47.Location = new System.Drawing.Point(1140, 17);
             this.button47.Name = "button47";
             this.button47.Size = new System.Drawing.Size(459, 117);
-            this.button47.TabIndex = 29;
-            this.button47.Text = "Test Connection to PubSub";
+            this.button47.TabIndex = 30;
+            this.button47.Text = "Test PubSub";
             this.button47.UseVisualStyleBackColor = true;
             this.button47.Click += new System.EventHandler(this.button47_Click);
             // 
