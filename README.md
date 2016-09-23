@@ -96,7 +96,17 @@ Available via Nuget: `Install-Package TwitchLib`
 - GetChannelFromSteamId(string steamId) - Fetches the name of a channel given a user's Steam Id (if their Steam is linked to their Twitch).
 
 ### TwitchPubSub
-- Groundword done(?)
+- Events:
+  * onOpen() - Fires when connection is successful to Twitch PubSub service. You should listen to a topic in this eventhandler.
+  * onError() - Any error in the service will fire this event along with an exception.
+  * onClose() - If service is disconnected intentionally or by error, this will fire.
+  * onTimeout() - This fires when a timeout occures. Includes user timedout, timeout duration, timeout reason, and moderator who did the timeout.
+  * onBan() - This fires when a ban occures. Includes banned user, ban message, and moderator that did ban.
+  * onUnban() - This fires when an unban occures. Includes unbanned user, and moderator who did the unban.
+- Supported Topics:
+  * chat_moderator_actions - This topic allows for listening to moderator events in chat.
+- Connect() - Connects to Twitch PubSub service (YOU HAVE 15 SECONDS TO LISTEN TO A CHANNEL BEFORE BEING DISCONNECTED)
+- Disconnect() - Disconnects from service
 
 ### Twitch Services
 - FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected.
