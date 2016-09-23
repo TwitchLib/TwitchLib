@@ -18,31 +18,31 @@ namespace TwitchLib
         private Timer pingTimer = new Timer();
 
         /*
-        AVAILABLE TOPICS (i'm aware of):
+        NON-IMPLEMENTED AVAILABLE TOPICS (i'm aware of):
         whispers.account_name - Requires OAUTH
         video-playback.channelid
-        chat_moderator_actions.channelid - Requires OAUTH
-        channel-bitsevents.channelId
         */
 
         #region Events
         public EventHandler onPubSubServiceConnected;
         public EventHandler<onPubSubServiceErrorArgs> onPubSubServiceError;
         public EventHandler onPubSubServiceClosed;
-        public EventHandler<onListenSuccessfulArgs> onListenSuccessful;
+        public EventHandler<onListenResponseArgs> onListenResponse;
         public EventHandler<onTimeoutArgs> onTimeout;
         public EventHandler<onBanArgs> onBan;
         public EventHandler<onUnbanArgs> onUnban;
+        public EventHandler<onBitsReceivedArgs> onBitsReceived;
 
         public class onPubSubServiceErrorArgs
         {
             public Exception Exception;
         }
 
-        public class onListenSuccessfulArgs
+        public class onListenResponseArgs
         {
             public string Topic;
             public TwitchPubSubClasses.Responses.Response Response;
+            public bool Successful;
         }
 
         public class onTimeoutArgs
@@ -64,6 +64,19 @@ namespace TwitchLib
         {
             public string UnbannedUser;
             public string UnbannedBy;
+        }
+
+        public class onBitsReceivedArgs
+        {
+            public string Username;
+            public string ChannelName;
+            public string UserId;
+            public string ChannelId;
+            public string Time;
+            public string ChatMessage;
+            public int BitsUsed;
+            public int TotalBitsUsed;
+            public string Context;
         }
         #endregion
 
@@ -125,28 +138,40 @@ namespace TwitchLib
                     TwitchPubSubClasses.Responses.Response resp = new TwitchPubSubClasses.Responses.Response(message);
                     if (previousRequest != null && previousRequest.Nonce.ToLower() == resp.Nonce.ToLower())
                     {
-                        onListenSuccessful?.Invoke(this, new onListenSuccessfulArgs { Response = resp, Topic = previousRequest.Topic });
+                        onListenResponse?.Invoke(this, new onListenResponseArgs { Response = resp, Topic = previousRequest.Topic, Successful = resp.Successful });
                         return;
                     }
                     break;
                 case "message":
                     TwitchPubSubClasses.Responses.Message msg = new TwitchPubSubClasses.Responses.Message(message);
-                    string reason = "";
-                    switch (msg.ModerationAction.ToLower())
+                    switch(msg.Topic.Split('.')[0])
                     {
-                        case "timeout":
-                            if (msg.Args.Count > 2)
-                                reason = msg.Args[2];
-                            onTimeout?.Invoke(this, new onTimeoutArgs { TimedoutBy = msg.CreatedBy, TimedoutUser = msg.Args[0], TimeoutDuration = TimeSpan.FromSeconds(int.Parse(msg.Args[1])), TimeoutReason = reason });
-                            return;
-                        case "ban":
-                            if (msg.Args.Count > 1)
-                                reason = msg.Args[1];
-                            onBan?.Invoke(this, new onBanArgs { BannedBy = msg.CreatedBy, BannedUser = msg.Args[0], BanReason = reason });
-                            return;
-                        case "unban":
-                            onUnban?.Invoke(this, new onUnbanArgs { UnbannedBy = msg.CreatedBy, UnbannedUser = msg.Args[0] });
-                            return;
+                        case "chat_moderator_actions":
+                            TwitchPubSubClasses.Responses.Message.ChatModeratorActions cMA = (TwitchPubSubClasses.Responses.Message.ChatModeratorActions)msg.messageData;
+                            string reason = "";
+                            switch (cMA.ModerationAction.ToLower())
+                            {
+                                case "timeout":
+                                    if (cMA.Args.Count > 2)
+                                        reason = cMA.Args[2];
+                                    onTimeout?.Invoke(this, new onTimeoutArgs { TimedoutBy = cMA.CreatedBy, TimedoutUser = cMA.Args[0],
+                                        TimeoutDuration = TimeSpan.FromSeconds(int.Parse(cMA.Args[1])), TimeoutReason = reason });
+                                    return;
+                                case "ban":
+                                    if (cMA.Args.Count > 1)
+                                        reason = cMA.Args[1];
+                                    onBan?.Invoke(this, new onBanArgs { BannedBy = cMA.CreatedBy, BannedUser = cMA.Args[0], BanReason = reason });
+                                    return;
+                                case "unban":
+                                    onUnban?.Invoke(this, new onUnbanArgs { UnbannedBy = cMA.CreatedBy, UnbannedUser = cMA.Args[0] });
+                                    return;
+                            }
+                            break;
+                        case "channel-bitsevents":
+                            TwitchPubSubClasses.Responses.Message.ChannelBitsEvents cBE = (TwitchPubSubClasses.Responses.Message.ChannelBitsEvents)msg.messageData;
+                            onBitsReceived?.Invoke(this, new onBitsReceivedArgs { BitsUsed = cBE.BitsUsed, ChannelId = cBE.ChannelId, ChannelName = cBE.ChannelName,
+                                ChatMessage = cBE.ChatMessage, Context = cBE.Context, Time = cBE.Time, TotalBitsUsed = cBE.TotalBitsUsed, UserId = cBE.UserId, Username = cBE.Username});
+                            break;
                     }
                     break;
             }
@@ -193,16 +218,25 @@ namespace TwitchLib
         #region Listeners
 
         /// <summary>
-        /// Sends a request to listen on timeouts and bans in a specific channel
+        /// [TESTED & WORKING] Sends a request to listen on timeouts and bans in a specific channel
         /// </summary>
         /// <param name="myTwitchId">A moderator's twitch acount's ID (can be fetched from TwitchApi)</param>
         /// <param name="channelTwitchId">Channel ID who has previous parameter's moderator (can be fetched from TwitchApi)</param>
-        /// <param name="oauth">Moderator OAuth key (can be OAuth key with any scope)</param>
-        public void ListenToChatModeratorActions(int myTwitchId, int channelTwitchId, string oauth)
+        /// <param name="moderatorOAuth">Moderator OAuth key (can be OAuth key with any scope)</param>
+        public void ListenToChatModeratorActions(int myTwitchId, int channelTwitchId, string moderatorOAuth)
         {
-            listenToTopic($"chat_moderator_actions.{myTwitchId}.{channelTwitchId}", oauth);
+            listenToTopic($"chat_moderator_actions.{myTwitchId}.{channelTwitchId}", moderatorOAuth);
         }
 
+        /// <summary>
+        /// [UNTESTED] Sends request to listen on bits events in specific channel
+        /// </summary>
+        /// <param name="channelTwitchId">Channel Id of channel to listen to bits on (can be fetched from TwitchApi)</param>
+        /// <param name="channelOAuth">OAuth token linked to the channel.</param>
+        public void ListenToBitsEvents(int channelTwitchId, string channelOAuth)
+        {
+            listenToTopic($"channel-bitsevents.{channelTwitchId}", channelOAuth);
+        }
         #endregion
 
         /// <summary>
@@ -224,6 +258,15 @@ namespace TwitchLib
         public void Disconnect()
         {
             socket.Close();
+        }
+
+        /// <summary>
+        /// This method will send passed json text to the message parser in order to allow for on-demand parser testing.
+        /// </summary>
+        /// <param name="testJsonString"></param>
+        public void TestMessageParser(string testJsonString)
+        {
+            parseMessage(testJsonString);
         }
     }
 }

@@ -10,22 +10,73 @@ namespace TwitchLib.TwitchPubSubClasses.Responses
     public class Message
     {
         public string Topic { get; protected set; }
-        public string Type { get; protected set; }
-        public string ModerationAction { get; protected set; }
-        public List<string> Args { get; protected set; } = new List<string>();
-        public string CreatedBy { get; protected set; }
+        public MessageData messageData;
+
         
         public Message(string jsonStr)
         {
             JToken json = JObject.Parse(jsonStr).SelectToken("data");
             Topic = json.SelectToken("topic")?.ToString();
             var encodedJsonMessage = json.SelectToken("message").ToString();
-            JToken jsonMessage = JObject.Parse(encodedJsonMessage).SelectToken("data");
-            Type = jsonMessage.SelectToken("type").ToString();
-            ModerationAction = jsonMessage.SelectToken("moderation_action").ToString();
-            foreach (JToken arg in jsonMessage.SelectToken("args"))
-                Args.Add(arg.ToString());
-            CreatedBy = jsonMessage.SelectToken("created_by").ToString();
+            switch(Topic.Split('.')[0])
+            {
+                case "chat_moderator_actions":
+                    messageData = new ChatModeratorActions(encodedJsonMessage);
+                    break;
+                case "channel-bitsevents":
+                    messageData = new ChannelBitsEvents(encodedJsonMessage);
+                    break;
+            }
+        }
+
+        public abstract class MessageData
+        {
+            //Leave empty for now
+        }
+
+        public class ChatModeratorActions : MessageData
+        {
+            public string Type { get; protected set; }
+            public string ModerationAction { get; protected set; }
+            public List<string> Args { get; protected set; } = new List<string>();
+            public string CreatedBy { get; protected set; }
+
+            public ChatModeratorActions(string jsonStr)
+            {
+                JToken json = JObject.Parse(jsonStr).SelectToken("data");
+                Type = json.SelectToken("type")?.ToString();
+                ModerationAction = json.SelectToken("moderation_action")?.ToString();
+                foreach (JToken arg in json.SelectToken("args"))
+                    Args.Add(arg.ToString());
+                CreatedBy = json.SelectToken("created_by").ToString();
+            }
+        }
+
+        public class ChannelBitsEvents : MessageData
+        {
+            public string Username { get; protected set; }
+            public string ChannelName { get; protected set; }
+            public string UserId { get; protected set; }
+            public string ChannelId { get; protected set; }
+            public string Time { get; protected set; }
+            public string ChatMessage { get; protected set; }
+            public int BitsUsed { get; protected set; }
+            public int TotalBitsUsed { get; protected set; }
+            public string Context { get; protected set; }
+
+            public ChannelBitsEvents(string jsonStr)
+            {
+                JToken json = JObject.Parse(jsonStr);
+                Username = json.SelectToken("user_name")?.ToString();
+                ChannelName = json.SelectToken("channel_name")?.ToString();
+                UserId = json.SelectToken("user_id")?.ToString();
+                ChannelId = json.SelectToken("channel_id")?.ToString();
+                Time = json.SelectToken("time")?.ToString();
+                ChatMessage = json.SelectToken("chat_message")?.ToString();
+                BitsUsed = int.Parse(json.SelectToken("bits_used").ToString());
+                TotalBitsUsed = int.Parse(json.SelectToken("total_bits_used").ToString());
+                Context = json.SelectToken("context")?.ToString();
+            }
         }
     }
 }
