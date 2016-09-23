@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WebSocket4Net;
 using Newtonsoft.Json.Linq;
 using SuperSocket.ClientEngine;
+using System.Timers;
 
 namespace TwitchLib
 {
@@ -14,6 +15,7 @@ namespace TwitchLib
         private WebSocket socket;
         private TwitchPubSubClasses.PreviousRequest previousRequest;
         private bool logging;
+        private Timer pingTimer = new Timer();
 
         /*
         AVAILABLE TOPICS (i'm aware of):
@@ -78,6 +80,9 @@ namespace TwitchLib
         {
             if(logging)
                 Console.WriteLine($"[TwitchPubSub] onOpen!");
+            pingTimer.Interval = 180000;
+            pingTimer.Elapsed += pingTimerTick;
+            pingTimer.Start();
             onPubSubServiceConnected?.Invoke(this, null);
         }
 
@@ -100,6 +105,14 @@ namespace TwitchLib
             if(logging)
                 Console.WriteLine($"[TwitchPubSub] onClose");
             onPubSubServiceClosed?.Invoke(this, null);
+        }
+
+        private void pingTimerTick(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            JObject data = new JObject(
+                new JProperty("type", "PING")
+            );
+            socket.Send(data.ToString());
         }
 
         private void parseMessage(string message)
@@ -202,8 +215,6 @@ namespace TwitchLib
             socket.Error += onError;
             socket.MessageReceived += onMessage;
             socket.Closed += onClose;
-            socket.AutoSendPingInterval = 120;
-            socket.EnableAutoSendPing = true;
             socket.Open();
         }
 
