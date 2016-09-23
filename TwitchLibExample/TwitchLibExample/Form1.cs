@@ -629,9 +629,12 @@ namespace TwitchLibExample
             pubsub.ListenToChatModeratorActions(0, 0, "moderators_oauth");
         }
 
-        private void pubsubOnListenSuccessful(object sender, TwitchPubSub.onListenSuccessfulArgs e)
+        private void pubsubOnListenResponse(object sender, TwitchPubSub.onListenResponseArgs e)
         {
-            MessageBox.Show($"Successfully verified listening to topic: {e.Topic}");
+            if (e.Successful)
+                MessageBox.Show($"Successfully verified listening to topic: {e.Topic}");
+            else
+                MessageBox.Show($"Failed to listen! Error: {e.Response.Error}");
         }
 
         private void pubsubOnTimeout(object sender, TwitchPubSub.onTimeoutArgs e)
@@ -653,7 +656,7 @@ namespace TwitchLibExample
         private void button47_Click(object sender, EventArgs e)
         {
             pubsub = new TwitchPubSub(true);
-            pubsub.onListenSuccessful += new EventHandler<TwitchPubSub.onListenSuccessfulArgs>(pubsubOnListenSuccessful);
+            pubsub.onListenResponse += new EventHandler<TwitchPubSub.onListenResponseArgs>(pubsubOnListenResponse);
             pubsub.onPubSubServiceConnected += new EventHandler(pubsubOnConnected);
             pubsub.onPubSubServiceClosed += new EventHandler(pubsubOnClose);
             pubsub.onTimeout += new EventHandler<TwitchPubSub.onTimeoutArgs>(pubsubOnTimeout);
