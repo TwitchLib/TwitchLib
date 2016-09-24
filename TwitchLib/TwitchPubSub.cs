@@ -32,6 +32,9 @@ namespace TwitchLib
         public EventHandler<onBanArgs> onBan;
         public EventHandler<onUnbanArgs> onUnban;
         public EventHandler<onBitsReceivedArgs> onBitsReceived;
+        public EventHandler<onStreamUpArgs> onStreamUp;
+        public EventHandler<onStreamDownArgs> onStreamDown;
+        public EventHandler<onViewCountArgs> onViewCount;
 
         public class onPubSubServiceErrorArgs
         {
@@ -77,6 +80,24 @@ namespace TwitchLib
             public int BitsUsed;
             public int TotalBitsUsed;
             public string Context;
+        }
+
+        public class onStreamUpArgs
+        {
+            public string ServerTime;
+            public int PlayDelay;
+        }
+
+        public class onStreamDownArgs
+        {
+            public string ServerTime;
+            public int PlayDelay;
+        }
+
+        public class onViewCountArgs
+        {
+            public string ServerTime;
+            public int Viewers;
         }
         #endregion
 
@@ -171,6 +192,21 @@ namespace TwitchLib
                             TwitchPubSubClasses.Responses.Message.ChannelBitsEvents cBE = (TwitchPubSubClasses.Responses.Message.ChannelBitsEvents)msg.messageData;
                             onBitsReceived?.Invoke(this, new onBitsReceivedArgs { BitsUsed = cBE.BitsUsed, ChannelId = cBE.ChannelId, ChannelName = cBE.ChannelName,
                                 ChatMessage = cBE.ChatMessage, Context = cBE.Context, Time = cBE.Time, TotalBitsUsed = cBE.TotalBitsUsed, UserId = cBE.UserId, Username = cBE.Username});
+                            return;
+                        case "video-playback":
+                            TwitchPubSubClasses.Responses.Message.VideoPlayback vP = (TwitchPubSubClasses.Responses.Message.VideoPlayback)msg.messageData;
+                            switch(vP.Type)
+                            {
+                                case TwitchPubSubClasses.Responses.Message.VideoPlayback.TypeEnum.StreamDown:
+                                    onStreamDown?.Invoke(this, new onStreamDownArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
+                                    return;
+                                case TwitchPubSubClasses.Responses.Message.VideoPlayback.TypeEnum.StreamUp:
+                                    onStreamUp?.Invoke(this, new onStreamUpArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
+                                    return;
+                                case TwitchPubSubClasses.Responses.Message.VideoPlayback.TypeEnum.ViewCount:
+                                    onViewCount?.Invoke(this, new onViewCountArgs { ServerTime = vP.ServerTime, Viewers = vP.Viewers });
+                                    return;
+                            }
                             break;
                     }
                     break;
@@ -229,13 +265,22 @@ namespace TwitchLib
         }
 
         /// <summary>
-        /// [UNTESTED] Sends request to listen on bits events in specific channel
+        /// [TESTED & WORKING] Sends request to listen on bits events in specific channel
         /// </summary>
         /// <param name="channelTwitchId">Channel Id of channel to listen to bits on (can be fetched from TwitchApi)</param>
         /// <param name="channelOAuth">OAuth token linked to the channel.</param>
         public void ListenToBitsEvents(int channelTwitchId, string channelOAuth)
         {
             listenToTopic($"channel-bitsevents.{channelTwitchId}", channelOAuth);
+        }
+
+        /// <summary>
+        /// [UNTESTED] Sends request to listen on video playback events in specific channel
+        /// </summary>
+        /// <param name="channelTwitchId">Channel Id of channel to listen to playback events in.</param>
+        public void ListenToVideoPlayback(int channelTwitchId)
+        {
+            listenToTopic($"video-playback.{channelTwitchId}");
         }
         #endregion
 
