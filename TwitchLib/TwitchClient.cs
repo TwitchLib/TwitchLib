@@ -14,6 +14,7 @@ namespace TwitchLib
     /// <summary>Represents a client connected to a Twitch channel.</summary>
     public class TwitchClient
     {
+        #region Private Variables
         private IrcConnection _client = new IrcConnection();
         private ConnectionCredentials _credentials;
         private List<char> _chatCommandIdentifiers = new List<char>();
@@ -21,7 +22,9 @@ namespace TwitchLib
         private bool _logging;
         private MessageEmoteCollection _channelEmotes = new MessageEmoteCollection();
         private string _autoJoinChannel = null;
+        #endregion
 
+        #region Public Variables
         /// <summary>A list of all channels the client is currently in.</summary>
         public List<JoinedChannel> JoinedChannels { get; protected set; } = new List<JoinedChannel>();
         /// <summary>Username of the user connected via this library.</summary>
@@ -47,7 +50,9 @@ namespace TwitchLib
 
         /// <summary>Determines whether Emotes will be replaced in messages.</summary>
         public bool WillReplaceEmotes { get; set; } = false;
+        #endregion
 
+        #region Events
         /// <summary>
         /// Fires when client connects to Twitch.
         /// </summary>
@@ -177,7 +182,9 @@ namespace TwitchLib
         /// Fires when a viewer gets banned by any moderator.
         /// </summary>
         public event EventHandler<OnViewerBannedArgs> OnViewerBanned;
+        #endregion  
 
+        #region Event Args
         /// <summary>Args representing on connected event.</summary>
         public class OnConnectedArgs : EventArgs
         {
@@ -404,6 +411,7 @@ namespace TwitchLib
             /// <summary>Channel that bot just left (parted).</summary>
             public string Channel;
         }
+        #endregion
 
         /// <summary>
         /// Initializes the TwitchChatClient class.
@@ -450,6 +458,7 @@ namespace TwitchLib
                 _client.WriteLine(message);
         }
 
+        #region SendMessage
         /// <summary>
         /// Sends a formatted Twitch channel chat message.
         /// </summary>
@@ -484,7 +493,129 @@ namespace TwitchLib
             if (JoinedChannels.Count > 0)
                 SendMessage(JoinedChannels[0], message, dryRun);
         }
+        #endregion
 
+        #region TimeoutUser
+        /// <summary>
+        /// TImesout a user in chat using a JoinedChannel object.
+        /// </summary>
+        /// <param name="channel">Channel object to send timeout to</param>
+        /// <param name="viewer">Viewer name to timeout</param>
+        /// <param name="duration">Duration of the timeout via TimeSpan object</param>
+        /// <param name="message">Message to accompany the timeout and show the user.</param>
+        /// <param name="dryRun">Indicates a dryrun (will not sened if true)</param>
+        public void TimeoutUser(JoinedChannel channel, string viewer, TimeSpan duration, string message = "", bool dryRun = false)
+        {
+            SendMessage(channel, $".timeout {viewer} {duration.Seconds} {message}", dryRun);
+        }
+
+        /// <summary>
+        /// Timesout a user in chat using a string for the channel.
+        /// </summary>
+        /// <param name="channel">Channel in string form to send timeout to</param>
+        /// <param name="viewer">Viewer name to timeout</param>
+        /// <param name="duration">Duration of the timeout via TimeSpan object</param>
+        /// <param name="message">Message to accompany the timeout and show the user.</param>
+        /// <param name="dryRun">Indicates a dryrun (will not sened if true)</param>
+        public void TimeoutUser(string channel, string viewer, TimeSpan duration, string message = "", bool dryRun = false)
+        {
+            var joinedChannel = GetJoinedChannel(channel);
+            if (joinedChannel != null)
+                TimeoutUser(joinedChannel, viewer, duration, message, dryRun);
+        }
+
+        /// <summary>
+        /// Timesout a user using the first joined channel.
+        /// </summary>
+        /// <param name="viewer">Viewer name to timeout</param>
+        /// <param name="duration">Duration of the timeout via TimeSpan object</param>
+        /// <param name="message">Message to accompany the timeout and show the user.</param>
+        /// <param name="dryRun">Indicates a dryrun (will not sened if true)</param>
+        public void TimeoutUser(string viewer, TimeSpan duration, string message = "", bool dryRun = false)
+        {
+            if (JoinedChannels.Count > 0)
+                TimeoutUser(JoinedChannels[0], viewer, duration, message, dryRun);
+        }
+        #endregion
+
+        #region BanUser
+        /// <summary>
+        /// Bans a user in chat using JoinedChannel
+        /// </summary>
+        /// <param name="channel">JoinedChannel object to send ban to</param>
+        /// <param name="viewer">Viewer name to ban</param>
+        /// <param name="message">Message to accompany the ban and show the user.</param>
+        /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
+        public void BanUser(JoinedChannel channel, string viewer, string message = "", bool dryRun = false)
+        {
+            SendMessage(channel, $".ban {viewer} {message}");
+        }
+
+        /// <summary>
+        /// Bans a user in chat using a string for the channel
+        /// </summary>
+        /// <param name="channel">Channel in string form to send ban to</param>
+        /// <param name="viewer">Viewer name to ban</param>
+        /// <param name="message">Message to accompany the ban and show the user.</param>
+        /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
+        public void BanUser(string channel, string viewer, string message = "", bool dryRun = false)
+        {
+            var joinedChannel = GetJoinedChannel(channel);
+            if (joinedChannel != null)
+                BanUser(joinedChannel, viewer, message, dryRun);
+        }
+
+        /// <summary>
+        /// Bans a user in chat using the first joined channel
+        /// </summary>
+        /// <param name="viewer">Viewer name to ban</param>
+        /// <param name="message">Message to accompany the ban and show the user.</param>
+        /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
+        public void BanUser(string viewer, string message = "", bool dryRun = false)
+        {
+            if (JoinedChannels.Count > 0)
+                BanUser(JoinedChannels[0], viewer, message, dryRun);
+        }
+        #endregion
+
+        #region UnbanUser
+        /// <summary>
+        /// Unbans a user in chat using JoinedChannel
+        /// </summary>
+        /// <param name="channel">JoinedChannel object to send unban to</param>
+        /// <param name="viewer">Viewer name to unban</param>
+        /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
+        public void UnbanUser(JoinedChannel channel, string viewer, bool dryRun = false)
+        {
+            SendMessage(channel, $".unban {viewer}", dryRun);
+        }
+
+        /// <summary>
+        /// Unbans a user in chat using a string for the channel
+        /// </summary>
+        /// <param name="channel">Channel in string form to send unban to</param>
+        /// <param name="viewer">Viewer name to unban</param>
+        /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
+        public void UnbanUser(string channel, string viewer, bool dryRun = false)
+        {
+            var joinedChannel = GetJoinedChannel(channel);
+            if (joinedChannel != null)
+                UnbanUser(joinedChannel, viewer, dryRun);
+        }
+
+        /// <summary>
+        /// Unbans a user in chat using first joined channel.
+        /// </summary>
+        /// <param name="viewer">Viewer name to unban</param>
+        /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
+        public void UnbanUser(string viewer, bool dryRun = false)
+        {
+            if (JoinedChannels.Count > 0)
+                UnbanUser(JoinedChannels[0], viewer, dryRun);
+        }
+        #endregion
+
+        #region Whispers
         /// <summary>
         /// Sends a formatted whisper message to someone.
         /// </summary>
@@ -510,7 +641,9 @@ namespace TwitchLib
             if (PreviousWhisper != null)
                 SendWhisper(PreviousWhisper.Username, message, dryRun);
         }
+        #endregion
 
+        #region Connection Calls
         /// <summary>
         /// Start connecting to the Twitch IRC chat.
         /// </summary>
@@ -547,7 +680,9 @@ namespace TwitchLib
                 Console.WriteLine("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
             _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
         }
+        #endregion
 
+        #region Command Identifiers
         /// <summary>
         /// Adds a character to a list of characters that if found at the start of a message, fires command received event.
         /// </summary>
@@ -583,7 +718,9 @@ namespace TwitchLib
         {
             _whisperCommandIdentifiers.Remove(identifier);
         }
+        #endregion
 
+        #region Channel Calls
         /// <summary>
         /// Join the Twitch IRC chat of <paramref name="channel"/>.
         /// </summary>
@@ -623,7 +760,7 @@ namespace TwitchLib
             if (_logging)
                 Console.WriteLine($"[TwitchLib] Leaving channel: {channel}");
             JoinedChannel joinedChannel = JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
-            if(joinedChannel != null)
+            if (joinedChannel != null)
                 _client.WriteLine(Rfc2812.Part($"#{channel}"));
         }
 
@@ -636,6 +773,7 @@ namespace TwitchLib
         {
             LeaveChannel(channel.Channel);
         }
+        #endregion
 
         /// <summary>
         /// This method allows firing the message parser with a custom irc string allowing for easy testing
@@ -646,6 +784,7 @@ namespace TwitchLib
             ParseIrcMessage(rawIrc);
         }
 
+        #region Client Events
         private void Connected(object sender, EventArgs e)
         {
             _client.WriteLine(Rfc2812.Pass(_credentials.TwitchOAuth), Priority.Critical);
@@ -657,7 +796,7 @@ namespace TwitchLib
             _client.WriteLine("CAP REQ twitch.tv/commands");
             _client.WriteLine("CAP REQ twitch.tv/tags");
 
-            if(_autoJoinChannel != null)
+            if (_autoJoinChannel != null)
             {
                 JoinedChannels.Add(new JoinedChannel(_autoJoinChannel));
                 _client.WriteLine(Rfc2812.Join($"#{_autoJoinChannel}"));
@@ -675,6 +814,7 @@ namespace TwitchLib
         {
             ParseIrcMessage(e.Line);
         }
+        #endregion
 
         private void ParseIrcMessage(string ircMessage)
         {
