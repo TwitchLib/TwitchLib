@@ -17,6 +17,8 @@ namespace TwitchLib
         public string DisplayName { get; protected set; }
         /// <summary>Property representing emote set of resubscriber.</summary>
         public string EmoteSet { get; protected set; }
+        /// <summary>Property representing resub message id</summary>
+        public string Id { get; protected set; }
         /// <summary>Property representing login of resubscription event.</summary>
         public string Login { get; protected set; }
         /// <summary>Property representing internval system message value.</summary>
@@ -42,7 +44,7 @@ namespace TwitchLib
         /// <summary>Property representing the channel the resubscription happened in.</summary>
         public string Channel { get; protected set; }
 
-        // @badges=subscriber/1,turbo/1;color=#2B119C;display-name=JustFunkIt;emotes=;login=justfunkit;mod=0;msg-id=resub;msg-param-months=2;room-id=44338537;subscriber=1;system-msg=JustFunkIt\ssubscribed\sfor\s2\smonths\sin\sa\srow!;turbo=1;user-id=26526370;user-type= :tmi.twitch.tv USERNOTICE #burkeblack :AVAST YEE SCURVY DOG
+        // @badges=subscriber/1,turbo/1;color=#2B119C;display-name=JustFunkIt;emotes=;id=9dasn-asdibas-asdba-as8as;login=justfunkit;mod=0;msg-id=resub;msg-param-months=2;room-id=44338537;subscriber=1;system-msg=JustFunkIt\ssubscribed\sfor\s2\smonths\sin\sa\srow!;turbo=1;user-id=26526370;user-type= :tmi.twitch.tv USERNOTICE #burkeblack :AVAST YEE SCURVY DOG
 
         /// <summary>ReSubscriber object constructor.</summary>
         public ReSubscriber(string ircString)
@@ -69,6 +71,9 @@ namespace TwitchLib
                             break;
                         case "emotes":
                             EmoteSet = value;
+                            break;
+                        case "id":
+                            Id = value;
                             break;
                         case "login":
                             Login = value;

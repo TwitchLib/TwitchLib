@@ -346,7 +346,7 @@ namespace TwitchLib.TwitchClientClasses
             }
 
             if (readType != null && readType == "USERNOTICE")
-                return new DetectionReturn((message.Split(';')[6].Split('=')[1] == "resub"), channelRet);
+                return new DetectionReturn((message.Split(';')[7].Split('=')[1] == "resub"), channelRet);
             return new DetectionReturn(false);
         }
 
