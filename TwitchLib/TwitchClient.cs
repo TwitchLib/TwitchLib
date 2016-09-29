@@ -1024,9 +1024,10 @@ namespace TwitchLib
             if(decodedMessage.Split(' ').Count() > 2 && (decodedMessage.Split(' ')[1] == "WHISPER" || decodedMessage.Split(' ')[2] == "WHISPER")) {
 
                 // On Whisper Message Received
-                if(WhisperParsing.detectedWhisperReceived(decodedMessage, _credentials.TwitchUsername))
+                WhisperMessage receivedMessage = null;
+                if (WhisperParsing.detectedWhisperReceived(decodedMessage, _credentials.TwitchUsername))
                 {
-                    WhisperMessage receivedMessage = new WhisperMessage(decodedMessage, _credentials.TwitchUsername);
+                    receivedMessage = new WhisperMessage(decodedMessage, _credentials.TwitchUsername);
                     PreviousWhisper = receivedMessage;
                     OnWhisperReceived?.Invoke(this, new OnWhisperReceivedArgs { WhisperMessage = receivedMessage });
                     // Fall through to detect command as well
@@ -1042,6 +1043,10 @@ namespace TwitchLib
                     OnWhisperCommandReceived?.Invoke(this, new OnWhisperCommandReceivedArgs { Command = command, WhisperMessage = whisperMessage, ArgumentsAsList = argumentsAsList, ArgumentsAsString = argumentsAsString });
                     return;
                 }
+
+                // Return if whisper message was parsed successfully
+                if (receivedMessage != null)
+                    return;
                 
             }
             #endregion  
