@@ -232,6 +232,26 @@ namespace TwitchLib
                 return null;
             }
         }
+
+        /// <summary>
+        /// Retrieves all featured streams.
+        /// </summary>
+        /// <returns>A list of featured stream objects for each featured stream.</returns>
+        public static async Task<List<FeaturedStream>> GetFeaturedStreams(int limit = 25, int offset = 0)
+        {
+            try
+            {
+                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/featured?limit={limit}&offset={offset}");
+                var json = JObject.Parse(resp);
+                List<TwitchAPIClasses.FeaturedStream> streams = new List<TwitchAPIClasses.FeaturedStream>();
+                foreach (JToken channel in json.SelectToken("featured"))
+                    streams.Add(new TwitchAPIClasses.FeaturedStream(channel));
+                return streams;
+            } catch
+            {
+                return null;
+            }
+        }
         #endregion
 
         #region Searching

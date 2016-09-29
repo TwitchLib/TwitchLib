@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="TwitchAPIClasses\Block.cs" />
     <Compile Include="TwitchAPIClasses\Channels.cs" />
+    <Compile Include="TwitchAPIClasses\FeaturedStream.cs" />
     <Compile Include="TwitchAPIClasses\FeedResponse.cs" />
     <Compile Include="TwitchAPIClasses\Game.cs" />
     <Compile Include="TwitchAPIClasses\User.cs" />
