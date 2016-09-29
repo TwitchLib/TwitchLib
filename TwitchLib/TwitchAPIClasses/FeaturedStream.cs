@@ -10,7 +10,7 @@ namespace TwitchLib.TwitchAPIClasses
     /// <summary>Class representing a single featured stream from a Twitch API request.</summary>
     public class FeaturedStream
     {
-        /// <summary>Property representing a basic text description of the featured channel.</summary>
+        /// <summary>Property representing a basic text description of the featured channel. (THIS HAS HTML ELEMENTS, BE AWARE)</summary>
         public string Text { get; protected set; }
         /// <summary>Property representing whether or not the featured channel is sponsored.</summary>
         public bool Sponsored { get; protected set; }
