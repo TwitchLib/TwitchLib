@@ -664,5 +664,12 @@ namespace TwitchLibExample
             pubsub.onUnban += new EventHandler<TwitchPubSub.onUnbanArgs>(pubsubOnUnban);
             pubsub.Connect();
         }
+
+        private async void button48_Click(object sender, EventArgs e)
+        {
+            var featuredStreams = await TwitchApi.GetFeaturedStreams();
+            foreach (TwitchLib.TwitchAPIClasses.FeaturedStream stream in featuredStreams)
+                MessageBox.Show($"Stream name: {stream.Stream.Channel.Name}\nStream text: {stream.Text}\nViewers: {stream.Stream.Viewers}");
+        }
     }
 }
