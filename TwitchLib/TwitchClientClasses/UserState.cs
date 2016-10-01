@@ -9,6 +9,8 @@ namespace TwitchLib
     /// <summary>Class representing state of a specific user.</summary>
     public class UserState
     {
+        /// <summary>Properrty representing the chat badges a specific user has.</summary>
+        public List<KeyValuePair<string, string>> Badges { get; protected set; } = new List<KeyValuePair<string, string>>();
         /// <summary>Properrty representing HEX user's name.</summary>
         public string ColorHex { get; protected set; }
         /// <summary>Property representing user's display name.</summary>
@@ -20,7 +22,7 @@ namespace TwitchLib
         /// <summary>Property representing subscriber status.</summary>
         public bool Subscriber { get; protected set; }
         /// <summary>Property representing Turbo status.</summary>
-        public bool Turbo { get; protected set; }
+        public bool Moderator { get; protected set; }
         /// <summary>Property representing returned user type of user.</summary>
         public Common.UserType UserType { get; protected set; }
 
@@ -30,13 +32,52 @@ namespace TwitchLib
         /// <param name="ircString"></param>
         public UserState(string ircString)
         {
-            ColorHex = ircString.Split(';')[0].Contains("#") ? ircString.Split(';')[0].Split('#')[1] : "";
-            DisplayName = ircString.Split(';')[1].Split('=')[1];
-            EmoteSet = ircString.Split(';')[2].Split('=')[1];
-            if (ircString.Split(';')[3].Split('=')[1] == "1")
-                Subscriber = true;
-            if (ircString.Split(';')[4].Split('=')[1] == "1")
-                Turbo = true;
+            foreach(string part in ircString.Split(';'))
+            {
+                // The 'user-type' section does not have a ; suffix, we will account for this outside of for loop, we should exit loop immediately
+                if (part.Contains(" :tmi.twitch.tv USERSTATE "))
+                    break;
+                if(!part.Contains("="))
+                {
+                    // This should never happen, unless Twitch changes their shit.
+                    Console.WriteLine($"Unaccounted for [UserState]: {part}");
+                    continue;
+                }
+                switch(part.Split('=')[0])
+                {
+                    case "@badges":
+                        string badges = part.Split('=')[1];
+                        if (badges.Contains('/'))
+                        {
+                            if (!badges.Contains(","))
+                                Badges.Add(new KeyValuePair<string, string>(badges.Split('/')[0], badges.Split('/')[1]));
+                            else
+                                foreach (string badge in badges.Split(','))
+                                    Badges.Add(new KeyValuePair<string, string>(badge.Split('/')[0], badge.Split('/')[1]));
+                        }
+                        break;
+                    case "color":
+                        ColorHex = part.Split('=')[1];
+                        break;
+                    case "display-name":
+                        DisplayName = part.Split('=')[1];
+                        break;
+                    case "emote-sets":
+                        EmoteSet = part.Split('=')[1];
+                        break;
+                    case "mod":
+                        Moderator = part.Split('=')[1] == "1";
+                        break;
+                    case "subscriber":
+                        Subscriber = part.Split('=')[1] == "1";
+                        break;
+                    default:
+                        // This should never happen, unless Twitch changes their shit
+                        Console.WriteLine($"Unaccounted for [UserState]: {part.Split('=')[0]}");
+                        break;
+                }
+            }
+            // Lets deal with that user-type
             switch (ircString.Split('=')[6].Split(' ')[0])
             {
                 case "mod":
@@ -60,6 +101,8 @@ namespace TwitchLib
                     break;
             }
             Channel = ircString.Split(' ')[3].Replace("#", "");
+            if (DisplayName.ToLower() == Channel.ToLower())
+                UserType = Common.UserType.Broadcaster;
         }
     }
 }
