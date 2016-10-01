@@ -9,20 +9,19 @@ namespace TwitchLib
     /// <summary>Class represents a new (not renew) subscriber to a Twitch channel.</summary>
     public class NewSubscriber
     {
-        private string _channel, _name;
-
         /// <summary>Channel the subscriber was detected from (useful for multi-channel bots).</summary>
-        public string Channel => _channel;
+        public string Channel { get; protected set; }
         /// <summary>Username of user that subscribed to channel.</summary>
-        public string Name => _name;
+        public string Name { get; protected set; }
+        /// <summary>Boolean to indicate whether the subscription was normal or via TwitchPrime</summary>
+        public bool IsTwitchPrime { get; protected set; }
 
-        //:twitchnotify!twitchnotify@twitchnotify.tmi.twitch.tv PRIVMSG #cohhcarnage :swiftyspiffy just subscribed!
-        //3 viewers resubscribed while you were away!
         /// <summary>Constructor for NewSubscriber object.</summary>
         public NewSubscriber(string ircString)
         {
-            _channel = ircString.Split('#')[1].Split(' ')[0];
-            _name = ircString.Split(':')[2].Split(' ')[0];
+            Channel = ircString.Split('#')[1].Split(' ')[0];
+            Name = ircString.Split(':')[2].Split(' ')[0];
+            IsTwitchPrime = ircString.Contains("subscribed with Twitch Prime");
         }
     }
 }
