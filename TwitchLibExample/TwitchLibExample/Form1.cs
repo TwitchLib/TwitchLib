@@ -671,5 +671,13 @@ namespace TwitchLibExample
             foreach (TwitchLib.TwitchAPIClasses.FeaturedStream stream in featuredStreams)
                 MessageBox.Show($"Stream name: {stream.Stream.Channel.Name}\nStream text: {stream.Text}\nViewers: {stream.Stream.Viewers}");
         }
+
+        private void button49_Click(object sender, EventArgs e)
+        {
+            if (clients.Count > 0)
+                clients[0].OnReadLineTest(textBox40.Text);
+            else
+                MessageBox.Show("Testing the message parser requires at least one connected client.");
+        }
     }
 }
