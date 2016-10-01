@@ -60,6 +60,8 @@ namespace TwitchLibExample
             newClient.OnViewerBanned += new EventHandler<TwitchClient.OnViewerBannedArgs>(onViewerBanned);
             newClient.OnClientLeftChannel += new EventHandler<TwitchClient.OnClientLeftChannelArgs>(onLeftChannel);
             newClient.OnJoinedChannel += new EventHandler<TwitchClient.OnJoinedChannelArgs>(onJoinedChannel);
+            newClient.OnNewSubscriber += new EventHandler<TwitchClient.OnNewSubscriberArgs>(onNewSubscription);
+            newClient.OnReSubscriber += new EventHandler<TwitchClient.OnReSubscriberArgs>(onReSubscription);
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
@@ -82,6 +84,16 @@ namespace TwitchLibExample
                 comboBox6.Items.Add(textBox4.Text);
         }
 
+        private void onNewSubscription(object sender, TwitchClient.OnNewSubscriberArgs e)
+        {
+            MessageBox.Show($"New sub: {e.Subscriber.Name}\nChannel: {e.Subscriber.Channel}\nTwitch Prime? {e.Subscriber.IsTwitchPrime}");
+        }
+
+        private void onReSubscription(object sender, TwitchClient.OnReSubscriberArgs e)
+        {
+            MessageBox.Show($"New resub: {e.ReSubscriber.DisplayName}\nChannel: {e.ReSubscriber.Channel}\nMonths: {e.ReSubscriber.Months}");
+        }
+
         private void onJoinedChannel(object sender, TwitchLib.TwitchClient.OnJoinedChannelArgs e)
         {
             MessageBox.Show($"Joined channel: {e.Channel}\nAs username: {e.Username}");
@@ -99,12 +111,12 @@ namespace TwitchLibExample
 
         public void onViewerTimedout(object sender, TwitchClient.OnViewerTimedoutArgs e)
         {
-            MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was timedout for {e.TimeoutDuration} seconds with reasoning: {e.TimeoutReason}");
+            //MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was timedout for {e.TimeoutDuration} seconds with reasoning: {e.TimeoutReason}");
         }
 
         public void onViewerBanned(object sender, TwitchClient.OnViewerBannedArgs e)
         {
-            MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was banned with reasoning: {e.BanReason}");
+            //MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was banned with reasoning: {e.BanReason}");
         }
 
         public void onClientThrottled(object sender, TwitchLib.Services.MessageThrottler.OnClientThrottledArgs e)
