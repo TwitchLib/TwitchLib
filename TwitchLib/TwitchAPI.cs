@@ -733,7 +733,10 @@ namespace TwitchLib
 
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
-            var request = (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={ClientId}"));
+            // If the URL already has GET parameters, we cannot use the GET parameter initializer '?'
+            HttpWebRequest request = url.Contains("?")
+                ? (HttpWebRequest)WebRequest.Create(new Uri($"{url}&client_id={ClientId}"))
+                : (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={ClientId}"));
             request.Method = "GET";
             request.Accept = "application/vnd.twitchtv.v3+json";
             request.ContentType = "application/json";
