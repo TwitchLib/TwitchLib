@@ -324,7 +324,7 @@ namespace TwitchLib
         /// <param name="limit">The number of listings to return, default to 10.</param>
         /// <param name="offset">The number of listings to offset the returned listings, default to 0.</param>
         /// <returns>A list of Game objects matching the query.</returns>
-        public static async Task<List<GameByPopularityListing>> GetGamesByTopViewerCounts(int limit = 10, int offset = 0)
+        public static async Task<List<GameByPopularityListing>> GetGamesByPopularity(int limit = 10, int offset = 0)
         {
             var returnedGames = new List<GameByPopularityListing>();
 
