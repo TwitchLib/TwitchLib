@@ -691,5 +691,12 @@ namespace TwitchLibExample
             else
                 MessageBox.Show("Testing the message parser requires at least one connected client.");
         }
+
+        private async void button50_Click(object sender, EventArgs e)
+        {
+            var games = await TwitchApi.GetGamesByPopularity();
+            foreach (var game in games)
+                MessageBox.Show($"Game: {game.Game.Name}\nViewer Count: {game.Viewers}\nChannel Count: {game.Channels}");
+        }
     }
 }

@@ -230,6 +230,8 @@
             this.label12 = new System.Windows.Forms.Label();
             this.button49 = new System.Windows.Forms.Button();
             this.textBox40 = new System.Windows.Forms.TextBox();
+            this.groupBox40 = new System.Windows.Forms.GroupBox();
+            this.button50 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -282,6 +284,7 @@
             this.groupBox9.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            this.groupBox40.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -1447,6 +1450,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.groupBox40);
             this.groupBox6.Controls.Add(this.groupBox39);
             this.groupBox6.Controls.Add(this.groupBox38);
             this.groupBox6.Controls.Add(this.groupBox37);
@@ -2487,6 +2491,29 @@
             this.textBox40.Size = new System.Drawing.Size(459, 38);
             this.textBox40.TabIndex = 32;
             // 
+            // groupBox40
+            // 
+            this.groupBox40.Controls.Add(this.button50);
+            this.groupBox40.Location = new System.Drawing.Point(1438, 544);
+            this.groupBox40.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox40.Name = "groupBox40";
+            this.groupBox40.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox40.Size = new System.Drawing.Size(459, 107);
+            this.groupBox40.TabIndex = 30;
+            this.groupBox40.TabStop = false;
+            this.groupBox40.Text = "Got Top Games By Viewers";
+            // 
+            // button50
+            // 
+            this.button50.Location = new System.Drawing.Point(17, 36);
+            this.button50.Margin = new System.Windows.Forms.Padding(5);
+            this.button50.Name = "button50";
+            this.button50.Size = new System.Drawing.Size(407, 48);
+            this.button50.TabIndex = 18;
+            this.button50.Text = "Fetch";
+            this.button50.UseVisualStyleBackColor = true;
+            this.button50.Click += new System.EventHandler(this.button50_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -2585,6 +2612,7 @@
             this.groupBox8.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
+            this.groupBox40.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2793,6 +2821,8 @@
         private System.Windows.Forms.Button button48;
         private System.Windows.Forms.Button button49;
         private System.Windows.Forms.TextBox textBox40;
+        private System.Windows.Forms.GroupBox groupBox40;
+        private System.Windows.Forms.Button button50;
     }
 }
 
