@@ -95,6 +95,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - GetChannelsObject(string channel) - Fetches a Channels object from an undocumented endpoint (I think), which contains steam Id and other interesting properties.
 - GetChannelFromSteamId(string steamId) - Fetches the name of a channel given a user's Steam Id (if their Steam is linked to their Twitch).
 - GetFeaturedStreams() - Fetches the featured streams (front page streams), along with the stream object, stream text, and other properties.
+- GetGamesByPopularity() - Fetches the top games by viewer count, includes listings with game objects, viewer counts, and channel counts.
 
 ### TwitchPubSub
 - Events:
