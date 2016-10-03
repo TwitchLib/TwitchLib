@@ -10,31 +10,26 @@ namespace TwitchLib.TwitchAPIClasses
     /// <summary>Object representing a follow between a user/viewer and a channel/streamer.</summary>
     public class Follow
     {
-        private bool _isFollowing;
-        private DateTime _createdAt;
-        private bool _notifications;
-        private Channel _channel;
-
         /// <summary>Bool representing if user follows channel. If false, all other properties are null.</summary>
-        public bool IsFollowing => _isFollowing;
+        public bool IsFollowing { get; protected set; }
         /// <summary>DateTime object representing when a follow was created.</summary>
-        public DateTime CreatedAt => _createdAt;
+        public DateTime CreatedAt { get; protected set; }
         /// <summary>Bool representing whether or not the user receives notificaitons for their follow.</summary>
-        public bool Notifications => _notifications;
+        public bool Notifications { get; protected set; }
         /// <summary>Channel details returned along with the request.</summary>
-        public Channel Channel => _channel;
+        public Channel Channel { get; protected set; }
 
         /// <summary>Constructor for follow</summary>
         public Follow(string apiResponse, bool successful = true)
         {
-            _isFollowing = successful;
+            IsFollowing = successful;
             if(successful)
             {
                 JObject json = JObject.Parse(apiResponse);
-                _createdAt = Convert.ToDateTime(json.SelectToken("created_at").ToString());
+                CreatedAt = Convert.ToDateTime(json.SelectToken("created_at").ToString());
                 if ((bool)json.SelectToken("notifications"))
-                    _notifications = true;
-                _channel = new Channel(json.SelectToken("channel"));
+                    Notifications = true;
+                Channel = new Channel(json.SelectToken("channel"));
             }
         }
     }
