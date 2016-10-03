@@ -144,6 +144,6 @@ https://discord.gg/0gHwecaLRAzrRYWi
  * GlitchHound ([GlitchHound](https://github.com/GlitchHound))
  * PFCKrutonium ([PFCKrutonium](https://github.com/PFCKrutonium))
  * toffaste1337([toffaste1337](https://github.com/toffaste1337))
-
+ * Mr_Examed ([Mr_Examed](https://www.twitch.tv/mr_examed))
 ### License
 MIT License. &copy; 2016 Cole
