@@ -317,6 +317,25 @@ namespace TwitchLib
                 json.SelectToken("games").Select(gameToken => new TwitchAPIClasses.Game((JObject)gameToken)));
             return returnedGames;
         }
+
+        /// <summary>
+        /// Execute a query to return the games with the most current viewers.
+        /// </summary>
+        /// <param name="limit">The number of listings to return, default to 10.</param>
+        /// <param name="offset">The number of listings to offset the returned listings, default to 0.</param>
+        /// <returns>A list of Game objects matching the query.</returns>
+        public static async Task<List<GameByPopularityListing>> GetGamesByTopViewerCounts(int limit = 10, int offset = 0)
+        {
+            var returnedGames = new List<GameByPopularityListing>();
+
+            var args = $"?limit={limit}&offset={offset}";
+            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/games/top{args}");
+
+            var json = JObject.Parse(resp);
+            returnedGames.AddRange(
+                json.SelectToken("top").Select(gameToken => new GameByPopularityListing((JObject)gameToken)));
+            return returnedGames;
+        }
         #endregion
 
         #region Chatters
