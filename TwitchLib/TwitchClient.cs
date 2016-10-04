@@ -935,7 +935,7 @@ namespace TwitchLib
             response = ChatParsing.detectedChannelStateChanged(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnChannelStateChanged?.Invoke(this, new OnChannelStateChangedArgs { ChannelState = new ChannelState(decodedMessage) });
+                OnChannelStateChanged?.Invoke(this, new OnChannelStateChangedArgs { ChannelState = new ChannelState(decodedMessage), Channel = response.Channel });
                 return;
             }
 
