@@ -71,7 +71,7 @@ namespace TwitchLib.TwitchClientClasses
             }
                 
             if (readType != null && readType == "PRIVMSG")
-                return new DetectionReturn((message.Split('!')[0] == ":twitchnotify" && (message.Contains("just subscribed"))), channelRet);
+                return new DetectionReturn((message.Split('!')[0] == ":twitchnotify" && (message.Contains("just subscribed!") || message.ToLower().Contains("just subscribed with twitch prime!"))), channelRet);
             return new DetectionReturn(false);
         }
 
