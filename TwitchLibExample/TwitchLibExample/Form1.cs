@@ -341,8 +341,9 @@ namespace TwitchLibExample
 
         private async void button19_Click(object sender, EventArgs e)
         {
-            if (await TwitchApi.ChannelHasUserSubscribed(textBox23.Text, textBox14.Text, textBox15.Text))
-                MessageBox.Show("User is subscribed!");
+            var response = await TwitchApi.ChannelHasUserSubscribed(textBox23.Text, textBox14.Text, textBox15.Text);
+            if (response != null)
+                MessageBox.Show($"{response.User.Name} has been subscribed to {textBox14.Text} for {(DateTime.UtcNow - response.CreatedAt).TotalHours} hours!");
             else
                 MessageBox.Show("User is not subscribed!");
         }
