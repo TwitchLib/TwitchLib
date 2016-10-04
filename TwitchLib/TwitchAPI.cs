@@ -608,18 +608,15 @@ namespace TwitchLib
         /// <param name="channel">The channel to check against.</param>
         /// <param name="accessToken">An oauth token with the required scope.</param>
         /// <returns>True if the user is subscribed to the channel, false otherwise.</returns>
-        public static async Task<bool> ChannelHasUserSubscribed(string username, string channel, string accessToken)
+        public static async Task<ChannelHasUserSubscribedResponse> ChannelHasUserSubscribed(string username, string channel, string accessToken)
         {
             try
             {
-                await
-                    MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions/{username}",
-                        accessToken);
-                return true;
+                return new ChannelHasUserSubscribedResponse(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions/{username}", accessToken)));
             }
             catch
             {
-                return false;
+                return null;
             }
         }
         #endregion
