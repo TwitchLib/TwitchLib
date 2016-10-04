@@ -43,6 +43,14 @@ namespace TwitchLib
             ListenToTopic
         }
 
+        /// <summary>Takes date time string received from Twitch API and converts it to DateTime object.</summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static DateTime DateTimeStringToObject(string dateTime)
+        {
+            return Convert.ToDateTime(dateTime);
+        }
+
         public static List<string> ParseQuotesAndNonQuotes(string message)
         {
             List<string> args = new List<string>();
