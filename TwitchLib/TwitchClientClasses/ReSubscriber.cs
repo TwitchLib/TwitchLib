@@ -23,6 +23,8 @@ namespace TwitchLib
         public string Login { get; protected set; }
         /// <summary>Property representing internval system message value.</summary>
         public string SystemMessage { get; protected set; }
+        /// <summary>Property representing internal system message value, parsed.</summary>
+        public string SystemMessageParsed { get; protected set; }
         /// <summary>Property representing </summary>
         public string ResubMessage { get; protected set; }
         /// <summary>Property representing number of months of being subscribed.</summary>
@@ -43,7 +45,8 @@ namespace TwitchLib
         public string RawIrc { get; protected set; }
         /// <summary>Property representing the channel the resubscription happened in.</summary>
         public string Channel { get; protected set; }
-
+        /// <summary>Property representing if the resubscription came from Twitch Prime.</summary>
+        public bool IsTwitchPrime { get; protected set; }
         // @badges=subscriber/1,turbo/1;color=#2B119C;display-name=JustFunkIt;emotes=;id=9dasn-asdibas-asdba-as8as;login=justfunkit;mod=0;msg-id=resub;msg-param-months=2;room-id=44338537;subscriber=1;system-msg=JustFunkIt\ssubscribed\sfor\s2\smonths\sin\sa\srow!;turbo=1;user-id=26526370;user-type= :tmi.twitch.tv USERNOTICE #burkeblack :AVAST YEE SCURVY DOG
 
         /// <summary>ReSubscriber object constructor.</summary>
@@ -92,6 +95,7 @@ namespace TwitchLib
                             break;
                         case "system-msg":
                             SystemMessage = value;
+                            SystemMessageParsed = value.Replace("\\s", " ");
                             break;
                         case "turbo":
                             Turbo = value == "1";
@@ -140,6 +144,9 @@ namespace TwitchLib
                 string rawParsedIrc = ircString.Split(new string[] { $"#{Channel} :" }, StringSplitOptions.None)[0];
                 ResubMessage = ircString.Replace($"{rawParsedIrc}#{Channel} :", "");
             }
+
+            // Check if Twitch Prime
+            IsTwitchPrime = SystemMessageParsed.ToLower().Contains("with twitch prime");
             
         }
 
