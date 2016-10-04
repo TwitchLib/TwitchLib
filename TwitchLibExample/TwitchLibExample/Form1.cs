@@ -62,6 +62,7 @@ namespace TwitchLibExample
             newClient.OnJoinedChannel += new EventHandler<TwitchClient.OnJoinedChannelArgs>(onJoinedChannel);
             newClient.OnNewSubscriber += new EventHandler<TwitchClient.OnNewSubscriberArgs>(onNewSubscription);
             newClient.OnReSubscriber += new EventHandler<TwitchClient.OnReSubscriberArgs>(onReSubscription);
+            newClient.OnChannelStateChanged += new EventHandler<TwitchClient.OnChannelStateChangedArgs>(onChannelStateChanged);
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
@@ -82,6 +83,11 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onChannelStateChanged(object sender, TwitchClient.OnChannelStateChangedArgs e)
+        {
+            MessageBox.Show($"Channel: {e.Channel}\nSub only: {e.ChannelState.SubOnly}\nEmotes only: {e.ChannelState.EmoteOnly}\nSlow mode: {e.ChannelState.SlowMode}\nR9K: {e.ChannelState.R9K}");
         }
 
         private void onNewSubscription(object sender, TwitchClient.OnNewSubscriberArgs e)
