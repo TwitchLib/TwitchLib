@@ -198,6 +198,11 @@ namespace TwitchLib
                 }
             }
 
+            // Check if display name was set, and if it wasn't, set it to username
+            if (string.IsNullOrEmpty(DisplayName))
+                DisplayName = Username;
+
+            // Check if message is from broadcaster
             if(Channel.ToLower() == Username.ToLower())
             {
                 UserType = Common.UserType.Broadcaster;
