@@ -454,5 +454,28 @@ namespace TwitchLib.TwitchClientClasses
 
             return new DetectionReturn(readType == "CLEARCHAT" && message.Substring(0, 12) == "@ban-reason=", channelRet);
         }
+
+        /// <summary>Parse function to detect list of moderators was received.</summary>
+        /// <param name="message"></param>
+        /// <param name="channels"></param>
+        /// <returns></returns>
+        public static DetectionReturn detectedModeratorsReceived(string message, List<JoinedChannel> channels)
+        {
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
+            if (readType != null && readType == "NOTICE")
+                return new DetectionReturn(message.Contains("The moderators of this room are:"), channelRet);
+            return new DetectionReturn(false);
+        }
     }
 }
