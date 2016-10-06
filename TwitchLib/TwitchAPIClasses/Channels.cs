@@ -7,25 +7,43 @@ using Newtonsoft.Json.Linq;
 
 namespace TwitchLib.TwitchAPIClasses
 {
+    /// <summary>Class representing Channels object.</summary>
     public class Channels
     {
+        /// <summary>Property representing the display name of a user.</summary>
         public string DisplayName { get; protected set; }
+        /// <summary>Property representing the game a channel is playing.</summary>
         public string Game { get; protected set; }
+        /// <summary>Property representing the status of a specific channel.</summary>
         public string Status { get; protected set; }
+        /// <summary>Property representing whether or not a channel is fighting adblock.</summary>
         public bool FightAdBlock { get; protected set; }
+        /// <summary>Property representing internal Id variable.</summary>
         public long Id { get; protected set; }
+        /// <summary>Property representing the name of a channel.</summary>
         public string Name { get; protected set; }
+        /// <summary>Property representing the partner status of the channel.</summary>
         public bool Partner { get; protected set; }
+        /// <summary>Property represeting Twitch's channel Liverail Id (I think related to advertisements)</summary>
         public long TwitchLiverailId { get; protected set; }
+        /// <summary>Property representing the LiverailId.</summary>
         public long LiverailId { get; protected set; }
+        /// <summary>Property representing the comscore id (I think related to advertisements).</summary>
         public string ComscoreId { get; protected set; }
+        /// <summary>Property representing Comscore6(?).</summary>
         public string ComscoreC6 { get; protected set; }
+        /// <summary>Property representing the Steam Id of the user (if available).</summary>
         public long SteamId { get; protected set; }
+        /// <summary>Property representing the PPV status of the channel.</summary>
         public bool PPV { get; protected set; }
+        /// <summary>Property representing the broadcaster software (fairly unreliable).</summary>
         public string BroadcasterSoftware { get; protected set; }
+        /// <summary>Property representing the preroll status of the channel (preroll ads)</summary>
         public bool Prerolls { get; protected set; }
+        /// <summary>Property representing the postrolls status of the channel (postroll ads)</summary>
         public bool Postrolls { get; protected set; }
 
+        /// <summary>Constructor for Channels object.</summary>
         public Channels(JToken json)
         {
             bool fightAdBlock, partner, ppv, prerolls, postrolls;
