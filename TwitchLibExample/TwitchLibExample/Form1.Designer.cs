@@ -232,6 +232,7 @@
             this.textBox40 = new System.Windows.Forms.TextBox();
             this.groupBox40 = new System.Windows.Forms.GroupBox();
             this.button50 = new System.Windows.Forms.Button();
+            this.button51 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -864,6 +865,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.button51);
             this.tabPage5.Controls.Add(this.textBox40);
             this.tabPage5.Controls.Add(this.button49);
             this.tabPage5.Controls.Add(this.button47);
@@ -2514,6 +2516,16 @@
             this.button50.UseVisualStyleBackColor = true;
             this.button50.Click += new System.EventHandler(this.button50_Click);
             // 
+            // button51
+            // 
+            this.button51.Location = new System.Drawing.Point(1140, 346);
+            this.button51.Name = "button51";
+            this.button51.Size = new System.Drawing.Size(143, 131);
+            this.button51.TabIndex = 33;
+            this.button51.Text = "Get Mods";
+            this.button51.UseVisualStyleBackColor = true;
+            this.button51.Click += new System.EventHandler(this.button51_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -2823,6 +2835,7 @@
         private System.Windows.Forms.TextBox textBox40;
         private System.Windows.Forms.GroupBox groupBox40;
         private System.Windows.Forms.Button button50;
+        private System.Windows.Forms.Button button51;
     }
 }
 

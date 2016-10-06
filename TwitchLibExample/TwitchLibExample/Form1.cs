@@ -63,6 +63,7 @@ namespace TwitchLibExample
             newClient.OnNewSubscriber += new EventHandler<TwitchClient.OnNewSubscriberArgs>(onNewSubscription);
             newClient.OnReSubscriber += new EventHandler<TwitchClient.OnReSubscriberArgs>(onReSubscription);
             newClient.OnChannelStateChanged += new EventHandler<TwitchClient.OnChannelStateChangedArgs>(onChannelStateChanged);
+            newClient.OnModeratorsReceived += new EventHandler<TwitchClient.OnModeratorsReceivedArgs>(onModeratorsReceived);
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
@@ -83,6 +84,12 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onModeratorsReceived(object sender, TwitchClient.OnModeratorsReceivedArgs e)
+        {
+            foreach (var mod in e.Moderators)
+                MessageBox.Show($"Moderator name: {mod}\nIn channel: {e.Channel}");
         }
 
         private void onChannelStateChanged(object sender, TwitchClient.OnChannelStateChangedArgs e)
@@ -704,6 +711,16 @@ namespace TwitchLibExample
             var games = await TwitchApi.GetGamesByPopularity();
             foreach (var game in games)
                 MessageBox.Show($"Game: {game.Game.Name}\nViewer Count: {game.Viewers}\nChannel Count: {game.Channels}");
+        }
+
+        private void button51_Click(object sender, EventArgs e)
+        {
+            if(clients.Count == 0)
+            {
+                MessageBox.Show("You must have at least one connected client.");
+                return;
+            }
+            clients[0].GetChannelModerators();
         }
     }
 }
