@@ -47,6 +47,7 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnChatCleared - Fires when a moderator sends a clear chat command (channel).
   * OnViewerTimedout - Fires when client detects a viewer was timedout (moderator, viewer, timeout duration, timeout reason, channel).
   * OnViewerBanned - Fires when client detects a viewer was banned (moderator, viewer, ban reason, channel).
+  * OnModeratorsReceived - Fires when a list of moderators is returned by Twitch (this happens by calling GetChannelModerators in the client).
 - Whisper Events:
   * OnWhisperReceived - Fires when a new whisper message is received, returns WhisperMessage
   * OnWhisperCommandReceived - Fires when command (uses custom command identifier) is received.
@@ -59,6 +60,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - Reconnect - Reconnects chat client given existing credentials
 - JoinedChannel(string channel) - Client will attempt to join passed in channel.
 - LeaveChannel(string channel) - Client will attempt to leave channel.
+- GetChannelModerators - Sends a request for all of the channel moderators (you MUST listen/handle the OnModeratorsReceived event).
 
 ### TwitchAPI
 - BroadcasterOnline(string channel) - Async function returns bool of whether or not streamer is streaming
