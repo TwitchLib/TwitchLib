@@ -1046,28 +1046,50 @@ namespace TwitchLib
             // On clear chat detected
             response = ChatParsing.detectedClearedChat(decodedMessage, JoinedChannels);
             if (response.Successful)
+            {
                 OnChatCleared?.Invoke(this, new OnChatClearedArgs { Channel = response.Channel });
-
+                return;
+            }
 
             // On timeout detected
             response = ChatParsing.detectedViewerTimedout(decodedMessage, JoinedChannels);
             if (response.Successful)
-                OnViewerTimedout?.Invoke(this, new OnViewerTimedoutArgs { Channel = response.Channel,
-                    TimeoutDuration = int.Parse(decodedMessage.Split(';')[0].Split('=')[1]), TimeoutReason = decodedMessage.Split(' ')[0].Split('=')[2].Replace("\\s", " "),
-                    Viewer = decodedMessage.Split(':')[2]});
-
+            {
+                OnViewerTimedout?.Invoke(this, new OnViewerTimedoutArgs
+                {
+                    Channel = response.Channel,
+                    TimeoutDuration = int.Parse(decodedMessage.Split(';')[0].Split('=')[1]),
+                    TimeoutReason = decodedMessage.Split(' ')[0].Split('=')[2].Replace("\\s", " "),
+                    Viewer = decodedMessage.Split(':')[2]
+                });
+                return;
+            }
 
             // On ban detected
             response = ChatParsing.detectedViewerBanned(decodedMessage, JoinedChannels);
             if (response.Successful)
-                OnViewerBanned?.Invoke(this, new OnViewerBannedArgs { Channel = response.Channel,
-                    BanReason = decodedMessage.Split(' ')[0].Split('=')[1].Replace("\\s", " "), Viewer = decodedMessage.Split(':')[2] });
+            {
+                OnViewerBanned?.Invoke(this, new OnViewerBannedArgs
+                {
+                    Channel = response.Channel,
+                    BanReason = decodedMessage.Split(' ')[0].Split('=')[1].Replace("\\s", " "),
+                    Viewer = decodedMessage.Split(':')[2]
+                });
+                return;
+            }
 
             // On moderators received detected
             response = ChatParsing.detectedModeratorsReceived(decodedMessage, JoinedChannels);
             if (response.Successful)
-                OnModeratorsReceived?.Invoke(this, new OnModeratorsReceivedArgs { Channel = decodedMessage.Split('#')[1].Split(' ')[0],
-                    Moderators = decodedMessage.Replace(" ", "").Split(':')[3].Split(',').ToList<string>() });
+            {
+                OnModeratorsReceived?.Invoke(this, new OnModeratorsReceivedArgs
+                {
+                    Channel = decodedMessage.Split('#')[1].Split(' ')[0],
+                    Moderators = decodedMessage.Replace(" ", "").Split(':')[3].Split(',').ToList<string>()
+                });
+                return;
+            }
+                
             #endregion
 
             #region Whisper Parsing
