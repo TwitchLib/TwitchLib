@@ -182,6 +182,11 @@ namespace TwitchLib
         /// Fires when a viewer gets banned by any moderator.
         /// </summary>
         public event EventHandler<OnViewerBannedArgs> OnViewerBanned;
+
+        /// <summary>
+        /// Fires when a list of moderators is received.
+        /// </summary>
+        public event EventHandler<OnModeratorsReceivedArgs> OnModeratorsReceived;
         #endregion  
 
         #region Event Args
@@ -410,6 +415,15 @@ namespace TwitchLib
             public string BotUsername;
             /// <summary>Channel that bot just left (parted).</summary>
             public string Channel;
+        }
+
+        /// <summary>Args representing a list of moderators received from chat.</summary>
+        public class OnModeratorsReceivedArgs : EventArgs
+        {
+            /// <summary>Property representing the channel the moderator list came from.</summary>
+            public string Channel;
+            /// <summary>Property representing the list of moderators.</summary>
+            public List<string> Moderators;
         }
         #endregion
 
@@ -773,6 +787,37 @@ namespace TwitchLib
         {
             LeaveChannel(channel.Channel);
         }
+
+        /// <summary>
+        /// Sends a request to get channel moderators. You MUST listen to OnModeratorsReceived event./>.
+        /// </summary>
+        /// <param name="channel">JoinedChannel object to designate which channel to send request to.</param>
+        public void GetChannelModerators(JoinedChannel channel)
+        {
+            if (OnModeratorsReceived == null)
+                throw new Exceptions.EventNotHandled("OnModeratorsReceived");
+            SendMessage(channel, "/mods");
+        }
+
+        /// <summary>
+        /// Sends a request to get channel moderators. You MUST listen to OnModeratorsReceived event./>.
+        /// </summary>
+        /// <param name="channel">String representing channel to designate which channel to send request to.</param>
+        public void GetChannelModerators(string channel)
+        {
+            var joinedChannel = GetJoinedChannel(channel);
+            if (joinedChannel != null)
+                GetChannelModerators(joinedChannel);
+        }
+
+        /// <summary>
+        /// Sends a request to get channel moderators. Request sent to first joined channel. You MUST listen to OnModeratorsReceived event./>.
+        /// </summary>
+        public void GetChannelModerators()
+        {
+            if (JoinedChannels.Count > 0)
+                GetChannelModerators(JoinedChannels[0]);
+        }
         #endregion
 
         /// <summary>
@@ -1018,6 +1063,11 @@ namespace TwitchLib
                 OnViewerBanned?.Invoke(this, new OnViewerBannedArgs { Channel = response.Channel,
                     BanReason = decodedMessage.Split(' ')[0].Split('=')[1].Replace("\\s", " "), Viewer = decodedMessage.Split(':')[2] });
 
+            // On moderators received detected
+            response = ChatParsing.detectedModeratorsReceived(decodedMessage, JoinedChannels);
+            if (response.Successful)
+                OnModeratorsReceived?.Invoke(this, new OnModeratorsReceivedArgs { Channel = decodedMessage.Split('#')[1].Split(' ')[0],
+                    Moderators = decodedMessage.Replace(" ", "").Split(':')[3].Split(',').ToList<string>() });
             #endregion
 
             #region Whisper Parsing
