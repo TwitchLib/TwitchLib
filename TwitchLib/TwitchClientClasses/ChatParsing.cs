@@ -52,7 +52,7 @@ namespace TwitchLib.TwitchClientClasses
             return false;
         }
 
-        /// <summary>[Untested] Parse function to detect new subscriber</summary>
+        /// <summary>Parse function to detect new subscriber</summary>
         /// <param name="message"></param>
         /// <param name="channels"></param>
         /// <returns></returns>
@@ -262,7 +262,7 @@ namespace TwitchLib.TwitchClientClasses
             return new DetectionReturn(false);
         }
 
-        /// <summary>[Untested] Parse function to detect host leaving.</summary>
+        /// <summary>Parse function to detect host leaving.</summary>
         /// <param name="message"></param>
         /// <param name="channels"></param>
         /// <returns></returns>
@@ -327,7 +327,7 @@ namespace TwitchLib.TwitchClientClasses
             return new DetectionReturn((readType != null && readType == "USERSTATE"), channelRet);
         }
 
-        /// <summary>[Untested] Parse function to detect resubscriptions.</summary>
+        /// <summary>Parse function to detect resubscriptions.</summary>
         /// <param name="message"></param>
         /// <param name="channels"></param>
         /// <returns></returns>
@@ -366,7 +366,7 @@ namespace TwitchLib.TwitchClientClasses
             return new DetectionReturn(message == ":tmi.twitch.tv PONG tmi.twitch.tv :irc.chat.twitch.tv");
         }
 
-        /// <summary>[Untested] Parse function to stopped hosting.</summary>
+        /// <summary>Parse function to detect stopped hosting.</summary>
         /// <param name="message"></param>
         /// <returns></returns>
         public static bool detectedHostingStopped(string message)
