@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\EventNotHandledException.cs" />
     <Compile Include="TwitchAPIClasses\Block.cs" />
     <Compile Include="TwitchAPIClasses\ChannelHasUserSubscribedResponse.cs" />
     <Compile Include="TwitchAPIClasses\Channels.cs" />
