@@ -802,7 +802,9 @@ namespace TwitchLib
             var request = (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={ClientId}"));
             request.Method = method;
             request.Accept = "application/vnd.twitchtv.v3+json";
-            request.ContentType = "application/json";
+            request.ContentType = method == "POST"
+                ? "application/x-www-form-urlencoded"
+                : "application/json";
             request.Headers.Add("Client-ID", ClientId);
 
             if (!string.IsNullOrWhiteSpace(accessToken))
