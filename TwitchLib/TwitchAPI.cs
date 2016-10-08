@@ -22,17 +22,17 @@ namespace TwitchLib
         public enum CommercialLength
         {
             /// <summary>30 second commercial</summary>
-            Seconds30 = 30,
+            Seconds30,
             /// <summary>60 second commercial</summary>
-            Seconds60 = 60,
+            Seconds60,
             /// <summary>90 second commercial</summary>
-            Seconds90 = 90,
+            Seconds90,
             /// <summary>120 second commercial</summary>
-            Second120 = 120,
+            Second120,
             /// <summary>150 second commercial</summary>
-            Seconds150 = 150,
+            Seconds150,
             /// <summary>180 second commercial</summary>
-            Seconds180 = 180
+            Seconds180
         }
 
         /// <summary>
@@ -654,9 +654,32 @@ namespace TwitchLib
         public static async Task<string> RunCommercial(CommercialLength length, string channel,
             string accessToken)
         {
+            // Default to 30 seconds?
+            int seconds = 30;
+            switch(length)
+            {
+                case CommercialLength.Seconds30:
+                    seconds = 30;
+                    break;
+                case CommercialLength.Seconds60:
+                    seconds = 60;
+                    break;
+                case CommercialLength.Seconds90:
+                    seconds = 90;
+                    break;
+                case CommercialLength.Second120:
+                    seconds = 120;
+                    break;
+                case CommercialLength.Seconds150:
+                    seconds = 150;
+                    break;
+                case CommercialLength.Seconds180:
+                    seconds = 180;
+                    break;
+            }
             return await
                 MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}/commercial", "POST",
-                    $"length={length}", accessToken);
+                    $"length={seconds}", accessToken);
         }
         #endregion
 
