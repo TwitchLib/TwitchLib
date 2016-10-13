@@ -777,6 +777,17 @@ namespace TwitchLib
             return new PostToChannelFeedResponse(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts", "POST", $"content={content}&share={(share ? "true" : "false")}", accessToken)));
         }
 
+        /// <summary>
+        /// Deletes a post on a Twitch channel's feed.
+        /// </summary>
+        /// <param name="postId">Integer Id of feed post to delete.</param>
+        /// <param name="channel">Channel where the post resides.</param>
+        /// <param name="accessToken">OAuth access token with channel_feed_edit scope.</param>
+        public static async void DeleteChannelFeedPost(string postId, string channel, string accessToken)
+        {
+            await MakeRestRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", "DELETE", null, accessToken);
+        }
+
         #region Internal Calls
         private static async Task<string> MakeGetRequest(string url, string accessToken = null)
         {
