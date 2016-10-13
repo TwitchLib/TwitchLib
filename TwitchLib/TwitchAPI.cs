@@ -764,6 +764,19 @@ namespace TwitchLib
         }
         #endregion
 
+        /// <summary>
+        /// Posts to a Twitch channel's feed.
+        /// </summary>
+        /// <param name="content">The content of the message being posted.</param>
+        /// <param name="accessToken">OAuth access token with channel_feed_edit scope.</param>
+        /// <param name="channel">Channel to post feed post to.</param>
+        /// <param name="share">If set to true, and enabled on account, will tweet out post.</param>
+        /// <returns>Returns object with Post object and URL to tweet if available.</returns>
+        public static async Task<PostToChannelFeedResponse> PostToChannelFeed(string content, bool share, string channel, string accessToken)
+        {
+            return new PostToChannelFeedResponse(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts", "POST", $"content={content}&share={(share ? "true" : "false")}", accessToken)));
+        }
+
         #region Internal Calls
         private static async Task<string> MakeGetRequest(string url, string accessToken = null)
         {

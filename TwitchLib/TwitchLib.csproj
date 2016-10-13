@@ -61,6 +61,8 @@
     <Compile Include="TwitchAPIClasses\FeedResponse.cs" />
     <Compile Include="TwitchAPIClasses\Game.cs" />
     <Compile Include="TwitchAPIClasses\GameByPopularityListing.cs" />
+    <Compile Include="TwitchAPIClasses\Post.cs" />
+    <Compile Include="TwitchAPIClasses\PostToChannelFeedResponse.cs" />
     <Compile Include="TwitchAPIClasses\User.cs" />
     <Compile Include="TwitchAPIClasses\BadgeResponse.cs" />
     <Compile Include="TwitchClientClasses\ChannelState.cs" />
