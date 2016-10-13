@@ -99,6 +99,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - GetFeaturedStreams() - Fetches the featured streams (front page streams), along with the stream object, stream text, and other properties.
 - GetGamesByPopularity() - Fetches the top games by viewer count, includes listings with game objects, viewer counts, and channel counts.
 - PostToChannelFeed() - Posts to channel with the ability to tweet out the post as well. Returns Tweet URL and Post object.
+- DeleteChannelFeedPost() - Deletes a channel feed post by the passed in post Id.
 
 ### TwitchPubSub
 - Events:
