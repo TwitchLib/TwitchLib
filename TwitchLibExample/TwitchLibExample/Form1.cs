@@ -729,5 +729,11 @@ namespace TwitchLibExample
             var response = await TwitchApi.PostToChannelFeed(textBox41.Text, checkBox1.Checked, textBox14.Text, textBox15.Text);
             MessageBox.Show($"Message body: {response.Post.Body}");
         }
+
+        private void button53_Click(object sender, EventArgs e)
+        {
+            //numericUpDown3
+            TwitchApi.DeleteChannelFeedPost(textBox42.Text, textBox14.Text, textBox15.Text);
+        }
     }
 }

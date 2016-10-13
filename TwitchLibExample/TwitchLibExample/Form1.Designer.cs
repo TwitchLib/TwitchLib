@@ -238,6 +238,10 @@
             this.textBox41 = new System.Windows.Forms.TextBox();
             this.label48 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.groupBox42 = new System.Windows.Forms.GroupBox();
+            this.button53 = new System.Windows.Forms.Button();
+            this.label49 = new System.Windows.Forms.Label();
+            this.textBox42 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -292,6 +296,7 @@
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox41.SuspendLayout();
+            this.groupBox42.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -939,6 +944,7 @@
             // 
             // groupBox11
             // 
+            this.groupBox11.Controls.Add(this.groupBox42);
             this.groupBox11.Controls.Add(this.groupBox41);
             this.groupBox11.Controls.Add(this.groupBox34);
             this.groupBox11.Controls.Add(this.groupBox33);
@@ -2587,6 +2593,48 @@
             this.checkBox1.Text = "Twitter Share";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
+            // groupBox42
+            // 
+            this.groupBox42.Controls.Add(this.textBox42);
+            this.groupBox42.Controls.Add(this.button53);
+            this.groupBox42.Controls.Add(this.label49);
+            this.groupBox42.Location = new System.Drawing.Point(1438, 271);
+            this.groupBox42.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox42.Name = "groupBox42";
+            this.groupBox42.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox42.Size = new System.Drawing.Size(459, 107);
+            this.groupBox42.TabIndex = 22;
+            this.groupBox42.TabStop = false;
+            this.groupBox42.Text = "Delete Channel Feed Post";
+            // 
+            // button53
+            // 
+            this.button53.Location = new System.Drawing.Point(307, 33);
+            this.button53.Margin = new System.Windows.Forms.Padding(5);
+            this.button53.Name = "button53";
+            this.button53.Size = new System.Drawing.Size(120, 48);
+            this.button53.TabIndex = 18;
+            this.button53.Text = "Send!";
+            this.button53.UseVisualStyleBackColor = true;
+            this.button53.Click += new System.EventHandler(this.button53_Click);
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(11, 43);
+            this.label49.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(110, 32);
+            this.label49.TabIndex = 0;
+            this.label49.Text = "Post Id:";
+            // 
+            // textBox42
+            // 
+            this.textBox42.Location = new System.Drawing.Point(129, 35);
+            this.textBox42.Name = "textBox42";
+            this.textBox42.Size = new System.Drawing.Size(170, 38);
+            this.textBox42.TabIndex = 19;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -2688,6 +2736,8 @@
             this.groupBox7.PerformLayout();
             this.groupBox41.ResumeLayout(false);
             this.groupBox41.PerformLayout();
+            this.groupBox42.ResumeLayout(false);
+            this.groupBox42.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2904,6 +2954,10 @@
         private System.Windows.Forms.Button button52;
         private System.Windows.Forms.TextBox textBox41;
         private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.GroupBox groupBox42;
+        private System.Windows.Forms.Button button53;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.TextBox textBox42;
     }
 }
 
