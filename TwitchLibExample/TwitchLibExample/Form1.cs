@@ -490,9 +490,9 @@ namespace TwitchLibExample
         {
             //textbox31
             var feed = await TwitchApi.GetChannelFeed(textBox31.Text);
-            foreach(TwitchLib.TwitchAPIClasses.FeedResponse.Post post in feed.Posts)
+            foreach(TwitchLib.TwitchAPIClasses.Post post in feed.Posts)
             {
-                foreach (TwitchLib.TwitchAPIClasses.FeedResponse.Post.Comment comment in post.Comments)
+                foreach (TwitchLib.TwitchAPIClasses.Post.Comment comment in post.Comments)
                     MessageBox.Show($"Comment author: {comment.User.Name}\n\nComment: {comment.Body}");
                 MessageBox.Show($"Post: {post.Body}");
             }
@@ -721,6 +721,13 @@ namespace TwitchLibExample
                 return;
             }
             clients[0].GetChannelModerators();
+        }
+
+        private async void button52_Click(object sender, EventArgs e)
+        {
+            //textBox41
+            var response = await TwitchApi.PostToChannelFeed(textBox41.Text, checkBox1.Checked, textBox14.Text, textBox15.Text);
+            MessageBox.Show($"Message body: {response.Post.Body}");
         }
     }
 }
