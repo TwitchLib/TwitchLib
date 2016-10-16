@@ -516,7 +516,7 @@ namespace TwitchLib
         /// <param name="direction">Creation date sorting direction.</param>
         /// <returns>A list of TwitchFollower objects.</returns>
         public static async Task<FollowersResponse> GetTwitchFollowers(string channel, int limit = 25,
-            string cursor = -1, SortDirection direction = SortDirection.Descending)
+            string cursor = "-1", SortDirection direction = SortDirection.Descending)
         {
             string args = "";
 
