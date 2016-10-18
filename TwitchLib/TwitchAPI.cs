@@ -520,12 +520,12 @@ namespace TwitchLib
         /// <param name="direction">Creation date sorting direction.</param>
         /// <returns>A list of TwitchFollower objects.</returns>
         public static async Task<FollowersResponse> GetTwitchFollowers(string channel, int limit = 25,
-            int cursor = -1, SortDirection direction = SortDirection.Descending)
+            string cursor = "-1", SortDirection direction = SortDirection.Descending)
         {
             string args = "";
 
             args += "?limit=" + limit;
-            args += cursor != -1 ? $"&cursor={cursor}" : "";
+            args += cursor != "-1" ? $"&cursor={cursor}" : "";
             args += "&direction=" + (direction == SortDirection.Descending ? "desc" : "asc");
 
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
