@@ -15,6 +15,10 @@ namespace TwitchLib
     /// <summary>Static class with functionality for Twitch API calls.</summary>
     public static class TwitchApi
     {
+        // Internal variables
+        private static string ClientId { get; set; }
+        private static string AccessToken { get; set; } 
+
         #region Enums
         /// <summary>
         /// A list of valid commercial lengths.
@@ -75,7 +79,7 @@ namespace TwitchLib
         /// <param name="channel">The channel to fetch editors from.</param>
         /// <param name="accessToken">An access token with the required scope.</param>
         /// <returns>A list of User objects that are channel editors.</returns>
-        public static async Task<List<User>> GetChannelEditors(string channel, string accessToken)
+        public static async Task<List<User>> GetChannelEditors(string channel, string accessToken = null)
         {
             var json = JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/editors", accessToken));
             List<User> editors = new List<User>();
@@ -374,7 +378,7 @@ namespace TwitchLib
         /// <param name="channel">The channel to update.</param>
         /// <param name="accessToken">An oauth token with the required scope.</param>
         /// <returns>The response of the request.</returns>
-        public static async Task<string> UpdateStreamTitle(string status, string channel, string accessToken)
+        public static async Task<string> UpdateStreamTitle(string status, string channel, string accessToken = null)
         {
             var data = "{\"channel\":{\"status\":\"" + status + "\"}}";
             return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
@@ -388,7 +392,7 @@ namespace TwitchLib
         /// <param name="channel">The channel to update.</param>
         /// <param name="accessToken">An oauth token with the required scope.</param>
         /// <returns>The response of the request.</returns>
-        public static async Task<string> UpdateStreamGame(string game, string channel, string accessToken)
+        public static async Task<string> UpdateStreamGame(string game, string channel, string accessToken = null)
         {
             var data = "{\"channel\":{\"game\":\"" + game + "\"}}";
             return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
@@ -403,7 +407,7 @@ namespace TwitchLib
         /// <param name="accessToken">An oauth token with the required scope.</param>
         /// <returns>The response of the request.</returns>
         public static async Task<string> UpdateStreamTitleAndGame(string status, string game, string channel,
-            string accessToken)
+            string accessToken = null)
         {
             var data = "{\"channel\":{\"status\":\"" + status + "\",\"game\":\"" + game + "\"}}";
             return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
@@ -418,7 +422,7 @@ namespace TwitchLib
         /// <param name="channel">The channel to reset the stream key for.</param>
         /// <param name="accessToken">An oauth token with the required scope.</param>
         /// <returns>The response of the request.</returns>
-        public static async Task<string> ResetStreamKey(string channel, string accessToken)
+        public static async Task<string> ResetStreamKey(string channel, string accessToken = null)
         {
             return await
                 MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}/streamkey", "DELETE", "", accessToken);
@@ -432,7 +436,7 @@ namespace TwitchLib
         /// <param name="channel">The channel to update.</param>
         /// <param name="accessToken">The channel owner's access token and the required scope.</param>
         /// <returns>The response of the request.</returns>
-        public static async Task<string> UpdateStreamDelay(int delay, string channel, string accessToken)
+        public static async Task<string> UpdateStreamDelay(int delay, string channel, string accessToken = null)
         {
             var data = "{\"channel\":{\"delay\":" + delay + "}}";
             return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
@@ -449,7 +453,7 @@ namespace TwitchLib
         /// <param name="limit">Limit output from Twitch Api. Default 25, max 100.</param>
         /// <param name="offset">Offset out from Twitch Api. Default 0.</param>
         /// <returns>List of Block objects.</returns>
-        public static async Task<List<Block>> GetBlockedList(string username, string accessToken, int limit = 25, int offset = 0)
+        public static async Task<List<Block>> GetBlockedList(string username, string accessToken = null, int limit = 25, int offset = 0)
         {
             string args = $"?limit={limit}&offset={offset}";
             string resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}/blocks{args}", accessToken);
@@ -469,7 +473,7 @@ namespace TwitchLib
         /// <param name="blockedUsername">User to block.</param>
         /// <param name="accessToken">This call requires an access token.</param>
         /// <returns>Block object.</returns>
-        public static async Task<Block> BlockUser(string username, string blockedUsername, string accessToken)
+        public static async Task<Block> BlockUser(string username, string blockedUsername, string accessToken = null)
         {
             return new Block(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/blocks/{blockedUsername}", "PUT", "", accessToken)));
         }
@@ -481,7 +485,7 @@ namespace TwitchLib
         /// <param name="username">User who's blocked list to unblock from.</param>
         /// <param name="blockedUsername">User to unblock.</param>
         /// <param name="accessToken">This call requires an access token.</param>
-        public static async void UnblockUser(string username, string blockedUsername, string accessToken)
+        public static async void UnblockUser(string username, string blockedUsername, string accessToken = null)
         {
             await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/blocks/{blockedUsername}", "DELETE", "", accessToken);
         }
@@ -566,7 +570,7 @@ namespace TwitchLib
         /// <param name="channel">The channel to follow.</param>
         /// <param name="accessToken">An oauth token with the required scope.</param>
         /// <returns>A follow object representing the follow action.</returns>
-        public static async Task<Follow> FollowChannel(string username, string channel, string accessToken)
+        public static async Task<Follow> FollowChannel(string username, string channel, string accessToken = null)
         {
             return new Follow(await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}", "PUT", "", accessToken));
         }
@@ -578,7 +582,7 @@ namespace TwitchLib
         /// <param name="username">The username of the user trying to follow the given channel.</param>
         /// <param name="channel">The channel to unfollow.</param>
         /// <param name="accessToken">An oauth token with the required scope.</param>
-        public static async void UnfollowChannel(string username, string channel, string accessToken)
+        public static async void UnfollowChannel(string username, string channel, string accessToken = null)
         {
             await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}", "DELETE", "", accessToken);
         }
@@ -592,7 +596,7 @@ namespace TwitchLib
         /// <param name="channel">The channel to retrieve the subscriptions from.</param>
         /// <param name="accessToken">An oauth token with the required scope.</param>
         /// <returns>An integer of the total subscription count.</returns>
-        public static async Task<int> GetSubscriberCount(string channel, string accessToken)
+        public static async Task<int> GetSubscriberCount(string channel, string accessToken = null)
         {
             var resp =
                 await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions", accessToken);
@@ -608,7 +612,7 @@ namespace TwitchLib
         /// <param name="channel">The channel to check against.</param>
         /// <param name="accessToken">An oauth token with the required scope.</param>
         /// <returns>True if the user is subscribed to the channel, false otherwise.</returns>
-        public static async Task<ChannelHasUserSubscribedResponse> ChannelHasUserSubscribed(string username, string channel, string accessToken)
+        public static async Task<ChannelHasUserSubscribedResponse> ChannelHasUserSubscribed(string username, string channel, string accessToken = null)
         {
             try
             {
@@ -652,7 +656,7 @@ namespace TwitchLib
         /// <param name="accessToken">An oauth token with the required scope.</param>
         /// <returns>The response of the request.</returns>
         public static async Task<string> RunCommercial(CommercialLength length, string channel,
-            string accessToken)
+            string accessToken = null)
         {
             // Default to 30 seconds?
             int seconds = 30;
@@ -698,7 +702,15 @@ namespace TwitchLib
                 ValidClientId();
         }
 
-        private static string ClientId { get; set; }
+        /// <summary>
+        /// Sets Access Token, which is saved in memory. This is not necessary, as tokens can be passed into Api calls.
+        /// </summary>
+        /// <param name="accessToken">Twitch account OAuth token to store in memory.</param>
+        public static void SetAccessToken(string accessToken)
+        {
+            if (!string.IsNullOrEmpty(accessToken))
+                AccessToken = accessToken;
+        }
 
         /// <summary>
         /// Validates a Client-Id and optionally updates it.
@@ -768,11 +780,11 @@ namespace TwitchLib
         /// Posts to a Twitch channel's feed.
         /// </summary>
         /// <param name="content">The content of the message being posted.</param>
-        /// <param name="accessToken">OAuth access token with channel_feed_edit scope.</param>
+        /// <param name="accessToken">OAuth access token with channel_feed_edit scope, not needed if already set.</param>
         /// <param name="channel">Channel to post feed post to.</param>
         /// <param name="share">If set to true, and enabled on account, will tweet out post.</param>
         /// <returns>Returns object with Post object and URL to tweet if available.</returns>
-        public static async Task<PostToChannelFeedResponse> PostToChannelFeed(string content, bool share, string channel, string accessToken)
+        public static async Task<PostToChannelFeedResponse> PostToChannelFeed(string content, bool share, string channel, string accessToken = null)
         {
             return new PostToChannelFeedResponse(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts", "POST", $"content={content}&share={(share ? "true" : "false")}", accessToken)));
         }
@@ -783,7 +795,7 @@ namespace TwitchLib
         /// <param name="postId">Integer Id of feed post to delete.</param>
         /// <param name="channel">Channel where the post resides.</param>
         /// <param name="accessToken">OAuth access token with channel_feed_edit scope.</param>
-        public static async void DeleteChannelFeedPost(string postId, string channel, string accessToken)
+        public static async void DeleteChannelFeedPost(string postId, string channel, string accessToken = null)
         {
             await MakeRestRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", "DELETE", null, accessToken);
         }
@@ -806,6 +818,8 @@ namespace TwitchLib
             request.Headers.Add("Client-ID", ClientId);
 
             if (!string.IsNullOrWhiteSpace(accessToken))
+                request.Headers.Add("Authorization", $"OAuth {accessToken}");
+            else if (!string.IsNullOrEmpty(AccessToken))
                 request.Headers.Add("Authorization", $"OAuth {accessToken}");
 
             using (var responseStream = await request.GetResponseAsync())
@@ -832,6 +846,8 @@ namespace TwitchLib
             request.Headers.Add("Client-ID", ClientId);
 
             if (!string.IsNullOrWhiteSpace(accessToken))
+                request.Headers.Add("Authorization", $"OAuth {accessToken}");
+            else if (!string.IsNullOrWhiteSpace(AccessToken))
                 request.Headers.Add("Authorization", $"OAuth {accessToken}");
 
             using (var requestStream = await request.GetRequestStreamAsync())
