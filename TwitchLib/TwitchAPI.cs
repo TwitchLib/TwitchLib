@@ -136,10 +136,10 @@ namespace TwitchLib
             }
             catch
             {
-                throw new InvalidChannelException(resp);
+                throw new BadResourceException(resp);
             }
             var json = JObject.Parse(resp);
-            if (json.SelectToken("error") != null) throw new InvalidChannelException(resp);
+            if (json.SelectToken("error") != null) throw new BadResourceException(resp);
             return new Channel(json);
         }
 
@@ -822,10 +822,14 @@ namespace TwitchLib
             else if (!string.IsNullOrEmpty(AccessToken))
                 request.Headers.Add("Authorization", $"OAuth {accessToken}");
 
-            using (var responseStream = await request.GetResponseAsync())
+            try
             {
-                return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
-            }
+                using (var responseStream = await request.GetResponseAsync())
+                {
+                    return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
+                }
+            } catch(WebException e) { handleWebException(e); return null; }
+            
         }
 
         private static async Task<string> MakeRestRequest(string url, string method, string requestData = null,
@@ -855,9 +859,27 @@ namespace TwitchLib
                 await requestStream.WriteAsync(data, 0, data.Length);
             }
 
-            using (var responseStream = await request.GetResponseAsync())
+            try
             {
-                return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
+                using (var responseStream = await request.GetResponseAsync())
+                {
+                    return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
+                }
+            } catch(WebException e) { handleWebException(e); return null; }
+            
+        }
+
+        private static void handleWebException(WebException e)
+        {
+            HttpWebResponse errorResp = e.Response as HttpWebResponse;
+            switch (errorResp.StatusCode)
+            {
+                case HttpStatusCode.Unauthorized:
+                    throw new Exceptions.BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
+                case HttpStatusCode.NotFound:
+                    throw new Exceptions.BadResourceException("The resource you tried to access was not valid.");
+                default:
+                    throw e;
             }
         }
         #endregion

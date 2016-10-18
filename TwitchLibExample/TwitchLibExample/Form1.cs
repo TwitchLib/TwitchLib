@@ -236,7 +236,7 @@ namespace TwitchLibExample
                 "Updated At: {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
                 channel.Status, channel.BroadcasterLanguage, channel.DisplayName, channel.Game, channel.Language, channel.Name, channel.CreatedAt, channel.UpdatedAt,
                 channel.Delay, channel.Logo, channel.Background, channel.ProfileBanner, channel.Mature, channel.Partner, channel.Id, channel.Views, channel.Followers));
-            } catch (TwitchLib.Exceptions.InvalidChannelException)
+            } catch (TwitchLib.Exceptions.BadResourceException)
             {
                 MessageBox.Show(string.Format("The channel '{0}' is not a valid channel!", textBox9.Text));
             }

@@ -83,7 +83,7 @@
     <Compile Include="TwitchAPIClasses\Chatter.cs" />
     <Compile Include="TwitchClientClasses\ConnectionCredentials.cs" />
     <Compile Include="Exceptions\ErrorLoggingInException.cs" />
-    <Compile Include="Exceptions\InvalidChannelException.cs" />
+    <Compile Include="Exceptions\BadResourceException.cs" />
     <Compile Include="TwitchClientClasses\NewSubscriber.cs" />
     <Compile Include="TwitchAPI.cs" />
     <Compile Include="TwitchAPIClasses\Follow.cs" />

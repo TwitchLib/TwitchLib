@@ -27,7 +27,7 @@ namespace TwitchLib.Services
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _followerServiceTimer.Interval = value * 1000; } }
 
         /// <summary>Service constructor.</summary>
-        /// <exception cref="Exceptions.InvalidChannelException">If channel is invalid, an InvalidChannelException will be thrown.</exception>
+        /// <exception cref="Exceptions.BadResourceException">If channel is invalid, an InvalidChannelException will be thrown.</exception>
         /// <param name="channel">Param representing the channel the service should monitor.</param>
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
         /// <param name="queryCount">Number of recent followers service should request from Twitch Api. Max: 100, Min: 1</param>
