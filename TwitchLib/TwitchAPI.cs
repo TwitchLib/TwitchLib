@@ -820,7 +820,7 @@ namespace TwitchLib
             if (!string.IsNullOrWhiteSpace(accessToken))
                 request.Headers.Add("Authorization", $"OAuth {accessToken}");
             else if (!string.IsNullOrEmpty(AccessToken))
-                request.Headers.Add("Authorization", $"OAuth {accessToken}");
+                request.Headers.Add("Authorization", $"OAuth {AccessToken}");
 
             try
             {
@@ -852,7 +852,7 @@ namespace TwitchLib
             if (!string.IsNullOrWhiteSpace(accessToken))
                 request.Headers.Add("Authorization", $"OAuth {accessToken}");
             else if (!string.IsNullOrWhiteSpace(AccessToken))
-                request.Headers.Add("Authorization", $"OAuth {accessToken}");
+                request.Headers.Add("Authorization", $"OAuth {AccessToken}");
 
             using (var requestStream = await request.GetRequestStreamAsync())
             {
