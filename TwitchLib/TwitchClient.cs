@@ -832,6 +832,12 @@ namespace TwitchLib
         #region Client Events
         private void Connected(object sender, EventArgs e)
         {
+            // Make sure proper formatting is applied to oauth
+            if(!_credentials.TwitchOAuth.Contains(":"))
+            {
+                _credentials.TwitchOAuth = _credentials.TwitchOAuth.Replace("oauth", "");
+                _credentials.TwitchOAuth = $"oauth:{_credentials.TwitchOAuth}";
+            }
             _client.WriteLine(Rfc2812.Pass(_credentials.TwitchOAuth), Priority.Critical);
             _client.WriteLine(Rfc2812.Nick(_credentials.TwitchUsername), Priority.Critical);
             _client.WriteLine(Rfc2812.User(_credentials.TwitchUsername, 0, _credentials.TwitchUsername),
