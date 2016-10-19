@@ -11,6 +11,8 @@ client.OnConnected += clientConnected;
 client.OnMessageReceived += clientMessageReceived;
 client.OnWhisperCommandReceived += clientWhsiperReceived;
 
+client.Connect();
+
 client.SendMessage("A chat message.");
 client.SendWhisper("whisper_receiver", "A whisper message.");
 
