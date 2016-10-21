@@ -3,6 +3,11 @@
 ### Overview
 TwitchLib is a C# library that attempts to harness Twitch Chat, Twitch API, and Twitch PubSub into a single package. Using TwitchLib, you can connect to a Twitch channel's chat and send and receive chat messages as well as send and receive whisper messages! You can also fetch general Twitch API data like followers or user details as well as make authenticated channel modifications like stream title and game, as well as actions like commercials and and resetting of the stream key. Additionally, the TwitchLib project contains an example project that demonstrates the majority of functionality presented in the library.
 
+### Documentation
+I'm in the process of developing a website for very rough documentation and usage of this library. Parts of it are "done" and available if you are interested:
+[http://swiftyspiffy.com/TwitchLib](http://swiftyspiffy.com/TwitchLib)
+
+
 ### Sample Implementation
 ```
 TwitchClient client = new TwitchClient(new ConnectionCredentials("my_username", "my_oauth"), "my_channel");
