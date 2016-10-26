@@ -528,8 +528,18 @@ namespace TwitchLib
             args += cursor != "-1" ? $"&cursor={cursor}" : "";
             args += "&direction=" + (direction == SortDirection.Descending ? "desc" : "asc");
 
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
-            return new FollowersResponse(resp);
+            try
+            {
+                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
+                return new FollowersResponse(resp);
+            } catch(WebException e)
+            {
+                // if it's a known exception from 400, we'll silently ignore it, otherwise throw exception
+                var responseCode = e.Response as HttpWebResponse;
+                if (responseCode.StatusCode == HttpStatusCode.BadRequest)
+                    return new FollowersResponse(null);
+                throw e;
+            }
         }
 
         /// <summary>
