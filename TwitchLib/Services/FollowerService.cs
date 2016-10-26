@@ -64,6 +64,10 @@ namespace TwitchLib.Services
         private async void _followerServiceTimerElapsed(object sender, ElapsedEventArgs e)
         {
             TwitchAPIClasses.FollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
+            // Check if the call was successful, and exit method if it wasn't
+            if (!response.CallSuccessful)
+                return;
+
             List<TwitchAPIClasses.Follower> mostRecentFollowers = response.Followers;
             List<TwitchAPIClasses.Follower> newFollowers = new List<TwitchAPIClasses.Follower>();
             if(ActiveCache == null)
