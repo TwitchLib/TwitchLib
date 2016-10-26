@@ -31,6 +31,7 @@ namespace TwitchLib
         public EventHandler<onTimeoutArgs> onTimeout;
         public EventHandler<onBanArgs> onBan;
         public EventHandler<onUnbanArgs> onUnban;
+        public EventHandler<onUntimeoutArgs> onUntimeout;
         public EventHandler<onHostArgs> onHost;
         public EventHandler<onBitsReceivedArgs> onBitsReceived;
         public EventHandler<onStreamUpArgs> onStreamUp;
@@ -68,6 +69,12 @@ namespace TwitchLib
         {
             public string UnbannedUser;
             public string UnbannedBy;
+        }
+
+        public class onUntimeoutArgs
+        {
+            public string UntimeoutedUser;
+            public string UntimeoutedBy;
         }
 
         public class onHostArgs
@@ -192,6 +199,9 @@ namespace TwitchLib
                                     return;
                                 case "unban":
                                     onUnban?.Invoke(this, new onUnbanArgs { UnbannedBy = cMA.CreatedBy, UnbannedUser = cMA.Args[0] });
+                                    return;
+                                case "untimeout":
+                                    onUntimeout?.Invoke(this, new onUntimeoutArgs { UntimeoutedBy = cMA.CreatedBy, UntimeoutedUser = cMA.Args[0] });
                                     return;
                                 case "host":
                                     onHost?.Invoke(this, new onHostArgs { HostedChannel = cMA.Args[0], Moderator = cMA.CreatedBy });
