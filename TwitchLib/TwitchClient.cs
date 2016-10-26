@@ -666,6 +666,8 @@ namespace TwitchLib
             if (_logging)
                 Console.WriteLine("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
             _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
+            if (_logging)
+                Console.WriteLine("Should be connected!");
         }
 
         /// <summary>
