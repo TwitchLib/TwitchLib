@@ -528,18 +528,8 @@ namespace TwitchLib
             args += cursor != "-1" ? $"&cursor={cursor}" : "";
             args += "&direction=" + (direction == SortDirection.Descending ? "desc" : "asc");
 
-            try
-            {
-                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
-                return new FollowersResponse(resp);
-            } catch(WebException e)
-            {
-                // if it's a known exception from 400, we'll silently ignore it, otherwise throw exception
-                var responseCode = e.Response as HttpWebResponse;
-                if (responseCode.StatusCode == HttpStatusCode.BadRequest)
-                    return new FollowersResponse(null);
-                throw e;
-            }
+            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
+            return new FollowersResponse(resp);
         }
 
         /// <summary>
@@ -822,9 +812,9 @@ namespace TwitchLib
             HttpWebRequest request = url.Contains("?")
                 ? (HttpWebRequest)WebRequest.Create(new Uri($"{url}&client_id={ClientId}"))
                 : (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={ClientId}"));
+
             request.Method = "GET";
             request.Accept = "application/vnd.twitchtv.v3+json";
-            request.ContentType = "application/json";
             request.Headers.Add("Client-ID", ClientId);
 
             if (!string.IsNullOrWhiteSpace(accessToken))
