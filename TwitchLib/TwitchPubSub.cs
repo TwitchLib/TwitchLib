@@ -33,6 +33,13 @@ namespace TwitchLib
         public EventHandler<onUnbanArgs> onUnban;
         public EventHandler<onUntimeoutArgs> onUntimeout;
         public EventHandler<onHostArgs> onHost;
+        public EventHandler<onSubscribersArgs> onSubscribers;
+        public EventHandler<onSubscribersoffArgs> onSubscribersoff;
+        public EventHandler<onClearArgs> onClear;
+        public EventHandler<onEmoteonlyArgs> onEmoteonly;
+        public EventHandler<onEmoteonlyoffArgs> onEmoteonlyoff;
+        public EventHandler<onR9kbetaArgs> onR9kbeta;
+        public EventHandler<onR9kbetaoffArgs> onR9kbetaoff;
         public EventHandler<onBitsReceivedArgs> onBitsReceived;
         public EventHandler<onStreamUpArgs> onStreamUp;
         public EventHandler<onStreamDownArgs> onStreamDown;
@@ -81,6 +88,41 @@ namespace TwitchLib
         {
             public string Moderator;
             public string HostedChannel;
+        }
+
+        public class onSubscribersArgs
+        {
+            public string Moderator;
+        }
+
+        public class onSubscribersoffArgs
+        {
+            public string Moderator;
+        }
+
+        public class onClearArgs
+        {
+            public string Moderator;
+        }
+
+        public class onEmoteonlyArgs
+        {
+            public string Moderator;
+        }
+
+        public class onEmoteonlyoffArgs
+        {
+            public string Moderator;
+        }
+
+        public class onR9kbetaArgs
+        {
+            public string Moderator;
+        }
+
+        public class onR9kbetaoffArgs
+        {
+            public string Moderator;
         }
 
         public class onBitsReceivedArgs
@@ -206,6 +248,28 @@ namespace TwitchLib
                                 case "host":
                                     onHost?.Invoke(this, new onHostArgs { HostedChannel = cMA.Args[0], Moderator = cMA.CreatedBy });
                                     return;
+                                case "subscribers":
+                                    onSubscribers?.Invoke(this, new onSubscribersArgs { Moderator = cMA.CreatedBy });
+                                    return;
+                                case "subscribersoff":
+                                    onSubscribersoff?.Invoke(this, new onSubscribersoffArgs { Moderator = cMA.CreatedBy });
+                                    return;
+                                case "clear":
+                                    onClear?.Invoke(this, new onClearArgs { Moderator = cMA.CreatedBy });
+                                    return;
+                                case "emoteonly":
+                                    onEmoteonly?.Invoke(this, new onEmoteonlyArgs { Moderator = cMA.CreatedBy });
+                                    return;
+                                case "emoteonlyoff":
+                                    onEmoteonlyoff?.Invoke(this, new onEmoteonlyoffArgs { Moderator = cMA.CreatedBy });
+                                    return;
+                                case "r9kbeta":
+                                    onR9kbeta?.Invoke(this, new onR9kbetaArgs { Moderator = cMA.CreatedBy });
+                                    return;
+                                case "r9kbetaoff":
+                                    onR9kbetaoff?.Invoke(this, new onR9kbetaoffArgs { Moderator = cMA.CreatedBy });
+                                    return;
+
                             }
                             break;
                         case "channel-bitsevents":
@@ -335,3 +399,4 @@ namespace TwitchLib
         }
     }
 }
+
