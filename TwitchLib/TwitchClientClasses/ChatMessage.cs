@@ -210,6 +210,20 @@ namespace TwitchLib
             }
         }
 
+        public ChatMessage(List<KeyValuePair<string, string>> badges, string channel, string colorHex, string displayName, 
+            string emoteSet, bool moderator, bool subscriber, Common.UserType userType, string message)
+        {
+            Badges = badges;
+            Channel = channel;
+            ColorHex = colorHex;
+            Username = DisplayName = displayName;
+            EmoteSet = emoteSet;
+            IsModerator = moderator;
+            Subscriber = subscriber;
+            UserType = userType;
+            Message = message;
+        }
+
         private static bool ConvertToBool(string data)
         {
             return data == "1";

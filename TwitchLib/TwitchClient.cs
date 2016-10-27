@@ -22,6 +22,9 @@ namespace TwitchLib
         private bool _logging;
         private MessageEmoteCollection _channelEmotes = new MessageEmoteCollection();
         private string _autoJoinChannel = null;
+        // variables used for constructing OnMessageSent properties
+        private List<string> hasSeenJoinedChannels = new List<string>();
+        private string lastMessageSent;
         #endregion
 
         #region Public Variables
@@ -248,12 +251,8 @@ namespace TwitchLib
         /// <summary>Args representing message sent event.</summary>
         public class OnMessageSentArgs : EventArgs
         {
-            /// <summary>Property representing username of bot.</summary>
-            public string Username;
-            /// <summary>Property representing channel of connected bot.</summary>
-            public string Channel;
-            /// <summary>Property representing sent message contents.</summary>
-            public string Message;
+            /// <summary>Property representing a chat message that was just sent (check null on properties before using).</summary>
+            public SentMessage SentMessage;
         }
 
         /// <summary>Args representing whisper sent event.</summary>
@@ -485,10 +484,9 @@ namespace TwitchLib
             if (ChatThrottler != null && !ChatThrottler.MessagePermitted(message)) return;
             string twitchMessage = $":{_credentials.TwitchUsername}!{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" +
                 $".tmi.twitch.tv PRIVMSG #{channel.Channel} :{message}";
+            lastMessageSent = message;
             // This is a makeshift hack to encode it with accomodations for at least cyrillic characters, and possibly others
             _client.WriteLine(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
-            OnMessageSent?.Invoke(this,
-                new OnMessageSentArgs {Username = _credentials.TwitchUsername, Channel = channel.Channel, Message = message});
         }
 
         /// <summary>
@@ -666,6 +664,8 @@ namespace TwitchLib
             if (_logging)
                 Console.WriteLine("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
             _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
+            if (_logging)
+                Console.WriteLine("Should be connected!");
         }
 
         /// <summary>
@@ -931,6 +931,7 @@ namespace TwitchLib
                 if (username.ToLower() == TwitchUsername)
                 {
                     JoinedChannels.Remove(JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == response.Channel));
+                    hasSeenJoinedChannels.Remove(response.Channel.ToLower());
                     OnClientLeftChannel?.Invoke(this, new OnClientLeftChannelArgs { BotUsername = username, Channel = response.Channel });
                 }
                 else
@@ -994,7 +995,17 @@ namespace TwitchLib
             response = ChatParsing.detectedUserStateChanged(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnUserStateChanged?.Invoke(this, new OnUserStateChangedArgs { UserState = new UserState(decodedMessage) });
+                var userState = new UserState(decodedMessage);
+                if (!hasSeenJoinedChannels.Contains(userState.Channel.ToLower()))
+                {
+                    // UserState fired from joining channel
+                    hasSeenJoinedChannels.Add(userState.Channel.ToLower());
+                    OnUserStateChanged?.Invoke(this, new OnUserStateChangedArgs { UserState = userState });
+                } else
+                {
+                    // UserState fired from sending a message
+                    OnMessageSent?.Invoke(this, new OnMessageSentArgs { SentMessage = new SentMessage(userState, lastMessageSent) });
+                }
                 return;
             }
 

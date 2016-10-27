@@ -64,6 +64,7 @@ namespace TwitchLibExample
             newClient.OnReSubscriber += new EventHandler<TwitchClient.OnReSubscriberArgs>(onReSubscription);
             newClient.OnChannelStateChanged += new EventHandler<TwitchClient.OnChannelStateChangedArgs>(onChannelStateChanged);
             newClient.OnModeratorsReceived += new EventHandler<TwitchClient.OnModeratorsReceivedArgs>(onModeratorsReceived);
+            newClient.OnMessageSent += onMessageSent;
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
@@ -84,6 +85,11 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onMessageSent(object sender, TwitchClient.OnMessageSentArgs e)
+        {
+            richTextBox1.Text += $"\n[Me]{e.SentMessage.DisplayName} [mod: {e.SentMessage.IsModerator}] [sub: {e.SentMessage.IsSubscriber}]: {e.SentMessage.Message}";
         }
 
         private void onModeratorsReceived(object sender, TwitchClient.OnModeratorsReceivedArgs e)
