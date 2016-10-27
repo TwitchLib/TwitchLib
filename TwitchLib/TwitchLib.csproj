@@ -95,6 +95,7 @@
     <Compile Include="TwitchAPIClasses\TeamMember.cs" />
     <Compile Include="TwitchAPIClasses\Video.cs" />
     <Compile Include="TwitchClient.cs" />
+    <Compile Include="TwitchClientClasses\SentMessage.cs" />
     <Compile Include="TwitchClientClasses\TwitchIpAndPort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TwitchClientClasses\WhisperParsing.cs" />
