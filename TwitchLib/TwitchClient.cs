@@ -518,7 +518,7 @@ namespace TwitchLib
         /// <param name="dryRun">Indicates a dryrun (will not sened if true)</param>
         public void TimeoutUser(JoinedChannel channel, string viewer, TimeSpan duration, string message = "", bool dryRun = false)
         {
-            SendMessage(channel, $".timeout {viewer} {duration.Seconds} {message}", dryRun);
+            SendMessage(channel, $".timeout {viewer} {duration.TotalSeconds} {message}", dryRun);
         }
 
         /// <summary>
