@@ -25,7 +25,7 @@ namespace TwitchLib.TwitchAPIClasses
         /// <summary>Property representing the preview images in an object.</summary>
         public PreviewObj Preview { get; protected set; }
         /// <summary>Property representing the date time the stream was created.</summary>
-        public string CreatedAt { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
         /// <summary>Property representing the current game.</summary>
         public string Game { get; protected set; }
         /// <summary>Property representing the channel the stream is from.</summary>
@@ -47,7 +47,7 @@ namespace TwitchLib.TwitchAPIClasses
             if (double.TryParse(twitchStreamData.SelectToken("average_fps").ToString(), out averageFps)) AverageFps = averageFps;
 
             Game = twitchStreamData.SelectToken("game").ToString();
-            CreatedAt = twitchStreamData.SelectToken("created_at").ToString();
+            CreatedAt = Common.DateTimeStringToObject(twitchStreamData.SelectToken("created_at").ToString());
 
             Channel = new Channel((JObject) twitchStreamData.SelectToken("channel"));
             Preview = new PreviewObj(twitchStreamData.SelectToken("preview"));

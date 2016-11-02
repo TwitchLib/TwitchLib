@@ -21,9 +21,9 @@ namespace TwitchLib.TwitchAPIClasses
         /// <summary>Bio of user.</summary>
         public string Bio { get; protected set; }
         /// <summary>Date and time user was created at.</summary>
-        public string CreatedAt { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
         /// <summary>Date and time user was last updated (logged in generally)</summary>
-        public string UpdatedAt { get; protected set; }
+        public DateTime UpdatedAt { get; protected set; }
         /// <summary>Link to logo of user.</summary>
         public string Logo { get; protected set; }
 
@@ -36,8 +36,8 @@ namespace TwitchLib.TwitchAPIClasses
             Name = json.SelectToken("name")?.ToString();
             Type = json.SelectToken("type")?.ToString();
             Bio = json.SelectToken("bio")?.ToString();
-            CreatedAt = json.SelectToken("created_at")?.ToString();
-            UpdatedAt = json.SelectToken("updated_at")?.ToString();
+            CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
+            UpdatedAt = Common.DateTimeStringToObject(json.SelectToken("updated_at")?.ToString());
             Logo = json.SelectToken("logo")?.ToString();
         }
     }

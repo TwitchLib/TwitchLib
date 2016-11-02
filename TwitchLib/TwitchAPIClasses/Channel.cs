@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 
 namespace TwitchLib.TwitchAPIClasses
 {
@@ -20,7 +21,7 @@ namespace TwitchLib.TwitchAPIClasses
         /// <summary>Property representing the language the broadcaster has flagged their channel as.</summary>
         public string BroadcasterLanguage { get; protected set; }
         /// <summary>Property representing date time string of channel creation.</summary>
-        public string CreatedAt { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
         /// <summary>Property representing channel delay, if applied.</summary>
         public string Delay { get; protected set; }
         /// <summary>Property representing customized display name.</summary>
@@ -38,7 +39,7 @@ namespace TwitchLib.TwitchAPIClasses
         /// <summary>Property representing current channel status.</summary>
         public string Status { get; protected set; }
         /// <summary>Property representing date time of last channel update.</summary>
-        public string UpdatedAt { get; protected set; }
+        public DateTime UpdatedAt { get; protected set; }
 
         /// <summary>Constructor for channel object.</summary>
         public Channel(JToken json)
@@ -55,7 +56,7 @@ namespace TwitchLib.TwitchAPIClasses
 
             Background = json.SelectToken("background").ToString();
             BroadcasterLanguage = json.SelectToken("broadcaster_language").ToString();
-            CreatedAt = json.SelectToken("created_at").ToString();
+            CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at").ToString());
             Delay = json.SelectToken("delay").ToString();
             DisplayName = json.SelectToken("display_name").ToString();
             Game = json.SelectToken("game").ToString();
@@ -64,7 +65,7 @@ namespace TwitchLib.TwitchAPIClasses
             Name = json.SelectToken("name").ToString();
             ProfileBanner = json.SelectToken("profile_banner").ToString();
             Status = json.SelectToken("status").ToString();
-            UpdatedAt = json.SelectToken("updated_at").ToString();
+            UpdatedAt = Common.DateTimeStringToObject(json.SelectToken("updated_at").ToString());
         }
     }
 }

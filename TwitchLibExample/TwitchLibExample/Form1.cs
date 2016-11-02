@@ -238,9 +238,9 @@ namespace TwitchLibExample
             try
             {
                 TwitchLib.TwitchAPIClasses.Channel channel = await TwitchApi.GetTwitchChannel(textBox9.Text);
-                MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At: {6}\n" +
-                "Updated At: {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
-                channel.Status, channel.BroadcasterLanguage, channel.DisplayName, channel.Game, channel.Language, channel.Name, channel.CreatedAt, channel.UpdatedAt,
+                MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At (seconds ago): {6}\n" +
+                "Updated At (seconds ago): {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
+                channel.Status, channel.BroadcasterLanguage, channel.DisplayName, channel.Game, channel.Language, channel.Name, channel.CreatedAt, channel.UpdatedAt.Second,
                 channel.Delay, channel.Logo, channel.Background, channel.ProfileBanner, channel.Mature, channel.Partner, channel.Id, channel.Views, channel.Followers));
             } catch (TwitchLib.Exceptions.BadResourceException)
             {
@@ -375,7 +375,7 @@ namespace TwitchLibExample
         {
             TwitchLib.TwitchAPIClasses.Stream stream = await TwitchApi.GetTwitchStream(textBox25.Text);
             MessageBox.Show(string.Format("average fps: {0}\nchannel name: {1}\ncreated at: {2}\ndelay: {3}\ngame: {4}\nid: {5}\nplaylist: {6}\npreview large: {7}\nvideo height: {8}\n viewers: {9}", 
-                stream.AverageFps, stream.Channel.Name, stream.CreatedAt, stream.Delay, stream.Game, stream.Id, stream.IsPlaylist, stream.Preview.Large, stream.VideoHeight, stream.Viewers));
+                stream.AverageFps, stream.Channel.Name, stream.CreatedAt.Second, stream.Delay, stream.Game, stream.Id, stream.IsPlaylist, stream.Preview.Large, stream.VideoHeight, stream.Viewers));
         }
 
         private async void button22_Click(object sender, EventArgs e)
@@ -487,7 +487,7 @@ namespace TwitchLibExample
             //textbox30
             var user = await TwitchApi.GetUser(textBox30.Text);
             if (user != null)
-                MessageBox.Show($"User: {user.Name}\nDisplay Name: {user.DisplayName}\nBio: {user.Bio}");
+                MessageBox.Show($"User: {user.Name}\nDisplay Name: {user.DisplayName}\nBio: {user.Bio}\nCreated At (seconds ago): {user.CreatedAt.Second}\nUpdated At (seconds ago): {user.UpdatedAt.Second}");
             else
                 MessageBox.Show("Invalid user!");
         }
