@@ -22,8 +22,12 @@ namespace TwitchLib.TwitchAPIClasses
         public string Bio { get; protected set; }
         /// <summary>Date and time user was created at.</summary>
         public DateTime CreatedAt { get; protected set; }
+        /// <summary>TimeSpan object that represents time since the user was created.</summary>
+        public TimeSpan TimeSinceCreated { get; protected set; }
         /// <summary>Date and time user was last updated (logged in generally)</summary>
         public DateTime UpdatedAt { get; protected set; }
+        /// <summary>TimeSpan object representing the amount of time since the User was last updated.</summary>
+        public TimeSpan TimeSinceUpdated { get; protected set; }
         /// <summary>Link to logo of user.</summary>
         public string Logo { get; protected set; }
 
@@ -37,7 +41,9 @@ namespace TwitchLib.TwitchAPIClasses
             Type = json.SelectToken("type")?.ToString();
             Bio = json.SelectToken("bio")?.ToString();
             CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
+            TimeSinceCreated = DateTime.UtcNow - CreatedAt;
             UpdatedAt = Common.DateTimeStringToObject(json.SelectToken("updated_at")?.ToString());
+            TimeSinceUpdated = DateTime.UtcNow - UpdatedAt;
             Logo = json.SelectToken("logo")?.ToString();
         }
     }

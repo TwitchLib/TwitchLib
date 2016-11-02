@@ -13,9 +13,13 @@ namespace TwitchLib.TwitchAPIClasses
     public class Block
     {
         /// <summary>
-        /// String form of a datetime json object representing when the block was last updated.
+        /// DateTime object representing when the block was last updated.
         /// </summary>
-        public string UpdatedAt { get; protected set; }
+        public DateTime UpdatedAt { get; protected set; }
+        /// <summary>
+        /// TimeSpan object representing amount of time since last update.
+        /// </summary>
+        public TimeSpan TimeSinceUpdate { get; protected set; }
         /// <summary>
         /// User object of the user that has been blocked.
         /// </summary>
@@ -27,7 +31,8 @@ namespace TwitchLib.TwitchAPIClasses
         /// <param name="json"></param>
         public Block(JToken json)
         {
-            UpdatedAt = json.SelectToken("updated_at")?.ToString();
+            UpdatedAt = Common.DateTimeStringToObject(json.SelectToken("updated_at")?.ToString());
+            TimeSinceUpdate = DateTime.UtcNow - UpdatedAt;
             if (json.SelectToken("user") != null)
                 User = new User(json.SelectToken("user").ToString());
         }

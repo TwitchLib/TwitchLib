@@ -22,6 +22,8 @@ namespace TwitchLib.TwitchAPIClasses
         public string BroadcasterLanguage { get; protected set; }
         /// <summary>Property representing date time string of channel creation.</summary>
         public DateTime CreatedAt { get; protected set; }
+        /// <summary>Property representing the time since the channel was created.</summary>
+        public TimeSpan TimeSinceCreated { get; protected set; }
         /// <summary>Property representing channel delay, if applied.</summary>
         public string Delay { get; protected set; }
         /// <summary>Property representing customized display name.</summary>
@@ -40,6 +42,8 @@ namespace TwitchLib.TwitchAPIClasses
         public string Status { get; protected set; }
         /// <summary>Property representing date time of last channel update.</summary>
         public DateTime UpdatedAt { get; protected set; }
+        /// <summary>Property represneting amount of time since last channel update.</summary>
+        public TimeSpan TimeSinceUpdated { get; protected set; }
 
         /// <summary>Constructor for channel object.</summary>
         public Channel(JToken json)
@@ -57,6 +61,7 @@ namespace TwitchLib.TwitchAPIClasses
             Background = json.SelectToken("background").ToString();
             BroadcasterLanguage = json.SelectToken("broadcaster_language").ToString();
             CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at").ToString());
+            TimeSinceCreated = DateTime.UtcNow - CreatedAt;
             Delay = json.SelectToken("delay").ToString();
             DisplayName = json.SelectToken("display_name").ToString();
             Game = json.SelectToken("game").ToString();
@@ -66,6 +71,7 @@ namespace TwitchLib.TwitchAPIClasses
             ProfileBanner = json.SelectToken("profile_banner").ToString();
             Status = json.SelectToken("status").ToString();
             UpdatedAt = Common.DateTimeStringToObject(json.SelectToken("updated_at").ToString());
+            TimeSinceUpdated = DateTime.UtcNow - UpdatedAt;
         }
     }
 }

@@ -26,6 +26,8 @@ namespace TwitchLib.TwitchAPIClasses
         public PreviewObj Preview { get; protected set; }
         /// <summary>Property representing the date time the stream was created.</summary>
         public DateTime CreatedAt { get; protected set; }
+        /// <summary>Property representing the time since the stream was created (essentially uptime)</summary>
+        public TimeSpan TimeSinceCreated { get; protected set; }
         /// <summary>Property representing the current game.</summary>
         public string Game { get; protected set; }
         /// <summary>Property representing the channel the stream is from.</summary>
@@ -48,7 +50,7 @@ namespace TwitchLib.TwitchAPIClasses
 
             Game = twitchStreamData.SelectToken("game").ToString();
             CreatedAt = Common.DateTimeStringToObject(twitchStreamData.SelectToken("created_at").ToString());
-
+            TimeSinceCreated = DateTime.UtcNow - CreatedAt;
             Channel = new Channel((JObject) twitchStreamData.SelectToken("channel"));
             Preview = new PreviewObj(twitchStreamData.SelectToken("preview"));
         }

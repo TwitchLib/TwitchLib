@@ -13,7 +13,9 @@ namespace TwitchLib.TwitchAPIClasses
         /// <summary>Property representing Id of post.</summary>
         public string Id { get; protected set; }
         /// <summary>Property representing date time string of post creation.</summary>
-        public string CreatedAt { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
+        /// <summary>Property representing the amount of time since the post was created.</summary>
+        public TimeSpan TimeSinceCreated { get; protected set; }
         /// <summary>Property representing whether or not post was deleted.</summary>
         public bool Deleted { get; protected set; }
         /// <summary>Property representing the body of the post.</summary>
@@ -37,7 +39,8 @@ namespace TwitchLib.TwitchAPIClasses
         public Post(JToken json)
         {
             Id = json.SelectToken("id")?.ToString();
-            CreatedAt = json.SelectToken("created_at")?.ToString();
+            CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
+            TimeSinceCreated = DateTime.UtcNow - CreatedAt;
             if (json.SelectToken("deleted") != null)
                 Deleted = json.SelectToken("deleted").ToString().ToLower() == "true";
             Body = json.SelectToken("body")?.ToString();
@@ -122,7 +125,9 @@ namespace TwitchLib.TwitchAPIClasses
             /// <summary>Property representing the Id of the comment.</summary>
             public int Id { get; protected set; }
             /// <summary>Property representing the date time of the comment creation.</summary>
-            public string CreatedAt { get; protected set; }
+            public DateTime CreatedAt { get; protected set; }
+            /// <summary>Property representing the amount of time since comment was created.</summary>
+            public TimeSpan TimeSinceCreated { get; protected set; }
             /// <summary>Property representing whether or not the comment was deleted.</summary>
             public bool Deleted { get; protected set; }
             /// <summary>Property representing the body of the comment.</summary>
@@ -141,7 +146,8 @@ namespace TwitchLib.TwitchAPIClasses
             {
                 if (json.SelectToken("id") != null)
                     Id = int.Parse(json.SelectToken("id").ToString());
-                CreatedAt = json.SelectToken("created_at")?.ToString();
+                CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
+                TimeSinceCreated = DateTime.UtcNow - CreatedAt;
                 if (json.SelectToken("deleted") != null)
                     Deleted = json.SelectToken("deleted").ToString().ToLower() == "true";
                 Body = json.SelectToken("body")?.ToString();

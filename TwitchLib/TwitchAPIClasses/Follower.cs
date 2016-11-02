@@ -13,14 +13,17 @@ namespace TwitchLib.TwitchAPIClasses
         /// <summary>Property representing whether notifications are enabled or not.</summary>
         public bool Notifications { get; protected set; }
         /// <summary>Property representing date time of follow.</summary>
-        public string CreatedAt { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
+        /// <summary>Property representing the amount of time since the follow was created.</summary>
+        public TimeSpan TimeSinceCreated { get; protected set; }
         /// <summary>Property representing the follower user.</summary>
         public User User { get; protected set; }
 
         /// <summary>Follower object constructor.</summary>
         public Follower(JToken followerData)
         {
-            CreatedAt = followerData.SelectToken("created_at").ToString();
+            CreatedAt = Common.DateTimeStringToObject(followerData.SelectToken("created_at").ToString());
+            TimeSinceCreated = DateTime.UtcNow - CreatedAt;
             if (followerData.SelectToken("notifications").ToString() == "true")
                 Notifications = true;
             User = new User(followerData.SelectToken("user").ToString());

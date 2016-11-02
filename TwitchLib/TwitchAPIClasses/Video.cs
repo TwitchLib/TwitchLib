@@ -33,7 +33,9 @@ namespace TwitchLib.TwitchAPIClasses
         /// <summary>Video preview image link.</summary>
         public string Preview { get; protected set; }
         /// <summary>Date and time string representing recorded date.</summary>
-        public string RecordedAt { get; protected set; }
+        public DateTime RecordedAt { get; protected set; }
+        /// <summary>TimeSpan object representing the time since the video was recorded.</summary>
+        public TimeSpan TimeSinceRecorded { get; protected set; }
         /// <summary>Current status of the recorded video.</summary>
         public string Status { get; protected set; }
         /// <summary>Tags assigned to video either automatically or by content creator.</summary>
@@ -80,7 +82,8 @@ namespace TwitchLib.TwitchAPIClasses
             Game = apiResponse.SelectToken("game").ToString();
             Id = apiResponse.SelectToken("_id").ToString();
             Preview = apiResponse.SelectToken("preview").ToString();
-            RecordedAt = apiResponse.SelectToken("recorded_at").ToString();
+            RecordedAt = Common.DateTimeStringToObject(apiResponse.SelectToken("recorded_at").ToString());
+            TimeSinceRecorded = DateTime.UtcNow - RecordedAt;
             Status = apiResponse.SelectToken("status").ToString();
             TagList = apiResponse.SelectToken("tag_list").ToString();
             Title = apiResponse.SelectToken("title").ToString();
