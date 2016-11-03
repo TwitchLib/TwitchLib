@@ -297,9 +297,10 @@ namespace TwitchLibExample
             TwitchApi.UpdateStreamGame(textBox17.Text, textBox14.Text, textBox15.Text);
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private async void button7_Click(object sender, EventArgs e)
         {
-            TwitchApi.UpdateStreamTitleAndGame(textBox18.Text, textBox19.Text, textBox14.Text, textBox15.Text);
+            var channel = await TwitchApi.UpdateStreamTitleAndGame(textBox18.Text, textBox19.Text, textBox14.Text, textBox15.Text);
+            MessageBox.Show($"Channel status: {channel.Status}\nChannel game: {channel.Game}");
         }
 
         private void button8_Click(object sender, EventArgs e)

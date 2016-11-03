@@ -406,11 +406,11 @@ namespace TwitchLib
         /// <param name="channel">The channel to update.</param>
         /// <param name="accessToken">An oauth token with the required scope.</param>
         /// <returns>The response of the request.</returns>
-        public static async Task<string> UpdateStreamTitleAndGame(string status, string game, string channel,
+        public static async Task<Channel> UpdateStreamTitleAndGame(string status, string game, string channel,
             string accessToken = null)
         {
             var data = "{\"channel\":{\"status\":\"" + status + "\",\"game\":\"" + game + "\"}}";
-            return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
+            return new Channel(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken)));
         }
         #endregion
 
