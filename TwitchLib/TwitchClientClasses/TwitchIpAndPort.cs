@@ -50,10 +50,10 @@ namespace TwitchLib
         }
 
         /// <summary>Downloads array of IpPort objects for chat servers.</summary>
-        public IpPort[] GetChatServers(string channel, string app_id)
+        public IpPort[] GetChatServers(string channel, string clientId)
         {
             var resp = new WebClient().DownloadString(
-                $"https://api.twitch.tv/api/channels/{channel}/chat_properties?client_id={app_id}");
+                $"https://api.twitch.tv/api/channels/{channel}/chat_properties?client_id={clientId}");
 
             var json = JObject.Parse(resp);
             _chatServers = new IpPort[json.SelectToken("chat_servers").Count()];
