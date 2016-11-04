@@ -17,11 +17,12 @@ namespace TwitchLib
         /// Constructor for TwitchIpAndPort requiring channel and bool for autodownload.
         /// </summary>
         /// <param name="channel"></param>
+        /// <param name="clientId"></param>
         /// <param name="autoDownloadServerData"></param>
-        public TwitchIpAndPort(string channel, string app_id, bool autoDownloadServerData = false)
+        public TwitchIpAndPort(string channel, string clientId, bool autoDownloadServerData = false)
         {
             if (!autoDownloadServerData) return;
-            GetChatServers(channel, app_id);
+            GetChatServers(channel, clientId);
             GetWhisperServers();
         }
 
