@@ -18,10 +18,10 @@ namespace TwitchLib
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="autoDownloadServerData"></param>
-        public TwitchIpAndPort(string channel, bool autoDownloadServerData = false)
+        public TwitchIpAndPort(string channel, string app_id, bool autoDownloadServerData = false)
         {
             if (!autoDownloadServerData) return;
-            GetChatServers(channel);
+            GetChatServers(channel, app_id);
             GetWhisperServers();
         }
 
@@ -50,10 +50,10 @@ namespace TwitchLib
         }
 
         /// <summary>Downloads array of IpPort objects for chat servers.</summary>
-        public IpPort[] GetChatServers(string channel)
+        public IpPort[] GetChatServers(string channel, string app_id)
         {
             var resp = new WebClient().DownloadString(
-                $"https://api.twitch.tv/api/channels/{channel}/chat_properties");
+                $"https://api.twitch.tv/api/channels/{channel}/chat_properties?client_id={app_id}");
 
             var json = JObject.Parse(resp);
             _chatServers = new IpPort[json.SelectToken("chat_servers").Count()];
