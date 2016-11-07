@@ -174,8 +174,7 @@ namespace TwitchLib
             var stream = await GetTwitchStream(channel);
             if (stream == null)
                 return TimeSpan.Zero;
-            var time = Convert.ToDateTime(stream.CreatedAt);
-            return DateTime.UtcNow - time;
+            return stream.TimeSinceCreated;
         }
 
         /// <summary>
