@@ -32,7 +32,7 @@ namespace TwitchLib
             /// <summary>90 second commercial</summary>
             Seconds90,
             /// <summary>120 second commercial</summary>
-            Second120,
+            Seconds120,
             /// <summary>150 second commercial</summary>
             Seconds150,
             /// <summary>180 second commercial</summary>
@@ -670,7 +670,7 @@ namespace TwitchLib
                 case CommercialLength.Seconds90:
                     seconds = 90;
                     break;
-                case CommercialLength.Second120:
+                case CommercialLength.Seconds120:
                     seconds = 120;
                     break;
                 case CommercialLength.Seconds150:
