@@ -477,5 +477,24 @@ namespace TwitchLib.TwitchClientClasses
                 return new DetectionReturn(message.Contains("The moderators of this room are:"), channelRet);
             return new DetectionReturn(false);
         }
+
+        public static DetectionReturn detectedChatColorChanged(string message, List<JoinedChannel> channels)
+        {
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
+            if (readType != null && readType == "NOTICE")
+                return new DetectionReturn(message.Contains("Your color has been changed."), channelRet);
+            return new DetectionReturn(false);
+        }
     }
 }
