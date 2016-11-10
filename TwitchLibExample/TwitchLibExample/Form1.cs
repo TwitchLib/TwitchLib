@@ -41,6 +41,8 @@ namespace TwitchLibExample
                 textBox15.Text = twitchOAuth;
             }
             this.Height = 640;
+            foreach (Common.ChatColorPresets color in Enum.GetValues(typeof(Common.ChatColorPresets)))
+                comboBox7.Items.Add(color.ToString());
             MessageBox.Show("This application is intended to demonstrate basic functionality of TwitchLib.\n\n-swiftyspiffy");
         }
 
@@ -65,6 +67,7 @@ namespace TwitchLibExample
             newClient.OnChannelStateChanged += new EventHandler<TwitchClient.OnChannelStateChangedArgs>(onChannelStateChanged);
             newClient.OnModeratorsReceived += new EventHandler<TwitchClient.OnModeratorsReceivedArgs>(onModeratorsReceived);
             newClient.OnMessageSent += onMessageSent;
+            newClient.OnChatColorChanged += onChatColorChanged;
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
@@ -85,6 +88,11 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onChatColorChanged(object sender, TwitchClient.OnChatColorChangedArgs e)
+        {
+            MessageBox.Show($"Chat color changed in channel: {e.Channel}");
         }
 
         private void onMessageSent(object sender, TwitchClient.OnMessageSentArgs e)
@@ -741,6 +749,12 @@ namespace TwitchLibExample
         {
             //numericUpDown3
             TwitchApi.DeleteChannelFeedPost(textBox42.Text, textBox14.Text, textBox15.Text);
+        }
+
+        private void button54_Click(object sender, EventArgs e)
+        {
+            if (comboBox7.Text != "")
+                clients[0].ChangeChatColor((Common.ChatColorPresets)Enum.Parse(typeof(Common.ChatColorPresets), comboBox7.Text));
         }
     }
 }
