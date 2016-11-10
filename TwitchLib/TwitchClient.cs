@@ -190,6 +190,11 @@ namespace TwitchLib
         /// Fires when a list of moderators is received.
         /// </summary>
         public event EventHandler<OnModeratorsReceivedArgs> OnModeratorsReceived;
+
+        /// <summary>
+        /// Fires when confirmation of a chat color change request was received.
+        /// </summary>
+        public event EventHandler<OnChatColorChangedArgs> OnChatColorChanged;
         #endregion  
 
         #region Event Args
@@ -424,6 +429,13 @@ namespace TwitchLib
             /// <summary>Property representing the list of moderators.</summary>
             public List<string> Moderators;
         }
+
+        /// <summary>Args representing a successful chat color change request.</summary>
+        public class OnChatColorChangedArgs : EventArgs
+        {
+            /// <summary>Property reprenting the channel the event was received in.</summary>
+            public string Channel;
+        }
         #endregion
 
         /// <summary>
@@ -470,6 +482,37 @@ namespace TwitchLib
             if(ChatThrottler == null || !ChatThrottler.ApplyThrottlingToRawMessages || ChatThrottler.MessagePermitted(message))
                 _client.WriteLine(message);
         }
+
+        #region ChangeChatColor
+        /// <summary>
+        /// Sends request to change color of chat name in Twitch chat.
+        /// </summary>
+        /// <param name="channel">JoinedChannel object representing which channel to send command to.</param>
+        /// <param name="color">Enum representing available chat preset colors.</param>
+        public void ChangeChatColor(JoinedChannel channel, Common.ChatColorPresets color)
+        {
+            SendMessage(channel, $".color {color.ToString()}");
+        }
+
+        /// <summary>
+        /// Sends request to change color of chat name in Twitch chat.
+        /// </summary>
+        /// <param name="channel">String representing the channel to send the command to.</param>
+        /// <param name="color">Enum representing available chat preset colors.</param>
+        public void ChangeChatColor(string channel, Common.ChatColorPresets color)
+        {
+            SendMessage(channel, $".color {color.ToString()}");
+        }
+
+        /// <summary>
+        /// Sends request to change color of chat name in Twitch chat.
+        /// </summary>
+        /// <param name="color">Enum representing available chat preset colors.</param>
+        public void ChangeChatColor(Common.ChatColorPresets color)
+        {
+            SendMessage($".color {color.ToString()}");
+        }
+        #endregion
 
         #region SendMessage
         /// <summary>
@@ -1106,7 +1149,19 @@ namespace TwitchLib
                 });
                 return;
             }
-                
+            #endregion
+
+            #region Others
+            // On chat color changed detected
+            response = ChatParsing.detectedChatColorChanged(decodedMessage, JoinedChannels);
+            if(response.Successful)
+            {
+                OnChatColorChanged?.Invoke(this, new OnChatColorChangedArgs
+                {
+                    Channel = decodedMessage.Split('#')[1].Split(' ')[0]
+                });
+                return;
+            }
             #endregion
 
             #region Whisper Parsing
