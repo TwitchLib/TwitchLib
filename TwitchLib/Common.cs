@@ -9,6 +9,26 @@ namespace TwitchLib
     /// <summary>A common/utility class for frequently used functions and variables.</summary>
     public static class Common
     {
+        /// <summary>Enum representing the available chat name color presets.</summary>
+        public enum ChatColorPresets
+        {
+            Blue,
+            Coral,
+            DodgerBlue,
+            SpringGreen,
+            YellowGreen,
+            Green,
+            OrangeRed,
+            Red,
+            GoldenRod,
+            HotPink,
+            CadetBlue,
+            SeaGreen,
+            Chocolate,
+            BlueViolet,
+            Firebrick
+        }
+
         /// <summary>Enum representing various user-types.</summary>
         public enum UserType
         {
