@@ -55,12 +55,14 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnViewerTimedout - Fires when client detects a viewer was timedout (moderator, viewer, timeout duration, timeout reason, channel).
   * OnViewerBanned - Fires when client detects a viewer was banned (moderator, viewer, ban reason, channel).
   * OnModeratorsReceived - Fires when a list of moderators is returned by Twitch (this happens by calling GetChannelModerators in the client).
+  * OnChatColorChanged - Fires when confirmation is received from Twitch that chat color has been successfully changed.
 - Whisper Events:
   * OnWhisperReceived - Fires when a new whisper message is received, returns WhisperMessage
   * OnWhisperCommandReceived - Fires when command (uses custom command identifier) is received.
   * OnWhisperSent - Fires when a whisper is sent.
 - SendRaw(string message) - Sends RAW IRC message
 - SendMessage(string message) - Sends formatted Twitch channel chat message
+- ChangeChatColor(ChatColor) - Requests a change in chat color to Twitch. You should listen to OnChatColorChanged event, and be aware that the change requires a few seconds to propagate to all viewer's browsers.
 - SendWhisper(string receiver, string message) - Sends formatted Twitch whisper message
 - Handled chat message types
 - Disconnect - Disconnects chat client from Twitch IRC
