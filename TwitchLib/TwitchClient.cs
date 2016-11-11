@@ -167,6 +167,11 @@ namespace TwitchLib
         public event EventHandler<OnDisconnectedArgs> OnDisconnected;
 
         /// <summary>
+        /// Fores when bot suffers conneciton error.
+        /// </summary>
+        public event EventHandler<OnConnectionErrorArgs> OnConnectionError;
+
+        /// <summary>
         /// Fires when a channel's chat is cleared.
         /// </summary>
         public event EventHandler<OnChatClearedArgs> OnChatCleared;
@@ -381,6 +386,13 @@ namespace TwitchLib
             public string Username;
         }
 
+        /// <summary>Args representing client connection error event.</summary>
+        public class OnConnectionErrorArgs : EventArgs
+        {
+            /// <summary>Username of the bot that suffered connection error.</summary>
+            public string Username;
+        }
+
         /// <summary>Args representing a cleared chat event.</summary>
         public class OnChatClearedArgs : EventArgs
         {
@@ -460,8 +472,9 @@ namespace TwitchLib
 
             _client.AutoReconnect = true;
             _client.OnConnected += Connected;
-            _client.OnReadLine += OnReadLine;
+            _client.OnReadLine += ReadLine;
             _client.OnDisconnected += Disconnected;
+            _client.OnConnectionError += ConnectionError;
         }
 
         /// <summary>
@@ -735,7 +748,7 @@ namespace TwitchLib
         {
             if (_logging)
                 Console.WriteLine("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
-            _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
+            _client.Reconnect();
         }
         #endregion
 
@@ -904,7 +917,12 @@ namespace TwitchLib
             OnDisconnected?.Invoke(this, new OnDisconnectedArgs { Username = TwitchUsername });
         }
 
-        private void OnReadLine(object sender, ReadLineEventArgs e)
+        private void ConnectionError(object sender, EventArgs e)
+        {
+            OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { Username = TwitchUsername });
+        }
+
+        private void ReadLine(object sender, ReadLineEventArgs e)
         {
             ParseIrcMessage(e.Line);
         }
