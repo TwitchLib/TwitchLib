@@ -14,7 +14,7 @@ namespace TwitchLib
     public class TwitchPubSub
     {
         private WebSocket socket;
-        private TwitchPubSubClasses.PreviousRequest previousRequest;
+        private Models.PubSub.PreviousRequest previousRequest;
         private bool logging;
         private Timer pingTimer = new Timer();
 
@@ -102,7 +102,7 @@ namespace TwitchLib
             switch(type.ToLower())
             {
                 case "response":
-                    TwitchPubSubClasses.Responses.Response resp = new TwitchPubSubClasses.Responses.Response(message);
+                    Models.PubSub.Responses.Response resp = new Models.PubSub.Responses.Response(message);
                     if (previousRequest != null && previousRequest.Nonce.ToLower() == resp.Nonce.ToLower())
                     {
                        OnListenResponse?.Invoke(this, new OnListenResponseArgs { Response = resp, Topic = previousRequest.Topic, Successful = resp.Successful });
@@ -110,11 +110,11 @@ namespace TwitchLib
                     }
                     break;
                 case "message":
-                    TwitchPubSubClasses.Responses.Message msg = new TwitchPubSubClasses.Responses.Message(message);
+                    Models.PubSub. Responses.Message msg = new Models.PubSub.Responses.Message(message);
                     switch(msg.Topic.Split('.')[0])
                     {
                         case "chat_moderator_actions":
-                            TwitchPubSubClasses.Responses.Message.ChatModeratorActions cMA = (TwitchPubSubClasses.Responses.Message.ChatModeratorActions)msg.messageData;
+                            Models.PubSub.Responses.Message.ChatModeratorActions cMA = (Models.PubSub.Responses.Message.ChatModeratorActions)msg.messageData;
                             string reason = "";
                             switch (cMA.ModerationAction.ToLower())
                             {
@@ -163,21 +163,21 @@ namespace TwitchLib
                             }
                             break;
                         case "channel-bitsevents":
-                            TwitchPubSubClasses.Responses.Message.ChannelBitsEvents cBE = (TwitchPubSubClasses.Responses.Message.ChannelBitsEvents)msg.messageData;
+                            Models.PubSub.Responses.Message.ChannelBitsEvents cBE = (Models.PubSub.Responses.Message.ChannelBitsEvents)msg.messageData;
                            OnBitsReceived?.Invoke(this, new OnBitsReceivedArgs { BitsUsed = cBE.BitsUsed, ChannelId = cBE.ChannelId, ChannelName = cBE.ChannelName,
                                 ChatMessage = cBE.ChatMessage, Context = cBE.Context, Time = cBE.Time, TotalBitsUsed = cBE.TotalBitsUsed, UserId = cBE.UserId, Username = cBE.Username});
                             return;
                         case "video-playback":
-                            TwitchPubSubClasses.Responses.Message.VideoPlayback vP = (TwitchPubSubClasses.Responses.Message.VideoPlayback)msg.messageData;
+                            Models.PubSub.Responses.Message.VideoPlayback vP = (Models.PubSub.Responses.Message.VideoPlayback)msg.messageData;
                             switch(vP.Type)
                             {
-                                case TwitchPubSubClasses.Responses.Message.VideoPlayback.TypeEnum.StreamDown:
+                                case Models.PubSub.Responses.Message.VideoPlayback.TypeEnum.StreamDown:
                                    OnStreamDown?.Invoke(this, new OnStreamDownArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
                                     return;
-                                case TwitchPubSubClasses.Responses.Message.VideoPlayback.TypeEnum.StreamUp:
+                                case Models.PubSub.Responses.Message.VideoPlayback.TypeEnum.StreamUp:
                                    OnStreamUp?.Invoke(this, new OnStreamUpArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
                                     return;
-                                case TwitchPubSubClasses.Responses.Message.VideoPlayback.TypeEnum.ViewCount:
+                                case Models.PubSub.Responses.Message.VideoPlayback.TypeEnum.ViewCount:
                                    OnViewCount?.Invoke(this, new OnViewCountArgs { ServerTime = vP.ServerTime, Viewers = vP.Viewers });
                                     return;
                             }
@@ -199,7 +199,7 @@ namespace TwitchLib
         private void listenToTopic(string topic, string oauth = null, bool unlisten = false)
         {
             string nonce = generateNonce();
-            previousRequest = new TwitchPubSubClasses.PreviousRequest(nonce, Common.PubSubRequestType.ListenToTopic, topic);
+            previousRequest = new Models.PubSub.PreviousRequest(nonce, Common.PubSubRequestType.ListenToTopic, topic);
             JObject jsonData = new JObject(
                 new JProperty("type", !unlisten ? "LISTEN" : "UNLISTEN"),
                 new JProperty("nonce", nonce),

@@ -99,6 +99,11 @@
     <Compile Include="Events\PubSub\OnUnbanArgs.cs" />
     <Compile Include="Events\PubSub\OnUntimeoutArgs.cs" />
     <Compile Include="Events\PubSub\OnViewCountArgs.cs" />
+    <Compile Include="Events\Services\FollowerService\OnNewFollowersDetectedArgs.cs" />
+    <Compile Include="Events\Services\FollowerService\OnServiceStartedArgs.cs" />
+    <Compile Include="Events\Services\FollowerService\OnServiceStoppedArgs.cs" />
+    <Compile Include="Events\Services\MessageThrottler\OnClientThrottledArgs.cs" />
+    <Compile Include="Events\Services\MessageThrottler\OnThrottlePeriodResetArgs.cs" />
     <Compile Include="Exceptions\Client\EventNotHandledException.cs" />
     <Compile Include="Models\API\Block.cs" />
     <Compile Include="Models\API\ChannelHasUserSubscribedResponse.cs" />

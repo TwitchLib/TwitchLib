@@ -9,7 +9,7 @@ namespace TwitchLib.Events.PubSub
     public class OnListenResponseArgs
     {
         public string Topic;
-        public TwitchPubSubClasses.Responses.Response Response;
+        public Models.PubSub.Responses.Response Response;
         public bool Successful;
     }
 }

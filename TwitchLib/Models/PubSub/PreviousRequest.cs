@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitchLib.TwitchPubSubClasses
+namespace TwitchLib.Models.PubSub
 {
     public class PreviousRequest
     {

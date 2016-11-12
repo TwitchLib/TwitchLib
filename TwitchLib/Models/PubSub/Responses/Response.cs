@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
-namespace TwitchLib.TwitchPubSubClasses.Responses
+namespace TwitchLib.Models.PubSub.Responses
 {
     public class Response
     {

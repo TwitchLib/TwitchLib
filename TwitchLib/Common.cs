@@ -63,6 +63,17 @@ namespace TwitchLib
             ListenToTopic
         }
 
+        /// <summary>Enum representing the available throttle types.</summary>
+        public enum ThrottleType
+        {
+            /// <summary>Throttle based on too many messages.</summary>
+            TooManyMessages = 0,
+            /// <summary>Throttle based on message being too short.</summary>
+            MessageTooShort = 1,
+            /// <summary>Throttle based on message being too long.</summary>
+            MessageTooLong = 2
+        }
+
         /// <summary>Takes date time string received from Twitch API and converts it to DateTime object.</summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
