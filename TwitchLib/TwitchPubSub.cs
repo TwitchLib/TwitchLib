@@ -7,6 +7,7 @@ using WebSocket4Net;
 using Newtonsoft.Json.Linq;
 using SuperSocket.ClientEngine;
 using System.Timers;
+using TwitchLib.Events.PubSub;
 
 namespace TwitchLib
 {
@@ -24,137 +25,26 @@ namespace TwitchLib
         */
 
         #region Events
-        public EventHandler onPubSubServiceConnected;
-        public EventHandler<onPubSubServiceErrorArgs> onPubSubServiceError;
-        public EventHandler onPubSubServiceClosed;
-        public EventHandler<onListenResponseArgs> onListenResponse;
-        public EventHandler<onTimeoutArgs> onTimeout;
-        public EventHandler<onBanArgs> onBan;
-        public EventHandler<onUnbanArgs> onUnban;
-        public EventHandler<onUntimeoutArgs> onUntimeout;
-        public EventHandler<onHostArgs> onHost;
-        public EventHandler<onSubscribersArgs> onSubscribers;
-        public EventHandler<onSubscribersoffArgs> onSubscribersoff;
-        public EventHandler<onClearArgs> onClear;
-        public EventHandler<onEmoteonlyArgs> onEmoteonly;
-        public EventHandler<onEmoteonlyoffArgs> onEmoteonlyoff;
-        public EventHandler<onR9kbetaArgs> onR9kbeta;
-        public EventHandler<onR9kbetaoffArgs> onR9kbetaoff;
-        public EventHandler<onBitsReceivedArgs> onBitsReceived;
-        public EventHandler<onStreamUpArgs> onStreamUp;
-        public EventHandler<onStreamDownArgs> onStreamDown;
-        public EventHandler<onViewCountArgs> onViewCount;
-
-        public class onPubSubServiceErrorArgs
-        {
-            public Exception Exception;
-        }
-
-        public class onListenResponseArgs
-        {
-            public string Topic;
-            public TwitchPubSubClasses.Responses.Response Response;
-            public bool Successful;
-        }
-
-        public class onTimeoutArgs
-        {
-            public string TimedoutUser;
-            public TimeSpan TimeoutDuration;
-            public string TimeoutReason;
-            public string TimedoutBy;
-        }
-
-        public class onBanArgs
-        {
-            public string BannedUser;
-            public string BanReason;
-            public string BannedBy;
-        }
-
-        public class onUnbanArgs
-        {
-            public string UnbannedUser;
-            public string UnbannedBy;
-        }
-
-        public class onUntimeoutArgs
-        {
-            public string UntimeoutedUser;
-            public string UntimeoutedBy;
-        }
-
-        public class onHostArgs
-        {
-            public string Moderator;
-            public string HostedChannel;
-        }
-
-        public class onSubscribersArgs
-        {
-            public string Moderator;
-        }
-
-        public class onSubscribersoffArgs
-        {
-            public string Moderator;
-        }
-
-        public class onClearArgs
-        {
-            public string Moderator;
-        }
-
-        public class onEmoteonlyArgs
-        {
-            public string Moderator;
-        }
-
-        public class onEmoteonlyoffArgs
-        {
-            public string Moderator;
-        }
-
-        public class onR9kbetaArgs
-        {
-            public string Moderator;
-        }
-
-        public class onR9kbetaoffArgs
-        {
-            public string Moderator;
-        }
-
-        public class onBitsReceivedArgs
-        {
-            public string Username;
-            public string ChannelName;
-            public string UserId;
-            public string ChannelId;
-            public string Time;
-            public string ChatMessage;
-            public int BitsUsed;
-            public int TotalBitsUsed;
-            public string Context;
-        }
-
-        public class onStreamUpArgs
-        {
-            public string ServerTime;
-            public int PlayDelay;
-        }
-
-        public class onStreamDownArgs
-        {
-            public string ServerTime;
-            public int PlayDelay;
-        }
-
-        public class onViewCountArgs
-        {
-            public string ServerTime;
-            public int Viewers;
-        }
+        public EventHandler OnPubSubServiceConnected;
+        public EventHandler<OnPubSubServiceErrorArgs> onPubSubServiceError;
+        public EventHandler OnPubSubServiceClosed;
+        public EventHandler<OnListenResponseArgs> onListenResponse;
+        public EventHandler<OnTimeoutArgs> onTimeout;
+        public EventHandler<OnBanArgs> onBan;
+        public EventHandler<OnUnbanArgs> onUnban;
+        public EventHandler<OnUntimeoutArgs> onUntimeout;
+        public EventHandler<OnHostArgs> onHost;
+        public EventHandler<OnSubscribersOnlyArgs> onSubscribers;
+        public EventHandler<OnSubscribersOnlyOffArgs> onSubscribersoff;
+        public EventHandler<OnClearArgs> onClear;
+        public EventHandler<OnEmoteOnlyArgs> onEmoteonly;
+        public EventHandler<OnEmoteOnlyOffArgs> onEmoteonlyoff;
+        public EventHandler<OnR9kBetaArgs> onR9kbeta;
+        public EventHandler<OnR9kBetaOffArgs> onR9kbetaoff;
+        public EventHandler<OnBitsReceivedArgs> onBitsReceived;
+        public EventHandler<OnStreamUpArgs> onStreamUp;
+        public EventHandler<OnStreamDownArgs> onStreamDown;
+        public EventHandler<OnViewCountArgs> onViewCount;
         #endregion
 
         /// <summary>
@@ -173,14 +63,14 @@ namespace TwitchLib
             pingTimer.Interval = 180000;
             pingTimer.Elapsed += pingTimerTick;
             pingTimer.Start();
-            onPubSubServiceConnected?.Invoke(this, null);
+            OnPubSubServiceConnected?.Invoke(this, null);
         }
 
         private void onError(object sender, ErrorEventArgs e)
         {
             if(logging)
                 Console.WriteLine($"[TwitchPubSub] onError: {e.Exception.Message}");
-            onPubSubServiceError?.Invoke(this, new onPubSubServiceErrorArgs { Exception = e.Exception });
+            onPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = e.Exception });
         }
 
         private void onMessage(object sender, MessageReceivedEventArgs e)
@@ -194,7 +84,7 @@ namespace TwitchLib
         {
             if(logging)
                 Console.WriteLine($"[TwitchPubSub] onClose");
-            onPubSubServiceClosed?.Invoke(this, null);
+            OnPubSubServiceClosed?.Invoke(this, null);
         }
 
         private void pingTimerTick(object sender, System.Timers.ElapsedEventArgs e)
@@ -215,7 +105,7 @@ namespace TwitchLib
                     TwitchPubSubClasses.Responses.Response resp = new TwitchPubSubClasses.Responses.Response(message);
                     if (previousRequest != null && previousRequest.Nonce.ToLower() == resp.Nonce.ToLower())
                     {
-                        onListenResponse?.Invoke(this, new onListenResponseArgs { Response = resp, Topic = previousRequest.Topic, Successful = resp.Successful });
+                        onListenResponse?.Invoke(this, new OnListenResponseArgs { Response = resp, Topic = previousRequest.Topic, Successful = resp.Successful });
                         return;
                     }
                     break;
@@ -231,50 +121,50 @@ namespace TwitchLib
                                 case "timeout":
                                     if (cMA.Args.Count > 2)
                                         reason = cMA.Args[2];
-                                    onTimeout?.Invoke(this, new onTimeoutArgs { TimedoutBy = cMA.CreatedBy, TimedoutUser = cMA.Args[0],
+                                    onTimeout?.Invoke(this, new OnTimeoutArgs { TimedoutBy = cMA.CreatedBy, TimedoutUser = cMA.Args[0],
                                         TimeoutDuration = TimeSpan.FromSeconds(int.Parse(cMA.Args[1])), TimeoutReason = reason });
                                     return;
                                 case "ban":
                                     if (cMA.Args.Count > 1)
                                         reason = cMA.Args[1];
-                                    onBan?.Invoke(this, new onBanArgs { BannedBy = cMA.CreatedBy, BannedUser = cMA.Args[0], BanReason = reason });
+                                    onBan?.Invoke(this, new OnBanArgs { BannedBy = cMA.CreatedBy, BannedUser = cMA.Args[0], BanReason = reason });
                                     return;
                                 case "unban":
-                                    onUnban?.Invoke(this, new onUnbanArgs { UnbannedBy = cMA.CreatedBy, UnbannedUser = cMA.Args[0] });
+                                    onUnban?.Invoke(this, new OnUnbanArgs { UnbannedBy = cMA.CreatedBy, UnbannedUser = cMA.Args[0] });
                                     return;
                                 case "untimeout":
-                                    onUntimeout?.Invoke(this, new onUntimeoutArgs { UntimeoutedBy = cMA.CreatedBy, UntimeoutedUser = cMA.Args[0] });
+                                    onUntimeout?.Invoke(this, new OnUntimeoutArgs { UntimeoutedBy = cMA.CreatedBy, UntimeoutedUser = cMA.Args[0] });
                                     return;
                                 case "host":
-                                    onHost?.Invoke(this, new onHostArgs { HostedChannel = cMA.Args[0], Moderator = cMA.CreatedBy });
+                                    onHost?.Invoke(this, new OnHostArgs { HostedChannel = cMA.Args[0], Moderator = cMA.CreatedBy });
                                     return;
                                 case "subscribers":
-                                    onSubscribers?.Invoke(this, new onSubscribersArgs { Moderator = cMA.CreatedBy });
+                                    onSubscribers?.Invoke(this, new OnSubscribersOnlyArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "subscribersoff":
-                                    onSubscribersoff?.Invoke(this, new onSubscribersoffArgs { Moderator = cMA.CreatedBy });
+                                    onSubscribersoff?.Invoke(this, new OnSubscribersOnlyOffArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "clear":
-                                    onClear?.Invoke(this, new onClearArgs { Moderator = cMA.CreatedBy });
+                                    onClear?.Invoke(this, new OnClearArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "emoteonly":
-                                    onEmoteonly?.Invoke(this, new onEmoteonlyArgs { Moderator = cMA.CreatedBy });
+                                    onEmoteonly?.Invoke(this, new OnEmoteOnlyArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "emoteonlyoff":
-                                    onEmoteonlyoff?.Invoke(this, new onEmoteonlyoffArgs { Moderator = cMA.CreatedBy });
+                                    onEmoteonlyoff?.Invoke(this, new OnEmoteOnlyOffArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "r9kbeta":
-                                    onR9kbeta?.Invoke(this, new onR9kbetaArgs { Moderator = cMA.CreatedBy });
+                                    onR9kbeta?.Invoke(this, new OnR9kBetaArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "r9kbetaoff":
-                                    onR9kbetaoff?.Invoke(this, new onR9kbetaoffArgs { Moderator = cMA.CreatedBy });
+                                    onR9kbetaoff?.Invoke(this, new OnR9kBetaOffArgs { Moderator = cMA.CreatedBy });
                                     return;
 
                             }
                             break;
                         case "channel-bitsevents":
                             TwitchPubSubClasses.Responses.Message.ChannelBitsEvents cBE = (TwitchPubSubClasses.Responses.Message.ChannelBitsEvents)msg.messageData;
-                            onBitsReceived?.Invoke(this, new onBitsReceivedArgs { BitsUsed = cBE.BitsUsed, ChannelId = cBE.ChannelId, ChannelName = cBE.ChannelName,
+                            onBitsReceived?.Invoke(this, new OnBitsReceivedArgs { BitsUsed = cBE.BitsUsed, ChannelId = cBE.ChannelId, ChannelName = cBE.ChannelName,
                                 ChatMessage = cBE.ChatMessage, Context = cBE.Context, Time = cBE.Time, TotalBitsUsed = cBE.TotalBitsUsed, UserId = cBE.UserId, Username = cBE.Username});
                             return;
                         case "video-playback":
@@ -282,13 +172,13 @@ namespace TwitchLib
                             switch(vP.Type)
                             {
                                 case TwitchPubSubClasses.Responses.Message.VideoPlayback.TypeEnum.StreamDown:
-                                    onStreamDown?.Invoke(this, new onStreamDownArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
+                                    onStreamDown?.Invoke(this, new OnStreamDownArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
                                     return;
                                 case TwitchPubSubClasses.Responses.Message.VideoPlayback.TypeEnum.StreamUp:
-                                    onStreamUp?.Invoke(this, new onStreamUpArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
+                                    onStreamUp?.Invoke(this, new OnStreamUpArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
                                     return;
                                 case TwitchPubSubClasses.Responses.Message.VideoPlayback.TypeEnum.ViewCount:
-                                    onViewCount?.Invoke(this, new onViewCountArgs { ServerTime = vP.ServerTime, Viewers = vP.Viewers });
+                                    onViewCount?.Invoke(this, new OnViewCountArgs { ServerTime = vP.ServerTime, Viewers = vP.Viewers });
                                     return;
                             }
                             break;

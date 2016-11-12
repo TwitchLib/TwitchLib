@@ -81,6 +81,24 @@
     <Compile Include="Events\Client\OnWhisperCommandReceivedArgs.cs" />
     <Compile Include="Events\Client\OnWhisperReceivedArgs.cs" />
     <Compile Include="Events\Client\OnWhisperSentArgs.cs" />
+    <Compile Include="Events\PubSub\OnBanArgs.cs" />
+    <Compile Include="Events\PubSub\OnBitsReceivedArgs.cs" />
+    <Compile Include="Events\PubSub\OnClearArgs.cs" />
+    <Compile Include="Events\PubSub\OnEmoteOnlyArgs.cs" />
+    <Compile Include="Events\PubSub\OnEmoteOnlyOffArgs.cs" />
+    <Compile Include="Events\PubSub\OnHostArgs.cs" />
+    <Compile Include="Events\PubSub\OnListenResponseArgs.cs" />
+    <Compile Include="Events\PubSub\OnPubSubServiceErrorArgs.cs" />
+    <Compile Include="Events\PubSub\OnR9kBetaArgs.cs" />
+    <Compile Include="Events\PubSub\OnR9kBetaOffArgs.cs" />
+    <Compile Include="Events\PubSub\OnStreamDownArgs.cs" />
+    <Compile Include="Events\PubSub\OnStreamUpArgs.cs" />
+    <Compile Include="Events\PubSub\OnSubscribersOnlyArgs.cs" />
+    <Compile Include="Events\PubSub\OnSubscribersOnlyOff.cs" />
+    <Compile Include="Events\PubSub\OnTimeoutArgs.cs" />
+    <Compile Include="Events\PubSub\OnUnbanArgs.cs" />
+    <Compile Include="Events\PubSub\OnUntimeoutArgs.cs" />
+    <Compile Include="Events\PubSub\OnViewCountArgs.cs" />
     <Compile Include="Exceptions\Client\EventNotHandledException.cs" />
     <Compile Include="Models\API\Block.cs" />
     <Compile Include="Models\API\ChannelHasUserSubscribedResponse.cs" />
@@ -136,9 +154,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\PubSub\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
