@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using TwitchLib.Models.API;
+using TwitchLib.Exceptions.Services;
+using TwitchLib.Exceptions.API;
 
 namespace TwitchLib.Services
 {
@@ -19,15 +22,15 @@ namespace TwitchLib.Services
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
         public string ClientId { get { return _clientId; } set { _clientId = value; TwitchApi.SetClientId(value); } }
         /// <summary>Property representing number of recent followers that service should request. Recommended: 25, increase for larger channels. MAX: 100, MINIMUM: 1</summary>
-        /// <exception cref="Exceptions.BadQueryCountException">Throws BadQueryCountException if queryCount is larger than 100 or smaller than 1.</exception>
-        public int QueryCount { get { return _queryCount; } set { if (value < 1 || value > 100) { throw new Exceptions.BadQueryCountException("Query count was smaller than 1 or exceeded 100"); } _queryCount = value; } }
+        /// <exception cref="BadQueryCountException">Throws BadQueryCountException if queryCount is larger than 100 or smaller than 1.</exception>
+        public int QueryCount { get { return _queryCount; } set { if (value < 1 || value > 100) { throw new BadQueryCountException("Query count was smaller than 1 or exceeded 100"); } _queryCount = value; } }
         /// <summary>Property representing the cache where detected followers are stored and compared against.</summary>
-        public List<TwitchAPIClasses.Follower> ActiveCache { get; set; }
+        public List<Follower> ActiveCache { get; set; }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _followerServiceTimer.Interval = value * 1000; } }
 
         /// <summary>Service constructor.</summary>
-        /// <exception cref="Exceptions.BadResourceException">If channel is invalid, an InvalidChannelException will be thrown.</exception>
+        /// <exception cref="BadResourceException">If channel is invalid, an InvalidChannelException will be thrown.</exception>
         /// <param name="channel">Param representing the channel the service should monitor.</param>
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
         /// <param name="queryCount">Number of recent followers service should request from Twitch Api. Max: 100, Min: 1</param>
@@ -45,7 +48,7 @@ namespace TwitchLib.Services
         /// <summary>Downloads recent followers from Twitch, starts service, fires OnServiceStarted event.</summary>
         public async void StartService()
         {
-            TwitchAPIClasses.FollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
+            FollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
             ActiveCache = response.Followers;
             _followerServiceTimer.Start();
             OnServiceStarted?.Invoke(this, 
@@ -63,9 +66,9 @@ namespace TwitchLib.Services
 
         private async void _followerServiceTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            TwitchAPIClasses.FollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
-            List<TwitchAPIClasses.Follower> mostRecentFollowers = response.Followers;
-            List<TwitchAPIClasses.Follower> newFollowers = new List<TwitchAPIClasses.Follower>();
+            FollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
+            List<Follower> mostRecentFollowers = response.Followers;
+            List<Follower> newFollowers = new List<Follower>();
             if(ActiveCache == null)
             {
                 ActiveCache = mostRecentFollowers;
@@ -89,9 +92,9 @@ namespace TwitchLib.Services
         }
 
         #region HELPERS
-        private bool isNewFollower(TwitchAPIClasses.Follower follower)
+        private bool isNewFollower(Follower follower)
         {
-            foreach (TwitchAPIClasses.Follower oldFollower in ActiveCache)
+            foreach (Follower oldFollower in ActiveCache)
                 if (oldFollower.User.Name.ToLower() == follower.User.Name.ToLower())
                     return false;
             return true;
@@ -138,7 +141,7 @@ namespace TwitchLib.Services
             /// <summary>Event property representing seconds between queries to Twitch Api.</summary>
             public int CheckIntervalSeconds;
             /// <summary>Event property representing all new followers detected.</summary>
-            public List<TwitchAPIClasses.Follower> NewFollowers;
+            public List<Follower> NewFollowers;
         }
 
         #endregion

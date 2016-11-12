@@ -5,9 +5,9 @@ using Meebey.SmartIrc4net;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Newtonsoft.Json.Serialization;
-using TwitchLib.Exceptions;
+using TwitchLib.Exceptions.Client;
 using System.Text;
-using TwitchLib.TwitchClientClasses;
+using TwitchLib.Models.Client;
 
 namespace TwitchLib
 {
@@ -851,7 +851,7 @@ namespace TwitchLib
         public void GetChannelModerators(JoinedChannel channel)
         {
             if (OnModeratorsReceived == null)
-                throw new Exceptions.EventNotHandled("OnModeratorsReceived");
+                throw new EventNotHandled("OnModeratorsReceived");
             SendMessage(channel, "/mods");
         }
 

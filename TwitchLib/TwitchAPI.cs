@@ -7,8 +7,8 @@ using System.Net.Http;
 using System.Text;
 using System.IO;
 using System.Linq;
-using TwitchLib.Exceptions;
-using TwitchLib.TwitchAPIClasses;
+using TwitchLib.Exceptions.API;
+using TwitchLib.Models.API;
 
 namespace TwitchLib
 {
@@ -198,14 +198,14 @@ namespace TwitchLib
         /// </summary>
         /// <param name="channel">The channel to retrieve the data for.</param>
         /// <returns>A TwitchStream object containing API data related to a stream.</returns>
-        public static async Task<TwitchAPIClasses.Stream> GetTwitchStream(string channel)
+        public static async Task<Models.API.Stream> GetTwitchStream(string channel)
         {
             try
             {
                 var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
                 var json = JObject.Parse(resp);
                 return json.SelectToken("stream").SelectToken("_id") != null
-                    ? new TwitchAPIClasses.Stream(json.SelectToken("stream"))
+                    ? new Models.API.Stream(json.SelectToken("stream"))
                     : null;
             }
             catch
@@ -219,15 +219,15 @@ namespace TwitchLib
         /// </summary>
         /// <param name="channels">List of channels.</param>
         /// <returns>A list of stream objects for each stream.</returns>
-        public static async Task<List<TwitchAPIClasses.Stream>> GetTwitchStreams(List<string> channels)
+        public static async Task<List<Models.API.Stream>> GetTwitchStreams(List<string> channels)
         {
             try
             {
                 var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams?channel={string.Join(",", channels)}");
                 var json = JObject.Parse(resp);
-                List<TwitchAPIClasses.Stream> streams = new List<TwitchAPIClasses.Stream>();
+                List<Models.API.Stream> streams = new List<Models.API.Stream>();
                 foreach (JToken channel in json.SelectToken("streams"))
-                    streams.Add(new TwitchAPIClasses.Stream(channel));
+                    streams.Add(new Models.API.Stream(channel));
                 return streams;
             }
             catch
@@ -246,9 +246,9 @@ namespace TwitchLib
             {
                 var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/featured?limit={limit}&offset={offset}");
                 var json = JObject.Parse(resp);
-                List<TwitchAPIClasses.FeaturedStream> streams = new List<TwitchAPIClasses.FeaturedStream>();
+                List<FeaturedStream> streams = new List<FeaturedStream>();
                 foreach (JToken channel in json.SelectToken("featured"))
-                    streams.Add(new TwitchAPIClasses.FeaturedStream(channel));
+                    streams.Add(new FeaturedStream(channel));
                 return streams;
             } catch
             {
@@ -286,9 +286,9 @@ namespace TwitchLib
         /// <param name="offset">Object offset for pagination. Default is 0.</param>
         /// <param name="hls">If set to true, only returns streams using HLS, if set to false only returns non-HLS streams. Default is null.</param>
         /// <returns>A list of Stream objects matching the query.</returns>
-        public static async Task<List<TwitchAPIClasses.Stream>> SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
+        public static async Task<List<Models.API.Stream>> SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
         {
-            var returnedStreams = new List<TwitchAPIClasses.Stream>();
+            var returnedStreams = new List<Models.API.Stream>();
             var hlsStr = "";
             if (hls == true) hlsStr = "&hls=true";
             if (hls == false) hlsStr = "&hls=false";
@@ -298,7 +298,7 @@ namespace TwitchLib
             var json = JObject.Parse(resp);
             if (json.SelectToken("_total").ToString() == "0") return returnedStreams;
             returnedStreams.AddRange(
-                json.SelectToken("streams").Select(streamToken => new TwitchAPIClasses.Stream((JObject)streamToken)));
+                json.SelectToken("streams").Select(streamToken => new Models.API.Stream((JObject)streamToken)));
             return returnedStreams;
         }
 
@@ -308,16 +308,16 @@ namespace TwitchLib
         /// <param name="query">A url-encoded search query.</param>
         /// <param name="live">If set to true, only games with active streams will be found.</param>
         /// <returns>A list of Game objects matching the query.</returns>
-        public static async Task<List<TwitchAPIClasses.Game>> SearchGames(string query, bool live = false)
+        public static async Task<List<Game>> SearchGames(string query, bool live = false)
         {
-            var returnedGames = new List<TwitchAPIClasses.Game>();
+            var returnedGames = new List<Game>();
 
             var args = $"?query={query}&type=suggest&live=" + live.ToString();
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/search/games{args}");
 
             var json = JObject.Parse(resp);
             returnedGames.AddRange(
-                json.SelectToken("games").Select(gameToken => new TwitchAPIClasses.Game((JObject)gameToken)));
+                json.SelectToken("games").Select(gameToken => new Game((JObject)gameToken)));
             return returnedGames;
         }
 
@@ -874,9 +874,9 @@ namespace TwitchLib
             switch (errorResp.StatusCode)
             {
                 case HttpStatusCode.Unauthorized:
-                    throw new Exceptions.BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
+                    throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
                 case HttpStatusCode.NotFound:
-                    throw new Exceptions.BadResourceException("The resource you tried to access was not valid.");
+                    throw new BadResourceException("The resource you tried to access was not valid.");
                 default:
                     throw e;
             }
