@@ -10,6 +10,11 @@ using System.Windows.Forms;
 using TwitchLib;
 using System.IO;
 using System.Net;
+using TwitchLib.Models.API;
+using TwitchLib.Models.Client;
+using TwitchLib.Events.Client;
+using TwitchLib.Exceptions.API;
+using TwitchLib.Events.PubSub;
 
 namespace TwitchLibExample
 {
@@ -26,7 +31,7 @@ namespace TwitchLibExample
         {
             //DO NOT USE IN PRODUCTION, UNSAFE PRACTICE
             CheckForIllegalCrossThreadCalls = false;
-            TwitchLib.MessageEmoteCollection collection = new MessageEmoteCollection();
+            MessageEmoteCollection collection = new MessageEmoteCollection();
 
             if (File.Exists("credentials.txt"))
             {
@@ -51,21 +56,21 @@ namespace TwitchLibExample
             ConnectionCredentials credentials = new ConnectionCredentials(textBox4.Text, textBox5.Text);
             TwitchClient newClient = new TwitchClient(credentials, textBox8.Text, '!', '!', true);
 
-            newClient.OnMessageReceived += new EventHandler<TwitchClient.OnMessageReceivedArgs>(globalChatMessageReceived);
-            newClient.OnChatCommandReceived += new EventHandler<TwitchClient.OnChatCommandReceivedArgs>(chatCommandReceived);
-            newClient.OnIncorrectLogin += new EventHandler<TwitchClient.OnIncorrectLoginArgs>(incorrectLogin);
-            newClient.OnConnected += new EventHandler<TwitchClient.OnConnectedArgs>(onConnected);
-            newClient.OnWhisperReceived += new EventHandler<TwitchClient.OnWhisperReceivedArgs>(globalWhisperReceived);
-            newClient.OnWhisperCommandReceived += new EventHandler<TwitchClient.OnWhisperCommandReceivedArgs>(whisperCommandReceived);
-            newClient.OnChatCleared += new EventHandler<TwitchClient.OnChatClearedArgs>(onChatCleared);
-            newClient.OnViewerTimedout += new EventHandler<TwitchClient.OnViewerTimedoutArgs>(onViewerTimedout);
-            newClient.OnViewerBanned += new EventHandler<TwitchClient.OnViewerBannedArgs>(onViewerBanned);
-            newClient.OnClientLeftChannel += new EventHandler<TwitchClient.OnClientLeftChannelArgs>(onLeftChannel);
-            newClient.OnJoinedChannel += new EventHandler<TwitchClient.OnJoinedChannelArgs>(onJoinedChannel);
-            newClient.OnNewSubscriber += new EventHandler<TwitchClient.OnNewSubscriberArgs>(onNewSubscription);
-            newClient.OnReSubscriber += new EventHandler<TwitchClient.OnReSubscriberArgs>(onReSubscription);
-            newClient.OnChannelStateChanged += new EventHandler<TwitchClient.OnChannelStateChangedArgs>(onChannelStateChanged);
-            newClient.OnModeratorsReceived += new EventHandler<TwitchClient.OnModeratorsReceivedArgs>(onModeratorsReceived);
+            newClient.OnMessageReceived += new EventHandler<OnMessageReceivedArgs>(globalChatMessageReceived);
+            newClient.OnChatCommandReceived += new EventHandler<OnChatCommandReceivedArgs>(chatCommandReceived);
+            newClient.OnIncorrectLogin += new EventHandler<OnIncorrectLoginArgs>(incorrectLogin);
+            newClient.OnConnected += new EventHandler<OnConnectedArgs>(onConnected);
+            newClient.OnWhisperReceived += new EventHandler<OnWhisperReceivedArgs>(globalWhisperReceived);
+            newClient.OnWhisperCommandReceived += new EventHandler<OnWhisperCommandReceivedArgs>(whisperCommandReceived);
+            newClient.OnChatCleared += new EventHandler<OnChatClearedArgs>(onChatCleared);
+            newClient.OnViewerTimedout += new EventHandler<OnViewerTimedoutArgs>(onViewerTimedout);
+            newClient.OnViewerBanned += new EventHandler<OnViewerBannedArgs>(onViewerBanned);
+            newClient.OnClientLeftChannel += new EventHandler<OnClientLeftChannelArgs>(onLeftChannel);
+            newClient.OnJoinedChannel += new EventHandler<OnJoinedChannelArgs>(onJoinedChannel);
+            newClient.OnNewSubscriber += new EventHandler<OnNewSubscriberArgs>(onNewSubscription);
+            newClient.OnReSubscriber += new EventHandler<OnReSubscriberArgs>(onReSubscription);
+            newClient.OnChannelStateChanged += new EventHandler<OnChannelStateChangedArgs>(onChannelStateChanged);
+            newClient.OnModeratorsReceived += new EventHandler<OnModeratorsReceivedArgs>(onModeratorsReceived);
             newClient.OnMessageSent += onMessageSent;
             newClient.OnChatColorChanged += onChatColorChanged;
             //Add message throttler
@@ -90,58 +95,58 @@ namespace TwitchLibExample
                 comboBox6.Items.Add(textBox4.Text);
         }
 
-        private void onChatColorChanged(object sender, TwitchClient.OnChatColorChangedArgs e)
+        private void onChatColorChanged(object sender, OnChatColorChangedArgs e)
         {
             MessageBox.Show($"Chat color changed in channel: {e.Channel}");
         }
 
-        private void onMessageSent(object sender, TwitchClient.OnMessageSentArgs e)
+        private void onMessageSent(object sender, OnMessageSentArgs e)
         {
             richTextBox1.Text += $"\n[Me]{e.SentMessage.DisplayName} [mod: {e.SentMessage.IsModerator}] [sub: {e.SentMessage.IsSubscriber}]: {e.SentMessage.Message}";
         }
 
-        private void onModeratorsReceived(object sender, TwitchClient.OnModeratorsReceivedArgs e)
+        private void onModeratorsReceived(object sender, OnModeratorsReceivedArgs e)
         {
             foreach (var mod in e.Moderators)
                 MessageBox.Show($"Moderator name: {mod}\nIn channel: {e.Channel}");
         }
 
-        private void onChannelStateChanged(object sender, TwitchClient.OnChannelStateChangedArgs e)
+        private void onChannelStateChanged(object sender, OnChannelStateChangedArgs e)
         {
             MessageBox.Show($"Channel: {e.Channel}\nSub only: {e.ChannelState.SubOnly}\nEmotes only: {e.ChannelState.EmoteOnly}\nSlow mode: {e.ChannelState.SlowMode}\nR9K: {e.ChannelState.R9K}");
         }
 
-        private void onNewSubscription(object sender, TwitchClient.OnNewSubscriberArgs e)
+        private void onNewSubscription(object sender, OnNewSubscriberArgs e)
         {
             MessageBox.Show($"New sub: {e.Subscriber.Name}\nChannel: {e.Subscriber.Channel}\nTwitch Prime? {e.Subscriber.IsTwitchPrime}");
         }
 
-        private void onReSubscription(object sender, TwitchClient.OnReSubscriberArgs e)
+        private void onReSubscription(object sender, OnReSubscriberArgs e)
         {
             MessageBox.Show($"New resub: {e.ReSubscriber.DisplayName}\nChannel: {e.ReSubscriber.Channel}\nMonths: {e.ReSubscriber.Months}");
         }
 
-        private void onJoinedChannel(object sender, TwitchLib.TwitchClient.OnJoinedChannelArgs e)
+        private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
             MessageBox.Show($"Joined channel: {e.Channel}\nAs username: {e.Username}");
         }
 
-        private void onLeftChannel(object sender, TwitchLib.TwitchClient.OnClientLeftChannelArgs e)
+        private void onLeftChannel(object sender, OnClientLeftChannelArgs e)
         {
             populateLeaveChannelsDropdown();
         }
 
-        public void onChatCleared(object sender, TwitchLib.TwitchClient.OnChatClearedArgs e)
+        public void onChatCleared(object sender, OnChatClearedArgs e)
         {
             MessageBox.Show($"Chat cleared in channel: {e.Channel}");
         }
 
-        public void onViewerTimedout(object sender, TwitchClient.OnViewerTimedoutArgs e)
+        public void onViewerTimedout(object sender, OnViewerTimedoutArgs e)
         {
             //MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was timedout for {e.TimeoutDuration} seconds with reasoning: {e.TimeoutReason}");
         }
 
-        public void onViewerBanned(object sender, TwitchClient.OnViewerBannedArgs e)
+        public void onViewerBanned(object sender, OnViewerBannedArgs e)
         {
             //MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was banned with reasoning: {e.BanReason}");
         }
@@ -156,17 +161,17 @@ namespace TwitchLibExample
             MessageBox.Show($"The message throttle period was reset.");
         }
 
-        public void onConnected(object sender, TwitchClient.OnConnectedArgs e)
+        public void onConnected(object sender, OnConnectedArgs e)
         {
             MessageBox.Show("Connected under username: " + e.Username);
         }
 
-        public void incorrectLogin(object sender, TwitchClient.OnIncorrectLoginArgs e)
+        public void incorrectLogin(object sender, OnIncorrectLoginArgs e)
         {
             MessageBox.Show("Failed login as chat client!!!\nException: " + e.Exception + "\nUsername: " + e.Exception.Username);
         }
 
-        private void chatCommandReceived(object sender, TwitchClient.OnChatCommandReceivedArgs e)
+        private void chatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
             listBox1.Items.Add("[#" + e.Command.ChatMessage.Channel + "]" + e.Command.ChatMessage.Username + ": " + e.Command + "; args: " + e.Command.ArgumentsAsString + ";");
             foreach(string arg in e.Command.ArgumentsAsList)
@@ -178,7 +183,7 @@ namespace TwitchLibExample
             Console.WriteLine("[chat] args as string: " + e.Command.ArgumentsAsString);
         }
 
-        private void whisperCommandReceived(object sender, TwitchClient.OnWhisperCommandReceivedArgs e)
+        private void whisperCommandReceived(object sender, OnWhisperCommandReceivedArgs e)
         {
             listBox2.Items.Add(e.WhisperMessage.Username + ": " + e.Command + "; args: " + e.ArgumentsAsString + ";");
             foreach (string arg in e.ArgumentsAsList)
@@ -188,7 +193,7 @@ namespace TwitchLibExample
             Console.WriteLine("[whisper] args as string: " + e.ArgumentsAsString);
         }
 
-        private void globalChatMessageReceived(object sender, TwitchClient.OnMessageReceivedArgs e)
+        private void globalChatMessageReceived(object sender, OnMessageReceivedArgs e)
         {
             //Don't do this in production
             CheckForIllegalCrossThreadCalls = false;
@@ -196,7 +201,7 @@ namespace TwitchLibExample
                 "\n" + richTextBox1.Text;
         }
 
-        private void globalWhisperReceived(object sender, TwitchClient.OnWhisperReceivedArgs e)
+        private void globalWhisperReceived(object sender, OnWhisperReceivedArgs e)
         {
             //Don't do this in production
             CheckForIllegalCrossThreadCalls = false;
@@ -211,7 +216,7 @@ namespace TwitchLibExample
             foreach (TwitchClient client in clients)
             {
                 if(client.TwitchUsername.ToLower() == comboBox2.Text.ToLower()) {
-                    foreach(TwitchLib.TwitchClientClasses.JoinedChannel channel in client.JoinedChannels)
+                    foreach(JoinedChannel channel in client.JoinedChannels)
                         comboBox3.Items.Add(channel.Channel);
                 }
             }
@@ -223,7 +228,7 @@ namespace TwitchLibExample
             {
                 if (client.TwitchUsername.ToLower() == comboBox2.Text.ToLower())
                 {
-                    foreach(TwitchLib.TwitchClientClasses.JoinedChannel channel in client.JoinedChannels)
+                    foreach(JoinedChannel channel in client.JoinedChannels)
                         if(channel.Channel.ToLower() == comboBox3.Text.ToLower())
                             client.SendMessage(channel, textBox3.Text);
                 }
@@ -245,12 +250,12 @@ namespace TwitchLibExample
         {
             try
             {
-                TwitchLib.TwitchAPIClasses.Channel channel = await TwitchApi.GetTwitchChannel(textBox9.Text);
+                Channel channel = await TwitchApi.GetTwitchChannel(textBox9.Text);
                 MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At (seconds ago): {6}\n" +
                 "Updated At (seconds ago): {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
                 channel.Status, channel.BroadcasterLanguage, channel.DisplayName, channel.Game, channel.Language, channel.Name, channel.CreatedAt, channel.UpdatedAt.Second,
                 channel.Delay, channel.Logo, channel.Background, channel.ProfileBanner, channel.Mature, channel.Partner, channel.Id, channel.Views, channel.Followers));
-            } catch (TwitchLib.Exceptions.BadResourceException)
+            } catch (BadResourceException)
             {
                 MessageBox.Show(string.Format("The channel '{0}' is not a valid channel!", textBox9.Text));
             }
@@ -258,9 +263,9 @@ namespace TwitchLibExample
 
         private async void button10_Click(object sender, EventArgs e)
         {
-            List<TwitchLib.TwitchAPIClasses.Chatter> chatters = await TwitchApi.GetChatters(textBox10.Text);
+            List<Chatter> chatters = await TwitchApi.GetChatters(textBox10.Text);
             string messageContents = "";
-            foreach(TwitchLib.TwitchAPIClasses.Chatter user in chatters)
+            foreach(Chatter user in chatters)
             {
                 if(messageContents == "")
                 {
@@ -333,8 +338,8 @@ namespace TwitchLibExample
 
         private async void button16_Click(object sender, EventArgs e)
         {
-            List<TwitchLib.TwitchAPIClasses.Video> videos = await TwitchApi.GetChannelVideos(textBox20.Text);
-            foreach(TwitchLib.TwitchAPIClasses.Video vid in videos)
+            List<Video> videos = await TwitchApi.GetChannelVideos(textBox20.Text);
+            foreach(Video vid in videos)
             {
                 MessageBox.Show($"Title: {vid.Title}\nDescription: {vid.Description}\nStatus: {vid.Status}\nId: {vid.Id}\nTag List: {vid.TagList}\n Recorded At: {vid.RecordedAt}\n" +
                     $"Game: {vid.Game}\nPreview: {vid.Preview}\nBroadcast Id: {vid.BroadcastId}\nLength: {vid.Length}\nUrl: {vid.Url}\nViews: {vid.Views}\n");
@@ -353,8 +358,8 @@ namespace TwitchLibExample
 
         private async void button18_Click(object sender, EventArgs e)
         {
-            List<TwitchLib.TwitchAPIClasses.TeamMember> members = await TwitchApi.GetTeamMembers(textBox22.Text);
-            foreach(TwitchLib.TwitchAPIClasses.TeamMember member in members)
+            List<TeamMember> members = await TwitchApi.GetTeamMembers(textBox22.Text);
+            foreach(TeamMember member in members)
             {
                 MessageBox.Show($"Name: {member.Name}\nDescription: {member.Description}\nTitle: {member.Title}\nMeta Game: {member.MetaGame}\nDisplay Name: {member.DisplayName}\n" +
                     $"Link: {member.Link}\nFollower Count: {member.FollowerCount}\nTotal Views: {member.TotalViews}\nCurrent Views: {member.CurrentViews}");
@@ -372,9 +377,9 @@ namespace TwitchLibExample
 
         private async void button20_Click(object sender, EventArgs e)
         {
-            TwitchLib.TwitchAPIClasses.FollowersResponse response = await TwitchApi.GetTwitchFollowers(textBox24.Text);
+            FollowersResponse response = await TwitchApi.GetTwitchFollowers(textBox24.Text);
             MessageBox.Show($"Cursor: {response.Cursor}\nFollower Count: {response.TotalFollowerCount}");
-            foreach(TwitchLib.TwitchAPIClasses.Follower follower in response.Followers)
+            foreach(Follower follower in response.Followers)
             {
                 MessageBox.Show(string.Format("notifications: {0}\ncreated at:{1}\n[user] name: {2}\n[user] display name: {3}\n[user] bio: {4}\n [user] logo: {5}\n[user] created at: {6}\n[user] updated at: {7}", follower.Notifications, follower.CreatedAt, follower.User.Name, follower.User.DisplayName, follower.User.Bio, follower.User.Logo, follower.User.CreatedAt, follower.User.UpdatedAt));
             }
@@ -382,7 +387,7 @@ namespace TwitchLibExample
 
         private async void button21_Click(object sender, EventArgs e)
         {
-            TwitchLib.TwitchAPIClasses.Stream stream = await TwitchApi.GetTwitchStream(textBox25.Text);
+            TwitchLib.Models.API.Stream stream = await TwitchApi.GetTwitchStream(textBox25.Text);
             MessageBox.Show(string.Format("average fps: {0}\nchannel name: {1}\ncreated at: {2}\ndelay: {3}\ngame: {4}\nid: {5}\nplaylist: {6}\npreview large: {7}\nvideo height: {8}\n viewers: {9}", 
                 stream.AverageFps, stream.Channel.Name, stream.CreatedAt.Second, stream.Delay, stream.Game, stream.Id, stream.IsPlaylist, stream.Preview.Large, stream.VideoHeight, stream.Viewers));
         }
@@ -395,9 +400,9 @@ namespace TwitchLibExample
 
         private async void button23_Click(object sender, EventArgs e)
         {
-            List<TwitchLib.TwitchAPIClasses.Channel> results = await TwitchApi.SearchChannels(textBox27.Text);
+            List<Channel> results = await TwitchApi.SearchChannels(textBox27.Text);
             if (results.Count > 0)
-                foreach(TwitchLib.TwitchAPIClasses.Channel channel in results)
+                foreach(Channel channel in results)
                     MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At: {6}\n" +
                     "Updated At: {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
                     channel.Status, channel.BroadcasterLanguage, channel.DisplayName, channel.Game, channel.Language, channel.Name, channel.CreatedAt, channel.UpdatedAt,
@@ -444,7 +449,7 @@ namespace TwitchLibExample
         private void OnNewFollowersDetected(object sender, TwitchLib.Services.FollowerService.OnNewFollowersDetectedArgs e)
         {
             string newFollowers = "";
-            foreach(TwitchLib.TwitchAPIClasses.Follower follower in e.NewFollowers)
+            foreach(Follower follower in e.NewFollowers)
                 if (newFollowers == "")
                     newFollowers = follower.User.Name;
                 else
@@ -456,19 +461,19 @@ namespace TwitchLibExample
         private async void button29_Click(object sender, EventArgs e)
         {
             //textbox29
-            TwitchLib.TwitchAPIClasses.FollowedUsersResponse response = await TwitchApi.GetFollowedUsers(textBox29.Text);
+            FollowedUsersResponse response = await TwitchApi.GetFollowedUsers(textBox29.Text);
             MessageBox.Show($"Channe: {textBox29.Text}\nTotal followed users: {response.TotalFollowCount}");
-            foreach (TwitchLib.TwitchAPIClasses.Follow follow in response.Follows)
+            foreach (Follow follow in response.Follows)
                 MessageBox.Show($"Followed user: {follow.Channel.DisplayName}\nFollow created at: {follow.CreatedAt}");
         }
 
         private async void button3_Click(object sender, EventArgs e)
         {
             //textbox6
-            List<TwitchLib.TwitchAPIClasses.Stream> results = await TwitchApi.SearchStreams(textBox6.Text);
+            List<TwitchLib.Models.API.Stream> results = await TwitchApi.SearchStreams(textBox6.Text);
             if (results.Count > 0)
             {
-                foreach (TwitchLib.TwitchAPIClasses.Stream stream in results)
+                foreach (TwitchLib.Models.API.Stream stream in results)
                     MessageBox.Show($"Result: {stream.Channel.Name}\n\nStarted at: {stream.CreatedAt}\nGame: {stream.Game}");
             } else
             {
@@ -479,10 +484,10 @@ namespace TwitchLibExample
         private async void button28_Click(object sender, EventArgs e)
         {
             //textbox7
-            List<TwitchLib.TwitchAPIClasses.Game> results = await TwitchApi.SearchGames(textBox7.Text);
+            List<Game> results = await TwitchApi.SearchGames(textBox7.Text);
             if (results.Count > 0)
             {
-                foreach (TwitchLib.TwitchAPIClasses.Game game in results)
+                foreach (Game game in results)
                     MessageBox.Show($"Result: {game.Name}\n\nPopularity: {game.Popularity}");
             }
             else
@@ -505,9 +510,9 @@ namespace TwitchLibExample
         {
             //textbox31
             var feed = await TwitchApi.GetChannelFeed(textBox31.Text);
-            foreach(TwitchLib.TwitchAPIClasses.Post post in feed.Posts)
+            foreach(Post post in feed.Posts)
             {
-                foreach (TwitchLib.TwitchAPIClasses.Post.Comment comment in post.Comments)
+                foreach (Post.Comment comment in post.Comments)
                     MessageBox.Show($"Comment author: {comment.User.Name}\n\nComment: {comment.Body}");
                 MessageBox.Show($"Post: {post.Body}");
             }
@@ -541,14 +546,14 @@ namespace TwitchLibExample
         {
             //textbox34
             var blocks = await TwitchApi.GetBlockedList(textBox14.Text, textBox15.Text);
-            foreach (TwitchLib.TwitchAPIClasses.Block block in blocks)
+            foreach (Block block in blocks)
                 MessageBox.Show($"Updated at: {block.UpdatedAt}\nUsername: {block.User.Name}");
         }
 
         private async void button37_Click(object sender, EventArgs e)
         {
             var editors = await TwitchApi.GetChannelEditors(textBox14.Text, textBox15.Text);
-            foreach (TwitchLib.TwitchAPIClasses.User user in editors)
+            foreach (User user in editors)
                 MessageBox.Show($"User: {user.Name}");
         }
 
@@ -579,8 +584,8 @@ namespace TwitchLibExample
         private async void button40_Click(object sender, EventArgs e)
         {
             //textbox36
-            List<TwitchLib.TwitchAPIClasses.BadgeResponse.Badge> badges = (await TwitchApi.GetChannelBadges(textBox36.Text)).ChannelBadges;
-            foreach (TwitchLib.TwitchAPIClasses.BadgeResponse.Badge badge in badges)
+            List<BadgeResponse.Badge> badges = (await TwitchApi.GetChannelBadges(textBox36.Text)).ChannelBadges;
+            foreach (BadgeResponse.Badge badge in badges)
                 MessageBox.Show($"Available images for: {badge.BadgeName}\nAlpha: {badge.Alpha}\nImage: {badge.Image}\nSVG: {badge.SVG}");
         }
 
@@ -591,7 +596,7 @@ namespace TwitchLibExample
             {
                 if (comboBox4.Text.ToLower() == client.TwitchUsername.ToLower())
                 {
-                    foreach (TwitchLib.TwitchClientClasses.JoinedChannel channel in client.JoinedChannels)
+                    foreach (JoinedChannel channel in client.JoinedChannels)
                         comboBox5.Items.Add(channel.Channel);
                 }
             }
@@ -640,7 +645,7 @@ namespace TwitchLibExample
         private async void button45_Click(object sender, EventArgs e)
         {
             //textbox38
-            TwitchLib.TwitchAPIClasses.Channels channels = await TwitchApi.GetChannelsObject(textBox38.Text);
+            Channels channels = await TwitchApi.GetChannelsObject(textBox38.Text);
             MessageBox.Show($"Display name: {channels.DisplayName}\n Fighting Ad Block: {channels.FightAdBlock}\nSteam Id: {channels.SteamId}");
         }
 
@@ -654,7 +659,7 @@ namespace TwitchLibExample
                 MessageBox.Show($"Channel: {channelName}");
         }
 
-        private void pubsubOnError(object sender, TwitchPubSub.onPubSubServiceErrorArgs e)
+        private void pubsubOnError(object sender, OnPubSubServiceErrorArgs e)
         {
             MessageBox.Show($"PubSub error! {e.Exception.Message}");
         }
@@ -670,7 +675,7 @@ namespace TwitchLibExample
             pubsub.ListenToChatModeratorActions(0, 0, "moderators_oauth");
         }
 
-        private void pubsubOnListenResponse(object sender, TwitchPubSub.onListenResponseArgs e)
+        private void pubsubOnListenResponse(object sender, OnListenResponseArgs e)
         {
             if (e.Successful)
                 MessageBox.Show($"Successfully verified listening to topic: {e.Topic}");
@@ -678,18 +683,18 @@ namespace TwitchLibExample
                 MessageBox.Show($"Failed to listen! Error: {e.Response.Error}");
         }
 
-        private void pubsubOnTimeout(object sender, TwitchPubSub.onTimeoutArgs e)
+        private void pubsubOnTimeout(object sender, OnTimeoutArgs e)
         {
             Console.WriteLine("Test");
             MessageBox.Show($"New timeout event! Details below:\nTimedout user: {e.TimedoutUser}\nTimeout duration: {e.TimeoutDuration} seconds\nTimeout reason: {e.TimeoutReason}\nTimeout by: {e.TimedoutBy}");
         }
 
-        private void pubsubOnBan(object sender, TwitchPubSub.onBanArgs e)
+        private void pubsubOnBan(object sender, OnBanArgs e)
         {
             MessageBox.Show($"New ban event! Details below:\nBanned user: {e.BannedUser}\nBan reason: {e.BanReason}\nBanned by: {e.BannedBy}");
         }
 
-        private void pubsubOnUnban(object sender, TwitchPubSub.onUnbanArgs e)
+        private void pubsubOnUnban(object sender, OnUnbanArgs e)
         {
             MessageBox.Show($"New unban event! Details below:\nUnbanned user:{e.UnbannedUser}\nUnbanned by: {e.UnbannedBy}");
         }
@@ -697,19 +702,19 @@ namespace TwitchLibExample
         private void button47_Click(object sender, EventArgs e)
         {
             pubsub = new TwitchPubSub(true);
-            pubsub.onListenResponse += new EventHandler<TwitchPubSub.onListenResponseArgs>(pubsubOnListenResponse);
-            pubsub.onPubSubServiceConnected += new EventHandler(pubsubOnConnected);
-            pubsub.onPubSubServiceClosed += new EventHandler(pubsubOnClose);
-            pubsub.onTimeout += new EventHandler<TwitchPubSub.onTimeoutArgs>(pubsubOnTimeout);
-            pubsub.onBan += new EventHandler<TwitchPubSub.onBanArgs>(pubsubOnBan);
-            pubsub.onUnban += new EventHandler<TwitchPubSub.onUnbanArgs>(pubsubOnUnban);
+            pubsub.OnListenResponse += new EventHandler<OnListenResponseArgs>(pubsubOnListenResponse);
+            pubsub.OnPubSubServiceConnected += new EventHandler(pubsubOnConnected);
+            pubsub.OnPubSubServiceClosed += new EventHandler(pubsubOnClose);
+            pubsub.OnTimeout += new EventHandler<OnTimeoutArgs>(pubsubOnTimeout);
+            pubsub.OnBan += new EventHandler<OnBanArgs>(pubsubOnBan);
+            pubsub.OnUnban += new EventHandler<OnUnbanArgs>(pubsubOnUnban);
             pubsub.Connect();
         }
 
         private async void button48_Click(object sender, EventArgs e)
         {
             var featuredStreams = await TwitchApi.GetFeaturedStreams();
-            foreach (TwitchLib.TwitchAPIClasses.FeaturedStream stream in featuredStreams)
+            foreach (FeaturedStream stream in featuredStreams)
                 MessageBox.Show($"Stream name: {stream.Stream.Channel.Name}\nStream text: {stream.Text}\nViewers: {stream.Stream.Viewers}");
         }
 
