@@ -14,17 +14,6 @@ namespace TwitchLib.Services
         private TimeSpan _periodDuration;
         private int _currentMessageCount;
 
-        /// <summary>Enum representing the available throttle types.</summary>
-        public enum ThrottleType
-        {
-            /// <summary>Throttle based on too many messages.</summary>
-            TooManyMessages = 0,
-            /// <summary>Throttle based on message being too short.</summary>
-            MessageTooShort = 1,
-            /// <summary>Throttle based on message being too long.</summary>
-            MessageTooLong = 2
-        }
-
         /// <summary>Property representing number of messages allowed before throttling in a period.</summary>
         public int MessagesAllowedInPeriod { get; set; }
         /// <summary>Property representing the time period for throttling.</summary>
@@ -55,22 +44,23 @@ namespace TwitchLib.Services
             if(message.Length > MaximumMessageLengthAllowed && MaximumMessageLengthAllowed != -1)
             {
                 OnClientThrottled?.Invoke(this,
-                    new OnClientThrottledArgs { Message = message, PeriodDuration = PeriodDuration,
-                        ThrottleViolation = ThrottleType.MessageTooLong });
+                    new Events.Services.MessageThrottler.OnClientThrottledArgs
+                    { Message = message, PeriodDuration = PeriodDuration,
+                        ThrottleViolation = Common.ThrottleType.MessageTooLong });
                 return false;
             }
             if(message.Length < MinimumMessageLengthAllowed)
             {
                 OnClientThrottled?.Invoke(this,
-                    new OnClientThrottledArgs { Message = message, PeriodDuration = PeriodDuration,
-                        ThrottleViolation = ThrottleType.MessageTooShort });
+                    new Events.Services.MessageThrottler.OnClientThrottledArgs { Message = message, PeriodDuration = PeriodDuration,
+                        ThrottleViolation = Common.ThrottleType.MessageTooShort });
                 return false;
             }
             if(_currentMessageCount == MessagesAllowedInPeriod)
             {
                 OnClientThrottled?.Invoke(this,
-                    new OnClientThrottledArgs { Message = message, PeriodDuration = PeriodDuration,
-                        ThrottleViolation = ThrottleType.TooManyMessages });
+                    new Events.Services.MessageThrottler.OnClientThrottledArgs { Message = message, PeriodDuration = PeriodDuration,
+                        ThrottleViolation = Common.ThrottleType.TooManyMessages });
                 return false;
             }
 
@@ -83,34 +73,16 @@ namespace TwitchLib.Services
         {
             _periodTimer.Stop();
             OnThrottledPeriodReset?.Invoke(this,
-                new OnThrottlePeriodResetArgs { TimeInPeriod = PeriodDuration });
+                new Events.Services.MessageThrottler.OnThrottlePeriodResetArgs { TimeInPeriod = PeriodDuration });
             _currentMessageCount = 0;
         }
         #endregion
 
         #region EVENTS
         /// <summary>Event fires when service starts.</summary>
-        public event EventHandler<OnClientThrottledArgs> OnClientThrottled;
+        public event EventHandler<Events.Services.MessageThrottler.OnClientThrottledArgs> OnClientThrottled;
         /// <summary>Event fires when service stops.</summary>
-        public event EventHandler<OnThrottlePeriodResetArgs> OnThrottledPeriodReset;
-
-        /// <summary>Class representing event args for OnClientThrottled.</summary>
-        public class OnClientThrottledArgs : EventArgs
-        {
-            /// <summary>Event property representing reason why message was throttled.</summary>
-            public ThrottleType ThrottleViolation;
-            /// <summary>Event property representing message that failed to send due to throttling.</summary>
-            public string Message;
-            /// <summary>Event property representing message that failed to send due to throttling.</summary>
-            public TimeSpan PeriodDuration;
-        }
-
-        /// <summary>Class representing event args for OnServiceStopped event.</summary>
-        public class OnThrottlePeriodResetArgs : EventArgs
-        {
-            /// <summary>Event property representing number of seconds in new throttle period.</summary>
-            public TimeSpan TimeInPeriod;
-        }
+        public event EventHandler<Events.Services.MessageThrottler.OnThrottlePeriodResetArgs> OnThrottledPeriodReset;
         #endregion
     }
 }
