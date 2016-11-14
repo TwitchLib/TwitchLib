@@ -15,6 +15,9 @@ using TwitchLib.Models.Client;
 using TwitchLib.Events.Client;
 using TwitchLib.Exceptions.API;
 using TwitchLib.Events.PubSub;
+using TwitchLib.Events.Services.FollowerService;
+using TwitchLib.Events.Services.MessageThrottler;
+using TwitchLib.Enums;
 
 namespace TwitchLibExample
 {
@@ -46,7 +49,7 @@ namespace TwitchLibExample
                 textBox15.Text = twitchOAuth;
             }
             this.Height = 640;
-            foreach (Common.ChatColorPresets color in Enum.GetValues(typeof(Common.ChatColorPresets)))
+            foreach (TwitchLib.Enums.ChatColorPresets color in Enum.GetValues(typeof(TwitchLib.Enums.ChatColorPresets)))
                 comboBox7.Items.Add(color.ToString());
             MessageBox.Show("This application is intended to demonstrate basic functionality of TwitchLib.\n\n-swiftyspiffy");
         }
@@ -151,12 +154,12 @@ namespace TwitchLibExample
             //MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was banned with reasoning: {e.BanReason}");
         }
 
-        public void onClientThrottled(object sender, TwitchLib.Services.MessageThrottler.OnClientThrottledArgs e)
+        public void onClientThrottled(object sender, OnClientThrottledArgs e)
         {
             MessageBox.Show($"The message '{e.Message}' was blocked by a message throttler. Throttle period duration: {e.PeriodDuration.TotalSeconds}.\n\nMessage violation: {e.ThrottleViolation}");
         }
 
-        public void onThrottlePeriodReset(object sender, TwitchLib.Services.MessageThrottler.OnThrottlePeriodResetArgs e)
+        public void onThrottlePeriodReset(object sender, OnThrottlePeriodResetArgs e)
         {
             MessageBox.Show($"The message throttle period was reset.");
         }
@@ -318,17 +321,17 @@ namespace TwitchLibExample
 
         private void button8_Click(object sender, EventArgs e)
         {
-            TwitchApi.RunCommercial(TwitchApi.CommercialLength.Seconds30, textBox14.Text, textBox15.Text);
+            TwitchApi.RunCommercial(CommercialLength.Seconds30, textBox14.Text, textBox15.Text);
         }
 
         private void button13_Click(object sender, EventArgs e)
         {
-            TwitchApi.RunCommercial(TwitchApi.CommercialLength.Seconds60, textBox14.Text, textBox15.Text);
+            TwitchApi.RunCommercial(CommercialLength.Seconds60, textBox14.Text, textBox15.Text);
         }
 
         private void button14_Click(object sender, EventArgs e)
         {
-            TwitchApi.RunCommercial(TwitchApi.CommercialLength.Seconds90, textBox14.Text, textBox15.Text);
+            TwitchApi.RunCommercial(CommercialLength.Seconds90, textBox14.Text, textBox15.Text);
         }
 
         private void button15_Click(object sender, EventArgs e)
@@ -436,17 +439,17 @@ namespace TwitchLibExample
             followerService.StartService();
         }
 
-        private void OnServiceStarted(object sender, TwitchLib.Services.FollowerService.OnServiceStartedArgs e)
+        private void OnServiceStarted(object sender, OnServiceStartedArgs e)
         {
             MessageBox.Show($"Follower service started with settings:\nChannel: {e.Channel}\nCheck Interval Seconds: {e.CheckIntervalSeconds}\nQuery Count: {e.QueryCount}");
         }
 
-        private void OnServiceStopped(object sender, TwitchLib.Services.FollowerService.OnServiceStoppedArgs e)
+        private void OnServiceStopped(object sender, OnServiceStoppedArgs e)
         {
             MessageBox.Show($"Follower service stopped with settings:\nChannel: {e.Channel}\nCheck Interval Seconds: {e.CheckIntervalSeconds}\nQuery Count: {e.QueryCount}");
         }
 
-        private void OnNewFollowersDetected(object sender, TwitchLib.Services.FollowerService.OnNewFollowersDetectedArgs e)
+        private void OnNewFollowersDetected(object sender, OnNewFollowersDetectedArgs e)
         {
             string newFollowers = "";
             foreach(Follower follower in e.NewFollowers)
@@ -759,7 +762,7 @@ namespace TwitchLibExample
         private void button54_Click(object sender, EventArgs e)
         {
             if (comboBox7.Text != "")
-                clients[0].ChangeChatColor((Common.ChatColorPresets)Enum.Parse(typeof(Common.ChatColorPresets), comboBox7.Text));
+                clients[0].ChangeChatColor((TwitchLib.Enums.ChatColorPresets)Enum.Parse(typeof(TwitchLib.Enums.ChatColorPresets), comboBox7.Text));
         }
     }
 }
