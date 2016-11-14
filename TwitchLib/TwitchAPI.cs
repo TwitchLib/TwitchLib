@@ -19,38 +19,6 @@ namespace TwitchLib
         private static string ClientId { get; set; }
         private static string AccessToken { get; set; } 
 
-        #region Enums
-        /// <summary>
-        /// A list of valid commercial lengths.
-        /// </summary>
-        public enum CommercialLength
-        {
-            /// <summary>30 second commercial</summary>
-            Seconds30,
-            /// <summary>60 second commercial</summary>
-            Seconds60,
-            /// <summary>90 second commercial</summary>
-            Seconds90,
-            /// <summary>120 second commercial</summary>
-            Seconds120,
-            /// <summary>150 second commercial</summary>
-            Seconds150,
-            /// <summary>180 second commercial</summary>
-            Seconds180
-        }
-
-        /// <summary>
-        /// A list of valid sorting directions.
-        /// </summary>
-        public enum SortDirection
-        {
-            /// <summary>Descending sort direction.</summary>
-            Descending,
-            /// <summary>Ascending sort direction.</summary>
-            Ascending
-        }
-        #endregion
-
         #region Get Objects
         /// <summary>
         /// Retrieves a Channels object regarding a specific channel.
@@ -353,17 +321,17 @@ namespace TwitchLib
             var chatters = JObject.Parse(resp).SelectToken("chatters");
             var chatterList =
                 chatters.SelectToken("moderators")
-                    .Select(user => new Chatter(user.ToString(), Common.UserType.Moderator))
+                    .Select(user => new Chatter(user.ToString(), Enums.UserType.Moderator))
                     .ToList();
             chatterList.AddRange(
-                chatters.SelectToken("staff").Select(user => new Chatter(user.ToString(), Common.UserType.Staff)));
+                chatters.SelectToken("staff").Select(user => new Chatter(user.ToString(), Enums.UserType.Staff)));
             chatterList.AddRange(
-                chatters.SelectToken("admins").Select(user => new Chatter(user.ToString(), Common.UserType.Admin)));
+                chatters.SelectToken("admins").Select(user => new Chatter(user.ToString(), Enums.UserType.Admin)));
             chatterList.AddRange(
                 chatters.SelectToken("global_mods")
-                    .Select(user => new Chatter(user.ToString(), Common.UserType.GlobalModerator)));
+                    .Select(user => new Chatter(user.ToString(), Enums.UserType.GlobalModerator)));
             chatterList.AddRange(
-                chatters.SelectToken("viewers").Select(user => new Chatter(user.ToString(), Common.UserType.Viewer)));
+                chatters.SelectToken("viewers").Select(user => new Chatter(user.ToString(), Enums.UserType.Viewer)));
             return chatterList;
         }
         #endregion
@@ -519,13 +487,13 @@ namespace TwitchLib
         /// <param name="direction">Creation date sorting direction.</param>
         /// <returns>A list of TwitchFollower objects.</returns>
         public static async Task<FollowersResponse> GetTwitchFollowers(string channel, int limit = 25,
-            string cursor = "-1", SortDirection direction = SortDirection.Descending)
+            string cursor = "-1", Enums.SortDirection direction = Enums.SortDirection.Descending)
         {
             string args = "";
 
             args += "?limit=" + limit;
             args += cursor != "-1" ? $"&cursor={cursor}" : "";
-            args += "&direction=" + (direction == SortDirection.Descending ? "desc" : "asc");
+            args += "&direction=" + (direction == Enums.SortDirection.Descending ? "desc" : "asc");
 
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
             return new FollowersResponse(resp);
@@ -539,20 +507,20 @@ namespace TwitchLib
         /// <param name="offset">Integer representing list offset</param>
         /// <param name="sortKey">Enum representing sort order.</param>
         /// <returns>FollowedUsersResponse object.</returns>
-        public static async Task<FollowedUsersResponse> GetFollowedUsers(string channel, int limit = 25, int offset = 0, Common.SortKey sortKey = Common.SortKey.CreatedAt)
+        public static async Task<FollowedUsersResponse> GetFollowedUsers(string channel, int limit = 25, int offset = 0, Enums.SortKey sortKey = Enums.SortKey.CreatedAt)
         {
             string args = "";
             args += "?limit=" + limit;
             args += "&offset=" + offset;
             switch (sortKey)
             {
-                case Common.SortKey.CreatedAt:
+                case Enums.SortKey.CreatedAt:
                     args += "&sortby=created_at";
                     break;
-                case Common.SortKey.LastBroadcaster:
+                case Enums.SortKey.LastBroadcaster:
                     args += "&sortby=last_broadcast";
                     break;
-                case Common.SortKey.Login:
+                case Enums.SortKey.Login:
                     args += "&sortby=login";
                     break;
             }
@@ -654,29 +622,29 @@ namespace TwitchLib
         /// <param name="channel">The channel to start a commercial on.</param>
         /// <param name="accessToken">An oauth token with the required scope.</param>
         /// <returns>The response of the request.</returns>
-        public static async Task<string> RunCommercial(CommercialLength length, string channel,
+        public static async Task<string> RunCommercial(Enums.CommercialLength length, string channel,
             string accessToken = null)
         {
             // Default to 30 seconds?
             int seconds = 30;
             switch(length)
             {
-                case CommercialLength.Seconds30:
+                case Enums.CommercialLength.Seconds30:
                     seconds = 30;
                     break;
-                case CommercialLength.Seconds60:
+                case Enums.CommercialLength.Seconds60:
                     seconds = 60;
                     break;
-                case CommercialLength.Seconds90:
+                case Enums.CommercialLength.Seconds90:
                     seconds = 90;
                     break;
-                case CommercialLength.Seconds120:
+                case Enums.CommercialLength.Seconds120:
                     seconds = 120;
                     break;
-                case CommercialLength.Seconds150:
+                case Enums.CommercialLength.Seconds150:
                     seconds = 150;
                     break;
-                case CommercialLength.Seconds180:
+                case Enums.CommercialLength.Seconds180:
                     seconds = 180;
                     break;
             }

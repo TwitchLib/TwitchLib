@@ -46,21 +46,21 @@ namespace TwitchLib.Services
                 OnClientThrottled?.Invoke(this,
                     new Events.Services.MessageThrottler.OnClientThrottledArgs
                     { Message = message, PeriodDuration = PeriodDuration,
-                        ThrottleViolation = Common.ThrottleType.MessageTooLong });
+                        ThrottleViolation = Enums.ThrottleType.MessageTooLong });
                 return false;
             }
             if(message.Length < MinimumMessageLengthAllowed)
             {
                 OnClientThrottled?.Invoke(this,
                     new Events.Services.MessageThrottler.OnClientThrottledArgs { Message = message, PeriodDuration = PeriodDuration,
-                        ThrottleViolation = Common.ThrottleType.MessageTooShort });
+                        ThrottleViolation = Enums.ThrottleType.MessageTooShort });
                 return false;
             }
             if(_currentMessageCount == MessagesAllowedInPeriod)
             {
                 OnClientThrottled?.Invoke(this,
                     new Events.Services.MessageThrottler.OnClientThrottledArgs { Message = message, PeriodDuration = PeriodDuration,
-                        ThrottleViolation = Common.ThrottleType.TooManyMessages });
+                        ThrottleViolation = Enums.ThrottleType.TooManyMessages });
                 return false;
             }
 

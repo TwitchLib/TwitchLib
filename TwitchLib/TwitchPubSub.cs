@@ -199,7 +199,7 @@ namespace TwitchLib
         private void listenToTopic(string topic, string oauth = null, bool unlisten = false)
         {
             string nonce = generateNonce();
-            previousRequest = new Models.PubSub.PreviousRequest(nonce, Common.PubSubRequestType.ListenToTopic, topic);
+            previousRequest = new Models.PubSub.PreviousRequest(nonce, Enums.PubSubRequestType.ListenToTopic, topic);
             JObject jsonData = new JObject(
                 new JProperty("type", !unlisten ? "LISTEN" : "UNLISTEN"),
                 new JProperty("nonce", nonce),

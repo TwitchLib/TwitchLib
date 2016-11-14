@@ -40,7 +40,7 @@ namespace TwitchLib.Models.Client
         /// <summary>Property representing whether or not the resubscriber is a subscriber (YES).</summary>
         public bool Sub { get; protected set; }
         /// <summary>Property representing the user type of the resubscriber.</summary>
-        public Common.UserType UserType { get; protected set; }
+        public Enums.UserType UserType { get; protected set; }
         /// <summary>Property representing the raw IRC message (for debugging/customized parsing)</summary>
         public string RawIrc { get; protected set; }
         /// <summary>Property representing the channel the resubscription happened in.</summary>
@@ -112,19 +112,19 @@ namespace TwitchLib.Models.Client
                 switch (ircString.Split(' ')[0].Split(';')[13].Split('=')[1])
                 {
                     case "mod":
-                        UserType = Common.UserType.Moderator;
+                        UserType = Enums.UserType.Moderator;
                         break;
                     case "global_mod":
-                        UserType = Common.UserType.GlobalModerator;
+                        UserType = Enums.UserType.GlobalModerator;
                         break;
                     case "admin":
-                        UserType = Common.UserType.Admin;
+                        UserType = Enums.UserType.Admin;
                         break;
                     case "staff":
-                        UserType = Common.UserType.Staff;
+                        UserType = Enums.UserType.Staff;
                         break;
                     default:
-                        UserType = Common.UserType.Viewer;
+                        UserType = Enums.UserType.Viewer;
                         break;
                 }
             }

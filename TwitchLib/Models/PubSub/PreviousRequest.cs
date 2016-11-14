@@ -9,10 +9,10 @@ namespace TwitchLib.Models.PubSub
     public class PreviousRequest
     {
         public string Nonce { get; protected set; }
-        public Common.PubSubRequestType RequestType { get; protected set; }
+        public Enums.PubSubRequestType RequestType { get; protected set; }
         public string Topic { get; protected set; }
 
-        public PreviousRequest(string nonce, Common.PubSubRequestType requestType, string topic = "none set")
+        public PreviousRequest(string nonce, Enums.PubSubRequestType requestType, string topic = "none set")
         {
             Nonce = nonce;
             RequestType = requestType;

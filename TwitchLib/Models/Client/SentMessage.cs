@@ -15,7 +15,7 @@ namespace TwitchLib.Models.Client
         public string EmoteSet { get; protected set; }
         public bool IsModerator { get; protected set; }
         public bool IsSubscriber { get; protected set; }
-        public Common.UserType UserType { get; protected set; }
+        public Enums.UserType UserType { get; protected set; }
         public string Message { get; protected set; }
 
         public SentMessage(UserState state, string message)

@@ -24,7 +24,7 @@ namespace TwitchLib.Models.Client
         /// <summary>Property representing Turbo status.</summary>
         public bool Moderator { get; protected set; }
         /// <summary>Property representing returned user type of user.</summary>
-        public Common.UserType UserType { get; protected set; }
+        public Enums.UserType UserType { get; protected set; }
 
         /// <summary>
         /// Constructor for UserState.
@@ -81,28 +81,28 @@ namespace TwitchLib.Models.Client
             switch (ircString.Split('=')[6].Split(' ')[0])
             {
                 case "mod":
-                    UserType = Common.UserType.Moderator;
+                    UserType = Enums.UserType.Moderator;
                     break;
 
                 case "global_mod":
-                    UserType = Common.UserType.GlobalModerator;
+                    UserType = Enums.UserType.GlobalModerator;
                     break;
 
                 case "admin":
-                    UserType = Common.UserType.Admin;
+                    UserType = Enums.UserType.Admin;
                     break;
 
                 case "staff":
-                    UserType = Common.UserType.Staff;
+                    UserType = Enums.UserType.Staff;
                     break;
 
                 default:
-                    UserType = Common.UserType.Viewer;
+                    UserType = Enums.UserType.Viewer;
                     break;
             }
             Channel = ircString.Split(' ')[3].Replace("#", "");
             if (DisplayName.ToLower() == Channel.ToLower())
-                UserType = Common.UserType.Broadcaster;
+                UserType = Enums.UserType.Broadcaster;
         }
     }
 }

@@ -53,6 +53,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\ChatColorPresets.cs" />
+    <Compile Include="Enums\CommercialLength.cs" />
+    <Compile Include="Enums\PubSubRequestType.cs" />
+    <Compile Include="Enums\SortDirection.cs" />
+    <Compile Include="Enums\SortKey.cs" />
+    <Compile Include="Enums\StringEnum.cs" />
+    <Compile Include="Enums\ThrottleType.cs" />
+    <Compile Include="Enums\UserType.cs" />
     <Compile Include="Events\Client\OnChannelStateChangedArgs.cs" />
     <Compile Include="Events\Client\OnChatClearedArgs.cs" />
     <Compile Include="Events\Client\OnChatColorChangedArgs.cs" />

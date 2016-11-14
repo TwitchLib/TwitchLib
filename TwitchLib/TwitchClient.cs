@@ -255,9 +255,9 @@ namespace TwitchLib
         /// </summary>
         /// <param name="channel">JoinedChannel object representing which channel to send command to.</param>
         /// <param name="color">Enum representing available chat preset colors.</param>
-        public void ChangeChatColor(JoinedChannel channel, Common.ChatColorPresets color)
+        public void ChangeChatColor(JoinedChannel channel, Enums.ChatColorPresets color)
         {
-            SendMessage(channel, $".color {color.ToString()}");
+            SendMessage(channel, $".color {color}");
         }
 
         /// <summary>
@@ -265,18 +265,18 @@ namespace TwitchLib
         /// </summary>
         /// <param name="channel">String representing the channel to send the command to.</param>
         /// <param name="color">Enum representing available chat preset colors.</param>
-        public void ChangeChatColor(string channel, Common.ChatColorPresets color)
+        public void ChangeChatColor(string channel, Enums.ChatColorPresets color)
         {
-            SendMessage(channel, $".color {color.ToString()}");
+            SendMessage(channel, $".color {color}");
         }
 
         /// <summary>
         /// Sends request to change color of chat name in Twitch chat.
         /// </summary>
         /// <param name="color">Enum representing available chat preset colors.</param>
-        public void ChangeChatColor(Common.ChatColorPresets color)
+        public void ChangeChatColor(Enums.ChatColorPresets color)
         {
-            SendMessage($".color {color.ToString()}");
+            SendMessage($".color {color}");
         }
         #endregion
 

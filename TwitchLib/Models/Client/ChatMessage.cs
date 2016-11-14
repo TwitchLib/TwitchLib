@@ -27,7 +27,7 @@ namespace TwitchLib.Models.Client
         /// <summary>Twitch chat message contents.</summary>
         public string Message { get; protected set; }
         /// <summary>User type can be viewer, moderator, global mod, admin, or staff</summary>
-        public Common.UserType UserType { get; protected set; }
+        public Enums.UserType UserType { get; protected set; }
         /// <summary>Twitch channel message was sent from (useful for multi-channel bots).</summary>
         public string Channel { get; protected set; }
         /// <summary>Channel specific subscriber status.</summary>
@@ -132,19 +132,19 @@ namespace TwitchLib.Models.Client
                     switch (part.Split('=')[1].Split(' ')[0])
                     {
                         case "mod":
-                            UserType = Common.UserType.Moderator;
+                            UserType = Enums.UserType.Moderator;
                             break;
                         case "global_mod":
-                            UserType = Common.UserType.GlobalModerator;
+                            UserType = Enums.UserType.GlobalModerator;
                             break;
                         case "admin":
-                            UserType = Common.UserType.Admin;
+                            UserType = Enums.UserType.Admin;
                             break;
                         case "staff":
-                            UserType = Common.UserType.Staff;
+                            UserType = Enums.UserType.Staff;
                             break;
                         default:
-                            UserType = Common.UserType.Viewer;
+                            UserType = Enums.UserType.Viewer;
                             break;
                     }
                 }
@@ -205,13 +205,13 @@ namespace TwitchLib.Models.Client
             // Check if message is from broadcaster
             if(Channel.ToLower() == Username.ToLower())
             {
-                UserType = Common.UserType.Broadcaster;
+                UserType = Enums.UserType.Broadcaster;
                 IsBroadcaster = true;
             }
         }
 
         public ChatMessage(List<KeyValuePair<string, string>> badges, string channel, string colorHex, string displayName, 
-            string emoteSet, bool moderator, bool subscriber, Common.UserType userType, string message)
+            string emoteSet, bool moderator, bool subscriber, Enums.UserType userType, string message)
         {
             Badges = badges;
             Channel = channel;
