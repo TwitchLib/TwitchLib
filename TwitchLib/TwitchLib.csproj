@@ -107,6 +107,7 @@
     <Compile Include="Events\PubSub\OnUnbanArgs.cs" />
     <Compile Include="Events\PubSub\OnUntimeoutArgs.cs" />
     <Compile Include="Events\PubSub\OnViewCountArgs.cs" />
+    <Compile Include="Events\PubSub\OnWhisperArgs.cs" />
     <Compile Include="Events\Services\FollowerService\OnNewFollowersDetectedArgs.cs" />
     <Compile Include="Events\Services\FollowerService\OnServiceStartedArgs.cs" />
     <Compile Include="Events\Services\FollowerService\OnServiceStoppedArgs.cs" />
@@ -137,6 +138,11 @@
     <Compile Include="Models\Client\JoinedChannel.cs" />
     <Compile Include="Models\Client\MessageEmote.cs" />
     <Compile Include="Models\Client\ReSubscriber.cs" />
+    <Compile Include="Models\PubSub\Responses\Messages\ChannelBitsEvents.cs" />
+    <Compile Include="Models\PubSub\Responses\Messages\ChatModeratorActions.cs" />
+    <Compile Include="Models\PubSub\Responses\Messages\MessageData.cs" />
+    <Compile Include="Models\PubSub\Responses\Messages\VideoPlayback.cs" />
+    <Compile Include="Models\PubSub\Responses\Messages\Whisper.cs" />
     <Compile Include="Services\FollowerService.cs" />
     <Compile Include="Services\MessageThrottler.cs" />
     <Compile Include="Models\API\Chatter.cs" />

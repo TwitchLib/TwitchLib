@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using SuperSocket.ClientEngine;
 using System.Timers;
 using TwitchLib.Events.PubSub;
+using TwitchLib.Models.PubSub.Responses.Messages;
 
 namespace TwitchLib
 {
@@ -45,6 +46,7 @@ namespace TwitchLib
         public EventHandler<OnStreamUpArgs> OnStreamUp;
         public EventHandler<OnStreamDownArgs> OnStreamDown;
         public EventHandler<OnViewCountArgs> OnViewCount;
+        public EventHandler<OnWhisperArgs> OnWhisper;
         #endregion
 
         /// <summary>
@@ -113,8 +115,12 @@ namespace TwitchLib
                     Models.PubSub. Responses.Message msg = new Models.PubSub.Responses.Message(message);
                     switch(msg.Topic.Split('.')[0])
                     {
+                        case "whispers":
+                            Whisper whisper = (Whisper)msg.messageData;
+                            OnWhisper?.Invoke(this, new OnWhisperArgs { Whisper = whisper });
+                            return;
                         case "chat_moderator_actions":
-                            Models.PubSub.Responses.Message.ChatModeratorActions cMA = (Models.PubSub.Responses.Message.ChatModeratorActions)msg.messageData;
+                            ChatModeratorActions cMA = (ChatModeratorActions)msg.messageData;
                             string reason = "";
                             switch (cMA.ModerationAction.ToLower())
                             {
@@ -163,21 +169,21 @@ namespace TwitchLib
                             }
                             break;
                         case "channel-bitsevents":
-                            Models.PubSub.Responses.Message.ChannelBitsEvents cBE = (Models.PubSub.Responses.Message.ChannelBitsEvents)msg.messageData;
-                           OnBitsReceived?.Invoke(this, new OnBitsReceivedArgs { BitsUsed = cBE.BitsUsed, ChannelId = cBE.ChannelId, ChannelName = cBE.ChannelName,
+                            ChannelBitsEvents cBE = (ChannelBitsEvents)msg.messageData;
+                            OnBitsReceived?.Invoke(this, new OnBitsReceivedArgs { BitsUsed = cBE.BitsUsed, ChannelId = cBE.ChannelId, ChannelName = cBE.ChannelName,
                                 ChatMessage = cBE.ChatMessage, Context = cBE.Context, Time = cBE.Time, TotalBitsUsed = cBE.TotalBitsUsed, UserId = cBE.UserId, Username = cBE.Username});
                             return;
                         case "video-playback":
-                            Models.PubSub.Responses.Message.VideoPlayback vP = (Models.PubSub.Responses.Message.VideoPlayback)msg.messageData;
+                            VideoPlayback vP = (VideoPlayback)msg.messageData;
                             switch(vP.Type)
                             {
-                                case Models.PubSub.Responses.Message.VideoPlayback.TypeEnum.StreamDown:
+                                case VideoPlayback.TypeEnum.StreamDown:
                                    OnStreamDown?.Invoke(this, new OnStreamDownArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
                                     return;
-                                case Models.PubSub.Responses.Message.VideoPlayback.TypeEnum.StreamUp:
+                                case VideoPlayback.TypeEnum.StreamUp:
                                    OnStreamUp?.Invoke(this, new OnStreamUpArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
                                     return;
-                                case Models.PubSub.Responses.Message.VideoPlayback.TypeEnum.ViewCount:
+                                case VideoPlayback.TypeEnum.ViewCount:
                                    OnViewCount?.Invoke(this, new OnViewCountArgs { ServerTime = vP.ServerTime, Viewers = vP.Viewers });
                                     return;
                             }
@@ -255,6 +261,16 @@ namespace TwitchLib
         public void ListenToVideoPlayback(int channelTwitchId)
         {
             listenToTopic($"video-playback.{channelTwitchId}");
+        }
+
+        /// <summary>
+        /// Sends request to listen to whispers from specific channel.
+        /// </summary>
+        /// <param name="channelTwitchId">Channel to listen to whispers on.</param>
+        /// <param name="channelOAuth">OAuth token to verify identity.</param>
+        public void ListenToWhispers(int channelTwitchId, string channelOAuth)
+        {
+            listenToTopic($"whispers.{channelTwitchId}", channelOAuth);
         }
         #endregion
 
