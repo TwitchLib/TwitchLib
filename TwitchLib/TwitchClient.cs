@@ -501,7 +501,10 @@ namespace TwitchLib
         {
             if (_logging)
                 Console.WriteLine("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
-            _client.Reconnect();
+            if(_client.IsConnected)
+                _client.Reconnect();
+            else
+                _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
         }
         #endregion
 
