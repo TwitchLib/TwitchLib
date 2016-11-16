@@ -676,6 +676,8 @@ namespace TwitchLibExample
         {
             // MODERATOR ACCOUNT ID, CHANNEL ACCOUNT ID, MODERATOR OAUTH
             pubsub.ListenToChatModeratorActions(0, 0, "moderators_oauth");
+            // MY ACCOUNT ID, MY OAUTH
+            pubsub.ListenToWhispers(0, "oauth_token");
         }
 
         private void pubsubOnListenResponse(object sender, OnListenResponseArgs e)
@@ -711,7 +713,13 @@ namespace TwitchLibExample
             pubsub.OnTimeout += new EventHandler<OnTimeoutArgs>(pubsubOnTimeout);
             pubsub.OnBan += new EventHandler<OnBanArgs>(pubsubOnBan);
             pubsub.OnUnban += new EventHandler<OnUnbanArgs>(pubsubOnUnban);
+            pubsub.OnWhisper += new EventHandler<OnWhisperArgs>(onWhsiper);
             pubsub.Connect();
+        }
+
+        private static void onWhsiper(object sender, OnWhisperArgs e)
+        {
+            MessageBox.Show($"Whisper received from: {e.Whisper.DataObject.Tags.DisplayName}\nBody: {e.Whisper.DataObject.Body}");
         }
 
         private async void button48_Click(object sender, EventArgs e)
