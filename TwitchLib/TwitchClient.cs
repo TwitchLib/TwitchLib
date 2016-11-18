@@ -214,6 +214,8 @@ namespace TwitchLib
         public TwitchClient(ConnectionCredentials credentials, string channel = null, char chatCommandIdentifier = '\0', char whisperCommandIdentifier = '\0',
             bool logging = false)
         {
+            if (logging)
+                log($"TwitchLib-TwitchClient initialized, assembly version: {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}");
             _credentials = credentials;
             TwitchUsername = _credentials.TwitchUsername;
             _autoJoinChannel = channel;
@@ -224,6 +226,8 @@ namespace TwitchLib
             _logging = logging;
 
             _client.AutoReconnect = true;
+            _client.AutoRetry = true;
+            _client.AutoRetryLimit = 0;
             _client.OnConnected += Connected;
             _client.OnReadLine += ReadLine;
             _client.OnDisconnected += Disconnected;
@@ -245,8 +249,12 @@ namespace TwitchLib
         /// <param name="message">The RAW message to be sent.</param>
         public void SendRaw(string message)
         {
+            ConsoleColor prevColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            log($"Writing: {message}");
             if(ChatThrottler == null || !ChatThrottler.ApplyThrottlingToRawMessages || ChatThrottler.MessagePermitted(message))
                 _client.WriteLine(message);
+            Console.ForegroundColor = prevColor;
         }
 
         #region ChangeChatColor
@@ -471,10 +479,10 @@ namespace TwitchLib
         public void Connect()
         {
             if (_logging)
-                Console.WriteLine("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
+                log("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
             _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
             if (_logging)
-                Console.WriteLine("Should be connected!");
+                log("Should be connected!");
         }
 
         /// <summary>
@@ -483,7 +491,7 @@ namespace TwitchLib
         public void Disconnect()
         {
             if (_logging)
-                Console.WriteLine("Disconnect Twitch Chat Client...");
+                log("Disconnect Twitch Chat Client...");
 
             // Not sure if this is the proper way to handle this. It is UI blocking, so in order to presrve UI functionality, I delegated it to a task.
             Task.Factory.StartNew(() => { _client.Disconnect(); });
@@ -500,7 +508,7 @@ namespace TwitchLib
         public void Reconnect()
         {
             if (_logging)
-                Console.WriteLine("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
+                log("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
             if(_client.IsConnected)
                 _client.Reconnect();
             else
@@ -560,7 +568,7 @@ namespace TwitchLib
             if (JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel && !overrideCheck) != null)
                 return;
             if (_logging)
-                Console.WriteLine($"[TwitchLib] Joining channel: {channel}");
+                log($"Joining channel: {channel}");
             _client.WriteLine(Rfc2812.Join($"#{channel}"));
             JoinedChannels.Add(new JoinedChannel(channel));
         }
@@ -584,7 +592,7 @@ namespace TwitchLib
             // Channel MUST be lower case
             channel = channel.ToLower();
             if (_logging)
-                Console.WriteLine($"[TwitchLib] Leaving channel: {channel}");
+                log($"Leaving channel: {channel}");
             JoinedChannel joinedChannel = JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
             if (joinedChannel != null)
                 _client.WriteLine(Rfc2812.Part($"#{channel}"));
@@ -675,11 +683,15 @@ namespace TwitchLib
 
         private void ConnectionError(object sender, EventArgs e)
         {
+            Reconnect();
+            System.Threading.Thread.Sleep(2000);
             OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { Username = TwitchUsername });
         }
 
         private void ReadLine(object sender, ReadLineEventArgs e)
         {
+            if (_logging)
+                log($"Received: {e.Line}");
             ParseIrcMessage(e.Line);
         }
         #endregion
@@ -688,8 +700,6 @@ namespace TwitchLib
         {
             // Hack to accomodate at least cyrillic characters, possibly more
             string decodedMessage = Encoding.UTF8.GetString(Encoding.Default.GetBytes(ircMessage));
-            if (_logging)
-                Console.WriteLine(decodedMessage);
 
             #region Chat Parsing
             DetectionReturn response;
@@ -839,7 +849,7 @@ namespace TwitchLib
             response = ChatParsing.detectedPing(decodedMessage);
             if (response.Successful && !DisableAutoPong)
             {
-                SendRaw("PONG :tmi.twitch.tv");
+                SendRaw("PONG\r\n");
                 return;
             }
 
@@ -971,8 +981,15 @@ namespace TwitchLib
 
             // Any other messages here
             if (_logging)
-                Console.WriteLine($"Unaccounted for: {decodedMessage}");
-            
+                log($"Unaccounted for: {decodedMessage}");            
+        }
+
+        private void log(string message)
+        {
+            ConsoleColor prevColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"[TwitchLib] {message}");
+            Console.ForegroundColor = prevColor;
         }
     }
 }
