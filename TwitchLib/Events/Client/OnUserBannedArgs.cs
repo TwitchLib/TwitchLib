@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace TwitchLib.Events.Client
 {
     /// <summary>Args representing a user was banned event.</summary>
-    public class OnViewerBannedArgs : EventArgs
+    public class OnUserBannedArgs : EventArgs
     {
         /// <summary>Channel that had ban event.</summary>
         public string Channel;
-        /// <summary>Viewer that was banned.</summary>
-        public string Viewer;
+        /// <summary>User that was banned.</summary>
+        public string Username;
         /// <summary>Reason for ban, if it was provided.</summary>
         public string BanReason;
     }

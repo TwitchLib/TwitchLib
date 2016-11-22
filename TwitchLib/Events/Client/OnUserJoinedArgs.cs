@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TwitchLib.Events.Client
 {
     /// <summary>Args representing viewer joined event.</summary>
-    public class OnViewerJoinedArgs : EventArgs
+    public class OnUserJoinedArgs : EventArgs
     {
         /// <summary>Property representing username of joined viewer.</summary>
         public string Username;

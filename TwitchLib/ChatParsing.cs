@@ -133,7 +133,7 @@ namespace TwitchLib
         /// <param name="message"></param>
         /// <param name="channels"></param>
         /// <returns></returns>
-        public static DetectionReturn detectViewerJoined(string message, List<JoinedChannel> channels)
+        public static DetectionReturn detectUserJoined(string message, List<JoinedChannel> channels)
         {
             string readType = null;
             string channelRet = null;
@@ -154,7 +154,7 @@ namespace TwitchLib
         /// <param name="message"></param>
         /// <param name="channels"></param>
         /// <returns></returns>
-        public static DetectionReturn detectedViewerLeft(string message, List<JoinedChannel> channels)
+        public static DetectionReturn detectedUserLeft(string message, List<JoinedChannel> channels)
         {
             string readType = null;
             string channelRet = null;
@@ -418,7 +418,7 @@ namespace TwitchLib
         /// <param name="message"></param>
         /// <param name="channels"></param>
         /// <returns></returns>
-        public static DetectionReturn detectedViewerTimedout(string message, List<JoinedChannel> channels)
+        public static DetectionReturn detectedUserTimedout(string message, List<JoinedChannel> channels)
         {
             string readType = null;
             string channelRet = null;
@@ -439,7 +439,7 @@ namespace TwitchLib
         /// <param name="message"></param>
         /// <param name="channels"></param>
         /// <returns></returns>
-        public static DetectionReturn detectedViewerBanned(string message, List<JoinedChannel> channels)
+        public static DetectionReturn detectedUserBanned(string message, List<JoinedChannel> channels)
         {
             string readType = null;
             string channelRet = null;
