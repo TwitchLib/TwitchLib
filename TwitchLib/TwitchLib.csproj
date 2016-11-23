@@ -82,9 +82,9 @@
     <Compile Include="Events\Client\OnNewSubscriberArgs.cs" />
     <Compile Include="Events\Client\OnReSubscriberArgs.cs" />
     <Compile Include="Events\Client\OnUserStateChangedArgs.cs" />
-    <Compile Include="Events\Client\OnViewerBannedArgs.cs" />
-    <Compile Include="Events\Client\OnViewerJoinedArgs.cs" />
-    <Compile Include="Events\Client\OnViewerLeftArgs.cs" />
+    <Compile Include="Events\Client\OnUserBannedArgs.cs" />
+    <Compile Include="Events\Client\OnUserJoinedArgs.cs" />
+    <Compile Include="Events\Client\OnUserLeftArgs.cs" />
     <Compile Include="Events\Client\OnViewerTimedoutArgs.cs" />
     <Compile Include="Events\Client\OnWhisperCommandReceivedArgs.cs" />
     <Compile Include="Events\Client\OnWhisperReceivedArgs.cs" />

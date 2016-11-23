@@ -40,8 +40,8 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnNewSubscriber - Fires when new subscriber is announced in chat, returns Subscriber
   * OnReSubscriber - Fires when existing subscriber resubscribes, returns ReSubscriber
   * OnChannelStateChanged - Fires when channel state is changed
-  * OnViewerJoined - New viewer/chatter joined the chat channel room.
-  * OnViewerLeft - Viewer/chatter left (PARTed) the chat channel.
+  * OnUserJoined - New viewer/chatter joined the chat channel room.
+  * OnUserLeft - Viewer/chatter left (PARTed) the chat channel.
   * OnChatCommandReceived - Fires when command (uses custom command identifier) is received.
   * OnMessageSent - Fires when a chat message is sent.
   * OnUserStateChanged - Fires when a user state is received.
@@ -52,8 +52,8 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnHostingStarted - Fires when someone begins hosting the channel the client is connected to.
   * OnHostingStopped - Fires when someone that is hosting channel that client is connected to, stops.
   * OnChatCleared - Fires when a moderator sends a clear chat command (channel).
-  * OnViewerTimedout - Fires when client detects a viewer was timedout (moderator, viewer, timeout duration, timeout reason, channel).
-  * OnViewerBanned - Fires when client detects a viewer was banned (moderator, viewer, ban reason, channel).
+  * OnUserTimedout - Fires when client detects a viewer was timedout (moderator, viewer, timeout duration, timeout reason, channel).
+  * OnUserBanned - Fires when client detects a viewer was banned (moderator, viewer, ban reason, channel).
   * OnModeratorsReceived - Fires when a list of moderators is returned by Twitch (this happens by calling GetChannelModerators in the client).
   * OnChatColorChanged - Fires when confirmation is received from Twitch that chat color has been successfully changed.
 - Whisper Events:

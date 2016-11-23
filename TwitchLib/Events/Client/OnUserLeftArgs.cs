@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TwitchLib.Events.Client
 {
     /// <summary>Args representing viewer left event.</summary>
-    public class OnViewerLeftArgs : EventArgs
+    public class OnUserLeftArgs : EventArgs
     {
         /// <summary>Property representing username of user that left.</summary>
         public string Username;

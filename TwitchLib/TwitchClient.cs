@@ -115,7 +115,7 @@ namespace TwitchLib
         /// <summary>
         /// Fires when a new viewer/chatter joined the channel's chat room, returns username and channel.
         /// </summary>
-        public event EventHandler<OnViewerJoinedArgs> OnViewerJoined;
+        public event EventHandler<OnUserJoinedArgs> OnUserJoined;
 
         /// <summary>
         /// Fires when a moderator joined the channel's chat room, returns username and channel.
@@ -150,7 +150,7 @@ namespace TwitchLib
         /// <summary>
         /// Fires when a PART message is received from Twitch regarding a particular viewer
         /// </summary>
-        public event EventHandler<OnViewerLeftArgs> OnViewerLeft;
+        public event EventHandler<OnUserLeftArgs> OnUserLeft;
 
         /// <summary>
         /// Fires when a channel got hosted by another channel.
@@ -180,7 +180,7 @@ namespace TwitchLib
         /// <summary>
         /// Fires when a viewer gets timedout by any moderator.
         /// </summary>
-        public event EventHandler<OnViewerTimedoutArgs> OnViewerTimedout;
+        public event EventHandler<OnUserTimedoutArgs> OnUserTimedout;
 
         /// <summary>
         /// Fires when client successfully leaves a channel.
@@ -190,7 +190,7 @@ namespace TwitchLib
         /// <summary>
         /// Fires when a viewer gets banned by any moderator.
         /// </summary>
-        public event EventHandler<OnViewerBannedArgs> OnViewerBanned;
+        public event EventHandler<OnUserBannedArgs> OnUserBanned;
 
         /// <summary>
         /// Fires when a list of moderators is received.
@@ -740,18 +740,18 @@ namespace TwitchLib
             }
 
             // On Viewer Joined
-            response = ChatParsing.detectViewerJoined(decodedMessage, JoinedChannels);
+            response = ChatParsing.detectUserJoined(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 if (TwitchUsername.ToLower() == decodedMessage.Split('!')[1].Split('@')[0].ToLower())
                     OnJoinedChannel?.Invoke(this, new OnJoinedChannelArgs { Channel = response.Channel, Username = decodedMessage.Split('!')[1].Split('@')[0] });
                 else
-                    OnViewerJoined?.Invoke(this, new OnViewerJoinedArgs { Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = response.Channel });
+                    OnUserJoined?.Invoke(this, new OnUserJoinedArgs { Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = response.Channel });
                 return;
             }
 
             // On Viewer Left
-            response = ChatParsing.detectedViewerLeft(decodedMessage, JoinedChannels);
+            response = ChatParsing.detectedUserLeft(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 string username = decodedMessage.Split(':')[1].Split('!')[0];
@@ -763,7 +763,7 @@ namespace TwitchLib
                 }
                 else
                 {
-                    OnViewerLeft?.Invoke(this, new OnViewerLeftArgs { Username = username, Channel = response.Channel });
+                    OnUserLeft?.Invoke(this, new OnUserLeftArgs { Username = username, Channel = response.Channel });
                 }
                 return;
             }
@@ -881,7 +881,7 @@ namespace TwitchLib
             if (response.Successful)
             {
                 OnExistingUsersDetected?.Invoke(this, new OnExistingUsersDetectedArgs { Channel = response.Channel,
-                    ExistingUsers = decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ').ToList<string>() });
+                    Users = decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ').ToList<string>() });
                 return;
             }
             #endregion
@@ -896,28 +896,28 @@ namespace TwitchLib
             }
 
             // On timeout detected
-            response = ChatParsing.detectedViewerTimedout(decodedMessage, JoinedChannels);
+            response = ChatParsing.detectedUserTimedout(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnViewerTimedout?.Invoke(this, new OnViewerTimedoutArgs
+                OnUserTimedout?.Invoke(this, new OnUserTimedoutArgs
                 {
                     Channel = response.Channel,
                     TimeoutDuration = int.Parse(decodedMessage.Split(';')[0].Split('=')[1]),
                     TimeoutReason = decodedMessage.Split(' ')[0].Split('=')[2].Replace("\\s", " "),
-                    Viewer = decodedMessage.Split(':')[2]
+                    Username = decodedMessage.Split(':')[2]
                 });
                 return;
             }
 
             // On ban detected
-            response = ChatParsing.detectedViewerBanned(decodedMessage, JoinedChannels);
+            response = ChatParsing.detectedUserBanned(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnViewerBanned?.Invoke(this, new OnViewerBannedArgs
+                OnUserBanned?.Invoke(this, new OnUserBannedArgs
                 {
                     Channel = response.Channel,
                     BanReason = decodedMessage.Split(' ')[0].Split('=')[1].Replace("\\s", " "),
-                    Viewer = decodedMessage.Split(':')[2]
+                    Username = decodedMessage.Split(':')[2]
                 });
                 return;
             }
