@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,21 @@ namespace TwitchLib
     /// <summary>A common/utility class for frequently used functions and variables.</summary>
     public static class Common
     {
+        /// <summary>
+        /// Function to check if a jtoken is null.
+        /// Credits: http://stackoverflow.com/questions/24066400/checking-for-empty-null-jtoken-in-a-jobject
+        /// </summary>
+        /// <param name="token">JToken to check if null or not.</param>
+        /// <returns>Boolean on whether true or not.</returns>
+        public static bool JsonIsNullOrEmpty(JToken token)
+        {
+            return (token == null) ||
+                   (token.Type == JTokenType.Array && !token.HasValues) ||
+                   (token.Type == JTokenType.Object && !token.HasValues) ||
+                   (token.Type == JTokenType.String && token.ToString() == String.Empty) ||
+                   (token.Type == JTokenType.Null);
+        }
+
         /// <summary>Takes date time string received from Twitch API and converts it to DateTime object.</summary>
         /// <param name="dateTime"></param>
         /// <returns></returns>
