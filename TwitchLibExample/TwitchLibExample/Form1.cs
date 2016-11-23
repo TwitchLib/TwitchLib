@@ -390,9 +390,20 @@ namespace TwitchLibExample
 
         private async void button21_Click(object sender, EventArgs e)
         {
-            TwitchLib.Models.API.Stream stream = await TwitchApi.GetTwitchStream(textBox25.Text);
-            MessageBox.Show(string.Format("average fps: {0}\nchannel name: {1}\ncreated at: {2}\ndelay: {3}\ngame: {4}\nid: {5}\nplaylist: {6}\npreview large: {7}\nvideo height: {8}\n viewers: {9}", 
-                stream.AverageFps, stream.Channel.Name, stream.CreatedAt.Second, stream.Delay, stream.Game, stream.Id, stream.IsPlaylist, stream.Preview.Large, stream.VideoHeight, stream.Viewers));
+            TwitchLib.Models.API.Stream stream = null;
+            try
+            {
+                stream = await TwitchApi.GetTwitchStream(textBox25.Text);
+            } catch (StreamOfflineException)
+            {
+                MessageBox.Show($"The stream for the channel '{textBox25.Text}' is currently offline.");
+            } catch (BadResourceException)
+            {
+                MessageBox.Show($"The channel '{textBox25.Text}' is an invalid channel.");
+            }
+            if(stream != null)
+                MessageBox.Show(string.Format("average fps: {0}\nchannel name: {1}\ncreated at: {2}\ndelay: {3}\ngame: {4}\nid: {5}\nplaylist: {6}\npreview large: {7}\nvideo height: {8}\n viewers: {9}", 
+                    stream.AverageFps, stream.Channel.Name, stream.CreatedAt.Second, stream.Delay, stream.Game, stream.Id, stream.IsPlaylist, stream.Preview.Large, stream.VideoHeight, stream.Viewers));
         }
 
         private async void button22_Click(object sender, EventArgs e)
