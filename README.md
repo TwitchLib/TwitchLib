@@ -85,7 +85,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - GetChannelHosts(string channel) - Async function that returns a string list of channels hosting a specified channel (undocumented)
 - GetTeamMembers(string teamName) - Async function that returns a TwitchTeamMember list of all members in a Twitch team (undocumented)
 - ChannelHasUserSubscribed(string username, string channel, string access_token) - Returns true or false on whether or not a user is subscribed to a channel.
-- GetTwitchStream(string channel) - Returns TwitchStream object containing API data related to a stream
+- GetTwitchStream(string channel) - Returns TwitchStream object containing API data related to a stream. Throws StreamOfflineException and BadResourceException.
 - GetTwitchStreams(List<string> channels) - Returns list of Stream objects for each channel passed in.
 - GetTwitchFollower(string channel) - Returns asc or desc list of followers from a specific channel, returns list of TwitchFollower objects.
 - GetUser(string username) - Returns a User object which represents a User object Twitch has.

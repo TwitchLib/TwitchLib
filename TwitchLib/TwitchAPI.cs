@@ -165,21 +165,18 @@ namespace TwitchLib
         /// Retrieves a collection of API data from a stream.
         /// </summary>
         /// <param name="channel">The channel to retrieve the data for.</param>
+        /// <exception cref="StreamOfflineException">Throws StreamOfflineException if stream is offline.</exception>
+        /// <exception cref="BadResourceException">Throws BadResourceException if the passed channel is invalid.</exception>
         /// <returns>A TwitchStream object containing API data related to a stream.</returns>
         public static async Task<Models.API.Stream> GetTwitchStream(string channel)
         {
-            try
-            {
-                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
-                var json = JObject.Parse(resp);
-                return json.SelectToken("stream").SelectToken("_id") != null
-                    ? new Models.API.Stream(json.SelectToken("stream"))
-                    : null;
-            }
-            catch
-            {
-                return null;
-            }
+            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
+            var json = JObject.Parse(resp);
+            if (!Common.JsonIsNullOrEmpty(json.SelectToken("error")))
+                throw new BadResourceException(json.SelectToken("error").ToString());
+            if (Common.JsonIsNullOrEmpty(json.SelectToken("stream")))
+                throw new StreamOfflineException();
+            return new Models.API.Stream(json.SelectToken("stream"));
         }
 
         /// <summary>
@@ -770,8 +767,8 @@ namespace TwitchLib
         #region Internal Calls
         private static async Task<string> MakeGetRequest(string url, string accessToken = null)
         {
-            if (string.IsNullOrEmpty(ClientId) && string.IsNullOrWhiteSpace(accessToken))
-                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId()");
+            if (string.IsNullOrEmpty(ClientId) && string.IsNullOrWhiteSpace(accessToken) && string.IsNullOrWhiteSpace(AccessToken))
+                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId(\"client_id_here\")");
 
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
