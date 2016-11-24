@@ -768,7 +768,7 @@ namespace TwitchLib
         private static async Task<string> MakeGetRequest(string url, string accessToken = null)
         {
             if (string.IsNullOrEmpty(ClientId) && string.IsNullOrWhiteSpace(accessToken) && string.IsNullOrWhiteSpace(AccessToken))
-                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId()");
+                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId(\"client_id_here\")");
 
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
