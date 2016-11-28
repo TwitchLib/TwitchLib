@@ -849,7 +849,7 @@ namespace TwitchLib
             response = ChatParsing.detectedPing(decodedMessage);
             if (response.Successful && !DisableAutoPong)
             {
-                SendRaw("PONG\r\n");
+                SendRaw("PONG");
                 return;
             }
 
