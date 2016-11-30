@@ -32,8 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Meebey.SmartIrc4net">
-      <HintPath>..\packages\smartirc4net-2015.0.5.9\lib\net40\Meebey.SmartIrc4net.dll</HintPath>
+    <Reference Include="Meebey.SmartIrc4net, Version=0.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SmartIrc4net\bin\debug\Meebey.SmartIrc4net.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -55,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Enums\ChatColorPresets.cs" />
     <Compile Include="Enums\CommercialLength.cs" />
+    <Compile Include="Enums\LogType.cs" />
     <Compile Include="Enums\PubSubRequestType.cs" />
     <Compile Include="Enums\SortDirection.cs" />
     <Compile Include="Enums\SortKey.cs" />
