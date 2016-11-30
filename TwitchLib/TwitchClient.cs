@@ -215,7 +215,7 @@ namespace TwitchLib
             bool logging = false)
         {
             if (logging)
-                log($"TwitchLib-TwitchClient initialized, assembly version: {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}");
+                Common.Log($"TwitchLib-TwitchClient initialized, assembly version: {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}");
             _credentials = credentials;
             TwitchUsername = _credentials.TwitchUsername;
             _autoJoinChannel = channel;
@@ -251,7 +251,8 @@ namespace TwitchLib
         {
             ConsoleColor prevColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            log($"Writing: {message}");
+            if(_logging)
+                Common.Log($"Writing: {message}");
             if(ChatThrottler == null || !ChatThrottler.ApplyThrottlingToRawMessages || ChatThrottler.MessagePermitted(message))
                 _client.WriteLine(message);
             Console.ForegroundColor = prevColor;
@@ -479,10 +480,10 @@ namespace TwitchLib
         public void Connect()
         {
             if (_logging)
-                log("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
+                Common.Log("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
             _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
             if (_logging)
-                log("Should be connected!");
+                Common.Log("Should be connected!");
         }
 
         /// <summary>
@@ -491,7 +492,7 @@ namespace TwitchLib
         public void Disconnect()
         {
             if (_logging)
-                log("Disconnect Twitch Chat Client...");
+                Common.Log("Disconnect Twitch Chat Client...");
 
             // Not sure if this is the proper way to handle this. It is UI blocking, so in order to presrve UI functionality, I delegated it to a task.
             Task.Factory.StartNew(() => { _client.Disconnect(); });
@@ -508,7 +509,7 @@ namespace TwitchLib
         public void Reconnect()
         {
             if (_logging)
-                log("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
+                Common.Log("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
             if(_client.IsConnected)
                 _client.Reconnect();
             else
@@ -568,7 +569,7 @@ namespace TwitchLib
             if (JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel && !overrideCheck) != null)
                 return;
             if (_logging)
-                log($"Joining channel: {channel}");
+                Common.Log($"Joining channel: {channel}");
             _client.WriteLine(Rfc2812.Join($"#{channel}"));
             JoinedChannels.Add(new JoinedChannel(channel));
         }
@@ -592,7 +593,7 @@ namespace TwitchLib
             // Channel MUST be lower case
             channel = channel.ToLower();
             if (_logging)
-                log($"Leaving channel: {channel}");
+                Common.Log($"Leaving channel: {channel}");
             JoinedChannel joinedChannel = JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
             if (joinedChannel != null)
                 _client.WriteLine(Rfc2812.Part($"#{channel}"));
@@ -673,7 +674,27 @@ namespace TwitchLib
                 _client.WriteLine(Rfc2812.Join($"#{_autoJoinChannel}"));
             }
 
-            Task.Factory.StartNew(() => _client.Listen());
+            Task.Factory.StartNew(() =>
+            {
+                while (true)
+                {
+                    if(_logging)
+                        Common.Log("Starting listen..", false, false, Enums.LogType.Success);
+                    _client.Listen();
+                    if(_logging)
+                        Common.Log("Stopped listening..", true, true, Enums.LogType.Failure);
+                }
+            }).ContinueWith(exStack =>
+            {
+                if(_logging)
+                    Common.Log("Exception!!", true, true, Enums.LogType.Failure);
+                exStack.Exception.Flatten().Handle(exception =>
+                {
+                    if(_logging)
+                        Common.Log(exception.Message, false, false, Enums.LogType.Failure);
+                    return true;
+                });
+            }, TaskContinuationOptions.OnlyOnFaulted);
         }
 
         private void Disconnected(object sender, EventArgs e)
@@ -691,7 +712,7 @@ namespace TwitchLib
         private void ReadLine(object sender, ReadLineEventArgs e)
         {
             if (_logging)
-                log($"Received: {e.Line}");
+                Common.Log($"Received: {e.Line}");
             ParseIrcMessage(e.Line);
         }
         #endregion
@@ -981,15 +1002,7 @@ namespace TwitchLib
 
             // Any other messages here
             if (_logging)
-                log($"Unaccounted for: {decodedMessage}");            
-        }
-
-        private void log(string message)
-        {
-            ConsoleColor prevColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"[TwitchLib] {message}");
-            Console.ForegroundColor = prevColor;
+                Common.Log($"Unaccounted for: {decodedMessage}");            
         }
     }
 }
