@@ -6,6 +6,7 @@ credentials.txt
 TwitchLib/TwitchLib.nuspec
 .travis.yml
 TwitchLib.Tests/
+!Libs/Meebey.SmartIrc4net.dll
 
 # User-specific files
 *.suo
