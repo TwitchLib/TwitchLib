@@ -66,8 +66,8 @@ namespace TwitchLibExample
             newClient.OnWhisperReceived += new EventHandler<OnWhisperReceivedArgs>(globalWhisperReceived);
             newClient.OnWhisperCommandReceived += new EventHandler<OnWhisperCommandReceivedArgs>(whisperCommandReceived);
             newClient.OnChatCleared += new EventHandler<OnChatClearedArgs>(onChatCleared);
-            newClient.OnViewerTimedout += new EventHandler<OnViewerTimedoutArgs>(onViewerTimedout);
-            newClient.OnViewerBanned += new EventHandler<OnViewerBannedArgs>(onViewerBanned);
+            newClient.OnUserTimedout += new EventHandler<OnUserTimedoutArgs>(onUserTimedout);
+            newClient.OnUserBanned += new EventHandler<OnUserBannedArgs>(onUserBanned);
             newClient.OnClientLeftChannel += new EventHandler<OnClientLeftChannelArgs>(onLeftChannel);
             newClient.OnJoinedChannel += new EventHandler<OnJoinedChannelArgs>(onJoinedChannel);
             newClient.OnNewSubscriber += new EventHandler<OnNewSubscriberArgs>(onNewSubscription);
@@ -144,12 +144,12 @@ namespace TwitchLibExample
             MessageBox.Show($"Chat cleared in channel: {e.Channel}");
         }
 
-        public void onViewerTimedout(object sender, OnViewerTimedoutArgs e)
+        public void onUserTimedout(object sender, OnUserTimedoutArgs e)
         {
             //MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was timedout for {e.TimeoutDuration} seconds with reasoning: {e.TimeoutReason}");
         }
 
-        public void onViewerBanned(object sender, OnViewerBannedArgs e)
+        public void onUserBanned(object sender, OnUserBannedArgs e)
         {
             //MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was banned with reasoning: {e.BanReason}");
         }
