@@ -755,7 +755,8 @@ namespace TwitchLib
             if (response.Successful)
             {
                 var chatMessage = new ChatMessage(TwitchUsername, decodedMessage, ref _channelEmotes, WillReplaceEmotes);
-                JoinedChannels.Single(x => x.Channel == response.Channel).HandleMessage(chatMessage);
+                foreach (var joinedChannel in JoinedChannels.Where(x => x.Channel.ToLower() == response.Channel.ToLower()))
+                    joinedChannel.HandleMessage(chatMessage);
                 OnMessageReceived?.Invoke(this, new OnMessageReceivedArgs { ChatMessage = chatMessage });
                 return;
             }
