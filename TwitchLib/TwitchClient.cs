@@ -16,6 +16,7 @@ namespace TwitchLib
     public class TwitchClient
     {
         #region Private Variables
+        private Task _listenThread;
         private IrcConnection _client = new IrcConnection();
         private ConnectionCredentials _credentials;
         private List<char> _chatCommandIdentifiers = new List<char>();
@@ -674,27 +675,31 @@ namespace TwitchLib
                 _client.WriteLine(Rfc2812.Join($"#{_autoJoinChannel}"));
             }
 
-            Task.Factory.StartNew(() =>
+            if(_listenThread == null || _listenThread.IsCompleted)
             {
-                while (true)
+                _listenThread = Task.Factory.StartNew(() =>
                 {
-                    if(_logging)
+                    if (_logging)
                         Common.Log("Starting listen..", false, false, Enums.LogType.Success);
-                    _client.Listen();
-                    if(_logging)
+                    try
+                    {
+                        _client.Listen();
+                    } catch(Exception ex)
+                    {
+                        if (_logging)
+                        {
+                            Common.Log("Exception!!", true, true, Enums.LogType.Failure);
+                            Common.Log(ex.Message, false, false, Enums.LogType.Failure);
+                        } 
+                    }
+                    if (_logging)
                         Common.Log("Stopped listening..", true, true, Enums.LogType.Failure);
-                }
-            }).ContinueWith(exStack =>
-            {
-                if(_logging)
-                    Common.Log("Exception!!", true, true, Enums.LogType.Failure);
-                exStack.Exception.Flatten().Handle(exception =>
-                {
-                    if(_logging)
-                        Common.Log(exception.Message, false, false, Enums.LogType.Failure);
-                    return true;
                 });
-            }, TaskContinuationOptions.OnlyOnFaulted);
+            } else
+            {
+                if (_logging)
+                    Common.Log("Already listening, not starting new thread...");
+            }
         }
 
         private void Disconnected(object sender, EventArgs e)
