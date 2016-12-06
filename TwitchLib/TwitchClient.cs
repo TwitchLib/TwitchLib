@@ -482,7 +482,12 @@ namespace TwitchLib
         {
             if (_logging)
                 Common.Log("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
+
+            // Ensure auto retry is enabled
+            _client.AutoRetry = true;
+
             _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
+
             if (_logging)
                 Common.Log("Should be connected!");
         }
@@ -494,6 +499,9 @@ namespace TwitchLib
         {
             if (_logging)
                 Common.Log("Disconnect Twitch Chat Client...");
+
+            // Disconnect invoked on purpose, so we can disable auto retry
+            _client.AutoRetry = false;
 
             // Not sure if this is the proper way to handle this. It is UI blocking, so in order to presrve UI functionality, I delegated it to a task.
             Task.Factory.StartNew(() => { _client.Disconnect(); });
@@ -511,6 +519,10 @@ namespace TwitchLib
         {
             if (_logging)
                 Common.Log("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
+
+            // Ensure auto retry is enabled
+            _client.AutoRetry = true;
+
             if(_client.IsConnected)
                 _client.Reconnect();
             else
@@ -815,7 +827,7 @@ namespace TwitchLib
             response = ChatParsing.detectedIncorrectLogin(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                _client.Disconnect();
+                Disconnect();
                 OnIncorrectLogin?.Invoke(this, new OnIncorrectLoginArgs { Exception = new ErrorLoggingInException(decodedMessage, _credentials.TwitchUsername) });
                 return;
             }
@@ -824,7 +836,7 @@ namespace TwitchLib
             response = ChatParsing.detectedMalformedOAuth(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
-                _client.Disconnect();
+                Disconnect();
                 OnIncorrectLogin?.Invoke(this, new OnIncorrectLoginArgs { Exception = new ErrorLoggingInException("Invalid OAuth key. Remember to add 'oauth:' as a prefix. Example: oauth:19nds9sbnga9asd", _credentials.TwitchUsername) });
                 return;
             }
