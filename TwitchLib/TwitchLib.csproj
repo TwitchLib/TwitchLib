@@ -11,7 +11,8 @@
     <AssemblyName>TwitchLib</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>2fa6d499</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,6 +59,7 @@
     <Compile Include="Enums\CommercialLength.cs" />
     <Compile Include="Enums\LogType.cs" />
     <Compile Include="Enums\PubSubRequestType.cs" />
+    <Compile Include="Enums\SendReceiveDirection.cs" />
     <Compile Include="Enums\SortDirection.cs" />
     <Compile Include="Enums\SortKey.cs" />
     <Compile Include="Enums\StringEnum.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="Events\Client\OnModeratorsReceivedArgs.cs" />
     <Compile Include="Events\Client\OnNewSubscriberArgs.cs" />
     <Compile Include="Events\Client\OnReSubscriberArgs.cs" />
+    <Compile Include="Events\Client\OnSendReceiveDataArgs.cs" />
     <Compile Include="Events\Client\OnUserStateChangedArgs.cs" />
     <Compile Include="Events\Client\OnUserBannedArgs.cs" />
     <Compile Include="Events\Client\OnUserJoinedArgs.cs" />
