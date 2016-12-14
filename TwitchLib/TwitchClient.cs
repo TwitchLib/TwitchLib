@@ -202,6 +202,12 @@ namespace TwitchLib
         /// Fires when confirmation of a chat color change request was received.
         /// </summary>
         public event EventHandler<OnChatColorChangedArgs> OnChatColorChanged;
+
+        /// <summary>
+        /// Fires when data is either received or sent.
+        /// </summary>
+        public event EventHandler<OnSendReceiveDataArgs> OnSendReceiveData;
+
         #endregion  
 
         /// <summary>
@@ -256,6 +262,7 @@ namespace TwitchLib
                 Common.Log($"Writing: {message}");
             if(ChatThrottler == null || !ChatThrottler.ApplyThrottlingToRawMessages || ChatThrottler.MessagePermitted(message))
                 _client.WriteLine(message);
+            OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Sent, Data = message });
             Console.ForegroundColor = prevColor;
         }
 
@@ -730,6 +737,7 @@ namespace TwitchLib
         {
             if (_logging)
                 Common.Log($"Received: {e.Line}");
+            OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = e.Line });
             ParseIrcMessage(e.Line);
         }
         #endregion
