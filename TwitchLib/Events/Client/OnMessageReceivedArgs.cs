@@ -12,5 +12,8 @@ namespace TwitchLib.Events.Client
     {
         /// <summary>Property representing received chat message.</summary>
         public ChatMessage ChatMessage;
+
+		// time
+		public DateTime Time;
     }
 }
