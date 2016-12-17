@@ -698,21 +698,24 @@ namespace TwitchLib
             {
                 _listenThread = Task.Factory.StartNew(() =>
                 {
-                    if (_logging)
-                        Common.Log("Starting listen..", false, false, Enums.LogType.Success);
-                    try
-                    {
-                        _client.Listen();
-                    } catch(Exception ex)
+                    while(_client.IsConnected)
                     {
                         if (_logging)
+                            Common.Log("Starting listen..", false, false, Enums.LogType.Success);
+                        try
                         {
-                            Common.Log("Exception!!", true, true, Enums.LogType.Failure);
-                            Common.Log(ex.Message, false, false, Enums.LogType.Failure);
-                        } 
+                            _client.Listen();
+                        } catch(Exception ex)
+                        {
+                            if (_logging)
+                            {
+                                Common.Log("Exception!!", true, true, Enums.LogType.Failure);
+                                Common.Log(ex.Message, false, false, Enums.LogType.Failure);
+                            } 
+                        }
+                        if (_logging)
+                            Common.Log("Stopped listening..", true, true, Enums.LogType.Failure);
                     }
-                    if (_logging)
-                        Common.Log("Stopped listening..", true, true, Enums.LogType.Failure);
                 });
             } else
             {
