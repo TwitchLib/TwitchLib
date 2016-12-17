@@ -21,6 +21,8 @@ namespace TwitchLib.Models.Client
         public string BroadcasterLanguage { get; protected set; }
         /// <summary>Property representing the current channel.</summary>
         public string Channel { get; protected set; }
+        /// <summary>Property </summary>
+        public TimeSpan FollowersOnly { get; protected set; }
 
         /// <summary>ChannelState object constructor.</summary>
         public ChannelState(string ircString)
@@ -45,6 +47,13 @@ namespace TwitchLib.Models.Client
                         break;
                     case "subs-only":
                         SubOnly = ConvertToBool(part.Split('=')[1]);
+                        break;
+                    case "followers-only":
+                        int minutes = int.Parse(part.Split('=')[1]);
+                        if(minutes == -1)
+                            FollowersOnly = TimeSpan.FromMinutes(0);
+                        else
+                            FollowersOnly = TimeSpan.FromMinutes(minutes);
                         break;
                     default:
                         Console.WriteLine("[TwitchLib][ChannelState] Unaccounted for: " + part);
