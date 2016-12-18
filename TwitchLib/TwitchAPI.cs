@@ -20,6 +20,7 @@ namespace TwitchLib
         private static string AccessToken { get; set; } 
 
         #region Get Objects
+
         /// <summary>
         /// Retrieves a Channels object regarding a specific channel.
         /// </summary>
@@ -65,11 +66,8 @@ namespace TwitchLib
         public static async Task<List<string>> GetChannelHosts(string channel)
         {
             var hosts = new List<string>();
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{channel}");
-            var json = JObject.Parse(resp);
-            if (json.SelectToken("_id") == null) return hosts;
-            resp = await MakeGetRequest($"http://tmi.twitch.tv/hosts?include_logins=1&target={json.SelectToken("_id")}");
-            json = JObject.Parse(resp);
+            User user = await GetUser(channel);
+            var json = JObject.Parse(await MakeGetRequest($"http://tmi.twitch.tv/hosts?include_logins=1&target={user.Id}"));
             hosts.AddRange(json.SelectToken("hosts").Select(host => host.SelectToken("host_login").ToString()));
             return hosts;
         }
@@ -82,8 +80,7 @@ namespace TwitchLib
         /// <returns>A TwitchTeamMember list of all members in a Twitch team.</returns>
         public static async Task<List<TeamMember>> GetTeamMembers(string teamName)
         {
-            var resp = await MakeGetRequest($"http://api.twitch.tv/api/team/{teamName}/all_channels.json");
-            var json = JObject.Parse(resp);
+            var json = JObject.Parse(await MakeGetRequest($"http://api.twitch.tv/api/team/{teamName}/all_channels.json"));
             return
                 json.SelectToken("channels")
                     .Select(member => new TeamMember(member.SelectToken("channel")))
@@ -95,20 +92,9 @@ namespace TwitchLib
         /// </summary>
         /// <param name="channel">The name of the channel to search for.</param>
         /// <returns>A TwitchStream object containing API data related to a stream.</returns>
-        public static async Task<Channel> GetTwitchChannel(string channel)
+        public static async Task<Channel> GetChannel(string channel)
         {
-            var resp = "";
-            try
-            {
-                resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}");
-            }
-            catch
-            {
-                throw new BadResourceException(resp);
-            }
-            var json = JObject.Parse(resp);
-            if (json.SelectToken("error") != null) throw new BadResourceException(resp);
-            return new Channel(json);
+            return new Channel(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}")));
         }
 
         /// <summary>
@@ -118,18 +104,7 @@ namespace TwitchLib
         /// <returns>User object containing details about the searched for user. Returns null if invalid user/error.</returns>
         public static async Task<User> GetUser(string username)
         {
-            try
-            {
-                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}");
-                JObject j = JObject.Parse(resp);
-                if (j.SelectToken("error") != null)
-                    return null;
-                return new User(resp);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return new User(await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}"));
         }
 
         /// <summary>
@@ -139,10 +114,7 @@ namespace TwitchLib
         /// <returns>A TimeSpan object representing time between creation_at of stream, and now.</returns>
         public static async Task<TimeSpan> GetUptime(string channel)
         {
-            var stream = await GetTwitchStream(channel);
-            if (stream == null)
-                return TimeSpan.Zero;
-            return stream.TimeSinceCreated;
+            return (await GetStream(channel)).TimeSinceCreated;
         }
 
         /// <summary>
@@ -157,8 +129,7 @@ namespace TwitchLib
             var args = $"?limit={limit}";
             if (cursor != null)
                 args += $"&cursor={cursor};";
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts{args}");
-            return new FeedResponse(JObject.Parse(resp));
+            return new FeedResponse(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts{args}")));
         }
 
         /// <summary>
@@ -168,7 +139,7 @@ namespace TwitchLib
         /// <exception cref="StreamOfflineException">Throws StreamOfflineException if stream is offline.</exception>
         /// <exception cref="BadResourceException">Throws BadResourceException if the passed channel is invalid.</exception>
         /// <returns>A TwitchStream object containing API data related to a stream.</returns>
-        public static async Task<Models.API.Stream> GetTwitchStream(string channel)
+        public static async Task<Models.API.Stream> GetStream(string channel)
         {
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
             var json = JObject.Parse(resp);
@@ -184,21 +155,12 @@ namespace TwitchLib
         /// </summary>
         /// <param name="channels">List of channels.</param>
         /// <returns>A list of stream objects for each stream.</returns>
-        public static async Task<List<Models.API.Stream>> GetTwitchStreams(List<string> channels)
+        public static async Task<List<Models.API.Stream>> GetStreams(List<string> channels)
         {
-            try
-            {
-                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams?channel={string.Join(",", channels)}");
-                var json = JObject.Parse(resp);
-                List<Models.API.Stream> streams = new List<Models.API.Stream>();
-                foreach (JToken channel in json.SelectToken("streams"))
-                    streams.Add(new Models.API.Stream(channel));
-                return streams;
-            }
-            catch
-            {
-                return null;
-            }
+            var json = JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/streams?channel={string.Join(",", channels)}"));
+            List<Models.API.Stream> streams = new List<Models.API.Stream>();
+            streams.AddRange(json.SelectToken("streams").Select(stream => new Models.API.Stream(stream)));
+            return streams;
         }
 
         /// <summary>
@@ -207,18 +169,10 @@ namespace TwitchLib
         /// <returns>A list of featured stream objects for each featured stream.</returns>
         public static async Task<List<FeaturedStream>> GetFeaturedStreams(int limit = 25, int offset = 0)
         {
-            try
-            {
-                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/featured?limit={limit}&offset={offset}");
-                var json = JObject.Parse(resp);
-                List<FeaturedStream> streams = new List<FeaturedStream>();
-                foreach (JToken channel in json.SelectToken("featured"))
-                    streams.Add(new FeaturedStream(channel));
-                return streams;
-            } catch
-            {
-                return null;
-            }
+            var json = JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/streams/featured?limit={limit}&offset={offset}"));
+            List<FeaturedStream> streams = new List<FeaturedStream>();
+            streams.AddRange(json.SelectToken("streams").Select(stream => new Models.API.FeaturedStream(stream)));
+            return streams;
         }
         #endregion
 
@@ -233,13 +187,9 @@ namespace TwitchLib
         public static async Task<List<Channel>> SearchChannels(string query, int limit = 25, int offset = 0)
         {
             var returnedChannels = new List<Channel>();
-            var args = $"?query={query}&limit={limit}&offset={offset}";
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/search/channels{args}");
-
-            var json = JObject.Parse(resp);
+            var json = JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/search/channels?query={query}&limit={limit}&offset={offset}"));
             if (json.SelectToken("_total").ToString() == "0") return returnedChannels;
-            returnedChannels.AddRange(
-                json.SelectToken("channels").Select(channelToken => new Channel((JObject)channelToken)));
+            returnedChannels.AddRange(json.SelectToken("channels").Select(channelToken => new Channel((JObject)channelToken)));
             return returnedChannels;
         }
 
