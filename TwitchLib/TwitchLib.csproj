@@ -120,6 +120,17 @@
     <Compile Include="Events\Services\MessageThrottler\OnThrottlePeriodResetArgs.cs" />
     <Compile Include="Exceptions\API\StreamOfflineException.cs" />
     <Compile Include="Exceptions\Client\EventNotHandledException.cs" />
+    <Compile Include="Exceptions\Client\InvalidParameterException.cs" />
+    <Compile Include="Extensions\Client\BanUserExt.cs" />
+    <Compile Include="Extensions\Client\ChangeChatColorExt.cs" />
+    <Compile Include="Extensions\Client\ClearChatExt.cs" />
+    <Compile Include="Extensions\Client\EmoteOnly.cs" />
+    <Compile Include="Extensions\Client\FollowersOnlyExt.cs" />
+    <Compile Include="Extensions\Client\HostExt.cs" />
+    <Compile Include="Extensions\Client\SlowModeExt.cs" />
+    <Compile Include="Extensions\Client\SubscribersOnly.cs" />
+    <Compile Include="Extensions\Client\TimeoutUserExt.cs" />
+    <Compile Include="Extensions\Client\UnbanUserExt.cs" />
     <Compile Include="Models\API\Block.cs" />
     <Compile Include="Models\API\ChannelHasUserSubscribedResponse.cs" />
     <Compile Include="Models\API\Channels.cs" />

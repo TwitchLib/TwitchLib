@@ -9,6 +9,7 @@ using TwitchLib.Exceptions.Client;
 using System.Text;
 using TwitchLib.Models.Client;
 using TwitchLib.Events.Client;
+using TwitchLib.Extensions.Client;
 
 namespace TwitchLib
 {
@@ -266,37 +267,6 @@ namespace TwitchLib
             Console.ForegroundColor = prevColor;
         }
 
-        #region ChangeChatColor
-        /// <summary>
-        /// Sends request to change color of chat name in Twitch chat.
-        /// </summary>
-        /// <param name="channel">JoinedChannel object representing which channel to send command to.</param>
-        /// <param name="color">Enum representing available chat preset colors.</param>
-        public void ChangeChatColor(JoinedChannel channel, Enums.ChatColorPresets color)
-        {
-            SendMessage(channel, $".color {color}");
-        }
-
-        /// <summary>
-        /// Sends request to change color of chat name in Twitch chat.
-        /// </summary>
-        /// <param name="channel">String representing the channel to send the command to.</param>
-        /// <param name="color">Enum representing available chat preset colors.</param>
-        public void ChangeChatColor(string channel, Enums.ChatColorPresets color)
-        {
-            SendMessage(channel, $".color {color}");
-        }
-
-        /// <summary>
-        /// Sends request to change color of chat name in Twitch chat.
-        /// </summary>
-        /// <param name="color">Enum representing available chat preset colors.</param>
-        public void ChangeChatColor(Enums.ChatColorPresets color)
-        {
-            SendMessage($".color {color}");
-        }
-        #endregion
-
         #region SendMessage
         /// <summary>
         /// Sends a formatted Twitch channel chat message.
@@ -330,126 +300,6 @@ namespace TwitchLib
         {
             if (JoinedChannels.Count > 0)
                 SendMessage(JoinedChannels[0], message, dryRun);
-        }
-        #endregion
-
-        #region TimeoutUser
-        /// <summary>
-        /// TImesout a user in chat using a JoinedChannel object.
-        /// </summary>
-        /// <param name="channel">Channel object to send timeout to</param>
-        /// <param name="viewer">Viewer name to timeout</param>
-        /// <param name="duration">Duration of the timeout via TimeSpan object</param>
-        /// <param name="message">Message to accompany the timeout and show the user.</param>
-        /// <param name="dryRun">Indicates a dryrun (will not sened if true)</param>
-        public void TimeoutUser(JoinedChannel channel, string viewer, TimeSpan duration, string message = "", bool dryRun = false)
-        {
-            SendMessage(channel, $".timeout {viewer} {duration.TotalSeconds} {message}", dryRun);
-        }
-
-        /// <summary>
-        /// Timesout a user in chat using a string for the channel.
-        /// </summary>
-        /// <param name="channel">Channel in string form to send timeout to</param>
-        /// <param name="viewer">Viewer name to timeout</param>
-        /// <param name="duration">Duration of the timeout via TimeSpan object</param>
-        /// <param name="message">Message to accompany the timeout and show the user.</param>
-        /// <param name="dryRun">Indicates a dryrun (will not sened if true)</param>
-        public void TimeoutUser(string channel, string viewer, TimeSpan duration, string message = "", bool dryRun = false)
-        {
-            var joinedChannel = GetJoinedChannel(channel);
-            if (joinedChannel != null)
-                TimeoutUser(joinedChannel, viewer, duration, message, dryRun);
-        }
-
-        /// <summary>
-        /// Timesout a user using the first joined channel.
-        /// </summary>
-        /// <param name="viewer">Viewer name to timeout</param>
-        /// <param name="duration">Duration of the timeout via TimeSpan object</param>
-        /// <param name="message">Message to accompany the timeout and show the user.</param>
-        /// <param name="dryRun">Indicates a dryrun (will not sened if true)</param>
-        public void TimeoutUser(string viewer, TimeSpan duration, string message = "", bool dryRun = false)
-        {
-            if (JoinedChannels.Count > 0)
-                TimeoutUser(JoinedChannels[0], viewer, duration, message, dryRun);
-        }
-        #endregion
-
-        #region BanUser
-        /// <summary>
-        /// Bans a user in chat using JoinedChannel
-        /// </summary>
-        /// <param name="channel">JoinedChannel object to send ban to</param>
-        /// <param name="viewer">Viewer name to ban</param>
-        /// <param name="message">Message to accompany the ban and show the user.</param>
-        /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
-        public void BanUser(JoinedChannel channel, string viewer, string message = "", bool dryRun = false)
-        {
-            SendMessage(channel, $".ban {viewer} {message}");
-        }
-
-        /// <summary>
-        /// Bans a user in chat using a string for the channel
-        /// </summary>
-        /// <param name="channel">Channel in string form to send ban to</param>
-        /// <param name="viewer">Viewer name to ban</param>
-        /// <param name="message">Message to accompany the ban and show the user.</param>
-        /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
-        public void BanUser(string channel, string viewer, string message = "", bool dryRun = false)
-        {
-            var joinedChannel = GetJoinedChannel(channel);
-            if (joinedChannel != null)
-                BanUser(joinedChannel, viewer, message, dryRun);
-        }
-
-        /// <summary>
-        /// Bans a user in chat using the first joined channel
-        /// </summary>
-        /// <param name="viewer">Viewer name to ban</param>
-        /// <param name="message">Message to accompany the ban and show the user.</param>
-        /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
-        public void BanUser(string viewer, string message = "", bool dryRun = false)
-        {
-            if (JoinedChannels.Count > 0)
-                BanUser(JoinedChannels[0], viewer, message, dryRun);
-        }
-        #endregion
-
-        #region UnbanUser
-        /// <summary>
-        /// Unbans a user in chat using JoinedChannel
-        /// </summary>
-        /// <param name="channel">JoinedChannel object to send unban to</param>
-        /// <param name="viewer">Viewer name to unban</param>
-        /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
-        public void UnbanUser(JoinedChannel channel, string viewer, bool dryRun = false)
-        {
-            SendMessage(channel, $".unban {viewer}", dryRun);
-        }
-
-        /// <summary>
-        /// Unbans a user in chat using a string for the channel
-        /// </summary>
-        /// <param name="channel">Channel in string form to send unban to</param>
-        /// <param name="viewer">Viewer name to unban</param>
-        /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
-        public void UnbanUser(string channel, string viewer, bool dryRun = false)
-        {
-            var joinedChannel = GetJoinedChannel(channel);
-            if (joinedChannel != null)
-                UnbanUser(joinedChannel, viewer, dryRun);
-        }
-
-        /// <summary>
-        /// Unbans a user in chat using first joined channel.
-        /// </summary>
-        /// <param name="viewer">Viewer name to unban</param>
-        /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
-        public void UnbanUser(string viewer, bool dryRun = false)
-        {
-            if (JoinedChannels.Count > 0)
-                UnbanUser(JoinedChannels[0], viewer, dryRun);
         }
         #endregion
 
@@ -1033,5 +883,6 @@ namespace TwitchLib
             if (_logging)
                 Common.Log($"Unaccounted for: {decodedMessage}");            
         }
+
     }
 }
