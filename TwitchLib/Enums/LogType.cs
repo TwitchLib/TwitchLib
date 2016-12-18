@@ -11,8 +11,11 @@ namespace TwitchLib.Enums
     /// </summary>
     public enum LogType
     {
+        /// <summary>White</summary>
         Normal,
+        /// <summary>Red</summary>
         Failure,
+        /// <summary>Green</summary>
         Success
     }
 }

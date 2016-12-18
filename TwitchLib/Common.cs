@@ -73,6 +73,11 @@ namespace TwitchLib
             return Convert.ToDateTime(dateTime);
         }
 
+        /// <summary>
+        /// Parses out strings that have quotes, ideal for commands that use quotes for parameters
+        /// </summary>
+        /// <param name="message">Input string to attempt to parse.</param>
+        /// <returns>List of contents of quotes from the input string</returns>
         public static List<string> ParseQuotesAndNonQuotes(string message)
         {
             List<string> args = new List<string>();

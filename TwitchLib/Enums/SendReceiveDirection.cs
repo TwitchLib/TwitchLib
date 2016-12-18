@@ -11,7 +11,9 @@ namespace TwitchLib.Enums
     /// </summary>
     public enum SendReceiveDirection
     {
+        /// <summary>Used for logging, direction of data.</summary>
         Sent,
+        /// <summary>Used for logging, direction of data.</summary>
         Received
     }
 }

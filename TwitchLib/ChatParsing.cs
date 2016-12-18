@@ -479,6 +479,12 @@ namespace TwitchLib
             return new DetectionReturn(false);
         }
 
+        /// <summary>
+        /// Parse function to detect chat color being changed successfully
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="channels"></param>
+        /// <returns></returns>
         public static DetectionReturn detectedChatColorChanged(string message, List<JoinedChannel> channels)
         {
             string readType = null;

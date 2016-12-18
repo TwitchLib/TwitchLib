@@ -11,20 +11,33 @@ namespace TwitchLib.Enums
     /// </summary>
     public enum ChatColorPresets
     {
+        /// <summary>Chat color name.</summary>
         Blue,
+        /// <summary>Chat color name.</summary>
         Coral,
+        /// <summary>Chat color name.</summary>
         DodgerBlue,
+        /// <summary>Chat color name.</summary>
         SpringGreen,
+        /// <summary>Chat color name.</summary>
         YellowGreen,
+        /// <summary>Chat color name.</summary>
         Green,
+        /// <summary>Chat color name.</summary>
         OrangeRed,
+        /// <summary>Chat color name.</summary>
         Red,
-        GoldenRod,
+        /// <summary>Chat color name.</summary>GoldenRod,
         HotPink,
+        /// <summary>Chat color name.</summary>
         CadetBlue,
+        /// <summary>Chat color name.</summary>
         SeaGreen,
+        /// <summary>Chat color name.</summary>
         Chocolate,
+        /// <summary>Chat color name.</summary>
         BlueViolet,
+        /// <summary>Chat color name.</summary>
         Firebrick
     }
 }
