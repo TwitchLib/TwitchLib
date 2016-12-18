@@ -124,9 +124,11 @@
     <Compile Include="Extensions\Client\BanUserExt.cs" />
     <Compile Include="Extensions\Client\ChangeChatColorExt.cs" />
     <Compile Include="Extensions\Client\ClearChatExt.cs" />
-    <Compile Include="Extensions\Client\EmoteOnly.cs" />
+    <Compile Include="Extensions\Client\CommercialExt.cs" />
+    <Compile Include="Extensions\Client\EmoteOnlyExt.cs" />
     <Compile Include="Extensions\Client\FollowersOnlyExt.cs" />
     <Compile Include="Extensions\Client\HostExt.cs" />
+    <Compile Include="Extensions\Client\ModExt.cs" />
     <Compile Include="Extensions\Client\SlowModeExt.cs" />
     <Compile Include="Extensions\Client\SubscribersOnly.cs" />
     <Compile Include="Extensions\Client\TimeoutUserExt.cs" />

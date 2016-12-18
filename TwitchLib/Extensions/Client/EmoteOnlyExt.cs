@@ -7,7 +7,7 @@ using TwitchLib.Models.Client;
 
 namespace TwitchLib.Extensions.Client
 {
-    public static class EmoteOnly
+    public static class EmoteOnlyExt
     {
         /// <summary>
         /// Enables emote only chat requirement.

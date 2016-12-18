@@ -18,6 +18,7 @@ using TwitchLib.Events.PubSub;
 using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Events.Services.MessageThrottler;
 using TwitchLib.Enums;
+using TwitchLib.Extensions.Client;
 
 namespace TwitchLibExample
 {
