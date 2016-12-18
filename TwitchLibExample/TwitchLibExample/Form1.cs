@@ -784,5 +784,13 @@ namespace TwitchLibExample
             if (comboBox7.Text != "")
                 clients[0].ChangeChatColor((TwitchLib.Enums.ChatColorPresets)Enum.Parse(typeof(TwitchLib.Enums.ChatColorPresets), comboBox7.Text));
         }
+
+        private async void button55_Click(object sender, EventArgs e)
+        {
+            if (await TwitchApi.StreamIsLive(textBox43.Text))
+                MessageBox.Show($"{textBox43.Text} is live!");
+            else
+                MessageBox.Show($"{textBox43.Text} is not live!");
+        }
     }
 }

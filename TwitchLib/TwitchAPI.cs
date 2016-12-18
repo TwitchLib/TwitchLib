@@ -118,6 +118,23 @@ namespace TwitchLib
         }
 
         /// <summary>
+        /// Checks if a stream is live or not.
+        /// </summary>
+        /// <param name="channel">The channel to retrieve live status for.</param>
+        /// <returns>Boolean representing if a stream is live or not.</returns>
+        public static async Task<bool> StreamIsLive(string channel)
+        {
+            try
+            {
+                await GetStream(channel);
+                return true;
+            } catch(StreamOfflineException)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Retrieves channel feed posts.
         /// </summary>
         /// <param name="channel">Channel to fetch feed posts from.</param>
