@@ -253,7 +253,7 @@ namespace TwitchLibExample
         {
             try
             {
-                Channel channel = await TwitchApi.GetTwitchChannel(textBox9.Text);
+                Channel channel = await TwitchApi.GetChannel(textBox9.Text);
                 MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At (seconds ago): {6}\n" +
                 "Updated At (seconds ago): {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
                 channel.Status, channel.BroadcasterLanguage, channel.DisplayName, channel.Game, channel.Language, channel.Name, channel.CreatedAt, channel.UpdatedAt.Second,
@@ -393,7 +393,7 @@ namespace TwitchLibExample
             TwitchLib.Models.API.Stream stream = null;
             try
             {
-                stream = await TwitchApi.GetTwitchStream(textBox25.Text);
+                stream = await TwitchApi.GetStream(textBox25.Text);
             } catch (StreamOfflineException)
             {
                 MessageBox.Show($"The stream for the channel '{textBox25.Text}' is currently offline.");
@@ -586,7 +586,7 @@ namespace TwitchLibExample
         {
             if(textBox35.Text.Contains(","))
             {
-                var streams = await TwitchApi.GetTwitchStreams(textBox35.Text.Split(',').ToList());
+                var streams = await TwitchApi.GetStreams(textBox35.Text.Split(',').ToList());
                 foreach (var stream in streams)
                     MessageBox.Show($"{stream.Channel.Name} currently has {stream.Viewers.ToString()} viewers!");
             } else
