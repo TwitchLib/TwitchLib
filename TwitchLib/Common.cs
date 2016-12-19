@@ -70,6 +70,8 @@ namespace TwitchLib
         /// <returns></returns>
         public static DateTime DateTimeStringToObject(string dateTime)
         {
+            if (dateTime == null)
+                return new DateTime();
             return Convert.ToDateTime(dateTime);
         }
 
