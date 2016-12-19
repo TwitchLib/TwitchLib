@@ -248,6 +248,12 @@
             this.button55 = new System.Windows.Forms.Button();
             this.textBox43 = new System.Windows.Forms.TextBox();
             this.label50 = new System.Windows.Forms.Label();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.groupBox44 = new System.Windows.Forms.GroupBox();
+            this.button56 = new System.Windows.Forms.Button();
+            this.textBox44 = new System.Windows.Forms.TextBox();
+            this.label51 = new System.Windows.Forms.Label();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -304,6 +310,8 @@
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox43.SuspendLayout();
+            this.tabPage9.SuspendLayout();
+            this.groupBox44.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -882,6 +890,7 @@
             // 
             this.tabControl3.Controls.Add(this.tabPage5);
             this.tabControl3.Controls.Add(this.tabPage6);
+            this.tabControl3.Controls.Add(this.tabPage9);
             this.tabControl3.Location = new System.Drawing.Point(9, 10);
             this.tabControl3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabControl3.Name = "tabControl3";
@@ -2726,11 +2735,77 @@
             this.label50.TabIndex = 0;
             this.label50.Text = "Channel:";
             // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.linkLabel2);
+            this.tabPage9.Controls.Add(this.groupBox44);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Size = new System.Drawing.Size(738, 602);
+            this.tabPage9.TabIndex = 2;
+            this.tabPage9.Text = "Twitch API v5";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // groupBox44
+            // 
+            this.groupBox44.Controls.Add(this.button56);
+            this.groupBox44.Controls.Add(this.textBox44);
+            this.groupBox44.Controls.Add(this.label51);
+            this.groupBox44.Location = new System.Drawing.Point(2, 2);
+            this.groupBox44.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox44.Name = "groupBox44";
+            this.groupBox44.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox44.Size = new System.Drawing.Size(172, 45);
+            this.groupBox44.TabIndex = 1;
+            this.groupBox44.TabStop = false;
+            this.groupBox44.Text = "Get Users";
+            // 
+            // button56
+            // 
+            this.button56.Location = new System.Drawing.Point(121, 15);
+            this.button56.Margin = new System.Windows.Forms.Padding(2);
+            this.button56.Name = "button56";
+            this.button56.Size = new System.Drawing.Size(45, 20);
+            this.button56.TabIndex = 18;
+            this.button56.Text = "Fetch";
+            this.button56.UseVisualStyleBackColor = true;
+            this.button56.Click += new System.EventHandler(this.button56_Click);
+            // 
+            // textBox44
+            // 
+            this.textBox44.Location = new System.Drawing.Point(64, 14);
+            this.textBox44.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox44.Name = "textBox44";
+            this.textBox44.Size = new System.Drawing.Size(54, 20);
+            this.textBox44.TabIndex = 1;
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(4, 15);
+            this.label51.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(58, 13);
+            this.label51.TabIndex = 0;
+            this.label51.Text = "Username:";
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.Location = new System.Drawing.Point(187, 2);
+            this.linkLabel2.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(110, 13);
+            this.linkLabel2.TabIndex = 25;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "Set Required Client-Id";
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(759, 442);
+            this.ClientSize = new System.Drawing.Size(759, 644);
             this.Controls.Add(this.tabControl3);
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
@@ -2831,6 +2906,10 @@
             this.groupBox7.PerformLayout();
             this.groupBox43.ResumeLayout(false);
             this.groupBox43.PerformLayout();
+            this.tabPage9.ResumeLayout(false);
+            this.tabPage9.PerformLayout();
+            this.groupBox44.ResumeLayout(false);
+            this.groupBox44.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3057,6 +3136,12 @@
         private System.Windows.Forms.Button button55;
         private System.Windows.Forms.TextBox textBox43;
         private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.GroupBox groupBox44;
+        private System.Windows.Forms.Button button56;
+        private System.Windows.Forms.TextBox textBox44;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.LinkLabel linkLabel2;
     }
 }
 

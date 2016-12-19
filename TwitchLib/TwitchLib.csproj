@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIv5\Models\User.cs" />
     <Compile Include="Enums\ChatColorPresets.cs" />
     <Compile Include="Enums\CommercialLength.cs" />
     <Compile Include="Enums\LogType.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Models\API\Stream.cs" />
     <Compile Include="Models\API\TeamMember.cs" />
     <Compile Include="Models\API\Video.cs" />
+    <Compile Include="TwitchAPIv5.cs" />
     <Compile Include="TwitchClient.cs" />
     <Compile Include="Models\Client\SentMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

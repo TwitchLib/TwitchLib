@@ -792,5 +792,24 @@ namespace TwitchLibExample
             else
                 MessageBox.Show($"{textBox43.Text} is not live!");
         }
+
+        private async void button56_Click(object sender, EventArgs e)
+        {
+            var resp = (await TwitchApiv5.GetUsers(textBox44.Text));
+            if(resp.Count > 0)
+            {
+                TwitchLib.APIv5.Models.User user = resp[0];
+                MessageBox.Show($"User: {user.Type}\nName: {user.Name}\nCreated at: {user.CreatedAt.ToShortDateString()}\nUpdated at: {user.UpdatedAt.ToShortDateString()}\nLogo: {user.Logo}\nId: {user.Id}\nBio: {user.Bio}");
+            } else
+            {
+                MessageBox.Show("No users returned!");
+            }
+            
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            TwitchApiv5.SetClientId(Microsoft.VisualBasic.Interaction.InputBox("Submit your client-Id below.", "Submit Client-Id"));
+        }
     }
 }
