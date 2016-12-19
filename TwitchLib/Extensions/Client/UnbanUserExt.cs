@@ -15,6 +15,7 @@ namespace TwitchLib.Extensions.Client
         /// <param name="channel">JoinedChannel object to send unban to</param>
         /// <param name="viewer">Viewer name to unban</param>
         /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
+        /// <param name="client">Client reference used to identify extension.</param>
         public static void UnbanUser(this TwitchClient client, JoinedChannel channel, string viewer, bool dryRun = false)
         {
             client.SendMessage(channel, $".unban {viewer}", dryRun);
@@ -26,6 +27,7 @@ namespace TwitchLib.Extensions.Client
         /// <param name="channel">Channel in string form to send unban to</param>
         /// <param name="viewer">Viewer name to unban</param>
         /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
+        /// /// <param name="client">Client reference used to identify extension.</param>
         public static void UnbanUser(this TwitchClient client, string channel, string viewer, bool dryRun = false)
         {
             var joinedChannel = client.GetJoinedChannel(channel);
@@ -38,6 +40,7 @@ namespace TwitchLib.Extensions.Client
         /// </summary>
         /// <param name="viewer">Viewer name to unban</param>
         /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
+        /// <param name="client">Client reference used to identify extension.</param>
         public static void UnbanUser(this TwitchClient client, string viewer, bool dryRun = false)
         {
             if (client.JoinedChannels.Count > 0)

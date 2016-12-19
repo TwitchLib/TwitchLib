@@ -14,6 +14,7 @@ namespace TwitchLib.Extensions.Client
         /// </summary>
         /// <param name="channel">JoinedChannel representation of the channel to send the ad to.</param>
         /// <param name="length">Enum representing the length of advertisement should be.</param>
+        /// <param name="client">Client reference used to identify extension.</param>
         public static void StartCommercial(this TwitchClient client, JoinedChannel channel, Enums.CommercialLength length)
         {
             switch(length)
@@ -44,6 +45,7 @@ namespace TwitchLib.Extensions.Client
         /// </summary>
         /// <param name="channel">String representation of the channel to send the ad to.</param>
         /// <param name="length">Enum representing the length of advertisement should be.</param>
+        /// <param name="client">Client reference used to identify extension.</param>
         public static void StartCommercial(this TwitchClient client, string channel, Enums.CommercialLength length)
         {
             switch (length)
@@ -73,6 +75,7 @@ namespace TwitchLib.Extensions.Client
         /// Sends command to start a commercial of variable length.
         /// </summary>
         /// <param name="length">Enum representing the length of advertisement should be.</param>
+        /// <param name="client">Client reference used to identify extension.</param>
         public static void StartCommercial(this TwitchClient client, Enums.CommercialLength length)
         {
             switch (length)

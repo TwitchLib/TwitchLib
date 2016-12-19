@@ -18,6 +18,7 @@ namespace TwitchLib.Extensions.Client
         /// <param name="duration">Duration of the timeout via TimeSpan object</param>
         /// <param name="message">Message to accompany the timeout and show the user.</param>
         /// <param name="dryRun">Indicates a dryrun (will not sened if true)</param>
+        /// <param name="client">Client reference used to identify extension.</param>
         public static void TimeoutUser(this TwitchClient client, JoinedChannel channel, string viewer, TimeSpan duration, string message = "", bool dryRun = false)
         {
             client.SendMessage(channel, $".timeout {viewer} {duration.TotalSeconds} {message}", dryRun);
@@ -31,6 +32,7 @@ namespace TwitchLib.Extensions.Client
         /// <param name="duration">Duration of the timeout via TimeSpan object</param>
         /// <param name="message">Message to accompany the timeout and show the user.</param>
         /// <param name="dryRun">Indicates a dryrun (will not sened if true)</param>
+        /// <param name="client">Client reference used to identify extension.</param>
         public static void TimeoutUser(this TwitchClient client, string channel, string viewer, TimeSpan duration, string message = "", bool dryRun = false)
         {
             var joinedChannel = client.GetJoinedChannel(channel);
@@ -45,6 +47,7 @@ namespace TwitchLib.Extensions.Client
         /// <param name="duration">Duration of the timeout via TimeSpan object</param>
         /// <param name="message">Message to accompany the timeout and show the user.</param>
         /// <param name="dryRun">Indicates a dryrun (will not sened if true)</param>
+        /// <param name="client">Client reference used to identify extension.</param>
         public static void TimeoutUser(this TwitchClient client, string viewer, TimeSpan duration, string message = "", bool dryRun = false)
         {
             if (client.JoinedChannels.Count > 0)

@@ -26,26 +26,47 @@ namespace TwitchLib
         */
 
         #region Events
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler OnPubSubServiceConnected;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnPubSubServiceErrorArgs> OnPubSubServiceError;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler OnPubSubServiceClosed;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnListenResponseArgs> OnListenResponse;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnTimeoutArgs> OnTimeout;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnBanArgs> OnBan;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnUnbanArgs> OnUnban;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnUntimeoutArgs> OnUntimeout;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnHostArgs> OnHost;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnSubscribersOnlyArgs> OnSubscribersOnly;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnSubscribersOnlyOffArgs> OnSubscribersOnlyOff;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnClearArgs> OnClear;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnEmoteOnlyArgs> OnEmoteOnly;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnEmoteOnlyOffArgs> OnEmoteOnlyOff;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnR9kBetaArgs> OnR9kBeta;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnR9kBetaOffArgs> OnR9kBetaOff;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnBitsReceivedArgs> OnBitsReceived;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnStreamUpArgs> OnStreamUp;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnStreamDownArgs> OnStreamDown;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnViewCountArgs> OnViewCount;
+        /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnWhisperArgs> OnWhisper;
         #endregion
 

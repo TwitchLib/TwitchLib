@@ -16,6 +16,7 @@ namespace TwitchLib.Extensions.Client
         /// <param name="viewer">Viewer name to ban</param>
         /// <param name="message">Message to accompany the ban and show the user.</param>
         /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
+        /// <param name="client">Client reference used to identify extension.</param>
         public static void BanUser(this TwitchClient client, JoinedChannel channel, string viewer, string message = "", bool dryRun = false)
         {
             client.SendMessage(channel, $".ban {viewer} {message}");
@@ -28,6 +29,7 @@ namespace TwitchLib.Extensions.Client
         /// <param name="viewer">Viewer name to ban</param>
         /// <param name="message">Message to accompany the ban and show the user.</param>
         /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
+        /// <param name="client">Client reference used to identify extension.</param>
         public static void BanUser(this TwitchClient client, string channel, string viewer, string message = "", bool dryRun = false)
         {
             var joinedChannel = client.GetJoinedChannel(channel);
@@ -41,6 +43,7 @@ namespace TwitchLib.Extensions.Client
         /// <param name="viewer">Viewer name to ban</param>
         /// <param name="message">Message to accompany the ban and show the user.</param>
         /// <param name="dryRun">Indicates a dryrun (will not send if true)</param>
+        /// <param name="client">Client reference used to identify extension.</param>
         public static void BanUser(this TwitchClient client, string viewer, string message = "", bool dryRun = false)
         {
             if (client.JoinedChannels.Count > 0)
