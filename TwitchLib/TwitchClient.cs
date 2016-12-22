@@ -26,8 +26,8 @@ namespace TwitchLib
         private MessageEmoteCollection _channelEmotes = new MessageEmoteCollection();
         private string _autoJoinChannel = null;
         // variables used for constructing OnMessageSent properties
-        private List<string> hasSeenJoinedChannels = new List<string>();
-        private string lastMessageSent;
+        private List<string> _hasSeenJoinedChannels = new List<string>();
+        private string _lastMessageSent;
         #endregion
 
         #region Public Variables
@@ -280,7 +280,7 @@ namespace TwitchLib
             if (ChatThrottler != null && !ChatThrottler.MessagePermitted(message)) return;
             string twitchMessage = $":{_credentials.TwitchUsername}!{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" +
                 $".tmi.twitch.tv PRIVMSG #{channel.Channel} :{message}";
-            lastMessageSent = message;
+            _lastMessageSent = message;
             // This is a makeshift hack to encode it with accomodations for at least cyrillic characters, and possibly others
             _client.WriteLine(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
         }
@@ -544,7 +544,7 @@ namespace TwitchLib
                 _client.WriteLine(Rfc2812.Join($"#{_autoJoinChannel}"));
             }
 
-            if(_listenThread == null || _listenThread.IsCompleted)
+            if (_listenThread == null || _listenThread.IsCompleted)
             {
                 _listenThread = Task.Factory.StartNew(() =>
                 {
@@ -658,7 +658,7 @@ namespace TwitchLib
                 if (username.ToLower() == TwitchUsername)
                 {
                     JoinedChannels.Remove(JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == response.Channel));
-                    hasSeenJoinedChannels.Remove(response.Channel.ToLower());
+                    _hasSeenJoinedChannels.Remove(response.Channel.ToLower());
                     OnClientLeftChannel?.Invoke(this, new OnClientLeftChannelArgs { BotUsername = username, Channel = response.Channel });
                 }
                 else
@@ -723,15 +723,15 @@ namespace TwitchLib
             if (response.Successful)
             {
                 var userState = new UserState(decodedMessage);
-                if (!hasSeenJoinedChannels.Contains(userState.Channel.ToLower()))
+                if (!_hasSeenJoinedChannels.Contains(userState.Channel.ToLower()))
                 {
                     // UserState fired from joining channel
-                    hasSeenJoinedChannels.Add(userState.Channel.ToLower());
+                    _hasSeenJoinedChannels.Add(userState.Channel.ToLower());
                     OnUserStateChanged?.Invoke(this, new OnUserStateChangedArgs { UserState = userState });
                 } else
                 {
                     // UserState fired from sending a message
-                    OnMessageSent?.Invoke(this, new OnMessageSentArgs { SentMessage = new SentMessage(userState, lastMessageSent) });
+                    OnMessageSent?.Invoke(this, new OnMessageSentArgs { SentMessage = new SentMessage(userState, _lastMessageSent) });
                 }
                 return;
             }
