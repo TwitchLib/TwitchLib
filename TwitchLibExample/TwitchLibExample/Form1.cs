@@ -75,6 +75,7 @@ namespace TwitchLibExample
             newClient.OnReSubscriber += new EventHandler<OnReSubscriberArgs>(onReSubscription);
             newClient.OnChannelStateChanged += new EventHandler<OnChannelStateChangedArgs>(onChannelStateChanged);
             newClient.OnModeratorsReceived += new EventHandler<OnModeratorsReceivedArgs>(onModeratorsReceived);
+            newClient.OnUserStateChanged += new EventHandler<OnUserStateChangedArgs>(onUserStateChanged);
             newClient.OnMessageSent += onMessageSent;
             newClient.OnChatColorChanged += onChatColorChanged;
             //Add message throttler
@@ -97,6 +98,11 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onUserStateChanged(object sender, OnUserStateChangedArgs e)
+        {
+            MessageBox.Show($"Display Name: {e.UserState.DisplayName}\nSubscriber: {e.UserState.Subscriber}\nModerator: {e.UserState.Moderator}");
         }
 
         private void onChatColorChanged(object sender, OnChatColorChangedArgs e)
