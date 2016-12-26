@@ -535,5 +535,20 @@ namespace TwitchLib
                     channel = channelObj.Channel;
             return new DetectionReturn(message.Contains(":Now hosting "), channel);
         }
+
+        /// <summary>
+        /// Parse function to detect that a 366 has been received indicating completed joining channel
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="channels"></param>
+        /// <returns></returns>
+        public static DetectionReturn detectedJoinChannelCompleted(string message)
+        {
+            //:blubott.tmi.twitch.tv 366 blubott #monstercat :End of /NAMES list
+            if (!message.Contains(" ") || message.Split(' ')[1] != "366")
+                return new DetectionReturn(false);
+
+            return new DetectionReturn(true, message.Split(' ')[3].Replace("#", ""));
+        }
     }
 }

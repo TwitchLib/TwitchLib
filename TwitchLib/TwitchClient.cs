@@ -25,6 +25,9 @@ namespace TwitchLib
         private bool _logging;
         private MessageEmoteCollection _channelEmotes = new MessageEmoteCollection();
         private string _autoJoinChannel = null;
+        private Queue<JoinedChannel> joinChannelQueue = new Queue<JoinedChannel>();
+        private bool currentlyJoiningChannels = false;
+
         // variables used for constructing OnMessageSent properties
         private List<string> _hasSeenJoinedChannels = new List<string>();
         private string _lastMessageSent;
@@ -443,10 +446,9 @@ namespace TwitchLib
             // Check to see if client is already in channel
             if (JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel && !overrideCheck) != null)
                 return;
-            if (_logging)
-                Common.Log($"Joining channel: {channel}");
-            _client.WriteLine(Rfc2812.Join($"#{channel}"));
-            JoinedChannels.Add(new JoinedChannel(channel));
+            joinChannelQueue.Enqueue(new JoinedChannel(channel));
+            if (!currentlyJoiningChannels)
+                queueingJoinCheck();
         }
 
         /// <summary>
@@ -793,10 +795,18 @@ namespace TwitchLib
             // On Now Hosting
             response = ChatParsing.detectedNowHosting(decodedMessage, JoinedChannels);
             if(response.Successful)
-            {//@msg-id=host_on :tmi.twitch.tv NOTICE #burkeblack :Now hosting DjTechlive.
+            {
                 OnNowHosting?.Invoke(this, new OnNowHostingArgs { Channel = response.Channel,
                     HostedChannel = decodedMessage.Split(' ')[6].Replace(".", "") });
                 return;
+            }
+
+            // On channel join completed with all existing names
+            response = ChatParsing.detectedJoinChannelCompleted(decodedMessage);
+            if(response.Successful)
+            {
+                currentlyJoiningChannels = false;
+                queueingJoinCheck();
             }
             #endregion
 
@@ -898,5 +908,22 @@ namespace TwitchLib
                 Common.Log($"Unaccounted for: {decodedMessage}");            
         }
 
+
+        private void queueingJoinCheck()
+        {
+            if(joinChannelQueue.Count > 0)
+            {
+                currentlyJoiningChannels = true;
+                JoinedChannel channelToJoin = joinChannelQueue.Dequeue();
+                if (_logging)
+                    Common.Log($"Joining channel: {channelToJoin.Channel}");
+                _client.WriteLine(Rfc2812.Join($"#{channelToJoin.Channel}"));
+                JoinedChannels.Add(new JoinedChannel(channelToJoin.Channel));
+            } else
+            {
+                if (_logging)
+                    Common.Log("Finished channel joining queue.");
+            }
+        }
     }
 }

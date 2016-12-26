@@ -256,6 +256,9 @@
             this.label51 = new System.Windows.Forms.Label();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.listBox3 = new System.Windows.Forms.ListBox();
+            this.button57 = new System.Windows.Forms.Button();
+            this.textBox45 = new System.Windows.Forms.TextBox();
+            this.label52 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -715,6 +718,9 @@
             // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.label52);
+            this.tabPage7.Controls.Add(this.textBox45);
+            this.tabPage7.Controls.Add(this.button57);
             this.tabPage7.Controls.Add(this.button43);
             this.tabPage7.Controls.Add(this.button42);
             this.tabPage7.Controls.Add(this.comboBox5);
@@ -2824,6 +2830,32 @@
             this.listBox3.Size = new System.Drawing.Size(150, 186);
             this.listBox3.TabIndex = 0;
             // 
+            // button57
+            // 
+            this.button57.Location = new System.Drawing.Point(190, 123);
+            this.button57.Name = "button57";
+            this.button57.Size = new System.Drawing.Size(168, 24);
+            this.button57.TabIndex = 17;
+            this.button57.Text = "Join Several Channels Quickly";
+            this.button57.UseVisualStyleBackColor = true;
+            this.button57.Click += new System.EventHandler(this.button57_Click);
+            // 
+            // textBox45
+            // 
+            this.textBox45.Location = new System.Drawing.Point(13, 126);
+            this.textBox45.Name = "textBox45";
+            this.textBox45.Size = new System.Drawing.Size(171, 20);
+            this.textBox45.TabIndex = 18;
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(19, 149);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(153, 13);
+            this.label52.TabIndex = 19;
+            this.label52.Text = "*separate channels by comma*";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3168,6 +3200,9 @@
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.TabPage tabPage10;
         private System.Windows.Forms.ListBox listBox3;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.TextBox textBox45;
+        private System.Windows.Forms.Button button57;
     }
 }
 

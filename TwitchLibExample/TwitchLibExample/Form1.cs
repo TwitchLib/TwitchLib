@@ -830,5 +830,18 @@ namespace TwitchLibExample
         {
             TwitchApiv5.SetClientId(Microsoft.VisualBasic.Interaction.InputBox("Submit your client-Id below.", "Submit Client-Id"));
         }
+
+        private void button57_Click(object sender, EventArgs e)
+        {
+            if(!textBox45.Text.Contains(","))
+            {
+                MessageBox.Show("Enter channels into the textbox on the right. No spaces. Separate channels by commas.");
+            } else
+            {
+                foreach (string channel in textBox45.Text.Split(','))
+                    clients[0].JoinChannel(channel);
+            }
+                
+        }
     }
 }
