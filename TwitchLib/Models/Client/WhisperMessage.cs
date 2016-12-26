@@ -20,7 +20,7 @@ namespace TwitchLib.Models.Client
         /// <summary>Property representing sender DisplayName (can be null/blank).</summary>
         public string DisplayName { get; protected set; }
         /// <summary>Property representing list of string emotes in message.</summary>
-        public string EmoteSet { get; protected set; }
+        public EmoteSet EmoteSet { get; protected set; }
         /// <summary>Property representing identifier of the message thread.</summary>
         public string ThreadId { get; protected set; }
         /// <summary>Property representing message identifier.</summary>
@@ -50,7 +50,6 @@ namespace TwitchLib.Models.Client
                 ColorHex = ircString.Split(';')[1].Split('=')[1];
                 Username = ircString.Split('@')[2].Split('.')[0];
                 DisplayName = ircString.Split(';')[2].Split('=')[1];
-                EmoteSet = ircString.Split(';')[3].Split('=')[1];
                 MessageId = int.Parse(ircString.Split(';')[4].Split('=')[1]);
                 ThreadId = ircString.Split(';')[5].Split('=')[1];
                 Turbo = ConvertToBool(ircString.Split(';')[6].Split('=')[1]);
@@ -61,6 +60,7 @@ namespace TwitchLib.Models.Client
                     ircString.Replace(
                         ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" +
                         ircString.Split('@')[2].Split(':')[0] + ":", string.Empty);
+                EmoteSet = new EmoteSet(ircString.Split(';')[3].Split('=')[1], Message);
             }
             else
             {
@@ -69,7 +69,6 @@ namespace TwitchLib.Models.Client
                 ColorHex = ircString.Split(';')[0].Split('=')[1];
                 Username = ircString.Split('@')[2].Split('.')[0];
                 DisplayName = ircString.Split(';')[1].Split('=')[1];
-                EmoteSet = ircString.Split(';')[2].Split('=')[1];
                 MessageId = int.Parse(ircString.Split(';')[3].Split('=')[1]);
                 ThreadId = ircString.Split(';')[4].Split('=')[1];
                 Turbo = ConvertToBool(ircString.Split(';')[5].Split('=')[1]);
@@ -80,6 +79,7 @@ namespace TwitchLib.Models.Client
                     ircString.Replace(
                         ircString.Split('@')[0] + "@" + ircString.Split('@')[1] + "@" +
                         ircString.Split('@')[2].Split(':')[0] + ":", string.Empty);
+                EmoteSet = new EmoteSet(ircString.Split(';')[2].Split('=')[1], Message);
             }
             BotUsername = botUsername;
         }
