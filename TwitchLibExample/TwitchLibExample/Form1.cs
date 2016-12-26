@@ -234,6 +234,11 @@ namespace TwitchLibExample
         {
             //Don't do this in production
             CheckForIllegalCrossThreadCalls = false;
+            if(e.WhisperMessage.EmoteSet.Emotes.Count > 0)
+            {
+                foreach (var emote in e.WhisperMessage.EmoteSet.Emotes)
+                    MessageBox.Show($"Emote: {emote.Name} (id: {emote.Id})\nStart index: {emote.StartIndex}\nEnd index: {emote.EndIndex}\nUrl: {emote.ImageUrl}");
+            }
 
             richTextBox2.Text = String.Format("{0} -> {1}: {2}", e.WhisperMessage.Username, e.WhisperMessage.BotUsername, e.WhisperMessage.Message) + 
                 "\n" + richTextBox2.Text;
