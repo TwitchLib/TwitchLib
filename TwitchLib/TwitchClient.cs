@@ -584,6 +584,7 @@ namespace TwitchLib
         private void Disconnected(object sender, EventArgs e)
         {
             OnDisconnected?.Invoke(this, new OnDisconnectedArgs { Username = TwitchUsername });
+            JoinedChannels.Clear();
         }
 
         private void ConnectionError(object sender, EventArgs e)
