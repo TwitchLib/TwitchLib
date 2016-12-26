@@ -23,7 +23,7 @@ namespace TwitchLib.Models.Client
         /// <summary>Hex representation of username color in chat (THIS CAN BE NULL IF VIEWER HASN'T SET COLOR).</summary>
         public string ColorHex { get; protected set; }
         /// <summary>Emote Ids that exist in message.</summary>
-        public string EmoteSet { get; protected set; }
+        public EmoteSet EmoteSet { get; protected set; }
         /// <summary>Twitch chat message contents.</summary>
         public string Message { get; protected set; }
         /// <summary>User type can be viewer, moderator, global mod, admin, or staff</summary>
@@ -52,6 +52,8 @@ namespace TwitchLib.Models.Client
         public int Bits { get; protected set; }
         /// <summary>Number of USD (United States Dollars) spent on bits.</summary>
         public double BitsInDollars { get; protected set; }
+
+        private string emoteSetStorage = null;
 
         //Example IRC message: @badges=moderator/1,warcraft/alliance;color=;display-name=Swiftyspiffyv4;emotes=;mod=1;room-id=40876073;subscriber=0;turbo=0;user-id=103325214;user-type=mod :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #swiftyspiffy :asd
         /// <summary>Constructor for ChatMessage object.</summary>
@@ -95,7 +97,7 @@ namespace TwitchLib.Models.Client
                 else if(part.Contains("bits="))
                 {
                     Bits = int.Parse(part.Split('=')[1]);
-                    BitsInDollars = ConvertBitsToUSD(Bits);
+                    BitsInDollars = convertBitsToUSD(Bits);
                 }
                 else if (part.Contains("color="))
                 {
@@ -109,11 +111,8 @@ namespace TwitchLib.Models.Client
                 }
                 else if (part.Contains("emotes="))
                 {
-                    if (EmoteSet == null)
-                    {
-                        EmoteSet = part.Split('=')[1]; ;
-                    }
-
+                    if (emoteSetStorage == null)
+                        emoteSetStorage = part.Split('=')[1];
                 }
                 else if (part.Contains("subscriber="))
                 {
@@ -153,7 +152,8 @@ namespace TwitchLib.Models.Client
                     IsModerator = part.Split('=')[1] == "1";
                 }
             }
-            Message = ircString.Split(new[] {$" PRIVMSG #{Channel} :"}, StringSplitOptions.None)[1];
+            Message = ircString.Split(new[] { $" PRIVMSG #{Channel} :" }, StringSplitOptions.None)[1];
+            EmoteSet = new EmoteSet(emoteSetStorage, Message);
             if ((byte)Message[0] == 1 && (byte)Message[Message.Length-1] == 1)
             {
               //Actions (/me {action}) are wrapped by byte=1 and prepended with "ACTION "
@@ -167,7 +167,7 @@ namespace TwitchLib.Models.Client
             //Parse the emoteSet
             if (EmoteSet != null && Message != null)
             {
-                string[] uniqueEmotes = EmoteSet.Split('/');
+                string[] uniqueEmotes = EmoteSet.RawEmoteSetString.Split('/');
                 string id, text;
                 int firstColon, firstComma, firstDash, low, high;
                 foreach (string emote in uniqueEmotes)
@@ -211,7 +211,7 @@ namespace TwitchLib.Models.Client
         }
 
         public ChatMessage(List<KeyValuePair<string, string>> badges, string channel, string colorHex, string displayName, 
-            string emoteSet, bool moderator, bool subscriber, Enums.UserType userType, string message)
+            EmoteSet emoteSet, bool moderator, bool subscriber, Enums.UserType userType, string message)
         {
             Badges = badges;
             Channel = channel;
@@ -224,12 +224,12 @@ namespace TwitchLib.Models.Client
             Message = message;
         }
 
-        private static bool ConvertToBool(string data)
+        private static bool convertToBool(string data)
         {
             return data == "1";
         }
 
-        private static double ConvertBitsToUSD(int bits)
+        private static double convertBitsToUSD(int bits)
         {
             /*
             Conversion Rates

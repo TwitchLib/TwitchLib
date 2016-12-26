@@ -148,6 +148,7 @@
     <Compile Include="Models\API\BadgeResponse.cs" />
     <Compile Include="Models\Client\ChannelState.cs" />
     <Compile Include="Models\Client\ChatCommand.cs" />
+    <Compile Include="Models\Client\EmoteSet.cs" />
     <Compile Include="Models\Client\ChatMessage.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Exceptions\Services\BadQueryCountException.cs" />
