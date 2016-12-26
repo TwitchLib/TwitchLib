@@ -255,7 +255,7 @@ namespace TwitchLib
         #region Listeners
 
         /// <summary>
-        /// [TESTED & WORKING] Sends a request to listenOn timeouts and bans in a specific channel
+        /// Sends a request to listenOn timeouts and bans in a specific channel
         /// </summary>
         /// <param name="myTwitchId">A moderator's twitch acount's ID (can be fetched from TwitchApi)</param>
         /// <param name="channelTwitchId">Channel ID who has previous parameter's moderator (can be fetched from TwitchApi)</param>
@@ -266,7 +266,7 @@ namespace TwitchLib
         }
 
         /// <summary>
-        /// [TESTED & WORKING] Sends request to listenOn bits events in specific channel
+        /// Sends request to listenOn bits events in specific channel
         /// </summary>
         /// <param name="channelTwitchId">Channel Id of channel to listen to bitsOn (can be fetched from TwitchApi)</param>
         /// <param name="channelOAuth">OAuth token linked to the channel.</param>
@@ -276,7 +276,7 @@ namespace TwitchLib
         }
 
         /// <summary>
-        /// [UNTESTED] Sends request to listenOn video playback events in specific channel
+        /// Sends request to listenOn video playback events in specific channel
         /// </summary>
         /// <param name="channelTwitchId">Channel Id of channel to listen to playback events in.</param>
         public void ListenToVideoPlayback(int channelTwitchId)
