@@ -42,6 +42,19 @@ namespace TwitchLib
             return null;
         }
 
+        /// <summary>
+        /// Extracts msg-id property from message.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns>Message id (ie host_on)</returns>
+        public static string getMsgId(string message)
+        {
+            foreach (string part in message.Split(' '))
+                if (part.Contains("@msg-id"))
+                    return part.Split('=')[1];
+            return null;
+        }
+
         /// <summary>[Works] Parse function to detect connected successfully</summary>
         /// <param name="message"></param>
         /// <returns></returns>
@@ -502,6 +515,25 @@ namespace TwitchLib
             if (readType != null && readType == "NOTICE")
                 return new DetectionReturn(message.Contains("Your color has been changed."), channelRet);
             return new DetectionReturn(false);
+        }
+
+        /// <summary>
+        /// Parse function to detect now hosting event.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="channels"></param>
+        /// <returns></returns>
+        public static DetectionReturn detectedNowHosting(string message, List<JoinedChannel> channels)
+        {
+            //@msg-id=host_on :tmi.twitch.tv NOTICE #burkeblack :Now hosting DjTechlive.
+            string id = getMsgId(message);
+            if (string.IsNullOrEmpty(id) || id != "host_on")
+                return new DetectionReturn(false);
+            string channel = "";
+            foreach (JoinedChannel channelObj in channels)
+                if (channelObj.Channel.ToLower() == message.Split(' ')[3].ToLower().Replace("#", ""))
+                    channel = channelObj.Channel;
+            return new DetectionReturn(message.Contains(":Now hosting "), channel);
         }
     }
 }

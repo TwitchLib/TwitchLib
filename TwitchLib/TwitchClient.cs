@@ -209,6 +209,11 @@ namespace TwitchLib
         /// </summary>
         public event EventHandler<OnSendReceiveDataArgs> OnSendReceiveData;
 
+        /// <summary>
+        /// Fires when client receives notice that a joined channel is hosting another channel.
+        /// </summary>
+        public event EventHandler<OnNowHostingArgs> OnNowHosting;
+
         #endregion  
 
         /// <summary>
@@ -782,6 +787,15 @@ namespace TwitchLib
             {
                 OnExistingUsersDetected?.Invoke(this, new OnExistingUsersDetectedArgs { Channel = response.Channel,
                     Users = decodedMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ').ToList<string>() });
+                return;
+            }
+
+            // On Now Hosting
+            response = ChatParsing.detectedNowHosting(decodedMessage, JoinedChannels);
+            if(response.Successful)
+            {//@msg-id=host_on :tmi.twitch.tv NOTICE #burkeblack :Now hosting DjTechlive.
+                OnNowHosting?.Invoke(this, new OnNowHostingArgs { Channel = response.Channel,
+                    HostedChannel = decodedMessage.Split(' ')[6].Replace(".", "") });
                 return;
             }
             #endregion

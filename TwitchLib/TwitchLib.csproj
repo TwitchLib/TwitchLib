@@ -85,6 +85,7 @@
     <Compile Include="Events\Client\OnModeratorLeftArgs.cs" />
     <Compile Include="Events\Client\OnModeratorsReceivedArgs.cs" />
     <Compile Include="Events\Client\OnNewSubscriberArgs.cs" />
+    <Compile Include="Events\Client\OnNowHostingArgs.cs" />
     <Compile Include="Events\Client\OnReSubscriberArgs.cs" />
     <Compile Include="Events\Client\OnSendReceiveDataArgs.cs" />
     <Compile Include="Events\Client\OnUserStateChangedArgs.cs" />
