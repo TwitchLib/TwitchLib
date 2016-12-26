@@ -76,6 +76,8 @@ namespace TwitchLibExample
             newClient.OnChannelStateChanged += new EventHandler<OnChannelStateChangedArgs>(onChannelStateChanged);
             newClient.OnModeratorsReceived += new EventHandler<OnModeratorsReceivedArgs>(onModeratorsReceived);
             newClient.OnUserStateChanged += new EventHandler<OnUserStateChangedArgs>(onUserStateChanged);
+            newClient.OnExistingUsersDetected += new EventHandler<OnExistingUsersDetectedArgs>(onExistingUsersDetected);
+            newClient.OnNowHosting += new EventHandler<OnNowHostingArgs>(onNowHosting);
             newClient.OnMessageSent += onMessageSent;
             newClient.OnChatColorChanged += onChatColorChanged;
             //Add message throttler
@@ -98,6 +100,17 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onNowHosting(object sender, OnNowHostingArgs e)
+        {
+            MessageBox.Show($"The joined channel '{e.Channel}' is now hosting {e.HostedChannel}");
+        }
+
+        private void onExistingUsersDetected(object sender, OnExistingUsersDetectedArgs e)
+        {
+            foreach (string user in e.Users)
+                listBox3.Items.Add(user);
         }
 
         private void onUserStateChanged(object sender, OnUserStateChangedArgs e)

@@ -150,6 +150,10 @@
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox43 = new System.Windows.Forms.GroupBox();
+            this.button55 = new System.Windows.Forms.Button();
+            this.textBox43 = new System.Windows.Forms.TextBox();
+            this.label50 = new System.Windows.Forms.Label();
             this.groupBox40 = new System.Windows.Forms.GroupBox();
             this.button50 = new System.Windows.Forms.Button();
             this.groupBox39 = new System.Windows.Forms.GroupBox();
@@ -244,16 +248,14 @@
             this.button9 = new System.Windows.Forms.Button();
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.groupBox43 = new System.Windows.Forms.GroupBox();
-            this.button55 = new System.Windows.Forms.Button();
-            this.textBox43 = new System.Windows.Forms.TextBox();
-            this.label50 = new System.Windows.Forms.Label();
             this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.groupBox44 = new System.Windows.Forms.GroupBox();
             this.button56 = new System.Windows.Forms.Button();
             this.textBox44 = new System.Windows.Forms.TextBox();
             this.label51 = new System.Windows.Forms.Label();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.listBox3 = new System.Windows.Forms.ListBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -285,6 +287,7 @@
             this.groupBox12.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox43.SuspendLayout();
             this.groupBox40.SuspendLayout();
             this.groupBox39.SuspendLayout();
             this.groupBox38.SuspendLayout();
@@ -309,15 +312,15 @@
             this.groupBox9.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
-            this.groupBox43.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.groupBox44.SuspendLayout();
+            this.tabPage10.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTextBox1
             // 
             this.richTextBox1.Location = new System.Drawing.Point(6, 5);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.richTextBox1.Margin = new System.Windows.Forms.Padding(2);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(232, 163);
             this.richTextBox1.TabIndex = 0;
@@ -328,7 +331,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(4, 5);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(357, 196);
@@ -339,9 +342,9 @@
             this.tabPage1.Controls.Add(this.listBox1);
             this.tabPage1.Controls.Add(this.richTextBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage1.Size = new System.Drawing.Size(349, 170);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Global Chat";
@@ -360,9 +363,9 @@
             this.tabPage2.Controls.Add(this.listBox2);
             this.tabPage2.Controls.Add(this.richTextBox2);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage2.Size = new System.Drawing.Size(349, 170);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Whispers";
@@ -379,7 +382,7 @@
             // richTextBox2
             // 
             this.richTextBox2.Location = new System.Drawing.Point(4, 7);
-            this.richTextBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.richTextBox2.Margin = new System.Windows.Forms.Padding(2);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.Size = new System.Drawing.Size(231, 161);
             this.richTextBox2.TabIndex = 1;
@@ -398,9 +401,9 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(4, 5);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(370, 91);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
@@ -409,7 +412,7 @@
             // textBox34
             // 
             this.textBox34.Location = new System.Drawing.Point(58, 71);
-            this.textBox34.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox34.Margin = new System.Windows.Forms.Padding(2);
             this.textBox34.Name = "textBox34";
             this.textBox34.Size = new System.Drawing.Size(185, 20);
             this.textBox34.TabIndex = 9;
@@ -427,7 +430,7 @@
             // button38
             // 
             this.button38.Location = new System.Drawing.Point(252, 68);
-            this.button38.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button38.Margin = new System.Windows.Forms.Padding(2);
             this.button38.Name = "button38";
             this.button38.Size = new System.Drawing.Size(110, 19);
             this.button38.TabIndex = 7;
@@ -438,7 +441,7 @@
             // textBox8
             // 
             this.textBox8.Location = new System.Drawing.Point(58, 48);
-            this.textBox8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox8.Margin = new System.Windows.Forms.Padding(2);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(185, 20);
             this.textBox8.TabIndex = 6;
@@ -456,7 +459,7 @@
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(252, 45);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(110, 19);
             this.button2.TabIndex = 4;
@@ -467,7 +470,7 @@
             // textBox5
             // 
             this.textBox5.Location = new System.Drawing.Point(194, 17);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox5.Margin = new System.Windows.Forms.Padding(2);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(170, 20);
             this.textBox5.TabIndex = 3;
@@ -476,7 +479,7 @@
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(41, 20);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(2);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(54, 20);
             this.textBox4.TabIndex = 2;
@@ -505,7 +508,7 @@
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(84, 20);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(91, 21);
             this.comboBox1.TabIndex = 3;
@@ -513,7 +516,7 @@
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(256, 20);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 4;
@@ -521,7 +524,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(310, 61);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(45, 26);
             this.button1.TabIndex = 4;
@@ -535,8 +538,9 @@
             this.tabControl2.Controls.Add(this.tabPage4);
             this.tabControl2.Controls.Add(this.tabPage7);
             this.tabControl2.Controls.Add(this.tabPage8);
+            this.tabControl2.Controls.Add(this.tabPage10);
             this.tabControl2.Location = new System.Drawing.Point(4, 252);
-            this.tabControl2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl2.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             this.tabControl2.Size = new System.Drawing.Size(374, 229);
@@ -546,9 +550,9 @@
             // 
             this.tabPage3.Controls.Add(this.tabControl1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage3.Size = new System.Drawing.Size(366, 203);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "Receive";
@@ -559,9 +563,9 @@
             this.tabPage4.Controls.Add(this.groupBox4);
             this.tabPage4.Controls.Add(this.groupBox3);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage4.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage4.Size = new System.Drawing.Size(366, 203);
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "Send";
@@ -577,9 +581,9 @@
             this.groupBox4.Controls.Add(this.textBox1);
             this.groupBox4.Controls.Add(this.comboBox1);
             this.groupBox4.Location = new System.Drawing.Point(4, 109);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox4.Size = new System.Drawing.Size(359, 92);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
@@ -588,7 +592,7 @@
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(61, 65);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(2);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(246, 20);
             this.textBox2.TabIndex = 6;
@@ -633,9 +637,9 @@
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.comboBox2);
             this.groupBox3.Location = new System.Drawing.Point(4, 5);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox3.Size = new System.Drawing.Size(359, 96);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
@@ -644,7 +648,7 @@
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(310, 60);
-            this.button4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(45, 26);
             this.button4.TabIndex = 13;
@@ -656,7 +660,7 @@
             // 
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Location = new System.Drawing.Point(265, 20);
-            this.comboBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox3.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(91, 21);
             this.comboBox3.TabIndex = 12;
@@ -674,7 +678,7 @@
             // textBox3
             // 
             this.textBox3.Location = new System.Drawing.Point(61, 64);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(2);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(246, 20);
             this.textBox3.TabIndex = 10;
@@ -703,7 +707,7 @@
             // 
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(84, 20);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(75, 21);
             this.comboBox2.TabIndex = 8;
@@ -721,9 +725,9 @@
             this.tabPage7.Controls.Add(this.comboBox4);
             this.tabPage7.Controls.Add(this.label42);
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
-            this.tabPage7.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.tabPage7.Margin = new System.Windows.Forms.Padding(1);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Padding = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(1);
             this.tabPage7.Size = new System.Drawing.Size(366, 203);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "Join/Leave Channel";
@@ -732,7 +736,7 @@
             // button43
             // 
             this.button43.Location = new System.Drawing.Point(190, 12);
-            this.button43.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button43.Margin = new System.Windows.Forms.Padding(1);
             this.button43.Name = "button43";
             this.button43.Size = new System.Drawing.Size(168, 21);
             this.button43.TabIndex = 16;
@@ -743,7 +747,7 @@
             // button42
             // 
             this.button42.Location = new System.Drawing.Point(190, 88);
-            this.button42.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button42.Margin = new System.Windows.Forms.Padding(1);
             this.button42.Name = "button42";
             this.button42.Size = new System.Drawing.Size(168, 27);
             this.button42.TabIndex = 15;
@@ -755,7 +759,7 @@
             // 
             this.comboBox5.FormattingEnabled = true;
             this.comboBox5.Location = new System.Drawing.Point(93, 97);
-            this.comboBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox5.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(94, 21);
             this.comboBox5.TabIndex = 14;
@@ -773,7 +777,7 @@
             // button41
             // 
             this.button41.Location = new System.Drawing.Point(190, 40);
-            this.button41.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button41.Margin = new System.Windows.Forms.Padding(1);
             this.button41.Name = "button41";
             this.button41.Size = new System.Drawing.Size(168, 27);
             this.button41.TabIndex = 12;
@@ -784,7 +788,7 @@
             // textBox37
             // 
             this.textBox37.Location = new System.Drawing.Point(83, 51);
-            this.textBox37.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.textBox37.Margin = new System.Windows.Forms.Padding(1);
             this.textBox37.Name = "textBox37";
             this.textBox37.Size = new System.Drawing.Size(104, 20);
             this.textBox37.TabIndex = 11;
@@ -803,7 +807,7 @@
             // 
             this.comboBox4.FormattingEnabled = true;
             this.comboBox4.Location = new System.Drawing.Point(54, 14);
-            this.comboBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox4.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(133, 21);
             this.comboBox4.TabIndex = 9;
@@ -825,9 +829,9 @@
             this.tabPage8.Controls.Add(this.button44);
             this.tabPage8.Controls.Add(this.label45);
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
-            this.tabPage8.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.tabPage8.Margin = new System.Windows.Forms.Padding(1);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Padding = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.tabPage8.Padding = new System.Windows.Forms.Padding(1);
             this.tabPage8.Size = new System.Drawing.Size(366, 203);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "Disconnect";
@@ -837,7 +841,7 @@
             // 
             this.comboBox6.FormattingEnabled = true;
             this.comboBox6.Location = new System.Drawing.Point(64, 23);
-            this.comboBox6.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.comboBox6.Margin = new System.Windows.Forms.Padding(1);
             this.comboBox6.Name = "comboBox6";
             this.comboBox6.Size = new System.Drawing.Size(158, 21);
             this.comboBox6.TabIndex = 2;
@@ -845,7 +849,7 @@
             // button44
             // 
             this.button44.Location = new System.Drawing.Point(25, 50);
-            this.button44.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button44.Margin = new System.Windows.Forms.Padding(1);
             this.button44.Name = "button44";
             this.button44.Size = new System.Drawing.Size(195, 27);
             this.button44.TabIndex = 1;
@@ -869,7 +873,7 @@
             this.columnHeader1,
             this.columnHeader3});
             this.listView1.Location = new System.Drawing.Point(4, 100);
-            this.listView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.listView1.Margin = new System.Windows.Forms.Padding(2);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(372, 150);
             this.listView1.TabIndex = 6;
@@ -892,7 +896,7 @@
             this.tabControl3.Controls.Add(this.tabPage6);
             this.tabControl3.Controls.Add(this.tabPage9);
             this.tabControl3.Location = new System.Drawing.Point(9, 10);
-            this.tabControl3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl3.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
             this.tabControl3.Size = new System.Drawing.Size(746, 628);
@@ -910,9 +914,9 @@
             this.tabPage5.Controls.Add(this.listView1);
             this.tabPage5.Controls.Add(this.tabControl2);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage5.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage5.Size = new System.Drawing.Size(738, 602);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "Twitch IRC";
@@ -922,7 +926,7 @@
             // 
             this.comboBox7.FormattingEnabled = true;
             this.comboBox7.Location = new System.Drawing.Point(423, 241);
-            this.comboBox7.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.comboBox7.Margin = new System.Windows.Forms.Padding(1);
             this.comboBox7.Name = "comboBox7";
             this.comboBox7.Size = new System.Drawing.Size(133, 21);
             this.comboBox7.TabIndex = 35;
@@ -930,7 +934,7 @@
             // button54
             // 
             this.button54.Location = new System.Drawing.Point(556, 234);
-            this.button54.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button54.Margin = new System.Windows.Forms.Padding(1);
             this.button54.Name = "button54";
             this.button54.Size = new System.Drawing.Size(95, 42);
             this.button54.TabIndex = 34;
@@ -941,7 +945,7 @@
             // button51
             // 
             this.button51.Location = new System.Drawing.Point(428, 145);
-            this.button51.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button51.Margin = new System.Windows.Forms.Padding(1);
             this.button51.Name = "button51";
             this.button51.Size = new System.Drawing.Size(54, 55);
             this.button51.TabIndex = 33;
@@ -952,7 +956,7 @@
             // textBox40
             // 
             this.textBox40.Location = new System.Drawing.Point(428, 69);
-            this.textBox40.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.textBox40.Margin = new System.Windows.Forms.Padding(1);
             this.textBox40.Name = "textBox40";
             this.textBox40.Size = new System.Drawing.Size(175, 20);
             this.textBox40.TabIndex = 32;
@@ -960,7 +964,7 @@
             // button49
             // 
             this.button49.Location = new System.Drawing.Point(428, 88);
-            this.button49.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button49.Margin = new System.Windows.Forms.Padding(1);
             this.button49.Name = "button49";
             this.button49.Size = new System.Drawing.Size(172, 49);
             this.button49.TabIndex = 31;
@@ -971,7 +975,7 @@
             // button47
             // 
             this.button47.Location = new System.Drawing.Point(428, 7);
-            this.button47.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.button47.Margin = new System.Windows.Forms.Padding(1);
             this.button47.Name = "button47";
             this.button47.Size = new System.Drawing.Size(172, 49);
             this.button47.TabIndex = 30;
@@ -984,9 +988,9 @@
             this.tabPage6.Controls.Add(this.groupBox11);
             this.tabPage6.Controls.Add(this.groupBox6);
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage6.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage6.Size = new System.Drawing.Size(738, 602);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Twitch API";
@@ -1013,9 +1017,9 @@
             this.groupBox11.Controls.Add(this.textBox14);
             this.groupBox11.Controls.Add(this.label17);
             this.groupBox11.Location = new System.Drawing.Point(4, 341);
-            this.groupBox11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox11.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox11.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox11.Size = new System.Drawing.Size(723, 259);
             this.groupBox11.TabIndex = 1;
             this.groupBox11.TabStop = false;
@@ -1027,9 +1031,9 @@
             this.groupBox42.Controls.Add(this.button53);
             this.groupBox42.Controls.Add(this.label49);
             this.groupBox42.Location = new System.Drawing.Point(539, 114);
-            this.groupBox42.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox42.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox42.Name = "groupBox42";
-            this.groupBox42.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox42.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox42.Size = new System.Drawing.Size(172, 45);
             this.groupBox42.TabIndex = 22;
             this.groupBox42.TabStop = false;
@@ -1038,7 +1042,7 @@
             // textBox42
             // 
             this.textBox42.Location = new System.Drawing.Point(48, 15);
-            this.textBox42.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.textBox42.Margin = new System.Windows.Forms.Padding(1);
             this.textBox42.Name = "textBox42";
             this.textBox42.Size = new System.Drawing.Size(66, 20);
             this.textBox42.TabIndex = 19;
@@ -1046,7 +1050,7 @@
             // button53
             // 
             this.button53.Location = new System.Drawing.Point(115, 14);
-            this.button53.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button53.Margin = new System.Windows.Forms.Padding(2);
             this.button53.Name = "button53";
             this.button53.Size = new System.Drawing.Size(45, 20);
             this.button53.TabIndex = 18;
@@ -1071,9 +1075,9 @@
             this.groupBox41.Controls.Add(this.textBox41);
             this.groupBox41.Controls.Add(this.label48);
             this.groupBox41.Location = new System.Drawing.Point(539, 42);
-            this.groupBox41.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox41.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox41.Name = "groupBox41";
-            this.groupBox41.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox41.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox41.Size = new System.Drawing.Size(172, 63);
             this.groupBox41.TabIndex = 21;
             this.groupBox41.TabStop = false;
@@ -1083,7 +1087,7 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(6, 36);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(1);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(89, 17);
             this.checkBox1.TabIndex = 20;
@@ -1093,7 +1097,7 @@
             // button52
             // 
             this.button52.Location = new System.Drawing.Point(97, 36);
-            this.button52.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button52.Margin = new System.Windows.Forms.Padding(2);
             this.button52.Name = "button52";
             this.button52.Size = new System.Drawing.Size(62, 20);
             this.button52.TabIndex = 19;
@@ -1104,7 +1108,7 @@
             // textBox41
             // 
             this.textBox41.Location = new System.Drawing.Point(57, 15);
-            this.textBox41.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox41.Margin = new System.Windows.Forms.Padding(2);
             this.textBox41.Name = "textBox41";
             this.textBox41.Size = new System.Drawing.Size(104, 20);
             this.textBox41.TabIndex = 1;
@@ -1123,9 +1127,9 @@
             // 
             this.groupBox34.Controls.Add(this.button37);
             this.groupBox34.Location = new System.Drawing.Point(453, 181);
-            this.groupBox34.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox34.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox34.Name = "groupBox34";
-            this.groupBox34.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox34.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox34.Size = new System.Drawing.Size(86, 68);
             this.groupBox34.TabIndex = 21;
             this.groupBox34.TabStop = false;
@@ -1134,7 +1138,7 @@
             // button37
             // 
             this.button37.Location = new System.Drawing.Point(9, 32);
-            this.button37.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button37.Margin = new System.Windows.Forms.Padding(2);
             this.button37.Name = "button37";
             this.button37.Size = new System.Drawing.Size(50, 20);
             this.button37.TabIndex = 18;
@@ -1146,9 +1150,9 @@
             // 
             this.groupBox33.Controls.Add(this.button36);
             this.groupBox33.Location = new System.Drawing.Point(363, 181);
-            this.groupBox33.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox33.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox33.Name = "groupBox33";
-            this.groupBox33.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox33.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox33.Size = new System.Drawing.Size(86, 68);
             this.groupBox33.TabIndex = 20;
             this.groupBox33.TabStop = false;
@@ -1157,7 +1161,7 @@
             // button36
             // 
             this.button36.Location = new System.Drawing.Point(9, 32);
-            this.button36.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button36.Margin = new System.Windows.Forms.Padding(2);
             this.button36.Name = "button36";
             this.button36.Size = new System.Drawing.Size(50, 20);
             this.button36.TabIndex = 18;
@@ -1172,9 +1176,9 @@
             this.groupBox32.Controls.Add(this.textBox33);
             this.groupBox32.Controls.Add(this.label38);
             this.groupBox32.Location = new System.Drawing.Point(363, 114);
-            this.groupBox32.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox32.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox32.Name = "groupBox32";
-            this.groupBox32.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox32.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox32.Size = new System.Drawing.Size(172, 63);
             this.groupBox32.TabIndex = 21;
             this.groupBox32.TabStop = false;
@@ -1183,7 +1187,7 @@
             // button34
             // 
             this.button34.Location = new System.Drawing.Point(97, 36);
-            this.button34.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button34.Margin = new System.Windows.Forms.Padding(2);
             this.button34.Name = "button34";
             this.button34.Size = new System.Drawing.Size(62, 20);
             this.button34.TabIndex = 19;
@@ -1194,7 +1198,7 @@
             // button35
             // 
             this.button35.Location = new System.Drawing.Point(114, 12);
-            this.button35.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button35.Margin = new System.Windows.Forms.Padding(2);
             this.button35.Name = "button35";
             this.button35.Size = new System.Drawing.Size(45, 20);
             this.button35.TabIndex = 18;
@@ -1205,7 +1209,7 @@
             // textBox33
             // 
             this.textBox33.Location = new System.Drawing.Point(57, 15);
-            this.textBox33.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox33.Margin = new System.Windows.Forms.Padding(2);
             this.textBox33.Name = "textBox33";
             this.textBox33.Size = new System.Drawing.Size(54, 20);
             this.textBox33.TabIndex = 1;
@@ -1227,9 +1231,9 @@
             this.groupBox31.Controls.Add(this.textBox32);
             this.groupBox31.Controls.Add(this.label37);
             this.groupBox31.Location = new System.Drawing.Point(363, 42);
-            this.groupBox31.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox31.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox31.Name = "groupBox31";
-            this.groupBox31.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox31.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox31.Size = new System.Drawing.Size(172, 63);
             this.groupBox31.TabIndex = 20;
             this.groupBox31.TabStop = false;
@@ -1238,7 +1242,7 @@
             // button33
             // 
             this.button33.Location = new System.Drawing.Point(97, 36);
-            this.button33.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button33.Margin = new System.Windows.Forms.Padding(2);
             this.button33.Name = "button33";
             this.button33.Size = new System.Drawing.Size(62, 20);
             this.button33.TabIndex = 19;
@@ -1249,7 +1253,7 @@
             // button32
             // 
             this.button32.Location = new System.Drawing.Point(114, 12);
-            this.button32.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button32.Margin = new System.Windows.Forms.Padding(2);
             this.button32.Name = "button32";
             this.button32.Size = new System.Drawing.Size(45, 20);
             this.button32.TabIndex = 18;
@@ -1260,7 +1264,7 @@
             // textBox32
             // 
             this.textBox32.Location = new System.Drawing.Point(57, 15);
-            this.textBox32.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox32.Margin = new System.Windows.Forms.Padding(2);
             this.textBox32.Name = "textBox32";
             this.textBox32.Size = new System.Drawing.Size(54, 20);
             this.textBox32.TabIndex = 1;
@@ -1279,9 +1283,9 @@
             // 
             this.groupBox25.Controls.Add(this.button25);
             this.groupBox25.Location = new System.Drawing.Point(4, 213);
-            this.groupBox25.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox25.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox25.Name = "groupBox25";
-            this.groupBox25.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox25.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox25.Size = new System.Drawing.Size(172, 41);
             this.groupBox25.TabIndex = 23;
             this.groupBox25.TabStop = false;
@@ -1290,7 +1294,7 @@
             // button25
             // 
             this.button25.Location = new System.Drawing.Point(7, 16);
-            this.button25.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button25.Margin = new System.Windows.Forms.Padding(2);
             this.button25.Name = "button25";
             this.button25.Size = new System.Drawing.Size(145, 20);
             this.button25.TabIndex = 20;
@@ -1304,9 +1308,9 @@
             this.groupBox24.Controls.Add(this.button24);
             this.groupBox24.Controls.Add(this.label31);
             this.groupBox24.Location = new System.Drawing.Point(181, 186);
-            this.groupBox24.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox24.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox24.Name = "groupBox24";
-            this.groupBox24.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox24.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox24.Size = new System.Drawing.Size(172, 45);
             this.groupBox24.TabIndex = 21;
             this.groupBox24.TabStop = false;
@@ -1315,7 +1319,7 @@
             // numericUpDown1
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(57, 16);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(1);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(51, 20);
             this.numericUpDown1.TabIndex = 19;
@@ -1323,7 +1327,7 @@
             // button24
             // 
             this.button24.Location = new System.Drawing.Point(115, 14);
-            this.button24.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button24.Margin = new System.Windows.Forms.Padding(2);
             this.button24.Name = "button24";
             this.button24.Size = new System.Drawing.Size(45, 20);
             this.button24.TabIndex = 18;
@@ -1347,9 +1351,9 @@
             this.groupBox19.Controls.Add(this.textBox23);
             this.groupBox19.Controls.Add(this.label26);
             this.groupBox19.Location = new System.Drawing.Point(181, 137);
-            this.groupBox19.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox19.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox19.Name = "groupBox19";
-            this.groupBox19.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox19.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox19.Size = new System.Drawing.Size(172, 45);
             this.groupBox19.TabIndex = 20;
             this.groupBox19.TabStop = false;
@@ -1358,7 +1362,7 @@
             // button19
             // 
             this.button19.Location = new System.Drawing.Point(115, 14);
-            this.button19.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button19.Margin = new System.Windows.Forms.Padding(2);
             this.button19.Name = "button19";
             this.button19.Size = new System.Drawing.Size(45, 20);
             this.button19.TabIndex = 18;
@@ -1369,7 +1373,7 @@
             // textBox23
             // 
             this.textBox23.Location = new System.Drawing.Point(57, 15);
-            this.textBox23.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox23.Margin = new System.Windows.Forms.Padding(2);
             this.textBox23.Name = "textBox23";
             this.textBox23.Size = new System.Drawing.Size(54, 20);
             this.textBox23.TabIndex = 1;
@@ -1388,9 +1392,9 @@
             // 
             this.groupBox15.Controls.Add(this.button15);
             this.groupBox15.Location = new System.Drawing.Point(4, 160);
-            this.groupBox15.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox15.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox15.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox15.Size = new System.Drawing.Size(172, 41);
             this.groupBox15.TabIndex = 22;
             this.groupBox15.TabStop = false;
@@ -1399,7 +1403,7 @@
             // button15
             // 
             this.button15.Location = new System.Drawing.Point(7, 16);
-            this.button15.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button15.Margin = new System.Windows.Forms.Padding(2);
             this.button15.Name = "button15";
             this.button15.Size = new System.Drawing.Size(145, 20);
             this.button15.TabIndex = 20;
@@ -1413,9 +1417,9 @@
             this.groupBox14.Controls.Add(this.button13);
             this.groupBox14.Controls.Add(this.button8);
             this.groupBox14.Location = new System.Drawing.Point(181, 92);
-            this.groupBox14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox14.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox14.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox14.Size = new System.Drawing.Size(172, 41);
             this.groupBox14.TabIndex = 21;
             this.groupBox14.TabStop = false;
@@ -1424,7 +1428,7 @@
             // button14
             // 
             this.button14.Location = new System.Drawing.Point(106, 16);
-            this.button14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button14.Margin = new System.Windows.Forms.Padding(2);
             this.button14.Name = "button14";
             this.button14.Size = new System.Drawing.Size(45, 20);
             this.button14.TabIndex = 20;
@@ -1435,7 +1439,7 @@
             // button13
             // 
             this.button13.Location = new System.Drawing.Point(57, 16);
-            this.button13.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button13.Margin = new System.Windows.Forms.Padding(2);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(45, 20);
             this.button13.TabIndex = 19;
@@ -1446,7 +1450,7 @@
             // button8
             // 
             this.button8.Location = new System.Drawing.Point(8, 16);
-            this.button8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button8.Margin = new System.Windows.Forms.Padding(2);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(45, 20);
             this.button8.TabIndex = 18;
@@ -1462,9 +1466,9 @@
             this.groupBox13.Controls.Add(this.textBox18);
             this.groupBox13.Controls.Add(this.label21);
             this.groupBox13.Location = new System.Drawing.Point(4, 92);
-            this.groupBox13.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox13.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox13.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox13.Size = new System.Drawing.Size(172, 63);
             this.groupBox13.TabIndex = 19;
             this.groupBox13.TabStop = false;
@@ -1473,7 +1477,7 @@
             // textBox19
             // 
             this.textBox19.Location = new System.Drawing.Point(57, 37);
-            this.textBox19.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox19.Margin = new System.Windows.Forms.Padding(2);
             this.textBox19.Name = "textBox19";
             this.textBox19.Size = new System.Drawing.Size(54, 20);
             this.textBox19.TabIndex = 20;
@@ -1491,7 +1495,7 @@
             // button7
             // 
             this.button7.Location = new System.Drawing.Point(114, 12);
-            this.button7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button7.Margin = new System.Windows.Forms.Padding(2);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(45, 20);
             this.button7.TabIndex = 18;
@@ -1502,7 +1506,7 @@
             // textBox18
             // 
             this.textBox18.Location = new System.Drawing.Point(57, 15);
-            this.textBox18.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox18.Margin = new System.Windows.Forms.Padding(2);
             this.textBox18.Name = "textBox18";
             this.textBox18.Size = new System.Drawing.Size(54, 20);
             this.textBox18.TabIndex = 1;
@@ -1523,9 +1527,9 @@
             this.groupBox12.Controls.Add(this.textBox17);
             this.groupBox12.Controls.Add(this.label20);
             this.groupBox12.Location = new System.Drawing.Point(181, 42);
-            this.groupBox12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox12.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox12.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox12.Size = new System.Drawing.Size(172, 45);
             this.groupBox12.TabIndex = 19;
             this.groupBox12.TabStop = false;
@@ -1534,7 +1538,7 @@
             // button6
             // 
             this.button6.Location = new System.Drawing.Point(114, 12);
-            this.button6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button6.Margin = new System.Windows.Forms.Padding(2);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(45, 20);
             this.button6.TabIndex = 18;
@@ -1545,7 +1549,7 @@
             // textBox17
             // 
             this.textBox17.Location = new System.Drawing.Point(57, 15);
-            this.textBox17.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox17.Margin = new System.Windows.Forms.Padding(2);
             this.textBox17.Name = "textBox17";
             this.textBox17.Size = new System.Drawing.Size(54, 20);
             this.textBox17.TabIndex = 1;
@@ -1566,9 +1570,9 @@
             this.groupBox5.Controls.Add(this.textBox16);
             this.groupBox5.Controls.Add(this.label19);
             this.groupBox5.Location = new System.Drawing.Point(4, 42);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox5.Size = new System.Drawing.Size(172, 45);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
@@ -1577,7 +1581,7 @@
             // button5
             // 
             this.button5.Location = new System.Drawing.Point(114, 12);
-            this.button5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button5.Margin = new System.Windows.Forms.Padding(2);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(45, 20);
             this.button5.TabIndex = 18;
@@ -1588,7 +1592,7 @@
             // textBox16
             // 
             this.textBox16.Location = new System.Drawing.Point(57, 15);
-            this.textBox16.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox16.Margin = new System.Windows.Forms.Padding(2);
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(54, 20);
             this.textBox16.TabIndex = 1;
@@ -1606,7 +1610,7 @@
             // textBox15
             // 
             this.textBox15.Location = new System.Drawing.Point(358, 20);
-            this.textBox15.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox15.Margin = new System.Windows.Forms.Padding(2);
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(116, 20);
             this.textBox15.TabIndex = 3;
@@ -1624,7 +1628,7 @@
             // textBox14
             // 
             this.textBox14.Location = new System.Drawing.Point(114, 21);
-            this.textBox14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox14.Margin = new System.Windows.Forms.Padding(2);
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(72, 20);
             this.textBox14.TabIndex = 1;
@@ -1667,1030 +1671,13 @@
             this.groupBox6.Controls.Add(this.groupBox8);
             this.groupBox6.Controls.Add(this.groupBox7);
             this.groupBox6.Location = new System.Drawing.Point(4, 5);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox6.Size = new System.Drawing.Size(723, 332);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Non Auth Calls";
-            // 
-            // groupBox40
-            // 
-            this.groupBox40.Controls.Add(this.button50);
-            this.groupBox40.Location = new System.Drawing.Point(539, 228);
-            this.groupBox40.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox40.Name = "groupBox40";
-            this.groupBox40.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox40.Size = new System.Drawing.Size(172, 45);
-            this.groupBox40.TabIndex = 30;
-            this.groupBox40.TabStop = false;
-            this.groupBox40.Text = "Got Top Games By Viewers";
-            // 
-            // button50
-            // 
-            this.button50.Location = new System.Drawing.Point(6, 15);
-            this.button50.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button50.Name = "button50";
-            this.button50.Size = new System.Drawing.Size(153, 20);
-            this.button50.TabIndex = 18;
-            this.button50.Text = "Fetch";
-            this.button50.UseVisualStyleBackColor = true;
-            this.button50.Click += new System.EventHandler(this.button50_Click);
-            // 
-            // groupBox39
-            // 
-            this.groupBox39.Controls.Add(this.button48);
-            this.groupBox39.Location = new System.Drawing.Point(539, 179);
-            this.groupBox39.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox39.Name = "groupBox39";
-            this.groupBox39.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox39.Size = new System.Drawing.Size(172, 45);
-            this.groupBox39.TabIndex = 29;
-            this.groupBox39.TabStop = false;
-            this.groupBox39.Text = "Get Featured Streams";
-            // 
-            // button48
-            // 
-            this.button48.Location = new System.Drawing.Point(6, 15);
-            this.button48.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button48.Name = "button48";
-            this.button48.Size = new System.Drawing.Size(153, 20);
-            this.button48.TabIndex = 18;
-            this.button48.Text = "Fetch";
-            this.button48.UseVisualStyleBackColor = true;
-            this.button48.Click += new System.EventHandler(this.button48_Click);
-            // 
-            // groupBox38
-            // 
-            this.groupBox38.Controls.Add(this.button46);
-            this.groupBox38.Controls.Add(this.textBox39);
-            this.groupBox38.Controls.Add(this.label47);
-            this.groupBox38.Location = new System.Drawing.Point(539, 124);
-            this.groupBox38.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox38.Name = "groupBox38";
-            this.groupBox38.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox38.Size = new System.Drawing.Size(172, 45);
-            this.groupBox38.TabIndex = 28;
-            this.groupBox38.TabStop = false;
-            this.groupBox38.Text = "Get Channel From Steam ID";
-            // 
-            // button46
-            // 
-            this.button46.Location = new System.Drawing.Point(114, 12);
-            this.button46.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button46.Name = "button46";
-            this.button46.Size = new System.Drawing.Size(45, 20);
-            this.button46.TabIndex = 18;
-            this.button46.Text = "Fetch";
-            this.button46.UseVisualStyleBackColor = true;
-            this.button46.Click += new System.EventHandler(this.button46_Click);
-            // 
-            // textBox39
-            // 
-            this.textBox39.Location = new System.Drawing.Point(57, 15);
-            this.textBox39.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox39.Name = "textBox39";
-            this.textBox39.Size = new System.Drawing.Size(54, 20);
-            this.textBox39.TabIndex = 1;
-            // 
-            // label47
-            // 
-            this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(4, 15);
-            this.label47.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(52, 13);
-            this.label47.TabIndex = 0;
-            this.label47.Text = "Steam Id:";
-            // 
-            // groupBox37
-            // 
-            this.groupBox37.Controls.Add(this.button45);
-            this.groupBox37.Controls.Add(this.textBox38);
-            this.groupBox37.Controls.Add(this.label46);
-            this.groupBox37.Location = new System.Drawing.Point(539, 72);
-            this.groupBox37.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox37.Name = "groupBox37";
-            this.groupBox37.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox37.Size = new System.Drawing.Size(172, 45);
-            this.groupBox37.TabIndex = 27;
-            this.groupBox37.TabStop = false;
-            this.groupBox37.Text = "Get Channels Object";
-            // 
-            // button45
-            // 
-            this.button45.Location = new System.Drawing.Point(114, 12);
-            this.button45.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button45.Name = "button45";
-            this.button45.Size = new System.Drawing.Size(45, 20);
-            this.button45.TabIndex = 18;
-            this.button45.Text = "Fetch";
-            this.button45.UseVisualStyleBackColor = true;
-            this.button45.Click += new System.EventHandler(this.button45_Click);
-            // 
-            // textBox38
-            // 
-            this.textBox38.Location = new System.Drawing.Point(57, 15);
-            this.textBox38.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox38.Name = "textBox38";
-            this.textBox38.Size = new System.Drawing.Size(54, 20);
-            this.textBox38.TabIndex = 1;
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(4, 15);
-            this.label46.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(49, 13);
-            this.label46.TabIndex = 0;
-            this.label46.Text = "Channel:";
-            // 
-            // groupBox36
-            // 
-            this.groupBox36.Controls.Add(this.button40);
-            this.groupBox36.Controls.Add(this.textBox36);
-            this.groupBox36.Controls.Add(this.label41);
-            this.groupBox36.Location = new System.Drawing.Point(539, 17);
-            this.groupBox36.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox36.Name = "groupBox36";
-            this.groupBox36.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox36.Size = new System.Drawing.Size(172, 45);
-            this.groupBox36.TabIndex = 25;
-            this.groupBox36.TabStop = false;
-            this.groupBox36.Text = "Get Channel Badges";
-            // 
-            // button40
-            // 
-            this.button40.Location = new System.Drawing.Point(114, 12);
-            this.button40.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button40.Name = "button40";
-            this.button40.Size = new System.Drawing.Size(45, 20);
-            this.button40.TabIndex = 18;
-            this.button40.Text = "Fetch";
-            this.button40.UseVisualStyleBackColor = true;
-            this.button40.Click += new System.EventHandler(this.button40_Click);
-            // 
-            // textBox36
-            // 
-            this.textBox36.Location = new System.Drawing.Point(57, 15);
-            this.textBox36.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox36.Name = "textBox36";
-            this.textBox36.Size = new System.Drawing.Size(54, 20);
-            this.textBox36.TabIndex = 1;
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(4, 15);
-            this.label41.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(49, 13);
-            this.label41.TabIndex = 0;
-            this.label41.Text = "Channel:";
-            // 
-            // groupBox35
-            // 
-            this.groupBox35.Controls.Add(this.button39);
-            this.groupBox35.Controls.Add(this.textBox35);
-            this.groupBox35.Controls.Add(this.label40);
-            this.groupBox35.Location = new System.Drawing.Point(176, 283);
-            this.groupBox35.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox35.Name = "groupBox35";
-            this.groupBox35.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox35.Size = new System.Drawing.Size(188, 45);
-            this.groupBox35.TabIndex = 23;
-            this.groupBox35.TabStop = false;
-            this.groupBox35.Text = "Get Streams (Comma Seperated)";
-            // 
-            // button39
-            // 
-            this.button39.Location = new System.Drawing.Point(114, 12);
-            this.button39.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button39.Name = "button39";
-            this.button39.Size = new System.Drawing.Size(45, 20);
-            this.button39.TabIndex = 18;
-            this.button39.Text = "Fetch";
-            this.button39.UseVisualStyleBackColor = true;
-            this.button39.Click += new System.EventHandler(this.button39_Click);
-            // 
-            // textBox35
-            // 
-            this.textBox35.Location = new System.Drawing.Point(57, 15);
-            this.textBox35.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox35.Name = "textBox35";
-            this.textBox35.Size = new System.Drawing.Size(54, 20);
-            this.textBox35.TabIndex = 1;
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(4, 15);
-            this.label40.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(54, 13);
-            this.label40.TabIndex = 0;
-            this.label40.Text = "Channels:";
-            // 
-            // groupBox30
-            // 
-            this.groupBox30.Controls.Add(this.button31);
-            this.groupBox30.Controls.Add(this.textBox31);
-            this.groupBox30.Controls.Add(this.label36);
-            this.groupBox30.Location = new System.Drawing.Point(363, 288);
-            this.groupBox30.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox30.Name = "groupBox30";
-            this.groupBox30.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox30.Size = new System.Drawing.Size(172, 45);
-            this.groupBox30.TabIndex = 24;
-            this.groupBox30.TabStop = false;
-            this.groupBox30.Text = "Get Channel Feed Posts";
-            // 
-            // button31
-            // 
-            this.button31.Location = new System.Drawing.Point(114, 12);
-            this.button31.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button31.Name = "button31";
-            this.button31.Size = new System.Drawing.Size(45, 20);
-            this.button31.TabIndex = 18;
-            this.button31.Text = "Fetch";
-            this.button31.UseVisualStyleBackColor = true;
-            this.button31.Click += new System.EventHandler(this.button31_Click);
-            // 
-            // textBox31
-            // 
-            this.textBox31.Location = new System.Drawing.Point(57, 15);
-            this.textBox31.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox31.Name = "textBox31";
-            this.textBox31.Size = new System.Drawing.Size(54, 20);
-            this.textBox31.TabIndex = 1;
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(4, 15);
-            this.label36.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(49, 13);
-            this.label36.TabIndex = 0;
-            this.label36.Text = "Channel:";
-            // 
-            // groupBox29
-            // 
-            this.groupBox29.Controls.Add(this.button30);
-            this.groupBox29.Controls.Add(this.textBox30);
-            this.groupBox29.Controls.Add(this.label34);
-            this.groupBox29.Location = new System.Drawing.Point(363, 237);
-            this.groupBox29.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox29.Name = "groupBox29";
-            this.groupBox29.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox29.Size = new System.Drawing.Size(172, 45);
-            this.groupBox29.TabIndex = 26;
-            this.groupBox29.TabStop = false;
-            this.groupBox29.Text = "Search for User";
-            // 
-            // button30
-            // 
-            this.button30.Location = new System.Drawing.Point(114, 12);
-            this.button30.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button30.Name = "button30";
-            this.button30.Size = new System.Drawing.Size(45, 20);
-            this.button30.TabIndex = 18;
-            this.button30.Text = "Fetch";
-            this.button30.UseVisualStyleBackColor = true;
-            this.button30.Click += new System.EventHandler(this.button30_Click);
-            // 
-            // textBox30
-            // 
-            this.textBox30.Location = new System.Drawing.Point(57, 15);
-            this.textBox30.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox30.Name = "textBox30";
-            this.textBox30.Size = new System.Drawing.Size(54, 20);
-            this.textBox30.TabIndex = 1;
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(4, 15);
-            this.label34.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(32, 13);
-            this.label34.TabIndex = 0;
-            this.label34.Text = "User:";
-            // 
-            // groupBox28
-            // 
-            this.groupBox28.Controls.Add(this.button28);
-            this.groupBox28.Controls.Add(this.textBox7);
-            this.groupBox28.Controls.Add(this.label4);
-            this.groupBox28.Location = new System.Drawing.Point(363, 186);
-            this.groupBox28.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox28.Name = "groupBox28";
-            this.groupBox28.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox28.Size = new System.Drawing.Size(172, 45);
-            this.groupBox28.TabIndex = 25;
-            this.groupBox28.TabStop = false;
-            this.groupBox28.Text = "Search Game";
-            // 
-            // button28
-            // 
-            this.button28.Location = new System.Drawing.Point(114, 12);
-            this.button28.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button28.Name = "button28";
-            this.button28.Size = new System.Drawing.Size(45, 20);
-            this.button28.TabIndex = 18;
-            this.button28.Text = "Fetch";
-            this.button28.UseVisualStyleBackColor = true;
-            this.button28.Click += new System.EventHandler(this.button28_Click);
-            // 
-            // textBox7
-            // 
-            this.textBox7.Location = new System.Drawing.Point(57, 15);
-            this.textBox7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(54, 20);
-            this.textBox7.TabIndex = 1;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(4, 15);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Game";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.button3);
-            this.groupBox2.Controls.Add(this.textBox6);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Location = new System.Drawing.Point(363, 131);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox2.Size = new System.Drawing.Size(172, 45);
-            this.groupBox2.TabIndex = 24;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Search Streams";
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(114, 12);
-            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(45, 20);
-            this.button3.TabIndex = 18;
-            this.button3.Text = "Fetch";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // textBox6
-            // 
-            this.textBox6.Location = new System.Drawing.Point(57, 15);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(54, 20);
-            this.textBox6.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 15);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Stream:";
-            // 
-            // groupBox27
-            // 
-            this.groupBox27.Controls.Add(this.button29);
-            this.groupBox27.Controls.Add(this.textBox29);
-            this.groupBox27.Controls.Add(this.label35);
-            this.groupBox27.Location = new System.Drawing.Point(363, 84);
-            this.groupBox27.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox27.Name = "groupBox27";
-            this.groupBox27.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox27.Size = new System.Drawing.Size(172, 39);
-            this.groupBox27.TabIndex = 22;
-            this.groupBox27.TabStop = false;
-            this.groupBox27.Text = "Get user\'s followed channels";
-            // 
-            // button29
-            // 
-            this.button29.Location = new System.Drawing.Point(114, 12);
-            this.button29.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button29.Name = "button29";
-            this.button29.Size = new System.Drawing.Size(45, 20);
-            this.button29.TabIndex = 18;
-            this.button29.Text = "Fetch";
-            this.button29.UseVisualStyleBackColor = true;
-            this.button29.Click += new System.EventHandler(this.button29_Click);
-            // 
-            // textBox29
-            // 
-            this.textBox29.Location = new System.Drawing.Point(57, 15);
-            this.textBox29.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox29.Name = "textBox29";
-            this.textBox29.Size = new System.Drawing.Size(54, 20);
-            this.textBox29.TabIndex = 1;
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(4, 15);
-            this.label35.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(49, 13);
-            this.label35.TabIndex = 0;
-            this.label35.Text = "Channel:";
-            // 
-            // groupBox26
-            // 
-            this.groupBox26.Controls.Add(this.button27);
-            this.groupBox26.Controls.Add(this.numericUpDown2);
-            this.groupBox26.Controls.Add(this.label33);
-            this.groupBox26.Controls.Add(this.button26);
-            this.groupBox26.Controls.Add(this.textBox28);
-            this.groupBox26.Controls.Add(this.label32);
-            this.groupBox26.Location = new System.Drawing.Point(363, 12);
-            this.groupBox26.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox26.Name = "groupBox26";
-            this.groupBox26.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox26.Size = new System.Drawing.Size(172, 65);
-            this.groupBox26.TabIndex = 19;
-            this.groupBox26.TabStop = false;
-            this.groupBox26.Text = "Follower Service";
-            // 
-            // button27
-            // 
-            this.button27.Location = new System.Drawing.Point(114, 36);
-            this.button27.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button27.Name = "button27";
-            this.button27.Size = new System.Drawing.Size(45, 20);
-            this.button27.TabIndex = 21;
-            this.button27.Text = "Stop";
-            this.button27.UseVisualStyleBackColor = true;
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(63, 39);
-            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(45, 20);
-            this.numericUpDown2.TabIndex = 20;
-            this.numericUpDown2.Value = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(7, 41);
-            this.label33.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(45, 13);
-            this.label33.TabIndex = 19;
-            this.label33.Text = "Interval:";
-            // 
-            // button26
-            // 
-            this.button26.Location = new System.Drawing.Point(114, 12);
-            this.button26.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button26.Name = "button26";
-            this.button26.Size = new System.Drawing.Size(45, 20);
-            this.button26.TabIndex = 18;
-            this.button26.Text = "Start";
-            this.button26.UseVisualStyleBackColor = true;
-            this.button26.Click += new System.EventHandler(this.button26_Click);
-            // 
-            // textBox28
-            // 
-            this.textBox28.Location = new System.Drawing.Point(57, 15);
-            this.textBox28.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox28.Name = "textBox28";
-            this.textBox28.Size = new System.Drawing.Size(54, 20);
-            this.textBox28.TabIndex = 1;
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(4, 15);
-            this.label32.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(49, 13);
-            this.label32.TabIndex = 0;
-            this.label32.Text = "Channel:";
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(218, 10);
-            this.linkLabel1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(110, 13);
-            this.linkLabel1.TabIndex = 24;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Set Required Client-Id";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-            // 
-            // groupBox23
-            // 
-            this.groupBox23.Controls.Add(this.button23);
-            this.groupBox23.Controls.Add(this.textBox27);
-            this.groupBox23.Controls.Add(this.label30);
-            this.groupBox23.Location = new System.Drawing.Point(4, 277);
-            this.groupBox23.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox23.Name = "groupBox23";
-            this.groupBox23.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox23.Size = new System.Drawing.Size(172, 45);
-            this.groupBox23.TabIndex = 23;
-            this.groupBox23.TabStop = false;
-            this.groupBox23.Text = "Search Channels";
-            // 
-            // button23
-            // 
-            this.button23.Location = new System.Drawing.Point(114, 11);
-            this.button23.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button23.Name = "button23";
-            this.button23.Size = new System.Drawing.Size(45, 20);
-            this.button23.TabIndex = 18;
-            this.button23.Text = "Fetch";
-            this.button23.UseVisualStyleBackColor = true;
-            this.button23.Click += new System.EventHandler(this.button23_Click);
-            // 
-            // textBox27
-            // 
-            this.textBox27.Location = new System.Drawing.Point(57, 15);
-            this.textBox27.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox27.Name = "textBox27";
-            this.textBox27.Size = new System.Drawing.Size(54, 20);
-            this.textBox27.TabIndex = 1;
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(4, 15);
-            this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(49, 13);
-            this.label30.TabIndex = 0;
-            this.label30.Text = "Channel:";
-            // 
-            // groupBox22
-            // 
-            this.groupBox22.Controls.Add(this.button22);
-            this.groupBox22.Controls.Add(this.textBox26);
-            this.groupBox22.Controls.Add(this.label29);
-            this.groupBox22.Location = new System.Drawing.Point(181, 235);
-            this.groupBox22.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox22.Name = "groupBox22";
-            this.groupBox22.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox22.Size = new System.Drawing.Size(172, 45);
-            this.groupBox22.TabIndex = 23;
-            this.groupBox22.TabStop = false;
-            this.groupBox22.Text = "Get Stream Uptime";
-            // 
-            // button22
-            // 
-            this.button22.Location = new System.Drawing.Point(114, 12);
-            this.button22.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button22.Name = "button22";
-            this.button22.Size = new System.Drawing.Size(45, 20);
-            this.button22.TabIndex = 18;
-            this.button22.Text = "Fetch";
-            this.button22.UseVisualStyleBackColor = true;
-            this.button22.Click += new System.EventHandler(this.button22_Click);
-            // 
-            // textBox26
-            // 
-            this.textBox26.Location = new System.Drawing.Point(57, 15);
-            this.textBox26.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox26.Name = "textBox26";
-            this.textBox26.Size = new System.Drawing.Size(54, 20);
-            this.textBox26.TabIndex = 1;
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(4, 15);
-            this.label29.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(49, 13);
-            this.label29.TabIndex = 0;
-            this.label29.Text = "Channel:";
-            // 
-            // groupBox21
-            // 
-            this.groupBox21.Controls.Add(this.button21);
-            this.groupBox21.Controls.Add(this.textBox25);
-            this.groupBox21.Controls.Add(this.label28);
-            this.groupBox21.Location = new System.Drawing.Point(4, 228);
-            this.groupBox21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox21.Name = "groupBox21";
-            this.groupBox21.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox21.Size = new System.Drawing.Size(172, 45);
-            this.groupBox21.TabIndex = 22;
-            this.groupBox21.TabStop = false;
-            this.groupBox21.Text = "Get Stream Data";
-            // 
-            // button21
-            // 
-            this.button21.Location = new System.Drawing.Point(114, 12);
-            this.button21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(45, 20);
-            this.button21.TabIndex = 18;
-            this.button21.Text = "Fetch";
-            this.button21.UseVisualStyleBackColor = true;
-            this.button21.Click += new System.EventHandler(this.button21_Click);
-            // 
-            // textBox25
-            // 
-            this.textBox25.Location = new System.Drawing.Point(57, 15);
-            this.textBox25.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox25.Name = "textBox25";
-            this.textBox25.Size = new System.Drawing.Size(54, 20);
-            this.textBox25.TabIndex = 1;
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(4, 15);
-            this.label28.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(49, 13);
-            this.label28.TabIndex = 0;
-            this.label28.Text = "Channel:";
-            // 
-            // groupBox20
-            // 
-            this.groupBox20.Controls.Add(this.button20);
-            this.groupBox20.Controls.Add(this.textBox24);
-            this.groupBox20.Controls.Add(this.label27);
-            this.groupBox20.Location = new System.Drawing.Point(181, 186);
-            this.groupBox20.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox20.Name = "groupBox20";
-            this.groupBox20.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox20.Size = new System.Drawing.Size(172, 45);
-            this.groupBox20.TabIndex = 21;
-            this.groupBox20.TabStop = false;
-            this.groupBox20.Text = "Get channel followers";
-            // 
-            // button20
-            // 
-            this.button20.Location = new System.Drawing.Point(114, 12);
-            this.button20.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(45, 20);
-            this.button20.TabIndex = 18;
-            this.button20.Text = "Fetch";
-            this.button20.UseVisualStyleBackColor = true;
-            this.button20.Click += new System.EventHandler(this.button20_Click);
-            // 
-            // textBox24
-            // 
-            this.textBox24.Location = new System.Drawing.Point(57, 15);
-            this.textBox24.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox24.Name = "textBox24";
-            this.textBox24.Size = new System.Drawing.Size(54, 20);
-            this.textBox24.TabIndex = 1;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(4, 15);
-            this.label27.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(49, 13);
-            this.label27.TabIndex = 0;
-            this.label27.Text = "Channel:";
-            // 
-            // groupBox18
-            // 
-            this.groupBox18.Controls.Add(this.button18);
-            this.groupBox18.Controls.Add(this.textBox22);
-            this.groupBox18.Controls.Add(this.label25);
-            this.groupBox18.Location = new System.Drawing.Point(4, 179);
-            this.groupBox18.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox18.Name = "groupBox18";
-            this.groupBox18.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox18.Size = new System.Drawing.Size(172, 45);
-            this.groupBox18.TabIndex = 21;
-            this.groupBox18.TabStop = false;
-            this.groupBox18.Text = "Get Twitch Team Members";
-            // 
-            // button18
-            // 
-            this.button18.Location = new System.Drawing.Point(114, 12);
-            this.button18.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(45, 20);
-            this.button18.TabIndex = 18;
-            this.button18.Text = "Fetch";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
-            // 
-            // textBox22
-            // 
-            this.textBox22.Location = new System.Drawing.Point(57, 15);
-            this.textBox22.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox22.Name = "textBox22";
-            this.textBox22.Size = new System.Drawing.Size(54, 20);
-            this.textBox22.TabIndex = 1;
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(4, 15);
-            this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(37, 13);
-            this.label25.TabIndex = 0;
-            this.label25.Text = "Team:";
-            // 
-            // groupBox17
-            // 
-            this.groupBox17.Controls.Add(this.button17);
-            this.groupBox17.Controls.Add(this.textBox21);
-            this.groupBox17.Controls.Add(this.label24);
-            this.groupBox17.Location = new System.Drawing.Point(181, 137);
-            this.groupBox17.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox17.Name = "groupBox17";
-            this.groupBox17.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox17.Size = new System.Drawing.Size(172, 45);
-            this.groupBox17.TabIndex = 20;
-            this.groupBox17.TabStop = false;
-            this.groupBox17.Text = "Get channel hosts";
-            // 
-            // button17
-            // 
-            this.button17.Location = new System.Drawing.Point(114, 12);
-            this.button17.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(45, 20);
-            this.button17.TabIndex = 18;
-            this.button17.Text = "Fetch";
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
-            // 
-            // textBox21
-            // 
-            this.textBox21.Location = new System.Drawing.Point(57, 15);
-            this.textBox21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox21.Name = "textBox21";
-            this.textBox21.Size = new System.Drawing.Size(54, 20);
-            this.textBox21.TabIndex = 1;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(4, 15);
-            this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(49, 13);
-            this.label24.TabIndex = 0;
-            this.label24.Text = "Channel:";
-            // 
-            // groupBox16
-            // 
-            this.groupBox16.Controls.Add(this.button16);
-            this.groupBox16.Controls.Add(this.textBox20);
-            this.groupBox16.Controls.Add(this.label23);
-            this.groupBox16.Location = new System.Drawing.Point(4, 130);
-            this.groupBox16.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox16.Size = new System.Drawing.Size(172, 45);
-            this.groupBox16.TabIndex = 19;
-            this.groupBox16.TabStop = false;
-            this.groupBox16.Text = "Get Most Recent 10 Vids";
-            // 
-            // button16
-            // 
-            this.button16.Location = new System.Drawing.Point(114, 12);
-            this.button16.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(45, 20);
-            this.button16.TabIndex = 18;
-            this.button16.Text = "Fetch";
-            this.button16.UseVisualStyleBackColor = true;
-            this.button16.Click += new System.EventHandler(this.button16_Click);
-            // 
-            // textBox20
-            // 
-            this.textBox20.Location = new System.Drawing.Point(57, 15);
-            this.textBox20.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox20.Name = "textBox20";
-            this.textBox20.Size = new System.Drawing.Size(54, 20);
-            this.textBox20.TabIndex = 1;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(4, 15);
-            this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(49, 13);
-            this.label23.TabIndex = 0;
-            this.label23.Text = "Channel:";
-            // 
-            // groupBox10
-            // 
-            this.groupBox10.Controls.Add(this.button12);
-            this.groupBox10.Controls.Add(this.textBox13);
-            this.groupBox10.Controls.Add(this.label16);
-            this.groupBox10.Location = new System.Drawing.Point(181, 74);
-            this.groupBox10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox10.Size = new System.Drawing.Size(172, 58);
-            this.groupBox10.TabIndex = 8;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "Streamer Online Status";
-            // 
-            // button12
-            // 
-            this.button12.Location = new System.Drawing.Point(114, 12);
-            this.button12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(45, 20);
-            this.button12.TabIndex = 18;
-            this.button12.Text = "Fetch";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
-            // 
-            // textBox13
-            // 
-            this.textBox13.Location = new System.Drawing.Point(57, 15);
-            this.textBox13.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(54, 20);
-            this.textBox13.TabIndex = 1;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(4, 15);
-            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(49, 13);
-            this.label16.TabIndex = 0;
-            this.label16.Text = "Channel:";
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.textBox12);
-            this.groupBox9.Controls.Add(this.label15);
-            this.groupBox9.Controls.Add(this.button11);
-            this.groupBox9.Controls.Add(this.textBox11);
-            this.groupBox9.Controls.Add(this.label14);
-            this.groupBox9.Location = new System.Drawing.Point(4, 67);
-            this.groupBox9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox9.Size = new System.Drawing.Size(172, 58);
-            this.groupBox9.TabIndex = 19;
-            this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "User is Following";
-            // 
-            // textBox12
-            // 
-            this.textBox12.Location = new System.Drawing.Point(57, 37);
-            this.textBox12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(54, 20);
-            this.textBox12.TabIndex = 20;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(4, 40);
-            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(49, 13);
-            this.label15.TabIndex = 19;
-            this.label15.Text = "Channel:";
-            // 
-            // button11
-            // 
-            this.button11.Location = new System.Drawing.Point(114, 12);
-            this.button11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(45, 43);
-            this.button11.TabIndex = 18;
-            this.button11.Text = "Fetch";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
-            // 
-            // textBox11
-            // 
-            this.textBox11.Location = new System.Drawing.Point(57, 15);
-            this.textBox11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(54, 20);
-            this.textBox11.TabIndex = 1;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(4, 15);
-            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(32, 13);
-            this.label14.TabIndex = 0;
-            this.label14.Text = "User:";
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.button10);
-            this.groupBox8.Controls.Add(this.textBox10);
-            this.groupBox8.Controls.Add(this.label13);
-            this.groupBox8.Location = new System.Drawing.Point(181, 24);
-            this.groupBox8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox8.Size = new System.Drawing.Size(172, 45);
-            this.groupBox8.TabIndex = 1;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Channel Chatters";
-            // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(114, 12);
-            this.button10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(45, 20);
-            this.button10.TabIndex = 18;
-            this.button10.Text = "Fetch";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
-            // 
-            // textBox10
-            // 
-            this.textBox10.Location = new System.Drawing.Point(57, 15);
-            this.textBox10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(54, 20);
-            this.textBox10.TabIndex = 1;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(4, 15);
-            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(49, 13);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "Channel:";
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.button9);
-            this.groupBox7.Controls.Add(this.textBox9);
-            this.groupBox7.Controls.Add(this.label12);
-            this.groupBox7.Location = new System.Drawing.Point(4, 17);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox7.Size = new System.Drawing.Size(172, 45);
-            this.groupBox7.TabIndex = 0;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Channel Data";
-            // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(114, 12);
-            this.button9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(45, 20);
-            this.button9.TabIndex = 18;
-            this.button9.Text = "Fetch";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
-            // textBox9
-            // 
-            this.textBox9.Location = new System.Drawing.Point(57, 15);
-            this.textBox9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(54, 20);
-            this.textBox9.TabIndex = 1;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(4, 15);
-            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(49, 13);
-            this.label12.TabIndex = 0;
-            this.label12.Text = "Channel:";
             // 
             // groupBox43
             // 
@@ -2735,6 +1722,1023 @@
             this.label50.TabIndex = 0;
             this.label50.Text = "Channel:";
             // 
+            // groupBox40
+            // 
+            this.groupBox40.Controls.Add(this.button50);
+            this.groupBox40.Location = new System.Drawing.Point(539, 228);
+            this.groupBox40.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox40.Name = "groupBox40";
+            this.groupBox40.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox40.Size = new System.Drawing.Size(172, 45);
+            this.groupBox40.TabIndex = 30;
+            this.groupBox40.TabStop = false;
+            this.groupBox40.Text = "Got Top Games By Viewers";
+            // 
+            // button50
+            // 
+            this.button50.Location = new System.Drawing.Point(6, 15);
+            this.button50.Margin = new System.Windows.Forms.Padding(2);
+            this.button50.Name = "button50";
+            this.button50.Size = new System.Drawing.Size(153, 20);
+            this.button50.TabIndex = 18;
+            this.button50.Text = "Fetch";
+            this.button50.UseVisualStyleBackColor = true;
+            this.button50.Click += new System.EventHandler(this.button50_Click);
+            // 
+            // groupBox39
+            // 
+            this.groupBox39.Controls.Add(this.button48);
+            this.groupBox39.Location = new System.Drawing.Point(539, 179);
+            this.groupBox39.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox39.Name = "groupBox39";
+            this.groupBox39.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox39.Size = new System.Drawing.Size(172, 45);
+            this.groupBox39.TabIndex = 29;
+            this.groupBox39.TabStop = false;
+            this.groupBox39.Text = "Get Featured Streams";
+            // 
+            // button48
+            // 
+            this.button48.Location = new System.Drawing.Point(6, 15);
+            this.button48.Margin = new System.Windows.Forms.Padding(2);
+            this.button48.Name = "button48";
+            this.button48.Size = new System.Drawing.Size(153, 20);
+            this.button48.TabIndex = 18;
+            this.button48.Text = "Fetch";
+            this.button48.UseVisualStyleBackColor = true;
+            this.button48.Click += new System.EventHandler(this.button48_Click);
+            // 
+            // groupBox38
+            // 
+            this.groupBox38.Controls.Add(this.button46);
+            this.groupBox38.Controls.Add(this.textBox39);
+            this.groupBox38.Controls.Add(this.label47);
+            this.groupBox38.Location = new System.Drawing.Point(539, 124);
+            this.groupBox38.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox38.Name = "groupBox38";
+            this.groupBox38.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox38.Size = new System.Drawing.Size(172, 45);
+            this.groupBox38.TabIndex = 28;
+            this.groupBox38.TabStop = false;
+            this.groupBox38.Text = "Get Channel From Steam ID";
+            // 
+            // button46
+            // 
+            this.button46.Location = new System.Drawing.Point(114, 12);
+            this.button46.Margin = new System.Windows.Forms.Padding(2);
+            this.button46.Name = "button46";
+            this.button46.Size = new System.Drawing.Size(45, 20);
+            this.button46.TabIndex = 18;
+            this.button46.Text = "Fetch";
+            this.button46.UseVisualStyleBackColor = true;
+            this.button46.Click += new System.EventHandler(this.button46_Click);
+            // 
+            // textBox39
+            // 
+            this.textBox39.Location = new System.Drawing.Point(57, 15);
+            this.textBox39.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox39.Name = "textBox39";
+            this.textBox39.Size = new System.Drawing.Size(54, 20);
+            this.textBox39.TabIndex = 1;
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(4, 15);
+            this.label47.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(52, 13);
+            this.label47.TabIndex = 0;
+            this.label47.Text = "Steam Id:";
+            // 
+            // groupBox37
+            // 
+            this.groupBox37.Controls.Add(this.button45);
+            this.groupBox37.Controls.Add(this.textBox38);
+            this.groupBox37.Controls.Add(this.label46);
+            this.groupBox37.Location = new System.Drawing.Point(539, 72);
+            this.groupBox37.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox37.Name = "groupBox37";
+            this.groupBox37.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox37.Size = new System.Drawing.Size(172, 45);
+            this.groupBox37.TabIndex = 27;
+            this.groupBox37.TabStop = false;
+            this.groupBox37.Text = "Get Channels Object";
+            // 
+            // button45
+            // 
+            this.button45.Location = new System.Drawing.Point(114, 12);
+            this.button45.Margin = new System.Windows.Forms.Padding(2);
+            this.button45.Name = "button45";
+            this.button45.Size = new System.Drawing.Size(45, 20);
+            this.button45.TabIndex = 18;
+            this.button45.Text = "Fetch";
+            this.button45.UseVisualStyleBackColor = true;
+            this.button45.Click += new System.EventHandler(this.button45_Click);
+            // 
+            // textBox38
+            // 
+            this.textBox38.Location = new System.Drawing.Point(57, 15);
+            this.textBox38.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox38.Name = "textBox38";
+            this.textBox38.Size = new System.Drawing.Size(54, 20);
+            this.textBox38.TabIndex = 1;
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(4, 15);
+            this.label46.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(49, 13);
+            this.label46.TabIndex = 0;
+            this.label46.Text = "Channel:";
+            // 
+            // groupBox36
+            // 
+            this.groupBox36.Controls.Add(this.button40);
+            this.groupBox36.Controls.Add(this.textBox36);
+            this.groupBox36.Controls.Add(this.label41);
+            this.groupBox36.Location = new System.Drawing.Point(539, 17);
+            this.groupBox36.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox36.Name = "groupBox36";
+            this.groupBox36.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox36.Size = new System.Drawing.Size(172, 45);
+            this.groupBox36.TabIndex = 25;
+            this.groupBox36.TabStop = false;
+            this.groupBox36.Text = "Get Channel Badges";
+            // 
+            // button40
+            // 
+            this.button40.Location = new System.Drawing.Point(114, 12);
+            this.button40.Margin = new System.Windows.Forms.Padding(2);
+            this.button40.Name = "button40";
+            this.button40.Size = new System.Drawing.Size(45, 20);
+            this.button40.TabIndex = 18;
+            this.button40.Text = "Fetch";
+            this.button40.UseVisualStyleBackColor = true;
+            this.button40.Click += new System.EventHandler(this.button40_Click);
+            // 
+            // textBox36
+            // 
+            this.textBox36.Location = new System.Drawing.Point(57, 15);
+            this.textBox36.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox36.Name = "textBox36";
+            this.textBox36.Size = new System.Drawing.Size(54, 20);
+            this.textBox36.TabIndex = 1;
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(4, 15);
+            this.label41.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(49, 13);
+            this.label41.TabIndex = 0;
+            this.label41.Text = "Channel:";
+            // 
+            // groupBox35
+            // 
+            this.groupBox35.Controls.Add(this.button39);
+            this.groupBox35.Controls.Add(this.textBox35);
+            this.groupBox35.Controls.Add(this.label40);
+            this.groupBox35.Location = new System.Drawing.Point(176, 283);
+            this.groupBox35.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox35.Name = "groupBox35";
+            this.groupBox35.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox35.Size = new System.Drawing.Size(188, 45);
+            this.groupBox35.TabIndex = 23;
+            this.groupBox35.TabStop = false;
+            this.groupBox35.Text = "Get Streams (Comma Seperated)";
+            // 
+            // button39
+            // 
+            this.button39.Location = new System.Drawing.Point(114, 12);
+            this.button39.Margin = new System.Windows.Forms.Padding(2);
+            this.button39.Name = "button39";
+            this.button39.Size = new System.Drawing.Size(45, 20);
+            this.button39.TabIndex = 18;
+            this.button39.Text = "Fetch";
+            this.button39.UseVisualStyleBackColor = true;
+            this.button39.Click += new System.EventHandler(this.button39_Click);
+            // 
+            // textBox35
+            // 
+            this.textBox35.Location = new System.Drawing.Point(57, 15);
+            this.textBox35.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox35.Name = "textBox35";
+            this.textBox35.Size = new System.Drawing.Size(54, 20);
+            this.textBox35.TabIndex = 1;
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(4, 15);
+            this.label40.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(54, 13);
+            this.label40.TabIndex = 0;
+            this.label40.Text = "Channels:";
+            // 
+            // groupBox30
+            // 
+            this.groupBox30.Controls.Add(this.button31);
+            this.groupBox30.Controls.Add(this.textBox31);
+            this.groupBox30.Controls.Add(this.label36);
+            this.groupBox30.Location = new System.Drawing.Point(363, 288);
+            this.groupBox30.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox30.Name = "groupBox30";
+            this.groupBox30.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox30.Size = new System.Drawing.Size(172, 45);
+            this.groupBox30.TabIndex = 24;
+            this.groupBox30.TabStop = false;
+            this.groupBox30.Text = "Get Channel Feed Posts";
+            // 
+            // button31
+            // 
+            this.button31.Location = new System.Drawing.Point(114, 12);
+            this.button31.Margin = new System.Windows.Forms.Padding(2);
+            this.button31.Name = "button31";
+            this.button31.Size = new System.Drawing.Size(45, 20);
+            this.button31.TabIndex = 18;
+            this.button31.Text = "Fetch";
+            this.button31.UseVisualStyleBackColor = true;
+            this.button31.Click += new System.EventHandler(this.button31_Click);
+            // 
+            // textBox31
+            // 
+            this.textBox31.Location = new System.Drawing.Point(57, 15);
+            this.textBox31.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox31.Name = "textBox31";
+            this.textBox31.Size = new System.Drawing.Size(54, 20);
+            this.textBox31.TabIndex = 1;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(4, 15);
+            this.label36.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(49, 13);
+            this.label36.TabIndex = 0;
+            this.label36.Text = "Channel:";
+            // 
+            // groupBox29
+            // 
+            this.groupBox29.Controls.Add(this.button30);
+            this.groupBox29.Controls.Add(this.textBox30);
+            this.groupBox29.Controls.Add(this.label34);
+            this.groupBox29.Location = new System.Drawing.Point(363, 237);
+            this.groupBox29.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox29.Name = "groupBox29";
+            this.groupBox29.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox29.Size = new System.Drawing.Size(172, 45);
+            this.groupBox29.TabIndex = 26;
+            this.groupBox29.TabStop = false;
+            this.groupBox29.Text = "Search for User";
+            // 
+            // button30
+            // 
+            this.button30.Location = new System.Drawing.Point(114, 12);
+            this.button30.Margin = new System.Windows.Forms.Padding(2);
+            this.button30.Name = "button30";
+            this.button30.Size = new System.Drawing.Size(45, 20);
+            this.button30.TabIndex = 18;
+            this.button30.Text = "Fetch";
+            this.button30.UseVisualStyleBackColor = true;
+            this.button30.Click += new System.EventHandler(this.button30_Click);
+            // 
+            // textBox30
+            // 
+            this.textBox30.Location = new System.Drawing.Point(57, 15);
+            this.textBox30.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox30.Name = "textBox30";
+            this.textBox30.Size = new System.Drawing.Size(54, 20);
+            this.textBox30.TabIndex = 1;
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(4, 15);
+            this.label34.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(32, 13);
+            this.label34.TabIndex = 0;
+            this.label34.Text = "User:";
+            // 
+            // groupBox28
+            // 
+            this.groupBox28.Controls.Add(this.button28);
+            this.groupBox28.Controls.Add(this.textBox7);
+            this.groupBox28.Controls.Add(this.label4);
+            this.groupBox28.Location = new System.Drawing.Point(363, 186);
+            this.groupBox28.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox28.Name = "groupBox28";
+            this.groupBox28.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox28.Size = new System.Drawing.Size(172, 45);
+            this.groupBox28.TabIndex = 25;
+            this.groupBox28.TabStop = false;
+            this.groupBox28.Text = "Search Game";
+            // 
+            // button28
+            // 
+            this.button28.Location = new System.Drawing.Point(114, 12);
+            this.button28.Margin = new System.Windows.Forms.Padding(2);
+            this.button28.Name = "button28";
+            this.button28.Size = new System.Drawing.Size(45, 20);
+            this.button28.TabIndex = 18;
+            this.button28.Text = "Fetch";
+            this.button28.UseVisualStyleBackColor = true;
+            this.button28.Click += new System.EventHandler(this.button28_Click);
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(57, 15);
+            this.textBox7.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(54, 20);
+            this.textBox7.TabIndex = 1;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(4, 15);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Game";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.textBox6);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Location = new System.Drawing.Point(363, 131);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox2.Size = new System.Drawing.Size(172, 45);
+            this.groupBox2.TabIndex = 24;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Search Streams";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(114, 12);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(45, 20);
+            this.button3.TabIndex = 18;
+            this.button3.Text = "Fetch";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // textBox6
+            // 
+            this.textBox6.Location = new System.Drawing.Point(57, 15);
+            this.textBox6.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(54, 20);
+            this.textBox6.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(4, 15);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Stream:";
+            // 
+            // groupBox27
+            // 
+            this.groupBox27.Controls.Add(this.button29);
+            this.groupBox27.Controls.Add(this.textBox29);
+            this.groupBox27.Controls.Add(this.label35);
+            this.groupBox27.Location = new System.Drawing.Point(363, 84);
+            this.groupBox27.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox27.Name = "groupBox27";
+            this.groupBox27.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox27.Size = new System.Drawing.Size(172, 39);
+            this.groupBox27.TabIndex = 22;
+            this.groupBox27.TabStop = false;
+            this.groupBox27.Text = "Get user\'s followed channels";
+            // 
+            // button29
+            // 
+            this.button29.Location = new System.Drawing.Point(114, 12);
+            this.button29.Margin = new System.Windows.Forms.Padding(2);
+            this.button29.Name = "button29";
+            this.button29.Size = new System.Drawing.Size(45, 20);
+            this.button29.TabIndex = 18;
+            this.button29.Text = "Fetch";
+            this.button29.UseVisualStyleBackColor = true;
+            this.button29.Click += new System.EventHandler(this.button29_Click);
+            // 
+            // textBox29
+            // 
+            this.textBox29.Location = new System.Drawing.Point(57, 15);
+            this.textBox29.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox29.Name = "textBox29";
+            this.textBox29.Size = new System.Drawing.Size(54, 20);
+            this.textBox29.TabIndex = 1;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(4, 15);
+            this.label35.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(49, 13);
+            this.label35.TabIndex = 0;
+            this.label35.Text = "Channel:";
+            // 
+            // groupBox26
+            // 
+            this.groupBox26.Controls.Add(this.button27);
+            this.groupBox26.Controls.Add(this.numericUpDown2);
+            this.groupBox26.Controls.Add(this.label33);
+            this.groupBox26.Controls.Add(this.button26);
+            this.groupBox26.Controls.Add(this.textBox28);
+            this.groupBox26.Controls.Add(this.label32);
+            this.groupBox26.Location = new System.Drawing.Point(363, 12);
+            this.groupBox26.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox26.Name = "groupBox26";
+            this.groupBox26.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox26.Size = new System.Drawing.Size(172, 65);
+            this.groupBox26.TabIndex = 19;
+            this.groupBox26.TabStop = false;
+            this.groupBox26.Text = "Follower Service";
+            // 
+            // button27
+            // 
+            this.button27.Location = new System.Drawing.Point(114, 36);
+            this.button27.Margin = new System.Windows.Forms.Padding(2);
+            this.button27.Name = "button27";
+            this.button27.Size = new System.Drawing.Size(45, 20);
+            this.button27.TabIndex = 21;
+            this.button27.Text = "Stop";
+            this.button27.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(63, 39);
+            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(1);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(45, 20);
+            this.numericUpDown2.TabIndex = 20;
+            this.numericUpDown2.Value = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(7, 41);
+            this.label33.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(45, 13);
+            this.label33.TabIndex = 19;
+            this.label33.Text = "Interval:";
+            // 
+            // button26
+            // 
+            this.button26.Location = new System.Drawing.Point(114, 12);
+            this.button26.Margin = new System.Windows.Forms.Padding(2);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(45, 20);
+            this.button26.TabIndex = 18;
+            this.button26.Text = "Start";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
+            // 
+            // textBox28
+            // 
+            this.textBox28.Location = new System.Drawing.Point(57, 15);
+            this.textBox28.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox28.Name = "textBox28";
+            this.textBox28.Size = new System.Drawing.Size(54, 20);
+            this.textBox28.TabIndex = 1;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(4, 15);
+            this.label32.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(49, 13);
+            this.label32.TabIndex = 0;
+            this.label32.Text = "Channel:";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(218, 10);
+            this.linkLabel1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(110, 13);
+            this.linkLabel1.TabIndex = 24;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Set Required Client-Id";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // groupBox23
+            // 
+            this.groupBox23.Controls.Add(this.button23);
+            this.groupBox23.Controls.Add(this.textBox27);
+            this.groupBox23.Controls.Add(this.label30);
+            this.groupBox23.Location = new System.Drawing.Point(4, 277);
+            this.groupBox23.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox23.Name = "groupBox23";
+            this.groupBox23.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox23.Size = new System.Drawing.Size(172, 45);
+            this.groupBox23.TabIndex = 23;
+            this.groupBox23.TabStop = false;
+            this.groupBox23.Text = "Search Channels";
+            // 
+            // button23
+            // 
+            this.button23.Location = new System.Drawing.Point(114, 11);
+            this.button23.Margin = new System.Windows.Forms.Padding(2);
+            this.button23.Name = "button23";
+            this.button23.Size = new System.Drawing.Size(45, 20);
+            this.button23.TabIndex = 18;
+            this.button23.Text = "Fetch";
+            this.button23.UseVisualStyleBackColor = true;
+            this.button23.Click += new System.EventHandler(this.button23_Click);
+            // 
+            // textBox27
+            // 
+            this.textBox27.Location = new System.Drawing.Point(57, 15);
+            this.textBox27.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox27.Name = "textBox27";
+            this.textBox27.Size = new System.Drawing.Size(54, 20);
+            this.textBox27.TabIndex = 1;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(4, 15);
+            this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(49, 13);
+            this.label30.TabIndex = 0;
+            this.label30.Text = "Channel:";
+            // 
+            // groupBox22
+            // 
+            this.groupBox22.Controls.Add(this.button22);
+            this.groupBox22.Controls.Add(this.textBox26);
+            this.groupBox22.Controls.Add(this.label29);
+            this.groupBox22.Location = new System.Drawing.Point(181, 235);
+            this.groupBox22.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox22.Name = "groupBox22";
+            this.groupBox22.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox22.Size = new System.Drawing.Size(172, 45);
+            this.groupBox22.TabIndex = 23;
+            this.groupBox22.TabStop = false;
+            this.groupBox22.Text = "Get Stream Uptime";
+            // 
+            // button22
+            // 
+            this.button22.Location = new System.Drawing.Point(114, 12);
+            this.button22.Margin = new System.Windows.Forms.Padding(2);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(45, 20);
+            this.button22.TabIndex = 18;
+            this.button22.Text = "Fetch";
+            this.button22.UseVisualStyleBackColor = true;
+            this.button22.Click += new System.EventHandler(this.button22_Click);
+            // 
+            // textBox26
+            // 
+            this.textBox26.Location = new System.Drawing.Point(57, 15);
+            this.textBox26.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox26.Name = "textBox26";
+            this.textBox26.Size = new System.Drawing.Size(54, 20);
+            this.textBox26.TabIndex = 1;
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(4, 15);
+            this.label29.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(49, 13);
+            this.label29.TabIndex = 0;
+            this.label29.Text = "Channel:";
+            // 
+            // groupBox21
+            // 
+            this.groupBox21.Controls.Add(this.button21);
+            this.groupBox21.Controls.Add(this.textBox25);
+            this.groupBox21.Controls.Add(this.label28);
+            this.groupBox21.Location = new System.Drawing.Point(4, 228);
+            this.groupBox21.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox21.Name = "groupBox21";
+            this.groupBox21.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox21.Size = new System.Drawing.Size(172, 45);
+            this.groupBox21.TabIndex = 22;
+            this.groupBox21.TabStop = false;
+            this.groupBox21.Text = "Get Stream Data";
+            // 
+            // button21
+            // 
+            this.button21.Location = new System.Drawing.Point(114, 12);
+            this.button21.Margin = new System.Windows.Forms.Padding(2);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(45, 20);
+            this.button21.TabIndex = 18;
+            this.button21.Text = "Fetch";
+            this.button21.UseVisualStyleBackColor = true;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
+            // 
+            // textBox25
+            // 
+            this.textBox25.Location = new System.Drawing.Point(57, 15);
+            this.textBox25.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox25.Name = "textBox25";
+            this.textBox25.Size = new System.Drawing.Size(54, 20);
+            this.textBox25.TabIndex = 1;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(4, 15);
+            this.label28.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(49, 13);
+            this.label28.TabIndex = 0;
+            this.label28.Text = "Channel:";
+            // 
+            // groupBox20
+            // 
+            this.groupBox20.Controls.Add(this.button20);
+            this.groupBox20.Controls.Add(this.textBox24);
+            this.groupBox20.Controls.Add(this.label27);
+            this.groupBox20.Location = new System.Drawing.Point(181, 186);
+            this.groupBox20.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox20.Name = "groupBox20";
+            this.groupBox20.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox20.Size = new System.Drawing.Size(172, 45);
+            this.groupBox20.TabIndex = 21;
+            this.groupBox20.TabStop = false;
+            this.groupBox20.Text = "Get channel followers";
+            // 
+            // button20
+            // 
+            this.button20.Location = new System.Drawing.Point(114, 12);
+            this.button20.Margin = new System.Windows.Forms.Padding(2);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(45, 20);
+            this.button20.TabIndex = 18;
+            this.button20.Text = "Fetch";
+            this.button20.UseVisualStyleBackColor = true;
+            this.button20.Click += new System.EventHandler(this.button20_Click);
+            // 
+            // textBox24
+            // 
+            this.textBox24.Location = new System.Drawing.Point(57, 15);
+            this.textBox24.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox24.Name = "textBox24";
+            this.textBox24.Size = new System.Drawing.Size(54, 20);
+            this.textBox24.TabIndex = 1;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(4, 15);
+            this.label27.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(49, 13);
+            this.label27.TabIndex = 0;
+            this.label27.Text = "Channel:";
+            // 
+            // groupBox18
+            // 
+            this.groupBox18.Controls.Add(this.button18);
+            this.groupBox18.Controls.Add(this.textBox22);
+            this.groupBox18.Controls.Add(this.label25);
+            this.groupBox18.Location = new System.Drawing.Point(4, 179);
+            this.groupBox18.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox18.Name = "groupBox18";
+            this.groupBox18.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox18.Size = new System.Drawing.Size(172, 45);
+            this.groupBox18.TabIndex = 21;
+            this.groupBox18.TabStop = false;
+            this.groupBox18.Text = "Get Twitch Team Members";
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(114, 12);
+            this.button18.Margin = new System.Windows.Forms.Padding(2);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(45, 20);
+            this.button18.TabIndex = 18;
+            this.button18.Text = "Fetch";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // textBox22
+            // 
+            this.textBox22.Location = new System.Drawing.Point(57, 15);
+            this.textBox22.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox22.Name = "textBox22";
+            this.textBox22.Size = new System.Drawing.Size(54, 20);
+            this.textBox22.TabIndex = 1;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(4, 15);
+            this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(37, 13);
+            this.label25.TabIndex = 0;
+            this.label25.Text = "Team:";
+            // 
+            // groupBox17
+            // 
+            this.groupBox17.Controls.Add(this.button17);
+            this.groupBox17.Controls.Add(this.textBox21);
+            this.groupBox17.Controls.Add(this.label24);
+            this.groupBox17.Location = new System.Drawing.Point(181, 137);
+            this.groupBox17.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox17.Name = "groupBox17";
+            this.groupBox17.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox17.Size = new System.Drawing.Size(172, 45);
+            this.groupBox17.TabIndex = 20;
+            this.groupBox17.TabStop = false;
+            this.groupBox17.Text = "Get channel hosts";
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(114, 12);
+            this.button17.Margin = new System.Windows.Forms.Padding(2);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(45, 20);
+            this.button17.TabIndex = 18;
+            this.button17.Text = "Fetch";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // textBox21
+            // 
+            this.textBox21.Location = new System.Drawing.Point(57, 15);
+            this.textBox21.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox21.Name = "textBox21";
+            this.textBox21.Size = new System.Drawing.Size(54, 20);
+            this.textBox21.TabIndex = 1;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(4, 15);
+            this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(49, 13);
+            this.label24.TabIndex = 0;
+            this.label24.Text = "Channel:";
+            // 
+            // groupBox16
+            // 
+            this.groupBox16.Controls.Add(this.button16);
+            this.groupBox16.Controls.Add(this.textBox20);
+            this.groupBox16.Controls.Add(this.label23);
+            this.groupBox16.Location = new System.Drawing.Point(4, 130);
+            this.groupBox16.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox16.Name = "groupBox16";
+            this.groupBox16.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox16.Size = new System.Drawing.Size(172, 45);
+            this.groupBox16.TabIndex = 19;
+            this.groupBox16.TabStop = false;
+            this.groupBox16.Text = "Get Most Recent 10 Vids";
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(114, 12);
+            this.button16.Margin = new System.Windows.Forms.Padding(2);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(45, 20);
+            this.button16.TabIndex = 18;
+            this.button16.Text = "Fetch";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
+            // textBox20
+            // 
+            this.textBox20.Location = new System.Drawing.Point(57, 15);
+            this.textBox20.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox20.Name = "textBox20";
+            this.textBox20.Size = new System.Drawing.Size(54, 20);
+            this.textBox20.TabIndex = 1;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(4, 15);
+            this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(49, 13);
+            this.label23.TabIndex = 0;
+            this.label23.Text = "Channel:";
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.button12);
+            this.groupBox10.Controls.Add(this.textBox13);
+            this.groupBox10.Controls.Add(this.label16);
+            this.groupBox10.Location = new System.Drawing.Point(181, 74);
+            this.groupBox10.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox10.Size = new System.Drawing.Size(172, 58);
+            this.groupBox10.TabIndex = 8;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Streamer Online Status";
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(114, 12);
+            this.button12.Margin = new System.Windows.Forms.Padding(2);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(45, 20);
+            this.button12.TabIndex = 18;
+            this.button12.Text = "Fetch";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // textBox13
+            // 
+            this.textBox13.Location = new System.Drawing.Point(57, 15);
+            this.textBox13.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(54, 20);
+            this.textBox13.TabIndex = 1;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(4, 15);
+            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(49, 13);
+            this.label16.TabIndex = 0;
+            this.label16.Text = "Channel:";
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.textBox12);
+            this.groupBox9.Controls.Add(this.label15);
+            this.groupBox9.Controls.Add(this.button11);
+            this.groupBox9.Controls.Add(this.textBox11);
+            this.groupBox9.Controls.Add(this.label14);
+            this.groupBox9.Location = new System.Drawing.Point(4, 67);
+            this.groupBox9.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox9.Size = new System.Drawing.Size(172, 58);
+            this.groupBox9.TabIndex = 19;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "User is Following";
+            // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(57, 37);
+            this.textBox12.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(54, 20);
+            this.textBox12.TabIndex = 20;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(4, 40);
+            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(49, 13);
+            this.label15.TabIndex = 19;
+            this.label15.Text = "Channel:";
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(114, 12);
+            this.button11.Margin = new System.Windows.Forms.Padding(2);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(45, 43);
+            this.button11.TabIndex = 18;
+            this.button11.Text = "Fetch";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // textBox11
+            // 
+            this.textBox11.Location = new System.Drawing.Point(57, 15);
+            this.textBox11.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new System.Drawing.Size(54, 20);
+            this.textBox11.TabIndex = 1;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(4, 15);
+            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(32, 13);
+            this.label14.TabIndex = 0;
+            this.label14.Text = "User:";
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.button10);
+            this.groupBox8.Controls.Add(this.textBox10);
+            this.groupBox8.Controls.Add(this.label13);
+            this.groupBox8.Location = new System.Drawing.Point(181, 24);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox8.Size = new System.Drawing.Size(172, 45);
+            this.groupBox8.TabIndex = 1;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Channel Chatters";
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(114, 12);
+            this.button10.Margin = new System.Windows.Forms.Padding(2);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(45, 20);
+            this.button10.TabIndex = 18;
+            this.button10.Text = "Fetch";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(57, 15);
+            this.textBox10.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(54, 20);
+            this.textBox10.TabIndex = 1;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(4, 15);
+            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(49, 13);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Channel:";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.button9);
+            this.groupBox7.Controls.Add(this.textBox9);
+            this.groupBox7.Controls.Add(this.label12);
+            this.groupBox7.Location = new System.Drawing.Point(4, 17);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox7.Size = new System.Drawing.Size(172, 45);
+            this.groupBox7.TabIndex = 0;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Channel Data";
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(114, 12);
+            this.button9.Margin = new System.Windows.Forms.Padding(2);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(45, 20);
+            this.button9.TabIndex = 18;
+            this.button9.Text = "Fetch";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(57, 15);
+            this.textBox9.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(54, 20);
+            this.textBox9.TabIndex = 1;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(4, 15);
+            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(49, 13);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "Channel:";
+            // 
             // tabPage9
             // 
             this.tabPage9.Controls.Add(this.linkLabel2);
@@ -2745,6 +2749,18 @@
             this.tabPage9.TabIndex = 2;
             this.tabPage9.Text = "Twitch API v5";
             this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.Location = new System.Drawing.Point(187, 2);
+            this.linkLabel2.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(110, 13);
+            this.linkLabel2.TabIndex = 25;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "Set Required Client-Id";
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
             // groupBox44
             // 
@@ -2789,17 +2805,24 @@
             this.label51.TabIndex = 0;
             this.label51.Text = "Username:";
             // 
-            // linkLabel2
+            // tabPage10
             // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(187, 2);
-            this.linkLabel2.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(110, 13);
-            this.linkLabel2.TabIndex = 25;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "Set Required Client-Id";
-            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            this.tabPage10.Controls.Add(this.listBox3);
+            this.tabPage10.Location = new System.Drawing.Point(4, 22);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage10.Size = new System.Drawing.Size(366, 203);
+            this.tabPage10.TabIndex = 4;
+            this.tabPage10.Text = "ExistingUsers";
+            this.tabPage10.UseVisualStyleBackColor = true;
+            // 
+            // listBox3
+            // 
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.Location = new System.Drawing.Point(6, 6);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(150, 186);
+            this.listBox3.TabIndex = 0;
             // 
             // Form1
             // 
@@ -2807,7 +2830,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(759, 644);
             this.Controls.Add(this.tabControl3);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Twitch Lib Example";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -2859,6 +2882,8 @@
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.groupBox43.ResumeLayout(false);
+            this.groupBox43.PerformLayout();
             this.groupBox40.ResumeLayout(false);
             this.groupBox39.ResumeLayout(false);
             this.groupBox38.ResumeLayout(false);
@@ -2904,12 +2929,11 @@
             this.groupBox8.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
-            this.groupBox43.ResumeLayout(false);
-            this.groupBox43.PerformLayout();
             this.tabPage9.ResumeLayout(false);
             this.tabPage9.PerformLayout();
             this.groupBox44.ResumeLayout(false);
             this.groupBox44.PerformLayout();
+            this.tabPage10.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3142,6 +3166,8 @@
         private System.Windows.Forms.TextBox textBox44;
         private System.Windows.Forms.Label label51;
         private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.ListBox listBox3;
     }
 }
 
