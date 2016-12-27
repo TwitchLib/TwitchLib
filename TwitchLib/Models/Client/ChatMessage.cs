@@ -165,7 +165,7 @@ namespace TwitchLib.Models.Client
             }
 
             //Parse the emoteSet
-            if (EmoteSet != null && Message != null)
+            if (EmoteSet != null && Message != null && EmoteSet.Emotes.Count > 0)
             {
                 string[] uniqueEmotes = EmoteSet.RawEmoteSetString.Split('/');
                 string id, text;

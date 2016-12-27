@@ -29,6 +29,8 @@ namespace TwitchLib.Models.Client
         {
             Emotes = new List<Emote>();
             RawEmoteSetString = emoteSetData;
+            if (string.IsNullOrEmpty(emoteSetData))
+                return;
             if (emoteSetData.Contains("/"))
             {
                 // Message contains multiple different emotes, first parse by unique emotes: 28087:15-21/25:5-9,28-32
