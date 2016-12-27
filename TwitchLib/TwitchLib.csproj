@@ -131,6 +131,7 @@
     <Compile Include="Extensions\Client\FollowersOnlyExt.cs" />
     <Compile Include="Extensions\Client\HostExt.cs" />
     <Compile Include="Extensions\Client\ModExt.cs" />
+    <Compile Include="Extensions\Client\ReplyWhisperExt.cs" />
     <Compile Include="Extensions\Client\SlowModeExt.cs" />
     <Compile Include="Extensions\Client\SubscribersOnly.cs" />
     <Compile Include="Extensions\Client\TimeoutUserExt.cs" />

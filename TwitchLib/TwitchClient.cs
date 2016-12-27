@@ -328,15 +328,6 @@ namespace TwitchLib
             _client.WriteLine(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
             OnWhisperSent?.Invoke(this, new OnWhisperSentArgs { Receiver = receiver, Message = message });
         }
-
-        /// <summary>
-        /// SendWhisper wrapper method that will send a whisper back to the user who most recently sent a whisper to this bot.
-        /// </summary>
-        public void ReplyWhisper(string message, bool dryRun = false)
-        {
-            if (PreviousWhisper != null)
-                SendWhisper(PreviousWhisper.Username, message, dryRun);
-        }
         #endregion
 
         #region Connection Calls
