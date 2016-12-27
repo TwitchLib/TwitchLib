@@ -6,14 +6,27 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.Models.Client
 {
+    /// <summary>
+    /// Object representing a command received via Twitch chat.
+    /// </summary>
     public class ChatCommand
     {
+        /// <summary>Property representing the chat message that the command came in.</summary>
         public ChatMessage ChatMessage { get; protected set; }
+        /// <summary>Property representing the actual command (without the command suffix).</summary>
         public string Command { get; protected set; }
+        /// <summary>Property representing all arguments received in a List form.</summary>
         public List<string> ArgumentsAsList { get; protected set; }
+        /// <summary>Property representing all arguments received in a string form.</summary>
         public string ArgumentsAsString { get; protected set; }
+        /// <summary>Property representing the command identifier (ie command suffix).</summary>
         public char CommandIdentifier { get; protected set; }
 
+        /// <summary>
+        /// ChatCommand constructor.
+        /// </summary>
+        /// <param name="ircString"></param>
+        /// <param name="chatMessage"></param>
         public ChatCommand(string ircString, ChatMessage chatMessage)
         {
             ChatMessage = chatMessage;
