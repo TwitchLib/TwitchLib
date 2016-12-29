@@ -225,7 +225,8 @@ namespace TwitchLibExample
                 foreach (var emote in e.ChatMessage.EmoteSet.Emotes)
                     MessageBox.Show($"Emote: {emote.Name} (id: {emote.Id})\nStart index: {emote.StartIndex}\nEnd index: {emote.EndIndex}\nUrl: {emote.ImageUrl}");
             }
-            
+
+            richTextBox1.BackColor = e.ChatMessage.Color;
             richTextBox1.Text = String.Format("#{0} {1}[isSub: {2}]: {3}", e.ChatMessage.Channel, e.ChatMessage.DisplayName, e.ChatMessage.Subscriber, e.ChatMessage.Message) + 
                 "\n" + richTextBox1.Text;
         }
