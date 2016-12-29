@@ -140,6 +140,7 @@ namespace TwitchLib.Models.PubSub.Responses.Messages
                     Color = json.SelectToken("color")?.ToString();
                     UserType = json.SelectToken("user_type")?.ToString();
                     Turbo = bool.Parse(json.SelectToken("turbo").ToString());
+                    Badges = new List<Badge>();
                     foreach (JToken badge in json.SelectToken("badges"))
                         Badges.Add(new Badge(badge));
 
