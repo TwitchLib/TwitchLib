@@ -58,7 +58,11 @@ namespace TwitchLibExample
         private void button2_Click(object sender, EventArgs e)
         {
             ConnectionCredentials credentials = new ConnectionCredentials(textBox4.Text, textBox5.Text);
-            TwitchClient newClient = new TwitchClient(credentials, textBox8.Text, '!', '!', true);
+            TwitchClient newClient;
+            if (!string.IsNullOrEmpty(textBox8.Text))
+                newClient = new TwitchClient(credentials, textBox8.Text, '!', '!', true);
+            else
+                newClient = new TwitchClient(credentials, null, '!', '!', true);
 
             newClient.OnMessageReceived += new EventHandler<OnMessageReceivedArgs>(globalChatMessageReceived);
             newClient.OnChatCommandReceived += new EventHandler<OnChatCommandReceivedArgs>(chatCommandReceived);
