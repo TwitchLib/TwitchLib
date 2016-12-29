@@ -166,12 +166,12 @@ namespace TwitchLibExample
 
         public void onUserTimedout(object sender, OnUserTimedoutArgs e)
         {
-            //MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was timedout for {e.TimeoutDuration} seconds with reasoning: {e.TimeoutReason}");
+            MessageBox.Show($"Viewer {e.Username} in channel {e.Channel} was timedout for {e.TimeoutDuration} seconds with reasoning: {e.TimeoutReason}");
         }
 
         public void onUserBanned(object sender, OnUserBannedArgs e)
         {
-            //MessageBox.Show($"Viewer {e.Viewer} in channel {e.Channel} was banned with reasoning: {e.BanReason}");
+            MessageBox.Show($"Viewer {e.Username} in channel {e.Channel} was banned with reasoning: {e.BanReason}");
         }
 
         public void onClientThrottled(object sender, OnClientThrottledArgs e)
@@ -240,6 +240,7 @@ namespace TwitchLibExample
                     MessageBox.Show($"Emote: {emote.Name} (id: {emote.Id})\nStart index: {emote.StartIndex}\nEnd index: {emote.EndIndex}\nUrl: {emote.ImageUrl}");
             }
 
+            richTextBox2.BackColor = e.WhisperMessage.Color;
             richTextBox2.Text = String.Format("{0} -> {1}: {2}", e.WhisperMessage.Username, e.WhisperMessage.BotUsername, e.WhisperMessage.Message) + 
                 "\n" + richTextBox2.Text;
         }
@@ -755,11 +756,11 @@ namespace TwitchLibExample
             pubsub.OnTimeout += new EventHandler<OnTimeoutArgs>(pubsubOnTimeout);
             pubsub.OnBan += new EventHandler<OnBanArgs>(pubsubOnBan);
             pubsub.OnUnban += new EventHandler<OnUnbanArgs>(pubsubOnUnban);
-            pubsub.OnWhisper += new EventHandler<OnWhisperArgs>(onWhsiper);
+            pubsub.OnWhisper += new EventHandler<OnWhisperArgs>(onWhisper);
             pubsub.Connect();
         }
 
-        private static void onWhsiper(object sender, OnWhisperArgs e)
+        private static void onWhisper(object sender, OnWhisperArgs e)
         {
             MessageBox.Show($"Whisper received from: {e.Whisper.DataObject.Tags.DisplayName}\nBody: {e.Whisper.DataObject.Body}");
         }
