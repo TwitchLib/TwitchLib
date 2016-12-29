@@ -234,22 +234,11 @@ namespace TwitchLib
         /// <param name="message"></param>
         /// <param name="channels"></param>
         /// <returns></returns>
-        public static DetectionReturn detectedIncorrectLogin(string message, List<JoinedChannel> channels)
+        public static DetectionReturn detectedIncorrectLogin(string message)
         {
-            string readType = null;
-            string channelRet = null;
-            foreach (JoinedChannel channel in channels)
-            {
-                readType = getReadType(message, channel.Channel);
-                if (readType != null)
-                {
-                    channelRet = channel.Channel;
-                    break;
-                }
-            }
-
-            if (readType != null && readType == "NOTICE")
-                return new DetectionReturn((message.Contains("Error logging in") || message.Contains("Login authentication failed")), channelRet);
+            if (message.Contains(":") && message.Split(':').Count() > 2
+                && message.Split(':')[2] == "Login authentication failed")
+                return new DetectionReturn(true);
             return new DetectionReturn(false);
         }
 

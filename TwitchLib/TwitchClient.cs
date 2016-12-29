@@ -684,7 +684,7 @@ namespace TwitchLib
             }
 
             // On Incorrect login
-            response = ChatParsing.detectedIncorrectLogin(decodedMessage, JoinedChannels);
+            response = ChatParsing.detectedIncorrectLogin(decodedMessage);
             if (response.Successful)
             {
                 Disconnect();
