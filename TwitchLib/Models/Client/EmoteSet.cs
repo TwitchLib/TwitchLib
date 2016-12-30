@@ -73,8 +73,6 @@ namespace TwitchLib.Models.Client
                 } else
                 {
                     // Single copy of single emote: 25:5-9
-                    Common.Log(emoteSetData, false, false, Enums.LogType.Failure);
-                    Common.Log(emoteSetData.Split(':')[1].Split('-')[0], false, false, Enums.LogType.Failure);
                     int startIndex = int.Parse(emoteSetData.Split(':')[1].Split('-')[0]);
                     int endIndex = int.Parse(emoteSetData.Split(':')[1].Split('-')[1]);
                     Emotes.Add(new Emote(emoteId, message.Substring(startIndex, (endIndex - startIndex) + 1), startIndex, endIndex));
