@@ -60,9 +60,9 @@ namespace TwitchLibExample
             ConnectionCredentials credentials = new ConnectionCredentials(textBox4.Text, textBox5.Text);
             TwitchClient newClient;
             if (!string.IsNullOrEmpty(textBox8.Text))
-                newClient = new TwitchClient(credentials, textBox8.Text, '!', '!', true);
+                newClient = new TwitchClient(credentials, textBox8.Text, '!', '!', true, false);
             else
-                newClient = new TwitchClient(credentials, null, '!', '!', true);
+                newClient = new TwitchClient(credentials, null, '!', '!', true, false);
 
             newClient.OnMessageReceived += new EventHandler<OnMessageReceivedArgs>(globalChatMessageReceived);
             newClient.OnChatCommandReceived += new EventHandler<OnChatCommandReceivedArgs>(chatCommandReceived);
