@@ -121,6 +121,7 @@
     <Compile Include="Events\Services\FollowerService\OnServiceStoppedArgs.cs" />
     <Compile Include="Events\Services\MessageThrottler\OnClientThrottledArgs.cs" />
     <Compile Include="Events\Services\MessageThrottler\OnThrottlePeriodResetArgs.cs" />
+    <Compile Include="Exceptions\API\NotPartneredException.cs" />
     <Compile Include="Exceptions\API\StreamOfflineException.cs" />
     <Compile Include="Exceptions\Client\EventNotHandledException.cs" />
     <Compile Include="Exceptions\Client\InvalidParameterException.cs" />

@@ -809,6 +809,8 @@ namespace TwitchLib
                     throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
                 case HttpStatusCode.NotFound:
                     throw new BadResourceException("The resource you tried to access was not valid.");
+                case (HttpStatusCode)422:
+                    throw new NotPartneredException("The resource you requested is only available to channels that have been partnered by Twitch.");
                 default:
                     throw e;
             }
