@@ -22,6 +22,8 @@ namespace TwitchLib.Services
         public string Channel { get { return _channel; } protected set { _channel = value; } }
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
         public string ClientId { get { return _clientId; } set { _clientId = value; TwitchApi.SetClientId(value); } }
+        /// <summary>Property representing the number of followers to compare a fresh query against for new followers. Default: 1000.</summary>
+        public int CacheSize { get; set; } = 1000;
         /// <summary>Property representing number of recent followers that service should request. Recommended: 25, increase for larger channels. MAX: 100, MINIMUM: 1</summary>
         /// <exception cref="BadQueryCountException">Throws BadQueryCountException if queryCount is larger than 100 or smaller than 1.</exception>
         public int QueryCount { get { return _queryCount; } set { if (value < 1 || value > 100) { throw new BadQueryCountException("Query count was smaller than 1 or exceeded 100"); } _queryCount = value; } }
@@ -76,20 +78,34 @@ namespace TwitchLib.Services
                 newFollowers = ActiveCache;
             } else
             {
-                if (ActiveCache[0].User.Name != mostRecentFollowers[0].User.Name)
+                foreach(Follower recentFollower in mostRecentFollowers)
                 {
-                    for (int i = 0; i < mostRecentFollowers.Count; i++)
+                    bool found = false;
+                    foreach(Follower cachedFollower in ActiveCache)
                     {
-                        if (mostRecentFollowers[i].User.Name != ActiveCache[0].User.Name)
-                            newFollowers.Add(mostRecentFollowers[i]);
-                        else break;
+                        if (recentFollower.User.Name.ToLower() == cachedFollower.User.Name.ToLower())
+                            found = true;
                     }
-                    ActiveCache = mostRecentFollowers;
+                    if (!found)
+                        newFollowers.Add(recentFollower);
                 }
+
+                // Check for new followers
+                if (newFollowers.Count > 0)
+                {
+                    // add new followers to active cache
+                    ActiveCache.AddRange(newFollowers);
+
+                    // prune cache so we don't use too much space unnecessarily
+                    if (ActiveCache.Count > CacheSize)
+                        ActiveCache = ActiveCache.GetRange(ActiveCache.Count - (CacheSize + 1), CacheSize);
+
+                    // Invoke new followers event
+                    OnNewFollowersDetected?.Invoke(this,
+                        new OnNewFollowersDetectedArgs { Channel = Channel, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount, NewFollowers = newFollowers });
+                }
+                    
             }
-            if(newFollowers.Count > 0)
-                OnNewFollowersDetected?.Invoke(this,
-                    new OnNewFollowersDetectedArgs { Channel = Channel, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount, NewFollowers = newFollowers });
         }
 
         #region HELPERS
