@@ -131,11 +131,20 @@ namespace TwitchLib.Models.Client
 
 
             // Parse channel
-            if (ircString.Contains("#") && ircString.Split('#').Count() > 2)
-                if (ircString.Split('#')[2].Contains(" "))
-                    Channel = ircString.Split('#')[2].Split(' ')[0];
-                else
-                    Channel = ircString.Split('#')[2];
+            if (ircString.Contains("#"))
+            {
+                if(ircString.Split('#').Count() > 2)
+                {
+                    if (ircString.Split('#')[2].Contains(" "))
+                        Channel = ircString.Split('#')[2].Split(' ')[0];
+                    else
+                        Channel = ircString.Split('#')[2];
+                } else
+                {
+                    Channel = ircString.Split('#')[1];
+                }
+            }
+                
 
             // Parse sub message
             ResubMessage = "";
