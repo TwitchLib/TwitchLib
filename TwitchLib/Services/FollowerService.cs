@@ -8,6 +8,7 @@ using TwitchLib.Models.API;
 using TwitchLib.Exceptions.Services;
 using TwitchLib.Exceptions.API;
 using TwitchLib.Events.Services.FollowerService;
+using TwitchLib;
 
 namespace TwitchLib.Services
 {
@@ -51,7 +52,7 @@ namespace TwitchLib.Services
         /// <summary>Downloads recent followers from Twitch, starts service, fires OnServiceStarted event.</summary>
         public async void StartService()
         {
-            FollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
+            FollowersResponse response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
             ActiveCache = response.Followers;
             _followerServiceTimer.Start();
             OnServiceStarted?.Invoke(this, 
@@ -69,7 +70,7 @@ namespace TwitchLib.Services
 
         private async void _followerServiceTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            FollowersResponse response = await TwitchApi.GetTwitchFollowers(Channel, QueryCount);
+            FollowersResponse response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
             List<Follower> mostRecentFollowers = response.Followers;
             List<Follower> newFollowers = new List<Follower>();
             if(ActiveCache == null)

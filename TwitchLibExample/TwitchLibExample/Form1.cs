@@ -290,7 +290,7 @@ namespace TwitchLibExample
         {
             try
             {
-                Channel channel = await TwitchApi.GetChannel(textBox9.Text);
+                Channel channel = await TwitchApi.Channels.GetChannelAsync(textBox9.Text);
                 MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At (seconds ago): {6}\n" +
                 "Updated At (seconds ago): {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
                 channel.Status, channel.BroadcasterLanguage, channel.DisplayName, channel.Game, channel.Language, channel.Name, channel.CreatedAt, channel.UpdatedAt.Second,
@@ -303,7 +303,7 @@ namespace TwitchLibExample
 
         private async void button10_Click(object sender, EventArgs e)
         {
-            List<Chatter> chatters = await TwitchApi.GetChatters(textBox10.Text);
+            List<Chatter> chatters = await TwitchApi.Streams.GetChattersAsync(textBox10.Text);
             string messageContents = "";
             foreach(Chatter user in chatters)
             {
@@ -320,7 +320,7 @@ namespace TwitchLibExample
 
         private async void button11_Click(object sender, EventArgs e)
         {
-            if ((await TwitchApi.UserFollowsChannel(textBox11.Text, textBox12.Text)).IsFollowing)
+            if ((await TwitchApi.Follows.UserFollowsChannelAsync(textBox11.Text, textBox12.Text)).IsFollowing)
             {
                 MessageBox.Show(String.Format("'{0}' follows the channel '{1}'!", textBox11.Text, textBox12.Text));
             } else
@@ -331,7 +331,7 @@ namespace TwitchLibExample
 
         private async void button12_Click(object sender, EventArgs e)
         {
-            if(await TwitchApi.BroadcasterOnline(textBox13.Text))
+            if(await TwitchApi.Streams.BroadcasterOnlineAsync(textBox13.Text))
             {
                 MessageBox.Show(String.Format("'{0}' is ONLINE!", textBox13.Text));
             } else
@@ -342,43 +342,43 @@ namespace TwitchLibExample
 
         private void button5_Click(object sender, EventArgs e)
         {
-            TwitchApi.UpdateStreamTitle(textBox16.Text, textBox14.Text, textBox15.Text);
+            TwitchApi.Streams.UpdateStreamTitleAsync(textBox16.Text, textBox14.Text, textBox15.Text);
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            TwitchApi.UpdateStreamGame(textBox17.Text, textBox14.Text, textBox15.Text);
+            TwitchApi.Streams.UpdateStreamGameAsync(textBox17.Text, textBox14.Text, textBox15.Text);
         }
 
         private async void button7_Click(object sender, EventArgs e)
         {
-            var channel = await TwitchApi.UpdateStreamTitleAndGame(textBox18.Text, textBox19.Text, textBox14.Text, textBox15.Text);
+            var channel = await TwitchApi.Streams.UpdateStreamTitleAndGameAsync(textBox18.Text, textBox19.Text, textBox14.Text, textBox15.Text);
             MessageBox.Show($"Channel status: {channel.Status}\nChannel game: {channel.Game}");
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
-            TwitchApi.RunCommercial(CommercialLength.Seconds30, textBox14.Text, textBox15.Text);
+            TwitchApi.Streams.RunCommercialAsync(CommercialLength.Seconds30, textBox14.Text, textBox15.Text);
         }
 
         private void button13_Click(object sender, EventArgs e)
         {
-            TwitchApi.RunCommercial(CommercialLength.Seconds60, textBox14.Text, textBox15.Text);
+            TwitchApi.Streams.RunCommercialAsync(CommercialLength.Seconds60, textBox14.Text, textBox15.Text);
         }
 
         private void button14_Click(object sender, EventArgs e)
         {
-            TwitchApi.RunCommercial(CommercialLength.Seconds90, textBox14.Text, textBox15.Text);
+            TwitchApi.Streams.RunCommercialAsync(CommercialLength.Seconds90, textBox14.Text, textBox15.Text);
         }
 
         private void button15_Click(object sender, EventArgs e)
         {
-            TwitchApi.ResetStreamKey(textBox14.Text, textBox15.Text);
+            TwitchApi.Streams.ResetStreamKeyAsync(textBox14.Text, textBox15.Text);
         }
 
         private async void button16_Click(object sender, EventArgs e)
         {
-            List<Video> videos = await TwitchApi.GetChannelVideos(textBox20.Text);
+            List<Video> videos = await TwitchApi.Videos.GetChannelVideosAsync(textBox20.Text);
             foreach(Video vid in videos)
             {
                 MessageBox.Show($"Title: {vid.Title}\nDescription: {vid.Description}\nStatus: {vid.Status}\nId: {vid.Id}\nTag List: {vid.TagList}\n Recorded At: {vid.RecordedAt}\n" +
@@ -388,7 +388,7 @@ namespace TwitchLibExample
 
         private async void button17_Click(object sender, EventArgs e)
         {
-            List<string> hosts = await TwitchApi.GetChannelHosts(textBox21.Text);
+            List<string> hosts = await TwitchApi.Channels.GetChannelHostsAsync(textBox21.Text);
             if (hosts.Count > 0)
                 foreach (string host in hosts)
                     MessageBox.Show(host);
@@ -398,7 +398,7 @@ namespace TwitchLibExample
 
         private async void button18_Click(object sender, EventArgs e)
         {
-            List<TeamMember> members = await TwitchApi.GetTeamMembers(textBox22.Text);
+            List<TeamMember> members = await TwitchApi.Teams.GetTeamMembersAsync(textBox22.Text);
             foreach(TeamMember member in members)
             {
                 MessageBox.Show($"Name: {member.Name}\nDescription: {member.Description}\nTitle: {member.Title}\nMeta Game: {member.MetaGame}\nDisplay Name: {member.DisplayName}\n" +
@@ -408,7 +408,7 @@ namespace TwitchLibExample
 
         private async void button19_Click(object sender, EventArgs e)
         {
-            var response = await TwitchApi.ChannelHasUserSubscribed(textBox23.Text, textBox14.Text, textBox15.Text);
+            var response = await TwitchApi.Subscriptions.ChannelHasUserSubscribedAsync(textBox23.Text, textBox14.Text, textBox15.Text);
             if (response != null)
                 MessageBox.Show($"{response.User.Name} has been subscribed to {textBox14.Text} for {(DateTime.UtcNow - response.CreatedAt).TotalHours} hours!");
             else
@@ -417,7 +417,7 @@ namespace TwitchLibExample
 
         private async void button20_Click(object sender, EventArgs e)
         {
-            FollowersResponse response = await TwitchApi.GetTwitchFollowers(textBox24.Text);
+            FollowersResponse response = await TwitchApi.Follows.GetFollowersAsync(textBox24.Text);
             MessageBox.Show($"Cursor: {response.Cursor}\nFollower Count: {response.TotalFollowerCount}");
             foreach(Follower follower in response.Followers)
             {
@@ -430,7 +430,7 @@ namespace TwitchLibExample
             TwitchLib.Models.API.Stream stream = null;
             try
             {
-                stream = await TwitchApi.GetStream(textBox25.Text);
+                stream = await TwitchApi.Streams.GetStreamAsync(textBox25.Text);
             } catch (StreamOfflineException)
             {
                 MessageBox.Show($"The stream for the channel '{textBox25.Text}' is currently offline.");
@@ -445,13 +445,13 @@ namespace TwitchLibExample
 
         private async void button22_Click(object sender, EventArgs e)
         {
-            TimeSpan uptime = await TwitchApi.GetUptime(textBox26.Text);
+            TimeSpan uptime = await TwitchApi.Streams.GetUptimeAsync(textBox26.Text);
             MessageBox.Show(string.Format("uptime: {0} days, {1} hours, {2} minutes, {3} seconds", uptime.Days, uptime.Hours, uptime.Minutes, uptime.Seconds));
         }
 
         private async void button23_Click(object sender, EventArgs e)
         {
-            List<Channel> results = await TwitchApi.SearchChannels(textBox27.Text);
+            List<Channel> results = await TwitchApi.Channels.SearchChannelsAsync(textBox27.Text);
             if (results.Count > 0)
                 foreach(Channel channel in results)
                     MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At: {6}\n" +
@@ -464,12 +464,12 @@ namespace TwitchLibExample
 
         private void button24_Click(object sender, EventArgs e)
         {
-            TwitchApi.UpdateStreamDelay(Decimal.ToInt32(numericUpDown1.Value), textBox14.Text, textBox15.Text);
+            TwitchApi.Streams.UpdateStreamDelayAsync(Decimal.ToInt32(numericUpDown1.Value), textBox14.Text, textBox15.Text);
         }
 
         private void button25_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Current sub count: " + TwitchApi.GetSubscriberCount(textBox14.Text, textBox15.Text).ToString());
+            MessageBox.Show("Current sub count: " + TwitchApi.Subscriptions.GetSubscriberCount(textBox14.Text, textBox15.Text).ToString());
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -512,7 +512,7 @@ namespace TwitchLibExample
         private async void button29_Click(object sender, EventArgs e)
         {
             //textbox29
-            FollowedUsersResponse response = await TwitchApi.GetFollowedUsers(textBox29.Text);
+            FollowedUsersResponse response = await TwitchApi.Follows.GetFollowedUsersAsync(textBox29.Text);
             MessageBox.Show($"Channe: {textBox29.Text}\nTotal followed users: {response.TotalFollowCount}");
             foreach (Follow follow in response.Follows)
                 MessageBox.Show($"Followed user: {follow.Channel.DisplayName}\nFollow created at: {follow.CreatedAt}");
@@ -521,7 +521,7 @@ namespace TwitchLibExample
         private async void button3_Click(object sender, EventArgs e)
         {
             //textbox6
-            List<TwitchLib.Models.API.Stream> results = await TwitchApi.SearchStreams(textBox6.Text);
+            List<TwitchLib.Models.API.Stream> results = await TwitchApi.Streams.SearchStreamsAsync(textBox6.Text);
             if (results.Count > 0)
             {
                 foreach (TwitchLib.Models.API.Stream stream in results)
@@ -535,7 +535,7 @@ namespace TwitchLibExample
         private async void button28_Click(object sender, EventArgs e)
         {
             //textbox7
-            List<Game> results = await TwitchApi.SearchGames(textBox7.Text);
+            List<Game> results = await TwitchApi.Games.SearchGamesAsync(textBox7.Text);
             if (results.Count > 0)
             {
                 foreach (Game game in results)
@@ -550,7 +550,7 @@ namespace TwitchLibExample
         private async void button30_Click(object sender, EventArgs e)
         {
             //textbox30
-            var user = await TwitchApi.GetUser(textBox30.Text);
+            var user = await TwitchApi.Users.GetUserAsync(textBox30.Text);
             if (user != null)
                 MessageBox.Show($"User: {user.Name}\nDisplay Name: {user.DisplayName}\nBio: {user.Bio}\nCreated At (seconds ago): {user.CreatedAt.Second}\nUpdated At (seconds ago): {user.UpdatedAt.Second}");
             else
@@ -560,7 +560,7 @@ namespace TwitchLibExample
         private async void button31_Click(object sender, EventArgs e)
         {
             //textbox31
-            var feed = await TwitchApi.GetChannelFeed(textBox31.Text);
+            var feed = await TwitchApi.Channels.GetChannelFeedAsync(textBox31.Text);
             foreach(Post post in feed.Posts)
             {
                 foreach (Post.Comment comment in post.Comments)
@@ -572,38 +572,38 @@ namespace TwitchLibExample
         private async void button32_Click(object sender, EventArgs e)
         {
             //textbox32
-            var follow = await TwitchApi.FollowChannel(textBox14.Text, textBox32.Text, textBox15.Text);
+            var follow = await TwitchApi.Follows.FollowChannelAsync(textBox14.Text, textBox32.Text, textBox15.Text);
             MessageBox.Show($"Channel: {follow.Channel.Name}\nIsFollowing: {follow.IsFollowing}\nCreated at: {follow.CreatedAt}");
         }
 
         private void button33_Click(object sender, EventArgs e)
         {
-            TwitchApi.UnfollowChannel(textBox14.Text, textBox32.Text, textBox15.Text);
+            TwitchApi.Follows.UnfollowChannelAsync(textBox14.Text, textBox32.Text, textBox15.Text);
         }
 
         private async void button35_Click(object sender, EventArgs e)
         {
             //textbox33
-            var block = await TwitchApi.BlockUser(textBox14.Text, textBox33.Text, textBox15.Text);
+            var block = await TwitchApi.Blocks.BlockUserAsync(textBox14.Text, textBox33.Text, textBox15.Text);
             MessageBox.Show($"Updated at: {block.UpdatedAt}\nUser: {block.User.Name}");
         }
 
         private void button34_Click(object sender, EventArgs e)
         {
-            TwitchApi.UnblockUser(textBox14.Text, textBox33.Text, textBox15.Text);
+            TwitchApi.Blocks.UnblockUserAsync(textBox14.Text, textBox33.Text, textBox15.Text);
         }
 
         private async void button36_Click(object sender, EventArgs e)
         {
             //textbox34
-            var blocks = await TwitchApi.GetBlockedList(textBox14.Text, textBox15.Text);
+            var blocks = await TwitchApi.Blocks.GetBlockedListAsync(textBox14.Text);
             foreach (Block block in blocks)
                 MessageBox.Show($"Updated at: {block.UpdatedAt}\nUsername: {block.User.Name}");
         }
 
         private async void button37_Click(object sender, EventArgs e)
         {
-            var editors = await TwitchApi.GetChannelEditors(textBox14.Text, textBox15.Text);
+            var editors = await TwitchApi.Channels.GetChannelEditorsAsync(textBox14.Text, textBox15.Text);
             foreach (User user in editors)
                 MessageBox.Show($"User: {user.Name}");
         }
@@ -623,7 +623,7 @@ namespace TwitchLibExample
         {
             if(textBox35.Text.Contains(","))
             {
-                var streams = await TwitchApi.GetStreams(textBox35.Text.Split(',').ToList());
+                var streams = await TwitchApi.Streams.GetStreamsAsync(textBox35.Text.Split(',').ToList());
                 foreach (var stream in streams)
                     MessageBox.Show($"{stream.Channel.Name} currently has {stream.Viewers.ToString()} viewers!");
             } else
@@ -635,7 +635,7 @@ namespace TwitchLibExample
         private async void button40_Click(object sender, EventArgs e)
         {
             //textbox36
-            List<BadgeResponse.Badge> badges = (await TwitchApi.GetChannelBadges(textBox36.Text)).ChannelBadges;
+            List<BadgeResponse.Badge> badges = (await TwitchApi.Channels.GetChannelBadgesAsync(textBox36.Text)).ChannelBadges;
             foreach (BadgeResponse.Badge badge in badges)
                 MessageBox.Show($"Available images for: {badge.BadgeName}\nAlpha: {badge.Alpha}\nImage: {badge.Image}\nSVG: {badge.SVG}");
         }
@@ -696,14 +696,14 @@ namespace TwitchLibExample
         private async void button45_Click(object sender, EventArgs e)
         {
             //textbox38
-            Channels channels = await TwitchApi.GetChannelsObject(textBox38.Text);
+            Channels channels = await TwitchApi.Channels.GetChannelsObjectAsync(textBox38.Text);
             MessageBox.Show($"Display name: {channels.DisplayName}\n Fighting Ad Block: {channels.FightAdBlock}\nSteam Id: {channels.SteamId}");
         }
 
         private async void button46_Click(object sender, EventArgs e)
         {
             //textbox 39
-            string channelName = await TwitchApi.GetChannelFromSteamId(textBox39.Text);
+            string channelName = await TwitchApi.Channels.GetChannelFromSteamIdAsync(textBox39.Text);
             if (channelName == null)
                 MessageBox.Show("Channel not found!");
             else
@@ -772,7 +772,7 @@ namespace TwitchLibExample
 
         private async void button48_Click(object sender, EventArgs e)
         {
-            var featuredStreams = await TwitchApi.GetFeaturedStreams();
+            var featuredStreams = await TwitchApi.Streams.GetFeaturedStreamsAsync();
             foreach (FeaturedStream stream in featuredStreams)
                 MessageBox.Show($"Stream name: {stream.Stream.Channel.Name}\nStream text: {stream.Text}\nViewers: {stream.Stream.Viewers}");
         }
@@ -787,7 +787,7 @@ namespace TwitchLibExample
 
         private async void button50_Click(object sender, EventArgs e)
         {
-            var games = await TwitchApi.GetGamesByPopularity();
+            var games = await TwitchApi.Games.GetGamesByPopularityAsync();
             foreach (var game in games)
                 MessageBox.Show($"Game: {game.Game.Name}\nViewer Count: {game.Viewers}\nChannel Count: {game.Channels}");
         }
@@ -805,14 +805,14 @@ namespace TwitchLibExample
         private async void button52_Click(object sender, EventArgs e)
         {
             //textBox41
-            var response = await TwitchApi.PostToChannelFeed(textBox41.Text, checkBox1.Checked, textBox14.Text, textBox15.Text);
+            var response = await TwitchApi.Channels.PostToChannelFeedAsync(textBox41.Text, checkBox1.Checked, textBox14.Text, textBox15.Text);
             MessageBox.Show($"Message body: {response.Post.Body}");
         }
 
         private void button53_Click(object sender, EventArgs e)
         {
             //numericUpDown3
-            TwitchApi.DeleteChannelFeedPost(textBox42.Text, textBox14.Text, textBox15.Text);
+            TwitchApi.Channels.DeleteChannelFeedPostAsync(textBox42.Text, textBox14.Text, textBox15.Text);
         }
 
         private void button54_Click(object sender, EventArgs e)
@@ -821,9 +821,9 @@ namespace TwitchLibExample
                 clients[0].ChangeChatColor((TwitchLib.Enums.ChatColorPresets)Enum.Parse(typeof(TwitchLib.Enums.ChatColorPresets), comboBox7.Text));
         }
 
-        private async void button55_Click(object sender, EventArgs e)
+        private void button55_Click(object sender, EventArgs e)
         {
-            if (await TwitchApi.StreamIsLive(textBox43.Text))
+            if (TwitchApi.Streams.StreamIsLive(textBox43.Text))
                 MessageBox.Show($"{textBox43.Text} is live!");
             else
                 MessageBox.Show($"{textBox43.Text} is not live!");

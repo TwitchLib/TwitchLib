@@ -175,7 +175,7 @@
     <Compile Include="Exceptions\Client\ErrorLoggingInException.cs" />
     <Compile Include="Exceptions\API\BadResourceException.cs" />
     <Compile Include="Models\Client\NewSubscriber.cs" />
-    <Compile Include="TwitchAPI.cs" />
+    <Compile Include="Internal\TwitchAPI.cs" />
     <Compile Include="Models\API\Follow.cs" />
     <Compile Include="Models\API\FollowedUsersResponse.cs" />
     <Compile Include="Models\API\Channel.cs" />
@@ -184,6 +184,7 @@
     <Compile Include="Models\API\Stream.cs" />
     <Compile Include="Models\API\TeamMember.cs" />
     <Compile Include="Models\API\Video.cs" />
+    <Compile Include="TwitchAPI.cs" />
     <Compile Include="TwitchAPIv5.cs" />
     <Compile Include="TwitchClient.cs" />
     <Compile Include="Models\Client\SentMessage.cs" />

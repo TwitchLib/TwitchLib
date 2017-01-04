@@ -1,820 +1,748 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Net;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TwitchLib.Exceptions.API;
 using TwitchLib.Models.API;
 
 namespace TwitchLib
 {
-    /// <summary>Static class with functionality for Twitch API calls.</summary>
+    /// <summary>
+    /// Fully featured Twitch API wrapper.
+    /// </summary>
     public static class TwitchApi
     {
-        // Internal variables
-        private static string ClientId { get; set; }
-        private static string AccessToken { get; set; } 
-
-        #region Get Objects
-
         /// <summary>
-        /// Retrieves a Channels object regarding a specific channel.
+        /// Twitch API calls relating to Twitch channels.
         /// </summary>
-        /// <param name="channel">The channel to fetch Channels object about.</param>
-        /// <returns>Channels object.</returns>
-        public static async Task<Channels> GetChannelsObject(string channel)
+        public static class Channels
         {
-            return new Channels(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/api/channels/{channel}")));
+            /// <summary>
+            /// [SYNC] Retrieves a Channels object regarding a specific channel.
+            /// </summary>
+            /// <param name="channel">The channel to fetch Channels object about.</param>
+            /// <returns>Channels object.</returns>
+            public static Models.API.Channels GetChannelsObject(string channel) => Task.Run(() => Internal.TwitchApi.GetChannelsObject(channel)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves a Channels object regarding a specific channel.
+            /// </summary>
+            /// <param name="channel">The channel to fetch Channels object about.</param>
+            /// <returns>Channels object.</returns>
+            public static async Task<Models.API.Channels> GetChannelsObjectAsync(string channel) => await Internal.TwitchApi.GetChannelsObject(channel);
+
+            /// <summary>
+            /// [SYNC] Retrieves a channel's list of available chat badges.
+            /// </summary>
+            /// <param name="channel">The channel to fetch available badges from.</param>
+            /// <returns>BadgeResponse object containing list of available badges.</returns>
+            public static BadgeResponse GetChannelBadges(string channel) => Task.Run(() => Internal.TwitchApi.GetChannelBadges(channel)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves a channel's list of available chat badges.
+            /// </summary>
+            /// <param name="channel">The channel to fetch available badges from.</param>
+            /// <returns>BadgeResponse object containing list of available badges.</returns>
+            public static async Task<BadgeResponse> GetChannelBadgesAsync(string channel) => await Internal.TwitchApi.GetChannelBadges(channel);
+
+            /// <summary>
+            /// [SYNC] Retrieves a string list of channel editor users.
+            /// <para>Authenticated, required scope: <code>channel_read</code></para>
+            /// </summary>
+            /// <param name="channel">The channel to fetch editors from.</param>
+            /// <param name="accessToken">An access token with the required scope.</param>
+            /// <returns>A list of User objects that are channel editors.</returns>
+            public static List<User> GetChannelEditors(string channel, string accessToken) => Task.Run(() => Internal.TwitchApi.GetChannelEditors(channel, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves a string list of channel editor users.
+            /// <para>Authenticated, required scope: <code>channel_read</code></para>
+            /// </summary>
+            /// <param name="channel">The channel to fetch editors from.</param>
+            /// <param name="accessToken">An access token with the required scope.</param>
+            /// <returns>A list of User objects that are channel editors.</returns>
+            public static async Task<List<User>> GetChannelEditorsAsync(string channel, string accessToken) => await Internal.TwitchApi.GetChannelEditors(channel, accessToken);
+
+            /// <summary>
+            /// [SYNC] Retrieves a string list of channels hosting a specified channel.
+            /// <para>Note: This uses an undocumented API endpoint and reliability is not guaranteed. Additionally, this makes 2 API calls so limited use is recommended.</para>
+            /// </summary>
+            /// <param name="channel">The name of the channel to search for.</param>
+            /// <returns>A list of all channels that are currently hosting the specified channel.</returns>
+            public static List<string> GetChannelHosts(string channel) => Task.Run(() => Internal.TwitchApi.GetChannelHosts(channel)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves a string list of channels hosting a specified channel.
+            /// <para>Note: This uses an undocumented API endpoint and reliability is not guaranteed. Additionally, this makes 2 API calls so limited use is recommended.</para>
+            /// </summary>
+            /// <param name="channel">The name of the channel to search for.</param>
+            /// <returns>A list of all channels that are currently hosting the specified channel.</returns>
+            public static async Task<List<string>> GetChannelHostsAsync(string channel) => await Internal.TwitchApi.GetChannelHosts(channel);
+
+            /// <summary>
+            /// [SYNC] Retrieves a TwitchStream object containing API data related to a stream.
+            /// </summary>
+            /// <param name="channel">The name of the channel to search for.</param>
+            /// <returns>A TwitchStream object containing API data related to a stream.</returns>
+            public static Channel GetChannel(string channel) => Task.Run(() => Internal.TwitchApi.GetChannel(channel)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves a TwitchStream object containing API data related to a stream.
+            /// </summary>
+            /// <param name="channel">The name of the channel to search for.</param>
+            /// <returns>A TwitchStream object containing API data related to a stream.</returns>
+            public static async Task<Channel> GetChannelAsync(string channel) => await Internal.TwitchApi.GetChannel(channel);
+
+            /// <summary>
+            /// [SYNC] Execute a search query on Twitch to find a list of channels.
+            /// </summary>
+            /// <param name="query">A url-encoded search query.</param>
+            /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
+            /// <param name="offset">Object offset for pagination. Default is 0.</param>
+            /// <returns>A list of Channel objects matching the query.</returns>
+            public static List<Channel> SearchChannels(string query, int limit = 25, int offset = 0) => Task.Run(() => Internal.TwitchApi.SearchChannels(query, limit, offset)).Result;
+            /// <summary>
+            /// [ASYNC] Execute a search query on Twitch to find a list of channels.
+            /// </summary>
+            /// <param name="query">A url-encoded search query.</param>
+            /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
+            /// <param name="offset">Object offset for pagination. Default is 0.</param>
+            /// <returns>A list of Channel objects matching the query.</returns>
+            public static async Task<List<Channel>> SearchChannelsAsync(string query, int limit = 25, int offset = 0) => await Internal.TwitchApi.SearchChannels(query, limit, offset);
+
+            /// <summary>
+            /// [SYNC] Retrieves channel feed posts.
+            /// </summary>
+            /// <param name="channel">Channel to fetch feed posts from.</param>
+            /// <param name="limit">Applied limit (default 10, max 100)</param>
+            /// <param name="cursor">Used for pagination.</param>
+            /// <returns></returns>
+            public static FeedResponse GetChannelFeed(string channel, int limit = 10, string cursor = null) => Task.Run(() => Internal.TwitchApi.GetChannelFeed(channel, limit, cursor)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves channel feed posts.
+            /// </summary>
+            /// <param name="channel">Channel to fetch feed posts from.</param>
+            /// <param name="limit">Applied limit (default 10, max 100)</param>
+            /// <param name="cursor">Used for pagination.</param>
+            /// <returns></returns>
+            public static async Task<FeedResponse> GetChannelFeedAsync(string channel, int limit = 10, string cursor = null) => await Internal.TwitchApi.GetChannelFeed(channel, limit, cursor);
+
+            /// <summary>
+            /// [SYNC] Posts to a Twitch channel's feed.
+            /// </summary>
+            /// <param name="content">The content of the message being posted.</param>
+            /// <param name="accessToken">OAuth access token with channel_feed_edit scope, not needed if already set.</param>
+            /// <param name="channel">Channel to post feed post to.</param>
+            /// <param name="share">If set to true, and enabled on account, will tweet out post.</param>
+            /// <returns>Returns object with Post object and URL to tweet if available.</returns>
+            public static PostToChannelFeedResponse PostToChannelFeed(string content, bool share, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.PostToChannelFeed(content, share, channel, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Posts to a Twitch channel's feed.
+            /// </summary>
+            /// <param name="content">The content of the message being posted.</param>
+            /// <param name="accessToken">OAuth access token with channel_feed_edit scope, not needed if already set.</param>
+            /// <param name="channel">Channel to post feed post to.</param>
+            /// <param name="share">If set to true, and enabled on account, will tweet out post.</param>
+            /// <returns>Returns object with Post object and URL to tweet if available.</returns>
+            public static async Task<PostToChannelFeedResponse> PostToChannelFeedAsync(string content, bool share, string channel, string accessToken = null) => await Internal.TwitchApi.PostToChannelFeed(content, share, channel, accessToken);
+
+            /// <summary>
+            /// [SYNC] Deletes a post on a Twitch channel's feed.
+            /// </summary>
+            /// <param name="postId">Integer Id of feed post to delete.</param>
+            /// <param name="channel">Channel where the post resides.</param>
+            /// <param name="accessToken">OAuth access token with channel_feed_edit scope.</param>
+            public static void DeleteChannelFeedPost(string postId, string channel, string accessToken = null) => Internal.TwitchApi.DeleteChannelFeedPost(postId, channel, accessToken);
+            /// <summary>
+            /// [ASYNC] Deletes a post on a Twitch channel's feed.
+            /// </summary>
+            /// <param name="postId">Integer Id of feed post to delete.</param>
+            /// <param name="channel">Channel where the post resides.</param>
+            /// <param name="accessToken">OAuth access token with channel_feed_edit scope.</param>
+            public static async void DeleteChannelFeedPostAsync(string postId, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.DeleteChannelFeedPost(postId, channel, accessToken));
+
+            /// <summary>
+            /// [SYNC] Fetches Twitch channel name from a steam Id, if their Steam is connected to their Twitch.
+            /// </summary>
+            /// <param name="steamId">The steam id of the user whose Twitch channel is requested.</param>
+            /// <returns>Returns channel name if available, or null.</returns>
+            public static string GetChannelFromSteamId(string steamId) => Task.Run(() => Internal.TwitchApi.GetChannelFromSteamId(steamId)).Result;
+            /// <summary>
+            /// [ASYNC] Fetches Twitch channel name from a steam Id, if their Steam is connected to their Twitch.
+            /// </summary>
+            /// <param name="steamId">The steam id of the user whose Twitch channel is requested.</param>
+            /// <returns>Returns channel name if available, or null.</returns>
+            public static async Task<string> GetChannelFromSteamIdAsync(string steamId) => await Internal.TwitchApi.GetChannelFromSteamId(steamId);
         }
 
         /// <summary>
-        /// Retrieves a channel's list of available chat badges.
+        /// Twitch API calls relating to Twitch teams.
         /// </summary>
-        /// <param name="channel">The channel to fetch available badges from.</param>
-        /// <returns>BadgeResponse object containing list of available badges.</returns>
-        public static async Task<BadgeResponse> GetChannelBadges(string channel)
+        public static class Teams
         {
-            return new BadgeResponse(await MakeGetRequest($"https://api.twitch.tv/kraken/chat/{channel}/badges"));
+            /// <summary>
+            /// [SYNC] Retrieves a TwitchTeamMember list of all members in a Twitch team.
+            /// <para>Note: This uses an undocumented API endpoint and reliability is not guaranteed.</para>
+            /// </summary>
+            /// <param name="teamName">The name of the Twitch team to search for.</param>
+            /// <returns>A TwitchTeamMember list of all members in a Twitch team.</returns>
+            public static List<TeamMember> GetTeamMembers(string teamName) => Task.Run(() => Internal.TwitchApi.GetTeamMembers(teamName)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves a TwitchTeamMember list of all members in a Twitch team.
+            /// <para>Note: This uses an undocumented API endpoint and reliability is not guaranteed.</para>
+            /// </summary>
+            /// <param name="teamName">The name of the Twitch team to search for.</param>
+            /// <returns>A TwitchTeamMember list of all members in a Twitch team.</returns>
+            public static async Task<List<TeamMember>> GetTeamMembersAsync(string teamName) => await Internal.TwitchApi.GetTeamMembers(teamName);
         }
 
         /// <summary>
-        /// Retrieves a string list of channel editor users.
-        /// <para>Authenticated, required scope: <code>channel_read</code></para>
+        /// Twitch API calls relating to Twitch users.
         /// </summary>
-        /// <param name="channel">The channel to fetch editors from.</param>
-        /// <param name="accessToken">An access token with the required scope.</param>
-        /// <returns>A list of User objects that are channel editors.</returns>
-        public static async Task<List<User>> GetChannelEditors(string channel, string accessToken = null)
+        public static class Users
         {
-            var json = JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/editors", accessToken));
-            List<User> editors = new List<User>();
-            foreach (JToken editor in json.SelectToken("users"))
-                editors.Add(new User(editor.ToString()));
-            return editors;
+            /// <summary>
+            /// [SYNC] Retrieves a User object from Twitch Api and returns User object.
+            /// </summary>
+            /// <param name="username">Name of the user you wish to fetch from Twitch.</param>
+            /// <returns>User object containing details about the searched for user. Returns null if invalid user/error.</returns>
+            public static User GetUser(string username) => Task.Run(() => Internal.TwitchApi.GetUser(username)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves a User object from Twitch Api and returns User object.
+            /// </summary>
+            /// <param name="username">Name of the user you wish to fetch from Twitch.</param>
+            /// <returns>User object containing details about the searched for user. Returns null if invalid user/error.</returns>
+            public static async Task<User> GetUserAsync(string username) => await Internal.TwitchApi.GetUser(username);
         }
 
         /// <summary>
-        /// Retrieves a string list of channels hosting a specified channel.
-        /// <para>Note: This uses an undocumented API endpoint and reliability is not guaranteed. Additionally, this makes 2 API calls so limited use is recommended.</para>
+        /// Twitch API calls relating to Twitch streams.
         /// </summary>
-        /// <param name="channel">The name of the channel to search for.</param>
-        /// <returns>A list of all channels that are currently hosting the specified channel.</returns>
-        public static async Task<List<string>> GetChannelHosts(string channel)
+        public static class Streams
         {
-            var hosts = new List<string>();
-            User user = await GetUser(channel);
-            var json = JObject.Parse(await MakeGetRequest($"http://tmi.twitch.tv/hosts?include_logins=1&target={user.Id}"));
-            hosts.AddRange(json.SelectToken("hosts").Select(host => host.SelectToken("host_login").ToString()));
-            return hosts;
+            /// <summary>
+            /// [SYNC] Retrieves the current uptime of a stream, if it is online.
+            /// </summary>
+            /// <param name="channel">The channel to retrieve the uptime for.</param>
+            /// <returns>A TimeSpan object representing time between creation_at of stream, and now.</returns>
+            public static TimeSpan GetUptime(string channel) => Task.Run(() => Internal.TwitchApi.GetUptime(channel)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves the current uptime of a stream, if it is online.
+            /// </summary>
+            /// <param name="channel">The channel to retrieve the uptime for.</param>
+            /// <returns>A TimeSpan object representing time between creation_at of stream, and now.</returns>
+            public static async Task<TimeSpan> GetUptimeAsync(string channel) => await Internal.TwitchApi.GetUptime(channel);
+
+            /// <summary>
+            /// [SYNC] Retrieves a collection of API data from a stream.
+            /// </summary>
+            /// <param name="channel">The channel to retrieve the data for.</param>
+            /// <exception cref="StreamOfflineException">Throws StreamOfflineException if stream is offline.</exception>
+            /// <exception cref="BadResourceException">Throws BadResourceException if the passed channel is invalid.</exception>
+            /// <returns>A TwitchStream object containing API data related to a stream.</returns>
+            public static Stream GetStream(string channel) => Task.Run(() => Internal.TwitchApi.GetStream(channel)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves a collection of API data from a stream.
+            /// </summary>
+            /// <param name="channel">The channel to retrieve the data for.</param>
+            /// <exception cref="StreamOfflineException">Throws StreamOfflineException if stream is offline.</exception>
+            /// <exception cref="BadResourceException">Throws BadResourceException if the passed channel is invalid.</exception>
+            /// <returns>A TwitchStream object containing API data related to a stream.</returns>
+            public static async Task<Stream> GetStreamAsync(string channel) => await Internal.TwitchApi.GetStream(channel);
+
+            /// <summary>
+            /// [SYNC] Retrieves a collection of API data from multiple streams
+            /// </summary>
+            /// <param name="channels">List of channels.</param>
+            /// <returns>A list of stream objects for each stream.</returns>
+            public static List<Stream> GetStreams(List<string> channels) => Task.Run(() => Internal.TwitchApi.GetStreams(channels)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves a collection of API data from multiple streams
+            /// </summary>
+            /// <param name="channels">List of channels.</param>
+            /// <returns>A list of stream objects for each stream.</returns>
+            public static async Task<List<Stream>> GetStreamsAsync(List<string> channels) => await Internal.TwitchApi.GetStreams(channels);
+
+            /// <summary>
+            /// [SYNC] Retrieves all featured streams.
+            /// </summary>
+            /// <returns>A list of featured stream objects for each featured stream.</returns>
+            public static List<FeaturedStream> GetFeaturedStreams(int limit = 25, int offset = 0) => Task.Run(() => Internal.TwitchApi.GetFeaturedStreams(limit, offset)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves all featured streams.
+            /// </summary>
+            /// <returns>A list of featured stream objects for each featured stream.</returns>
+            public static async Task<List<FeaturedStream>> GetFeaturedStreamsAsync(int limit = 25, int offset = 0) => await Internal.TwitchApi.GetFeaturedStreams(limit, offset);
+
+            /// <summary>
+            /// [ASYNC] Update the <paramref name="status"/> of a <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>channel_editor</code></para>
+            /// </summary>
+            /// <param name="status">Channel's title.</param>
+            /// <param name="channel">The channel to update.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>The response of the request.</returns>
+            public static string UpdateStreamTitle(string status, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateStreamTitle(status, channel, accessToken)).Result;
+            /// <summary>
+            /// [SYNC] Update the <paramref name="status"/> of a <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>channel_editor</code></para>
+            /// </summary>
+            /// <param name="status">Channel's title.</param>
+            /// <param name="channel">The channel to update.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>The response of the request.</returns>
+            public static async Task<string> UpdateStreamTitleAsync(string status, string channel, string accessToken = null) => await Internal.TwitchApi.UpdateStreamTitle(status, channel, accessToken);
+
+            /// <summary>
+            /// [SYNC] Update the <paramref name="game"/> the <paramref name="channel"/> is currently playing.
+            /// <para>Authenticated, required scope: <code>channel_editor</code></para>
+            /// </summary>
+            /// <param name="game">Game category to be classified as.</param>
+            /// <param name="channel">The channel to update.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>The response of the request.</returns>
+            public static string UpdateStreamGame(string game, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateStreamGame(game, channel, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Update the <paramref name="game"/> the <paramref name="channel"/> is currently playing.
+            /// <para>Authenticated, required scope: <code>channel_editor</code></para>
+            /// </summary>
+            /// <param name="game">Game category to be classified as.</param>
+            /// <param name="channel">The channel to update.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>The response of the request.</returns>
+            public static async Task<string> UpdateStreamGameAsync(string game, string channel, string accessToken = null) => await Internal.TwitchApi.UpdateStreamGame(game, channel, accessToken);
+
+            /// <summary>
+            /// [SYNC] Update the <paramref name="status"/> and <paramref name="game"/> of a <paramref name="channel"/>.
+            /// </summary>
+            /// <param name="status">Channel's title.</param>
+            /// <param name="game">Game category to be classified as.</param>
+            /// <param name="channel">The channel to update.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>The response of the request.</returns>
+            public static Channel UpdateStreamTitleAndGame(string status, string game, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateStreamTitleAndGame(status, game, channel, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Update the <paramref name="status"/> and <paramref name="game"/> of a <paramref name="channel"/>.
+            /// </summary>
+            /// <param name="status">Channel's title.</param>
+            /// <param name="game">Game category to be classified as.</param>
+            /// <param name="channel">The channel to update.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>The response of the request.</returns>
+            public static async Task<Channel> UpdateStreamTitleAndGameAsync(string status, string game, string channel, string accessToken = null) => await Internal.TwitchApi.UpdateStreamTitleAndGame(status, game, channel, accessToken);
+
+            /// <summary>
+            /// [SYNC] Execute a search query on Twitch to find a list of streams.
+            /// </summary>
+            /// <param name="query">A url-encoded search query.</param>
+            /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
+            /// <param name="offset">Object offset for pagination. Default is 0.</param>
+            /// <param name="hls">If set to true, only returns streams using HLS, if set to false only returns non-HLS streams. Default is null.</param>
+            /// <returns>A list of Stream objects matching the query.</returns>
+            public static List<Stream> SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null) => Task.Run(() => Internal.TwitchApi.SearchStreams(query, limit, offset, hls)).Result;
+            /// <summary>
+            /// [ASYNC] Execute a search query on Twitch to find a list of streams.
+            /// </summary>
+            /// <param name="query">A url-encoded search query.</param>
+            /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
+            /// <param name="offset">Object offset for pagination. Default is 0.</param>
+            /// <param name="hls">If set to true, only returns streams using HLS, if set to false only returns non-HLS streams. Default is null.</param>
+            /// <returns>A list of Stream objects matching the query.</returns>
+            public static async Task<List<Stream>> SearchStreamsAsync(string query, int limit = 25, int offset = 0, bool? hls = null) => await Internal.TwitchApi.SearchStreams(query, limit, offset, hls);
+
+            /// <summary>
+            /// [SYNC] Resets the stream key of the <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>channel_stream</code></para>
+            /// </summary>
+            /// <param name="channel">The channel to reset the stream key for.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>The response of the request.</returns>
+            public static string ResetStreamKey(string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.ResetStreamKey(channel, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Resets the stream key of the <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>channel_stream</code></para>
+            /// </summary>
+            /// <param name="channel">The channel to reset the stream key for.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>The response of the request.</returns>
+            public static async Task<string> ResetStreamKeyAsync(string channel, string accessToken) => await Internal.TwitchApi.ResetStreamKey(channel, accessToken);
+
+            /// <summary>
+            /// [SYNC] Updates the <paramref name="delay"/> of a <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>channel_editor</code></para>
+            /// </summary>
+            /// <param name="delay">Channel delay in seconds.</param>
+            /// <param name="channel">The channel to update.</param>
+            /// <param name="accessToken">The channel owner's access token and the required scope.</param>
+            /// <returns>The response of the request.</returns>
+            public static string UpdateStreamDelay(int delay, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateStreamDelay(delay, channel, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Updates the <paramref name="delay"/> of a <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>channel_editor</code></para>
+            /// </summary>
+            /// <param name="delay">Channel delay in seconds.</param>
+            /// <param name="channel">The channel to update.</param>
+            /// <param name="accessToken">The channel owner's access token and the required scope.</param>
+            /// <returns>The response of the request.</returns>
+            public static async Task<string> UpdateStreamDelayAsync(int delay, string channel, string accessToken = null) => await Internal.TwitchApi.UpdateStreamDelay(delay, channel, accessToken);
+
+            /// <summary>
+            /// [SYNC] Start a commercial on <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>channel_commercial</code></para>
+            /// </summary>
+            /// <param name="length">Length of commercial break in seconds. Default value is 30. You can only trigger a commercial once every 8 minutes.</param>
+            /// <param name="channel">The channel to start a commercial on.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>The response of the request.</returns>
+            public static string RunCommercial(Enums.CommercialLength length, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.RunCommercial(length, channel, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Start a commercial on <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>channel_commercial</code></para>
+            /// </summary>
+            /// <param name="length">Length of commercial break in seconds. Default value is 30. You can only trigger a commercial once every 8 minutes.</param>
+            /// <param name="channel">The channel to start a commercial on.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>The response of the request.</returns>
+            public static async Task<string> RunCommercialAsync(Enums.CommercialLength length, string channel, string accessToken = null) => await Internal.TwitchApi.RunCommercial(length, channel, accessToken);
+
+            /// <summary>
+            /// [SYNC] Retrieves a list of all people currently chatting in a channel's chat.
+            /// </summary>
+            /// <param name="channel">The channel to retrieve the chatting people for.</param>
+            /// <returns>A list of Chatter objects detailing each chatter in a channel.</returns>
+            public static List<Chatter> GetChatters(string channel) => Task.Run(() => Internal.TwitchApi.GetChatters(channel)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves a list of all people currently chatting in a channel's chat.
+            /// </summary>
+            /// <param name="channel">The channel to retrieve the chatting people for.</param>
+            /// <returns>A list of Chatter objects detailing each chatter in a channel.</returns>
+            public static async Task<List<Chatter>> GetChattersAsync(string channel) => await Internal.TwitchApi.GetChatters(channel);
+
+            /// <summary>
+            /// [SYNC, DEPRECATED] Checks if a stream is live or not.
+            /// </summary>
+            /// <param name="channel">The channel to retrieve live status for.</param>
+            /// <returns>Boolean representing if a stream is live or not.</returns>
+            public static bool StreamIsLive(string channel) => Task.Run(() => Internal.TwitchApi.StreamIsLive(channel)).Result;
+            /// <summary>
+            /// [ASYNC, DEPRECATED] Checks if a stream is live or not.
+            /// </summary>
+            /// <param name="channel">The channel to retrieve live status for.</param>
+            /// <returns>Boolean representing if a stream is live or not.</returns>
+            public static async Task<bool> StreamIsLiveAsync(string channel) => await Internal.TwitchApi.StreamIsLive(channel);
+
+            /// <summary>
+            /// [SYNC] Retrieves the current status of the broadcaster.
+            /// </summary>
+            /// <param name="channel">The name of the broadcaster to check.</param>
+            /// <returns>True if the broadcaster is online, false otherwise.</returns>
+            public static bool BroadcasterOnline(string channel) => Task.Run(() => Internal.TwitchApi.BroadcasterOnline(channel)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves the current status of the broadcaster.
+            /// </summary>
+            /// <param name="channel">The name of the broadcaster to check.</param>
+            /// <returns>True if the broadcaster is online, false otherwise.</returns>
+            public static async Task<bool> BroadcasterOnlineAsync(string channel) => await Internal.TwitchApi.BroadcasterOnline(channel);
         }
 
         /// <summary>
-        /// Retrieves a TwitchTeamMember list of all members in a Twitch team.
-        /// <para>Note: This uses an undocumented API endpoint and reliability is not guaranteed.</para>
+        /// Twitch API calls relating to Twitch games.
         /// </summary>
-        /// <param name="teamName">The name of the Twitch team to search for.</param>
-        /// <returns>A TwitchTeamMember list of all members in a Twitch team.</returns>
-        public static async Task<List<TeamMember>> GetTeamMembers(string teamName)
+        public static class Games
         {
-            var json = JObject.Parse(await MakeGetRequest($"http://api.twitch.tv/api/team/{teamName}/all_channels.json"));
-            return
-                json.SelectToken("channels")
-                    .Select(member => new TeamMember(member.SelectToken("channel")))
-                    .ToList();
+            /// <summary>
+            /// [SYNC] Execute a query to return the games with the most current viewers.
+            /// </summary>
+            /// <param name="limit">The number of listings to return, default to 10.</param>
+            /// <param name="offset">The number of listings to offset the returned listings, default to 0.</param>
+            /// <returns>A list of Game objects matching the query.</returns>
+            public static List<GameByPopularityListing> GetGamesByPopularity(int limit = 10, int offset = 0) => Task.Run(() => Internal.TwitchApi.GetGamesByPopularity(limit, offset)).Result;
+            /// <summary>
+            /// [ASYNC] Execute a query to return the games with the most current viewers.
+            /// </summary>
+            /// <param name="limit">The number of listings to return, default to 10.</param>
+            /// <param name="offset">The number of listings to offset the returned listings, default to 0.</param>
+            /// <returns>A list of Game objects matching the query.</returns>
+            public static async Task<List<GameByPopularityListing>> GetGamesByPopularityAsync(int limit = 10, int offset = 0) => await Internal.TwitchApi.GetGamesByPopularity(limit, offset);
+
+            /// <summary>
+            /// [SYNC] Execute a search query on Twitch to find a list of games.
+            /// </summary>
+            /// <param name="query">A url-encoded search query.</param>
+            /// <param name="live">If set to true, only games with active streams will be found.</param>
+            /// <returns>A list of Game objects matching the query.</returns>
+            public static List<Game> SearchGames(string query, bool live = false) => Task.Run(() => Internal.TwitchApi.SearchGames(query, live)).Result;
+            /// <summary>
+            /// [ASYNC] Execute a search query on Twitch to find a list of games.
+            /// </summary>
+            /// <param name="query">A url-encoded search query.</param>
+            /// <param name="live">If set to true, only games with active streams will be found.</param>
+            /// <returns>A list of Game objects matching the query.</returns>
+            public static async Task<List<Game>> SearchGamesAsync(string query, bool live = false) => await Internal.TwitchApi.SearchGames(query, live);
         }
 
         /// <summary>
-        /// Retrieves a TwitchStream object containing API data related to a stream.
+        /// Twitch API calls relating Twitch's blocking system.
         /// </summary>
-        /// <param name="channel">The name of the channel to search for.</param>
-        /// <returns>A TwitchStream object containing API data related to a stream.</returns>
-        public static async Task<Channel> GetChannel(string channel)
+        public static class Blocks
         {
-            return new Channel(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}")));
+            /// <summary>
+            /// [SYNC] Retrieves a list of blocked users a specific user has.
+            /// <para>Authenticated, required scope: <code>user_blocks_read</code></para>
+            /// </summary>
+            /// <param name="username">Username of user to fetch blocked list of.</param>
+            /// <param name="accessToken">This call requires an access token.</param>
+            /// <param name="limit">Limit output from Twitch Api. Default 25, max 100.</param>
+            /// <param name="offset">Offset out from Twitch Api. Default 0.</param>
+            /// <returns>List of Block objects.</returns>
+            public static List<Block> GetBlockedList(string username, int limit = 25, int offset = 0, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetBlockedList(username, accessToken, limit, offset)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves a list of blocked users a specific user has.
+            /// <para>Authenticated, required scope: <code>user_blocks_read</code></para>
+            /// </summary>
+            /// <param name="username">Username of user to fetch blocked list of.</param>
+            /// <param name="accessToken">This call requires an access token.</param>
+            /// <param name="limit">Limit output from Twitch Api. Default 25, max 100.</param>
+            /// <param name="offset">Offset out from Twitch Api. Default 0.</param>
+            /// <returns>List of Block objects.</returns>
+            public static async Task<List<Block>> GetBlockedListAsync(string username, int limit = 25, int offset = 0, string accessToken = null) => await Internal.TwitchApi.GetBlockedList(username, accessToken, limit, offset);
+
+            /// <summary>
+            /// [SYNC] Blocks a user.
+            /// <para>Authenticated, required scope: <code>user_blocks_edit</code></para>
+            /// </summary>
+            /// <param name="username">User who's blocked list to add to.</param>
+            /// <param name="blockedUsername">User to block.</param>
+            /// <param name="accessToken">This call requires an access token.</param>
+            /// <returns>Block object.</returns>
+            public static Block BlockUser(string username, string blockedUsername, string accessToken = null) => Task.Run(() => Internal.TwitchApi.BlockUser(username, blockedUsername, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Blocks a user.
+            /// <para>Authenticated, required scope: <code>user_blocks_edit</code></para>
+            /// </summary>
+            /// <param name="username">User who's blocked list to add to.</param>
+            /// <param name="blockedUsername">User to block.</param>
+            /// <param name="accessToken">This call requires an access token.</param>
+            /// <returns>Block object.</returns>
+            public static async Task<Block> BlockUserAsync(string username, string blockedUsername, string accessToken = null) => await Internal.TwitchApi.BlockUser(username, blockedUsername, accessToken);
+
+            /// <summary>
+            /// [SYNC] Unblocks a user.
+            /// <para>Authenticated, required scope: <code>user_blocks_edit</code></para>
+            /// </summary>
+            /// <param name="username">User who's blocked list to unblock from.</param>
+            /// <param name="blockedUsername">User to unblock.</param>
+            /// <param name="accessToken">This call requires an access token.</param>
+            public static void UnblockUser(string username, string blockedUsername, string accessToken = null) => Internal.TwitchApi.UnblockUser(username, blockedUsername, accessToken);
+            /// <summary>
+            /// [ASYNC] Unblocks a user.
+            /// <para>Authenticated, required scope: <code>user_blocks_edit</code></para>
+            /// </summary>
+            /// <param name="username">User who's blocked list to unblock from.</param>
+            /// <param name="blockedUsername">User to unblock.</param>
+            /// <param name="accessToken">This call requires an access token.</param>
+            public static async void UnblockUserAsync(string username, string blockedUsername, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UnblockUser(username, blockedUsername, accessToken));
         }
 
         /// <summary>
-        /// Retrieves a User object from Twitch Api and returns User object.
+        /// Twitch API calls relating to Twitch's follow system.
         /// </summary>
-        /// <param name="username">Name of the user you wish to fetch from Twitch.</param>
-        /// <returns>User object containing details about the searched for user. Returns null if invalid user/error.</returns>
-        public static async Task<User> GetUser(string username)
+        public static class Follows
         {
-            return new User(await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}"));
+            /// <summary>
+            /// [SYNC] Retrieves whether a specified user is following the specified user.
+            /// </summary>
+            /// <param name="username">The user to check the follow status of.</param>
+            /// <param name="channel">The channel to check against.</param>
+            /// <returns>Returns Follow object representing follow relationship.</returns>
+            public static Follow UserFollowsChannel(string username, string channel) => Task.Run(() => Internal.TwitchApi.UserFollowsChannel(username, channel)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves whether a specified user is following the specified user.
+            /// </summary>
+            /// <param name="username">The user to check the follow status of.</param>
+            /// <param name="channel">The channel to check against.</param>
+            /// <returns>Returns Follow object representing follow relationship.</returns>
+            public static async Task<Follow> UserFollowsChannelAsync(string username, string channel) => await Internal.TwitchApi.UserFollowsChannel(username, channel);
+
+            /// <summary>
+            /// [SYNC] Retrieves an ascending or descending list of followers from a specific channel.
+            /// </summary>
+            /// <param name="channel">The channel to retrieve the followers from.</param>
+            /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
+            /// <param name="cursor">Twitch uses cursoring to paginate long lists of followers. Check <code>_cursor</code> in response body and set <code>cursor</code> to this value to get the next page of results, or use <code>_links.next</code> to navigate to the next page of results.</param>
+            /// <param name="direction">Creation date sorting direction.</param>
+            /// <returns>A list of TwitchFollower objects.</returns>
+            public static FollowersResponse GetFollowers(string channel, int limit = 25, string cursor = null) => Task.Run(() => Internal.TwitchApi.GetTwitchFollowers(channel, limit, cursor)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves an ascending or descending list of followers from a specific channel.
+            /// </summary>
+            /// <param name="channel">The channel to retrieve the followers from.</param>
+            /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
+            /// <param name="cursor">Twitch uses cursoring to paginate long lists of followers. Check <code>_cursor</code> in response body and set <code>cursor</code> to this value to get the next page of results, or use <code>_links.next</code> to navigate to the next page of results.</param>
+            /// <param name="direction">Creation date sorting direction.</param>
+            /// <returns>A list of TwitchFollower objects.</returns>
+            public static async Task<FollowersResponse> GetFollowersAsync(string channel, int limit = 25, string cursor = null) => await Internal.TwitchApi.GetTwitchFollowers(channel, limit, cursor);
+
+            /// <summary>
+            /// [SYNC] Retrieves a list of followed users a specific user has.
+            /// </summary>
+            /// <param name="channel">Channel to fetch followed users</param>
+            /// <param name="limit">Default is 25, max is 100, min is 0</param>
+            /// <param name="offset">Integer representing list offset</param>
+            /// <param name="sortKey">Enum representing sort order.</param>
+            /// <returns>FollowedUsersResponse object.</returns>
+            public static FollowedUsersResponse GetFollowedUsers(string channel, int limit = 25, int offset = 0, Enums.SortKey sortKey = Enums.SortKey.CreatedAt) => Task.Run(() => Internal.TwitchApi.GetFollowedUsers(channel, limit, offset, sortKey)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves a list of followed users a specific user has.
+            /// </summary>
+            /// <param name="channel">Channel to fetch followed users</param>
+            /// <param name="limit">Default is 25, max is 100, min is 0</param>
+            /// <param name="offset">Integer representing list offset</param>
+            /// <param name="sortKey">Enum representing sort order.</param>
+            /// <returns>FollowedUsersResponse object.</returns>
+            public static async Task<FollowedUsersResponse> GetFollowedUsersAsync(string channel, int limit = 25, int offset = 0, Enums.SortKey sortKey = Enums.SortKey.CreatedAt) => await Internal.TwitchApi.GetFollowedUsers(channel, limit, offset, sortKey);
+
+            /// <summary>
+            /// [SYNC] Follows a channel given by <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>user_follows_edit</code></para>
+            /// </summary>
+            /// <param name="username">The username of the user trying to follow the given channel.</param>
+            /// <param name="channel">The channel to follow.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>A follow object representing the follow action.</returns>
+            public static Follow FollowChannel(string username, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.FollowChannel(username, channel, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Follows a channel given by <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>user_follows_edit</code></para>
+            /// </summary>
+            /// <param name="username">The username of the user trying to follow the given channel.</param>
+            /// <param name="channel">The channel to follow.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>A follow object representing the follow action.</returns>
+            public static async Task<Follow> FollowChannelAsync(string username, string channel, string accessToken = null) => await Internal.TwitchApi.FollowChannel(username, channel, accessToken);
+
+            /// <summary>
+            /// [SYNC] Unfollows a channel given by <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>user_follows_edit</code></para>
+            /// </summary>
+            /// <param name="username">The username of the user trying to follow the given channel.</param>
+            /// <param name="channel">The channel to unfollow.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            public static void UnfollowChannel(string username, string channel, string accessToken = null) => Internal.TwitchApi.UnfollowChannel(username, channel, accessToken);
+            /// <summary>
+            /// [ASYNC] Unfollows a channel given by <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>user_follows_edit</code></para>
+            /// </summary>
+            /// <param name="username">The username of the user trying to follow the given channel.</param>
+            /// <param name="channel">The channel to unfollow.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            public static async void UnfollowChannelAsync(string username, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UnfollowChannel(username, channel, accessToken));
         }
 
         /// <summary>
-        /// Retrieves the current uptime of a stream, if it is online.
+        /// Twitch API calls relating to Twitch subscriptions.
         /// </summary>
-        /// <param name="channel">The channel to retrieve the uptime for.</param>
-        /// <returns>A TimeSpan object representing time between creation_at of stream, and now.</returns>
-        public static async Task<TimeSpan> GetUptime(string channel)
+        public static class Subscriptions
         {
-            return (await GetStream(channel)).TimeSinceCreated;
+            /// <summary>
+            /// [SYNC] Returns the amount of subscribers <paramref name="channel"/> has.
+            /// <para>Authenticated, required scope: <code>channel_subscriptions</code></para>
+            /// </summary>
+            /// <param name="channel">The channel to retrieve the subscriptions from.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>An integer of the total subscription count.</returns>
+            public static int GetSubscriberCount(string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetSubscriberCount(channel, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Returns the amount of subscribers <paramref name="channel"/> has.
+            /// <para>Authenticated, required scope: <code>channel_subscriptions</code></para>
+            /// </summary>
+            /// <param name="channel">The channel to retrieve the subscriptions from.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>An integer of the total subscription count.</returns>
+            public static async Task<int> GetSubscriberCountAsync(string channel, string accessToken = null) => await Internal.TwitchApi.GetSubscriberCount(channel, accessToken);
+
+            /// <summary>
+            /// [SYNC] Retrieves whether a <paramref name="username"/> is subscribed to a <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>channel_check_subscription</code></para>
+            /// </summary>
+            /// <param name="username">The user to check subscription status for.</param>
+            /// <param name="channel">The channel to check against.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>True if the user is subscribed to the channel, false otherwise.</returns>
+            public static ChannelHasUserSubscribedResponse ChannelHasUserSubscribed(string username, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.ChannelHasUserSubscribed(username, channel, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves whether a <paramref name="username"/> is subscribed to a <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: <code>channel_check_subscription</code></para>
+            /// </summary>
+            /// <param name="username">The user to check subscription status for.</param>
+            /// <param name="channel">The channel to check against.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>True if the user is subscribed to the channel, false otherwise.</returns>
+            public static async Task<ChannelHasUserSubscribedResponse> ChannelHasUserSubscribedAsync(string username, string channel, string accessToken = null) => await Internal.TwitchApi.ChannelHasUserSubscribed(username, channel, accessToken);
         }
 
         /// <summary>
-        /// Checks if a stream is live or not.
+        /// Twitch API calls relating to Twitch videos.
         /// </summary>
-        /// <param name="channel">The channel to retrieve live status for.</param>
-        /// <returns>Boolean representing if a stream is live or not.</returns>
-        public static async Task<bool> StreamIsLive(string channel)
+        public static class Videos
         {
-            try
-            {
-                await GetStream(channel);
-                return true;
-            } catch(StreamOfflineException)
-            {
-                return false;
-            }
+            /// <summary>
+            /// [SYNC] Returns a list of videos ordered by time of creation, starting with the most recent.
+            /// </summary>
+            /// <param name="channel">The channel to retrieve the list of videos from.</param>
+            /// <param name="limit">Maximum number of objects in array. Default is 10. Maximum is 100.</param>
+            /// <param name="offset">Object offset for pagination. Default is 0.</param>
+            /// <param name="onlyBroadcasts">Returns only broadcasts when true. Otherwise only highlights are returned. Default is false.</param>
+            /// <param name="onlyHls">Returns only HLS VoDs when true. Otherwise only non-HLS VoDs are returned. Default is false.</param>
+            /// <returns>A list of TwitchVideo objects the channel has available.</returns>
+            public static List<Video> GetChannelVideos(string channel, int limit = 10, int offset = 0, bool onlyBroadcasts = false, bool onlyHls = false) => Task.Run(() => Internal.TwitchApi.GetChannelVideos(channel, limit, offset, onlyBroadcasts, onlyHls)).Result;
+            /// <summary>
+            /// [ASYNC] Returns a list of videos ordered by time of creation, starting with the most recent.
+            /// </summary>
+            /// <param name="channel">The channel to retrieve the list of videos from.</param>
+            /// <param name="limit">Maximum number of objects in array. Default is 10. Maximum is 100.</param>
+            /// <param name="offset">Object offset for pagination. Default is 0.</param>
+            /// <param name="onlyBroadcasts">Returns only broadcasts when true. Otherwise only highlights are returned. Default is false.</param>
+            /// <param name="onlyHls">Returns only HLS VoDs when true. Otherwise only non-HLS VoDs are returned. Default is false.</param>
+            /// <returns>A list of TwitchVideo objects the channel has available.</returns>
+            public static async Task<List<Video>> GetChannelVideosAsync(string channel, int limit = 10, int offset = 0, bool onlyBroadcasts = false, bool onlyHls = false) => await Internal.TwitchApi.GetChannelVideos(channel, limit, offset, onlyBroadcasts, onlyHls);
         }
 
+        #region Twitch API Global Functions
         /// <summary>
-        /// Retrieves channel feed posts.
-        /// </summary>
-        /// <param name="channel">Channel to fetch feed posts from.</param>
-        /// <param name="limit">Applied limit (default 10, max 100)</param>
-        /// <param name="cursor">Used for pagination.</param>
-        /// <returns></returns>
-        public static async Task<FeedResponse> GetChannelFeed(string channel, int limit = 10, string cursor = null)
-        {
-            var args = $"?limit={limit}";
-            if (cursor != null)
-                args += $"&cursor={cursor};";
-            return new FeedResponse(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts{args}")));
-        }
-
-        /// <summary>
-        /// Retrieves a collection of API data from a stream.
-        /// </summary>
-        /// <param name="channel">The channel to retrieve the data for.</param>
-        /// <exception cref="StreamOfflineException">Throws StreamOfflineException if stream is offline.</exception>
-        /// <exception cref="BadResourceException">Throws BadResourceException if the passed channel is invalid.</exception>
-        /// <returns>A TwitchStream object containing API data related to a stream.</returns>
-        public static async Task<Models.API.Stream> GetStream(string channel)
-        {
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
-            var json = JObject.Parse(resp);
-            if (!Common.JsonIsNullOrEmpty(json.SelectToken("error")))
-                throw new BadResourceException(json.SelectToken("error").ToString());
-            if (Common.JsonIsNullOrEmpty(json.SelectToken("stream")))
-                throw new StreamOfflineException();
-            return new Models.API.Stream(json.SelectToken("stream"));
-        }
-
-        /// <summary>
-        /// Retrieves a collection of API data from multiple streams
-        /// </summary>
-        /// <param name="channels">List of channels.</param>
-        /// <returns>A list of stream objects for each stream.</returns>
-        public static async Task<List<Models.API.Stream>> GetStreams(List<string> channels)
-        {
-            var json = JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/streams?channel={string.Join(",", channels)}"));
-            List<Models.API.Stream> streams = new List<Models.API.Stream>();
-            streams.AddRange(json.SelectToken("streams").Select(stream => new Models.API.Stream(stream)));
-            return streams;
-        }
-
-        /// <summary>
-        /// Retrieves all featured streams.
-        /// </summary>
-        /// <returns>A list of featured stream objects for each featured stream.</returns>
-        public static async Task<List<FeaturedStream>> GetFeaturedStreams(int limit = 25, int offset = 0)
-        {
-            var json = JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/streams/featured?limit={limit}&offset={offset}"));
-            List<FeaturedStream> streams = new List<FeaturedStream>();
-            streams.AddRange(json.SelectToken("streams").Select(stream => new Models.API.FeaturedStream(stream)));
-            return streams;
-        }
-        #endregion
-
-        #region Searching
-        /// <summary>
-        /// Execute a search query on Twitch to find a list of channels.
-        /// </summary>
-        /// <param name="query">A url-encoded search query.</param>
-        /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
-        /// <param name="offset">Object offset for pagination. Default is 0.</param>
-        /// <returns>A list of Channel objects matching the query.</returns>
-        public static async Task<List<Channel>> SearchChannels(string query, int limit = 25, int offset = 0)
-        {
-            var returnedChannels = new List<Channel>();
-            var json = JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/search/channels?query={query}&limit={limit}&offset={offset}"));
-            if (json.SelectToken("_total").ToString() == "0") return returnedChannels;
-            returnedChannels.AddRange(json.SelectToken("channels").Select(channelToken => new Channel((JObject)channelToken)));
-            return returnedChannels;
-        }
-
-        /// <summary>
-        /// Execute a search query on Twitch to find a list of streams.
-        /// </summary>
-        /// <param name="query">A url-encoded search query.</param>
-        /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
-        /// <param name="offset">Object offset for pagination. Default is 0.</param>
-        /// <param name="hls">If set to true, only returns streams using HLS, if set to false only returns non-HLS streams. Default is null.</param>
-        /// <returns>A list of Stream objects matching the query.</returns>
-        public static async Task<List<Models.API.Stream>> SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
-        {
-            var returnedStreams = new List<Models.API.Stream>();
-            var hlsStr = "";
-            if (hls == true) hlsStr = "&hls=true";
-            if (hls == false) hlsStr = "&hls=false";
-            var args = $"?query={query}&limit={limit}&offset={offset}{hlsStr}";
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/search/streams{args}");
-
-            var json = JObject.Parse(resp);
-            if (json.SelectToken("_total").ToString() == "0") return returnedStreams;
-            returnedStreams.AddRange(
-                json.SelectToken("streams").Select(streamToken => new Models.API.Stream((JObject)streamToken)));
-            return returnedStreams;
-        }
-
-        /// <summary>
-        /// Execute a search query on Twitch to find a list of games.
-        /// </summary>
-        /// <param name="query">A url-encoded search query.</param>
-        /// <param name="live">If set to true, only games with active streams will be found.</param>
-        /// <returns>A list of Game objects matching the query.</returns>
-        public static async Task<List<Game>> SearchGames(string query, bool live = false)
-        {
-            var returnedGames = new List<Game>();
-
-            var args = $"?query={query}&type=suggest&live=" + live.ToString();
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/search/games{args}");
-
-            var json = JObject.Parse(resp);
-            returnedGames.AddRange(
-                json.SelectToken("games").Select(gameToken => new Game((JObject)gameToken)));
-            return returnedGames;
-        }
-
-        /// <summary>
-        /// Execute a query to return the games with the most current viewers.
-        /// </summary>
-        /// <param name="limit">The number of listings to return, default to 10.</param>
-        /// <param name="offset">The number of listings to offset the returned listings, default to 0.</param>
-        /// <returns>A list of Game objects matching the query.</returns>
-        public static async Task<List<GameByPopularityListing>> GetGamesByPopularity(int limit = 10, int offset = 0)
-        {
-            var returnedGames = new List<GameByPopularityListing>();
-
-            var args = $"?limit={limit}&offset={offset}";
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/games/top{args}");
-
-            var json = JObject.Parse(resp);
-            returnedGames.AddRange(
-                json.SelectToken("top").Select(gameToken => new GameByPopularityListing((JObject)gameToken)));
-            return returnedGames;
-        }
-        #endregion
-
-        #region Chatters
-        /// <summary>
-        /// Retrieves a list of all people currently chatting in a channel's chat.
-        /// </summary>
-        /// <param name="channel">The channel to retrieve the chatting people for.</param>
-        /// <returns>A list of Chatter objects detailing each chatter in a channel.</returns>
-        public static async Task<List<Chatter>> GetChatters(string channel)
-        {
-            var resp = await MakeGetRequest($"https://tmi.twitch.tv/group/user/{channel.ToLower()}/chatters");
-            var chatters = JObject.Parse(resp).SelectToken("chatters");
-            var chatterList =
-                chatters.SelectToken("moderators")
-                    .Select(user => new Chatter(user.ToString(), Enums.UserType.Moderator))
-                    .ToList();
-            chatterList.AddRange(
-                chatters.SelectToken("staff").Select(user => new Chatter(user.ToString(), Enums.UserType.Staff)));
-            chatterList.AddRange(
-                chatters.SelectToken("admins").Select(user => new Chatter(user.ToString(), Enums.UserType.Admin)));
-            chatterList.AddRange(
-                chatters.SelectToken("global_mods")
-                    .Select(user => new Chatter(user.ToString(), Enums.UserType.GlobalModerator)));
-            chatterList.AddRange(
-                chatters.SelectToken("viewers").Select(user => new Chatter(user.ToString(), Enums.UserType.Viewer)));
-            return chatterList;
-        }
-        #endregion
-
-        #region TitleAndGame
-        /// <summary>
-        /// Update the <paramref name="status"/> of a <paramref name="channel"/>.
-        /// <para>Authenticated, required scope: <code>channel_editor</code></para>
-        /// </summary>
-        /// <param name="status">Channel's title.</param>
-        /// <param name="channel">The channel to update.</param>
-        /// <param name="accessToken">An oauth token with the required scope.</param>
-        /// <returns>The response of the request.</returns>
-        public static async Task<string> UpdateStreamTitle(string status, string channel, string accessToken = null)
-        {
-            var data = "{\"channel\":{\"status\":\"" + status + "\"}}";
-            return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
-        }
-
-        /// <summary>
-        /// Update the <paramref name="game"/> the <paramref name="channel"/> is currently playing.
-        /// <para>Authenticated, required scope: <code>channel_editor</code></para>
-        /// </summary>
-        /// <param name="game">Game category to be classified as.</param>
-        /// <param name="channel">The channel to update.</param>
-        /// <param name="accessToken">An oauth token with the required scope.</param>
-        /// <returns>The response of the request.</returns>
-        public static async Task<string> UpdateStreamGame(string game, string channel, string accessToken = null)
-        {
-            var data = "{\"channel\":{\"game\":\"" + game + "\"}}";
-            return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
-        }
-
-        /// <summary>
-        /// Update the <paramref name="status"/> and <paramref name="game"/> of a <paramref name="channel"/>.
-        /// </summary>
-        /// <param name="status">Channel's title.</param>
-        /// <param name="game">Game category to be classified as.</param>
-        /// <param name="channel">The channel to update.</param>
-        /// <param name="accessToken">An oauth token with the required scope.</param>
-        /// <returns>The response of the request.</returns>
-        public static async Task<Channel> UpdateStreamTitleAndGame(string status, string game, string channel,
-            string accessToken = null)
-        {
-            var data = "{\"channel\":{\"status\":\"" + status + "\",\"game\":\"" + game + "\"}}";
-            return new Channel(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken)));
-        }
-        #endregion
-
-        #region Streaming
-        /// <summary>
-        /// Resets the stream key of the <paramref name="channel"/>.
-        /// <para>Authenticated, required scope: <code>channel_stream</code></para>
-        /// </summary>
-        /// <param name="channel">The channel to reset the stream key for.</param>
-        /// <param name="accessToken">An oauth token with the required scope.</param>
-        /// <returns>The response of the request.</returns>
-        public static async Task<string> ResetStreamKey(string channel, string accessToken = null)
-        {
-            return await
-                MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}/streamkey", "DELETE", "", accessToken);
-        }
-
-        /// <summary>
-        /// Updates the <paramref name="delay"/> of a <paramref name="channel"/>.
-        /// <para>Authenticated, required scope: <code>channel_editor</code></para>
-        /// </summary>
-        /// <param name="delay">Channel delay in seconds.</param>
-        /// <param name="channel">The channel to update.</param>
-        /// <param name="accessToken">The channel owner's access token and the required scope.</param>
-        /// <returns>The response of the request.</returns>
-        public static async Task<string> UpdateStreamDelay(int delay, string channel, string accessToken = null)
-        {
-            var data = "{\"channel\":{\"delay\":" + delay + "}}";
-            return await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
-        }
-        #endregion
-
-        #region Blocking
-        /// <summary>
-        /// Retrieves a list of blocked users a specific user has.
-        /// <para>Authenticated, required scope: <code>user_blocks_read</code></para>
-        /// </summary>
-        /// <param name="username">Username of user to fetch blocked list of.</param>
-        /// <param name="accessToken">This call requires an access token.</param>
-        /// <param name="limit">Limit output from Twitch Api. Default 25, max 100.</param>
-        /// <param name="offset">Offset out from Twitch Api. Default 0.</param>
-        /// <returns>List of Block objects.</returns>
-        public static async Task<List<Block>> GetBlockedList(string username, string accessToken = null, int limit = 25, int offset = 0)
-        {
-            string args = $"?limit={limit}&offset={offset}";
-            string resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}/blocks{args}", accessToken);
-            JObject json = JObject.Parse(resp);
-            List<Block> blocks = new List<Block>();
-            if (json.SelectToken("blocks") != null)
-                foreach (JToken block in json.SelectToken("blocks"))
-                    blocks.Add(new Block(block));
-            return blocks;
-        }
-
-        /// <summary>
-        /// Blocks a user.
-        /// <para>Authenticated, required scope: <code>user_blocks_edit</code></para>
-        /// </summary>
-        /// <param name="username">User who's blocked list to add to.</param>
-        /// <param name="blockedUsername">User to block.</param>
-        /// <param name="accessToken">This call requires an access token.</param>
-        /// <returns>Block object.</returns>
-        public static async Task<Block> BlockUser(string username, string blockedUsername, string accessToken = null)
-        {
-            return new Block(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/blocks/{blockedUsername}", "PUT", "", accessToken)));
-        }
-
-        /// <summary>
-        /// Unblocks a user.
-        /// <para>Authenticated, required scope: <code>user_blocks_edit</code></para>
-        /// </summary>
-        /// <param name="username">User who's blocked list to unblock from.</param>
-        /// <param name="blockedUsername">User to unblock.</param>
-        /// <param name="accessToken">This call requires an access token.</param>
-        public static async void UnblockUser(string username, string blockedUsername, string accessToken = null)
-        {
-            await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/blocks/{blockedUsername}", "DELETE", "", accessToken);
-        }
-        #endregion
-
-        #region Follows
-        /// <summary>
-        /// Retrieves whether a specified user is following the specified user.
-        /// </summary>
-        /// <param name="username">The user to check the follow status of.</param>
-        /// <param name="channel">The channel to check against.</param>
-        /// <returns>Returns Follow object representing follow relationship.</returns>
-        public static async Task<Follow> UserFollowsChannel(string username, string channel)
-        {
-            try
-            {
-                string resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}");
-                return new Follow(resp);
-            }
-            catch
-            {
-                return new Follow(null, false);
-            }
-        }
-
-        /// <summary>
-        /// Retrieves an ascending or descending list of followers from a specific channel.
-        /// </summary>
-        /// <param name="channel">The channel to retrieve the followers from.</param>
-        /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
-        /// <param name="cursor">Twitch uses cursoring to paginate long lists of followers. Check <code>_cursor</code> in response body and set <code>cursor</code> to this value to get the next page of results, or use <code>_links.next</code> to navigate to the next page of results.</param>
-        /// <param name="direction">Creation date sorting direction.</param>
-        /// <returns>A list of TwitchFollower objects.</returns>
-        public static async Task<FollowersResponse> GetTwitchFollowers(string channel, int limit = 25,
-            string cursor = "-1", Enums.SortDirection direction = Enums.SortDirection.Descending)
-        {
-            string args = "";
-
-            args += "?limit=" + limit;
-            args += cursor != "-1" ? $"&cursor={cursor}" : "";
-            args += "&direction=" + (direction == Enums.SortDirection.Descending ? "desc" : "asc");
-
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
-            return new FollowersResponse(resp);
-        }
-
-        /// <summary>
-        /// Retrieves a list of followed users a specific user has.
-        /// </summary>
-        /// <param name="channel">Channel to fetch followed users</param>
-        /// <param name="limit">Default is 25, max is 100, min is 0</param>
-        /// <param name="offset">Integer representing list offset</param>
-        /// <param name="sortKey">Enum representing sort order.</param>
-        /// <returns>FollowedUsersResponse object.</returns>
-        public static async Task<FollowedUsersResponse> GetFollowedUsers(string channel, int limit = 25, int offset = 0, Enums.SortKey sortKey = Enums.SortKey.CreatedAt)
-        {
-            string args = "";
-            args += "?limit=" + limit;
-            args += "&offset=" + offset;
-            switch (sortKey)
-            {
-                case Enums.SortKey.CreatedAt:
-                    args += "&sortby=created_at";
-                    break;
-                case Enums.SortKey.LastBroadcaster:
-                    args += "&sortby=last_broadcast";
-                    break;
-                case Enums.SortKey.Login:
-                    args += "&sortby=login";
-                    break;
-            }
-
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{channel}/follows/channels{args}");
-            return new FollowedUsersResponse(resp);
-        }
-
-        /// <summary>
-        /// Follows a channel given by <paramref name="channel"/>.
-        /// <para>Authenticated, required scope: <code>user_follows_edit</code></para>
-        /// </summary>
-        /// <param name="username">The username of the user trying to follow the given channel.</param>
-        /// <param name="channel">The channel to follow.</param>
-        /// <param name="accessToken">An oauth token with the required scope.</param>
-        /// <returns>A follow object representing the follow action.</returns>
-        public static async Task<Follow> FollowChannel(string username, string channel, string accessToken = null)
-        {
-            return new Follow(await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}", "PUT", "", accessToken));
-        }
-
-        /// <summary>
-        /// Unfollows a channel given by <paramref name="channel"/>.
-        /// <para>Authenticated, required scope: <code>user_follows_edit</code></para>
-        /// </summary>
-        /// <param name="username">The username of the user trying to follow the given channel.</param>
-        /// <param name="channel">The channel to unfollow.</param>
-        /// <param name="accessToken">An oauth token with the required scope.</param>
-        public static async void UnfollowChannel(string username, string channel, string accessToken = null)
-        {
-            await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}", "DELETE", "", accessToken);
-        }
-        #endregion  
-
-        #region Subscriptions
-        /// <summary>
-        /// Returns the amount of subscribers <paramref name="channel"/> has.
-        /// <para>Authenticated, required scope: <code>channel_subscriptions</code></para>
-        /// </summary>
-        /// <param name="channel">The channel to retrieve the subscriptions from.</param>
-        /// <param name="accessToken">An oauth token with the required scope.</param>
-        /// <returns>An integer of the total subscription count.</returns>
-        public static async Task<int> GetSubscriberCount(string channel, string accessToken = null)
-        {
-            var resp =
-                await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions", accessToken);
-            var json = JObject.Parse(resp);
-            return int.Parse(json.SelectToken("_total").ToString());
-        }
-
-        /// <summary>
-        /// Retrieves whether a <paramref name="username"/> is subscribed to a <paramref name="channel"/>.
-        /// <para>Authenticated, required scope: <code>channel_check_subscription</code></para>
-        /// </summary>
-        /// <param name="username">The user to check subscription status for.</param>
-        /// <param name="channel">The channel to check against.</param>
-        /// <param name="accessToken">An oauth token with the required scope.</param>
-        /// <returns>True if the user is subscribed to the channel, false otherwise.</returns>
-        public static async Task<ChannelHasUserSubscribedResponse> ChannelHasUserSubscribed(string username, string channel, string accessToken = null)
-        {
-            try
-            {
-                return new ChannelHasUserSubscribedResponse(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions/{username}", accessToken)));
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        #endregion
-
-        #region Videos
-        /// <summary>
-        /// Returns a list of videos ordered by time of creation, starting with the most recent.
-        /// </summary>
-        /// <param name="channel">The channel to retrieve the list of videos from.</param>
-        /// <param name="limit">Maximum number of objects in array. Default is 10. Maximum is 100.</param>
-        /// <param name="offset">Object offset for pagination. Default is 0.</param>
-        /// <param name="onlyBroadcasts">Returns only broadcasts when true. Otherwise only highlights are returned. Default is false.</param>
-        /// <param name="onlyHls">Returns only HLS VoDs when true. Otherwise only non-HLS VoDs are returned. Default is false.</param>
-        /// <returns>A list of TwitchVideo objects the channel has available.</returns>
-        public static async Task<List<Video>> GetChannelVideos(string channel, int limit = 10,
-            int offset = 0, bool onlyBroadcasts = false, bool onlyHls = false)
-        {
-            var args = $"?limit={limit}&offset={offset}&broadcasts={onlyBroadcasts}&hls={onlyHls}";
-            var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/videos{args}");
-            var vids = JObject.Parse(resp).SelectToken("videos");
-
-            return vids.Select(vid => new Video(vid)).ToList();
-        }
-        #endregion
-
-        #region Commercials
-        /// <summary>
-        /// Start a commercial on <paramref name="channel"/>.
-        /// <para>Authenticated, required scope: <code>channel_commercial</code></para>
-        /// </summary>
-        /// <param name="length">Length of commercial break in seconds. Default value is 30. You can only trigger a commercial once every 8 minutes.</param>
-        /// <param name="channel">The channel to start a commercial on.</param>
-        /// <param name="accessToken">An oauth token with the required scope.</param>
-        /// <returns>The response of the request.</returns>
-        public static async Task<string> RunCommercial(Enums.CommercialLength length, string channel,
-            string accessToken = null)
-        {
-            // Default to 30 seconds?
-            int seconds = 30;
-            switch(length)
-            {
-                case Enums.CommercialLength.Seconds30:
-                    seconds = 30;
-                    break;
-                case Enums.CommercialLength.Seconds60:
-                    seconds = 60;
-                    break;
-                case Enums.CommercialLength.Seconds90:
-                    seconds = 90;
-                    break;
-                case Enums.CommercialLength.Seconds120:
-                    seconds = 120;
-                    break;
-                case Enums.CommercialLength.Seconds150:
-                    seconds = 150;
-                    break;
-                case Enums.CommercialLength.Seconds180:
-                    seconds = 180;
-                    break;
-            }
-            return await
-                MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}/commercial", "POST",
-                    $"length={seconds}", accessToken);
-        }
-        #endregion
-
-        #region Other
-        /// <summary>
-        /// Sets ClientId, which is required for all API calls. Also validates ClientId.
+        /// [SYNC] Sets ClientId, which is required for all API calls. Also validates ClientId.
         /// <param name="clientId">Client-Id to bind to TwitchApi.</param>
         /// <param name="disableClientIdValidation">Forcefully disables Client-Id validation.</param>
         /// </summary>
-        public static void SetClientId(string clientId, bool disableClientIdValidation = false)
-        {
-            if (ClientId != null && clientId == ClientId)
-                return;
-            ClientId = clientId;
-            if (!disableClientIdValidation)
-                ValidClientId();
-        }
+        public static void SetClientId(string clientId, bool disableClientIdValidation = false) => Internal.TwitchApi.SetClientId(clientId, disableClientIdValidation);
+        /// <summary>
+        /// [ASYNC] Sets ClientId, which is required for all API calls. Also validates ClientId.
+        /// <param name="clientId">Client-Id to bind to TwitchApi.</param>
+        /// <param name="disableClientIdValidation">Forcefully disables Client-Id validation.</param>
+        /// </summary>
+        public static async void SetClientIdAsync(string clientId, bool disableClientIdValidation = false) => Task.Run(() => Internal.TwitchApi.SetClientId(clientId, disableClientIdValidation));
 
         /// <summary>
-        /// Sets Access Token, which is saved in memory. This is not necessary, as tokens can be passed into Api calls.
+        /// [SYNC] Sets Access Token, which is saved in memory. This is not necessary, as tokens can be passed into Api calls.
         /// </summary>
         /// <param name="accessToken">Twitch account OAuth token to store in memory.</param>
-        public static void SetAccessToken(string accessToken)
-        {
-            if (!string.IsNullOrEmpty(accessToken))
-                AccessToken = accessToken;
-        }
+        public static void SetAccessToken(string accessToken) => Internal.TwitchApi.SetAccessToken(accessToken);
+        /// <summary>
+        /// [ASYNC] Sets Access Token, which is saved in memory. This is not necessary, as tokens can be passed into Api calls.
+        /// </summary>
+        /// <param name="accessToken">Twitch account OAuth token to store in memory.</param>
+        public static async void SetAccessTokenAsync(string accessToken) => Task.Run(() => Internal.TwitchApi.SetAccessToken(accessToken));
 
         /// <summary>
-        /// Validates a Client-Id and optionally updates it.
+        /// [SYNC] Validates a Client-Id and optionally updates it.
         /// </summary>
         /// <param name="clientId">Client-Id string to be validated.</param>
         /// <param name="updateClientIdOnSuccess">Updates Client-Id if passed Client-Id is valid.</param>
         /// <returns>True or false depending on the validity of the Client-Id.</returns>
-        public static async Task<bool> ValidClientId(string clientId, bool updateClientIdOnSuccess = true)
-        {
-            string oldClientId;
-            if (!string.IsNullOrEmpty(ClientId))
-                oldClientId = ClientId;
-            var resp = await MakeGetRequest("https://api.twitch.tv/kraken");
-            var json = JObject.Parse(resp);
-            if (json.SelectToken("identified") != null && (bool)json.SelectToken("identified") == true)
-                return true;
-            return false;
-        }
-
-        private static async void ValidClientId()
-        {
-            if (await ValidClientId(ClientId, false) == false)
-                throw new InvalidCredentialException("The provided Client-Id is invalid. Create an application here and obtain a Client-Id from it here: https://www.twitch.tv/settings/connections");
-        }
-
+        public static bool ValidClientId(string clientId, bool updateClientIdOnSuccess = true) => Task.Run(() => Internal.TwitchApi.ValidClientId(clientId, updateClientIdOnSuccess)).Result;
         /// <summary>
-        /// Retrieves the current status of the broadcaster.
+        /// [ASYNC] Validates a Client-Id and optionally updates it.
         /// </summary>
-        /// <param name="channel">The name of the broadcaster to check.</param>
-        /// <returns>True if the broadcaster is online, false otherwise.</returns>
-        public static async Task<bool> BroadcasterOnline(string channel)
-        {
-            try
-            {
-                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
-                return resp.Contains("{\"stream\":{\"_id\":");
-            }
-            catch (InvalidCredentialException badCredentials)
-            {
-                throw badCredentials;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Fetches Twitch channel name from a steam Id, if their Steam is connected to their Twitch.
-        /// </summary>
-        /// <param name="steamId">The steam id of the user whose Twitch channel is requested.</param>
-        /// <returns>Returns channel name if available, or null.</returns>
-        public static async Task<string> GetChannelFromSteamId(string steamId)
-        {
-            try
-            {
-                string resp = await MakeGetRequest($"https://api.twitch.tv/api/steam/{steamId}");
-                return JObject.Parse(resp).SelectToken("name").ToString();
-            } catch(Exception)
-            {
-                return null;
-            }
-        }
-        #endregion
-
-        /// <summary>
-        /// Posts to a Twitch channel's feed.
-        /// </summary>
-        /// <param name="content">The content of the message being posted.</param>
-        /// <param name="accessToken">OAuth access token with channel_feed_edit scope, not needed if already set.</param>
-        /// <param name="channel">Channel to post feed post to.</param>
-        /// <param name="share">If set to true, and enabled on account, will tweet out post.</param>
-        /// <returns>Returns object with Post object and URL to tweet if available.</returns>
-        public static async Task<PostToChannelFeedResponse> PostToChannelFeed(string content, bool share, string channel, string accessToken = null)
-        {
-            return new PostToChannelFeedResponse(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts", "POST", $"content={content}&share={(share ? "true" : "false")}", accessToken)));
-        }
-
-        /// <summary>
-        /// Deletes a post on a Twitch channel's feed.
-        /// </summary>
-        /// <param name="postId">Integer Id of feed post to delete.</param>
-        /// <param name="channel">Channel where the post resides.</param>
-        /// <param name="accessToken">OAuth access token with channel_feed_edit scope.</param>
-        public static async void DeleteChannelFeedPost(string postId, string channel, string accessToken = null)
-        {
-            await MakeRestRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", "DELETE", null, accessToken);
-        }
-
-        #region Internal Calls
-        private static async Task<string> MakeGetRequest(string url, string accessToken = null)
-        {
-            if (string.IsNullOrEmpty(ClientId) && string.IsNullOrWhiteSpace(accessToken) && string.IsNullOrWhiteSpace(AccessToken))
-                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId(\"client_id_here\")");
-
-            accessToken = accessToken?.ToLower().Replace("oauth:", "");
-
-            // If the URL already has GET parameters, we cannot use the GET parameter initializer '?'
-            HttpWebRequest request = url.Contains("?")
-                ? (HttpWebRequest)WebRequest.Create(new Uri($"{url}&client_id={ClientId}"))
-                : (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={ClientId}"));
-
-            request.Method = "GET";
-            request.Accept = "application/vnd.twitchtv.v3+json";
-            request.Headers.Add("Client-ID", ClientId);
-
-            if (!string.IsNullOrWhiteSpace(accessToken))
-                request.Headers.Add("Authorization", $"OAuth {accessToken}");
-            else if (!string.IsNullOrEmpty(AccessToken))
-                request.Headers.Add("Authorization", $"OAuth {AccessToken}");
-
-            try
-            {
-                using (var responseStream = await request.GetResponseAsync())
-                {
-                    return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
-                }
-            } catch(WebException e) { handleWebException(e); return null; }
-            
-        }
-
-        private static async Task<string> MakeRestRequest(string url, string method, string requestData = null,
-            string accessToken = null)
-        {
-            if (string.IsNullOrWhiteSpace(ClientId) && string.IsNullOrWhiteSpace(accessToken))
-                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token.");
-
-            var data = new UTF8Encoding().GetBytes(requestData ?? "");
-            accessToken = accessToken?.ToLower().Replace("oauth:", "");
-
-            var request = (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={ClientId}"));
-            request.Method = method;
-            request.Accept = "application/vnd.twitchtv.v3+json";
-            request.ContentType = method == "POST"
-                ? "application/x-www-form-urlencoded"
-                : "application/json";
-            request.Headers.Add("Client-ID", ClientId);
-
-            if (!string.IsNullOrWhiteSpace(accessToken))
-                request.Headers.Add("Authorization", $"OAuth {accessToken}");
-            else if (!string.IsNullOrWhiteSpace(AccessToken))
-                request.Headers.Add("Authorization", $"OAuth {AccessToken}");
-
-            using (var requestStream = await request.GetRequestStreamAsync())
-            {
-                await requestStream.WriteAsync(data, 0, data.Length);
-            }
-
-            try
-            {
-                using (var responseStream = await request.GetResponseAsync())
-                {
-                    return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
-                }
-            } catch(WebException e) { handleWebException(e); return null; }
-            
-        }
-
-        private static void handleWebException(WebException e)
-        {
-            HttpWebResponse errorResp = e.Response as HttpWebResponse;
-            switch (errorResp.StatusCode)
-            {
-                case HttpStatusCode.Unauthorized:
-                    throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
-                case HttpStatusCode.NotFound:
-                    throw new BadResourceException("The resource you tried to access was not valid.");
-                case (HttpStatusCode)422:
-                    throw new NotPartneredException("The resource you requested is only available to channels that have been partnered by Twitch.");
-                default:
-                    throw e;
-            }
-        }
+        /// <param name="clientId">Client-Id string to be validated.</param>
+        /// <param name="updateClientIdOnSuccess">Updates Client-Id if passed Client-Id is valid.</param>
+        /// <returns>True or false depending on the validity of the Client-Id.</returns>
+        public static async Task<bool> ValidClientIdAsync(string clientId, bool updateClientIdOnSuccess = true) => await Internal.TwitchApi.ValidClientId(clientId, updateClientIdOnSuccess);
         #endregion
     }
 }
