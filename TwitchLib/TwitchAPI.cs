@@ -439,6 +439,17 @@ namespace TwitchLib
             /// <param name="channel">The name of the broadcaster to check.</param>
             /// <returns>True if the broadcaster is online, false otherwise.</returns>
             public static async Task<bool> BroadcasterOnlineAsync(string channel) => await Internal.TwitchApi.BroadcasterOnline(channel);
+
+            /// <summary>
+            /// [SYNC] Retrieves the site wide streams summary (total viewers, total streams) on Twitch.
+            /// </summary>
+            /// <returns>StreamsSummary object housing total viewers, total streams.</returns>
+            public static StreamsSummary GetStreamsSummary() => Task.Run(() => Internal.TwitchApi.GetStreamsSummary()).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves the site wide streams summary (total viewers, total streams) on Twitch.
+            /// </summary>
+            /// <returns>StreamsSummary object housing total viewers, total streams.</returns>
+            public static async Task<StreamsSummary> GetStreamsSummaryAsync() => await Internal.TwitchApi.GetStreamsSummary();
         }
 
         /// <summary>
