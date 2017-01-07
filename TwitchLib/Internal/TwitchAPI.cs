@@ -119,7 +119,7 @@ namespace TwitchLib.Internal
             return streams;
         }
         
-        public static async Task<StreamsSummary> GetStreamSummary()
+        public static async Task<StreamsSummary> GetStreamsSummary()
         {
             var json = await MakeGetRequest("https://api.twitch.tv/kraken/streams/summary");
             return new StreamsSummary(json);
