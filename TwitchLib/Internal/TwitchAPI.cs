@@ -118,6 +118,12 @@ namespace TwitchLib.Internal
             streams.AddRange(json.SelectToken("streams").Select(stream => new Models.API.FeaturedStream(stream)));
             return streams;
         }
+        
+        public static async Task<StreamsSummary> GetStreamSummary()
+        {
+            var json = await MakeGetRequest("https://api.twitch.tv/kraken/streams/summary");
+            return new StreamsSummary(json);
+        }
         #endregion
 
         #region Searching
