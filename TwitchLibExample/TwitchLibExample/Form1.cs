@@ -821,12 +821,10 @@ namespace TwitchLibExample
                 clients[0].ChangeChatColor((TwitchLib.Enums.ChatColorPresets)Enum.Parse(typeof(TwitchLib.Enums.ChatColorPresets), comboBox7.Text));
         }
 
-        private void button55_Click(object sender, EventArgs e)
+        private async void button55_Click(object sender, EventArgs e)
         {
-            if (TwitchApi.Streams.StreamIsLive(textBox43.Text))
-                MessageBox.Show($"{textBox43.Text} is live!");
-            else
-                MessageBox.Show($"{textBox43.Text} is not live!");
+            var resp = await TwitchApi.Streams.GetStreamsSummaryAsync();
+            MessageBox.Show($"Total streams: {resp.TotalStreams}\nTotal viewers: {resp.TotalViewers}");
         }
 
         private async void button56_Click(object sender, EventArgs e)
