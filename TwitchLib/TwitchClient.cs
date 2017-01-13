@@ -173,7 +173,7 @@ namespace TwitchLib
         public event EventHandler<OnDisconnectedArgs> OnDisconnected;
 
         /// <summary>
-        /// Fores when bot suffers conneciton error.
+        /// Forces when bot suffers conneciton error.
         /// </summary>
         public event EventHandler<OnConnectionErrorArgs> OnConnectionError;
 

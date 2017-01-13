@@ -13,13 +13,13 @@ namespace TwitchLib.Models.Client
     {
         /// <summary>Property representing the chat message that the command came in.</summary>
         public ChatMessage ChatMessage { get; protected set; }
-        /// <summary>Property representing the actual command (without the command suffix).</summary>
+        /// <summary>Property representing the actual command (without the command prefix).</summary>
         public string Command { get; protected set; }
         /// <summary>Property representing all arguments received in a List form.</summary>
         public List<string> ArgumentsAsList { get; protected set; }
         /// <summary>Property representing all arguments received in a string form.</summary>
         public string ArgumentsAsString { get; protected set; }
-        /// <summary>Property representing the command identifier (ie command suffix).</summary>
+        /// <summary>Property representing the command identifier (ie command prefix).</summary>
         public char CommandIdentifier { get; protected set; }
 
         /// <summary>
