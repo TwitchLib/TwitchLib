@@ -335,9 +335,9 @@ namespace TwitchLib.Internal
             return int.Parse(json.SelectToken("_total").ToString());
         }
 
-        public static async Task<ChannelSubscribersResponse> GetAllChannelSubscribers(string channel, string accessToken = null)
+        /*public static async Task<SubscribersResponse> GetAllChannelSubscribers(string channel, string accessToken = null)
         {
-            var csr = new ChannelSubscribersResponse();
+            var csr = new SubscribersResponse();
             var totalSubscribers = await GetSubscriberCount(channel, accessToken);
             int offset = 0;
             int pageCount = (totalSubscribers + 90 - 1) / 90;
@@ -351,6 +351,48 @@ namespace TwitchLib.Internal
                 offset += 90;
             }
             return csr;
+        }*/
+
+        public static async Task<SubscribersResponse> GetAllChannelSubscribers(string channel, string accessToken = null)
+        {
+            // initial stuffs
+            List<Subscription> allSubs = new List<Subscription>();
+            int totalSubs;
+            var firstBatch = await GetSubscribers(channel, 100, 0, Enums.SortDirection.Ascending, accessToken);
+            totalSubs = firstBatch.TotalSubscriberCount;
+            allSubs.AddRange(firstBatch.Subscribers);
+
+            // math stuff to determine left over and number of requests
+            int leftOverSubs = (totalSubs - firstBatch.Subscribers.Count) % 100;
+            int requiredRequests = (totalSubs - firstBatch.Subscribers.Count - leftOverSubs) / 100;
+
+            // perform required requests after initial delay
+            int currentOffset = firstBatch.Subscribers.Count;
+            System.Threading.Thread.Sleep(1000);
+            for (int i = 0; i < requiredRequests; i++)
+            {
+                var requestedSubs = await GetSubscribers(channel, 100, currentOffset, Enums.SortDirection.Ascending, accessToken);
+                allSubs.AddRange(requestedSubs.Subscribers);
+                currentOffset += requestedSubs.Subscribers.Count;
+
+                // We should wait a second before performing another request per Twitch requirements
+                System.Threading.Thread.Sleep(1000);
+            }
+
+            // get leftover subs
+            var leftOverSubsRequest = await GetSubscribers(channel, leftOverSubs, currentOffset, Enums.SortDirection.Ascending, accessToken);
+            allSubs.AddRange(leftOverSubsRequest.Subscribers);
+
+            return new SubscribersResponse(allSubs, totalSubs);
+        }
+
+        public static async Task<SubscribersResponse> GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.SortDirection direction = Enums.SortDirection.Ascending, string accessToken = null)
+        {
+            string args = $"?limit={limit}";
+            args += $"&offset={offset}";
+            args += $"&direction={(direction == Enums.SortDirection.Descending ? "desc" : "asc")}";
+
+            return new SubscribersResponse(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions{args}", accessToken)));
         }
 
         public static async Task<ChannelHasUserSubscribedResponse> ChannelHasUserSubscribed(string username, string channel, string accessToken = null)
