@@ -21,5 +21,14 @@ namespace TwitchLib.Models.API
             TimeSinceCreated = DateTime.UtcNow - CreatedAt;
             User = new User(json.SelectToken("user").ToString());
         }
+
+        /// <summary>Constructor for Subscription (using JToken as param)</summary>
+        /// <param name="json"></param>
+        public Subscription(JToken json)
+        {
+            CreatedAt = Convert.ToDateTime(json.SelectToken("created_at").ToString());
+            TimeSinceCreated = DateTime.UtcNow - CreatedAt;
+            User = new User(json.SelectToken("user").ToString());
+        }
     }
 }

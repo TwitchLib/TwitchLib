@@ -905,5 +905,21 @@ namespace TwitchLibExample
         {
             TwitchApi.SetAccessToken(textBox15.Text);
         }
+
+        private async void button62_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchApi.Subscriptions.GetSubscribersAsync(textBox14.Text);
+            MessageBox.Show($"Total subs: {resp.TotalSubscriberCount}");
+            foreach (var sub in resp.Subscribers)
+                MessageBox.Show($"Sub: {sub.User.DisplayName}");
+        }
+
+        private async void button63_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchApi.Subscriptions.GetAllChannelSubscribersAsync(textBox14.Text);
+            label55.Text = "Total Subs: " + resp.TotalSubscriberCount + "|" + resp.Subscribers.Count;
+            foreach (var sub in resp.Subscribers)
+                listBox4.Items.Add(sub.User.Name);
+        }
     }
 }

@@ -694,7 +694,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to check against.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>List of channel subscribers</returns>
-            public static ChannelSubscribersResponse GetChannelSubscribers(string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetAllChannelSubscribers(channel, accessToken)).Result;
+            public static SubscribersResponse GetAllChannelSubscribers(string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetAllChannelSubscribers(channel, accessToken)).Result;
             /// <summary>
             /// [ASYNC] Retrieves subscriber list for a <paramref name="channel"/>.
             /// <para>Authenticated, required scope: channel_subscriptions</para>
@@ -702,7 +702,28 @@ namespace TwitchLib
             /// <param name="channel">The channel to check against.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>List of channel subscribers</returns>
-            public static async Task<ChannelSubscribersResponse> GetChannelSubscribersAsync(string channel, string accessToken = null) => await Internal.TwitchApi.GetAllChannelSubscribers(channel, accessToken);
+            public static async Task<SubscribersResponse> GetAllChannelSubscribersAsync(string channel, string accessToken = null) => await Internal.TwitchApi.GetAllChannelSubscribers(channel, accessToken);
+
+            /// <summary>
+            /// [SYNC] Retrieves channel subscribers from Twitch using limit and offset
+            /// </summary>
+            /// <param name="channel">Channel to pull subscribers from</param>
+            /// <param name="limit">Limit the number of subscriptions returned. Max 100, default: 25</param>
+            /// <param name="offset">Access the subscriber list at a specific offset. Default 0</param>
+            /// <param name="direction">Direction of which the subscribers should be returned. Default Ascending</param>
+            /// <param name="accessToken">Optional access token used if you haven't set the access token.</param>
+            /// <returns>SubscribersResponse housing all subscribers and total number</returns>
+            public static SubscribersResponse GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.SortDirection direction = Enums.SortDirection.Ascending, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetSubscribers(channel, limit, offset, direction, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves channel subscribers from Twitch using limit and offset
+            /// </summary>
+            /// <param name="channel">Channel to pull subscribers from</param>
+            /// <param name="limit">Limit the number of subscriptions returned. Max 100, default: 25</param>
+            /// <param name="offset">Access the subscriber list at a specific offset. Default 0</param>
+            /// <param name="direction">Direction of which the subscribers should be returned. Default Ascending</param>
+            /// <param name="accessToken">Optional access token used if you haven't set the access token.</param>
+            /// <returns>SubscribersResponse housing all subscribers and total number</returns>
+            public static async Task<SubscribersResponse> GetSubscribersAsync(string channel, int limit = 25, int offset = 0, Enums.SortDirection direction = Enums.SortDirection.Ascending, string accessToken = null) => await Internal.TwitchApi.GetSubscribers(channel, limit, offset, direction, accessToken);
         }
 
         /// <summary>
