@@ -60,6 +60,7 @@
     <Compile Include="Enums\ChatColorPresets.cs" />
     <Compile Include="Enums\CommercialLength.cs" />
     <Compile Include="Enums\LogType.cs" />
+    <Compile Include="Enums\Period.cs" />
     <Compile Include="Enums\PubSubRequestType.cs" />
     <Compile Include="Enums\SendReceiveDirection.cs" />
     <Compile Include="Enums\SortDirection.cs" />
@@ -141,6 +142,8 @@
     <Compile Include="Models\API\Block.cs" />
     <Compile Include="Models\API\ChannelHasUserSubscribedResponse.cs" />
     <Compile Include="Models\API\Channels.cs" />
+    <Compile Include="Models\API\Clip.cs" />
+    <Compile Include="Models\API\ClipsResponse.cs" />
     <Compile Include="Models\API\FeaturedStream.cs" />
     <Compile Include="Models\API\FeedResponse.cs" />
     <Compile Include="Models\API\Game.cs" />
