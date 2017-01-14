@@ -335,6 +335,24 @@ namespace TwitchLib.Internal
             return int.Parse(json.SelectToken("_total").ToString());
         }
 
+        public static async Task<ChannelSubscribersResponse> GetAllChannelSubscribers(string channel, string accessToken = null)
+        {
+            var csr = new ChannelSubscribersResponse();
+            var totalSubscribers = await GetSubscriberCount(channel, accessToken);
+            int offset = 0;
+            int pageCount = (totalSubscribers + 90 - 1) / 90;
+            for (int i = 1; i < pageCount; i++)
+            {
+                var args = $"?limit=90&offset={offset}";
+                var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions{args}", accessToken);
+                JObject json = JObject.Parse(resp);
+                foreach (JToken subscription in json.SelectToken("subscriptions"))
+                    csr.Subscribers.Add(new Subscription(subscription.ToString()));
+                offset += 90;
+            }
+            return csr;
+        }
+
         public static async Task<ChannelHasUserSubscribedResponse> ChannelHasUserSubscribed(string username, string channel, string accessToken = null)
         {
             try

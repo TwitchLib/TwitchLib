@@ -141,6 +141,7 @@
     <Compile Include="Models\API\Block.cs" />
     <Compile Include="Models\API\ChannelHasUserSubscribedResponse.cs" />
     <Compile Include="Models\API\Channels.cs" />
+    <Compile Include="Models\API\ChannelSubscribersResponse.cs" />
     <Compile Include="Models\API\FeaturedStream.cs" />
     <Compile Include="Models\API\FeedResponse.cs" />
     <Compile Include="Models\API\Game.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Models\API\Post.cs" />
     <Compile Include="Models\API\PostToChannelFeedResponse.cs" />
     <Compile Include="Models\API\StreamsSummary.cs" />
+    <Compile Include="Models\API\Subscription.cs" />
     <Compile Include="Models\API\User.cs" />
     <Compile Include="Models\API\BadgeResponse.cs" />
     <Compile Include="Models\Client\ChannelState.cs" />

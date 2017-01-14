@@ -686,6 +686,23 @@ namespace TwitchLib
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>True if the user is subscribed to the channel, false otherwise.</returns>
             public static async Task<ChannelHasUserSubscribedResponse> ChannelHasUserSubscribedAsync(string username, string channel, string accessToken = null) => await Internal.TwitchApi.ChannelHasUserSubscribed(username, channel, accessToken);
+
+            /// <summary>
+            /// [SYNC] Retrieves subscriber list for a <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: channel_subscriptions</para>
+            /// </summary>
+            /// <param name="channel">The channel to check against.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>List of channel subscribers</returns>
+            public static ChannelSubscribersResponse GetChannelSubscribers(string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetAllChannelSubscribers(channel, accessToken)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves subscriber list for a <paramref name="channel"/>.
+            /// <para>Authenticated, required scope: channel_subscriptions</para>
+            /// </summary>
+            /// <param name="channel">The channel to check against.</param>
+            /// <param name="accessToken">An oauth token with the required scope.</param>
+            /// <returns>List of channel subscribers</returns>
+            public static async Task<ChannelSubscribersResponse> GetChannelSubscribersAsync(string channel, string accessToken = null) => await Internal.TwitchApi.GetAllChannelSubscribers(channel, accessToken);
         }
 
         /// <summary>
