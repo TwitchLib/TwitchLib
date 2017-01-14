@@ -694,7 +694,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to check against.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>List of channel subscribers</returns>
-            public static SubscribersResponse GetAllChannelSubscribers(string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetAllChannelSubscribers(channel, accessToken)).Result;
+            public static SubscribersResponse GetChannelSubscribers(string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetAllSubscribers(channel, accessToken)).Result;
             /// <summary>
             /// [ASYNC] Retrieves subscriber list for a <paramref name="channel"/>.
             /// <para>Authenticated, required scope: channel_subscriptions</para>
@@ -702,7 +702,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to check against.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>List of channel subscribers</returns>
-            public static async Task<SubscribersResponse> GetAllChannelSubscribersAsync(string channel, string accessToken = null) => await Internal.TwitchApi.GetAllChannelSubscribers(channel, accessToken);
+            public static async Task<SubscribersResponse> GetChannelSubscribersAsync(string channel, string accessToken = null) => await Internal.TwitchApi.GetAllSubscribers(channel, accessToken);
 
             /// <summary>
             /// [SYNC] Retrieves channel subscribers from Twitch using limit and offset
