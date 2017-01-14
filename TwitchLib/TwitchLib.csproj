@@ -142,6 +142,7 @@
     <Compile Include="Models\API\Block.cs" />
     <Compile Include="Models\API\ChannelHasUserSubscribedResponse.cs" />
     <Compile Include="Models\API\Channels.cs" />
+    <Compile Include="Models\API\ChannelSubscribersResponse.cs" />
     <Compile Include="Models\API\Clip.cs" />
     <Compile Include="Models\API\ClipsResponse.cs" />
     <Compile Include="Models\API\FeaturedStream.cs" />
