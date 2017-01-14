@@ -151,6 +151,7 @@
     <Compile Include="Models\API\Post.cs" />
     <Compile Include="Models\API\PostToChannelFeedResponse.cs" />
     <Compile Include="Models\API\StreamsSummary.cs" />
+    <Compile Include="Models\API\Subscription.cs" />
     <Compile Include="Models\API\User.cs" />
     <Compile Include="Models\API\BadgeResponse.cs" />
     <Compile Include="Models\Client\ChannelState.cs" />
