@@ -340,15 +340,15 @@ namespace TwitchLib.Internal
             var csr = new ChannelSubscribersResponse();
             var totalSubscribers = await GetSubscriberCount(channel, accessToken);
             int offset = 0;
-            int pageCount = (totalSubscribers + 90 - 1) / 90;
-            for (int i = 1; i < pageCount; i++)
+            int pageCount = (totalSubscribers + 100 - 1) / 100;
+            for (int i = 1; i <= pageCount; i++)
             {
                 var args = $"?limit=90&offset={offset}";
                 var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions{args}", accessToken);
                 JObject json = JObject.Parse(resp);
                 foreach (JToken subscription in json.SelectToken("subscriptions"))
                     csr.Subscribers.Add(new Subscription(subscription.ToString()));
-                offset += 90;
+                offset += 100;
             }
             return csr;
         }
