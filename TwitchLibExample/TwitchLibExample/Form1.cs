@@ -858,5 +858,52 @@ namespace TwitchLibExample
             }
                 
         }
+
+        private async void button58_Click(object sender, EventArgs e)
+        {
+            //textbox43
+            ClipsResponse response;
+            if(textBox43.Text.Length == 0)
+            {
+                response = await TwitchApi.Clips.GetTopClipsAsync();
+            } else
+            {
+                if(textBox43.Text.Contains(","))
+                {
+                    List<string> channels = textBox43.Text.Split(',').ToList();
+                    response = await TwitchApi.Clips.GetTopClipsAsync(channels);
+                } else
+                {
+                    List<string> channels = new List<string>();
+                    channels.Add(textBox43.Text);
+                    response = await TwitchApi.Clips.GetTopClipsAsync(channels);
+                }
+            }
+
+            foreach(Clip clip in response.Clips)
+            {
+                MessageBox.Show($"Title: {clip.Title}\n Game: {clip.Game}\nBroadcaster: {clip.Broadcaster.DisplayName}\nCurator: {clip.Curator.DisplayName}\nVOD Link: {clip.VOD.Url}");
+            }
+        }
+
+        private async void button59_Click(object sender, EventArgs e)
+        {
+            Clip details = await TwitchApi.Clips.GetClipInformationAsync(textBox46.Text, textBox47.Text);
+            MessageBox.Show($"Title: {details.Title}\nGame: {details.Game}\nBroadcaster: {details.Broadcaster.DisplayName}\nCurator: {details.Curator.DisplayName}\nVod URL: {details.VOD.Url}");
+        }
+
+        private async void button60_Click(object sender, EventArgs e)
+        {
+            ClipsResponse resp = await TwitchApi.Clips.GetFollowedClipsAsync("0", 10, false, textBox15.Text);
+            foreach(Clip clip in resp.Clips)
+            {
+                MessageBox.Show($"Title: {clip.Title}\n Game: {clip.Game}\nBroadcaster: {clip.Broadcaster.DisplayName}\nCurator: {clip.Curator.DisplayName}\nVOD Link: {clip.VOD.Url}");
+            }
+        }
+
+        private void button61_Click(object sender, EventArgs e)
+        {
+            TwitchApi.SetAccessToken(textBox15.Text);
+        }
     }
 }

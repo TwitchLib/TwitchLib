@@ -411,6 +411,56 @@ namespace TwitchLib.Internal
         }
         #endregion
 
+        #region Clips
+        public static async Task<ClipsResponse> GetTopClips(List<string> channels = null, List<string> games = null, int limit = 10, string cursor = null, Enums.Period period = Enums.Period.Day, bool trending = false)
+        {
+            string channelsStr = (channels != null) ? $"channel={string.Join(",", channels)}" : null;
+            string gamesStr = (games != null) ? $"game={string.Join(",", games)}" : null;
+            string limitStr = $"limit={limit}";
+            string cursorStr = (cursor != null) ? $"cursor={cursor}" : null;
+            string periodStr = "";
+            switch(period)
+            {
+                case Enums.Period.All:
+                    periodStr = "period=all";
+                    break;
+                case Enums.Period.Day:
+                    periodStr = "period=day";
+                    break;
+                case Enums.Period.Month:
+                    periodStr = "period=month";
+                    break;
+                case Enums.Period.Week:
+                    periodStr = "period=week";
+                    break;
+            }
+            string trendingStr = (trending) ? "trending=true" : "trending=false";
+            string url = $"https://api.twitch.tv/kraken/clips/top?{limitStr}&{periodStr}";
+            if (channels != null)
+                url = $"{url}&{channelsStr}";
+            if (games != null)
+                url = $"{url}&{gamesStr}";
+            if (cursor != null)
+                url = $"{url}&{cursorStr}";
+            return new ClipsResponse(JObject.Parse(await MakeGetRequest(url, null, 4)));
+        }
+        
+        public static async Task<Clip> GetClipInformation(string channel, string slug)
+        {
+            string url = $"https://api.twitch.tv/kraken/clips/{channel}/{slug}";
+            return new Clip(JObject.Parse(await MakeGetRequest(url, null, 4)));
+        }
+
+        public static async Task<ClipsResponse> GetFollowedClips(string cursor = "0", int limit = 10, bool trending = false, string accessToken = null)
+        {
+            string cursorStr = $"cursor={cursor}";
+            string limitStr = $"limit={limit}";
+            string trendingStr = $"trending={trending.ToString().ToLower()}";
+            string url = $"https://api.twitch.tv/kraken/clips/followed?{cursorStr}&{limitStr}&{trendingStr}";
+            return new ClipsResponse(JObject.Parse(await MakeRestRequest(url, "POST", null, accessToken, 4)));
+        }
+        #endregion
+
         #region Other
         public static void SetClientId(string clientId, bool disableClientIdValidation = false)
         {
@@ -487,7 +537,7 @@ namespace TwitchLib.Internal
         }
 
         #region Internal Calls
-        private static async Task<string> MakeGetRequest(string url, string accessToken = null)
+        private static async Task<string> MakeGetRequest(string url, string accessToken = null, int apiVersion = 3)
         {
             if (string.IsNullOrEmpty(ClientId) && string.IsNullOrWhiteSpace(accessToken) && string.IsNullOrWhiteSpace(AccessToken))
                 throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId(\"client_id_here\")");
@@ -500,7 +550,7 @@ namespace TwitchLib.Internal
                 : (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={ClientId}"));
 
             request.Method = "GET";
-            request.Accept = "application/vnd.twitchtv.v3+json";
+            request.Accept = $"application/vnd.twitchtv.v{apiVersion}+json";
             request.Headers.Add("Client-ID", ClientId);
 
             if (!string.IsNullOrWhiteSpace(accessToken))
@@ -519,7 +569,7 @@ namespace TwitchLib.Internal
         }
 
         private static async Task<string> MakeRestRequest(string url, string method, string requestData = null,
-            string accessToken = null)
+            string accessToken = null, int apiVersion = 3)
         {
             if (string.IsNullOrWhiteSpace(ClientId) && string.IsNullOrWhiteSpace(accessToken))
                 throw new InvalidCredentialException("All API calls require Client-Id or OAuth token.");
@@ -529,7 +579,7 @@ namespace TwitchLib.Internal
 
             var request = (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={ClientId}"));
             request.Method = method;
-            request.Accept = "application/vnd.twitchtv.v3+json";
+            request.Accept = $"application/vnd.twitchtv.v{apiVersion}+json";
             request.ContentType = method == "POST"
                 ? "application/x-www-form-urlencoded"
                 : "application/json";
