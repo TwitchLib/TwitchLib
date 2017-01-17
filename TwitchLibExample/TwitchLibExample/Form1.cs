@@ -19,6 +19,18 @@ using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Events.Services.MessageThrottler;
 using TwitchLib.Enums;
 using TwitchLib.Extensions.Client;
+using TwitchLib.Models.API.Video;
+using TwitchLib.Models.API.User;
+using TwitchLib.Models.API.Block;
+using TwitchLib.Models.API.Team;
+using TwitchLib.Models.API.Feed;
+using TwitchLib.Models.API.Game;
+using TwitchLib.Models.API.Follow;
+using TwitchLib.Models.API.Stream;
+using TwitchLib.Models.API.Clip;
+using TwitchLib.Models.API.Chat;
+using TwitchLib.Models.API.Channel;
+using TwitchLib.Models.API.Badge;
 
 namespace TwitchLibExample
 {
@@ -290,7 +302,7 @@ namespace TwitchLibExample
         {
             try
             {
-                Channel channel = await TwitchApi.Channels.GetChannelAsync(textBox9.Text);
+                TwitchLib.Models.API.Channel.Channel channel = await TwitchApi.Channels.GetChannelAsync(textBox9.Text);
                 MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At (seconds ago): {6}\n" +
                 "Updated At (seconds ago): {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
                 channel.Status, channel.BroadcasterLanguage, channel.DisplayName, channel.Game, channel.Language, channel.Name, channel.CreatedAt, channel.UpdatedAt.Second,
@@ -427,7 +439,7 @@ namespace TwitchLibExample
 
         private async void button21_Click(object sender, EventArgs e)
         {
-            TwitchLib.Models.API.Stream stream = null;
+            TwitchLib.Models.API.Stream.Stream stream = null;
             try
             {
                 stream = await TwitchApi.Streams.GetStreamAsync(textBox25.Text);
@@ -451,9 +463,9 @@ namespace TwitchLibExample
 
         private async void button23_Click(object sender, EventArgs e)
         {
-            List<Channel> results = await TwitchApi.Channels.SearchChannelsAsync(textBox27.Text);
+            List<TwitchLib.Models.API.Channel.Channel> results = await TwitchApi.Channels.SearchChannelsAsync(textBox27.Text);
             if (results.Count > 0)
-                foreach(Channel channel in results)
+                foreach(TwitchLib.Models.API.Channel.Channel channel in results)
                     MessageBox.Show(String.Format("Status: {0}\nBroadcaster Lang: {1}\nDisplay Name: {2}\nGame: {3}\nLanguage: {4}\nName: {5}\nCreated At: {6}\n" +
                     "Updated At: {7}\nDelay: {8}\nLogo: {9}\nBackground: {10}\nProfile Banner: {11}\nMature: {12}\nPartner: {13}\nID: {14}\nViews: {15}\nFollowers: {16}",
                     channel.Status, channel.BroadcasterLanguage, channel.DisplayName, channel.Game, channel.Language, channel.Name, channel.CreatedAt, channel.UpdatedAt,
@@ -521,10 +533,10 @@ namespace TwitchLibExample
         private async void button3_Click(object sender, EventArgs e)
         {
             //textbox6
-            List<TwitchLib.Models.API.Stream> results = await TwitchApi.Streams.SearchStreamsAsync(textBox6.Text);
+            List<TwitchLib.Models.API.Stream.Stream> results = await TwitchApi.Streams.SearchStreamsAsync(textBox6.Text);
             if (results.Count > 0)
             {
-                foreach (TwitchLib.Models.API.Stream stream in results)
+                foreach (TwitchLib.Models.API.Stream.Stream stream in results)
                     MessageBox.Show($"Result: {stream.Channel.Name}\n\nStarted at: {stream.CreatedAt}\nGame: {stream.Game}");
             } else
             {
@@ -635,8 +647,8 @@ namespace TwitchLibExample
         private async void button40_Click(object sender, EventArgs e)
         {
             //textbox36
-            List<BadgeResponse.Badge> badges = (await TwitchApi.Channels.GetChannelBadgesAsync(textBox36.Text)).ChannelBadges;
-            foreach (BadgeResponse.Badge badge in badges)
+            List<Badge> badges = (await TwitchApi.Channels.GetChannelBadgesAsync(textBox36.Text)).ChannelBadges;
+            foreach (Badge badge in badges)
                 MessageBox.Show($"Available images for: {badge.BadgeName}\nAlpha: {badge.Alpha}\nImage: {badge.Image}\nSVG: {badge.SVG}");
         }
 
@@ -916,7 +928,7 @@ namespace TwitchLibExample
 
         private async void button63_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchApi.Subscriptions.GetAllChannelSubscribersAsync(textBox14.Text);
+            var resp = await TwitchApi.Subscriptions.GetChannelSubscribersAsync(textBox14.Text);
             label55.Text = "Total Subs: " + resp.TotalSubscriberCount + "|" + resp.Subscribers.Count;
             foreach (var sub in resp.Subscribers)
                 listBox4.Items.Add(sub.User.Name);
