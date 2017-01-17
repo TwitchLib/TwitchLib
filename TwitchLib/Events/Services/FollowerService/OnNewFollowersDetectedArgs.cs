@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Models.API;
+using TwitchLib.Models.API.Follow;
 
 namespace TwitchLib.Events.Services.FollowerService
 {

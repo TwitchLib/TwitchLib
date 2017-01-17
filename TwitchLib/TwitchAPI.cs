@@ -23,26 +23,26 @@ namespace TwitchLib
             /// </summary>
             /// <param name="channel">The channel to fetch Channels object about.</param>
             /// <returns>Channels object.</returns>
-            public static Models.API.Channels GetChannelsObject(string channel) => Task.Run(() => Internal.TwitchApi.GetChannelsObject(channel)).Result;
+            public static Models.API.Channel.Channels GetChannelsObject(string channel) => Task.Run(() => Internal.TwitchApi.GetChannelsObject(channel)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a Channels object regarding a specific channel.
             /// </summary>
             /// <param name="channel">The channel to fetch Channels object about.</param>
             /// <returns>Channels object.</returns>
-            public static async Task<Models.API.Channels> GetChannelsObjectAsync(string channel) => await Internal.TwitchApi.GetChannelsObject(channel);
+            public static async Task<Models.API.Channel.Channels> GetChannelsObjectAsync(string channel) => await Internal.TwitchApi.GetChannelsObject(channel);
 
             /// <summary>
             /// [SYNC] Retrieves a channel's list of available chat badges.
             /// </summary>
             /// <param name="channel">The channel to fetch available badges from.</param>
             /// <returns>BadgeResponse object containing list of available badges.</returns>
-            public static BadgeResponse GetChannelBadges(string channel) => Task.Run(() => Internal.TwitchApi.GetChannelBadges(channel)).Result;
+            public static Models.API.Badge.BadgeResponse GetChannelBadges(string channel) => Task.Run(() => Internal.TwitchApi.GetChannelBadges(channel)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a channel's list of available chat badges.
             /// </summary>
             /// <param name="channel">The channel to fetch available badges from.</param>
             /// <returns>BadgeResponse object containing list of available badges.</returns>
-            public static async Task<BadgeResponse> GetChannelBadgesAsync(string channel) => await Internal.TwitchApi.GetChannelBadges(channel);
+            public static async Task<Models.API.Badge.BadgeResponse> GetChannelBadgesAsync(string channel) => await Internal.TwitchApi.GetChannelBadges(channel);
 
             /// <summary>
             /// [SYNC] Retrieves a string list of channel editor users.
@@ -51,7 +51,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to fetch editors from.</param>
             /// <param name="accessToken">An access token with the required scope.</param>
             /// <returns>A list of User objects that are channel editors.</returns>
-            public static List<User> GetChannelEditors(string channel, string accessToken) => Task.Run(() => Internal.TwitchApi.GetChannelEditors(channel, accessToken)).Result;
+            public static List<Models.API.User.User> GetChannelEditors(string channel, string accessToken) => Task.Run(() => Internal.TwitchApi.GetChannelEditors(channel, accessToken)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a string list of channel editor users.
             /// <para>Authenticated, required scope: <code>channel_read</code></para>
@@ -59,7 +59,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to fetch editors from.</param>
             /// <param name="accessToken">An access token with the required scope.</param>
             /// <returns>A list of User objects that are channel editors.</returns>
-            public static async Task<List<User>> GetChannelEditorsAsync(string channel, string accessToken) => await Internal.TwitchApi.GetChannelEditors(channel, accessToken);
+            public static async Task<List<Models.API.User.User>> GetChannelEditorsAsync(string channel, string accessToken) => await Internal.TwitchApi.GetChannelEditors(channel, accessToken);
 
             /// <summary>
             /// [SYNC] Retrieves a string list of channels hosting a specified channel.
@@ -81,13 +81,13 @@ namespace TwitchLib
             /// </summary>
             /// <param name="channel">The name of the channel to search for.</param>
             /// <returns>A TwitchStream object containing API data related to a stream.</returns>
-            public static Channel GetChannel(string channel) => Task.Run(() => Internal.TwitchApi.GetChannel(channel)).Result;
+            public static Models.API.Channel.Channel GetChannel(string channel) => Task.Run(() => Internal.TwitchApi.GetChannel(channel)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a TwitchStream object containing API data related to a stream.
             /// </summary>
             /// <param name="channel">The name of the channel to search for.</param>
             /// <returns>A TwitchStream object containing API data related to a stream.</returns>
-            public static async Task<Channel> GetChannelAsync(string channel) => await Internal.TwitchApi.GetChannel(channel);
+            public static async Task<Models.API.Channel.Channel> GetChannelAsync(string channel) => await Internal.TwitchApi.GetChannel(channel);
 
             /// <summary>
             /// [SYNC] Execute a search query on Twitch to find a list of channels.
@@ -96,7 +96,7 @@ namespace TwitchLib
             /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
             /// <param name="offset">Object offset for pagination. Default is 0.</param>
             /// <returns>A list of Channel objects matching the query.</returns>
-            public static List<Channel> SearchChannels(string query, int limit = 25, int offset = 0) => Task.Run(() => Internal.TwitchApi.SearchChannels(query, limit, offset)).Result;
+            public static List<Models.API.Channel.Channel> SearchChannels(string query, int limit = 25, int offset = 0) => Task.Run(() => Internal.TwitchApi.SearchChannels(query, limit, offset)).Result;
             /// <summary>
             /// [ASYNC] Execute a search query on Twitch to find a list of channels.
             /// </summary>
@@ -104,7 +104,7 @@ namespace TwitchLib
             /// <param name="limit">Maximum number of objects in array. Default is 25. Maximum is 100.</param>
             /// <param name="offset">Object offset for pagination. Default is 0.</param>
             /// <returns>A list of Channel objects matching the query.</returns>
-            public static async Task<List<Channel>> SearchChannelsAsync(string query, int limit = 25, int offset = 0) => await Internal.TwitchApi.SearchChannels(query, limit, offset);
+            public static async Task<List<Models.API.Channel.Channel>> SearchChannelsAsync(string query, int limit = 25, int offset = 0) => await Internal.TwitchApi.SearchChannels(query, limit, offset);
 
             /// <summary>
             /// [SYNC] Retrieves channel feed posts.
@@ -113,7 +113,7 @@ namespace TwitchLib
             /// <param name="limit">Applied limit (default 10, max 100)</param>
             /// <param name="cursor">Used for pagination.</param>
             /// <returns></returns>
-            public static FeedResponse GetChannelFeed(string channel, int limit = 10, string cursor = null) => Task.Run(() => Internal.TwitchApi.GetChannelFeed(channel, limit, cursor)).Result;
+            public static Models.API.Feed.FeedResponse GetChannelFeed(string channel, int limit = 10, string cursor = null) => Task.Run(() => Internal.TwitchApi.GetChannelFeed(channel, limit, cursor)).Result;
             /// <summary>
             /// [ASYNC] Retrieves channel feed posts.
             /// </summary>
@@ -121,7 +121,7 @@ namespace TwitchLib
             /// <param name="limit">Applied limit (default 10, max 100)</param>
             /// <param name="cursor">Used for pagination.</param>
             /// <returns></returns>
-            public static async Task<FeedResponse> GetChannelFeedAsync(string channel, int limit = 10, string cursor = null) => await Internal.TwitchApi.GetChannelFeed(channel, limit, cursor);
+            public static async Task<Models.API.Feed.FeedResponse> GetChannelFeedAsync(string channel, int limit = 10, string cursor = null) => await Internal.TwitchApi.GetChannelFeed(channel, limit, cursor);
 
             /// <summary>
             /// [SYNC] Posts to a Twitch channel's feed.
@@ -131,7 +131,7 @@ namespace TwitchLib
             /// <param name="channel">Channel to post feed post to.</param>
             /// <param name="share">If set to true, and enabled on account, will tweet out post.</param>
             /// <returns>Returns object with Post object and URL to tweet if available.</returns>
-            public static PostToChannelFeedResponse PostToChannelFeed(string content, bool share, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.PostToChannelFeed(content, share, channel, accessToken)).Result;
+            public static Models.API.Feed.PostToChannelFeedResponse PostToChannelFeed(string content, bool share, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.PostToChannelFeed(content, share, channel, accessToken)).Result;
             /// <summary>
             /// [ASYNC] Posts to a Twitch channel's feed.
             /// </summary>
@@ -140,7 +140,7 @@ namespace TwitchLib
             /// <param name="channel">Channel to post feed post to.</param>
             /// <param name="share">If set to true, and enabled on account, will tweet out post.</param>
             /// <returns>Returns object with Post object and URL to tweet if available.</returns>
-            public static async Task<PostToChannelFeedResponse> PostToChannelFeedAsync(string content, bool share, string channel, string accessToken = null) => await Internal.TwitchApi.PostToChannelFeed(content, share, channel, accessToken);
+            public static async Task<Models.API.Feed.PostToChannelFeedResponse> PostToChannelFeedAsync(string content, bool share, string channel, string accessToken = null) => await Internal.TwitchApi.PostToChannelFeed(content, share, channel, accessToken);
 
             /// <summary>
             /// [SYNC] Deletes a post on a Twitch channel's feed.
@@ -182,14 +182,14 @@ namespace TwitchLib
             /// </summary>
             /// <param name="teamName">The name of the Twitch team to search for.</param>
             /// <returns>A TwitchTeamMember list of all members in a Twitch team.</returns>
-            public static List<TeamMember> GetTeamMembers(string teamName) => Task.Run(() => Internal.TwitchApi.GetTeamMembers(teamName)).Result;
+            public static List<Models.API.Team.TeamMember> GetTeamMembers(string teamName) => Task.Run(() => Internal.TwitchApi.GetTeamMembers(teamName)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a TwitchTeamMember list of all members in a Twitch team.
             /// <para>Note: This uses an undocumented API endpoint and reliability is not guaranteed.</para>
             /// </summary>
             /// <param name="teamName">The name of the Twitch team to search for.</param>
             /// <returns>A TwitchTeamMember list of all members in a Twitch team.</returns>
-            public static async Task<List<TeamMember>> GetTeamMembersAsync(string teamName) => await Internal.TwitchApi.GetTeamMembers(teamName);
+            public static async Task<List<Models.API.Team.TeamMember>> GetTeamMembersAsync(string teamName) => await Internal.TwitchApi.GetTeamMembers(teamName);
         }
 
         /// <summary>
@@ -202,13 +202,13 @@ namespace TwitchLib
             /// </summary>
             /// <param name="username">Name of the user you wish to fetch from Twitch.</param>
             /// <returns>User object containing details about the searched for user. Returns null if invalid user/error.</returns>
-            public static User GetUser(string username) => Task.Run(() => Internal.TwitchApi.GetUser(username)).Result;
+            public static Models.API.User.User GetUser(string username) => Task.Run(() => Internal.TwitchApi.GetUser(username)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a User object from Twitch Api and returns User object.
             /// </summary>
             /// <param name="username">Name of the user you wish to fetch from Twitch.</param>
             /// <returns>User object containing details about the searched for user. Returns null if invalid user/error.</returns>
-            public static async Task<User> GetUserAsync(string username) => await Internal.TwitchApi.GetUser(username);
+            public static async Task<Models.API.User.User> GetUserAsync(string username) => await Internal.TwitchApi.GetUser(username);
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace TwitchLib
             /// <exception cref="StreamOfflineException">Throws StreamOfflineException if stream is offline.</exception>
             /// <exception cref="BadResourceException">Throws BadResourceException if the passed channel is invalid.</exception>
             /// <returns>A TwitchStream object containing API data related to a stream.</returns>
-            public static Stream GetStream(string channel) => Task.Run(() => Internal.TwitchApi.GetStream(channel)).Result;
+            public static Models.API.Stream.Stream GetStream(string channel) => Task.Run(() => Internal.TwitchApi.GetStream(channel)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a collection of API data from a stream.
             /// </summary>
@@ -244,31 +244,31 @@ namespace TwitchLib
             /// <exception cref="StreamOfflineException">Throws StreamOfflineException if stream is offline.</exception>
             /// <exception cref="BadResourceException">Throws BadResourceException if the passed channel is invalid.</exception>
             /// <returns>A TwitchStream object containing API data related to a stream.</returns>
-            public static async Task<Stream> GetStreamAsync(string channel) => await Internal.TwitchApi.GetStream(channel);
+            public static async Task<Models.API.Stream.Stream> GetStreamAsync(string channel) => await Internal.TwitchApi.GetStream(channel);
 
             /// <summary>
             /// [SYNC] Retrieves a collection of API data from multiple streams
             /// </summary>
             /// <param name="channels">List of channels.</param>
             /// <returns>A list of stream objects for each stream.</returns>
-            public static List<Stream> GetStreams(List<string> channels) => Task.Run(() => Internal.TwitchApi.GetStreams(channels)).Result;
+            public static List<Models.API.Stream.Stream> GetStreams(List<string> channels) => Task.Run(() => Internal.TwitchApi.GetStreams(channels)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a collection of API data from multiple streams
             /// </summary>
             /// <param name="channels">List of channels.</param>
             /// <returns>A list of stream objects for each stream.</returns>
-            public static async Task<List<Stream>> GetStreamsAsync(List<string> channels) => await Internal.TwitchApi.GetStreams(channels);
+            public static async Task<List<Models.API.Stream.Stream>> GetStreamsAsync(List<string> channels) => await Internal.TwitchApi.GetStreams(channels);
 
             /// <summary>
             /// [SYNC] Retrieves all featured streams.
             /// </summary>
             /// <returns>A list of featured stream objects for each featured stream.</returns>
-            public static List<FeaturedStream> GetFeaturedStreams(int limit = 25, int offset = 0) => Task.Run(() => Internal.TwitchApi.GetFeaturedStreams(limit, offset)).Result;
+            public static List<Models.API.Stream.FeaturedStream> GetFeaturedStreams(int limit = 25, int offset = 0) => Task.Run(() => Internal.TwitchApi.GetFeaturedStreams(limit, offset)).Result;
             /// <summary>
             /// [ASYNC] Retrieves all featured streams.
             /// </summary>
             /// <returns>A list of featured stream objects for each featured stream.</returns>
-            public static async Task<List<FeaturedStream>> GetFeaturedStreamsAsync(int limit = 25, int offset = 0) => await Internal.TwitchApi.GetFeaturedStreams(limit, offset);
+            public static async Task<List<Models.API.Stream.FeaturedStream>> GetFeaturedStreamsAsync(int limit = 25, int offset = 0) => await Internal.TwitchApi.GetFeaturedStreams(limit, offset);
 
             /// <summary>
             /// [ASYNC] Update the <paramref name="status"/> of a <paramref name="channel"/>.
@@ -316,7 +316,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to update.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>The response of the request.</returns>
-            public static Channel UpdateStreamTitleAndGame(string status, string game, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateStreamTitleAndGame(status, game, channel, accessToken)).Result;
+            public static Models.API.Channel.Channel UpdateStreamTitleAndGame(string status, string game, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateStreamTitleAndGame(status, game, channel, accessToken)).Result;
             /// <summary>
             /// [ASYNC] Update the <paramref name="status"/> and <paramref name="game"/> of a <paramref name="channel"/>.
             /// </summary>
@@ -325,7 +325,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to update.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>The response of the request.</returns>
-            public static async Task<Channel> UpdateStreamTitleAndGameAsync(string status, string game, string channel, string accessToken = null) => await Internal.TwitchApi.UpdateStreamTitleAndGame(status, game, channel, accessToken);
+            public static async Task<Models.API.Channel.Channel> UpdateStreamTitleAndGameAsync(string status, string game, string channel, string accessToken = null) => await Internal.TwitchApi.UpdateStreamTitleAndGame(status, game, channel, accessToken);
 
             /// <summary>
             /// [SYNC] Execute a search query on Twitch to find a list of streams.
@@ -335,7 +335,7 @@ namespace TwitchLib
             /// <param name="offset">Object offset for pagination. Default is 0.</param>
             /// <param name="hls">If set to true, only returns streams using HLS, if set to false only returns non-HLS streams. Default is null.</param>
             /// <returns>A list of Stream objects matching the query.</returns>
-            public static List<Stream> SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null) => Task.Run(() => Internal.TwitchApi.SearchStreams(query, limit, offset, hls)).Result;
+            public static List<Models.API.Stream.Stream> SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null) => Task.Run(() => Internal.TwitchApi.SearchStreams(query, limit, offset, hls)).Result;
             /// <summary>
             /// [ASYNC] Execute a search query on Twitch to find a list of streams.
             /// </summary>
@@ -344,7 +344,7 @@ namespace TwitchLib
             /// <param name="offset">Object offset for pagination. Default is 0.</param>
             /// <param name="hls">If set to true, only returns streams using HLS, if set to false only returns non-HLS streams. Default is null.</param>
             /// <returns>A list of Stream objects matching the query.</returns>
-            public static async Task<List<Stream>> SearchStreamsAsync(string query, int limit = 25, int offset = 0, bool? hls = null) => await Internal.TwitchApi.SearchStreams(query, limit, offset, hls);
+            public static async Task<List<Models.API.Stream.Stream>> SearchStreamsAsync(string query, int limit = 25, int offset = 0, bool? hls = null) => await Internal.TwitchApi.SearchStreams(query, limit, offset, hls);
 
             /// <summary>
             /// [SYNC] Resets the stream key of the <paramref name="channel"/>.
@@ -406,13 +406,13 @@ namespace TwitchLib
             /// </summary>
             /// <param name="channel">The channel to retrieve the chatting people for.</param>
             /// <returns>A list of Chatter objects detailing each chatter in a channel.</returns>
-            public static List<Chatter> GetChatters(string channel) => Task.Run(() => Internal.TwitchApi.GetChatters(channel)).Result;
+            public static List<Models.API.Chat.Chatter> GetChatters(string channel) => Task.Run(() => Internal.TwitchApi.GetChatters(channel)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a list of all people currently chatting in a channel's chat.
             /// </summary>
             /// <param name="channel">The channel to retrieve the chatting people for.</param>
             /// <returns>A list of Chatter objects detailing each chatter in a channel.</returns>
-            public static async Task<List<Chatter>> GetChattersAsync(string channel) => await Internal.TwitchApi.GetChatters(channel);
+            public static async Task<List<Models.API.Chat.Chatter>> GetChattersAsync(string channel) => await Internal.TwitchApi.GetChatters(channel);
 
             /// <summary>
             /// [SYNC, DEPRECATED] Checks if a stream is live or not.
@@ -444,12 +444,12 @@ namespace TwitchLib
             /// [SYNC] Retrieves the site wide streams summary (total viewers, total streams) on Twitch.
             /// </summary>
             /// <returns>StreamsSummary object housing total viewers, total streams.</returns>
-            public static StreamsSummary GetStreamsSummary() => Task.Run(() => Internal.TwitchApi.GetStreamsSummary()).Result;
+            public static Models.API.Stream.StreamsSummary GetStreamsSummary() => Task.Run(() => Internal.TwitchApi.GetStreamsSummary()).Result;
             /// <summary>
             /// [ASYNC] Retrieves the site wide streams summary (total viewers, total streams) on Twitch.
             /// </summary>
             /// <returns>StreamsSummary object housing total viewers, total streams.</returns>
-            public static async Task<StreamsSummary> GetStreamsSummaryAsync() => await Internal.TwitchApi.GetStreamsSummary();
+            public static async Task<Models.API.Stream.StreamsSummary> GetStreamsSummaryAsync() => await Internal.TwitchApi.GetStreamsSummary();
         }
 
         /// <summary>
@@ -463,14 +463,14 @@ namespace TwitchLib
             /// <param name="limit">The number of listings to return, default to 10.</param>
             /// <param name="offset">The number of listings to offset the returned listings, default to 0.</param>
             /// <returns>A list of Game objects matching the query.</returns>
-            public static List<GameByPopularityListing> GetGamesByPopularity(int limit = 10, int offset = 0) => Task.Run(() => Internal.TwitchApi.GetGamesByPopularity(limit, offset)).Result;
+            public static List<Models.API.Game.GameByPopularityListing> GetGamesByPopularity(int limit = 10, int offset = 0) => Task.Run(() => Internal.TwitchApi.GetGamesByPopularity(limit, offset)).Result;
             /// <summary>
             /// [ASYNC] Execute a query to return the games with the most current viewers.
             /// </summary>
             /// <param name="limit">The number of listings to return, default to 10.</param>
             /// <param name="offset">The number of listings to offset the returned listings, default to 0.</param>
             /// <returns>A list of Game objects matching the query.</returns>
-            public static async Task<List<GameByPopularityListing>> GetGamesByPopularityAsync(int limit = 10, int offset = 0) => await Internal.TwitchApi.GetGamesByPopularity(limit, offset);
+            public static async Task<List<Models.API.Game.GameByPopularityListing>> GetGamesByPopularityAsync(int limit = 10, int offset = 0) => await Internal.TwitchApi.GetGamesByPopularity(limit, offset);
 
             /// <summary>
             /// [SYNC] Execute a search query on Twitch to find a list of games.
@@ -478,14 +478,14 @@ namespace TwitchLib
             /// <param name="query">A url-encoded search query.</param>
             /// <param name="live">If set to true, only games with active streams will be found.</param>
             /// <returns>A list of Game objects matching the query.</returns>
-            public static List<Game> SearchGames(string query, bool live = false) => Task.Run(() => Internal.TwitchApi.SearchGames(query, live)).Result;
+            public static List<Models.API.Game.Game> SearchGames(string query, bool live = false) => Task.Run(() => Internal.TwitchApi.SearchGames(query, live)).Result;
             /// <summary>
             /// [ASYNC] Execute a search query on Twitch to find a list of games.
             /// </summary>
             /// <param name="query">A url-encoded search query.</param>
             /// <param name="live">If set to true, only games with active streams will be found.</param>
             /// <returns>A list of Game objects matching the query.</returns>
-            public static async Task<List<Game>> SearchGamesAsync(string query, bool live = false) => await Internal.TwitchApi.SearchGames(query, live);
+            public static async Task<List<Models.API.Game.Game>> SearchGamesAsync(string query, bool live = false) => await Internal.TwitchApi.SearchGames(query, live);
         }
 
         /// <summary>
@@ -502,7 +502,7 @@ namespace TwitchLib
             /// <param name="limit">Limit output from Twitch Api. Default 25, max 100.</param>
             /// <param name="offset">Offset out from Twitch Api. Default 0.</param>
             /// <returns>List of Block objects.</returns>
-            public static List<Block> GetBlockedList(string username, int limit = 25, int offset = 0, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetBlockedList(username, accessToken, limit, offset)).Result;
+            public static List<Models.API.Block.Block> GetBlockedList(string username, int limit = 25, int offset = 0, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetBlockedList(username, accessToken, limit, offset)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a list of blocked users a specific user has.
             /// <para>Authenticated, required scope: <code>user_blocks_read</code></para>
@@ -512,7 +512,7 @@ namespace TwitchLib
             /// <param name="limit">Limit output from Twitch Api. Default 25, max 100.</param>
             /// <param name="offset">Offset out from Twitch Api. Default 0.</param>
             /// <returns>List of Block objects.</returns>
-            public static async Task<List<Block>> GetBlockedListAsync(string username, int limit = 25, int offset = 0, string accessToken = null) => await Internal.TwitchApi.GetBlockedList(username, accessToken, limit, offset);
+            public static async Task<List<Models.API.Block.Block>> GetBlockedListAsync(string username, int limit = 25, int offset = 0, string accessToken = null) => await Internal.TwitchApi.GetBlockedList(username, accessToken, limit, offset);
 
             /// <summary>
             /// [SYNC] Blocks a user.
@@ -522,7 +522,7 @@ namespace TwitchLib
             /// <param name="blockedUsername">User to block.</param>
             /// <param name="accessToken">This call requires an access token.</param>
             /// <returns>Block object.</returns>
-            public static Block BlockUser(string username, string blockedUsername, string accessToken = null) => Task.Run(() => Internal.TwitchApi.BlockUser(username, blockedUsername, accessToken)).Result;
+            public static Models.API.Block.Block BlockUser(string username, string blockedUsername, string accessToken = null) => Task.Run(() => Internal.TwitchApi.BlockUser(username, blockedUsername, accessToken)).Result;
             /// <summary>
             /// [ASYNC] Blocks a user.
             /// <para>Authenticated, required scope: <code>user_blocks_edit</code></para>
@@ -531,7 +531,7 @@ namespace TwitchLib
             /// <param name="blockedUsername">User to block.</param>
             /// <param name="accessToken">This call requires an access token.</param>
             /// <returns>Block object.</returns>
-            public static async Task<Block> BlockUserAsync(string username, string blockedUsername, string accessToken = null) => await Internal.TwitchApi.BlockUser(username, blockedUsername, accessToken);
+            public static async Task<Models.API.Block.Block> BlockUserAsync(string username, string blockedUsername, string accessToken = null) => await Internal.TwitchApi.BlockUser(username, blockedUsername, accessToken);
 
             /// <summary>
             /// [SYNC] Unblocks a user.
@@ -562,14 +562,14 @@ namespace TwitchLib
             /// <param name="username">The user to check the follow status of.</param>
             /// <param name="channel">The channel to check against.</param>
             /// <returns>Returns Follow object representing follow relationship.</returns>
-            public static Follow UserFollowsChannel(string username, string channel) => Task.Run(() => Internal.TwitchApi.UserFollowsChannel(username, channel)).Result;
+            public static Models.API.Follow.Follow UserFollowsChannel(string username, string channel) => Task.Run(() => Internal.TwitchApi.UserFollowsChannel(username, channel)).Result;
             /// <summary>
             /// [ASYNC] Retrieves whether a specified user is following the specified user.
             /// </summary>
             /// <param name="username">The user to check the follow status of.</param>
             /// <param name="channel">The channel to check against.</param>
             /// <returns>Returns Follow object representing follow relationship.</returns>
-            public static async Task<Follow> UserFollowsChannelAsync(string username, string channel) => await Internal.TwitchApi.UserFollowsChannel(username, channel);
+            public static async Task<Models.API.Follow.Follow> UserFollowsChannelAsync(string username, string channel) => await Internal.TwitchApi.UserFollowsChannel(username, channel);
 
             /// <summary>
             /// [SYNC] Retrieves an ascending or descending list of followers from a specific channel.
@@ -579,7 +579,7 @@ namespace TwitchLib
             /// <param name="cursor">Twitch uses cursoring to paginate long lists of followers. Check <code>_cursor</code> in response body and set <code>cursor</code> to this value to get the next page of results, or use <code>_links.next</code> to navigate to the next page of results.</param>
             /// <param name="direction">Creation date sorting direction.</param>
             /// <returns>A list of TwitchFollower objects.</returns>
-            public static FollowersResponse GetFollowers(string channel, int limit = 25, string cursor = null) => Task.Run(() => Internal.TwitchApi.GetTwitchFollowers(channel, limit, cursor)).Result;
+            public static Models.API.Follow.FollowersResponse GetFollowers(string channel, int limit = 25, string cursor = null, Enums.SortDirection direction = Enums.SortDirection.Descending) => Task.Run(() => Internal.TwitchApi.GetTwitchFollowers(channel, limit, cursor, direction)).Result;
             /// <summary>
             /// [ASYNC] Retrieves an ascending or descending list of followers from a specific channel.
             /// </summary>
@@ -588,7 +588,7 @@ namespace TwitchLib
             /// <param name="cursor">Twitch uses cursoring to paginate long lists of followers. Check <code>_cursor</code> in response body and set <code>cursor</code> to this value to get the next page of results, or use <code>_links.next</code> to navigate to the next page of results.</param>
             /// <param name="direction">Creation date sorting direction.</param>
             /// <returns>A list of TwitchFollower objects.</returns>
-            public static async Task<FollowersResponse> GetFollowersAsync(string channel, int limit = 25, string cursor = null) => await Internal.TwitchApi.GetTwitchFollowers(channel, limit, cursor);
+            public static async Task<Models.API.Follow.FollowersResponse> GetFollowersAsync(string channel, int limit = 25, string cursor = null, Enums.SortDirection direction = Enums.SortDirection.Descending) => await Internal.TwitchApi.GetTwitchFollowers(channel, limit, cursor, direction);
 
             /// <summary>
             /// [SYNC] Retrieves a list of followed users a specific user has.
@@ -598,7 +598,7 @@ namespace TwitchLib
             /// <param name="offset">Integer representing list offset</param>
             /// <param name="sortKey">Enum representing sort order.</param>
             /// <returns>FollowedUsersResponse object.</returns>
-            public static FollowedUsersResponse GetFollowedUsers(string channel, int limit = 25, int offset = 0, Enums.SortKey sortKey = Enums.SortKey.CreatedAt) => Task.Run(() => Internal.TwitchApi.GetFollowedUsers(channel, limit, offset, sortKey)).Result;
+            public static Models.API.Follow.FollowedUsersResponse GetFollowedUsers(string channel, int limit = 25, int offset = 0, Enums.SortKey sortKey = Enums.SortKey.CreatedAt) => Task.Run(() => Internal.TwitchApi.GetFollowedUsers(channel, limit, offset, sortKey)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a list of followed users a specific user has.
             /// </summary>
@@ -607,7 +607,7 @@ namespace TwitchLib
             /// <param name="offset">Integer representing list offset</param>
             /// <param name="sortKey">Enum representing sort order.</param>
             /// <returns>FollowedUsersResponse object.</returns>
-            public static async Task<FollowedUsersResponse> GetFollowedUsersAsync(string channel, int limit = 25, int offset = 0, Enums.SortKey sortKey = Enums.SortKey.CreatedAt) => await Internal.TwitchApi.GetFollowedUsers(channel, limit, offset, sortKey);
+            public static async Task<Models.API.Follow.FollowedUsersResponse> GetFollowedUsersAsync(string channel, int limit = 25, int offset = 0, Enums.SortKey sortKey = Enums.SortKey.CreatedAt) => await Internal.TwitchApi.GetFollowedUsers(channel, limit, offset, sortKey);
 
             /// <summary>
             /// [SYNC] Follows a channel given by <paramref name="channel"/>.
@@ -617,7 +617,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to follow.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>A follow object representing the follow action.</returns>
-            public static Follow FollowChannel(string username, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.FollowChannel(username, channel, accessToken)).Result;
+            public static Models.API.Follow.Follow FollowChannel(string username, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.FollowChannel(username, channel, accessToken)).Result;
             /// <summary>
             /// [ASYNC] Follows a channel given by <paramref name="channel"/>.
             /// <para>Authenticated, required scope: <code>user_follows_edit</code></para>
@@ -626,7 +626,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to follow.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>A follow object representing the follow action.</returns>
-            public static async Task<Follow> FollowChannelAsync(string username, string channel, string accessToken = null) => await Internal.TwitchApi.FollowChannel(username, channel, accessToken);
+            public static async Task<Models.API.Follow.Follow> FollowChannelAsync(string username, string channel, string accessToken = null) => await Internal.TwitchApi.FollowChannel(username, channel, accessToken);
 
             /// <summary>
             /// [SYNC] Unfollows a channel given by <paramref name="channel"/>.
@@ -676,7 +676,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to check against.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>True if the user is subscribed to the channel, false otherwise.</returns>
-            public static ChannelHasUserSubscribedResponse ChannelHasUserSubscribed(string username, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.ChannelHasUserSubscribed(username, channel, accessToken)).Result;
+            public static Models.API.Channel.ChannelHasUserSubscribedResponse ChannelHasUserSubscribed(string username, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.ChannelHasUserSubscribed(username, channel, accessToken)).Result;
             /// <summary>
             /// [ASYNC] Retrieves whether a <paramref name="username"/> is subscribed to a <paramref name="channel"/>.
             /// <para>Authenticated, required scope: <code>channel_check_subscription</code></para>
@@ -685,7 +685,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to check against.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>True if the user is subscribed to the channel, false otherwise.</returns>
-            public static async Task<ChannelHasUserSubscribedResponse> ChannelHasUserSubscribedAsync(string username, string channel, string accessToken = null) => await Internal.TwitchApi.ChannelHasUserSubscribed(username, channel, accessToken);
+            public static async Task<Models.API.Channel.ChannelHasUserSubscribedResponse> ChannelHasUserSubscribedAsync(string username, string channel, string accessToken = null) => await Internal.TwitchApi.ChannelHasUserSubscribed(username, channel, accessToken);
 
             /// <summary>
             /// [SYNC] Retrieves subscriber list for a <paramref name="channel"/>.
@@ -694,7 +694,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to check against.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>List of channel subscribers</returns>
-            public static SubscribersResponse GetChannelSubscribers(string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetAllSubscribers(channel, accessToken)).Result;
+            public static Models.API.Subscriber.SubscribersResponse GetChannelSubscribers(string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetAllSubscribers(channel, accessToken)).Result;
             /// <summary>
             /// [ASYNC] Retrieves subscriber list for a <paramref name="channel"/>.
             /// <para>Authenticated, required scope: channel_subscriptions</para>
@@ -702,7 +702,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to check against.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>List of channel subscribers</returns>
-            public static async Task<SubscribersResponse> GetChannelSubscribersAsync(string channel, string accessToken = null) => await Internal.TwitchApi.GetAllSubscribers(channel, accessToken);
+            public static async Task<Models.API.Subscriber.SubscribersResponse> GetChannelSubscribersAsync(string channel, string accessToken = null) => await Internal.TwitchApi.GetAllSubscribers(channel, accessToken);
 
             /// <summary>
             /// [SYNC] Retrieves channel subscribers from Twitch using limit and offset
@@ -713,7 +713,7 @@ namespace TwitchLib
             /// <param name="direction">Direction of which the subscribers should be returned. Default Ascending</param>
             /// <param name="accessToken">Optional access token used if you haven't set the access token.</param>
             /// <returns>SubscribersResponse housing all subscribers and total number</returns>
-            public static SubscribersResponse GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.SortDirection direction = Enums.SortDirection.Ascending, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetSubscribers(channel, limit, offset, direction, accessToken)).Result;
+            public static Models.API.Subscriber.SubscribersResponse GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.SortDirection direction = Enums.SortDirection.Ascending, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetSubscribers(channel, limit, offset, direction, accessToken)).Result;
             /// <summary>
             /// [ASYNC] Retrieves channel subscribers from Twitch using limit and offset
             /// </summary>
@@ -723,7 +723,7 @@ namespace TwitchLib
             /// <param name="direction">Direction of which the subscribers should be returned. Default Ascending</param>
             /// <param name="accessToken">Optional access token used if you haven't set the access token.</param>
             /// <returns>SubscribersResponse housing all subscribers and total number</returns>
-            public static async Task<SubscribersResponse> GetSubscribersAsync(string channel, int limit = 25, int offset = 0, Enums.SortDirection direction = Enums.SortDirection.Ascending, string accessToken = null) => await Internal.TwitchApi.GetSubscribers(channel, limit, offset, direction, accessToken);
+            public static async Task<Models.API.Subscriber.SubscribersResponse> GetSubscribersAsync(string channel, int limit = 25, int offset = 0, Enums.SortDirection direction = Enums.SortDirection.Ascending, string accessToken = null) => await Internal.TwitchApi.GetSubscribers(channel, limit, offset, direction, accessToken);
         }
 
         /// <summary>
@@ -740,7 +740,7 @@ namespace TwitchLib
             /// <param name="onlyBroadcasts">Returns only broadcasts when true. Otherwise only highlights are returned. Default is false.</param>
             /// <param name="onlyHls">Returns only HLS VoDs when true. Otherwise only non-HLS VoDs are returned. Default is false.</param>
             /// <returns>A list of TwitchVideo objects the channel has available.</returns>
-            public static List<Video> GetChannelVideos(string channel, int limit = 10, int offset = 0, bool onlyBroadcasts = false, bool onlyHls = false) => Task.Run(() => Internal.TwitchApi.GetChannelVideos(channel, limit, offset, onlyBroadcasts, onlyHls)).Result;
+            public static List<Models.API.Video.Video> GetChannelVideos(string channel, int limit = 10, int offset = 0, bool onlyBroadcasts = false, bool onlyHls = false) => Task.Run(() => Internal.TwitchApi.GetChannelVideos(channel, limit, offset, onlyBroadcasts, onlyHls)).Result;
             /// <summary>
             /// [ASYNC] Returns a list of videos ordered by time of creation, starting with the most recent.
             /// </summary>
@@ -750,7 +750,7 @@ namespace TwitchLib
             /// <param name="onlyBroadcasts">Returns only broadcasts when true. Otherwise only highlights are returned. Default is false.</param>
             /// <param name="onlyHls">Returns only HLS VoDs when true. Otherwise only non-HLS VoDs are returned. Default is false.</param>
             /// <returns>A list of TwitchVideo objects the channel has available.</returns>
-            public static async Task<List<Video>> GetChannelVideosAsync(string channel, int limit = 10, int offset = 0, bool onlyBroadcasts = false, bool onlyHls = false) => await Internal.TwitchApi.GetChannelVideos(channel, limit, offset, onlyBroadcasts, onlyHls);
+            public static async Task<List<Models.API.Video.Video>> GetChannelVideosAsync(string channel, int limit = 10, int offset = 0, bool onlyBroadcasts = false, bool onlyHls = false) => await Internal.TwitchApi.GetChannelVideos(channel, limit, offset, onlyBroadcasts, onlyHls);
         }
 
         /// <summary>
@@ -768,7 +768,7 @@ namespace TwitchLib
             /// <param name="period">Period enum used to specify a date range. Default is Day.</param>
             /// <param name="trending">Only pull from trending clips? Default is false.</param>
             /// <returns>ClipsResponse object containing cursor string as well as List of Clip objects.</returns>
-            public static ClipsResponse GetTopClips(List<string> channels = null, List<string> games = null, int limit = 10, string cursor = null, Enums.Period period = Enums.Period.Day, bool trending = false) => Task.Run(() => Internal.TwitchApi.GetTopClips(channels, games, limit, cursor, period, trending)).Result;
+            public static Models.API.Clip.ClipsResponse GetTopClips(List<string> channels = null, List<string> games = null, int limit = 10, string cursor = null, Enums.Period period = Enums.Period.Day, bool trending = false) => Task.Run(() => Internal.TwitchApi.GetTopClips(channels, games, limit, cursor, period, trending)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a list of top clips given specific (or no) parameters.
             /// </summary>
@@ -779,7 +779,7 @@ namespace TwitchLib
             /// <param name="period">Period enum used to specify a date range. Default is Day.</param>
             /// <param name="trending">Only pull from trending clips? Default is false.</param>
             /// <returns>ClipsResponse object containing cursor string as well as List of Clip objects.</returns>
-            public static async Task<ClipsResponse> GetTopClipsAsync(List<string> channels = null, List<string> games = null, int limit = 10, string cursor = null, Enums.Period period = Enums.Period.Day, bool trending = false) => await Internal.TwitchApi.GetTopClips(channels, games, limit, cursor, period, trending);
+            public static async Task<Models.API.Clip.ClipsResponse> GetTopClipsAsync(List<string> channels = null, List<string> games = null, int limit = 10, string cursor = null, Enums.Period period = Enums.Period.Day, bool trending = false) => await Internal.TwitchApi.GetTopClips(channels, games, limit, cursor, period, trending);
 
             /// <summary>
             /// [SYNC] Retrieves detailed information regarding a specific clip.
@@ -787,14 +787,14 @@ namespace TwitchLib
             /// <param name="channel">The channel that the clip happened in.</param>
             /// <param name="slug">The string of words that identifies the clip.</param>
             /// <returns>Clip object.</returns>
-            public static Clip GetClipInformation(string channel, string slug) => Task.Run(() => Internal.TwitchApi.GetClipInformation(channel, slug)).Result;
+            public static Models.API.Clip.Clip GetClipInformation(string channel, string slug) => Task.Run(() => Internal.TwitchApi.GetClipInformation(channel, slug)).Result;
             /// <summary>
             /// [ASYNC] Retrieves detailed information regarding a specific clip.
             /// </summary>
             /// <param name="channel">The channel that the clip happened in.</param>
             /// <param name="slug">The string of words that identifies the clip.</param>
             /// <returns>Clip object.</returns>
-            public static async Task<Clip> GetClipInformationAsync(string channel, string slug) => await Internal.TwitchApi.GetClipInformation(channel, slug);
+            public static async Task<Models.API.Clip.Clip> GetClipInformationAsync(string channel, string slug) => await Internal.TwitchApi.GetClipInformation(channel, slug);
 
             /// <summary>
             /// [SYNC] Gets the top Clips for a user's followed games. Required scope: user_read
@@ -804,7 +804,7 @@ namespace TwitchLib
             /// <param name="trending">Only pull from trending clips? Default is false.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>ClipsResponse object.</returns>
-            public static ClipsResponse GetFollowedClips(string cursor = "0", int limit = 10, bool trending = false, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetFollowedClips(cursor, limit, trending, accessToken)).Result;
+            public static Models.API.Clip.ClipsResponse GetFollowedClips(string cursor = "0", int limit = 10, bool trending = false, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetFollowedClips(cursor, limit, trending, accessToken)).Result;
             /// <summary>
             /// [ASYNC] Gets the top Clips for a user's followed games. Required scope: user_read
             /// </summary>
@@ -813,7 +813,7 @@ namespace TwitchLib
             /// <param name="trending">Only pull from trending clips? Default is false.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>ClipsResponse object.</returns>
-            public static async Task<ClipsResponse> GetFollowedClipsAsync(string cursor = "0", int limit = 10, bool trending = false, string accessToken = null) => await Internal.TwitchApi.GetFollowedClips(cursor, limit, trending, accessToken);
+            public static async Task<Models.API.Clip.ClipsResponse> GetFollowedClipsAsync(string cursor = "0", int limit = 10, bool trending = false, string accessToken = null) => await Internal.TwitchApi.GetFollowedClips(cursor, limit, trending, accessToken);
         }
 
         #region Twitch API Global Functions

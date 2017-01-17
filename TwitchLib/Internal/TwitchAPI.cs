@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using TwitchLib.Exceptions.API;
 using TwitchLib.Models.API;
+using TwitchLib.Models.API.User;
+using TwitchLib.Models.API.Team;
 
 namespace TwitchLib.Internal
 {
@@ -20,14 +22,14 @@ namespace TwitchLib.Internal
         private static string AccessToken { get; set; } 
 
         #region Get Objects
-        public static async Task<Channels> GetChannelsObject(string channel)
+        public static async Task<Models.API.Channel.Channels> GetChannelsObject(string channel)
         {
-            return new Channels(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/api/channels/{channel}")));
+            return new Models.API.Channel.Channels(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/api/channels/{channel}")));
         }
 
-        public static async Task<BadgeResponse> GetChannelBadges(string channel)
+        public static async Task<Models.API.Badge.BadgeResponse> GetChannelBadges(string channel)
         {
-            return new BadgeResponse(await MakeGetRequest($"https://api.twitch.tv/kraken/chat/{channel}/badges"));
+            return new Models.API.Badge.BadgeResponse(await MakeGetRequest($"https://api.twitch.tv/kraken/chat/{channel}/badges"));
         }
 
         public static async Task<List<User>> GetChannelEditors(string channel, string accessToken = null)
@@ -57,9 +59,9 @@ namespace TwitchLib.Internal
                     .ToList();
         }
 
-        public static async Task<Channel> GetChannel(string channel)
+        public static async Task<Models.API.Channel.Channel> GetChannel(string channel)
         {
-            return new Channel(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}")));
+            return new Models.API.Channel.Channel(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}")));
         }
 
         public static async Task<User> GetUser(string username)
@@ -84,15 +86,15 @@ namespace TwitchLib.Internal
             }
         }
 
-        public static async Task<FeedResponse> GetChannelFeed(string channel, int limit = 10, string cursor = null)
+        public static async Task<Models.API.Feed.FeedResponse> GetChannelFeed(string channel, int limit = 10, string cursor = null)
         {
             var args = $"?limit={limit}";
             if (cursor != null)
                 args += $"&cursor={cursor};";
-            return new FeedResponse(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts{args}")));
+            return new Models.API.Feed.FeedResponse(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts{args}")));
         }
 
-        public static async Task<Models.API.Stream> GetStream(string channel)
+        public static async Task<Models.API.Stream.Stream> GetStream(string channel)
         {
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
             var json = JObject.Parse(resp);
@@ -100,46 +102,46 @@ namespace TwitchLib.Internal
                 throw new BadResourceException(json.SelectToken("error").ToString());
             if (Common.JsonIsNullOrEmpty(json.SelectToken("stream")))
                 throw new StreamOfflineException();
-            return new Models.API.Stream(json.SelectToken("stream"));
+            return new Models.API.Stream.Stream(json.SelectToken("stream"));
         }
 
-        public static async Task<List<Models.API.Stream>> GetStreams(List<string> channels)
+        public static async Task<List<Models.API.Stream.Stream>> GetStreams(List<string> channels)
         {
             var json = JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/streams?channel={string.Join(",", channels)}"));
-            List<Models.API.Stream> streams = new List<Models.API.Stream>();
-            streams.AddRange(json.SelectToken("streams").Select(stream => new Models.API.Stream(stream)));
+            List<Models.API.Stream.Stream> streams = new List<Models.API.Stream.Stream>();
+            streams.AddRange(json.SelectToken("streams").Select(stream => new Models.API.Stream.Stream(stream)));
             return streams;
         }
 
-        public static async Task<List<FeaturedStream>> GetFeaturedStreams(int limit = 25, int offset = 0)
+        public static async Task<List<Models.API.Stream.FeaturedStream>> GetFeaturedStreams(int limit = 25, int offset = 0)
         {
             var json = JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/streams/featured?limit={limit}&offset={offset}"));
-            List<FeaturedStream> streams = new List<FeaturedStream>();
-            streams.AddRange(json.SelectToken("streams").Select(stream => new Models.API.FeaturedStream(stream)));
+            List<Models.API.Stream.FeaturedStream> streams = new List<Models.API.Stream.FeaturedStream>();
+            streams.AddRange(json.SelectToken("streams").Select(stream => new Models.API.Stream.FeaturedStream(stream)));
             return streams;
         }
         
-        public static async Task<StreamsSummary> GetStreamsSummary()
+        public static async Task<Models.API.Stream.StreamsSummary> GetStreamsSummary()
         {
             var json = await MakeGetRequest("https://api.twitch.tv/kraken/streams/summary");
-            return new StreamsSummary(json);
+            return new Models.API.Stream.StreamsSummary(json);
         }
         #endregion
 
         #region Searching
-        public static async Task<List<Channel>> SearchChannels(string query, int limit = 25, int offset = 0)
+        public static async Task<List<Models.API.Channel.Channel>> SearchChannels(string query, int limit = 25, int offset = 0)
         {
-            var returnedChannels = new List<Channel>();
+            var returnedChannels = new List<Models.API.Channel.Channel>();
             var json = JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/search/channels?query={query}&limit={limit}&offset={offset}"));
             if (json.SelectToken("_total").ToString() == "0") return returnedChannels;
-            returnedChannels.AddRange(json.SelectToken("channels").Select(channelToken => new Channel((JObject)channelToken)));
+            returnedChannels.AddRange(json.SelectToken("channels").Select(channelToken => new Models.API.Channel.Channel((JObject)channelToken)));
             return returnedChannels;
         }
 
         
-        public static async Task<List<Models.API.Stream>> SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
+        public static async Task<List<Models.API.Stream.Stream>> SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
         {
-            var returnedStreams = new List<Models.API.Stream>();
+            var returnedStreams = new List<Models.API.Stream.Stream>();
             var hlsStr = "";
             if (hls == true) hlsStr = "&hls=true";
             if (hls == false) hlsStr = "&hls=false";
@@ -149,58 +151,58 @@ namespace TwitchLib.Internal
             var json = JObject.Parse(resp);
             if (json.SelectToken("_total").ToString() == "0") return returnedStreams;
             returnedStreams.AddRange(
-                json.SelectToken("streams").Select(streamToken => new Models.API.Stream((JObject)streamToken)));
+                json.SelectToken("streams").Select(streamToken => new Models.API.Stream.Stream((JObject)streamToken)));
             return returnedStreams;
         }
 
         
-        public static async Task<List<Game>> SearchGames(string query, bool live = false)
+        public static async Task<List<Models.API.Game.Game>> SearchGames(string query, bool live = false)
         {
-            var returnedGames = new List<Game>();
+            var returnedGames = new List<Models.API.Game.Game>();
 
             var args = $"?query={query}&type=suggest&live=" + live.ToString();
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/search/games{args}");
 
             var json = JObject.Parse(resp);
             returnedGames.AddRange(
-                json.SelectToken("games").Select(gameToken => new Game((JObject)gameToken)));
+                json.SelectToken("games").Select(gameToken => new Models.API.Game.Game((JObject)gameToken)));
             return returnedGames;
         }
 
         
-        public static async Task<List<GameByPopularityListing>> GetGamesByPopularity(int limit = 10, int offset = 0)
+        public static async Task<List<Models.API.Game.GameByPopularityListing>> GetGamesByPopularity(int limit = 10, int offset = 0)
         {
-            var returnedGames = new List<GameByPopularityListing>();
+            var returnedGames = new List<Models.API.Game.GameByPopularityListing>();
 
             var args = $"?limit={limit}&offset={offset}";
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/games/top{args}");
 
             var json = JObject.Parse(resp);
             returnedGames.AddRange(
-                json.SelectToken("top").Select(gameToken => new GameByPopularityListing((JObject)gameToken)));
+                json.SelectToken("top").Select(gameToken => new Models.API.Game.GameByPopularityListing((JObject)gameToken)));
             return returnedGames;
         }
         #endregion
 
         #region Chatters
         
-        public static async Task<List<Chatter>> GetChatters(string channel)
+        public static async Task<List<Models.API.Chat.Chatter>> GetChatters(string channel)
         {
             var resp = await MakeGetRequest($"https://tmi.twitch.tv/group/user/{channel.ToLower()}/chatters");
             var chatters = JObject.Parse(resp).SelectToken("chatters");
             var chatterList =
                 chatters.SelectToken("moderators")
-                    .Select(user => new Chatter(user.ToString(), Enums.UserType.Moderator))
+                    .Select(user => new Models.API.Chat.Chatter(user.ToString(), Enums.UserType.Moderator))
                     .ToList();
             chatterList.AddRange(
-                chatters.SelectToken("staff").Select(user => new Chatter(user.ToString(), Enums.UserType.Staff)));
+                chatters.SelectToken("staff").Select(user => new Models.API.Chat.Chatter(user.ToString(), Enums.UserType.Staff)));
             chatterList.AddRange(
-                chatters.SelectToken("admins").Select(user => new Chatter(user.ToString(), Enums.UserType.Admin)));
+                chatters.SelectToken("admins").Select(user => new Models.API.Chat.Chatter(user.ToString(), Enums.UserType.Admin)));
             chatterList.AddRange(
                 chatters.SelectToken("global_mods")
-                    .Select(user => new Chatter(user.ToString(), Enums.UserType.GlobalModerator)));
+                    .Select(user => new Models.API.Chat.Chatter(user.ToString(), Enums.UserType.GlobalModerator)));
             chatterList.AddRange(
-                chatters.SelectToken("viewers").Select(user => new Chatter(user.ToString(), Enums.UserType.Viewer)));
+                chatters.SelectToken("viewers").Select(user => new Models.API.Chat.Chatter(user.ToString(), Enums.UserType.Viewer)));
             return chatterList;
         }
         #endregion
@@ -220,11 +222,11 @@ namespace TwitchLib.Internal
         }
 
         
-        public static async Task<Channel> UpdateStreamTitleAndGame(string status, string game, string channel,
+        public static async Task<Models.API.Channel.Channel> UpdateStreamTitleAndGame(string status, string game, string channel,
             string accessToken = null)
         {
             var data = "{\"channel\":{\"status\":\"" + status + "\",\"game\":\"" + game + "\"}}";
-            return new Channel(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken)));
+            return new Models.API.Channel.Channel(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken)));
         }
         #endregion
 
@@ -243,21 +245,21 @@ namespace TwitchLib.Internal
         #endregion
 
         #region Blocking
-        public static async Task<List<Block>> GetBlockedList(string username, string accessToken = null, int limit = 25, int offset = 0)
+        public static async Task<List<Models.API.Block.Block>> GetBlockedList(string username, string accessToken = null, int limit = 25, int offset = 0)
         {
             string args = $"?limit={limit}&offset={offset}";
             string resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}/blocks{args}", accessToken);
             JObject json = JObject.Parse(resp);
-            List<Block> blocks = new List<Block>();
+            List<Models.API.Block.Block> blocks = new List<Models.API.Block.Block>();
             if (json.SelectToken("blocks") != null)
                 foreach (JToken block in json.SelectToken("blocks"))
-                    blocks.Add(new Block(block));
+                    blocks.Add(new Models.API.Block.Block(block));
             return blocks;
         }
 
-        public static async Task<Block> BlockUser(string username, string blockedUsername, string accessToken = null)
+        public static async Task<Models.API.Block.Block> BlockUser(string username, string blockedUsername, string accessToken = null)
         {
-            return new Block(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/blocks/{blockedUsername}", "PUT", "", accessToken)));
+            return new Models.API.Block.Block(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/blocks/{blockedUsername}", "PUT", "", accessToken)));
         }
 
         public static async void UnblockUser(string username, string blockedUsername, string accessToken = null)
@@ -267,20 +269,20 @@ namespace TwitchLib.Internal
         #endregion
 
         #region Follows
-        public static async Task<Follow> UserFollowsChannel(string username, string channel)
+        public static async Task<Models.API.Follow.Follow> UserFollowsChannel(string username, string channel)
         {
             try
             {
                 string resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}");
-                return new Follow(resp);
+                return new Models.API.Follow.Follow(resp);
             }
             catch
             {
-                return new Follow(null, false);
+                return new Models.API.Follow.Follow(null, false);
             }
         }
 
-        public static async Task<FollowersResponse> GetTwitchFollowers(string channel, int limit = 25,
+        public static async Task<Models.API.Follow.FollowersResponse> GetTwitchFollowers(string channel, int limit = 25,
             string cursor = "-1", Enums.SortDirection direction = Enums.SortDirection.Descending)
         {
             string args = "";
@@ -290,10 +292,10 @@ namespace TwitchLib.Internal
             args += "&direction=" + (direction == Enums.SortDirection.Descending ? "desc" : "asc");
 
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/follows{args}");
-            return new FollowersResponse(resp);
+            return new Models.API.Follow.FollowersResponse(resp);
         }
 
-        public static async Task<FollowedUsersResponse> GetFollowedUsers(string channel, int limit = 25, int offset = 0, Enums.SortKey sortKey = Enums.SortKey.CreatedAt)
+        public static async Task<Models.API.Follow.FollowedUsersResponse> GetFollowedUsers(string channel, int limit = 25, int offset = 0, Enums.SortKey sortKey = Enums.SortKey.CreatedAt)
         {
             string args = "";
             args += "?limit=" + limit;
@@ -312,12 +314,12 @@ namespace TwitchLib.Internal
             }
 
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/users/{channel}/follows/channels{args}");
-            return new FollowedUsersResponse(resp);
+            return new Models.API.Follow.FollowedUsersResponse(resp);
         }
 
-        public static async Task<Follow> FollowChannel(string username, string channel, string accessToken = null)
+        public static async Task<Models.API.Follow.Follow> FollowChannel(string username, string channel, string accessToken = null)
         {
-            return new Follow(await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}", "PUT", "", accessToken));
+            return new Models.API.Follow.Follow(await MakeRestRequest($"https://api.twitch.tv/kraken/users/{username}/follows/channels/{channel}", "PUT", "", accessToken));
         }
 
         public static async void UnfollowChannel(string username, string channel, string accessToken = null)
@@ -335,10 +337,10 @@ namespace TwitchLib.Internal
             return int.Parse(json.SelectToken("_total").ToString());
         }
 
-        public static async Task<SubscribersResponse> GetAllSubscribers(string channel, string accessToken = null)
+        public static async Task<Models.API.Subscriber.SubscribersResponse> GetAllSubscribers(string channel, string accessToken = null)
         {
             // initial stuffs
-            List<Subscription> allSubs = new List<Subscription>();
+            List<Models.API.Subscriber.Subscription> allSubs = new List<Models.API.Subscriber.Subscription>();
             int totalSubs;
             var firstBatch = await GetSubscribers(channel, 100, 0, Enums.SortDirection.Ascending, accessToken);
             totalSubs = firstBatch.TotalSubscriberCount;
@@ -365,23 +367,23 @@ namespace TwitchLib.Internal
             var leftOverSubsRequest = await GetSubscribers(channel, leftOverSubs, currentOffset, Enums.SortDirection.Ascending, accessToken);
             allSubs.AddRange(leftOverSubsRequest.Subscribers);
 
-            return new SubscribersResponse(allSubs, totalSubs);
+            return new Models.API.Subscriber.SubscribersResponse(allSubs, totalSubs);
         }
 
-        public static async Task<SubscribersResponse> GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.SortDirection direction = Enums.SortDirection.Ascending, string accessToken = null)
+        public static async Task<Models.API.Subscriber.SubscribersResponse> GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.SortDirection direction = Enums.SortDirection.Ascending, string accessToken = null)
         {
             string args = $"?limit={limit}";
             args += $"&offset={offset}";
             args += $"&direction={(direction == Enums.SortDirection.Descending ? "desc" : "asc")}";
 
-            return new SubscribersResponse(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions{args}", accessToken)));
+            return new Models.API.Subscriber.SubscribersResponse(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions{args}", accessToken)));
         }
 
-        public static async Task<ChannelHasUserSubscribedResponse> ChannelHasUserSubscribed(string username, string channel, string accessToken = null)
+        public static async Task<Models.API.Channel.ChannelHasUserSubscribedResponse> ChannelHasUserSubscribed(string username, string channel, string accessToken = null)
         {
             try
             {
-                return new ChannelHasUserSubscribedResponse(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions/{username}", accessToken)));
+                return new Models.API.Channel.ChannelHasUserSubscribedResponse(JObject.Parse(await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions/{username}", accessToken)));
             }
             catch
             {
@@ -391,14 +393,14 @@ namespace TwitchLib.Internal
         #endregion
 
         #region Videos
-        public static async Task<List<Video>> GetChannelVideos(string channel, int limit = 10,
+        public static async Task<List<Models.API.Video.Video>> GetChannelVideos(string channel, int limit = 10,
             int offset = 0, bool onlyBroadcasts = false, bool onlyHls = false)
         {
             var args = $"?limit={limit}&offset={offset}&broadcasts={onlyBroadcasts}&hls={onlyHls}";
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/videos{args}");
             var vids = JObject.Parse(resp).SelectToken("videos");
 
-            return vids.Select(vid => new Video(vid)).ToList();
+            return vids.Select(vid => new Models.API.Video.Video(vid)).ToList();
         }
         #endregion
 
@@ -436,7 +438,7 @@ namespace TwitchLib.Internal
         #endregion
 
         #region Clips
-        public static async Task<ClipsResponse> GetTopClips(List<string> channels = null, List<string> games = null, int limit = 10, string cursor = null, Enums.Period period = Enums.Period.Day, bool trending = false)
+        public static async Task<Models.API.Clip.ClipsResponse> GetTopClips(List<string> channels = null, List<string> games = null, int limit = 10, string cursor = null, Enums.Period period = Enums.Period.Day, bool trending = false)
         {
             string channelsStr = (channels != null) ? $"channel={string.Join(",", channels)}" : null;
             string gamesStr = (games != null) ? $"game={string.Join(",", games)}" : null;
@@ -466,22 +468,22 @@ namespace TwitchLib.Internal
                 url = $"{url}&{gamesStr}";
             if (cursor != null)
                 url = $"{url}&{cursorStr}";
-            return new ClipsResponse(JObject.Parse(await MakeGetRequest(url, null, 4)));
+            return new Models.API.Clip.ClipsResponse(JObject.Parse(await MakeGetRequest(url, null, 4)));
         }
         
-        public static async Task<Clip> GetClipInformation(string channel, string slug)
+        public static async Task<Models.API.Clip.Clip> GetClipInformation(string channel, string slug)
         {
             string url = $"https://api.twitch.tv/kraken/clips/{channel}/{slug}";
-            return new Clip(JObject.Parse(await MakeGetRequest(url, null, 4)));
+            return new Models.API.Clip.Clip(JObject.Parse(await MakeGetRequest(url, null, 4)));
         }
 
-        public static async Task<ClipsResponse> GetFollowedClips(string cursor = "0", int limit = 10, bool trending = false, string accessToken = null)
+        public static async Task<Models.API.Clip.ClipsResponse> GetFollowedClips(string cursor = "0", int limit = 10, bool trending = false, string accessToken = null)
         {
             string cursorStr = $"cursor={cursor}";
             string limitStr = $"limit={limit}";
             string trendingStr = $"trending={trending.ToString().ToLower()}";
             string url = $"https://api.twitch.tv/kraken/clips/followed?{cursorStr}&{limitStr}&{trendingStr}";
-            return new ClipsResponse(JObject.Parse(await MakeRestRequest(url, "POST", null, accessToken, 4)));
+            return new Models.API.Clip.ClipsResponse(JObject.Parse(await MakeRestRequest(url, "POST", null, accessToken, 4)));
         }
         #endregion
 
@@ -550,9 +552,9 @@ namespace TwitchLib.Internal
         }
         #endregion
 
-        public static async Task<PostToChannelFeedResponse> PostToChannelFeed(string content, bool share, string channel, string accessToken = null)
+        public static async Task<Models.API.Feed.PostToChannelFeedResponse> PostToChannelFeed(string content, bool share, string channel, string accessToken = null)
         {
-            return new PostToChannelFeedResponse(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts", "POST", $"content={content}&share={(share ? "true" : "false")}", accessToken)));
+            return new Models.API.Feed.PostToChannelFeedResponse(JObject.Parse(await MakeRestRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts", "POST", $"content={content}&share={(share ? "true" : "false")}", accessToken)));
         }
 
         public static async void DeleteChannelFeedPost(string postId, string channel, string accessToken = null)

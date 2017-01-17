@@ -29,7 +29,7 @@ namespace TwitchLib.Services
         /// <exception cref="BadQueryCountException">Throws BadQueryCountException if queryCount is larger than 100 or smaller than 1.</exception>
         public int QueryCount { get { return _queryCount; } set { if (value < 1 || value > 100) { throw new BadQueryCountException("Query count was smaller than 1 or exceeded 100"); } _queryCount = value; } }
         /// <summary>Property representing the cache where detected followers are stored and compared against.</summary>
-        public List<Follower> ActiveCache { get; set; }
+        public List<Models.API.Follow.Follower> ActiveCache { get; set; }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _followerServiceTimer.Interval = value * 1000; } }
 
@@ -52,7 +52,7 @@ namespace TwitchLib.Services
         /// <summary>Downloads recent followers from Twitch, starts service, fires OnServiceStarted event.</summary>
         public async void StartService()
         {
-            FollowersResponse response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
+            Models.API.Follow.FollowersResponse response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
             ActiveCache = response.Followers;
             _followerServiceTimer.Start();
             OnServiceStarted?.Invoke(this, 
@@ -70,19 +70,19 @@ namespace TwitchLib.Services
 
         private async void _followerServiceTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            FollowersResponse response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
-            List<Follower> mostRecentFollowers = response.Followers;
-            List<Follower> newFollowers = new List<Follower>();
+            Models.API.Follow.FollowersResponse response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
+            List<Models.API.Follow.Follower> mostRecentFollowers = response.Followers;
+            List<Models.API.Follow.Follower> newFollowers = new List<Models.API.Follow.Follower>();
             if(ActiveCache == null)
             {
                 ActiveCache = mostRecentFollowers;
                 newFollowers = ActiveCache;
             } else
             {
-                foreach(Follower recentFollower in mostRecentFollowers)
+                foreach(Models.API.Follow.Follower recentFollower in mostRecentFollowers)
                 {
                     bool found = false;
-                    foreach(Follower cachedFollower in ActiveCache)
+                    foreach(Models.API.Follow.Follower cachedFollower in ActiveCache)
                     {
                         if (recentFollower.User.Name.ToLower() == cachedFollower.User.Name.ToLower())
                             found = true;
@@ -110,9 +110,9 @@ namespace TwitchLib.Services
         }
 
         #region HELPERS
-        private bool isNewFollower(Follower follower)
+        private bool isNewFollower(Models.API.Follow.Follower follower)
         {
-            foreach (Follower oldFollower in ActiveCache)
+            foreach (Models.API.Follow.Follower oldFollower in ActiveCache)
                 if (oldFollower.User.Name.ToLower() == follower.User.Name.ToLower())
                     return false;
             return true;
