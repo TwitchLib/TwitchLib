@@ -82,7 +82,7 @@ namespace TwitchLib.Models.API.Video
             Game = apiResponse.SelectToken("game").ToString();
             Id = apiResponse.SelectToken("_id").ToString();
             Preview = apiResponse.SelectToken("preview").ToString();
-            RecordedAt = Common.DateTimeStringToObject(apiResponse.SelectToken("recorded_at").ToString());
+            RecordedAt = Common.Helpers.DateTimeStringToObject(apiResponse.SelectToken("recorded_at").ToString());
             TimeSinceRecorded = DateTime.UtcNow - RecordedAt;
             Status = apiResponse.SelectToken("status").ToString();
             TagList = apiResponse.SelectToken("tag_list").ToString();

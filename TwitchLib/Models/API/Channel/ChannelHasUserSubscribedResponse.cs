@@ -25,7 +25,7 @@ namespace TwitchLib.Models.API.Channel
             if (json.SelectToken("user") != null)
                 User = new Models.API.User.User(json.SelectToken("user").ToString());
             if (json.SelectToken("created_at") != null)
-                CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at").ToString());
+                CreatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("created_at").ToString());
         }
     }
 }

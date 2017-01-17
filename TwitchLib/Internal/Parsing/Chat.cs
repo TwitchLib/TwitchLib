@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using TwitchLib.Models.Client;
 
-namespace TwitchLib
+namespace TwitchLib.Internal.Parsing
 {
-    /// <summary>Static parsing class handling all chat message parsing</summary>
-    public static class ChatParsing
+    internal static class Chat
     {
         /// <summary>Function returning the type of message received from Twitch</summary>
         /// <param name="message"></param>
@@ -17,23 +14,24 @@ namespace TwitchLib
         /// <returns>Message type (ie NOTICE, PRIVMSG, JOIN, etc)</returns>
         public static string getReadType(string message, string channel)
         {
-            if(message.Contains(" "))
+            if (message.Contains(" "))
             {
                 bool found = false;
-                foreach(string word in message.Split(' '))
+                foreach (string word in message.Split(' '))
                 {
-                    if(word[0] == '#')
+                    if (word[0] == '#')
                     {
                         if (word == $"#{channel}")
                             found = true;
                     }
                 }
-                if(found)
+                if (found)
                 {
                     var splitter = Regex.Split(message, $" #{channel}");
                     var readType = splitter[0].Split(' ')[splitter[0].Split(' ').Length - 1];
                     return readType;
-                } else
+                }
+                else
                 {
                     if (message.Split(' ').Count() > 1 && message.Split(' ')[1] == "NOTICE")
                         return "NOTICE";
@@ -74,7 +72,7 @@ namespace TwitchLib
         {
             string readType = null;
             string channelRet = null;
-            foreach(JoinedChannel channel in channels)
+            foreach (JoinedChannel channel in channels)
             {
                 readType = getReadType(message, channel.Channel);
                 if (readType != null)
@@ -83,7 +81,7 @@ namespace TwitchLib
                     break;
                 }
             }
-                
+
             if (readType != null && readType == "PRIVMSG")
                 return new DetectionReturn((message.Split('!')[0] == ":twitchnotify" && (message.Contains("just subscribed!") || message.ToLower().Contains("just subscribed with twitch prime!"))), channelRet);
             return new DetectionReturn(false);
@@ -232,7 +230,6 @@ namespace TwitchLib
 
         /// <summary>[Works] Parse function to detect failed login.</summary>
         /// <param name="message"></param>
-        /// <param name="channels"></param>
         /// <returns></returns>
         public static DetectionReturn detectedIncorrectLogin(string message)
         {
@@ -529,7 +526,6 @@ namespace TwitchLib
         /// Parse function to detect that a 366 has been received indicating completed joining channel
         /// </summary>
         /// <param name="message"></param>
-        /// <param name="channels"></param>
         /// <returns></returns>
         public static DetectionReturn detectedJoinChannelCompleted(string message)
         {

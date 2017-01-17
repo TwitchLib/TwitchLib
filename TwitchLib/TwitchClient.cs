@@ -232,7 +232,7 @@ namespace TwitchLib
             bool logging = false, bool autoReListenOnExceptions = true)
         {
             if (logging)
-                Common.Log($"TwitchLib-TwitchClient initialized, assembly version: {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}");
+                Common.Logging.Log($"TwitchLib-TwitchClient initialized, assembly version: {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}");
             _credentials = credentials;
             TwitchUsername = _credentials.TwitchUsername;
             _autoJoinChannel = channel;
@@ -270,7 +270,7 @@ namespace TwitchLib
             ConsoleColor prevColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             if(_logging)
-                Common.Log($"Writing: {message}");
+                Common.Logging.Log($"Writing: {message}");
             if(ChatThrottler == null || !ChatThrottler.ApplyThrottlingToRawMessages || ChatThrottler.MessagePermitted(message))
                 _client.WriteLine(message);
             OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Sent, Data = message });
@@ -339,7 +339,7 @@ namespace TwitchLib
         public void Connect()
         {
             if (_logging)
-                Common.Log("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
+                Common.Logging.Log("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
 
             // Ensure auto retry is enabled
             _client.AutoRetry = true;
@@ -347,7 +347,7 @@ namespace TwitchLib
             _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
 
             if (_logging)
-                Common.Log("Should be connected!");
+                Common.Logging.Log("Should be connected!");
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace TwitchLib
         public void Disconnect()
         {
             if (_logging)
-                Common.Log("Disconnect Twitch Chat Client...");
+                Common.Logging.Log("Disconnect Twitch Chat Client...");
 
             // Disconnect invoked on purpose, so we can disable auto retry
             _client.AutoRetry = false;
@@ -376,7 +376,7 @@ namespace TwitchLib
         public void Reconnect()
         {
             if (_logging)
-                Common.Log("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
+                Common.Logging.Log("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
 
             // Ensure auto retry is enabled
             _client.AutoRetry = true;
@@ -463,7 +463,7 @@ namespace TwitchLib
             // Channel MUST be lower case
             channel = channel.ToLower();
             if (_logging)
-                Common.Log($"Leaving channel: {channel}");
+                Common.Logging.Log($"Leaving channel: {channel}");
             JoinedChannel joinedChannel = JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
             if (joinedChannel != null)
                 _client.WriteLine(Rfc2812.Part($"#{channel}"));
@@ -551,7 +551,7 @@ namespace TwitchLib
                     while(_client.IsConnected)
                     {
                         if (_logging)
-                            Common.Log("Starting listen..", false, false, Enums.LogType.Success);
+                            Common.Logging.Log("Starting listen..", false, false, Enums.LogType.Success);
                         try
                         {
                             _client.Listen();
@@ -559,20 +559,20 @@ namespace TwitchLib
                         {
                             if (_logging)
                             {
-                                Common.Log("Exception!!", true, true, Enums.LogType.Failure);
-                                Common.Log(ex.Message, false, false, Enums.LogType.Failure);
+                                Common.Logging.Log("Exception!!", true, true, Enums.LogType.Failure);
+                                Common.Logging.Log(ex.Message, false, false, Enums.LogType.Failure);
                             }
                             if (!_autoReListenOnException)
                                 throw ex;
                         }
                         if (_logging)
-                            Common.Log("Stopped listening..", true, true, Enums.LogType.Failure);
+                            Common.Logging.Log("Stopped listening..", true, true, Enums.LogType.Failure);
                     }
                 });
             } else
             {
                 if (_logging)
-                    Common.Log("Already listening, not starting new thread...");
+                    Common.Logging.Log("Already listening, not starting new thread...");
             }
         }
 
@@ -592,7 +592,7 @@ namespace TwitchLib
         private void ReadLine(object sender, ReadLineEventArgs e)
         {
             if (_logging)
-                Common.Log($"Received: {e.Line}");
+                Common.Logging.Log($"Received: {e.Line}");
             OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = e.Line });
             ParseIrcMessage(e.Line);
         }
@@ -607,7 +607,7 @@ namespace TwitchLib
             DetectionReturn response;
 
             // On Connected
-            if (ChatParsing.detectConnected(decodedMessage))
+            if (Internal.Parsing.Chat.detectConnected(decodedMessage))
             {
                 IsConnected = true;
                 OnConnected?.Invoke(this, new OnConnectedArgs { AutoJoinChannel = "", Username = TwitchUsername });
@@ -615,7 +615,7 @@ namespace TwitchLib
             }
 
             // On New Subscriber
-            response = ChatParsing.detectNewSubscriber(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectNewSubscriber(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnNewSubscriber?.Invoke(this, new OnNewSubscriberArgs { Subscriber = new NewSubscriber(decodedMessage), Channel = response.Channel });
@@ -623,7 +623,7 @@ namespace TwitchLib
             }
 
             // On Command Received (PURPOSELY DROP THROUGH WITHOUT RETURN)
-            response = ChatParsing.detectCommandReceived(TwitchUsername, decodedMessage, JoinedChannels, ChannelEmotes, WillReplaceEmotes, _chatCommandIdentifiers);
+            response = Internal.Parsing.Chat.detectCommandReceived(TwitchUsername, decodedMessage, JoinedChannels, ChannelEmotes, WillReplaceEmotes, _chatCommandIdentifiers);
             if (response.Successful)
             {
                 var chatMessage = new ChatMessage(TwitchUsername, decodedMessage, ref _channelEmotes, WillReplaceEmotes);
@@ -632,7 +632,7 @@ namespace TwitchLib
             }
 
             // On Message Received
-            response = ChatParsing.detectMessageReceived(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectMessageReceived(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 var chatMessage = new ChatMessage(TwitchUsername, decodedMessage, ref _channelEmotes, WillReplaceEmotes);
@@ -643,7 +643,7 @@ namespace TwitchLib
             }
 
             // On Viewer Joined
-            response = ChatParsing.detectUserJoined(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectUserJoined(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 if (TwitchUsername.ToLower() == decodedMessage.Split('!')[1].Split('@')[0].ToLower())
@@ -654,7 +654,7 @@ namespace TwitchLib
             }
 
             // On Viewer Left
-            response = ChatParsing.detectedUserLeft(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedUserLeft(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 string username = decodedMessage.Split(':')[1].Split('!')[0];
@@ -672,7 +672,7 @@ namespace TwitchLib
             }
 
             // On Moderator Joined
-            response = ChatParsing.detectedModeratorJoined(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedModeratorJoined(decodedMessage, JoinedChannels);
             if(response.Successful)
             {
                 OnModeratorJoined?.Invoke(this, new OnModeratorJoinedArgs { Username = decodedMessage.Split(' ')[4], Channel = response.Channel });
@@ -680,7 +680,7 @@ namespace TwitchLib
             }
 
             // On Moderator Left
-            response = ChatParsing.detectedModeatorLeft(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedModeatorLeft(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnModeratorLeft?.Invoke(this, new OnModeratorLeftArgs { Username = decodedMessage.Split(' ')[4], Channel = response.Channel });
@@ -688,7 +688,7 @@ namespace TwitchLib
             }
 
             // On Incorrect login
-            response = ChatParsing.detectedIncorrectLogin(decodedMessage);
+            response = Internal.Parsing.Chat.detectedIncorrectLogin(decodedMessage);
             if (response.Successful)
             {
                 Disconnect();
@@ -697,7 +697,7 @@ namespace TwitchLib
             }
 
             // On Malformed OAuth
-            response = ChatParsing.detectedMalformedOAuth(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedMalformedOAuth(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 Disconnect();
@@ -706,7 +706,7 @@ namespace TwitchLib
             }
 
             // On Host Left
-            response = ChatParsing.detectedHostLeft(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedHostLeft(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnHostLeft?.Invoke(this, null);
@@ -714,7 +714,7 @@ namespace TwitchLib
             }
 
             // On Channel State Changed
-            response = ChatParsing.detectedChannelStateChanged(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedChannelStateChanged(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnChannelStateChanged?.Invoke(this, new OnChannelStateChangedArgs { ChannelState = new ChannelState(decodedMessage), Channel = response.Channel });
@@ -722,7 +722,7 @@ namespace TwitchLib
             }
 
             // On User State Changed
-            response = ChatParsing.detectedUserStateChanged(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedUserStateChanged(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 var userState = new UserState(decodedMessage);
@@ -740,7 +740,7 @@ namespace TwitchLib
             }
 
             // On ReSubscriber
-            response = ChatParsing.detectedReSubscriber(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedReSubscriber(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 var resub = new ReSubscriber(decodedMessage);
@@ -749,7 +749,7 @@ namespace TwitchLib
             }
 
             // On PING received
-            response = ChatParsing.detectedPing(decodedMessage);
+            response = Internal.Parsing.Chat.detectedPing(decodedMessage);
             if (response.Successful && !DisableAutoPong)
             {
                 SendRaw("PONG");
@@ -757,12 +757,12 @@ namespace TwitchLib
             }
 
             // On PONG received (don't do anything)
-            response = ChatParsing.detectedPong(decodedMessage);
+            response = Internal.Parsing.Chat.detectedPong(decodedMessage);
             if (response.Successful)
                 return;
 
             // On Hosting Stopped
-            if(ChatParsing.detectedHostingStopped(decodedMessage))
+            if(Internal.Parsing.Chat.detectedHostingStopped(decodedMessage))
             {
                 int viewers;
                 int.TryParse(decodedMessage.Split(' ')[4], out viewers);
@@ -771,7 +771,7 @@ namespace TwitchLib
             }
 
             // On Hosting Started
-            if(ChatParsing.detectedHostingStarted(decodedMessage))
+            if(Internal.Parsing.Chat.detectedHostingStarted(decodedMessage))
             {
                 int viewers;
                 int.TryParse(decodedMessage.Split(' ')[4], out viewers);
@@ -780,7 +780,7 @@ namespace TwitchLib
             }
 
             // On Existing Users Detected
-            response = ChatParsing.detectedExistingUsers(decodedMessage, _credentials.TwitchUsername, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedExistingUsers(decodedMessage, _credentials.TwitchUsername, JoinedChannels);
             if (response.Successful)
             {
                 OnExistingUsersDetected?.Invoke(this, new OnExistingUsersDetectedArgs { Channel = response.Channel,
@@ -789,7 +789,7 @@ namespace TwitchLib
             }
 
             // On Now Hosting
-            response = ChatParsing.detectedNowHosting(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedNowHosting(decodedMessage, JoinedChannels);
             if(response.Successful)
             {
                 OnNowHosting?.Invoke(this, new OnNowHostingArgs { Channel = response.Channel,
@@ -798,7 +798,7 @@ namespace TwitchLib
             }
 
             // On channel join completed with all existing names
-            response = ChatParsing.detectedJoinChannelCompleted(decodedMessage);
+            response = Internal.Parsing.Chat.detectedJoinChannelCompleted(decodedMessage);
             if(response.Successful)
             {
                 currentlyJoiningChannels = false;
@@ -808,7 +808,7 @@ namespace TwitchLib
 
             #region Clear Chat, Timeouts, and Bans
             // On clear chat detected
-            response = ChatParsing.detectedClearedChat(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedClearedChat(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnChatCleared?.Invoke(this, new OnChatClearedArgs { Channel = response.Channel });
@@ -816,7 +816,7 @@ namespace TwitchLib
             }
 
             // On timeout detected
-            response = ChatParsing.detectedUserTimedout(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedUserTimedout(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnUserTimedout?.Invoke(this, new OnUserTimedoutArgs
@@ -830,7 +830,7 @@ namespace TwitchLib
             }
 
             // On ban detected
-            response = ChatParsing.detectedUserBanned(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedUserBanned(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnUserBanned?.Invoke(this, new OnUserBannedArgs
@@ -843,7 +843,7 @@ namespace TwitchLib
             }
 
             // On moderators received detected
-            response = ChatParsing.detectedModeratorsReceived(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedModeratorsReceived(decodedMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnModeratorsReceived?.Invoke(this, new OnModeratorsReceivedArgs
@@ -857,7 +857,7 @@ namespace TwitchLib
 
             #region Others
             // On chat color changed detected
-            response = ChatParsing.detectedChatColorChanged(decodedMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedChatColorChanged(decodedMessage, JoinedChannels);
             if(response.Successful)
             {
                 OnChatColorChanged?.Invoke(this, new OnChatColorChangedArgs
@@ -873,7 +873,7 @@ namespace TwitchLib
 
                 // On Whisper Message Received
                 WhisperMessage receivedMessage = null;
-                if (WhisperParsing.detectedWhisperReceived(decodedMessage, _credentials.TwitchUsername))
+                if (Internal.Parsing.Whisper.detectedWhisperReceived(decodedMessage, _credentials.TwitchUsername))
                 {
                     receivedMessage = new WhisperMessage(decodedMessage, _credentials.TwitchUsername);
                     PreviousWhisper = receivedMessage;
@@ -882,7 +882,7 @@ namespace TwitchLib
                 }
 
                 // On Whisper Command Received
-                if(WhisperParsing.detectedWhisperCommandReceived(decodedMessage, _credentials.TwitchUsername, _whisperCommandIdentifiers))
+                if(Internal.Parsing.Whisper.detectedWhisperCommandReceived(decodedMessage, _credentials.TwitchUsername, _whisperCommandIdentifiers))
                 {
                     var whisperMessage = new WhisperMessage(decodedMessage, _credentials.TwitchUsername);
                     string command = whisperMessage.Message.Split(' ')?[0].Substring(1, whisperMessage.Message.Split(' ')[0].Length - 1) ?? whisperMessage.Message.Substring(1, whisperMessage.Message.Length - 1);
@@ -901,7 +901,7 @@ namespace TwitchLib
 
             // Any other messages here
             if (_logging)
-                Common.Log($"Unaccounted for: {decodedMessage}");            
+                Common.Logging.Log($"Unaccounted for: {decodedMessage}");            
         }
 
 
@@ -912,13 +912,13 @@ namespace TwitchLib
                 currentlyJoiningChannels = true;
                 JoinedChannel channelToJoin = joinChannelQueue.Dequeue();
                 if (_logging)
-                    Common.Log($"Joining channel: {channelToJoin.Channel}");
+                    Common.Logging.Log($"Joining channel: {channelToJoin.Channel}");
                 _client.WriteLine(Rfc2812.Join($"#{channelToJoin.Channel}"));
                 JoinedChannels.Add(new JoinedChannel(channelToJoin.Channel));
             } else
             {
                 if (_logging)
-                    Common.Log("Finished channel joining queue.");
+                    Common.Logging.Log("Finished channel joining queue.");
             }
         }
     }

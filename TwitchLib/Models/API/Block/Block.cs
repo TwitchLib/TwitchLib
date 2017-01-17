@@ -31,7 +31,7 @@ namespace TwitchLib.Models.API.Block
         /// <param name="json"></param>
         public Block(JToken json)
         {
-            UpdatedAt = Common.DateTimeStringToObject(json.SelectToken("updated_at")?.ToString());
+            UpdatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("updated_at")?.ToString());
             TimeSinceUpdate = DateTime.UtcNow - UpdatedAt;
             if (json.SelectToken("user") != null)
                 User = new User.User(json.SelectToken("user").ToString());

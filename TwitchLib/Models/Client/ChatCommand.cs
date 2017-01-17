@@ -35,7 +35,7 @@ namespace TwitchLib.Models.Client
             if (!chatMessage.Message.Contains("\"") || chatMessage.Message.Count(x => x == '"') % 2 == 1)
                 ArgumentsAsList = chatMessage.Message.Split(' ')?.Where(arg => arg != chatMessage.Message[0] + Command).ToList<string>() ?? new List<string>();
             else
-                ArgumentsAsList = Common.ParseQuotesAndNonQuotes(ArgumentsAsString);
+                ArgumentsAsList = Common.Helpers.ParseQuotesAndNonQuotes(ArgumentsAsString);
             CommandIdentifier = chatMessage.Message[0];
         }
     }

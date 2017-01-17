@@ -60,7 +60,7 @@ namespace TwitchLib.Models.API.Clip
             if (durationParse != -1)
                 Duration = durationParse;
             if (json.SelectToken("created_at") != null)
-                CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at").ToString());
+                CreatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("created_at").ToString());
         }
     }
 }

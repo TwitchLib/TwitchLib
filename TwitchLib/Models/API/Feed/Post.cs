@@ -39,7 +39,7 @@ namespace TwitchLib.Models.API.Feed
         public Post(JToken json)
         {
             Id = json.SelectToken("id")?.ToString();
-            CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
+            CreatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
             TimeSinceCreated = DateTime.UtcNow - CreatedAt;
             if (json.SelectToken("deleted") != null)
                 Deleted = json.SelectToken("deleted").ToString().ToLower() == "true";
@@ -146,7 +146,7 @@ namespace TwitchLib.Models.API.Feed
             {
                 if (json.SelectToken("id") != null)
                     Id = int.Parse(json.SelectToken("id").ToString());
-                CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
+                CreatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
                 TimeSinceCreated = DateTime.UtcNow - CreatedAt;
                 if (json.SelectToken("deleted") != null)
                     Deleted = json.SelectToken("deleted").ToString().ToLower() == "true";

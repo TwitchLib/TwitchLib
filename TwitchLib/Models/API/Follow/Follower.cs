@@ -22,7 +22,7 @@ namespace TwitchLib.Models.API.Follow
         /// <summary>Follower object constructor.</summary>
         public Follower(JToken followerData)
         {
-            CreatedAt = Common.DateTimeStringToObject(followerData.SelectToken("created_at").ToString());
+            CreatedAt = Common.Helpers.DateTimeStringToObject(followerData.SelectToken("created_at").ToString());
             TimeSinceCreated = DateTime.UtcNow - CreatedAt;
             if (followerData.SelectToken("notifications").ToString() == "true")
                 Notifications = true;

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TwitchLib.Models.Client;
 
-namespace TwitchLib.Models.Client
+namespace TwitchLib.Internal.Parsing
 {
     /// <summary>Static class used for detecting whisper commands and messages.</summary>
-    public static class WhisperParsing
+    internal static class Whisper
     {
         /// <summary>Function used to detect if a whisper was received or not.</summary>
         public static bool detectedWhisperReceived(string message, string username)

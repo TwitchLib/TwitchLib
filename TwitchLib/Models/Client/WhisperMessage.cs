@@ -101,7 +101,7 @@ namespace TwitchLib.Models.Client
                         break;
 
                     default:
-                        Common.Log($"Unaccounted for [WhisperMessage.cs]: key: {key}, value: {value}");
+                        Common.Logging.Log($"Unaccounted for [WhisperMessage.cs]: key: {key}, value: {value}");
                         break;
                 }
             }

@@ -60,7 +60,7 @@ namespace TwitchLib.Models.API.Channel
 
             Background = json.SelectToken("background").ToString();
             BroadcasterLanguage = json.SelectToken("broadcaster_language").ToString();
-            CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at").ToString());
+            CreatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("created_at").ToString());
             TimeSinceCreated = DateTime.UtcNow - CreatedAt;
             Delay = json.SelectToken("delay").ToString();
             DisplayName = json.SelectToken("display_name").ToString();
@@ -70,7 +70,7 @@ namespace TwitchLib.Models.API.Channel
             Name = json.SelectToken("name").ToString();
             ProfileBanner = json.SelectToken("profile_banner").ToString();
             Status = json.SelectToken("status").ToString();
-            UpdatedAt = Common.DateTimeStringToObject(json.SelectToken("updated_at").ToString());
+            UpdatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("updated_at").ToString());
             TimeSinceUpdated = DateTime.UtcNow - UpdatedAt;
         }
     }

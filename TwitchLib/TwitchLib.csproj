@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APIv5\Models\User.cs" />
+    <Compile Include="Common\Helpers.cs" />
+    <Compile Include="Common\Logging.cs" />
+    <Compile Include="Enums\BadgeColor.cs" />
     <Compile Include="Enums\ChatColorPresets.cs" />
     <Compile Include="Enums\CommercialLength.cs" />
     <Compile Include="Enums\LogType.cs" />
@@ -170,7 +173,6 @@
     <Compile Include="Models\Client\ChatCommand.cs" />
     <Compile Include="Models\Client\EmoteSet.cs" />
     <Compile Include="Models\Client\ChatMessage.cs" />
-    <Compile Include="Common.cs" />
     <Compile Include="Exceptions\Services\BadQueryCountException.cs" />
     <Compile Include="Exceptions\API\BadScopeException.cs" />
     <Compile Include="Exceptions\API\InvalidCredentialException.cs" />
@@ -206,7 +208,7 @@
     <Compile Include="TwitchClient.cs" />
     <Compile Include="Models\Client\SentMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Client\WhisperParsing.cs" />
+    <Compile Include="Common\WhisperParsing.cs" />
     <Compile Include="Models\Client\UserState.cs" />
     <Compile Include="Models\Client\WhisperMessage.cs" />
     <Compile Include="TwitchPubSub.cs" />

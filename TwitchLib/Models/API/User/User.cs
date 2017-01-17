@@ -40,9 +40,9 @@ namespace TwitchLib.Models.API.User
             Name = json.SelectToken("name")?.ToString();
             Type = json.SelectToken("type")?.ToString();
             Bio = json.SelectToken("bio")?.ToString();
-            CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
+            CreatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
             TimeSinceCreated = DateTime.UtcNow - CreatedAt;
-            UpdatedAt = Common.DateTimeStringToObject(json.SelectToken("updated_at")?.ToString());
+            UpdatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("updated_at")?.ToString());
             TimeSinceUpdated = DateTime.UtcNow - UpdatedAt;
             Logo = json.SelectToken("logo")?.ToString();
         }

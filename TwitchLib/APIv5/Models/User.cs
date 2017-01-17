@@ -31,8 +31,8 @@ namespace TwitchLib.APIv5.Models
         {
             Type = json.SelectToken("type")?.ToString();
             Name = json.SelectToken("name")?.ToString();
-            CreatedAt = Common.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
-            UpdatedAt = Common.DateTimeStringToObject(json.SelectToken("updated_at")?.ToString());
+            CreatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
+            UpdatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("updated_at")?.ToString());
             Logo = json.SelectToken("logo")?.ToString();
             Id = (json.SelectToken("_id") != null) ? long.Parse(json.SelectToken("_id").ToString()) : -1;
             Bio = json.SelectToken("bio")?.ToString();

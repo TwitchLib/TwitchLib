@@ -49,7 +49,7 @@ namespace TwitchLib.Models.API.Stream
             if (double.TryParse(twitchStreamData.SelectToken("average_fps").ToString(), out averageFps)) AverageFps = averageFps;
 
             Game = twitchStreamData.SelectToken("game").ToString();
-            CreatedAt = Common.DateTimeStringToObject(twitchStreamData.SelectToken("created_at").ToString());
+            CreatedAt = Common.Helpers.DateTimeStringToObject(twitchStreamData.SelectToken("created_at").ToString());
             TimeSinceCreated = DateTime.UtcNow - CreatedAt;
             Channel = new Channel.Channel((JObject) twitchStreamData.SelectToken("channel"));
             Preview = new Preview(twitchStreamData.SelectToken("preview"));

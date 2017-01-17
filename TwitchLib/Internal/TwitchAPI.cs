@@ -98,9 +98,9 @@ namespace TwitchLib.Internal
         {
             var resp = await MakeGetRequest($"https://api.twitch.tv/kraken/streams/{channel}");
             var json = JObject.Parse(resp);
-            if (!Common.JsonIsNullOrEmpty(json.SelectToken("error")))
+            if (!Common.Helpers.JsonIsNullOrEmpty(json.SelectToken("error")))
                 throw new BadResourceException(json.SelectToken("error").ToString());
-            if (Common.JsonIsNullOrEmpty(json.SelectToken("stream")))
+            if (Common.Helpers.JsonIsNullOrEmpty(json.SelectToken("stream")))
                 throw new StreamOfflineException();
             return new Models.API.Stream.Stream(json.SelectToken("stream"));
         }
