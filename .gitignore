@@ -8,6 +8,10 @@ TwitchLib/TwitchLib.nuspec
 TwitchLib.Tests/
 !Libs/Meebey.SmartIrc4net.dll
 
+# Files used to weave for NuGet
+TwitchLib/FodyWeavers.xml
+TwitchLib/packages.config
+
 # User-specific files
 *.suo
 *.user
