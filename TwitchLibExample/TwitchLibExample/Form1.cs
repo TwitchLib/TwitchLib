@@ -55,11 +55,13 @@ namespace TwitchLibExample
                 string twitchUser = file.ReadLine();
                 string twitchOAuth = file.ReadLine();
                 string twitchChannel = file.ReadLine();
+                string clientId = file.ReadLine();
                 textBox4.Text = twitchUser;
                 textBox5.Text = twitchOAuth;
                 textBox8.Text = twitchChannel;
                 textBox14.Text = twitchChannel;
                 textBox15.Text = twitchOAuth;
+                TwitchApi.SetClientId(clientId);
             }
             this.Height = 640;
             foreach (TwitchLib.Enums.ChatColorPresets color in Enum.GetValues(typeof(TwitchLib.Enums.ChatColorPresets)))
@@ -393,7 +395,7 @@ namespace TwitchLibExample
             List<Video> videos = await TwitchApi.Videos.GetChannelVideosAsync(textBox20.Text);
             foreach(Video vid in videos)
             {
-                MessageBox.Show($"Title: {vid.Title}\nDescription: {vid.Description}\nStatus: {vid.Status}\nId: {vid.Id}\nTag List: {vid.TagList}\n Recorded At: {vid.RecordedAt}\n" +
+                MessageBox.Show($"Title: {vid.Title}\nDescription: {vid.Description}\nStatus: {vid.Status}\nId: {vid.Id}\nTag List: {vid.TagList}\n Recorded At: {vid.CreatedAt}\n" +
                     $"Game: {vid.Game}\nPreview: {vid.Preview}\nBroadcast Id: {vid.BroadcastId}\nLength: {vid.Length}\nUrl: {vid.Url}\nViews: {vid.Views}\n");
             }
         }
