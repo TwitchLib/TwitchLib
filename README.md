@@ -162,4 +162,4 @@ https://discord.gg/0gHwecaLRAzrRYWi
  * XuluniX ([XuluniX](https://github.com/XuluniX))
  
 ### License
-MIT License. &copy; 2016 Cole
+MIT License. &copy; 2016-2017 Cole
