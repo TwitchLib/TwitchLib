@@ -402,6 +402,22 @@ namespace TwitchLib.Internal
 
             return vids.Select(vid => new Models.API.Video.Video(vid)).ToList();
         }
+
+        public static async Task<Models.API.Video.UploadVideo.CreateVideoResponse> CreateVideo(string channel, string title, string accessToken = "")
+        {
+            return null;
+        }
+
+        public static async void UploadVideoPart(int index, string uploadToken, string diskLocation, string accessToken = null)
+        {
+
+        }
+
+        public static async void CompleteVideoUpload(string videoId, string uploadToken, string accessToken = null)
+        {
+
+        }
+
         #endregion
 
         #region Commercials
