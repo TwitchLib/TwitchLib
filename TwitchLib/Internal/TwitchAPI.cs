@@ -405,17 +405,51 @@ namespace TwitchLib.Internal
 
         public static async Task<Models.API.Video.UploadVideo.CreateVideoResponse> CreateVideo(string channel, string title, string accessToken = "")
         {
-            return null;
+            JObject data = new JObject();
+            data.Add("channel_name", channel);
+            data.Add("title", title);
+
+            var resp = await MakeRestRequest("https://api.twitch.tv/kraken/videos", "POST", data.ToString(), accessToken, 4);
+            return new Models.API.Video.UploadVideo.CreateVideoResponse(JObject.Parse(resp));
         }
 
-        public static async void UploadVideoPart(int index, string uploadToken, string diskLocation, string accessToken = null)
+        public static async void UploadVideoPart(int index, string uploadToken, string partDiskLocation, string accessToken = null)
         {
+            // Check if file exists
+            if (!File.Exists(partDiskLocation))
+                throw new Exceptions.API.UploadVideo.UploadVideoPart.BadPartException("File doesn't appear to exist!");
+
+            // Check if file abides by Twitch's size rule (between 5mb and 25mb)
+            FileInfo info = new FileInfo(partDiskLocation);
+            if (info.Length < 5000000 || info.Length > 25000000)
+                throw new Exceptions.API.UploadVideo.UploadVideoPart.BadPartException("File is either too large or too small. Must be larger than 5mb, and smaller than 25mb.");
+
+            //@TODO Upload video part
 
         }
 
         public static async void CompleteVideoUpload(string videoId, string uploadToken, string accessToken = null)
         {
+            await MakeRestRequest($"https://uploads.twitch.tv/upload/{videoId}/complete", "POST", $"upload_token={uploadToken}", accessToken, 4);
+        }
 
+        public static async Task<Models.API.Video.Video> UploadTwitchVideo(string channel, string title, List<string> partsDiskLocations, string accessToken = null)
+        {
+            // Create video
+            var resp = await CreateVideo(channel, title, accessToken);
+
+            // Upload video parts
+            for(int i = 0; i < partsDiskLocations.Count; i++)
+            {
+                UploadVideoPart(i + 1, resp.Upload.Token, partsDiskLocations[i], accessToken);
+                System.Threading.Thread.Sleep(1000);
+            }
+
+            // Complete video upload
+            CompleteVideoUpload(resp.Video.Id, resp.Upload.Token, accessToken);
+
+            // Return URL to newly uploaded video
+            return resp.Video;
         }
 
         #endregion
