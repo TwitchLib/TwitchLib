@@ -638,7 +638,7 @@ namespace TwitchLib
                 var chatMessage = new ChatMessage(TwitchUsername, decodedMessage, ref _channelEmotes, WillReplaceEmotes);
                 foreach (var joinedChannel in JoinedChannels.Where(x => x.Channel.ToLower() == response.Channel.ToLower()))
                     joinedChannel.HandleMessage(chatMessage);
-                OnMessageReceived?.Invoke(this, new OnMessageReceivedArgs { ChatMessage = chatMessage });
+                OnMessageReceived?.Invoke(this, new OnMessageReceivedArgs { ChatMessage = chatMessage, Time = DateTime.Now });
                 return;
             }
 
