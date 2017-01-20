@@ -403,6 +403,7 @@ namespace TwitchLib.Internal
             return vids.Select(vid => new Models.API.Video.Video(vid)).ToList();
         }
 
+        // TODO: 404ing
         public static async Task<Models.API.Video.UploadVideo.CreateVideoResponse> CreateVideo(string channel, string title, string accessToken = "")
         {
             JObject data = new JObject();
@@ -413,37 +414,49 @@ namespace TwitchLib.Internal
             return new Models.API.Video.UploadVideo.CreateVideoResponse(JObject.Parse(resp));
         }
 
-        public static async void UploadVideoPart(int index, string uploadToken, string partDiskLocation, string accessToken = null)
+        // TODO: Untested
+        public static async void UploadVideo(string vidId, string uploadToken, string fileName, string accessToken = null)
         {
+            long maxUploadSize = 10737418240; // 10GBs
+            long chunkSize = 10485760; // 10MBs
+        
             // Check if file exists
-            if (!File.Exists(partDiskLocation))
+            if (!File.Exists(fileName))
                 throw new Exceptions.API.UploadVideo.UploadVideoPart.BadPartException("File doesn't appear to exist!");
 
             // Check if file abides by Twitch's size rule (between 5mb and 25mb)
-            FileInfo info = new FileInfo(partDiskLocation);
-            if (info.Length < 5000000 || info.Length > 25000000)
-                throw new Exceptions.API.UploadVideo.UploadVideoPart.BadPartException("File is either too large or too small. Must be larger than 5mb, and smaller than 25mb.");
+            FileInfo info = new FileInfo(fileName);
+            if (info.Length > maxUploadSize)
+                throw new Exceptions.API.UploadVideo.UploadVideoPart.BadPartException("File is larger than 10GBs. Twitch does not allow files this large.");
 
-            //@TODO Upload video part
-
+            // read and upload chunks
+            using (var file = File.OpenRead(fileName))
+            {
+                int bytes;
+                var buffer = new byte[chunkSize];
+                int i = 1;
+                while((bytes = file.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    await MakeRestRequest($"https://uploads.twitch.tv/upload/{vidId}?index={i}&upload_token={uploadToken}", "POST", null, accessToken, 4, buffer);
+                    i++;
+                }
+            }
         }
 
+        //TODO: Untested
         public static async void CompleteVideoUpload(string videoId, string uploadToken, string accessToken = null)
         {
             await MakeRestRequest($"https://uploads.twitch.tv/upload/{videoId}/complete", "POST", $"upload_token={uploadToken}", accessToken, 4);
         }
 
-        public static async Task<Models.API.Video.Video> UploadTwitchVideo(string channel, string title, List<string> partsDiskLocations, string accessToken = null)
+        //TODO: Untested
+        public static async Task<Models.API.Video.Video> UploadTwitchVideo(string channel, string title, string fileName, string accessToken = null)
         {
             // Create video
             var resp = await CreateVideo(channel, title, accessToken);
 
             // Upload video parts
-            for(int i = 0; i < partsDiskLocations.Count; i++)
-            {
-                UploadVideoPart(i + 1, resp.Upload.Token, partsDiskLocations[i], accessToken);
-                System.Threading.Thread.Sleep(1000);
-            }
+            UploadVideo(resp.Video.Id, resp.Upload.Token, fileName);
 
             // Complete video upload
             CompleteVideoUpload(resp.Video.Id, resp.Upload.Token, accessToken);
@@ -644,13 +657,13 @@ namespace TwitchLib.Internal
             
         }
 
-        private static async Task<string> MakeRestRequest(string url, string method, string requestData = null,
-            string accessToken = null, int apiVersion = 3)
+        private static async Task<string> MakeRestRequest(string url, string method, string requestData = null, string accessToken = null, int apiVersion = 3, byte[] data = null)
         {
             if (string.IsNullOrWhiteSpace(ClientId) && string.IsNullOrWhiteSpace(accessToken))
                 throw new InvalidCredentialException("All API calls require Client-Id or OAuth token.");
 
-            var data = new UTF8Encoding().GetBytes(requestData ?? "");
+            if(data == null)
+                data = new UTF8Encoding().GetBytes(requestData ?? "");
             accessToken = accessToken?.ToLower().Replace("oauth:", "");
 
             var request = (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={ClientId}"));
