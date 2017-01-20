@@ -57,6 +57,7 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnModeratorsReceived - Fires when a list of moderators is returned by Twitch (this happens by calling GetChannelModerators in the client).
   * OnChatColorChanged - Fires when confirmation is received from Twitch that chat color has been successfully changed.
   * OnNowHosting - Fires when the home channel begins hosting another channel.
+  * OnBeingHosted - Fires when the library sees that another channel is hosting the broadcaster's channel. YOU MUST BE CONNECTED AS THE BROADCASTER.
 - Whisper Events:
   * OnWhisperReceived - Fires when a new whisper message is received, returns WhisperMessage
   * OnWhisperCommandReceived - Fires when command (uses custom command identifier) is received.
