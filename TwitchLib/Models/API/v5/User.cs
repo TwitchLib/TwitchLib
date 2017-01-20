@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
-namespace TwitchLib.APIv5.Models
+namespace TwitchLib.Models.API.v5
 {
     /// <summary>Class representing a user object from Twitch API.</summary>
     public class User

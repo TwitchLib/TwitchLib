@@ -58,18 +58,18 @@ namespace TwitchLib.Models.API.Channel
             if (int.TryParse(json.SelectToken("views").ToString(), out views)) Views = views;
             if (long.TryParse(json.SelectToken("_id").ToString(), out id)) Id = id;
 
-            Background = json.SelectToken("background").ToString();
-            BroadcasterLanguage = json.SelectToken("broadcaster_language").ToString();
+            Background = json.SelectToken("background")?.ToString();
+            BroadcasterLanguage = json.SelectToken("broadcaster_language")?.ToString();
             CreatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("created_at").ToString());
             TimeSinceCreated = DateTime.UtcNow - CreatedAt;
-            Delay = json.SelectToken("delay").ToString();
-            DisplayName = json.SelectToken("display_name").ToString();
-            Game = json.SelectToken("game").ToString();
-            Language = json.SelectToken("language").ToString();
-            Logo = json.SelectToken("logo").ToString();
-            Name = json.SelectToken("name").ToString();
-            ProfileBanner = json.SelectToken("profile_banner").ToString();
-            Status = json.SelectToken("status").ToString();
+            Delay = json.SelectToken("delay")?.ToString();
+            DisplayName = json.SelectToken("display_name")?.ToString();
+            Game = json.SelectToken("game")?.ToString();
+            Language = json.SelectToken("language")?.ToString();
+            Logo = json.SelectToken("logo")?.ToString();
+            Name = json.SelectToken("name")?.ToString();
+            ProfileBanner = json.SelectToken("profile_banner")?.ToString();
+            Status = json.SelectToken("status")?.ToString();
             UpdatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("updated_at").ToString());
             TimeSinceUpdated = DateTime.UtcNow - UpdatedAt;
         }

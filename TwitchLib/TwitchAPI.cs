@@ -209,6 +209,10 @@ namespace TwitchLib
             /// <param name="username">Name of the user you wish to fetch from Twitch.</param>
             /// <returns>User object containing details about the searched for user. Returns null if invalid user/error.</returns>
             public static async Task<Models.API.User.User> GetUserAsync(string username) => await Internal.TwitchApi.GetUser(username);
+
+            public static List<Models.API.v5.User> GetUsersV5(string username) => Task.Run(() => Internal.TwitchApi.GetUsersV5(username)).Result;
+
+            public static async Task<List<Models.API.v5.User>> GetUsersV5Async(string username) => await Internal.TwitchApi.GetUsersV5(username);
         }
 
         /// <summary>
@@ -450,6 +454,12 @@ namespace TwitchLib
             /// </summary>
             /// <returns>StreamsSummary object housing total viewers, total streams.</returns>
             public static async Task<Models.API.Stream.StreamsSummary> GetStreamsSummaryAsync() => await Internal.TwitchApi.GetStreamsSummary();
+
+            public static List<Models.API.Stream.Stream> GetAllStreamsV5(string game = null, List<string> channels = null, Enums.StreamType streamType = Enums.StreamType.Live,
+                string language = "en", int limit = 25, int offset = 0, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetAllStreamsV5(game, channels, streamType, language, limit, offset, accessToken)).Result;
+
+            public static async Task<List<Models.API.Stream.Stream>> GetAllStreamsV5Async(string game = null, List<string> channels = null, Enums.StreamType streamType = Enums.StreamType.Live,
+                string language = "en", int limit = 25, int offset = 0, string accessToken = null) => await Internal.TwitchApi.GetAllStreamsV5(game, channels, streamType, language, limit, offset, accessToken);
         }
 
         /// <summary>
