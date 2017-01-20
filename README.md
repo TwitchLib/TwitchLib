@@ -49,13 +49,14 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnModeratorLeft - Fires when a moderator leaves chat (not necessarily real time)
   * OnHostLeft - Fires when a hosted channel goes offline
   * OnExistingUsersDetected - Fires when list of users message is received from Twitch (generally when entering the room)
-  * OnHostingStarted - Fires when someone begins hosting the channel the client is connected to.
-  * OnHostingStopped - Fires when someone that is hosting channel that client is connected to, stops.
+  * OnHostingStarted - Fires when the joined channel begins hosting another channel.
+  * OnHostingStopped - Fires when the joined channel quits hosting another channel.
   * OnChatCleared - Fires when a moderator sends a clear chat command (channel).
   * OnUserTimedout - Fires when client detects a viewer was timedout (moderator, viewer, timeout duration, timeout reason, channel).
   * OnUserBanned - Fires when client detects a viewer was banned (moderator, viewer, ban reason, channel).
   * OnModeratorsReceived - Fires when a list of moderators is returned by Twitch (this happens by calling GetChannelModerators in the client).
   * OnChatColorChanged - Fires when confirmation is received from Twitch that chat color has been successfully changed.
+  * OnNowHosting - Fires when the home channel begins hosting another channel.
 - Whisper Events:
   * OnWhisperReceived - Fires when a new whisper message is received, returns WhisperMessage
   * OnWhisperCommandReceived - Fires when command (uses custom command identifier) is received.

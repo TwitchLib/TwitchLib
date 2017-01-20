@@ -158,12 +158,12 @@ namespace TwitchLib
         public event EventHandler<OnUserLeftArgs> OnUserLeft;
 
         /// <summary>
-        /// Fires when a channel got hosted by another channel.
+        /// Fires when the joined channel begins hosting another channel.
         /// </summary>
         public event EventHandler<OnHostingStartedArgs> OnHostingStarted;
 
         /// <summary>
-        /// Fires when a channel is not being streamed by another channel anymore.
+        /// Fires when the joined channel quits hosting another channel.
         /// </summary>
         public event EventHandler<OnHostingStoppedArgs> OnHostingStopped;
 
