@@ -843,21 +843,16 @@ namespace TwitchLibExample
 
         private async void button56_Click(object sender, EventArgs e)
         {
-            var resp = (await TwitchApiv5.GetUsers(textBox44.Text));
+            var resp = (await TwitchApi.Users.GetUsersV5Async(textBox44.Text));
             if(resp.Count > 0)
             {
-                TwitchLib.APIv5.Models.User user = resp[0];
+                TwitchLib.Models.API.v5.User user = resp[0];
                 MessageBox.Show($"User: {user.Type}\nName: {user.Name}\nCreated at: {user.CreatedAt.ToShortDateString()}\nUpdated at: {user.UpdatedAt.ToShortDateString()}\nLogo: {user.Logo}\nId: {user.Id}\nBio: {user.Bio}");
             } else
             {
                 MessageBox.Show("No users returned!");
             }
             
-        }
-
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            TwitchApiv5.SetClientId(Microsoft.VisualBasic.Interaction.InputBox("Submit your client-Id below.", "Submit Client-Id"));
         }
 
         private void button57_Click(object sender, EventArgs e)
@@ -934,6 +929,25 @@ namespace TwitchLibExample
             label55.Text = "Total Subs: " + resp.TotalSubscriberCount + "|" + resp.Subscribers.Count;
             foreach (var sub in resp.Subscribers)
                 listBox4.Items.Add(sub.User.Name);
+        }
+
+        private void button64_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            if (ofd.ShowDialog() == DialogResult.OK)
+                textBox48.Text = ofd.FileName;
+        }
+
+        private async void button65_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Not fully implemented yet.");
+            //await TwitchApi.Videos.UploadVideoAsync(textBox14.Text, "Test Upload", textBox48.Text);
+        }
+        private async void button66_Click_1(object sender, EventArgs e)
+        {
+            var streams = await TwitchApi.Streams.GetAllStreamsV5Async();
+            foreach (var stream in streams)
+                MessageBox.Show($"Channel: {stream.Channel.Name}\nGame: {stream.Game}");
         }
     }
 }
