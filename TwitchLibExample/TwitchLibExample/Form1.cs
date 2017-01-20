@@ -100,6 +100,7 @@ namespace TwitchLibExample
             newClient.OnChatColorChanged += onChatColorChanged;
             newClient.OnHostingStarted += new EventHandler<OnHostingStartedArgs>(onHostingStarted);
             newClient.OnHostingStopped += new EventHandler<OnHostingStoppedArgs>(onHostingStopped);
+            // newClient.OnBeingHosted += new EventHandler<OnBeingHostedArgs>(onBeingHosted); ONLY USE IF YOU ARE JOING BROADCASTER's CHANNEL AS THE BROADCASTER (exception will be thrown if not)
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
@@ -120,6 +121,18 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onBeingHosted(object sender, OnBeingHostedArgs e)
+        {
+            if(e.Viewers == -1)
+            {
+                MessageBox.Show($"I am now being hosted by {e.HostedByChannel}!");
+            } else
+            {
+                MessageBox.Show($"I am now being hosted by {e.HostedByChannel} for {e.Viewers} viewers");
+            }
+            
         }
 
         private void onHostingStarted(object sender, OnHostingStartedArgs e)
