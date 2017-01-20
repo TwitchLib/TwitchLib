@@ -537,5 +537,14 @@ namespace TwitchLib.Internal.Parsing
 
             return new DetectionReturn(true, message.Split(' ')[3].Replace("#", ""));
         }
+
+        public static DetectionReturn detectedBeingHosted(string message, List<JoinedChannel> channels)
+        {
+            //:jtv!jtv@jtv.tmi.twitch.tv PRIVMSG (HOSTED):(HOSTER) is now hosting you for (VIEWERS_TOTAL) viewers.
+            //:jtv!jtv@jtv.tmi.twitch.tv PRIVMSG swiftyspiffy :BurkeBlack is now hosting you.
+            if (message.Contains(" ") && message.Split(' ')[1] == "PRIVMSG" && message.Contains("jtv!jtv@jtv") && message.Contains("is now hosting you"))
+                return new DetectionReturn(true, message.Split(' ')[2]);
+            return new DetectionReturn(false);
+        }
     }
 }

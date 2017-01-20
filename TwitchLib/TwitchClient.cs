@@ -59,6 +59,9 @@ namespace TwitchLib
 
         /// <summary>Determines whether Emotes will be replaced in messages.</summary>
         public bool WillReplaceEmotes { get; set; } = false;
+
+        /// <summary>If set to true, the library will not check upon channel join that if BeingHosted event is subscribed, that the bot is connected as broadcaster. Only override if the broadcaster is joining multiple channels, including the broadcaster's.</summary>
+        public bool OverrideBeingHostedCheck { get; set; } = false;
         #endregion
 
         #region Events
@@ -217,6 +220,10 @@ namespace TwitchLib
         /// </summary>
         public event EventHandler<OnNowHostingArgs> OnNowHosting;
 
+        /// <summary>
+        /// Fires when the library detects another channel has started hosting the broadcaster's stream. MUST BE CONNECTED AS BROADCASTER.
+        /// </summary>
+        public event EventHandler<OnBeingHostedArgs> OnBeingHosted;
         #endregion  
 
         /// <summary>
@@ -647,9 +654,15 @@ namespace TwitchLib
             if (response.Successful)
             {
                 if (TwitchUsername.ToLower() == decodedMessage.Split('!')[1].Split('@')[0].ToLower())
+                {
                     OnJoinedChannel?.Invoke(this, new OnJoinedChannelArgs { Channel = response.Channel, Username = decodedMessage.Split('!')[1].Split('@')[0] });
-                else
+                    if (OnBeingHosted != null)
+                        if (response.Channel.ToLower() != TwitchUsername && !OverrideBeingHostedCheck)
+                            throw new BadListenException("BeingHosted", "You cannot listen to OnBeingHosted unless you are connected to the broadcaster's channel as the broadcaster. You may override this by setting the TwitchClient property OverrideBeingHostedCheck to true.");
+                } else
+                {
                     OnUserJoined?.Invoke(this, new OnUserJoinedArgs { Username = decodedMessage.Split('!')[1].Split('@')[0], Channel = response.Channel });
+                }
                 return;
             }
 
@@ -803,6 +816,15 @@ namespace TwitchLib
             {
                 currentlyJoiningChannels = false;
                 queueingJoinCheck();
+            }
+
+            // On another channel hosts this broadcaster's channel
+            response = Internal.Parsing.Chat.detectedBeingHosted(decodedMessage, JoinedChannels);
+            if(response.Successful)
+            {
+                OnBeingHosted?.Invoke(this, new OnBeingHostedArgs { Channel = response.Channel, BotUsername = TwitchUsername, HostedByChannel = decodedMessage.Split(':')[2].Split(' ')[0],
+                    Viewers = ((decodedMessage.Contains("hosting you for") && decodedMessage.Split(' ').Count() >= 9) ? int.Parse(decodedMessage.Split(' ')[8]) : -1) });
+                return;
             }
             #endregion
 
