@@ -98,6 +98,8 @@ namespace TwitchLibExample
             newClient.OnNowHosting += new EventHandler<OnNowHostingArgs>(onNowHosting);
             newClient.OnMessageSent += onMessageSent;
             newClient.OnChatColorChanged += onChatColorChanged;
+            newClient.OnHostingStarted += new EventHandler<OnHostingStartedArgs>(onHostingStarted);
+            newClient.OnHostingStopped += new EventHandler<OnHostingStoppedArgs>(onHostingStopped);
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
@@ -118,6 +120,16 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onHostingStarted(object sender, OnHostingStartedArgs e)
+        {
+            MessageBox.Show($"Channel '{e.HostingChannel}' has started hosting the connected channel '{e.TargetChannel}' for {e.Viewers} viewers.");
+        }
+
+        private void onHostingStopped(object sender, OnHostingStoppedArgs e)
+        {
+            MessageBox.Show($"Channel {e.HostingChannel} has stopped hosting!");
         }
 
         private void onNowHosting(object sender, OnNowHostingArgs e)
