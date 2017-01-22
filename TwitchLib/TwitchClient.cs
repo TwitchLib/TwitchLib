@@ -235,7 +235,7 @@ namespace TwitchLib
         /// <param name="whisperCommandIdentifier">The identifier to be used for reading and writing commands from whispers.</param>
         /// <param name="logging">Whether or not logging to console should be enabled.</param>
         /// <param name="autoReListenOnExceptions">By default, TwitchClient will silence exceptions and auto-relisten for overall stability. For debugging, you may wish to have the exception bubble up, set this to false.</param>
-        public TwitchClient(ConnectionCredentials credentials, string channel = null, char chatCommandIdentifier = '\0', char whisperCommandIdentifier = '\0',
+        public TwitchClient(ConnectionCredentials credentials, string channel = null, char chatCommandIdentifier = '!', char whisperCommandIdentifier = '!',
             bool logging = false, bool autoReListenOnExceptions = true)
         {
             if (logging)
