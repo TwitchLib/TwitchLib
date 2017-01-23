@@ -282,7 +282,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to update.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>The response of the request.</returns>
-            public static string UpdateStreamTitle(string status, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateStreamTitle(status, channel, accessToken)).Result;
+            public static Models.API.Channel.Channel UpdateStreamTitle(string status, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateStreamTitle(status, channel, accessToken)).Result;
             /// <summary>
             /// [SYNC] Update the <paramref name="status"/> of a <paramref name="channel"/>.
             /// <para>Authenticated, required scope: <code>channel_editor</code></para>
@@ -291,7 +291,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to update.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>The response of the request.</returns>
-            public static async Task<string> UpdateStreamTitleAsync(string status, string channel, string accessToken = null) => await Internal.TwitchApi.UpdateStreamTitle(status, channel, accessToken);
+            public static async Task<Models.API.Channel.Channel> UpdateStreamTitleAsync(string status, string channel, string accessToken = null) => await Internal.TwitchApi.UpdateStreamTitle(status, channel, accessToken);
 
             /// <summary>
             /// [SYNC] Update the <paramref name="game"/> the <paramref name="channel"/> is currently playing.
@@ -301,7 +301,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to update.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>The response of the request.</returns>
-            public static string UpdateStreamGame(string game, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateStreamGame(game, channel, accessToken)).Result;
+            public static Models.API.Channel.Channel UpdateStreamGame(string game, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateStreamGame(game, channel, accessToken)).Result;
             /// <summary>
             /// [ASYNC] Update the <paramref name="game"/> the <paramref name="channel"/> is currently playing.
             /// <para>Authenticated, required scope: <code>channel_editor</code></para>
@@ -310,7 +310,7 @@ namespace TwitchLib
             /// <param name="channel">The channel to update.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
             /// <returns>The response of the request.</returns>
-            public static async Task<string> UpdateStreamGameAsync(string game, string channel, string accessToken = null) => await Internal.TwitchApi.UpdateStreamGame(game, channel, accessToken);
+            public static async Task<Models.API.Channel.Channel> UpdateStreamGameAsync(string game, string channel, string accessToken = null) => await Internal.TwitchApi.UpdateStreamGame(game, channel, accessToken);
 
             /// <summary>
             /// [SYNC] Update the <paramref name="status"/> and <paramref name="game"/> of a <paramref name="channel"/>.

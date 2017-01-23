@@ -208,17 +208,17 @@ namespace TwitchLib.Internal
         #endregion
 
         #region TitleAndGame
-        internal static async Task<string> UpdateStreamTitle(string status, string channel, string accessToken = null)
+        internal static async Task<Models.API.Channel.Channel> UpdateStreamTitle(string status, string channel, string accessToken = null)
         {
             var data = "{\"channel\":{\"status\":\"" + status + "\"}}";
-            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
+            return new Models.API.Channel.Channel(JObject.Parse(await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken)));
         }
 
         
-        internal static async Task<string> UpdateStreamGame(string game, string channel, string accessToken = null)
+        internal static async Task<Models.API.Channel.Channel> UpdateStreamGame(string game, string channel, string accessToken = null)
         {
             var data = "{\"channel\":{\"game\":\"" + game + "\"}}";
-            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken);
+            return new Models.API.Channel.Channel(JObject.Parse(await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken)));
         }
 
         
