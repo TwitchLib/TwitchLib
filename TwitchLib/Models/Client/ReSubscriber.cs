@@ -70,7 +70,7 @@ namespace TwitchLib.Models.Client
                             ColorHex = value;
                             break;
                         case "display-name":
-                            DisplayName = value;
+                            DisplayName = value.Replace(" ", "");
                             break;
                         case "emotes":
                             EmoteSet = value;
@@ -136,12 +136,12 @@ namespace TwitchLib.Models.Client
                 if(ircString.Split('#').Count() > 2)
                 {
                     if (ircString.Split('#')[2].Contains(" "))
-                        Channel = ircString.Split('#')[2].Split(' ')[0];
+                        Channel = ircString.Split('#')[2].Split(' ')[0].Replace(" ", "");
                     else
-                        Channel = ircString.Split('#')[2];
+                        Channel = ircString.Split('#')[2].Replace(" ", "");
                 } else
                 {
-                    Channel = ircString.Split('#')[1];
+                    Channel = ircString.Split('#')[1].Replace(" ", "");
                 }
             }
                 

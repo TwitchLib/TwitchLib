@@ -19,8 +19,8 @@ namespace TwitchLib.Models.Client
         /// <summary>Constructor for NewSubscriber object.</summary>
         public NewSubscriber(string ircString)
         {
-            Channel = ircString.Split('#')[1].Split(' ')[0];
-            Name = ircString.Split(':')[2].Split(' ')[0];
+            Channel = ircString.Split('#')[1].Split(' ')[0].Replace(" ", "");
+            Name = ircString.Split(':')[2].Split(' ')[0].Replace(" ", "");
             IsTwitchPrime = ircString.Contains("subscribed with Twitch Prime");
         }
     }
