@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Meebey.SmartIrc4net;
-using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using Newtonsoft.Json.Serialization;
 using TwitchLib.Exceptions.Client;
 using System.Text;
 using TwitchLib.Models.Client;
 using TwitchLib.Events.Client;
-using TwitchLib.Extensions.Client;
+using TwitchLib.Internal;
 
 namespace TwitchLib
 {
@@ -18,7 +15,7 @@ namespace TwitchLib
     {
         #region Private Variables
         private Task _listenThread;
-        private IrcConnection _client = new IrcConnection();
+        private WebSocketClient _client;
         private ConnectionCredentials _credentials;
         private List<char> _chatCommandIdentifiers = new List<char>();
         private List<char> _whisperCommandIdentifiers = new List<char>();
@@ -250,15 +247,14 @@ namespace TwitchLib
             _logging = logging;
             _autoReListenOnException = autoReListenOnExceptions;
 
+            _client = WebSocketClient.Create(new Uri($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}"));
             _client.AutoReconnect = true;
-            _client.AutoRetry = true;
-            _client.AutoRetryLimit = 0;
-            _client.OnConnected += Connected;
-            _client.OnReadLine += ReadLine;
-            _client.OnDisconnected += Disconnected;
-            _client.OnConnectionError += ConnectionError;
+            _client.OnConnected += _client_OnConnected;
+            _client.OnMessage += _client_OnMessage;
+            _client.OnDisconnected += _client_OnDisconnected;
+            _client.OnError += _client_OnError;
         }
-
+        
         /// <summary>
         /// Depending in the parameter, either enables or disables logging to the debug console.
         /// </summary>
@@ -279,7 +275,7 @@ namespace TwitchLib
             if(_logging)
                 Common.Logging.Log($"Writing: {message}");
             if(ChatThrottler == null || !ChatThrottler.ApplyThrottlingToRawMessages || ChatThrottler.MessagePermitted(message))
-                _client.WriteLine(message);
+                _client.SendMessage(message);
             OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Sent, Data = message });
             Console.ForegroundColor = prevColor;
         }
@@ -299,7 +295,7 @@ namespace TwitchLib
                 $".tmi.twitch.tv PRIVMSG #{channel.Channel} :{message}";
             _lastMessageSent = message;
             // This is a makeshift hack to encode it with accomodations for at least cyrillic characters, and possibly others
-            _client.WriteLine(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
+            _client.SendMessage(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
         }
 
         /// <summary>
@@ -334,7 +330,7 @@ namespace TwitchLib
             string twitchMessage = $":{_credentials.TwitchUsername}~{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" +
                 $".tmi.twitch.tv PRIVMSG #jtv :/w {receiver} {message}";
             // This is a makeshift hack to encode it with accomodations for at least cyrillic, and possibly others
-            _client.WriteLine(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
+            _client.SendMessage(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
             OnWhisperSent?.Invoke(this, new OnWhisperSentArgs { Receiver = receiver, Message = message });
         }
         #endregion
@@ -348,10 +344,7 @@ namespace TwitchLib
             if (_logging)
                 Common.Logging.Log("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
 
-            // Ensure auto retry is enabled
-            _client.AutoRetry = true;
-
-            _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
+            _client.Connect();
 
             if (_logging)
                 Common.Logging.Log("Should be connected!");
@@ -364,10 +357,7 @@ namespace TwitchLib
         {
             if (_logging)
                 Common.Logging.Log("Disconnect Twitch Chat Client...");
-
-            // Disconnect invoked on purpose, so we can disable auto retry
-            _client.AutoRetry = false;
-
+            
             // Not sure if this is the proper way to handle this. It is UI blocking, so in order to presrve UI functionality, I delegated it to a task.
             Task.Factory.StartNew(() => { _client.Disconnect(); });
 
@@ -385,13 +375,10 @@ namespace TwitchLib
             if (_logging)
                 Common.Logging.Log("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
 
-            // Ensure auto retry is enabled
-            _client.AutoRetry = true;
-
             if(_client.IsConnected)
                 _client.Reconnect();
             else
-                _client.Connect(_credentials.TwitchHost, _credentials.TwitchPort);
+                _client.Connect();
         }
         #endregion
 
@@ -473,7 +460,7 @@ namespace TwitchLib
                 Common.Logging.Log($"Leaving channel: {channel}");
             JoinedChannel joinedChannel = JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
             if (joinedChannel != null)
-                _client.WriteLine(Rfc2812.Part($"#{channel}"));
+                _client.SendMessage(Rfc2812.Part($"#{channel}"));
         }
 
         /// <summary>
@@ -528,81 +515,50 @@ namespace TwitchLib
         }
 
         #region Client Events
-        private void Connected(object sender, EventArgs e)
-        {
-            // Make sure proper formatting is applied to oauth
-            if(!_credentials.TwitchOAuth.Contains(":"))
-            {
-                _credentials.TwitchOAuth = _credentials.TwitchOAuth.Replace("oauth", "");
-                _credentials.TwitchOAuth = $"oauth:{_credentials.TwitchOAuth}";
-            }
-            _client.WriteLine(Rfc2812.Pass(_credentials.TwitchOAuth), Priority.Critical);
-            _client.WriteLine(Rfc2812.Nick(_credentials.TwitchUsername), Priority.Critical);
-            _client.WriteLine(Rfc2812.User(_credentials.TwitchUsername, 0, _credentials.TwitchUsername),
-                Priority.Critical);
-
-            _client.WriteLine("CAP REQ twitch.tv/membership");
-            _client.WriteLine("CAP REQ twitch.tv/commands");
-            _client.WriteLine("CAP REQ twitch.tv/tags");
-
-            if (_autoJoinChannel != null)
-            {
-                JoinedChannels.Add(new JoinedChannel(_autoJoinChannel));
-                _client.WriteLine(Rfc2812.Join($"#{_autoJoinChannel}"));
-            }
-
-            if (_listenThread == null || _listenThread.IsCompleted)
-            {
-                _listenThread = Task.Factory.StartNew(() =>
-                {
-                    while(_client.IsConnected)
-                    {
-                        if (_logging)
-                            Common.Logging.Log("Starting listen..", false, false, Enums.LogType.Success);
-                        try
-                        {
-                            _client.Listen();
-                        } catch(Exception ex)
-                        {
-                            if (_logging)
-                            {
-                                Common.Logging.Log("Exception!!", true, true, Enums.LogType.Failure);
-                                Common.Logging.Log(ex.Message, false, false, Enums.LogType.Failure);
-                            }
-                            if (!_autoReListenOnException)
-                                throw ex;
-                        }
-                        if (_logging)
-                            Common.Logging.Log("Stopped listening..", true, true, Enums.LogType.Failure);
-                    }
-                });
-            } else
-            {
-                if (_logging)
-                    Common.Logging.Log("Already listening, not starting new thread...");
-            }
-        }
-
-        private void Disconnected(object sender, EventArgs e)
-        {
-            OnDisconnected?.Invoke(this, new OnDisconnectedArgs { Username = TwitchUsername });
-            JoinedChannels.Clear();
-        }
-
-        private void ConnectionError(object sender, EventArgs e)
+        private void _client_OnError(WebSocketClient sender, Exception e)
         {
             Reconnect();
             System.Threading.Thread.Sleep(2000);
             OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { Username = TwitchUsername });
         }
 
-        private void ReadLine(object sender, ReadLineEventArgs e)
+        private void _client_OnDisconnected(WebSocketClient e)
+        {
+            OnDisconnected?.Invoke(this, new OnDisconnectedArgs { Username = TwitchUsername });
+            JoinedChannels.Clear();
+        }
+
+        private void _client_OnMessage(WebSocketClient sender, string e)
         {
             if (_logging)
-                Common.Logging.Log($"Received: {e.Line}");
-            OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = e.Line });
-            ParseIrcMessage(e.Line);
+                Common.Logging.Log($"Received: {e}");
+            OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = e });
+            ParseIrcMessage(e);
         }
+
+        private void _client_OnConnected(WebSocketClient obj)
+        {
+            // Make sure proper formatting is applied to oauth
+            if (!_credentials.TwitchOAuth.Contains(":"))
+            {
+                _credentials.TwitchOAuth = _credentials.TwitchOAuth.Replace("oauth", "");
+                _credentials.TwitchOAuth = $"oauth:{_credentials.TwitchOAuth}";
+            }
+            _client.SendMessage(Rfc2812.Pass(_credentials.TwitchOAuth));
+            _client.SendMessage(Rfc2812.Nick(_credentials.TwitchUsername));
+            _client.SendMessage(Rfc2812.User(_credentials.TwitchUsername, 0, _credentials.TwitchUsername));
+
+            _client.SendMessage("CAP REQ twitch.tv/membership");
+            _client.SendMessage("CAP REQ twitch.tv/commands");
+            _client.SendMessage("CAP REQ twitch.tv/tags");
+
+            if (_autoJoinChannel != null)
+            {
+                JoinedChannels.Add(new JoinedChannel(_autoJoinChannel));
+                _client.SendMessage(Rfc2812.Join($"#{_autoJoinChannel}"));
+            }
+        }
+       
         #endregion
 
         private void ParseIrcMessage(string ircMessage)
@@ -935,7 +891,7 @@ namespace TwitchLib
                 JoinedChannel channelToJoin = joinChannelQueue.Dequeue();
                 if (_logging)
                     Common.Logging.Log($"Joining channel: {channelToJoin.Channel}");
-                _client.WriteLine(Rfc2812.Join($"#{channelToJoin.Channel}"));
+                _client.SendMessage(Rfc2812.Join($"#{channelToJoin.Channel}"));
                 JoinedChannels.Add(new JoinedChannel(channelToJoin.Channel));
             } else
             {
