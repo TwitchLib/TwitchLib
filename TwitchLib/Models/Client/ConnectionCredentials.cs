@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.Client
+﻿namespace TwitchLib.Models.Client
 {
     /// <summary>Class used to store credentials used to connect to Twitch chat/whisper.</summary>
     public class ConnectionCredentials
@@ -19,7 +13,7 @@ namespace TwitchLib.Models.Client
         public int TwitchPort { get; set; }
 
         /// <summary>Constructor for ConnectionCredentials object.</summary>
-        public ConnectionCredentials(string twitchUsername, string twitchOAuth, string twitchHost = "irc.chat.twitch.tv", int twitchPort = 6667)
+        public ConnectionCredentials(string twitchUsername, string twitchOAuth, string twitchHost = "irc-ws.chat.twitch.tv", int twitchPort = 80)
         {
             TwitchUsername = twitchUsername.ToLower();
             TwitchOAuth = twitchOAuth;

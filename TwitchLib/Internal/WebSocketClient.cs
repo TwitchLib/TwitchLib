@@ -16,6 +16,9 @@ namespace TwitchLib.Internal
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
 
+        public bool AutoReconnect { get; set; }
+        public bool IsConnected { get; set; }
+
         public event Action<WebSocketClient> OnConnected;
         public event Action<WebSocketClient, string> OnMessage;
         public event Action<WebSocketClient> OnDisconnected;
@@ -55,18 +58,22 @@ namespace TwitchLib.Internal
         /// <returns></returns>
         public void Disconnect()
         {
-            Client.CloseAsync(WebSocketCloseStatus.NormalClosure, "Normal", CancellationToken.None);
+            Client.CloseAsync(WebSocketCloseStatus.NormalClosure, "Normal", CancellationToken.None).Wait();
+        }
+        /// <summary>
+        /// Reconnects to the WebSocket server.
+        /// </summary>
+        /// <returns></returns>
+        public void Reconnect()
+        {
+            Disconnect();
+            ConnectAsync();
         }
         /// <summary>
         /// Send a message to the WebSocket server.
         /// </summary>
         /// <param name="message">The message to send</param>
         public void SendMessage(string message)
-        {
-            SendMessageAsync(message);
-        }
-
-        private async void SendMessageAsync(string message)
         {
             if (Client.State != WebSocketState.Open)
             {
@@ -87,7 +94,7 @@ namespace TwitchLib.Internal
                     count = messageBuffer.Length - offset;
                 }
 
-                await Client.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count), WebSocketMessageType.Text, lastMessage, _cancellationToken);
+                Client.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count), WebSocketMessageType.Text, lastMessage, _cancellationToken).Wait();
             }
         }
 
@@ -107,7 +114,7 @@ namespace TwitchLib.Internal
                 while (Client.State == WebSocketState.Open)
                 {
                     var stringResult = new StringBuilder();
-
+                    IsConnected = true;
 
                     WebSocketReceiveResult result;
                     do
@@ -139,7 +146,9 @@ namespace TwitchLib.Internal
             }
             finally
             {
-                Client.Dispose();
+                IsConnected = false;
+                if (AutoReconnect)
+                    Reconnect();
             }
         }
 
@@ -179,5 +188,6 @@ namespace TwitchLib.Internal
                 Client.Dispose();
             }
         }
+
     }
 }
