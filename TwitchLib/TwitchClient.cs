@@ -532,6 +532,8 @@ namespace TwitchLib
         {
             if (_logging)
                 Common.Logging.Log($"Received: {e}");
+            // remove \r\n at the end of received messages, I THINK Trim will work for this usecase
+            e = e.Trim();
             OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = e });
             ParseIrcMessage(e);
         }
