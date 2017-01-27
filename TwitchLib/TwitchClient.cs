@@ -38,7 +38,7 @@ namespace TwitchLib
         /// <summary>The most recent whisper received.</summary>
         public WhisperMessage PreviousWhisper { get; protected set; }
         /// <summary>The current connection status of the client.</summary>
-        public bool IsConnected { get; protected set; }
+        public bool IsConnected { get { return _client.IsConnected; } }
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on chat messages.</summary>
         public Services.MessageThrottler ChatThrottler;
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on whispers.</summary>
@@ -574,7 +574,6 @@ namespace TwitchLib
             // On Connected
             if (Internal.Parsing.Chat.detectConnected(decodedMessage))
             {
-                IsConnected = true;
                 OnConnected?.Invoke(this, new OnConnectedArgs { AutoJoinChannel = "", Username = TwitchUsername });
                 return;
             }
