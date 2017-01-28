@@ -117,7 +117,7 @@ namespace TwitchLib.Internal
         {
             var json = JObject.Parse(await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/streams/featured?limit={limit}&offset={offset}"));
             List<Models.API.Stream.FeaturedStream> streams = new List<Models.API.Stream.FeaturedStream>();
-            streams.AddRange(json.SelectToken("streams").Select(stream => new Models.API.Stream.FeaturedStream(stream)));
+            streams.AddRange(json.SelectToken("featured").Select(stream => new Models.API.Stream.FeaturedStream(stream)));
             return streams;
         }
         
