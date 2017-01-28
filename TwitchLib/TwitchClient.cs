@@ -629,15 +629,6 @@ namespace TwitchLib
                 return;
             }
 
-            // On Command Received (PURPOSELY DROP THROUGH WITHOUT RETURN)
-            response = Internal.Parsing.Chat.detectCommandReceived(TwitchUsername, decodedMessage, JoinedChannels, ChannelEmotes, WillReplaceEmotes, _chatCommandIdentifiers);
-            if (response.Successful)
-            {
-                var chatMessage = new ChatMessage(TwitchUsername, decodedMessage, ref _channelEmotes, WillReplaceEmotes);
-                OnChatCommandReceived?.Invoke(this, new OnChatCommandReceivedArgs { Command = new ChatCommand(decodedMessage, chatMessage) });
-                // purposely drop through without return
-            }
-
             // On Message Received
             response = Internal.Parsing.Chat.detectMessageReceived(decodedMessage, JoinedChannels);
             if (response.Successful)
@@ -647,6 +638,15 @@ namespace TwitchLib
                     joinedChannel.HandleMessage(chatMessage);
                 OnMessageReceived?.Invoke(this, new OnMessageReceivedArgs { ChatMessage = chatMessage });
                 return;
+            }
+
+            // On Command Received (PURPOSELY DROP THROUGH WITHOUT RETURN)
+            response = Internal.Parsing.Chat.detectCommandReceived(TwitchUsername, decodedMessage, JoinedChannels, ChannelEmotes, WillReplaceEmotes, _chatCommandIdentifiers);
+            if (response.Successful)
+            {
+                var chatMessage = new ChatMessage(TwitchUsername, decodedMessage, ref _channelEmotes, WillReplaceEmotes);
+                OnChatCommandReceived?.Invoke(this, new OnChatCommandReceivedArgs { Command = new ChatCommand(decodedMessage, chatMessage) });
+                // purposely drop through without return
             }
 
             // On Viewer Joined
