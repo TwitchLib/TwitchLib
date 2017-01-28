@@ -637,7 +637,7 @@ namespace TwitchLib
                 foreach (var joinedChannel in JoinedChannels.Where(x => x.Channel.ToLower() == response.Channel.ToLower()))
                     joinedChannel.HandleMessage(chatMessage);
                 OnMessageReceived?.Invoke(this, new OnMessageReceivedArgs { ChatMessage = chatMessage });
-                return;
+                // purposely drop through without return
             }
 
             // On Command Received (PURPOSELY DROP THROUGH WITHOUT RETURN)
@@ -646,7 +646,7 @@ namespace TwitchLib
             {
                 var chatMessage = new ChatMessage(TwitchUsername, decodedMessage, ref _channelEmotes, WillReplaceEmotes);
                 OnChatCommandReceived?.Invoke(this, new OnChatCommandReceivedArgs { Command = new ChatCommand(decodedMessage, chatMessage) });
-                // purposely drop through without return
+                return;
             }
 
             // On Viewer Joined
