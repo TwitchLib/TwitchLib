@@ -364,7 +364,6 @@ namespace TwitchLib
             // Clear instance data
             JoinedChannels.Clear();
             PreviousWhisper = null;
-            IsConnected = false;
         }
 
         /// <summary>
@@ -538,7 +537,7 @@ namespace TwitchLib
             ParseIrcMessage(e);
         }
 
-        private void _client_OnConnected(WebSocketClient obj)
+        private void _client_OnConnected(WebSocketClient sender)
         {
             // Make sure proper formatting is applied to oauth
             if (!_credentials.TwitchOAuth.Contains(":"))
@@ -556,8 +555,7 @@ namespace TwitchLib
 
             if (_autoJoinChannel != null)
             {
-                JoinedChannels.Add(new JoinedChannel(_autoJoinChannel));
-                _client.SendMessage(Rfc2812.Join($"#{_autoJoinChannel}"));
+                JoinChannel(_autoJoinChannel);
             }
         }
        
@@ -574,7 +572,7 @@ namespace TwitchLib
             // On Connected
             if (Internal.Parsing.Chat.detectConnected(decodedMessage))
             {
-                OnConnected?.Invoke(this, new OnConnectedArgs { AutoJoinChannel = "", Username = TwitchUsername });
+                OnConnected?.Invoke(this, new OnConnectedArgs { AutoJoinChannel = _autoJoinChannel != null ? _autoJoinChannel : "", Username = TwitchUsername });
                 return;
             }
 
