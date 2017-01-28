@@ -294,9 +294,13 @@ namespace TwitchLib.Models.Client
         /// <param name="emote">The <see cref="MessageEmote"/> to add to the collection.</param>
         public void Add(MessageEmote emote)
         {
-            if (_emoteList.ContainsKey(emote.Text)) return;
+            MessageEmote gotEmote;
+            if (!_emoteList.TryGetValue(emote.Text, out gotEmote))
+            {
+                _emoteList.Add(emote.Text, emote);
+            }
 
-            _emoteList.Add(emote.Text, emote);
+            
             if (CurrentPattern == null)
             {
                 //string i = String.Format(_basePattern, "(" + emote.EscapedText + "){0}");

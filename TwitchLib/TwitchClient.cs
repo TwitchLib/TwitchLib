@@ -38,7 +38,7 @@ namespace TwitchLib
         /// <summary>The most recent whisper received.</summary>
         public WhisperMessage PreviousWhisper { get; protected set; }
         /// <summary>The current connection status of the client.</summary>
-        public bool IsConnected { get; protected set; }
+        public bool IsConnected { get { return _client.IsConnected; } }
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on chat messages.</summary>
         public Services.MessageThrottler ChatThrottler;
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on whispers.</summary>
@@ -364,7 +364,6 @@ namespace TwitchLib
             // Clear instance data
             JoinedChannels.Clear();
             PreviousWhisper = null;
-            IsConnected = false;
         }
 
         /// <summary>
@@ -538,7 +537,7 @@ namespace TwitchLib
             ParseIrcMessage(e);
         }
 
-        private void _client_OnConnected(WebSocketClient obj)
+        private void _client_OnConnected(WebSocketClient sender)
         {
             // Make sure proper formatting is applied to oauth
             if (!_credentials.TwitchOAuth.Contains(":"))
@@ -556,8 +555,7 @@ namespace TwitchLib
 
             if (_autoJoinChannel != null)
             {
-                JoinedChannels.Add(new JoinedChannel(_autoJoinChannel));
-                _client.SendMessage(Rfc2812.Join($"#{_autoJoinChannel}"));
+                JoinChannel(_autoJoinChannel);
             }
         }
        
@@ -574,8 +572,7 @@ namespace TwitchLib
             // On Connected
             if (Internal.Parsing.Chat.detectConnected(decodedMessage))
             {
-                IsConnected = true;
-                OnConnected?.Invoke(this, new OnConnectedArgs { AutoJoinChannel = "", Username = TwitchUsername });
+                OnConnected?.Invoke(this, new OnConnectedArgs { AutoJoinChannel = _autoJoinChannel != null ? _autoJoinChannel : "", Username = TwitchUsername });
                 return;
             }
 
