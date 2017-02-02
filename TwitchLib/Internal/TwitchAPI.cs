@@ -396,7 +396,7 @@ namespace TwitchLib.Internal
         internal static async Task<List<Models.API.Video.Video>> GetChannelVideos(string channel, int limit = 10,
             int offset = 0, bool onlyBroadcasts = false, bool onlyHls = false)
         {
-            var args = $"?limit={limit}&offset={offset}&broadcasts={onlyBroadcasts}&hls={onlyHls}";
+            var args = $"?limit={limit}&offset={offset}&broadcasts={onlyBroadcasts.ToString().ToLower()}&hls={onlyHls.ToString().ToLower()}";
             var resp = await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/videos{args}");
             var vids = JObject.Parse(resp).SelectToken("videos");
 
