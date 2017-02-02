@@ -37,7 +37,7 @@ namespace TwitchLib.Models.Client
         /// <summary>Property representing message contents.</summary>
         public string Message { get; protected set; }
         /// <summary>Property representing user type of sender.</summary>
-        public string UserType { get; protected set; }
+        public Enums.UserType UserType { get; protected set; }
 
         /// <summary>
         /// WhisperMessage constructor.
@@ -100,6 +100,23 @@ namespace TwitchLib.Models.Client
                         UserId = long.Parse(value);
                         break;
 
+                    case "user-type":
+                        switch (part.Split('=')[1].Split(' ')[0])
+                        {
+                            case "global_mod":
+                                UserType = Enums.UserType.GlobalModerator;
+                                break;
+                            case "admin":
+                                UserType = Enums.UserType.Admin;
+                                break;
+                            case "staff":
+                                UserType = Enums.UserType.Staff;
+                                break;
+                            default:
+                                UserType = Enums.UserType.Viewer;
+                                break;
+                        }
+                        break;
                     default:
                         Common.Logging.Log($"Unaccounted for [WhisperMessage.cs]: key: {key}, value: {value}");
                         break;
