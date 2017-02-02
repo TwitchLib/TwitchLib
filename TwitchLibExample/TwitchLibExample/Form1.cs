@@ -417,7 +417,7 @@ namespace TwitchLibExample
 
         private async void button16_Click(object sender, EventArgs e)
         {
-            List<Video> videos = await TwitchApi.Videos.GetChannelVideosAsync(textBox20.Text);
+            List<Video> videos = await TwitchApi.Videos.GetChannelVideosAsync(textBox20.Text, 10, 0, true);
             foreach(Video vid in videos)
             {
                 MessageBox.Show($"Title: {vid.Title}\nDescription: {vid.Description}\nStatus: {vid.Status}\nId: {vid.Id}\nTag List: {vid.TagList}\n Recorded At: {vid.CreatedAt}\n" +
