@@ -134,6 +134,10 @@ Available via Nuget: `Install-Package TwitchLib`
 - FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected. (OPTIONAL)
 - MessageThrottler - Property object that can be assigned to either Chat or Whisper clients, fires events and blocks sending of messages given a specific time period in order to prevent Twitch ToS violations. (OPTIONAL)
 
+### Twitch Token Generator
+A lot of you have been messaging me asking how to generate an access token for a specific priviledge. I've gone ahead and made a tool to do just this. Should also make testing much easier.
+[https://twitchtokengenerator.com](https://twitchtokengenerator.com)
+
 ### Testing/Parsing Stability
 I've recently taken to implementing this class into test applications and connecting them to large Twitch channels to see how the class handles fast moving chat and large TwitchAPI usage.  These are the events/channels I've had the library connected to.
 - GamesDoneQuick (several days) - 80,000 - 200,000 concurrent, fixed a number of overflow and outofindex exceptions thrown when TwitchAPI returns service unavailable or TwitchIRC returns incomplete message data
