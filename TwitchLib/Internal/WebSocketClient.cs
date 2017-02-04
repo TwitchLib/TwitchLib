@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
@@ -16,6 +17,9 @@ namespace TwitchLib.Internal
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
 
+        public bool AutoReconnect { get; set; }
+        public bool IsConnected { get { return Client?.State == WebSocketState.Open ? true : false; } }
+
         public event Action<WebSocketClient> OnConnected;
         public event Action<WebSocketClient, string> OnMessage;
         public event Action<WebSocketClient> OnDisconnected;
@@ -24,7 +28,7 @@ namespace TwitchLib.Internal
         protected WebSocketClient(Uri uri)
         {
             Client = new ClientWebSocket();
-            Client.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
+            Client.Options.KeepAliveInterval = TimeSpan.FromSeconds(60);
             _uri = uri;
             _cancellationToken = _cancellationTokenSource.Token;
         }
@@ -55,18 +59,26 @@ namespace TwitchLib.Internal
         /// <returns></returns>
         public void Disconnect()
         {
-            Client.CloseAsync(WebSocketCloseStatus.NormalClosure, "Normal", CancellationToken.None);
+            Client.CloseAsync(WebSocketCloseStatus.NormalClosure, "Normal", CancellationToken.None).Wait();
+        }
+        /// <summary>
+        /// Reconnects to the WebSocket server.
+        /// </summary>
+        /// <returns></returns>
+        public void Reconnect()
+        {
+            if (IsConnected)
+                StartListen();
+            else
+            {
+                ConnectAsync();
+            }
         }
         /// <summary>
         /// Send a message to the WebSocket server.
         /// </summary>
         /// <param name="message">The message to send</param>
         public void SendMessage(string message)
-        {
-            SendMessageAsync(message);
-        }
-
-        private async void SendMessageAsync(string message)
         {
             if (Client.State != WebSocketState.Open)
             {
@@ -87,7 +99,7 @@ namespace TwitchLib.Internal
                     count = messageBuffer.Length - offset;
                 }
 
-                await Client.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count), WebSocketMessageType.Text, lastMessage, _cancellationToken);
+                Client.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count), WebSocketMessageType.Text, lastMessage, _cancellationToken).Wait();
             }
         }
 
@@ -108,7 +120,6 @@ namespace TwitchLib.Internal
                 {
                     var stringResult = new StringBuilder();
 
-
                     WebSocketReceiveResult result;
                     do
                     {
@@ -128,7 +139,16 @@ namespace TwitchLib.Internal
 
                     } while (!result.EndOfMessage);
 
-                    CallOnMessage(stringResult);
+                    var messages = stringResult
+                        .ToString()
+                        .Split(new string[] { "\r", "\n" }, StringSplitOptions.None)
+                        .Where(c=>!string.IsNullOrWhiteSpace(c))
+                        .ToList();
+                    
+                    foreach (var msg in messages)
+                    {
+                        CallOnMessage(msg);
+                    }
 
                 }
             }
@@ -139,7 +159,8 @@ namespace TwitchLib.Internal
             }
             finally
             {
-                Client.Dispose();
+                if (AutoReconnect)
+                    Reconnect();
             }
         }
 
@@ -149,10 +170,10 @@ namespace TwitchLib.Internal
                 RunInTask(() => OnError(this, e));
         }
 
-        private void CallOnMessage(StringBuilder stringResult)
+        private void CallOnMessage(string message)
         {
             if (OnMessage != null)
-                RunInTask(() => OnMessage(this, stringResult.ToString()));
+                RunInTask(() => OnMessage(this, message));
         }
 
         private void CallOnDisconnected()
@@ -179,5 +200,6 @@ namespace TwitchLib.Internal
                 Client.Dispose();
             }
         }
+
     }
 }
