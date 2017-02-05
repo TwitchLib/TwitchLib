@@ -146,10 +146,8 @@ I've recently taken to implementing this class into test applications and connec
 - TwitchLibExample - This project is included in this repo as a master example project.
 - PFCKrutonium's [TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot) - This project implements the bot using VisualBasic.
 
-### Libraries Utilized
-- Newtonsoft.Json - JSON parsing class.  Used to parse Twitch API calls.
-- SmartIRC4Net - Base IRC class.
-- WebSocket4Net - Base Socket class.
+### Libraries/Dependencies Utilized
+- Newtonsoft.Json (7.0.1) - JSON parsing class.  Used to parse Twitch API calls.
 
 ### Support/Discussion
 The Twitch Discord server has a #developer channel that has constant discussion about developing for the Twitch platform. You can likely get support and discuss ideas there. A link is below:
@@ -166,7 +164,7 @@ https://discord.gg/0gHwecaLRAzrRYWi
  * toffaste1337([toffaste1337](https://github.com/toffaste1337))
  * Mr_Examed ([Mr_Examed](https://www.twitch.tv/mr_examed))
  * XuluniX ([XuluniX](https://github.com/XuluniX))
- * prom3theu5 ([prom3theu5](https://twitter.com/prom3theu5))
+ * prom3theu5 ([@prom3theu5](https://twitter.com/prom3theu5))
  
 ### License
 MIT License. &copy; 2016-2017 Cole
