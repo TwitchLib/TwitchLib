@@ -173,7 +173,11 @@ namespace TwitchLib.Internal
         private void CallOnMessage(string message)
         {
             if (OnMessage != null)
+            {
+                message = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(message));
                 RunInTask(() => OnMessage(this, message));
+            }
+                
         }
 
         private void CallOnDisconnected()
