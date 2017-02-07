@@ -73,7 +73,7 @@
     <Compile Include="Events\Client\OnChatClearedArgs.cs" />
     <Compile Include="Events\Client\OnChatColorChangedArgs.cs" />
     <Compile Include="Events\Client\OnChatCommandReceivedArgs.cs" />
-    <Compile Include="Events\Client\OnClientLeftChannelArgs.cs" />
+    <Compile Include="Events\Client\OnLeftChannelArgs.cs" />
     <Compile Include="Events\Client\OnConnectedArgs.cs" />
     <Compile Include="Events\Client\OnConnectionErrorArgs.cs" />
     <Compile Include="Events\Client\OnDisconnectedArgs.cs" />

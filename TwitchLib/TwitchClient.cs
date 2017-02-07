@@ -190,7 +190,7 @@ namespace TwitchLib
         /// <summary>
         /// Fires when client successfully leaves a channel.
         /// </summary>
-        public event EventHandler<OnClientLeftChannelArgs> OnClientLeftChannel;
+        public event EventHandler<OnLeftChannelArgs> OnLeftChannel;
 
         /// <summary>
         /// Fires when a viewer gets banned by any moderator.
@@ -627,7 +627,7 @@ namespace TwitchLib
                 {
                     JoinedChannels.Remove(JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == response.Channel));
                     _hasSeenJoinedChannels.Remove(response.Channel.ToLower());
-                    OnClientLeftChannel?.Invoke(this, new OnClientLeftChannelArgs { BotUsername = username, Channel = response.Channel });
+                    OnLeftChannel?.Invoke(this, new OnLeftChannelArgs { BotUsername = username, Channel = response.Channel });
                 }
                 else
                 {

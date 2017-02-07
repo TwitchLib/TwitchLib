@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TwitchLib.Events.Client
 {
     /// <summary>Args representing the client left a channel event.</summary>
-    public class OnClientLeftChannelArgs : EventArgs
+    public class OnLeftChannelArgs : EventArgs
     {
         /// <summary>The username of the bot that left the channel.</summary>
         public string BotUsername;
