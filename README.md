@@ -33,6 +33,7 @@ Available via Nuget: `Install-Package TwitchLib`
 ### TwitchClient
 - Initiailized using channel and ConnectionCredentials
 - Chat Events:
+  * OnLeftChannel - Similar to OnJoinedChannel, but fires when the client leaves a channel.
   * OnIncorrectLogin - Fires when an invalid login is returned by Twitch
   * OnConnected - Fires on listening and after joined channel, returns username and channel
   * OnDisconnected - Fires when TwitchClient disconnects.
@@ -58,6 +59,8 @@ Available via Nuget: `Install-Package TwitchLib`
   * OnChatColorChanged - Fires when confirmation is received from Twitch that chat color has been successfully changed.
   * OnNowHosting - Fires when the home channel begins hosting another channel.
   * OnBeingHosted - Fires when the library sees that another channel is hosting the broadcaster's channel. YOU MUST BE CONNECTED AS THE BROADCASTER.
+  * OnSendReceiveData - Fires whenever the TwitchClient sends or receives data to/from Twitch. Excellent for debugging/custom interpretation.
+  * OnViewerTimedout - Fires whenever a user is timedout in chat.
 - Whisper Events:
   * OnWhisperReceived - Fires when a new whisper message is received, returns WhisperMessage
   * OnWhisperCommandReceived - Fires when command (uses custom command identifier) is received.
@@ -73,7 +76,7 @@ Available via Nuget: `Install-Package TwitchLib`
 - LeaveChannel(string channel) - Client will attempt to leave channel.
 - GetChannelModerators - Sends a request for all of the channel moderators (you MUST listen/handle the OnModeratorsReceived event).
 
-### TwitchAPI
+### TwitchAPI (All methods have accompanying Async methods. Append Async to method name)
 - BroadcasterOnline(string channel) - Async function returns bool of whether or not streamer is streaming
 - GetTwitchChannel(string channel) - Async function returns TwitchCHannel of a specific channel
 - UserFollowsChannel(string username, string channel) - Async function returns bool if a user follows a channel
