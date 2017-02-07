@@ -141,13 +141,10 @@ Available via Nuget: `Install-Package TwitchLib`
 A lot of you have been messaging me asking how to generate an access token for a specific priviledge. I've gone ahead and made a tool to do just this. Should also make testing much easier.
 [https://twitchtokengenerator.com](https://twitchtokengenerator.com)
 
-### Testing/Parsing Stability
-I've recently taken to implementing this class into test applications and connecting them to large Twitch channels to see how the class handles fast moving chat and large TwitchAPI usage.  These are the events/channels I've had the library connected to.
-- GamesDoneQuick (several days) - 80,000 - 200,000 concurrent, fixed a number of overflow and outofindex exceptions thrown when TwitchAPI returns service unavailable or TwitchIRC returns incomplete message data
-
 ### Examples and Implementations
 - TwitchLibExample - This project is included in this repo as a master example project.
 - PFCKrutonium's [TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot) - This project implements the bot using VisualBasic.
+- Bacon_Docunt VOD on building a Twitch bot using TwitchLib: [twitch.tv/videos/115788601](https://www.twitch.tv/videos/115788601)
 
 ### Libraries/Dependencies Utilized
 - Newtonsoft.Json (7.0.1) - JSON parsing class.  Used to parse Twitch API calls.
