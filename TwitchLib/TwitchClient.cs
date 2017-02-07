@@ -295,7 +295,7 @@ namespace TwitchLib
                 $".tmi.twitch.tv PRIVMSG #{channel.Channel} :{message}";
             _lastMessageSent = message;
             // This is a makeshift hack to encode it with accomodations for at least cyrillic characters, and possibly others
-            _client.SendMessage(Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage)));
+            _client.SendMessage(twitchMessage);
         }
 
         /// <summary>
