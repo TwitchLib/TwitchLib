@@ -239,7 +239,7 @@ namespace TwitchLib
                 Common.Logging.Log($"TwitchLib-TwitchClient initialized, assembly version: {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}");
             _credentials = credentials;
             TwitchUsername = _credentials.TwitchUsername;
-            _autoJoinChannel = channel.ToLower();
+            _autoJoinChannel = channel?.ToLower();
             if(chatCommandIdentifier != '\0')
                 _chatCommandIdentifiers.Add(chatCommandIdentifier);
             if (whisperCommandIdentifier != '\0')
