@@ -826,6 +826,40 @@ namespace TwitchLib
             public static async Task<Models.API.Clip.ClipsResponse> GetFollowedClipsAsync(string cursor = "0", int limit = 10, bool trending = false, string accessToken = null) => await Internal.TwitchApi.GetFollowedClips(cursor, limit, trending, accessToken);
         }
 
+        /// <summary>
+        /// Twitch API calls relating to Twitch communities.
+        /// </summary>
+        public static class Communities
+        {
+            /// <summary>
+            /// [SYNC] Retrieves a community object representing a Twitch community by the name.
+            /// </summary>
+            /// <param name="communityName">Name of the community to fetch.</param>
+            /// <returns>Community object.</returns>
+            public static Models.API.Community.Community GetCommunityByName(string communityName) => Task.Run(() => Internal.TwitchApi.GetCommunityByName(communityName)).Result;
+
+            /// <summary>
+            /// [ASYNC] Retrieves a community object representing a Twitch community by the name.
+            /// </summary>
+            /// <param name="communityName">Name of the community to fetch.</param>
+            /// <returns>Community object.</returns>
+            public static async Task<Models.API.Community.Community> GetCommunityByNameAsync(string communityName) => await Internal.TwitchApi.GetCommunityByName(communityName);
+
+            /// <summary>
+            /// [SYNC] Retrieves a community object representing a Twitch community by the id.
+            /// </summary>
+            /// <param name="communityId">Id of Twitch community to fetch.</param>
+            /// <returns>Community object.</returns>
+            public static Models.API.Community.Community GetCommunityById(string communityId) => Task.Run(() => Internal.TwitchApi.GetCommunityById(communityId)).Result;
+
+            /// <summary>
+            /// [ASYNC] Retrieves a community object representing a Twitch community by the id.
+            /// </summary>
+            /// <param name="communityId">Id of Twitch community to fetch.</param>
+            /// <returns>Community object.</returns>
+            public static async Task<Models.API.Community.Community> GetCommunityByIdAsync(string communityId) => await Internal.TwitchApi.GetCommunityById(communityId);
+        }
+
         #region Twitch API Global Functions
         /// <summary>
         /// [SYNC] Sets ClientId, which is required for all API calls. Also validates ClientId.

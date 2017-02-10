@@ -577,6 +577,33 @@ namespace TwitchLib.Internal
         }
         #endregion
 
+        #region Communities
+        public async static Task<Models.API.Community.Community> GetCommunityByName(string communityName)
+        {
+            string response = (await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/communities?name={communityName}", null, 5));
+            JObject json = JObject.Parse(response);
+            JToken val;
+            if(json.TryGetValue("error", out val))
+                if (val.ToString() == "Not Found")
+                    throw new BadResourceException(response);
+
+            return new Models.API.Community.Community(json);
+        }
+
+        public async static Task<Models.API.Community.Community> GetCommunityById(string id)
+        {
+            string response = (await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/communities/{id}", null, 5));
+            JObject json = JObject.Parse(response);
+            JToken val;
+            if (json.TryGetValue("error", out val))
+                if (val.ToString() == "Not Found")
+                    throw new BadResourceException(response);
+
+            return new Models.API.Community.Community(json);
+        }
+
+        #endregion
+
         #region Other
         internal static void SetClientId(string clientId, bool disableClientIdValidation = false)
         {
