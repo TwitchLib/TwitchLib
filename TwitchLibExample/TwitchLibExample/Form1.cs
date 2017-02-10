@@ -87,7 +87,7 @@ namespace TwitchLibExample
             newClient.OnChatCleared += new EventHandler<OnChatClearedArgs>(onChatCleared);
             newClient.OnUserTimedout += new EventHandler<OnUserTimedoutArgs>(onUserTimedout);
             newClient.OnUserBanned += new EventHandler<OnUserBannedArgs>(onUserBanned);
-            newClient.OnClientLeftChannel += new EventHandler<OnClientLeftChannelArgs>(onLeftChannel);
+            newClient.OnLeftChannel += new EventHandler<OnLeftChannelArgs>(onLeftChannel);
             newClient.OnJoinedChannel += new EventHandler<OnJoinedChannelArgs>(onJoinedChannel);
             newClient.OnNewSubscriber += new EventHandler<OnNewSubscriberArgs>(onNewSubscription);
             newClient.OnReSubscriber += new EventHandler<OnReSubscriberArgs>(onReSubscription);
@@ -197,7 +197,7 @@ namespace TwitchLibExample
             MessageBox.Show($"Joined channel: {e.Channel}\nAs username: {e.Username}");
         }
 
-        private void onLeftChannel(object sender, OnClientLeftChannelArgs e)
+        private void onLeftChannel(object sender, OnLeftChannelArgs e)
         {
             populateLeaveChannelsDropdown();
         }
@@ -973,6 +973,20 @@ namespace TwitchLibExample
             var streams = await TwitchApi.Streams.GetAllStreamsV5Async();
             foreach (var stream in streams)
                 MessageBox.Show($"Channel: {stream.Channel.Name}\nGame: {stream.Game}");
+        }
+
+        private void button67_Click(object sender, EventArgs e)
+        {
+            //textbox49
+            var resp = TwitchApi.Communities.GetCommunityByName(textBox49.Text);
+            MessageBox.Show("Id: " + resp.Id);
+        }
+
+        private async void button68_Click(object sender, EventArgs e)
+        {
+            //textbox50
+            var resp = await TwitchApi.Communities.GetCommunityByIdAsync(textBox50.Text);
+            MessageBox.Show("Name: " + resp.Name);
         }
     }
 }
