@@ -38,7 +38,7 @@ namespace TwitchLib.Services
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
         /// <param name="queryCount">Number of recent followers service should request from Twitch Api. Max: 100, Min: 1</param>
         /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
-        public FollowerService(string channel, int checkIntervalSeconds = 60, int queryCount = 25, string clientId = "")
+        public FollowerService(string channel, int checkIntervalSeconds = 60, int queryCount = 25, string clientId = "") //queryCount is never used
         {
             Channel = channel;
             CheckIntervalSeconds = checkIntervalSeconds;
@@ -81,7 +81,7 @@ namespace TwitchLib.Services
             }
             List<Models.API.Follow.Follower> mostRecentFollowers = response.Followers;
             List<Models.API.Follow.Follower> newFollowers = new List<Models.API.Follow.Follower>();
-            if(ActiveCache == null)
+            if(ActiveCache == null) //ActiveCache initializes at StartService, so, I think,  this IF is never true
             {
                 ActiveCache = mostRecentFollowers;
                 newFollowers = ActiveCache;
@@ -116,16 +116,7 @@ namespace TwitchLib.Services
                     
             }
         }
-
-        #region HELPERS
-        private bool isNewFollower(Models.API.Follow.Follower follower)
-        {
-            foreach (Models.API.Follow.Follower oldFollower in ActiveCache)
-                if (oldFollower.User.Name.ToLower() == follower.User.Name.ToLower())
-                    return false;
-            return true;
-        }
-        #endregion
+        
 
         #region EVENTS
         /// <summary>Event fires when service starts.</summary>
