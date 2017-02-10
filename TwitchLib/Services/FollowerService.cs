@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using TwitchLib.Models.API;
 using TwitchLib.Exceptions.Services;
 using TwitchLib.Exceptions.API;
 using TwitchLib.Events.Services.FollowerService;
-using TwitchLib;
 
 namespace TwitchLib.Services
 {
@@ -70,7 +69,16 @@ namespace TwitchLib.Services
 
         private async void _followerServiceTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            Models.API.Follow.FollowersResponse response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
+            Models.API.Follow.FollowersResponse response;
+            try
+            {
+                response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
+            }
+            catch (WebException)
+            {
+                //Logging.Log("Twitch API is unavailable. Skipping FollowerService iteration...");
+                return;
+            }
             List<Models.API.Follow.Follower> mostRecentFollowers = response.Followers;
             List<Models.API.Follow.Follower> newFollowers = new List<Models.API.Follow.Follower>();
             if(ActiveCache == null)
