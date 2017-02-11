@@ -50,10 +50,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
+    <Compile Include="Exceptions\API\BadParameterException.cs" />
     <Compile Include="Exceptions\Client\BadListenException.cs" />
     <Compile Include="Internal\Rfc2812.cs" />
     <Compile Include="Internal\WebSocketClient.cs" />
     <Compile Include="Models\API\Community\Community.cs" />
+    <Compile Include="Models\API\Community\CommunityBannedUser.cs" />
+    <Compile Include="Models\API\Community\CommunityBannedUsersResponse.cs" />
+    <Compile Include="Models\API\Community\TopCommunitiesResponse.cs" />
+    <Compile Include="Models\API\Community\TopCommunityListing.cs" />
     <Compile Include="Models\API\v5\User.cs" />
     <Compile Include="Common\Helpers.cs" />
     <Compile Include="Common\Logging.cs" />

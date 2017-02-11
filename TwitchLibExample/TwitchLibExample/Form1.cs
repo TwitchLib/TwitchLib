@@ -975,18 +975,47 @@ namespace TwitchLibExample
                 MessageBox.Show($"Channel: {stream.Channel.Name}\nGame: {stream.Game}");
         }
 
-        private void button67_Click(object sender, EventArgs e)
+        private async void button69_Click(object sender, EventArgs e)
+        {
+            string id = await TwitchApi.Communities.CreateCommunityAsync(textBox51.Text, textBox52.Text, textBox53.Text, textBox54.Text);
+            MessageBox.Show("id: " + id);
+            Clipboard.SetText(id);
+        }
+
+        private void button70_Click(object sender, EventArgs e)
+        {
+            string id = textBox58.Text;
+            TwitchApi.Communities.UpdateCommunityAsync(id, textBox55.Text);
+        }
+
+        private void button67_Click_1(object sender, EventArgs e)
         {
             //textbox49
             var resp = TwitchApi.Communities.GetCommunityByName(textBox49.Text);
             MessageBox.Show("Id: " + resp.Id);
+            Clipboard.SetText(resp.Id);
         }
 
-        private async void button68_Click(object sender, EventArgs e)
+        private async void button68_Click_1(object sender, EventArgs e)
         {
             //textbox50
             var resp = await TwitchApi.Communities.GetCommunityByIdAsync(textBox50.Text);
             MessageBox.Show("Name: " + resp.Name);
+        }
+
+        private async void button71_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchApi.Communities.GetTopCommunitiesAsync(5);
+            foreach (var community in resp.TopCommunities)
+                MessageBox.Show($"Name: {community.Name}\nViewers: {community.Viewers}");
+        }
+
+        private async void button72_Click(object sender, EventArgs e)
+        {
+            string id = textBox56.Text;
+            var resp = await TwitchApi.Communities.GetCommunityBannedUsersAsync(id);
+            foreach (var ban in resp.BannedUsers)
+                MessageBox.Show($"Name: {ban.Name}");
         }
     }
 }

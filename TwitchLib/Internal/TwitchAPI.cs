@@ -598,6 +598,82 @@ namespace TwitchLib.Internal
             return new Models.API.Community.Community(json);
         }
 
+        public async static Task<string> CreateCommunity(string name, string summary, string description, string rules, string accessToken = null)
+        {
+            if (name.Length < 3 || name.Length > 25)
+                throw new BadParameterException("Name parameter must be between 3 and 25 characters of length.");
+            if (name.Contains(" "))
+                throw new BadParameterException("Name parameter cannot contain space characters.");
+            if (summary.Length > 160)
+                throw new BadParameterException("Summary parameter must be 160 or less characters of length.");
+            if (description.Length > 1572864)
+                throw new BadParameterException("Description must be 1,572,864 characters or less of length.");
+            if (rules.Length > 1572864)
+                throw new BadParameterException("Rules must be 1,572,864 characters or less of length.");
+
+            JObject jsonObj = new JObject();
+            jsonObj["name"] = name;
+            jsonObj["summary"] = summary;
+            jsonObj["description"] = description;
+            jsonObj["rules"] = rules;
+
+            string response = (await Requests.MakeRestRequest("https://api.twitch.tv/kraken/communities", "POST", jsonObj.ToString(), accessToken, 5));
+
+            var json = JObject.Parse(response);
+            JToken id;
+            if (json.TryGetValue("_id", out id))
+                return id.ToString();
+            else
+                return null;
+        }
+
+        public async static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null)
+        {
+            if (summary != null && summary.Length > 160)
+                throw new BadParameterException("Summary parameter must be 160 or less characters of length.");
+            if (description != null && description.Length > 1572864)
+                throw new BadParameterException("Description must be 1,572,864 characters or less of length.");
+            if (rules != null && rules.Length > 1572864)
+                throw new BadParameterException("Rules must be 1,572,864 characters or less of length.");
+
+            JObject json = new JObject();
+            if (summary != null)
+                json["summary"] = summary;
+            if (description != null)
+                json["description"] = description;
+            if (rules != null)
+                json["rules"] = rules;
+            if (email != null)
+                json["email"] = email;
+
+            string response = (await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}", "PUT", json.ToString(), accessToken, 5));
+        }
+        
+        public async static Task<Models.API.Community.TopCommunitiesResponse> GetTopCommunities(long? limit = null, string cursor = null)
+        {
+            if (limit != null && limit > 100)
+                throw new BadParameterException("Limit may not be larger than 100");
+
+            string args = (limit == null) ? "?limit=10" : $"?limit={limit}";
+            if (cursor != null)
+                args += $"&cursor={cursor}";
+
+            string resp = await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/communities/top{args}", null, 5);
+            return new Models.API.Community.TopCommunitiesResponse(JObject.Parse(resp));
+        }
+
+        public async static Task<Models.API.Community.CommunityBannedUsersResponse> GetCommunityBannedUsers(string communityId, long? limit = null, string cursor = null, string accessToken = null)
+        {
+            if (limit != null && limit > 100)
+                throw new BadParameterException("Limit may not be larger than 100");
+
+            string args = (limit == null) ? "?limit=10" : $"?limit={limit}";
+            if (cursor != null)
+                args += $"&cursor={cursor}";
+
+            string resp = await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/communities/{communityId}/bans{args}", accessToken, 5);
+            return new Models.API.Community.CommunityBannedUsersResponse(JObject.Parse(resp));
+        }
         #endregion
 
         #region Other

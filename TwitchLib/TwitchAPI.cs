@@ -855,6 +855,88 @@ namespace TwitchLib
             /// <param name="communityId">Id of Twitch community to fetch.</param>
             /// <returns>Community object.</returns>
             public static async Task<Models.API.Community.Community> GetCommunityByIdAsync(string communityId) => await Internal.TwitchApi.GetCommunityById(communityId);
+
+            /// <summary>
+            /// [SYNC] Sends request to create a Twitch Community.
+            /// </summary>
+            /// <param name="name">Name of the Twitch Community. 3-25 characters. No spaces.</param>
+            /// <param name="summary">Summary of the Twitch Community. 160 characters max.</param>
+            /// <param name="description">Description of the Twitch Community. Max of 1,572,864 characters.</param>
+            /// <param name="rules">Rules for the Twitch Community. Max of 1,572,864 characters.</param>
+            /// <param name="accessToken">If an access token is not set, set this param.</param>
+            /// <returns>String ID of the new community.</returns>
+            public static string CreateCommunity(string name, string summary, string description, string rules, string accessToken = null) => Task.Run(() => Internal.TwitchApi.CreateCommunity(name, summary, description, rules, accessToken)).Result;
+
+            /// <summary>
+            /// [ASYNC] Sends request to create a Twitch Community.
+            /// </summary>
+            /// <param name="name">Name of the Twitch Community. 3-25 characters. No spaces.</param>
+            /// <param name="summary">Summary of the Twitch Community. 160 characters max.</param>
+            /// <param name="description">Description of the Twitch Community. Max of 1,572,864 characters.</param>
+            /// <param name="rules">Rules for the Twitch Community. Max of 1,572,864 characters.</param>
+            /// <param name="accessToken">If an access token is not set, set this param.</param>
+            /// <returns>String ID of the new community.</returns>
+            public static async Task<string> CreateCommunityAsync(string name, string summary, string description, string rules, string accessToken = null) => await Internal.TwitchApi.CreateCommunity(name, summary, description, rules, accessToken);
+
+            /// <summary>
+            /// [SYNC] Attempts to update details regarding an existing Twitch community.
+            /// </summary>
+            /// <param name="communityId">Unique Twitch community identifier.</param>
+            /// <param name="summary">Summary of the Twitch Community. 160 characters max.</param>
+            /// <param name="description">Description of the Twitch Community. Max of 1,572,864 characters.</param>
+            /// <param name="rules">Rules for the Twitch Community. Max of 1,572,864 characters.</param>
+            /// <param name="email">Contact email for the community.</param>
+            /// <param name="accessToken">If an access token is not set, set this param.</param>
+            /// <returns>String ID of the new community.</returns>
+            public static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateCommunity(communityId, summary, description, rules, email, accessToken)).RunSynchronously();
+
+            /// <summary>
+            /// [ASYNC] Attempts to update details regarding an existing Twitch community.
+            /// </summary>
+            /// <param name="communityId">Unique Twitch community identifier.</param>
+            /// <param name="summary">Summary of the Twitch Community. 160 characters max.</param>
+            /// <param name="description">Description of the Twitch Community. Max of 1,572,864 characters.</param>
+            /// <param name="rules">Rules for the Twitch Community. Max of 1,572,864 characters.</param>
+            /// <param name="email">Contact email for the community.</param>
+            /// <param name="accessToken">If an access token is not set, set this param.</param>
+            /// <returns>String ID of the new community.</returns>
+            public static async void UpdateCommunityAsync(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateCommunity(communityId, summary, description, rules, email, accessToken));
+
+            /// <summary>
+            /// [SYNC] Fetches the top communities on Twitch currently by viewer count.
+            /// </summary>
+            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
+            /// <param name="cursor">Used to tell server where to start fetching results.</param>
+            /// <returns>TopCommunitiesResponse housing total, cursor, and list of communities.</returns>
+            public static Models.API.Community.TopCommunitiesResponse GetTopCommunities(long? limit = null, string cursor = null) => Task.Run(() => Internal.TwitchApi.GetTopCommunities(limit, cursor)).Result;
+
+            /// <summary>
+            /// [ASYNC] Fetches the top communities on Twitch currently by viewer count.
+            /// </summary>
+            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
+            /// <param name="cursor">Used to tell server where to start fetching results.</param>
+            /// <returns>TopCommunitiesResponse housing total, cursor, and list of communities.</returns>
+            public static async Task<Models.API.Community.TopCommunitiesResponse> GetTopCommunitiesAsync(long? limit = null, string cursor = null) => await Internal.TwitchApi.GetTopCommunities(limit, cursor);
+
+            /// <summary>
+            /// [SYNC] Fetches the banned users in a specific community.
+            /// </summary>
+            /// <param name="communityId">Unique ID of the Twitch community.</param>
+            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
+            /// <param name="cursor">Used to tell server where to start fetching results.</param>
+            /// <param name="accessToken">If not set, you must set this param.</param>
+            /// <returns>CommunityBannedUsersResponse housing cursor and banned users.</returns>
+            public static Models.API.Community.CommunityBannedUsersResponse GetCommunityBannedUsers(string communityId, long? limit = null, string cursor = null, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetCommunityBannedUsers(communityId, limit, cursor, accessToken)).Result;
+
+            /// <summary>
+            /// [ASYNC] Fetches the banned users in a specific community.
+            /// </summary>
+            /// <param name="communityId">Unique ID of the Twitch community.</param>
+            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
+            /// <param name="cursor">Used to tell server where to start fetching results.</param>
+            /// <param name="accessToken">If not set, you must set this param.</param>
+            /// <returns>CommunityBannedUsersResponse housing cursor and banned users.</returns>
+            public static async Task<Models.API.Community.CommunityBannedUsersResponse> GetCommunityBannedUsersAsync(string communityId, long? limit = null, string cursor = null, string accessToken = null) => await Internal.TwitchApi.GetCommunityBannedUsers(communityId, limit, cursor, accessToken);
         }
 
         #region Twitch API Global Functions
