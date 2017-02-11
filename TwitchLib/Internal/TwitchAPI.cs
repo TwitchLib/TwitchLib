@@ -678,6 +678,19 @@ namespace TwitchLib.Internal
             string resp = await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/communities/{communityId}/bans{args}", accessToken, 5);
             return new Models.API.Community.CommunityBannedUsersResponse(JObject.Parse(resp));
         }
+
+        public async static Task<Models.API.Community.StreamsInCommunityResponse> GetStreamsInCommunity(string communityId, long? limit = null, string cursor = null)
+        {
+            if (limit != null && limit > 100)
+                throw new BadParameterException("Limit may not be larger than 100");
+
+            string args = (limit == null) ? "?limit=10" : $"?limit={limit}";
+            if (cursor != null)
+                args += $"&cursor={cursor}";
+
+            string resp = await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/streams?community_id={communityId}", null, 5);
+            return new Models.API.Community.StreamsInCommunityResponse(JObject.Parse(resp));
+        }
         #endregion
 
         #region Other

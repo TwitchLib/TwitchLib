@@ -940,6 +940,24 @@ namespace TwitchLib
             /// <param name="accessToken">If not set, you must set this param.</param>
             /// <returns>CommunityBannedUsersResponse housing cursor and banned users.</returns>
             public static async Task<Models.API.Community.CommunityBannedUsersResponse> GetCommunityBannedUsersAsync(string communityId, long? limit = null, string cursor = null, string accessToken = null) => await Internal.TwitchApi.GetCommunityBannedUsers(communityId, limit, cursor, accessToken);
+
+            /// <summary>
+            /// [SYNC] Gets all streams currently in a community.
+            /// </summary>
+            /// <param name="communityId">Unique ID of the Twitch community.</param>
+            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
+            /// <param name="cursor">Used to tell server where to start fetching results.</param>
+            /// <returns>StreamsInCommunityResponse houses total streams and list of streams.</returns>
+            public static Models.API.Community.StreamsInCommunityResponse GetStreamersInCommunity(string communityId, long? limit = null, string cursor = null) => Task.Run(() => Internal.TwitchApi.GetStreamsInCommunity(communityId, limit, cursor)).Result;
+
+            /// <summary>
+            /// [ASYNC] Gets all streams currently in a community.
+            /// </summary>
+            /// <param name="communityId">Unique ID of the Twitch community.</param>
+            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
+            /// <param name="cursor">Used to tell server where to start fetching results.</param>
+            /// <returns>StreamsInCommunityResponse houses total streams and list of streams.</returns>
+            public static async Task<Models.API.Community.StreamsInCommunityResponse> GetStreamersInCommunityAsync(string communityId, long? limit = null, string cursor = null) => await Internal.TwitchApi.GetStreamsInCommunity(communityId, limit, cursor);
         }
 
         #region Twitch API Global Functions

@@ -57,6 +57,7 @@
     <Compile Include="Models\API\Community\Community.cs" />
     <Compile Include="Models\API\Community\CommunityBannedUser.cs" />
     <Compile Include="Models\API\Community\CommunityBannedUsersResponse.cs" />
+    <Compile Include="Models\API\Community\StreamsInCommunityResponse.cs" />
     <Compile Include="Models\API\Community\TopCommunitiesResponse.cs" />
     <Compile Include="Models\API\Community\TopCommunityListing.cs" />
     <Compile Include="Models\API\v5\User.cs" />
