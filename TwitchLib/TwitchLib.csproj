@@ -55,6 +55,8 @@
     <Compile Include="Internal\Rfc2812.cs" />
     <Compile Include="Internal\WebSocketClient.cs" />
     <Compile Include="Models\API\Community\Community.cs" />
+    <Compile Include="Models\API\Community\TopCommunitiesResponse.cs" />
+    <Compile Include="Models\API\Community\TopCommunityListing.cs" />
     <Compile Include="Models\API\v5\User.cs" />
     <Compile Include="Common\Helpers.cs" />
     <Compile Include="Common\Logging.cs" />

@@ -904,6 +904,22 @@ namespace TwitchLib
             /// <param name="accessToken">If an access token is not set, set this param.</param>
             /// <returns>String ID of the new community.</returns>
             public static async void UpdateCommunityAsync(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateCommunity(communityId, summary, description, rules, email, accessToken));
+
+            /// <summary>
+            /// [SYNC] Fetches the top communities on Twitch currently by viewer count.
+            /// </summary>
+            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
+            /// <param name="cursor">Used to tell server where to start fetching results.</param>
+            /// <returns>TopCommunitiesResponse housing total, cursor, and list of communities.</returns>
+            public static Models.API.Community.TopCommunitiesResponse GetTopCommunities(long? limit = null, string cursor = null) => Task.Run(() => Internal.TwitchApi.GetTopCommunities(limit, cursor)).Result;
+
+            /// <summary>
+            /// [ASYNC] Fetches the top communities on Twitch currently by viewer count.
+            /// </summary>
+            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
+            /// <param name="cursor">Used to tell server where to start fetching results.</param>
+            /// <returns>TopCommunitiesResponse housing total, cursor, and list of communities.</returns>
+            public static async Task<Models.API.Community.TopCommunitiesResponse> GetTopCommunitiesAsync(long? limit = null, string cursor = null) => await Internal.TwitchApi.GetTopCommunities(limit, cursor);
         }
 
         #region Twitch API Global Functions

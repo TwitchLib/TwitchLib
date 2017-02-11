@@ -652,6 +652,19 @@ namespace TwitchLib.Internal
 
             string response = (await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}", "PUT", json.ToString(), accessToken, 5));
         }
+        
+        public async static Task<Models.API.Community.TopCommunitiesResponse> GetTopCommunities(long? limit = null, string cursor = null)
+        {
+            if (limit != null && limit > 100)
+                throw new BadParameterException("Limit may not be larger than 100");
+
+            string args = (limit == null) ? "?limit=10" : $"?limit={limit}";
+            if (cursor != null)
+                args += $"&cursor={cursor}";
+
+            string resp = await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/communities/top{args}", null, 5);
+            return new Models.API.Community.TopCommunitiesResponse(JObject.Parse(resp));
+        }
         #endregion
 
         #region Other
