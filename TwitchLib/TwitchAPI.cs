@@ -920,6 +920,26 @@ namespace TwitchLib
             /// <param name="cursor">Used to tell server where to start fetching results.</param>
             /// <returns>TopCommunitiesResponse housing total, cursor, and list of communities.</returns>
             public static async Task<Models.API.Community.TopCommunitiesResponse> GetTopCommunitiesAsync(long? limit = null, string cursor = null) => await Internal.TwitchApi.GetTopCommunities(limit, cursor);
+
+            /// <summary>
+            /// [SYNC] Fetches the banned users in a specific community.
+            /// </summary>
+            /// <param name="communityId">Unique ID of the Twitch community.</param>
+            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
+            /// <param name="cursor">Used to tell server where to start fetching results.</param>
+            /// <param name="accessToken">If not set, you must set this param.</param>
+            /// <returns>CommunityBannedUsersResponse housing cursor and banned users.</returns>
+            public static Models.API.Community.CommunityBannedUsersResponse GetCommunityBannedUsers(string communityId, long? limit = null, string cursor = null, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetCommunityBannedUsers(communityId, limit, cursor, accessToken)).Result;
+
+            /// <summary>
+            /// [ASYNC] Fetches the banned users in a specific community.
+            /// </summary>
+            /// <param name="communityId">Unique ID of the Twitch community.</param>
+            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
+            /// <param name="cursor">Used to tell server where to start fetching results.</param>
+            /// <param name="accessToken">If not set, you must set this param.</param>
+            /// <returns>CommunityBannedUsersResponse housing cursor and banned users.</returns>
+            public static async Task<Models.API.Community.CommunityBannedUsersResponse> GetCommunityBannedUsersAsync(string communityId, long? limit = null, string cursor = null, string accessToken = null) => await Internal.TwitchApi.GetCommunityBannedUsers(communityId, limit, cursor, accessToken);
         }
 
         #region Twitch API Global Functions
