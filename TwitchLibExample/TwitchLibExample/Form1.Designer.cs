@@ -311,6 +311,10 @@
             this.button72 = new System.Windows.Forms.Button();
             this.textBox56 = new System.Windows.Forms.TextBox();
             this.label63 = new System.Windows.Forms.Label();
+            this.groupBox58 = new System.Windows.Forms.GroupBox();
+            this.button73 = new System.Windows.Forms.Button();
+            this.textBox57 = new System.Windows.Forms.TextBox();
+            this.label64 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -383,6 +387,7 @@
             this.groupBox52.SuspendLayout();
             this.groupBox56.SuspendLayout();
             this.groupBox57.SuspendLayout();
+            this.groupBox58.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -3098,6 +3103,7 @@
             // 
             // tabPage9
             // 
+            this.tabPage9.Controls.Add(this.groupBox58);
             this.tabPage9.Controls.Add(this.groupBox57);
             this.tabPage9.Controls.Add(this.groupBox56);
             this.tabPage9.Controls.Add(this.groupBox53);
@@ -3498,6 +3504,49 @@
             this.label63.TabIndex = 0;
             this.label63.Text = "Id:";
             // 
+            // groupBox58
+            // 
+            this.groupBox58.Controls.Add(this.textBox57);
+            this.groupBox58.Controls.Add(this.label64);
+            this.groupBox58.Controls.Add(this.button73);
+            this.groupBox58.Location = new System.Drawing.Point(474, 486);
+            this.groupBox58.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox58.Name = "groupBox58";
+            this.groupBox58.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox58.Size = new System.Drawing.Size(459, 107);
+            this.groupBox58.TabIndex = 32;
+            this.groupBox58.TabStop = false;
+            this.groupBox58.Text = "Get Streamers in Community";
+            // 
+            // button73
+            // 
+            this.button73.Location = new System.Drawing.Point(306, 35);
+            this.button73.Margin = new System.Windows.Forms.Padding(5);
+            this.button73.Name = "button73";
+            this.button73.Size = new System.Drawing.Size(118, 48);
+            this.button73.TabIndex = 18;
+            this.button73.Text = "Fetch Streamers";
+            this.button73.UseVisualStyleBackColor = true;
+            this.button73.Click += new System.EventHandler(this.button73_Click);
+            // 
+            // textBox57
+            // 
+            this.textBox57.Location = new System.Drawing.Point(74, 41);
+            this.textBox57.Margin = new System.Windows.Forms.Padding(5);
+            this.textBox57.Name = "textBox57";
+            this.textBox57.Size = new System.Drawing.Size(222, 38);
+            this.textBox57.TabIndex = 20;
+            // 
+            // label64
+            // 
+            this.label64.AutoSize = true;
+            this.label64.Location = new System.Drawing.Point(18, 41);
+            this.label64.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(46, 32);
+            this.label64.TabIndex = 19;
+            this.label64.Text = "Id:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -3628,6 +3677,8 @@
             this.groupBox56.ResumeLayout(false);
             this.groupBox57.ResumeLayout(false);
             this.groupBox57.PerformLayout();
+            this.groupBox58.ResumeLayout(false);
+            this.groupBox58.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3917,6 +3968,10 @@
         private System.Windows.Forms.Button button72;
         private System.Windows.Forms.TextBox textBox56;
         private System.Windows.Forms.Label label63;
+        private System.Windows.Forms.GroupBox groupBox58;
+        private System.Windows.Forms.Button button73;
+        private System.Windows.Forms.TextBox textBox57;
+        private System.Windows.Forms.Label label64;
     }
 }
 
