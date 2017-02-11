@@ -1002,5 +1002,12 @@ namespace TwitchLibExample
             var resp = await TwitchApi.Communities.GetCommunityByIdAsync(textBox50.Text);
             MessageBox.Show("Name: " + resp.Name);
         }
+
+        private async void button71_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchApi.Communities.GetTopCommunitiesAsync(5);
+            foreach (var community in resp.TopCommunities)
+                MessageBox.Show($"Name: {community.Name}\nViewers: {community.Viewers}");
+        }
     }
 }

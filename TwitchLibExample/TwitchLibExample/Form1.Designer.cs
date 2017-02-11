@@ -305,6 +305,8 @@
             this.button67 = new System.Windows.Forms.Button();
             this.textBox49 = new System.Windows.Forms.TextBox();
             this.label56 = new System.Windows.Forms.Label();
+            this.groupBox56 = new System.Windows.Forms.GroupBox();
+            this.button71 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -375,6 +377,7 @@
             this.groupBox55.SuspendLayout();
             this.groupBox53.SuspendLayout();
             this.groupBox52.SuspendLayout();
+            this.groupBox56.SuspendLayout();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -3090,6 +3093,7 @@
             // 
             // tabPage9
             // 
+            this.tabPage9.Controls.Add(this.groupBox56);
             this.tabPage9.Controls.Add(this.groupBox53);
             this.tabPage9.Controls.Add(this.groupBox52);
             this.tabPage9.Controls.Add(this.groupBox55);
@@ -3422,6 +3426,29 @@
             this.label56.TabIndex = 0;
             this.label56.Text = "Name:";
             // 
+            // groupBox56
+            // 
+            this.groupBox56.Controls.Add(this.button71);
+            this.groupBox56.Location = new System.Drawing.Point(476, 252);
+            this.groupBox56.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBox56.Name = "groupBox56";
+            this.groupBox56.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox56.Size = new System.Drawing.Size(459, 107);
+            this.groupBox56.TabIndex = 31;
+            this.groupBox56.TabStop = false;
+            this.groupBox56.Text = "Get Top Communities";
+            // 
+            // button71
+            // 
+            this.button71.Location = new System.Drawing.Point(15, 35);
+            this.button71.Margin = new System.Windows.Forms.Padding(5);
+            this.button71.Name = "button71";
+            this.button71.Size = new System.Drawing.Size(409, 48);
+            this.button71.TabIndex = 18;
+            this.button71.Text = "Fetch Communities";
+            this.button71.UseVisualStyleBackColor = true;
+            this.button71.Click += new System.EventHandler(this.button71_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -3549,6 +3576,7 @@
             this.groupBox53.PerformLayout();
             this.groupBox52.ResumeLayout(false);
             this.groupBox52.PerformLayout();
+            this.groupBox56.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3832,6 +3860,8 @@
         private System.Windows.Forms.Button button67;
         private System.Windows.Forms.TextBox textBox49;
         private System.Windows.Forms.Label label56;
+        private System.Windows.Forms.GroupBox groupBox56;
+        private System.Windows.Forms.Button button71;
     }
 }
 
