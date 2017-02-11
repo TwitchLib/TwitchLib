@@ -1009,5 +1009,13 @@ namespace TwitchLibExample
             foreach (var community in resp.TopCommunities)
                 MessageBox.Show($"Name: {community.Name}\nViewers: {community.Viewers}");
         }
+
+        private async void button72_Click(object sender, EventArgs e)
+        {
+            string id = textBox56.Text;
+            var resp = await TwitchApi.Communities.GetCommunityBannedUsersAsync(id);
+            foreach (var ban in resp.BannedUsers)
+                MessageBox.Show($"Name: {ban.Name}");
+        }
     }
 }
