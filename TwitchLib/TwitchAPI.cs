@@ -155,7 +155,7 @@ namespace TwitchLib
             /// <param name="postId">Integer Id of feed post to delete.</param>
             /// <param name="channel">Channel where the post resides.</param>
             /// <param name="accessToken">OAuth access token with channel_feed_edit scope.</param>
-            public static async void DeleteChannelFeedPostAsync(string postId, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.DeleteChannelFeedPost(postId, channel, accessToken));
+            public static async void DeleteChannelFeedPostAsync(string postId, string channel, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.DeleteChannelFeedPost(postId, channel, accessToken));
 
             /// <summary>
             /// [SYNC] Fetches Twitch channel name from a steam Id, if their Steam is connected to their Twitch.
