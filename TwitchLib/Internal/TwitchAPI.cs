@@ -228,8 +228,6 @@ namespace TwitchLib.Internal
             var data = "{\"channel\":{\"status\":\"" + status + "\",\"game\":\"" + game + "\"}}";
             return new Models.API.Channel.Channel(JObject.Parse(await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken)));
         }
-
-        internal 
         #endregion
 
         #region Streaming
@@ -749,6 +747,22 @@ namespace TwitchLib.Internal
         internal async static void RemoveCommunityModerator(string communityId, string userId, string accessToken = null)
         {
             string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", "DELETE", null, accessToken, 5);
+        }
+        
+        internal async static Task<Models.API.Community.Community> GetChannelCommunity(string channelId)
+        {
+            string resp = await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channelId}/community", null, 5);
+            return new Models.API.Community.Community(JObject.Parse(resp));
+        }
+
+        internal async static void SetChannelCommunity(string channelId, string communityId, string accessToken = null)
+        {
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channelId}/community/{communityId}", "PUT", null, accessToken, 5);
+        }
+
+        internal async static void RemoveChannelCommunity(string channelId, string accessToken = null)
+        {
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channelId}/community", "DELETE", null, accessToken, 5);
         }
         #endregion
 

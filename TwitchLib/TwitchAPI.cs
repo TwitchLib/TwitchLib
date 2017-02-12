@@ -169,6 +169,50 @@ namespace TwitchLib
             /// <param name="steamId">The steam id of the user whose Twitch channel is requested.</param>
             /// <returns>Returns channel name if available, or null.</returns>
             public static async Task<string> GetChannelFromSteamIdAsync(string steamId) => await Internal.TwitchApi.GetChannelFromSteamId(steamId);
+
+            /// <summary>
+            /// [SYNC] Fetches the community that a channel is currently in.
+            /// </summary>
+            /// <param name="channelId">The channel ID to fetch the community of.</param>
+            /// <returns>Returns Communnity object.</returns>
+            public static Models.API.Community.Community GetChannelCommunity(string channelId) => Task.Run(() => Internal.TwitchApi.GetChannelCommunity(channelId)).Result;
+
+            /// <summary>
+            /// [ASYNC] Fetches the community that a channel is currently in.
+            /// </summary>
+            /// <param name="channelId">The channel ID to fetch the community of.</param>
+            /// <returns>Returns Communnity object.</returns>
+            public static async Task<Models.API.Community.Community> GetChannelCommunityAsync(string channelId) => await Internal.TwitchApi.GetChannelCommunity(channelId);
+
+            /// <summary>
+            /// [SYNC] Attempts to set the community of a channel.
+            /// </summary>
+            /// <param name="channelId">The channel ID to apply the community to.</param>
+            /// <param name="communityId">The community ID to be applied to channel.</param>
+            /// <param name="accessToken">If access token is not yet set, you must set it here.</param>
+            public static void SetChannelCommunity(string channelId, string communityId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.SetChannelCommunity(channelId, communityId, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Attempts to set the community of a channel.
+            /// </summary>
+            /// <param name="channelId">The channel ID to apply the community to.</param>
+            /// <param name="communityId">The community ID to be applied to channel.</param>
+            /// <param name="accessToken">If access token is not yet set, you must set it here.</param>
+            public static async void SetChannelCommunityAsync(string channelId, string communityId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.SetChannelCommunity(channelId, communityId, accessToken));
+
+            /// <summary>
+            /// [SYNC] Attempts to remove a community from a channel.
+            /// </summary>
+            /// <param name="channelId">The Id of the channel to remove the community from.</param>
+            /// <param name="accessToken">If access token is not yet set, you must set it here.</param>
+            public static void RemoveChannelCommunity(string channelId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.RemoveChannelCommunity(channelId, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Attempts to remove a community from a channel.
+            /// </summary>
+            /// <param name="channelId">The Id of the channel to remove the community from.</param>
+            /// <param name="accessToken">If access token is not yet set, you must set it here.</param>
+            public static async void RemoveChannelCommunityAsync(string channelId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.RemoveChannelCommunity(channelId, accessToken));
         }
 
         /// <summary>
