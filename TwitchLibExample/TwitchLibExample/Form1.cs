@@ -1082,5 +1082,30 @@ namespace TwitchLibExample
             foreach (var mod in resp)
                 MessageBox.Show($"Name: {mod.Name}");
         }
+
+        private async void button81_Click(object sender, EventArgs e)
+        {
+            string channelId = textBox68.Text;
+
+            var resp = await TwitchApi.Channels.GetChannelCommunityAsync(channelId);
+
+            if(resp != null)
+                MessageBox.Show($"Community name: {resp.Name}");
+        }
+
+        private void button82_Click(object sender, EventArgs e)
+        {
+            string channelId = textBox67.Text;
+            string communityId = textBox66.Text;
+
+            TwitchApi.Channels.SetChannelCommunity(channelId, communityId);
+        }
+
+        private void button83_Click(object sender, EventArgs e)
+        {
+            string channelId = textBox69.Text;
+
+            TwitchApi.Channels.RemoveChannelCommunity(channelId);
+        }
     }
 }
