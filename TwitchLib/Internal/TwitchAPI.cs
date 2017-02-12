@@ -691,6 +691,63 @@ namespace TwitchLib.Internal
             string resp = await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/streams?community_id={communityId}", null, 5);
             return new Models.API.Community.StreamsInCommunityResponse(JObject.Parse(resp));
         }
+
+        public async static void BanCommunityUser(string communityId, string userId, string accessToken = null)
+        {
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", "PUT", null, accessToken, 5);
+        }
+
+        public async static void UnBanCommunityUser(string communityId, string userId, string accessToken = null)
+        {
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", "DELETE", null, accessToken, 5);
+        }
+
+        public async static void TimeoutCommunityUser(string communityId, string userId, int durationInHours, string reason = null, string accessToken = null)
+        {
+            JObject json = new JObject();
+            json["duration"] = durationInHours;
+            if (reason != null)
+                json["reason"] = reason;
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", "PUT", json.ToString(), accessToken, 5);
+        }
+
+        public async static Task<Models.API.Community.CommunityTimedOutUsersResponse> GetTimedOutCommunityUsers(string communityId, long? limit = null, string cursor = null, string accessToken = null)
+        {
+            if (limit != null && limit > 100)
+                throw new BadParameterException("Limit may not be larger than 100");
+
+            string args = (limit == null) ? "?limit=10" : $"?limit={limit}";
+            if (cursor != null)
+                args += $"&cursor={cursor}";
+
+            string resp = await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts{args}", accessToken, 5);
+            return new Models.API.Community.CommunityTimedOutUsersResponse(JObject.Parse(resp));
+        }
+
+        public async static void UnTimeoutCommunityUser(string communityId, string userId, string accessToken = null)
+        {
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", "DELETE", null, accessToken, 5);
+        }
+
+        public async static void AddCommunityModerator(string communityId, string userId, string accessToken = null)
+        {
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", "PUT", null, accessToken, 5);
+        }
+
+        public async static Task<List<Models.API.Community.CommunityModerator>> GetCommunityModerators(string communityId)
+        {
+            List<Models.API.Community.CommunityModerator> communityModerators = new List<Models.API.Community.CommunityModerator>();
+            string resp = await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/communities/{communityId}/moderators", null, 5);
+            JObject json = JObject.Parse(resp);
+            foreach (JToken mod in json.SelectToken("moderators"))
+                communityModerators.Add(new Models.API.Community.CommunityModerator(mod));
+            return communityModerators;
+        }
+
+        public async static void RemoveCommunityModerator(string communityId, string userId, string accessToken = null)
+        {
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", "DELETE", null, accessToken, 5);
+        }
         #endregion
 
         #region Other

@@ -13,7 +13,7 @@ namespace TwitchLib.Models.API.Community
         /// <summary>String used to identify where the results came from.</summary>
         public string Cursor { get; protected set; }
         /// <summary></summary>
-        public List<CommunityBannedUser> BannedUsers { get; protected set; } = new List<CommunityBannedUser>();
+        public List<CommunityUser> BannedUsers { get; protected set; } = new List<CommunityUser>();
 
         /// <summary>CommunityBannedUsersResponse constructor.</summary>
         /// <param name="json"></param>
@@ -22,7 +22,7 @@ namespace TwitchLib.Models.API.Community
             Cursor = json.SelectToken("_cursor")?.ToString();
             if (json.SelectToken("banned_users") != null)
                 foreach (JToken bannedUser in json.SelectToken("banned_users"))
-                    BannedUsers.Add(new CommunityBannedUser(bannedUser));
+                    BannedUsers.Add(new CommunityUser(bannedUser));
         }
     }
 }

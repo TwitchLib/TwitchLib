@@ -10,7 +10,7 @@ namespace TwitchLib.Models.API.Community
     /// <summary>
     /// Object representing a banned community member.
     /// </summary>
-    public class CommunityBannedUser
+    public class CommunityUser
     {
         /// <summary>Twitch assigned unique ID of users.</summary>
         public string UserId { get; protected set; }
@@ -22,11 +22,13 @@ namespace TwitchLib.Models.API.Community
         public string Bio { get; protected set; }
         /// <summary>Url to image of user's avatar.</summary>
         public string AvatarImageUrl { get; protected set; }
-        /// <summary>Start time stamp for ban.</summary>
+        /// <summary>Start time stamp for ban (set for bans, timeouts).</summary>
         public long StartTimestamp { get; protected set; }
+        /// <summary>End time stamp for a timeout (set for timeouts)</summary>
+        public long EndTimestamp { get; protected set; }
 
         /// <summary></summary>
-        public CommunityBannedUser(JToken json)
+        public CommunityUser(JToken json)
         {
             UserId = json.SelectToken("user_id")?.ToString();
             DisplayName = json.SelectToken("display_name")?.ToString();
@@ -35,6 +37,8 @@ namespace TwitchLib.Models.API.Community
             AvatarImageUrl = json.SelectToken("avatar_image_url")?.ToString();
             if (json.SelectToken("start_timestamp") != null)
                 StartTimestamp = long.Parse(json.SelectToken("start_timestamp").ToString());
+            if (json.SelectToken("end_timestamp") != null)
+                EndTimestamp = long.Parse(json.SelectToken("end_timestamp").ToString());
         }
     }
 }

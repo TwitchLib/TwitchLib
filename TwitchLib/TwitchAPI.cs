@@ -558,7 +558,7 @@ namespace TwitchLib
             /// <param name="username">User who's blocked list to unblock from.</param>
             /// <param name="blockedUsername">User to unblock.</param>
             /// <param name="accessToken">This call requires an access token.</param>
-            public static async void UnblockUserAsync(string username, string blockedUsername, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UnblockUser(username, blockedUsername, accessToken));
+            public static async void UnblockUserAsync(string username, string blockedUsername, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.UnblockUser(username, blockedUsername, accessToken));
         }
 
         /// <summary>
@@ -653,7 +653,7 @@ namespace TwitchLib
             /// <param name="username">The username of the user trying to follow the given channel.</param>
             /// <param name="channel">The channel to unfollow.</param>
             /// <param name="accessToken">An oauth token with the required scope.</param>
-            public static async void UnfollowChannelAsync(string username, string channel, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UnfollowChannel(username, channel, accessToken));
+            public static async void UnfollowChannelAsync(string username, string channel, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.UnfollowChannel(username, channel, accessToken));
         }
 
         /// <summary>
@@ -891,7 +891,7 @@ namespace TwitchLib
             /// <param name="email">Contact email for the community.</param>
             /// <param name="accessToken">If an access token is not set, set this param.</param>
             /// <returns>String ID of the new community.</returns>
-            public static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateCommunity(communityId, summary, description, rules, email, accessToken)).RunSynchronously();
+            public static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateCommunity(communityId, summary, description, rules, email, accessToken));
 
             /// <summary>
             /// [ASYNC] Attempts to update details regarding an existing Twitch community.
@@ -903,7 +903,7 @@ namespace TwitchLib
             /// <param name="email">Contact email for the community.</param>
             /// <param name="accessToken">If an access token is not set, set this param.</param>
             /// <returns>String ID of the new community.</returns>
-            public static async void UpdateCommunityAsync(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateCommunity(communityId, summary, description, rules, email, accessToken));
+            public static async void UpdateCommunityAsync(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.UpdateCommunity(communityId, summary, description, rules, email, accessToken));
 
             /// <summary>
             /// [SYNC] Fetches the top communities on Twitch currently by viewer count.
@@ -958,6 +958,120 @@ namespace TwitchLib
             /// <param name="cursor">Used to tell server where to start fetching results.</param>
             /// <returns>StreamsInCommunityResponse houses total streams and list of streams.</returns>
             public static async Task<Models.API.Community.StreamsInCommunityResponse> GetStreamersInCommunityAsync(string communityId, long? limit = null, string cursor = null) => await Internal.TwitchApi.GetStreamsInCommunity(communityId, limit, cursor);
+
+            /// <summary>
+            /// [SYNC] Sends request to ban a member in a Twitch community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community that will have the user banned from.</param>
+            /// <param name="userId">The ID of the user to be banned.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static void BanCommunityMember(string communityId, string userId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.BanCommunityUser(communityId, userId, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Sends request to ban a member in a Twitch community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community that will have the user banned from.</param>
+            /// <param name="userId">The ID of the user to be banned.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static async void BanCommunityMemberAsync(string communityId, string userId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.BanCommunityUser(communityId, userId, accessToken));
+
+            /// <summary>
+            /// [SYNC] Sends request to unban a member in a Twitch community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community that will have the user unbanned from.</param>
+            /// <param name="userId">The ID of the user to be unbanned.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static void UnBanCommunityMember(string communityId, string userId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UnBanCommunityUser(communityId, userId, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Sends request to unban a member in a Twitch community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community that will have the user unbanned from.</param>
+            /// <param name="userId">The ID of the user to be unbanned.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static async void UnBanCommunityMemberAsync(string communityId, string userId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.UnBanCommunityUser(communityId, userId, accessToken));
+
+            /// <summary>
+            /// [SYNC] Sends request to timeout a member in a Twitch community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community that will have the user timedout from.</param>
+            /// <param name="userId">The ID of the user to be timedout.</param>
+            /// <param name="durationInHours">THe number of hours the member will be timed out for.</param>
+            /// <param name="reason">Optional parameter to provide a reason why they were timed out.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static void TimeoutCommunityMember(string communityId, string userId, int durationInHours, string reason = null, string accessToken = null) => Task.Run(() => Internal.TwitchApi.TimeoutCommunityUser(communityId, userId, durationInHours, reason, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Sends request to timeout a member in a Twitch community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community that will have the user timedout from.</param>
+            /// <param name="userId">The ID of the user to be timedout.</param>
+            /// <param name="durationInHours">THe number of hours the member will be timed out for.</param>
+            /// <param name="reason">Optional parameter to provide a reason why they were timed out.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static async void TimeoutCommunityMemberAsync(string communityId, string userId, int durationInHours, string reason = null, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.TimeoutCommunityUser(communityId, userId, durationInHours, reason, accessToken));
+
+            /// <summary>
+            /// [SYNC] Sends request to untimeout a member in a Twitch community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community that will have the user untimedout from.</param>
+            /// <param name="userId">The ID of the user to be untimedout.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static void UnTimeoutCommunityMember(string communityId, string userId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UnTimeoutCommunityUser(communityId, userId, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Sends request to untimeout a member in a Twitch community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community that will have the user untimedout from.</param>
+            /// <param name="userId">The ID of the user to be untimedout.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static async void UnTimeoutCommunityMemberAsync(string communityId, string userId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.UnTimeoutCommunityUser(communityId, userId, accessToken));
+
+            /// <summary>
+            /// [SYNC] Fetches the moderators that exist in a specific Twitch community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to fetch moderators from.</param>
+            /// <returns>List of CommunityModerator objects.</returns>
+            public static List<Models.API.Community.CommunityModerator> GetCommunityModerators(string communityId) => Task.Run(() => Internal.TwitchApi.GetCommunityModerators(communityId)).Result;
+
+            /// <summary>
+            /// [ASYNC] Fetches the moderators that exist in a specific Twitch community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to fetch moderators from.</param>
+            /// <returns>List of CommunityModerator objects.</returns>
+            public static async Task<List<Models.API.Community.CommunityModerator>> GetCommunityModeratorsAsync(string communityId) => await Internal.TwitchApi.GetCommunityModerators(communityId);
+
+            /// <summary>
+            /// [SYNC] Adds a new moderator to a specific community
+            /// </summary>
+            /// <param name="communityId">The ID of the community to fetch moderators from.</param>
+            /// <param name="userId">The ID of the new moderator.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static void AddCommunityModerator(string communityId, string userId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.AddCommunityModerator(communityId, userId, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Adds a new moderator to a specific community
+            /// </summary>
+            /// <param name="communityId">The ID of the community to add the moderator to.</param>
+            /// <param name="userId">The ID of the new moderator.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static async void AddCommunityModeratorAsync(string communityId, string userId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.AddCommunityModerator(communityId, userId, accessToken));
+
+            /// <summary>
+            /// [SYNC] Removes an existing moderator from a specific community
+            /// </summary>
+            /// <param name="communityId">The ID of the community to fetch moderators from.</param>
+            /// <param name="userId">The ID of the moderator to remove..</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static void RemoveCommunityModerator(string communityId, string userId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.RemoveCommunityModerator(communityId, userId, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Removes an existing moderator from a specific community
+            /// </summary>
+            /// <param name="communityId">The ID of the community to fetch moderators from.</param>
+            /// <param name="userId">The ID of the moderator to remove..</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static async void RemoveCommunityModeratorAsync(string communityId, string userId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.RemoveCommunityModerator(communityId, userId, accessToken));
         }
 
         #region Twitch API Global Functions
@@ -972,7 +1086,7 @@ namespace TwitchLib
         /// <param name="clientId">Client-Id to bind to TwitchApi.</param>
         /// <param name="disableClientIdValidation">Forcefully disables Client-Id validation.</param>
         /// </summary>
-        public static async void SetClientIdAsync(string clientId, bool disableClientIdValidation = false) => Task.Run(() => Internal.TwitchApi.SetClientId(clientId, disableClientIdValidation));
+        public static async void SetClientIdAsync(string clientId, bool disableClientIdValidation = false) => await Task.Run(() => Internal.TwitchApi.SetClientId(clientId, disableClientIdValidation));
 
         /// <summary>
         /// [SYNC] Sets Access Token, which is saved in memory. This is not necessary, as tokens can be passed into Api calls.
@@ -983,7 +1097,7 @@ namespace TwitchLib
         /// [ASYNC] Sets Access Token, which is saved in memory. This is not necessary, as tokens can be passed into Api calls.
         /// </summary>
         /// <param name="accessToken">Twitch account OAuth token to store in memory.</param>
-        public static async void SetAccessTokenAsync(string accessToken) => Task.Run(() => Internal.TwitchApi.SetAccessToken(accessToken));
+        public static async void SetAccessTokenAsync(string accessToken) => await Task.Run(() => Internal.TwitchApi.SetAccessToken(accessToken));
 
         /// <summary>
         /// [SYNC] Validates a Client-Id and optionally updates it.

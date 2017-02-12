@@ -59,7 +59,9 @@
     <Compile Include="Internal\Rfc2812.cs" />
     <Compile Include="Internal\WebSocketClient.cs" />
     <Compile Include="Models\API\Community\Community.cs" />
-    <Compile Include="Models\API\Community\CommunityBannedUser.cs" />
+    <Compile Include="Models\API\Community\CommunityModerator.cs" />
+    <Compile Include="Models\API\Community\CommunityTimedOutUsersResponse.cs" />
+    <Compile Include="Models\API\Community\CommunityUser.cs" />
     <Compile Include="Models\API\Community\CommunityBannedUsersResponse.cs" />
     <Compile Include="Models\API\Community\StreamsInCommunityResponse.cs" />
     <Compile Include="Models\API\Community\TopCommunitiesResponse.cs" />
