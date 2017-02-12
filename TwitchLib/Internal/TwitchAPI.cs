@@ -207,7 +207,7 @@ namespace TwitchLib.Internal
         }
         #endregion
 
-        #region TitleAndGame
+        #region TitleAndGameAndCommunity
         internal static async Task<Models.API.Channel.Channel> UpdateStreamTitle(string status, string channel, string accessToken = null)
         {
             var data = "{\"channel\":{\"status\":\"" + status + "\"}}";
@@ -228,6 +228,8 @@ namespace TwitchLib.Internal
             var data = "{\"channel\":{\"status\":\"" + status + "\",\"game\":\"" + game + "\"}}";
             return new Models.API.Channel.Channel(JObject.Parse(await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channel}", "PUT", data, accessToken)));
         }
+
+        internal 
         #endregion
 
         #region Streaming
@@ -578,7 +580,7 @@ namespace TwitchLib.Internal
         #endregion
 
         #region Communities
-        public async static Task<Models.API.Community.Community> GetCommunityByName(string communityName)
+        internal async static Task<Models.API.Community.Community> GetCommunityByName(string communityName)
         {
             string response = (await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/communities?name={communityName}", null, 5));
             JObject json = JObject.Parse(response);
@@ -590,7 +592,7 @@ namespace TwitchLib.Internal
             return new Models.API.Community.Community(json);
         }
 
-        public async static Task<Models.API.Community.Community> GetCommunityById(string id)
+        internal async static Task<Models.API.Community.Community> GetCommunityById(string id)
         {
             string response = (await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/communities/{id}", null, 5));
             JObject json = JObject.Parse(response);
@@ -602,7 +604,7 @@ namespace TwitchLib.Internal
             return new Models.API.Community.Community(json);
         }
 
-        public async static Task<string> CreateCommunity(string name, string summary, string description, string rules, string accessToken = null)
+        internal async static Task<string> CreateCommunity(string name, string summary, string description, string rules, string accessToken = null)
         {
             if (name.Length < 3 || name.Length > 25)
                 throw new BadParameterException("Name parameter must be between 3 and 25 characters of length.");
@@ -631,7 +633,7 @@ namespace TwitchLib.Internal
                 return null;
         }
 
-        public async static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null)
+        internal async static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null)
         {
             if (summary != null && summary.Length > 160)
                 throw new BadParameterException("Summary parameter must be 160 or less characters of length.");
@@ -652,8 +654,8 @@ namespace TwitchLib.Internal
 
             string response = (await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}", "PUT", json.ToString(), accessToken, 5));
         }
-        
-        public async static Task<Models.API.Community.TopCommunitiesResponse> GetTopCommunities(long? limit = null, string cursor = null)
+
+        internal async static Task<Models.API.Community.TopCommunitiesResponse> GetTopCommunities(long? limit = null, string cursor = null)
         {
             if (limit != null && limit > 100)
                 throw new BadParameterException("Limit may not be larger than 100");
@@ -666,7 +668,7 @@ namespace TwitchLib.Internal
             return new Models.API.Community.TopCommunitiesResponse(JObject.Parse(resp));
         }
 
-        public async static Task<Models.API.Community.CommunityBannedUsersResponse> GetCommunityBannedUsers(string communityId, long? limit = null, string cursor = null, string accessToken = null)
+        internal async static Task<Models.API.Community.CommunityBannedUsersResponse> GetCommunityBannedUsers(string communityId, long? limit = null, string cursor = null, string accessToken = null)
         {
             if (limit != null && limit > 100)
                 throw new BadParameterException("Limit may not be larger than 100");
@@ -679,7 +681,7 @@ namespace TwitchLib.Internal
             return new Models.API.Community.CommunityBannedUsersResponse(JObject.Parse(resp));
         }
 
-        public async static Task<Models.API.Community.StreamsInCommunityResponse> GetStreamsInCommunity(string communityId, long? limit = null, string cursor = null)
+        internal async static Task<Models.API.Community.StreamsInCommunityResponse> GetStreamsInCommunity(string communityId, long? limit = null, string cursor = null)
         {
             if (limit != null && limit > 100)
                 throw new BadParameterException("Limit may not be larger than 100");
@@ -692,17 +694,17 @@ namespace TwitchLib.Internal
             return new Models.API.Community.StreamsInCommunityResponse(JObject.Parse(resp));
         }
 
-        public async static void BanCommunityUser(string communityId, string userId, string accessToken = null)
+        internal async static void BanCommunityUser(string communityId, string userId, string accessToken = null)
         {
             string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", "PUT", null, accessToken, 5);
         }
 
-        public async static void UnBanCommunityUser(string communityId, string userId, string accessToken = null)
+        internal async static void UnBanCommunityUser(string communityId, string userId, string accessToken = null)
         {
             string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", "DELETE", null, accessToken, 5);
         }
 
-        public async static void TimeoutCommunityUser(string communityId, string userId, int durationInHours, string reason = null, string accessToken = null)
+        internal async static void TimeoutCommunityUser(string communityId, string userId, int durationInHours, string reason = null, string accessToken = null)
         {
             JObject json = new JObject();
             json["duration"] = durationInHours;
@@ -711,7 +713,7 @@ namespace TwitchLib.Internal
             string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", "PUT", json.ToString(), accessToken, 5);
         }
 
-        public async static Task<Models.API.Community.CommunityTimedOutUsersResponse> GetTimedOutCommunityUsers(string communityId, long? limit = null, string cursor = null, string accessToken = null)
+        internal async static Task<Models.API.Community.CommunityTimedOutUsersResponse> GetTimedOutCommunityUsers(string communityId, long? limit = null, string cursor = null, string accessToken = null)
         {
             if (limit != null && limit > 100)
                 throw new BadParameterException("Limit may not be larger than 100");
@@ -724,17 +726,17 @@ namespace TwitchLib.Internal
             return new Models.API.Community.CommunityTimedOutUsersResponse(JObject.Parse(resp));
         }
 
-        public async static void UnTimeoutCommunityUser(string communityId, string userId, string accessToken = null)
+        internal async static void UnTimeoutCommunityUser(string communityId, string userId, string accessToken = null)
         {
             string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", "DELETE", null, accessToken, 5);
         }
 
-        public async static void AddCommunityModerator(string communityId, string userId, string accessToken = null)
+        internal async static void AddCommunityModerator(string communityId, string userId, string accessToken = null)
         {
             string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", "PUT", null, accessToken, 5);
         }
 
-        public async static Task<List<Models.API.Community.CommunityModerator>> GetCommunityModerators(string communityId)
+        internal async static Task<List<Models.API.Community.CommunityModerator>> GetCommunityModerators(string communityId)
         {
             List<Models.API.Community.CommunityModerator> communityModerators = new List<Models.API.Community.CommunityModerator>();
             string resp = await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/communities/{communityId}/moderators", null, 5);
@@ -744,7 +746,7 @@ namespace TwitchLib.Internal
             return communityModerators;
         }
 
-        public async static void RemoveCommunityModerator(string communityId, string userId, string accessToken = null)
+        internal async static void RemoveCommunityModerator(string communityId, string userId, string accessToken = null)
         {
             string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", "DELETE", null, accessToken, 5);
         }
