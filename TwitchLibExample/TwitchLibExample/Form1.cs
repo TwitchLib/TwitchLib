@@ -1025,5 +1025,62 @@ namespace TwitchLibExample
             foreach (var stream in resp.Streams)
                 MessageBox.Show($"Name: {stream.Channel.Name}");
         }
+
+        private void button74_Click(object sender, EventArgs e)
+        {
+            string communityId = textBox59.Text;
+            string userId = textBox60.Text;
+
+            TwitchApi.Communities.BanCommunityMember(communityId, userId);
+        }
+
+        private void button75_Click(object sender, EventArgs e)
+        {
+            string communityId = textBox59.Text;
+            string userId = textBox60.Text;
+
+            TwitchApi.Communities.UnBanCommunityMember(communityId, userId);
+        }
+
+        private void button77_Click(object sender, EventArgs e)
+        {
+            string communityId = textBox62.Text;
+            string userId = textBox61.Text;
+
+            TwitchApi.Communities.TimeoutCommunityMemberAsync(communityId, userId, (int)numericUpDown3.Value);
+        }
+
+        private void button76_Click(object sender, EventArgs e)
+        {
+            string communityId = textBox62.Text;
+            string userId = textBox61.Text;
+
+            TwitchApi.Communities.UnTimeoutCommunityMember(communityId, userId);
+        }
+
+        private void button79_Click(object sender, EventArgs e)
+        {
+            string communityId = textBox64.Text;
+            string userId = textBox63.Text;
+
+            TwitchApi.Communities.AddCommunityModerator(communityId, userId);
+        }
+
+        private void button78_Click(object sender, EventArgs e)
+        {
+            string communityId = textBox64.Text;
+            string userId = textBox63.Text;
+
+            TwitchApi.Communities.RemoveCommunityModerator(communityId, userId);
+        }
+
+        private void button80_Click(object sender, EventArgs e)
+        {
+            string communityId = textBox65.Text;
+
+            var resp = TwitchApi.Communities.GetCommunityModerators(communityId);
+            foreach (var mod in resp)
+                MessageBox.Show($"Name: {mod.Name}");
+        }
     }
 }
