@@ -542,12 +542,13 @@ namespace TwitchLib
 
         private void _client_OnMessage(object sender, MessageEventArgs e)
         {
+            string message = e.Data.Trim();
             if (_logging)
-                Common.Logging.Log($"Received: {e.Data}");
+                Common.Logging.Log($"Received: {message}");
             if(e.IsText)
             {
-                OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = e.Data });
-                ParseIrcMessage(e.Data);
+                OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = message });
+                ParseIrcMessage(message);
             }
         }
 
