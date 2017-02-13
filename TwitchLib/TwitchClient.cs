@@ -543,13 +543,22 @@ namespace TwitchLib
         private void _client_OnMessage(object sender, MessageEventArgs e)
         {
             string message = e.Data.Trim();
-            if (_logging)
-                Common.Logging.Log($"Received: {message}");
-            if(e.IsText)
+            string[] stringSeparators = new string[] { "\r\n" };
+            string[] lines = e.Data.Split(stringSeparators, StringSplitOptions.None);
+            foreach(string line in lines)
             {
-                OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = message });
-                ParseIrcMessage(message);
+                if(line.Length > 1)
+                {
+                    if (_logging)
+                        Common.Logging.Log($"Received: {line}");
+                    if (e.IsText)
+                    {
+                        OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = line });
+                        ParseIrcMessage(line);
+                    }
+                }
             }
+            
         }
 
         private void _client_OnConnected(object sender, object e)
@@ -765,26 +774,14 @@ namespace TwitchLib
             }
 
             // On Existing Users Detected
-            response = Internal.Parsing.Chat.detectedExistingUsersAndMods(ircMessage, _credentials.TwitchUsername, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedExistingUsers(ircMessage, _credentials.TwitchUsername, JoinedChannels);
             if (response.Successful)
             {
-                string[] stringSeparators = new string[] { "\r\n" };
-                string[] lines = ircMessage.Split(stringSeparators, StringSplitOptions.None);
-                foreach (string line in lines)
-                {
-                    if(line.Contains(" ") && line.Split(' ')[1] == "353")
-                        OnExistingUsersDetected?.Invoke(this, new OnExistingUsersDetectedArgs
-                        {
-                            Channel = response.Channel,
-                            Users = line.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ').ToList<string>()
-                        });
-                    if (line.Contains(" ") && line.Split(' ').Count() > 3 && line.Split(' ')[3] == "+o")
-                        OnModeratorJoined?.Invoke(this, new OnModeratorJoinedArgs
-                        {
-                            Channel = response.Channel,
-                            Username = line.Split(' ')[4]
-                        });
-                }
+                Console.WriteLine();
+                Console.WriteLine("DETECTED: " + ircMessage);
+                Console.WriteLine();
+                OnExistingUsersDetected?.Invoke(this, new OnExistingUsersDetectedArgs { Channel = response.Channel,
+                    Users = ircMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ').ToList<string>() });
                 return;
             }
 

@@ -393,7 +393,7 @@ namespace TwitchLib.Internal.Parsing
         /// <param name="username"></param>
         /// <param name="channels"></param>
         /// <returns></returns>
-        public static DetectionReturn detectedExistingUsersAndMods(string message, string username, List<JoinedChannel> channels)
+        public static DetectionReturn detectedExistingUsers(string message, string username, List<JoinedChannel> channels)
         {
             if (channels.Count == 0)
                 return new DetectionReturn(false);
