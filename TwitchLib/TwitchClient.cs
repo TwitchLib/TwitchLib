@@ -777,9 +777,6 @@ namespace TwitchLib
             response = Internal.Parsing.Chat.detectedExistingUsers(ircMessage, _credentials.TwitchUsername, JoinedChannels);
             if (response.Successful)
             {
-                Console.WriteLine();
-                Console.WriteLine("DETECTED: " + ircMessage);
-                Console.WriteLine();
                 OnExistingUsersDetected?.Invoke(this, new OnExistingUsersDetectedArgs { Channel = response.Channel,
                     Users = ircMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ').ToList<string>() });
                 return;
