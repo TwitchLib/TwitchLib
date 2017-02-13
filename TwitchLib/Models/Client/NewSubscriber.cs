@@ -21,6 +21,8 @@ namespace TwitchLib.Models.Client
         {
             Channel = ircString.Split('#')[1].Split(' ')[0].Replace(" ", "");
             Name = ircString.Split(':')[2].Split(' ')[0].Replace(" ", "");
+            if (Name.Contains(":"))
+                Name = Name.Split(':')[0];
             IsTwitchPrime = ircString.Contains("subscribed with Twitch Prime");
         }
     }

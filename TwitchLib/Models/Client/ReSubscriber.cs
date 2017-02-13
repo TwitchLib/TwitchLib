@@ -156,6 +156,10 @@ namespace TwitchLib.Models.Client
 
             // Check if Twitch Prime
             IsTwitchPrime = SystemMessageParsed.ToLower().Contains("with twitch prime");
+
+            // Check if parsing screwed up
+            if (Login.Contains(":"))
+                Login = Login.Split(':')[0];
             
         }
 
