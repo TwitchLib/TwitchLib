@@ -11,6 +11,7 @@ using TwitchLib.Exceptions.API;
 using TwitchLib.Models.API;
 using TwitchLib.Models.API.User;
 using TwitchLib.Models.API.Team;
+using System.Drawing;
 
 namespace TwitchLib.Internal
 {
@@ -763,6 +764,44 @@ namespace TwitchLib.Internal
         internal async static void RemoveChannelCommunity(string channelId, string accessToken = null)
         {
             string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channelId}/community", "DELETE", null, accessToken, 5);
+        }
+
+        internal async static void CreateCommunityAvatarImage(string communityId, string base64AvatarImage, string accessToken = null)
+        {
+            JObject json = new JObject();
+            json["avatar_image"] = base64AvatarImage;
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "POST", json.ToString(), accessToken, 5);
+        }
+
+        internal async static void CreateCommunityAvatarImage(string communityId, Image avatarImage, string accessToken = null)
+        {
+            JObject json = new JObject();
+            json["avatar_image"] = Common.Helpers.ImageToBase64(avatarImage);
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "POST", json.ToString(), accessToken, 5);
+        }
+
+        internal async static void RemoveCommunityAvatarImage(string communityId, string accessToken = null)
+        {
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "DELETE", null, accessToken, 5);
+        }
+
+        internal async static void CreateCommunityCoverImage(string communityId, string base64CoverImage, string accessToken = null)
+        {
+            JObject json = new JObject();
+            json["cover_image"] = base64CoverImage;
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", "POST", json.ToString(), accessToken, 5);
+        }
+
+        internal async static void CreateCommunityCoverImage(string communityId, Image coverImage, string accessToken = null)
+        {
+            JObject json = new JObject();
+            json["cover_image"] = Common.Helpers.ImageToBase64(coverImage);
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", "POST", json.ToString(), accessToken, 5);
+        }
+
+        internal async static void RemoveCommunityCoverImage(string communityId, string accessToken = null)
+        {
+            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", "DELETE", null, accessToken, 5);
         }
         #endregion
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -1116,6 +1117,99 @@ namespace TwitchLib
             /// <param name="userId">The ID of the moderator to remove..</param>
             /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
             public static async void RemoveCommunityModeratorAsync(string communityId, string userId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.RemoveCommunityModerator(communityId, userId, accessToken));
+
+            /// <summary>
+            /// [SYNC] Attempts to create an avatar image for a community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to assign the image to.</param>
+            /// <param name="base64AvatarImage">Base64 encoded image as a string</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static void CreateCommunityAvatarImage(string communityId, string base64AvatarImage, string accessToken = null) => Task.Run(() => Internal.TwitchApi.CreateCommunityAvatarImage(communityId, base64AvatarImage, accessToken));
+
+            /// <summary>
+            /// [SYNC] Attempts to create an avatar image for a community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to assign the image to.</param>
+            /// <param name="avatarImage">Image object representing the avatar image.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static void CreateCommunityAvatarImage(string communityId, Image avatarImage, string accessToken = null) => Task.Run(() => Internal.TwitchApi.CreateCommunityAvatarImage(communityId, avatarImage, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Attempts to create an avatar image for a community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to assign the image to.</param>
+            /// <param name="base64AvatarImage">Base64 encoded image as a string</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static async void CreateCommunityAvatarImageAsync(string communityId, string base64AvatarImage, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.CreateCommunityAvatarImage(communityId, base64AvatarImage, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Attempts to create an avatar image for a community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to assign the image to.</param>
+            /// <param name="avatarImage">Image object representing the avatar image.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static async void CreateCommunityAvatarImageAsync(string communityId, Image avatarImage, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.CreateCommunityAvatarImage(communityId, avatarImage, accessToken));
+
+            /// <summary>
+            /// [SYNC] Attempts to remove a community avatar image.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to remove the avatar image from.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static void RemoveCommunityAvatarImage(string communityId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.RemoveCommunityAvatarImage(communityId, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Attempts to remove a community avatar image.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to remove the avatar image from.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static async void RemoveCommunityAvatarImageAsync(string communityId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.RemoveCommunityAvatarImage(communityId, accessToken));
+
+
+            /// <summary>
+            /// [SYNC] Attempts to create an Cover image for a community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to assign the image to.</param>
+            /// <param name="base64CoverImage">Base64 encoded image as a string</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static void CreateCommunityCoverImage(string communityId, string base64CoverImage, string accessToken = null) => Task.Run(() => Internal.TwitchApi.CreateCommunityCoverImage(communityId, base64CoverImage, accessToken));
+
+            /// <summary>
+            /// [SYNC] Attempts to create an Cover image for a community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to assign the image to.</param>
+            /// <param name="CoverImage">Image object representing the Cover image.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static void CreateCommunityCoverImage(string communityId, Image CoverImage, string accessToken = null) => Task.Run(() => Internal.TwitchApi.CreateCommunityCoverImage(communityId, CoverImage, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Attempts to create an Cover image for a community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to assign the image to.</param>
+            /// <param name="base64CoverImage">Base64 encoded image as a string</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static async void CreateCommunityCoverImageAsync(string communityId, string base64CoverImage, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.CreateCommunityCoverImage(communityId, base64CoverImage, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Attempts to create an Cover image for a community.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to assign the image to.</param>
+            /// <param name="CoverImage">Image object representing the Cover image.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static async void CreateCommunityCoverImageAsync(string communityId, Image CoverImage, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.CreateCommunityCoverImage(communityId, CoverImage, accessToken));
+
+            /// <summary>
+            /// [SYNC] Attempts to remove a community Cover image.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to remove the Cover image from.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static void RemoveCommunityCoverImage(string communityId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.RemoveCommunityCoverImage(communityId, accessToken));
+
+            /// <summary>
+            /// [ASYNC] Attempts to remove a community Cover image.
+            /// </summary>
+            /// <param name="communityId">The ID of the community to remove the Cover image from.</param>
+            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
+            public static async void RemoveCommunityCoverImageAsync(string communityId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.RemoveCommunityCoverImage(communityId, accessToken));
         }
 
         #region Twitch API Global Functions
