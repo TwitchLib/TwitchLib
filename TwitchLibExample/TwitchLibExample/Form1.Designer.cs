@@ -356,6 +356,9 @@
             this.textBox69 = new System.Windows.Forms.TextBox();
             this.button83 = new System.Windows.Forms.Button();
             this.label77 = new System.Windows.Forms.Label();
+            this.label78 = new System.Windows.Forms.Label();
+            this.label79 = new System.Windows.Forms.Label();
+            this.listBox5 = new System.Windows.Forms.ListBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -1023,6 +1026,9 @@
             // 
             // tabPage10
             // 
+            this.tabPage10.Controls.Add(this.label79);
+            this.tabPage10.Controls.Add(this.listBox5);
+            this.tabPage10.Controls.Add(this.label78);
             this.tabPage10.Controls.Add(this.listBox3);
             this.tabPage10.Location = new System.Drawing.Point(10, 48);
             this.tabPage10.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
@@ -1030,17 +1036,17 @@
             this.tabPage10.Padding = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.tabPage10.Size = new System.Drawing.Size(977, 488);
             this.tabPage10.TabIndex = 4;
-            this.tabPage10.Text = "ExistingUsers";
+            this.tabPage10.Text = "Users";
             this.tabPage10.UseVisualStyleBackColor = true;
             // 
             // listBox3
             // 
             this.listBox3.FormattingEnabled = true;
             this.listBox3.ItemHeight = 31;
-            this.listBox3.Location = new System.Drawing.Point(16, 14);
+            this.listBox3.Location = new System.Drawing.Point(16, 76);
             this.listBox3.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.listBox3.Name = "listBox3";
-            this.listBox3.Size = new System.Drawing.Size(393, 438);
+            this.listBox3.Size = new System.Drawing.Size(393, 376);
             this.listBox3.TabIndex = 0;
             // 
             // listView1
@@ -4049,6 +4055,34 @@
             this.label77.TabIndex = 23;
             this.label77.Text = "Channel Id:";
             // 
+            // label78
+            // 
+            this.label78.AutoSize = true;
+            this.label78.Location = new System.Drawing.Point(11, 23);
+            this.label78.Name = "label78";
+            this.label78.Size = new System.Drawing.Size(204, 32);
+            this.label78.TabIndex = 1;
+            this.label78.Text = "Existing Users:";
+            // 
+            // label79
+            // 
+            this.label79.AutoSize = true;
+            this.label79.Location = new System.Drawing.Point(420, 23);
+            this.label79.Name = "label79";
+            this.label79.Size = new System.Drawing.Size(188, 32);
+            this.label79.TabIndex = 3;
+            this.label79.Text = "Joined Users:";
+            // 
+            // listBox5
+            // 
+            this.listBox5.FormattingEnabled = true;
+            this.listBox5.ItemHeight = 31;
+            this.listBox5.Location = new System.Drawing.Point(425, 76);
+            this.listBox5.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.listBox5.Name = "listBox5";
+            this.listBox5.Size = new System.Drawing.Size(393, 376);
+            this.listBox5.TabIndex = 2;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -4076,6 +4110,7 @@
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
             this.tabPage10.ResumeLayout(false);
+            this.tabPage10.PerformLayout();
             this.tabControl3.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
@@ -4530,6 +4565,9 @@
         private System.Windows.Forms.TextBox textBox68;
         private System.Windows.Forms.Button button81;
         private System.Windows.Forms.Label label76;
+        private System.Windows.Forms.Label label79;
+        private System.Windows.Forms.ListBox listBox5;
+        private System.Windows.Forms.Label label78;
     }
 }
 

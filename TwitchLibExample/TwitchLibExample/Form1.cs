@@ -98,6 +98,7 @@ namespace TwitchLibExample
             newClient.OnNowHosting += new EventHandler<OnNowHostingArgs>(onNowHosting);
             newClient.OnMessageSent += onMessageSent;
             newClient.OnChatColorChanged += onChatColorChanged;
+            newClient.OnUserJoined += onUserJoined;
             newClient.OnHostingStarted += new EventHandler<OnHostingStartedArgs>(onHostingStarted);
             newClient.OnHostingStopped += new EventHandler<OnHostingStoppedArgs>(onHostingStopped);
             // newClient.OnBeingHosted += new EventHandler<OnBeingHostedArgs>(onBeingHosted); ONLY USE IF YOU ARE JOING BROADCASTER's CHANNEL AS THE BROADCASTER (exception will be thrown if not)
@@ -121,6 +122,11 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onUserJoined(object sender, OnUserJoinedArgs e)
+        {
+            listBox5.Items.Add(e.Username);
         }
 
         private void onBeingHosted(object sender, OnBeingHostedArgs e)
@@ -168,7 +174,7 @@ namespace TwitchLibExample
 
         private void onMessageSent(object sender, OnMessageSentArgs e)
         {
-            richTextBox1.Text += $"\n[Me]{e.SentMessage.DisplayName} [mod: {e.SentMessage.IsModerator}] [sub: {e.SentMessage.IsSubscriber}]: {e.SentMessage.Message}";
+            richTextBox1.Text += $"\n[via onMessageSent] [Me]{e.SentMessage.DisplayName} [mod: {e.SentMessage.IsModerator}] [sub: {e.SentMessage.IsSubscriber}]: {e.SentMessage.Message}";
         }
 
         private void onModeratorsReceived(object sender, OnModeratorsReceivedArgs e)
