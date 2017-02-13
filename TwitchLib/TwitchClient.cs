@@ -765,11 +765,26 @@ namespace TwitchLib
             }
 
             // On Existing Users Detected
-            response = Internal.Parsing.Chat.detectedExistingUsers(ircMessage, _credentials.TwitchUsername, JoinedChannels);
+            response = Internal.Parsing.Chat.detectedExistingUsersAndMods(ircMessage, _credentials.TwitchUsername, JoinedChannels);
             if (response.Successful)
             {
-                OnExistingUsersDetected?.Invoke(this, new OnExistingUsersDetectedArgs { Channel = response.Channel,
-                    Users = ircMessage.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ').ToList<string>() });
+                string[] stringSeparators = new string[] { "\r\n" };
+                string[] lines = ircMessage.Split(stringSeparators, StringSplitOptions.None);
+                foreach (string line in lines)
+                {
+                    if(line.Contains(" ") && line.Split(' ')[1] == "353")
+                        OnExistingUsersDetected?.Invoke(this, new OnExistingUsersDetectedArgs
+                        {
+                            Channel = response.Channel,
+                            Users = line.Replace($":{_credentials.TwitchUsername}.tmi.twitch.tv 353 {_credentials.TwitchUsername} = #{response.Channel} :", "").Split(' ').ToList<string>()
+                        });
+                    if (line.Contains(" ") && line.Split(' ').Count() > 3 && line.Split(' ')[3] == "+o")
+                        OnModeratorJoined?.Invoke(this, new OnModeratorJoinedArgs
+                        {
+                            Channel = response.Channel,
+                            Username = line.Split(' ')[4]
+                        });
+                }
                 return;
             }
 
