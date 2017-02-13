@@ -1,14 +1,31 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TwitchLib.Common
 {
+    /// <summary>
+    /// Static class of helper functions used around the project.
+    /// </summary>
     public static class Helpers
     {
+        /// <summary>
+        /// Function that converts Image object to a base64 string.
+        /// </summary>
+        /// <param name="image">Image object represting the image to turn to base64 string.</param>
+        /// <returns>Base64 string of image.</returns>
+        public static string ImageToBase64(Image image)
+        {
+            MemoryStream ms = new MemoryStream();
+            image.Save(ms, image.RawFormat);
+            return Convert.ToBase64String(ms.ToArray());
+        }
+
         /// <summary>
         /// Function to check if a jtoken is null.
         /// Credits: http://stackoverflow.com/questions/24066400/checking-for-empty-null-jtoken-in-a-jobject
