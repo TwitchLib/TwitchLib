@@ -141,7 +141,11 @@ namespace TwitchLib.Models.Client
                         Channel = ircString.Split('#')[2].Replace(" ", "");
                 } else
                 {
-                    Channel = ircString.Split('#')[1].Replace(" ", "");
+                    Channel = ircString.Split('#')[1];
+                    if (Channel.Contains(" "))
+                        Channel = Channel.Split(' ')[0];
+                    if (Channel.Contains(":"))
+                        Channel = Channel.Split(':')[0];
                 }
             }
                 
@@ -156,11 +160,6 @@ namespace TwitchLib.Models.Client
 
             // Check if Twitch Prime
             IsTwitchPrime = SystemMessageParsed.ToLower().Contains("with twitch prime");
-
-            // Check if parsing screwed up
-            if (Login.Contains(":"))
-                Login = Login.Split(':')[0];
-            
         }
 
         /// <summary>Overriden ToString method, prints out all properties related to resub.</summary>
