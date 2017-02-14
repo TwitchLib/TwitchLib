@@ -500,11 +500,53 @@ namespace TwitchLib
             /// <returns>StreamsSummary object housing total viewers, total streams.</returns>
             public static async Task<Models.API.Stream.StreamsSummary> GetStreamsSummaryAsync() => await Internal.TwitchApi.GetStreamsSummary();
 
-            public static List<Models.API.Stream.Stream> GetAllStreamsV5(string game = null, List<string> channels = null, Enums.StreamType streamType = Enums.StreamType.Live,
+            /// <summary>
+            /// [SYNC] Fetches streams based on the given parameters.
+            /// </summary>
+            /// <param name="game"></param>
+            /// <param name="channels"></param>
+            /// <param name="streamType"></param>
+            /// <param name="language"></param>
+            /// <param name="limit"></param>
+            /// <param name="offset"></param>
+            /// <param name="accessToken"></param>
+            /// <returns>List of Stream objects.</returns>
+            public static List<Models.API.Stream.Stream> GetAllStreams(string game = null, List<string> channels = null, Enums.StreamType streamType = Enums.StreamType.Live,
                 string language = "en", int limit = 25, int offset = 0, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetAllStreamsV5(game, channels, streamType, language, limit, offset, accessToken)).Result;
 
-            public static async Task<List<Models.API.Stream.Stream>> GetAllStreamsV5Async(string game = null, List<string> channels = null, Enums.StreamType streamType = Enums.StreamType.Live,
+            /// <summary>
+            /// [ASYNC] Fetches streams based on the given parameters.
+            /// </summary>
+            /// <param name="game"></param>
+            /// <param name="channels"></param>
+            /// <param name="streamType"></param>
+            /// <param name="language"></param>
+            /// <param name="limit"></param>
+            /// <param name="offset"></param>
+            /// <param name="accessToken"></param>
+            /// <returns>List of Stream objects.</returns>
+            public static async Task<List<Models.API.Stream.Stream>> GetAllStreamsAsync(string game = null, List<string> channels = null, Enums.StreamType streamType = Enums.StreamType.Live,
                 string language = "en", int limit = 25, int offset = 0, string accessToken = null) => await Internal.TwitchApi.GetAllStreamsV5(game, channels, streamType, language, limit, offset, accessToken);
+
+            /// <summary>
+            /// [SYNC] Retrieves a list of followed streams.
+            /// </summary>
+            /// <param name="streamType">Stream type can be live, playlist, or all.</param>
+            /// <param name="limit">Limit must be larger than 0 and smaller than or equal to 100.</param>
+            /// <param name="offset">Offset used for pagination of results.</param>
+            /// <param name="accessToken">If accessToken not previously set, you must set it here.</param>
+            /// <returns>FollowedStreamsResponse housing total followed streams and a list of (up to 100) followed stream objects.</returns>
+            public static Models.API.Stream.FollowedStreamsResponse GetFollowedStreams(Enums.StreamType streamType = Enums.StreamType.Live, int limit = 25, int offset = 0, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetFollowedStreams(streamType, limit, offset, accessToken)).Result;
+
+            /// <summary>
+            /// [ASYNC] Retrieves a list of followed streams.
+            /// </summary>
+            /// <param name="streamType">Stream type can be live, playlist, or all.</param>
+            /// <param name="limit">Limit must be larger than 0 and smaller than or equal to 100.</param>
+            /// <param name="offset">Offset used for pagination of results.</param>
+            /// <param name="accessToken">If accessToken not previously set, you must set it here.</param>
+            /// <returns>FollowedStreamsResponse housing total followed streams and a list of (up to 100) followed stream objects.</returns>
+            public static async Task<Models.API.Stream.FollowedStreamsResponse> GetFollowedStreamsAsync(Enums.StreamType streamType = Enums.StreamType.Live, int limit = 25, int offset = 0, string accessToken = null) => await Internal.TwitchApi.GetFollowedStreams(streamType, limit, offset, accessToken);
         }
 
         /// <summary>

@@ -127,6 +127,29 @@ namespace TwitchLib.Internal
             var json = await Requests.MakeGetRequest("https://api.twitch.tv/kraken/streams/summary");
             return new Models.API.Stream.StreamsSummary(json);
         }
+
+        internal static async Task<Models.API.Stream.FollowedStreamsResponse> GetFollowedStreams(Enums.StreamType streamType = Enums.StreamType.Live, int limit = 25, int offset = 0, string accessToken = null)
+        {
+            if (limit > 100 || limit < 0)
+                throw new Exceptions.API.BadParameterException("Limit must be larger than 0 and equal to or smaller than 100");
+
+            string args = $"?limit={limit}&offset={offset}";
+            switch(streamType)
+            {
+                case Enums.StreamType.Live:
+                    args += "&stream_type=live";
+                    break;
+                case Enums.StreamType.Playlist:
+                    args += "&stream_type=playlist";
+                    break;
+                case Enums.StreamType.All:
+                    args += "&stream_type=all";
+                    break;
+            }
+
+            string resp = await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/streams/followed{args}", accessToken, 5);
+            return new Models.API.Stream.FollowedStreamsResponse(JObject.Parse(resp));
+        }
         #endregion
 
         #region Searching
