@@ -38,10 +38,11 @@ namespace TwitchLib.Services
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
         /// <param name="queryCount">Number of recent followers service should request from Twitch Api. Max: 100, Min: 1</param>
         /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
-        public FollowerService(string channel, int checkIntervalSeconds = 60, int queryCount = 25, string clientId = "") //queryCount is never used
+        public FollowerService(string channel, int checkIntervalSeconds = 60, int queryCount = 25, string clientId = "")
         {
             Channel = channel;
             CheckIntervalSeconds = checkIntervalSeconds;
+            QueryCount = queryCount;
             _followerServiceTimer.Elapsed += _followerServiceTimerElapsed;
             if (clientId != "")
                 ClientId = clientId;
@@ -81,42 +82,41 @@ namespace TwitchLib.Services
             }
             List<Models.API.Follow.Follower> mostRecentFollowers = response.Followers;
             List<Models.API.Follow.Follower> newFollowers = new List<Models.API.Follow.Follower>();
-            if(ActiveCache == null) //ActiveCache initializes at StartService, so, I think,  this IF is never true
+
+            foreach (Models.API.Follow.Follower recentFollower in mostRecentFollowers)
             {
-                ActiveCache = mostRecentFollowers;
-                newFollowers = ActiveCache;
-            } else
-            {
-                foreach(Models.API.Follow.Follower recentFollower in mostRecentFollowers)
+                bool found = false;
+                foreach (Models.API.Follow.Follower cachedFollower in ActiveCache)
                 {
-                    bool found = false;
-                    foreach(Models.API.Follow.Follower cachedFollower in ActiveCache)
+                    if (recentFollower.User.Name.ToLower() == cachedFollower.User.Name.ToLower())
+                        found = true;
+                }
+                if (!found)
+                    newFollowers.Add(recentFollower);
+            }
+
+            // Check for new followers
+            if (newFollowers.Count > 0)
+            {
+                // add new followers to active cache
+                ActiveCache.AddRange(newFollowers);
+
+                // prune cache so we don't use too much space unnecessarily
+                if (ActiveCache.Count > CacheSize)
+                    ActiveCache = ActiveCache.GetRange(ActiveCache.Count - (CacheSize + 1), CacheSize);
+
+                // Invoke new followers event
+                OnNewFollowersDetected?.Invoke(this,
+                    new OnNewFollowersDetectedArgs
                     {
-                        if (recentFollower.User.Name.ToLower() == cachedFollower.User.Name.ToLower())
-                            found = true;
-                    }
-                    if (!found)
-                        newFollowers.Add(recentFollower);
-                }
-
-                // Check for new followers
-                if (newFollowers.Count > 0)
-                {
-                    // add new followers to active cache
-                    ActiveCache.AddRange(newFollowers);
-
-                    // prune cache so we don't use too much space unnecessarily
-                    if (ActiveCache.Count > CacheSize)
-                        ActiveCache = ActiveCache.GetRange(ActiveCache.Count - (CacheSize + 1), CacheSize);
-
-                    // Invoke new followers event
-                    OnNewFollowersDetected?.Invoke(this,
-                        new OnNewFollowersDetectedArgs { Channel = Channel, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount, NewFollowers = newFollowers });
-                }
-                    
+                        Channel = Channel,
+                        CheckIntervalSeconds = CheckIntervalSeconds,
+                        QueryCount = QueryCount,
+                        NewFollowers = newFollowers
+                    });
             }
         }
-        
+
 
         #region EVENTS
         /// <summary>Event fires when service starts.</summary>
