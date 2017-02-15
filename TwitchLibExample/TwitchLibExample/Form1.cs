@@ -971,7 +971,7 @@ namespace TwitchLibExample
         }
         private async void button66_Click_1(object sender, EventArgs e)
         {
-            var streams = await TwitchApi.Streams.GetAllStreamsV5Async();
+            var streams = await TwitchApi.Streams.GetAllStreamsAsync();
             foreach (var stream in streams)
                 MessageBox.Show($"Channel: {stream.Channel.Name}\nGame: {stream.Game}");
         }
@@ -1107,6 +1107,13 @@ namespace TwitchLibExample
             string channelId = textBox69.Text;
 
             TwitchApi.Channels.RemoveChannelCommunity(channelId);
+        }
+
+        private async void button84_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchApi.Streams.GetFollowedStreamsAsync();
+            foreach (var stream in resp.Streams)
+                MessageBox.Show($"Stream channel: {stream.Channel.Name}\nGame: {stream.Game}\nViewers: {stream.Viewers}");
         }
     }
 }
