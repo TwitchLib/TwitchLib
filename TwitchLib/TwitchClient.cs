@@ -19,11 +19,10 @@ namespace TwitchLib
         private WebSocketClient _client;*/
         private WebSocket _client;
         private ConnectionCredentials _credentials;
-        private List<char> _chatCommandIdentifiers = new List<char>();
-        private List<char> _whisperCommandIdentifiers = new List<char>();
-        private bool _logging, _autoReListenOnException;
         private MessageEmoteCollection _channelEmotes = new MessageEmoteCollection();
         private string _autoJoinChannel = null;
+        private List<char> _chatCommandIdentifiers = new List<char>();
+        private List<char> _whisperCommandIdentifiers = new List<char>();
         private Queue<JoinedChannel> joinChannelQueue = new Queue<JoinedChannel>();
         private bool currentlyJoiningChannels = false;
 
@@ -52,15 +51,27 @@ namespace TwitchLib
         ///     added according to the availability rules defined by the third-party.
         /// </remarks>
         public MessageEmoteCollection ChannelEmotes { get { return _channelEmotes; } protected set { _channelEmotes = value; } }
-
         /// <summary>Will disable the client from sending automatic PONG responses to PING</summary>
         public bool DisableAutoPong { get; set; } = false;
-
         /// <summary>Determines whether Emotes will be replaced in messages.</summary>
         public bool WillReplaceEmotes { get; set; } = false;
-
         /// <summary>If set to true, the library will not check upon channel join that if BeingHosted event is subscribed, that the bot is connected as broadcaster. Only override if the broadcaster is joining multiple channels, including the broadcaster's.</summary>
         public bool OverrideBeingHostedCheck { get; set; } = false;
+        /// <summary>Provides access to connection credentials object.</summary>
+        public ConnectionCredentials ConnectionCredentials
+        {
+            get { return _credentials; }
+            set
+            {
+                if (_client.IsAlive)
+                    throw new IllegalAssignmentException("While the client is connected, you are unable to change the connection credentials. Please disconnect first and then change them.");
+                _credentials = value;
+            }
+        }
+        /// <summary>Provides access to logging on off boolean.</summary>
+        public bool Logging { get; set; } = false;
+        /// <summary>Provides access to autorelistiononexception on off boolean.</summary>
+        public bool AutoReListenOnException { get; set; } = true;
         #endregion
 
         #region Events
@@ -246,8 +257,8 @@ namespace TwitchLib
                 _chatCommandIdentifiers.Add(chatCommandIdentifier);
             if (whisperCommandIdentifier != '\0')
                 _whisperCommandIdentifiers.Add(whisperCommandIdentifier);
-            _logging = logging;
-            _autoReListenOnException = autoReListenOnExceptions;
+            Logging = logging;
+            AutoReListenOnException = autoReListenOnExceptions;
 
             _client = new WebSocket($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}");
             _client.OnOpen += _client_OnConnected;
@@ -262,15 +273,6 @@ namespace TwitchLib
             _client.OnDisconnected += _client_OnDisconnected;
             _client.OnError += _client_OnError;*/
         }
-        
-        /// <summary>
-        /// Depending in the parameter, either enables or disables logging to the debug console.
-        /// </summary>
-        /// <param name="loggingStatus">True to enable logging, false to disable logging.</param>
-        public void SetLoggingStatus(bool loggingStatus)
-        {
-            _logging = loggingStatus;
-        }
 
         /// <summary>
         /// Sends a RAW IRC message.
@@ -280,7 +282,7 @@ namespace TwitchLib
         {
             ConsoleColor prevColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            if(_logging)
+            if(Logging)
                 Common.Logging.Log($"Writing: {message}");
             if(ChatThrottler == null || !ChatThrottler.ApplyThrottlingToRawMessages || ChatThrottler.MessagePermitted(message))
                 _client.Send(message);
@@ -350,12 +352,12 @@ namespace TwitchLib
         /// </summary>
         public void Connect()
         {
-            if (_logging)
+            if (Logging)
                 Common.Logging.Log("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
 
             _client.Connect();
 
-            if (_logging)
+            if (Logging)
                 Common.Logging.Log("Should be connected!");
         }
 
@@ -364,7 +366,7 @@ namespace TwitchLib
         /// </summary>
         public void Disconnect()
         {
-            if (_logging)
+            if (Logging)
                 Common.Logging.Log("Disconnect Twitch Chat Client...");
             
             // Not sure if this is the proper way to handle this. It is UI blocking, so in order to presrve UI functionality, I delegated it to a task.
@@ -380,7 +382,7 @@ namespace TwitchLib
         /// </summary>
         public void Reconnect()
         {
-            if (_logging)
+            if (Logging)
                 Common.Logging.Log("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
 
             if (_client.IsAlive)
@@ -468,7 +470,7 @@ namespace TwitchLib
         {
             // Channel MUST be lower case
             channel = channel.ToLower();
-            if (_logging)
+            if (Logging)
                 Common.Logging.Log($"Leaving channel: {channel}");
             JoinedChannel joinedChannel = JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
             if (joinedChannel != null)
@@ -549,7 +551,7 @@ namespace TwitchLib
             {
                 if(line.Length > 1)
                 {
-                    if (_logging)
+                    if (Logging)
                         Common.Logging.Log($"Received: {line}");
                     if (e.IsText)
                     {
@@ -904,7 +906,7 @@ namespace TwitchLib
             #endregion  
 
             // Any other messages here
-            if (_logging)
+            if (Logging)
                 Common.Logging.Log($"Unaccounted for: {ircMessage}");            
         }
 
@@ -915,13 +917,13 @@ namespace TwitchLib
             {
                 currentlyJoiningChannels = true;
                 JoinedChannel channelToJoin = joinChannelQueue.Dequeue();
-                if (_logging)
+                if (Logging)
                     Common.Logging.Log($"Joining channel: {channelToJoin.Channel}");
                 _client.Send(Rfc2812.Join($"#{channelToJoin.Channel}"));
                 JoinedChannels.Add(new JoinedChannel(channelToJoin.Channel));
             } else
             {
-                if (_logging)
+                if (Logging)
                     Common.Logging.Log("Finished channel joining queue.");
             }
         }
