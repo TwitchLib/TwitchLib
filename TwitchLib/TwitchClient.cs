@@ -15,8 +15,6 @@ namespace TwitchLib
     public class TwitchClient
     {
         #region Private Variables
-        /*private Task _listenThread; Keep this in so when mono finally patches, we can remove websocketsharp dep.
-        private WebSocketClient _client;*/
         private WebSocket _client;
         private ConnectionCredentials _credentials;
         private MessageEmoteCollection _channelEmotes = new MessageEmoteCollection();
@@ -265,13 +263,6 @@ namespace TwitchLib
             _client.OnMessage += _client_OnMessage;
             _client.OnClose += _client_OnDisconnected;
             _client.OnError += _client_OnError;
-            // Uncomment once Mono patches issue in WebSocketClient
-            /*_client = WebSocketClient.Create(new Uri($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}"));
-            _client.AutoReconnect = true;
-            _client.OnConnected += _client_OnConnected;
-            _client.OnMessage += _client_OnMessage;
-            _client.OnDisconnected += _client_OnDisconnected;
-            _client.OnError += _client_OnError;*/
         }
 
         /// <summary>
