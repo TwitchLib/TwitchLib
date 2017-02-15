@@ -120,7 +120,7 @@ namespace TwitchLib.Internal.Parsing
         /// <param name="WillReplaceEmotes"></param>
         /// <param name="_commandIdentifiers"></param>
         /// <returns></returns>
-        public static DetectionReturn detectCommandReceived(string botUsername, string message, List<JoinedChannel> channels, MessageEmoteCollection _channelEmotes, bool WillReplaceEmotes, List<char> _commandIdentifiers)
+        public static DetectionReturn detectCommandReceived(string botUsername, string message, List<JoinedChannel> channels, MessageEmoteCollection _channelEmotes, bool WillReplaceEmotes, HashSet<char> _commandIdentifiers)
         {
             string readType = null;
             string channelRet = null;

@@ -21,8 +21,8 @@ namespace TwitchLib
         private ConnectionCredentials _credentials;
         private MessageEmoteCollection _channelEmotes = new MessageEmoteCollection();
         private string _autoJoinChannel = null;
-        private List<char> _chatCommandIdentifiers = new List<char>();
-        private List<char> _whisperCommandIdentifiers = new List<char>();
+        private HashSet<char> _chatCommandIdentifiers = new HashSet<char>();
+        private HashSet<char> _whisperCommandIdentifiers = new HashSet<char>();
         private Queue<JoinedChannel> joinChannelQueue = new Queue<JoinedChannel>();
         private bool currentlyJoiningChannels = false;
 
