@@ -22,8 +22,8 @@ namespace TwitchLib.Models.API.Stream
             if (json.SelectToken("_total") != null)
                 Total = int.Parse(json.SelectToken("_total").ToString());
 
-            if (json.SelectToken("_streams") != null)
-                foreach (JToken stream in json.SelectToken("_streams"))
+            if (json.SelectToken("streams") != null)
+                foreach (JToken stream in json.SelectToken("streams"))
                     Streams.Add(new Stream(stream));
         }
     }
