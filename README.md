@@ -21,10 +21,10 @@ client.Connect();
 client.SendMessage("A chat message.");
 client.SendWhisper("whisper_receiver", "A whisper message.");
 
-TwitchApi.BroadcasterOnline("my_favorite_streamer");
-TwitchApi.GetTwitchFollowers("my_favorite_streamer");
-TwitchApi.GetSubscriberCount("my_favorite_streamer", "my_favorite_streamer's_access_token");
-TwitchApi.RunCommercial(TwitchApi.CommercialLength.Seconds180, "my_favorite_streamer", "my_favorite_streamer's_access_token");
+TwitchApi.Streams.BroadcasterOnline("my_favorite_streamer");
+TwitchApi.Follows.GetFollows("my_favorite_streamer");
+TwitchApi.Subscriptions.GetSubscriberCount("my_favorite_streamer", "my_favorite_streamer's_access_token");
+TwitchApi.Streams.RunCommercial(TwitchApi.CommercialLength.Seconds180, "my_favorite_streamer", "my_favorite_streamer's_access_token");
 ```
 
 ### Availability
