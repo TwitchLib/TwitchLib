@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using TwitchLib.Models.API;
 using TwitchLib.Exceptions.Services;
 using TwitchLib.Exceptions.API;
 using TwitchLib.Events.Services.FollowerService;
-using TwitchLib;
 
 namespace TwitchLib.Services
 {
@@ -43,6 +42,7 @@ namespace TwitchLib.Services
         {
             Channel = channel;
             CheckIntervalSeconds = checkIntervalSeconds;
+            QueryCount = queryCount;
             _followerServiceTimer.Elapsed += _followerServiceTimerElapsed;
             if (clientId != "")
                 ClientId = clientId;
@@ -70,54 +70,53 @@ namespace TwitchLib.Services
 
         private async void _followerServiceTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            Models.API.Follow.FollowersResponse response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
+            Models.API.Follow.FollowersResponse response;
+            try
+            {
+                response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
+            }
+            catch (WebException)
+            {
+                //Logging.Log("Twitch API is unavailable. Skipping FollowerService iteration...");
+                return;
+            }
             List<Models.API.Follow.Follower> mostRecentFollowers = response.Followers;
             List<Models.API.Follow.Follower> newFollowers = new List<Models.API.Follow.Follower>();
-            if(ActiveCache == null)
+
+            foreach (Models.API.Follow.Follower recentFollower in mostRecentFollowers)
             {
-                ActiveCache = mostRecentFollowers;
-                newFollowers = ActiveCache;
-            } else
-            {
-                foreach(Models.API.Follow.Follower recentFollower in mostRecentFollowers)
+                bool found = false;
+                foreach (Models.API.Follow.Follower cachedFollower in ActiveCache)
                 {
-                    bool found = false;
-                    foreach(Models.API.Follow.Follower cachedFollower in ActiveCache)
+                    if (recentFollower.User.Name.ToLower() == cachedFollower.User.Name.ToLower())
+                        found = true;
+                }
+                if (!found)
+                    newFollowers.Add(recentFollower);
+            }
+
+            // Check for new followers
+            if (newFollowers.Count > 0)
+            {
+                // add new followers to active cache
+                ActiveCache.AddRange(newFollowers);
+
+                // prune cache so we don't use too much space unnecessarily
+                if (ActiveCache.Count > CacheSize)
+                    ActiveCache = ActiveCache.GetRange(ActiveCache.Count - (CacheSize + 1), CacheSize);
+
+                // Invoke new followers event
+                OnNewFollowersDetected?.Invoke(this,
+                    new OnNewFollowersDetectedArgs
                     {
-                        if (recentFollower.User.Name.ToLower() == cachedFollower.User.Name.ToLower())
-                            found = true;
-                    }
-                    if (!found)
-                        newFollowers.Add(recentFollower);
-                }
-
-                // Check for new followers
-                if (newFollowers.Count > 0)
-                {
-                    // add new followers to active cache
-                    ActiveCache.AddRange(newFollowers);
-
-                    // prune cache so we don't use too much space unnecessarily
-                    if (ActiveCache.Count > CacheSize)
-                        ActiveCache = ActiveCache.GetRange(ActiveCache.Count - (CacheSize + 1), CacheSize);
-
-                    // Invoke new followers event
-                    OnNewFollowersDetected?.Invoke(this,
-                        new OnNewFollowersDetectedArgs { Channel = Channel, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount, NewFollowers = newFollowers });
-                }
-                    
+                        Channel = Channel,
+                        CheckIntervalSeconds = CheckIntervalSeconds,
+                        QueryCount = QueryCount,
+                        NewFollowers = newFollowers
+                    });
             }
         }
 
-        #region HELPERS
-        private bool isNewFollower(Models.API.Follow.Follower follower)
-        {
-            foreach (Models.API.Follow.Follower oldFollower in ActiveCache)
-                if (oldFollower.User.Name.ToLower() == follower.User.Name.ToLower())
-                    return false;
-            return true;
-        }
-        #endregion
 
         #region EVENTS
         /// <summary>Event fires when service starts.</summary>
