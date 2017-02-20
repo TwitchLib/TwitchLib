@@ -67,6 +67,9 @@
     <Compile Include="Models\API\Community\StreamsInCommunityResponse.cs" />
     <Compile Include="Models\API\Community\TopCommunitiesResponse.cs" />
     <Compile Include="Models\API\Community\TopCommunityListing.cs" />
+    <Compile Include="Models\API\Other\Validate\Authorization.cs" />
+    <Compile Include="Models\API\Other\Validate\Token.cs" />
+    <Compile Include="Models\API\Other\Validate\ValidationResponse.cs" />
     <Compile Include="Models\API\Stream\FollowedStreamsResponse.cs" />
     <Compile Include="Models\API\v5\User.cs" />
     <Compile Include="Common\Helpers.cs" />

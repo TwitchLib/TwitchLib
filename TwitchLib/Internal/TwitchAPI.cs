@@ -862,6 +862,11 @@ namespace TwitchLib.Internal
                 throw new InvalidCredentialException("The provided Client-Id is invalid. Create an application here and obtain a Client-Id from it here: https://www.twitch.tv/settings/connections");
         }
 
+        internal static async Task<Models.API.Other.Validate.ValidationResponse> ValidationAPIRequest(string accessToken = null)
+        {
+            string resp = await Requests.MakeGetRequest("https://api.twitch.tv/kraken", accessToken);
+            return new Models.API.Other.Validate.ValidationResponse(JObject.Parse(resp));
+        }
         
         internal static async Task<bool> BroadcasterOnline(string channel)
         {
