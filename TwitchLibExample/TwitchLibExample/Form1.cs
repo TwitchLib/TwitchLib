@@ -1115,5 +1115,14 @@ namespace TwitchLibExample
             foreach (var stream in resp.Streams)
                 MessageBox.Show($"Stream channel: {stream.Channel.Name}\nGame: {stream.Game}\nViewers: {stream.Viewers}");
         }
+
+        private async void button85_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchApi.ValidationAPIRequestAsync();
+            if (resp.Token.Authorization != null)
+                MessageBox.Show($"{resp.Token.Username}\nClient Id: {resp.Token.ClientId}\n\nScopes {String.Join(",", resp.Token.Authorization.Scopes)}");
+            else
+                MessageBox.Show($"Client Id set, but no auth set.");
+        }
     }
 }
