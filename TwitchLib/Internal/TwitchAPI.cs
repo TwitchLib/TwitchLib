@@ -864,7 +864,7 @@ namespace TwitchLib.Internal
 
         internal static async Task<Models.API.Other.Validate.ValidationResponse> ValidationAPIRequest(string accessToken = null)
         {
-            string resp = await Requests.MakeGetRequest("https://api.twitch.tv/kraken", accessToken);
+            string resp = await Requests.MakeGetRequest("https://api.twitch.tv/kraken", accessToken, 5);
             return new Models.API.Other.Validate.ValidationResponse(JObject.Parse(resp));
         }
         

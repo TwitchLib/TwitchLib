@@ -16,6 +16,8 @@ namespace TwitchLib.Models.API.Other.Validate
         public Authorization Authorization { get; protected set; }
         /// <summary>Username of Twitch account Token is for.</summary>
         public string Username { get; protected set; }
+        /// <summary>UserId of the Twitch account.</summary>
+        public string UserId { get; protected set; }
         /// <summary>Client ID used to access Twitch API.</summary>
         public string ClientId { get; protected set; }
 
@@ -29,6 +31,7 @@ namespace TwitchLib.Models.API.Other.Validate
             if (json.SelectToken("authorization") != null)
                 Authorization = new Authorization(json.SelectToken("authorization"));
             Username = json.SelectToken("user_name")?.ToString();
+            UserId = json.SelectToken("user_id")?.ToString();
             ClientId = json.SelectToken("client_id")?.ToString();
         }
     }
