@@ -1,159 +1,144 @@
-# TwitchLib - Twitch Chat, API, and PubSub C# Library
-[![Travis CI Build Test](https://api.travis-ci.org/swiftyspiffy/TwitchLib.svg?branch=master)](https://travis-ci.org/swiftyspiffy/TwitchLib/) [![NuGet Pre Release](https://img.shields.io/nuget/vpre/TwitchLib.svg)](https://www.nuget.org/packages/TwitchLib)
-### Overview
-TwitchLib is a C# library that attempts to harness Twitch Chat, Twitch API, and Twitch PubSub into a single package. Using TwitchLib, you can connect to a Twitch channel's chat and send and receive chat messages as well as send and receive whisper messages! You can also fetch general Twitch API data like followers or user details as well as make authenticated channel modifications like stream title and game, as well as actions like commercials and and resetting of the stream key. Additionally, the TwitchLib project contains an example project that demonstrates the majority of functionality presented in the library.
+<p align="center">
+<img src="http://swiftyspiffy.com/img/twitchlib.png" style="max-height: 300px;">
+</p>
 
-### Documentation
-I'm in the process of developing a website for very rough documentation and usage of this library. Parts of it is "done" and available if you are interested:
-[http://swiftyspiffy.com/TwitchLib](http://swiftyspiffy.com/TwitchLib)
+<p align="center">
+<a href="https://travis-ci.org/swiftyspiffy/TwitchLib.svg"><img src="https://api.travis-ci.org/swiftyspiffy/TwitchLib.svg?branch=master" style="max-height: 300px;"></a>
+<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/.NET%20Framework-4.5-orange.svg" style="max-height: 300px;"></a>
+<img src="https://img.shields.io/badge/Platform-.NET-lightgrey.svg" style="max-height: 300px;" alt="Platform: iOS">
+<a href="https://discord.gg/0gHwecaLRAzrRYWi"><img src="https://img.shields.io/badge/Discord-Twitch-red.svg" style="max-height: 300px;"></a>
+<a href="http://twitter.com/swiftyspiffy"><img src="https://img.shields.io/badge/Twitter-@swiftyspiffy-blue.svg?style=flat" style="max-height: 300px;"></a>
+
+</p>
+
+## About
+TwitchLib is a powerful C# library that allows for interaction with various Twitch services like chat, whispers, API, and PubSub event system. Below are the descriptions of the core components that make up TwitchLib.
+
+* **TwitchClient**: Handles chat and whisper Twitch services. Complete witha suite of events that fire for virtually every piece of data received from Twitch.
+* **TwitchApi**: With complete V3 and increasing coverage of V5 endpoints, TwitchApi is a static class that allows for modifying of virtually all Twitch account properties and fetching of Twitch data.
+* **TwitchPubSub**: Covers the relatively new Twitch PubSub event system. Currently both topics Twitch supports are supported via this static class.
 
 
-### Sample Implementation
-```
-TwitchClient client = new TwitchClient(new ConnectionCredentials("my_username", "my_oauth"), "my_channel");
+In addition to the above core components, additional parts of the library include services like FollowerService and MessageThrottler, as well as extensions for TwitchClient which contain wrappers for commonly used client funcitonality like changing color and timing users out.
 
-client.OnConnected += clientConnected;
-client.OnMessageReceived += clientMessageReceived;
-client.OnWhisperCommandReceived += clientWhsiperReceived;
+
+## Implementing
+Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples, but this library can also be used in Visual Basic.
+#### TwitchClient
+```csharp
+using TwitchLib;
+using TwitchLib.Models.Client;
+using TwitchLib.Events.Client;
+
+TwitchClient client;
+ConnectionCredentials credentials = new ConnectionCredentials("twitch_username", "access_token");
+
+client = new TwitchClient(credentials, "channel_to_join");
+client.OnJoinedChannel += onJoinedChannel;
+client.OnMessageReceived += onMessageReceived;
+client.OnWhisperReceived += onWhisperReceived;
+client.OnNewSubscriber += onNewSubscriber;
 
 client.Connect();
 
-client.SendMessage("A chat message.");
-client.SendWhisper("whisper_receiver", "A whisper message.");
-
-TwitchApi.Streams.BroadcasterOnline("my_favorite_streamer");
-TwitchApi.Follows.GetFollows("my_favorite_streamer");
-TwitchApi.Subscriptions.GetSubscriberCount("my_favorite_streamer", "my_favorite_streamer's_access_token");
-TwitchApi.Streams.RunCommercial(TwitchApi.CommercialLength.Seconds180, "my_favorite_streamer", "my_favorite_streamer's_access_token");
+private void onJoinedChannel(object sender, OnJoinedChannelArgs e) {
+	client.SendMessage("Hey guys! I am a bot connected via TwitchLib!");
+}
+private void onMessageReceived(object sender, OnMessageReceivedArgs e) {
+	if(e.ChatMessage.Message.Contains("badword"))
+    	client.TimeoutUser(e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
+}
+private void onCommandReceived(object sender, OnWhisperCommandReceivedArgs e) {
+	if(e.Command == "help")
+    	client.SendMessage($"Hi there {e.ChatMessage.Username}! You can view all commands using !command");
+}
+private void onWhisperReceived(object sender, OnWhisperReceivedArgs e) {
+	if(e.WhisperMessage.Username == "my_friend")
+    	client.SendWhisper(e.WhisperMessage.Username, "Hey! Whispers are so cool!!");
+}
+private void onNewSubscriber(object sender, OnNewSubscriberArgs e) {
+	if(e.Subscriber.IsTwitchPrime)
+		client.SendMessage($"Welcome {} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
+    else
+    	client.SendMessage($"Welcome {} to the substers! You just earned 500 points!");
+}
 ```
+For a complete list of TwitchClient events and calls, click <a href="http://swiftyspiffy.com/TwitchLib/client.html" target="_blank">here</a>
+#### TwitchApi
+Note: All calls below are synchronous, but TwitchApi supports both synchronous and asynchronous. To access asynch calls, simply append Async. For example, ChannelHasUserSubscribedAsync.
+```csharp
+using TwitchLib;
+using TwitchLib.Models.API;
 
-### Availability
-Available via Nuget: `Install-Package TwitchLib`
+TwitchApi.SetClientId("my_client_id");
+TwitchApi.SetAccessToken("channel_access_token");
 
-### TwitchClient
-- Initiailized using channel and ConnectionCredentials
-- Chat Events:
-  * OnLeftChannel - Similar to OnJoinedChannel, but fires when the client leaves a channel.
-  * OnIncorrectLogin - Fires when an invalid login is returned by Twitch
-  * OnConnected - Fires on listening and after joined channel, returns username and channel
-  * OnDisconnected - Fires when TwitchClient disconnects.
-  * OnMessageReceived - Fires when new chat message arrives, returns ChatMessage
-  * OnNewSubscriber - Fires when new subscriber is announced in chat, returns Subscriber
-  * OnReSubscriber - Fires when existing subscriber resubscribes, returns ReSubscriber
-  * OnChannelStateChanged - Fires when channel state is changed
-  * OnUserJoined - New viewer/chatter joined the chat channel room.
-  * OnUserLeft - Viewer/chatter left (PARTed) the chat channel.
-  * OnChatCommandReceived - Fires when command (uses custom command identifier) is received.
-  * OnMessageSent - Fires when a chat message is sent.
-  * OnUserStateChanged - Fires when a user state is received.
-  * OnModeratorJoined - Fires when a moderator joins chat (not necessarily real time)
-  * OnModeratorLeft - Fires when a moderator leaves chat (not necessarily real time)
-  * OnHostLeft - Fires when a hosted channel goes offline
-  * OnExistingUsersDetected - Fires when list of users message is received from Twitch (generally when entering the room)
-  * OnHostingStarted - Fires when the joined channel begins hosting another channel.
-  * OnHostingStopped - Fires when the joined channel quits hosting another channel.
-  * OnChatCleared - Fires when a moderator sends a clear chat command (channel).
-  * OnUserTimedout - Fires when client detects a viewer was timedout (moderator, viewer, timeout duration, timeout reason, channel).
-  * OnUserBanned - Fires when client detects a viewer was banned (moderator, viewer, ban reason, channel).
-  * OnModeratorsReceived - Fires when a list of moderators is returned by Twitch (this happens by calling GetChannelModerators in the client).
-  * OnChatColorChanged - Fires when confirmation is received from Twitch that chat color has been successfully changed.
-  * OnNowHosting - Fires when the home channel begins hosting another channel.
-  * OnBeingHosted - Fires when the library sees that another channel is hosting the broadcaster's channel. YOU MUST BE CONNECTED AS THE BROADCASTER.
-  * OnSendReceiveData - Fires whenever the TwitchClient sends or receives data to/from Twitch. Excellent for debugging/custom interpretation.
-  * OnViewerTimedout - Fires whenever a user is timedout in chat.
-- Whisper Events:
-  * OnWhisperReceived - Fires when a new whisper message is received, returns WhisperMessage
-  * OnWhisperCommandReceived - Fires when command (uses custom command identifier) is received.
-  * OnWhisperSent - Fires when a whisper is sent.
-- SendRaw(string message) - Sends RAW IRC message
-- SendMessage(string message) - Sends formatted Twitch channel chat message
-- ChangeChatColor(ChatColor) - Requests a change in chat color to Twitch. You should listen to OnChatColorChanged event, and be aware that the change requires a few seconds to propagate to all viewer's browsers.
-- SendWhisper(string receiver, string message) - Sends formatted Twitch whisper message
-- Handled chat message types
-- Disconnect - Disconnects chat client from Twitch IRC
-- Reconnect - Reconnects chat client given existing credentials
-- JoinedChannel(string channel) - Client will attempt to join passed in channel.
-- LeaveChannel(string channel) - Client will attempt to leave channel.
-- GetChannelModerators - Sends a request for all of the channel moderators (you MUST listen/handle the OnModeratorsReceived event).
+bool isSubbed = TwitchApi.Subscriptions.ChannelHasUserSubscribed("user", "channel");
+List<Subscription> allSubs = TwitchApi.Subscriptions.GetChannelSubscribers("channel");
 
-### TwitchAPI (All methods have accompanying Async methods. Append Async to method name)
-- BroadcasterOnline(string channel) - Async function returns bool of whether or not streamer is streaming
-- GetTwitchChannel(string channel) - Async function returns TwitchCHannel of a specific channel
-- UserFollowsChannel(string username, string channel) - Async function returns bool if a user follows a channel
-- GetChatters(string channel) - Aysync function returns list of Chatter objects detailing each chatter in a channel
-- UpdateStreamTitle(string status, string username, string access_token) - Async function that changes stream title
-- UpdateStreamGame(string game, string username, string access_token) - Async function that updates a streams's game
-- UpdateStreamTitleAndGame(string status, string game, string username, string access_token) - Async function that updates a stream's status and game
-- ResetStreamKey(string username, string access_token) - Async function that resets the stream key of a channel
-- GetChannelVideos(string channel, [int limit], [int offset], [bool onlyBroadcasts], [bool onlyHLS]) - Async function that returns list of TwitchVIdeo objects
-- RunCommercial(Valid_Commercial_Lengths length, string username, string access_token) - A sync function that runs a commercial of variable length on a channel
-- GetChannelHosts(string channel) - Async function that returns a string list of channels hosting a specified channel (undocumented)
-- GetTeamMembers(string teamName) - Async function that returns a TwitchTeamMember list of all members in a Twitch team (undocumented)
-- ChannelHasUserSubscribed(string username, string channel, string access_token) - Returns true or false on whether or not a user is subscribed to a channel.
-- GetTwitchStream(string channel) - Returns TwitchStream object containing API data related to a stream. Throws StreamOfflineException and BadResourceException.
-- GetTwitchStreams(List<string> channels) - Returns list of Stream objects for each channel passed in.
-- GetTwitchFollower(string channel) - Returns asc or desc list of followers from a specific channel, returns list of TwitchFollower objects.
-- GetUser(string username) - Returns a User object which represents a User object Twitch has.
-- GetUptime(string channel) - Returns TimeSpan object representing time between creation_at of stream, and now.
-- GetChannelFeed(string channel, int limit = 10, string cursor = null) - Returns a FeedResponse which houses all feed posts, comments, reactions, etc.
-- SetClientId(string clientId) - Sets ClientId for inclusion in all API calls per Twitch requirement.
-- SetAccessToken(string accessToken) - Sets access token so that it is no longer needed to call an api calls (token stored in memory).
-- GetFollowedUsers(string channel, int limit = 25, int offset = 0, Common.SortKey sortKey) - Gets a list of users a user follows.
-- SearchChannels(string query, int limit = 25, int offset = 0) - Search uses a term for channels and returns a list of channel objects.
-- SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null) - Search uses a term for streams and returns a list of stream objects.
-- SearchGames(string query, bool live = false) - Search uses a term for games and returns a list of game objects.
-- FollowChannel(string username, string channel, string accessToken) - Follows a specific channel.
-- UnfollowChannel(string username, string channel, string accessToken) - Unfollows a specific channel.
-- GetBlockedList(string username, string accessToken, int limit = 25, int offset = 0) - Returns a list of Block objects, each featuring a user object and an update date/time.
-- BlockUser(string username, string blockedUsername, string accessToken) - Blocks user, returns a Block object.
-- UnblockUser(string username, string blockedUsername, string accessToken) - Unblocks user.
-- GetChannelEditors(string channel, string accessToken) - Retrieves a list of User objects representing users that are channel editors.
-- GetChannelBadges(string channel) - Fetches a list of Badge objects representing each badge available in a channel.
-- GetChannelsObject(string channel) - Fetches a Channels object from an undocumented endpoint (I think), which contains steam Id and other interesting properties.
-- GetChannelFromSteamId(string steamId) - Fetches the name of a channel given a user's Steam Id (if their Steam is linked to their Twitch).
-- GetFeaturedStreams() - Fetches the featured streams (front page streams), along with the stream object, stream text, and other properties.
-- GetGamesByPopularity() - Fetches the top games by viewer count, includes listings with game objects, viewer counts, and channel counts.
-- PostToChannelFeed() - Posts to channel with the ability to tweet out the post as well. Returns Tweet URL and Post object.
-- DeleteChannelFeedPost() - Deletes a channel feed post by the passed in post Id.
+List<Follow> follows = TwitchApi.Follows.GetFollowedUsers("channel");
+Follow resp = TwitchApi.Follows.FollowChannel("user", "channel");
 
-### TwitchPubSub
-- Events:
-  * onOpen() - Fires when connection is successful to Twitch PubSub service. You should listen to a topic in this eventhandler.
-  * onError() - Any error in the service will fire this event along with an exception.
-  * onClose() - If service is disconnected intentionally or by error, this will fire.
-  * onListenResponse() - Fires when a response to a listen command is sent. Supports successful (no error), and failed (error) responses.
-  * onTimeout() - This fires when a timeout occures. Includes user timedout, timeout duration, timeout reason, and moderator who did the timeout.
-  * onBan() - This fires when a ban occures. Includes banned user, ban message, and moderator that did ban.
-  * onUnban() - This fires when an unban occures. Includes unbanned user, and moderator who did the unban.
-  * onHost() - This fires when a channel is hosted. Properties include moderator and hosted channel.
-  * onBitsEvent() - This fires when bits are sent to chat, it a includes significant amount of data on the event.
-- Supported Topics:
-  * chat_moderator_actions - This topic allows for listening to moderator events in chat.
-  * channel-bitsevents - This topic allows for listening to events when bits are sent in chat.
-- Connect() - Connects to Twitch PubSub service (YOU HAVE 15 SECONDS TO LISTEN TO A CHANNEL BEFORE BEING DISCONNECTED, you should use onOpen event to begin a listen)
-- Disconnect() - Disconnects from service
+bool isStreaming = TwitchApi.Streams.BroadcasterOnline("channel");
+Channel resp = TwitchApi.Streams.UpdateStreamTitleAndGame("new status", "new game", "channel");
 
-### Twitch Services
-- FollowerService - Monitors channel for new followers on custom interval and query count values. Fires event when new followers are detected. (OPTIONAL)
-- MessageThrottler - Property object that can be assigned to either Chat or Whisper clients, fires events and blocks sending of messages given a specific time period in order to prevent Twitch ToS violations. (OPTIONAL)
+List<User> editors = TwitchApi.Channels.GetChannelEditors("channel");
+PostToChannelFeedResponse resp  =TwitchApi.Channels.PostToChannelFeed("This is a new feed post.", true, "channel");
 
-### Twitch Token Generator
-A lot of you have been messaging me asking how to generate an access token for a specific priviledge. I've gone ahead and made a tool to do just this. Should also make testing much easier.
-[https://twitchtokengenerator.com](https://twitchtokengenerator.com)
+Clip clip = TwitchApi.Clips.GetClipInformation("channel", "ChannelSlugHere");
+List<Clip> topClips = TwitchApi.Clips.GetTopClips().Clips;
 
-### Examples and Implementations
-- TwitchLibExample - This project is included in this repo as a master example project.
-- PFCKrutonium's [TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot) - This project implements the bot using VisualBasic.
-- Bacon_Docunt VOD on building a Twitch bot using TwitchLib: [twitch.tv/videos/115788601](https://www.twitch.tv/videos/115788601)
+string communityId = TwitchApi.Communities.CreateCommunity("community_name", "community summary", "community description", "community rules");
+TwitchApi.Communities.BanCommunityMember("community_id", "user_id");
+```
+For a complete list of TwitchApi calls, click <a href="http://swiftyspiffy.com/TwitchLib/api.html" target="_blank">here</a>
+#### TwitchPubSub
+```csharp
+using TwitchLib;
 
-### Libraries/Dependencies Utilized
-- Newtonsoft.Json (7.0.1) - JSON parsing class.  Used to parse Twitch API calls.
+TwitchPubSub pubsub = new TwitchPubSub();
+pubsub.OnPubSubServiceConnected += onPubSubConnected;
+pubsub.OnListResponse += onPubSubResponse;
+pubsub.OnBitsReceived += onPubSubBitsReceived;
 
-### Support/Discussion
-The Twitch Discord server has a #developer channel that has constant discussion about developing for the Twitch platform. You can likely get support and discuss ideas there. A link is below:
-https://discord.gg/0gHwecaLRAzrRYWi
+pubsub.Connect();
 
-### Contributors
+private void onPubSubConnected(object sender, object e) {
+	// MY ACCOUNT ID, MY OAUTH
+    pubsub.ListenToWhispers(0, "oauth_token");
+}
+private void onPubSubResponse(object sender, OnListenResponseArgs e) {
+	if (e.Successful)
+    	MessageBox.Show($"Successfully verified listening to topic: {e.Topic}");
+    else
+        MessageBox.Show($"Failed to listen! Error: {e.Response.Error}");	
+}
+private void onPubSubBitsReceived() {
+	MessageBox.Show($"Just received {e.BitsUsed} bits from {e.Username}. That brings their total to {e.TotalBitsUsed} bits!");
+}
+```
+For a complete list of TwitchPubSub functionality, click <a href="http://swiftyspiffy.com/TwitchLib/pubsub.html" target="_blank">here</a>
+
+## Installation
+
+### [NuGet](https://www.nuget.org/packages/TwitchLib/)
+
+To install this library via NuGet via NuGet console, use:
+```
+Install-Package TwitchLib
+```
+and via Package Manager, simply search:
+```
+TwitchLib
+```
+You are also more than welcome to clone/fork this repo and build the library yourself!
+
+## Dependencies
+
+* Newtonsoft.Json 7.0.1+ ([nuget link](https://www.nuget.org/packages/Newtonsoft.Json/7.0.1))
+* WebSocketSharp-NonPreRelease ([nuget link](https://www.nuget.org/packages/WebSocketSharp-NonPreRelease/))
+
+## Contributors
  * Cole ([@swiftyspiffy](http://twitter.com/swiftyspiffy))
  * Nadermane ([@Nadermane](http://twitter.com/nadermane))
  * BenWoodford ([BenWoodford](https://github.com/BenWoodford))
@@ -165,6 +150,7 @@ https://discord.gg/0gHwecaLRAzrRYWi
  * Mr_Examed ([Mr_Examed](https://www.twitch.tv/mr_examed))
  * XuluniX ([XuluniX](https://github.com/XuluniX))
  * prom3theu5 ([@prom3theu5](https://twitter.com/prom3theu5))
- 
-### License
-MIT License. &copy; 2016-2017 Cole
+
+## License
+
+This project is available under the MIT license. See the LICENSE file for more info.
