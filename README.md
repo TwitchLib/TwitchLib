@@ -119,6 +119,14 @@ private void onPubSubBitsReceived() {
 ```
 For a complete list of TwitchPubSub functionality, click <a href="http://swiftyspiffy.com/TwitchLib/pubsub.html" target="_blank">here</a>
 
+## Examples, Applications, and Community Work
+- TwitchLibExample - Included in this repo is an example application that demos almost all of the library's functionality.
+- Bacon_Donut VOD on building a Twitch bot using TwitchLib: [twitch.tv/videos/115788601](https://www.twitch.tv/videos/115788601)
+- Prom3theu5's Conan Exiles Dedicated Server Updater / Service - [Steam](http://steamcommunity.com/app/440900/discussions/6/133256240742484919/) [Github](https://steamcommunity.com/linkfilter/?url=https://github.com/prom3theu5/ConanExilesServerUpdater)
+- Von Jan Suchotzki's German Video Tutorial Series - [His Website](http://www.lernmoment.de/csharp-tutorial-deutsch/twitch-client-architektur/) [Youtube](https://www.youtube.com/watch?v=N0OPTdTGgTI)
+- DHSean's TwitchAutomator [Reddit](https://www.reddit.com/r/pcgaming/comments/4wfosp/ive_created_an_app_called_twitchautomator_which/) [Github](https://github.com/XenZibe/TwitchUpdater)
+- PFCKrutonium's [TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot) - This project implements the bot using VisualBasic.
+
 ## Installation
 
 ### [NuGet](https://www.nuget.org/packages/TwitchLib/)
