@@ -16,7 +16,7 @@ namespace TwitchLib.Models.Client
         /// <summary>Twitch username of the bot that received the message.</summary>
         public string BotUsername { get; protected set; }
         /// <summary>Twitch-unique integer assigned on per account basis.</summary>
-        public int UserId { get; protected set; }
+        public string UserId { get; protected set; }
         /// <summary>Username of sender of chat message.</summary>
         public string Username { get; protected set; }
         /// <summary>Case-sensitive username of sender of chat message.</summary>
@@ -129,7 +129,7 @@ namespace TwitchLib.Models.Client
                 }
                 else if (part.Contains("user-id="))
                 {
-                    UserId = int.Parse(part.Split('=')[1]);
+                    UserId = part.Split('=')[1];
                 }
                 else if (part.Contains("user-type="))
                 {
