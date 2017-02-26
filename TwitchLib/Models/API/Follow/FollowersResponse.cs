@@ -24,7 +24,7 @@ namespace TwitchLib.Models.API.Follow
             foreach (JToken follower in json.SelectToken("follows"))
                 Followers.Add(new Follower(follower));
             TotalFollowerCount = int.Parse(json.SelectToken("_total").ToString());
-            Cursor = json.SelectToken("_cursor").ToString();
+            Cursor = json.SelectToken("_cursor")?.ToString();
         }
     }
 }
