@@ -776,6 +776,11 @@ namespace TwitchLibExample
                 MessageBox.Show($"Failed to listen! Error: {e.Response.Error}");
         }
 
+        private void pubsubOnBitsReceived(object sender, OnBitsReceivedArgs e)
+        {
+            MessageBox.Show($"Just received {e.BitsUsed} bits from {e.Username}. That brings their total to {e.TotalBitsUsed} bits!");
+        }
+
         private void pubsubOnTimeout(object sender, OnTimeoutArgs e)
         {
             Console.WriteLine("Test");
@@ -802,7 +807,6 @@ namespace TwitchLibExample
             pubsub.OnBan += new EventHandler<OnBanArgs>(pubsubOnBan);
             pubsub.OnUnban += new EventHandler<OnUnbanArgs>(pubsubOnUnban);
             pubsub.OnWhisper += new EventHandler<OnWhisperArgs>(onWhisper);
-            pubsub.Connect();
         }
 
         private static void onWhisper(object sender, OnWhisperArgs e)
@@ -939,6 +943,8 @@ namespace TwitchLibExample
         private void button61_Click(object sender, EventArgs e)
         {
             TwitchApi.SetAccessToken(textBox15.Text);
+
+            
         }
 
         private async void button62_Click(object sender, EventArgs e)
