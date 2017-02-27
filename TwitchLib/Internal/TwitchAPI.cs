@@ -525,10 +525,10 @@ namespace TwitchLib.Internal
         #endregion
 
         #region API5
-        public async static Task<List<Models.API.v5.User>> GetUsersV5(string username)
+        public async static Task<List<Models.API.v5.User>> GetUsersV5(List<string> usernames)
         {
             List<Models.API.v5.User> users = new List<Models.API.v5.User>();
-            string response = (await Internal.Requests.MakeGetRequest($"https://api.twitch.tv/kraken/users?login={username}", null, 5));
+            string response = (await Internal.Requests.MakeGetRequest($"https://api.twitch.tv/kraken/users?login={String.Join(",", usernames)}", null, 5));
             JObject json = JObject.Parse(response);
             users.AddRange(json.SelectToken("users").Select(user => new Models.API.v5.User(user)));
             return users;

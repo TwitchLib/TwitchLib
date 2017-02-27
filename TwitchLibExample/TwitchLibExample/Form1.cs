@@ -873,11 +873,20 @@ namespace TwitchLibExample
 
         private async void button56_Click(object sender, EventArgs e)
         {
-            var resp = (await TwitchApi.Users.GetUsersV5Async(textBox44.Text));
+            List<string> users = new List<string>();
+            if (textBox44.Text.Contains(","))
+                foreach (string user in textBox44.Text.Split(','))
+                    users.Add(user);
+            else
+                users.Add(textBox44.Text);
+
+            var resp = (await TwitchApi.Users.GetUsersV5Async(users));
             if(resp.Count > 0)
             {
-                TwitchLib.Models.API.v5.User user = resp[0];
-                MessageBox.Show($"User: {user.Type}\nName: {user.Name}\nCreated at: {user.CreatedAt.ToShortDateString()}\nUpdated at: {user.UpdatedAt.ToShortDateString()}\nLogo: {user.Logo}\nId: {user.Id}\nBio: {user.Bio}");
+                foreach(var user in resp)
+                {
+                    MessageBox.Show($"User: {user.Type}\nName: {user.Name}\nCreated at: {user.CreatedAt.ToShortDateString()}\nUpdated at: {user.UpdatedAt.ToShortDateString()}\nLogo: {user.Logo}\nId: {user.Id}\nBio: {user.Bio}");
+                }
             } else
             {
                 MessageBox.Show("No users returned!");
