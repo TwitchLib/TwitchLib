@@ -255,8 +255,18 @@ namespace TwitchLib
             /// <returns>User object containing details about the searched for user. Returns null if invalid user/error.</returns>
             public static async Task<Models.API.User.User> GetUserAsync(string username) => await Internal.TwitchApi.GetUser(username);
 
+            /// <summary>
+            /// [SYNC] Fetches a list of user objects given their usernames.
+            /// </summary>
+            /// <param name="usernames">List of strings representing usernames.</param>
+            /// <returns>List of user objects of the valid usernames.</returns>
             public static List<Models.API.v5.User> GetUsersV5(List<string> usernames) => Task.Run(() => Internal.TwitchApi.GetUsersV5(usernames)).Result;
 
+            /// <summary>
+            /// [ASYNC] Fetches a list of user objects given their usernames.
+            /// </summary>
+            /// <param name="usernames">List of strings representing usernames.</param>
+            /// <returns>List of user objects of the valid usernames.</returns>
             public static async Task<List<Models.API.v5.User>> GetUsersV5Async(List<string> usernames) => await Internal.TwitchApi.GetUsersV5(usernames);
         }
 
