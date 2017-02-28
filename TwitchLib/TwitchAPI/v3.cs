@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TwitchLib.Exceptions.API;
-using TwitchLib.Models.API;
 
-namespace TwitchLib
+namespace TwitchLib.TwitchAPI
 {
     /// <summary>
-    /// Fully featured Twitch API wrapper.
+    /// Fully featured Twitch API wrapper (for Twitch v3 endpoints).
     /// </summary>
-    public static class TwitchApi
+    public static class v3
     {
         /// <summary>
         /// Twitch API calls relating to Twitch channels.
@@ -170,50 +167,6 @@ namespace TwitchLib
             /// <param name="steamId">The steam id of the user whose Twitch channel is requested.</param>
             /// <returns>Returns channel name if available, or null.</returns>
             public static async Task<string> GetChannelFromSteamIdAsync(string steamId) => await Internal.TwitchApi.GetChannelFromSteamId(steamId);
-
-            /// <summary>
-            /// [SYNC] Fetches the community that a channel is currently in.
-            /// </summary>
-            /// <param name="channelId">The channel ID to fetch the community of.</param>
-            /// <returns>Returns Communnity object.</returns>
-            public static Models.API.Community.Community GetChannelCommunity(string channelId) => Task.Run(() => Internal.TwitchApi.GetChannelCommunity(channelId)).Result;
-
-            /// <summary>
-            /// [ASYNC] Fetches the community that a channel is currently in.
-            /// </summary>
-            /// <param name="channelId">The channel ID to fetch the community of.</param>
-            /// <returns>Returns Communnity object.</returns>
-            public static async Task<Models.API.Community.Community> GetChannelCommunityAsync(string channelId) => await Internal.TwitchApi.GetChannelCommunity(channelId);
-
-            /// <summary>
-            /// [SYNC] Attempts to set the community of a channel.
-            /// </summary>
-            /// <param name="channelId">The channel ID to apply the community to.</param>
-            /// <param name="communityId">The community ID to be applied to channel.</param>
-            /// <param name="accessToken">If access token is not yet set, you must set it here.</param>
-            public static void SetChannelCommunity(string channelId, string communityId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.SetChannelCommunity(channelId, communityId, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Attempts to set the community of a channel.
-            /// </summary>
-            /// <param name="channelId">The channel ID to apply the community to.</param>
-            /// <param name="communityId">The community ID to be applied to channel.</param>
-            /// <param name="accessToken">If access token is not yet set, you must set it here.</param>
-            public static async void SetChannelCommunityAsync(string channelId, string communityId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.SetChannelCommunity(channelId, communityId, accessToken));
-
-            /// <summary>
-            /// [SYNC] Attempts to remove a community from a channel.
-            /// </summary>
-            /// <param name="channelId">The Id of the channel to remove the community from.</param>
-            /// <param name="accessToken">If access token is not yet set, you must set it here.</param>
-            public static void RemoveChannelCommunity(string channelId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.RemoveChannelCommunity(channelId, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Attempts to remove a community from a channel.
-            /// </summary>
-            /// <param name="channelId">The Id of the channel to remove the community from.</param>
-            /// <param name="accessToken">If access token is not yet set, you must set it here.</param>
-            public static async void RemoveChannelCommunityAsync(string channelId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.RemoveChannelCommunity(channelId, accessToken));
         }
 
         /// <summary>
@@ -254,20 +207,6 @@ namespace TwitchLib
             /// <param name="username">Name of the user you wish to fetch from Twitch.</param>
             /// <returns>User object containing details about the searched for user. Returns null if invalid user/error.</returns>
             public static async Task<Models.API.User.User> GetUserAsync(string username) => await Internal.TwitchApi.GetUser(username);
-
-            /// <summary>
-            /// [SYNC] Fetches a list of user objects given their usernames.
-            /// </summary>
-            /// <param name="usernames">List of strings representing usernames.</param>
-            /// <returns>List of user objects of the valid usernames.</returns>
-            public static List<Models.API.v5.User> GetUsersV5(List<string> usernames) => Task.Run(() => Internal.TwitchApi.GetUsersV5(usernames)).Result;
-
-            /// <summary>
-            /// [ASYNC] Fetches a list of user objects given their usernames.
-            /// </summary>
-            /// <param name="usernames">List of strings representing usernames.</param>
-            /// <returns>List of user objects of the valid usernames.</returns>
-            public static async Task<List<Models.API.v5.User>> GetUsersV5Async(List<string> usernames) => await Internal.TwitchApi.GetUsersV5(usernames);
         }
 
         /// <summary>
@@ -292,16 +231,16 @@ namespace TwitchLib
             /// [SYNC] Retrieves a collection of API data from a stream.
             /// </summary>
             /// <param name="channel">The channel to retrieve the data for.</param>
-            /// <exception cref="StreamOfflineException">Throws StreamOfflineException if stream is offline.</exception>
-            /// <exception cref="BadResourceException">Throws BadResourceException if the passed channel is invalid.</exception>
+            /// <exception cref="Exceptions.API.StreamOfflineException">Throws StreamOfflineException if stream is offline.</exception>
+            /// <exception cref="Exceptions.API.BadResourceException">Throws BadResourceException if the passed channel is invalid.</exception>
             /// <returns>A TwitchStream object containing API data related to a stream.</returns>
             public static Models.API.Stream.Stream GetStream(string channel) => Task.Run(() => Internal.TwitchApi.GetStream(channel)).Result;
             /// <summary>
             /// [ASYNC] Retrieves a collection of API data from a stream.
             /// </summary>
             /// <param name="channel">The channel to retrieve the data for.</param>
-            /// <exception cref="StreamOfflineException">Throws StreamOfflineException if stream is offline.</exception>
-            /// <exception cref="BadResourceException">Throws BadResourceException if the passed channel is invalid.</exception>
+            /// <exception cref="Exceptions.API.StreamOfflineException">Throws StreamOfflineException if stream is offline.</exception>
+            /// <exception cref="Exceptions.API.BadResourceException">Throws BadResourceException if the passed channel is invalid.</exception>
             /// <returns>A TwitchStream object containing API data related to a stream.</returns>
             public static async Task<Models.API.Stream.Stream> GetStreamAsync(string channel) => await Internal.TwitchApi.GetStream(channel);
 
@@ -509,90 +448,6 @@ namespace TwitchLib
             /// </summary>
             /// <returns>StreamsSummary object housing total viewers, total streams.</returns>
             public static async Task<Models.API.Stream.StreamsSummary> GetStreamsSummaryAsync() => await Internal.TwitchApi.GetStreamsSummary();
-
-            /// <summary>
-            /// [SYNC] Fetches streams based on the given parameters.
-            /// </summary>
-            /// <param name="game"></param>
-            /// <param name="channels"></param>
-            /// <param name="streamType"></param>
-            /// <param name="language"></param>
-            /// <param name="limit"></param>
-            /// <param name="offset"></param>
-            /// <param name="accessToken"></param>
-            /// <returns>List of Stream objects.</returns>
-            public static List<Models.API.Stream.Stream> GetAllStreams(string game = null, List<string> channels = null, Enums.StreamType streamType = Enums.StreamType.Live,
-                string language = "en", int limit = 25, int offset = 0, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetAllStreamsV5(game, channels, streamType, language, limit, offset, accessToken)).Result;
-
-            /// <summary>
-            /// [ASYNC] Fetches streams based on the given parameters.
-            /// </summary>
-            /// <param name="game"></param>
-            /// <param name="channels"></param>
-            /// <param name="streamType"></param>
-            /// <param name="language"></param>
-            /// <param name="limit"></param>
-            /// <param name="offset"></param>
-            /// <param name="accessToken"></param>
-            /// <returns>List of Stream objects.</returns>
-            public static async Task<List<Models.API.Stream.Stream>> GetAllStreamsAsync(string game = null, List<string> channels = null, Enums.StreamType streamType = Enums.StreamType.Live,
-                string language = "en", int limit = 25, int offset = 0, string accessToken = null) => await Internal.TwitchApi.GetAllStreamsV5(game, channels, streamType, language, limit, offset, accessToken);
-
-            /// <summary>
-            /// [SYNC] Retrieves a list of followed streams.
-            /// </summary>
-            /// <param name="streamType">Stream type can be live, playlist, or all.</param>
-            /// <param name="limit">Limit must be larger than 0 and smaller than or equal to 100.</param>
-            /// <param name="offset">Offset used for pagination of results.</param>
-            /// <param name="accessToken">If accessToken not previously set, you must set it here.</param>
-            /// <returns>FollowedStreamsResponse housing total followed streams and a list of (up to 100) followed stream objects.</returns>
-            public static Models.API.Stream.FollowedStreamsResponse GetFollowedStreams(Enums.StreamType streamType = Enums.StreamType.Live, int limit = 25, int offset = 0, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetFollowedStreams(streamType, limit, offset, accessToken)).Result;
-
-            /// <summary>
-            /// [ASYNC] Retrieves a list of followed streams.
-            /// </summary>
-            /// <param name="streamType">Stream type can be live, playlist, or all.</param>
-            /// <param name="limit">Limit must be larger than 0 and smaller than or equal to 100.</param>
-            /// <param name="offset">Offset used for pagination of results.</param>
-            /// <param name="accessToken">If accessToken not previously set, you must set it here.</param>
-            /// <returns>FollowedStreamsResponse housing total followed streams and a list of (up to 100) followed stream objects.</returns>
-            public static async Task<Models.API.Stream.FollowedStreamsResponse> GetFollowedStreamsAsync(Enums.StreamType streamType = Enums.StreamType.Live, int limit = 25, int offset = 0, string accessToken = null) => await Internal.TwitchApi.GetFollowedStreams(streamType, limit, offset, accessToken);
-        }
-
-        /// <summary>
-        /// Twitch API calls relating to Twitch games.
-        /// </summary>
-        public static class Games
-        {
-            /// <summary>
-            /// [SYNC] Execute a query to return the games with the most current viewers.
-            /// </summary>
-            /// <param name="limit">The number of listings to return, default to 10.</param>
-            /// <param name="offset">The number of listings to offset the returned listings, default to 0.</param>
-            /// <returns>A list of Game objects matching the query.</returns>
-            public static List<Models.API.Game.GameByPopularityListing> GetGamesByPopularity(int limit = 10, int offset = 0) => Task.Run(() => Internal.TwitchApi.GetGamesByPopularity(limit, offset)).Result;
-            /// <summary>
-            /// [ASYNC] Execute a query to return the games with the most current viewers.
-            /// </summary>
-            /// <param name="limit">The number of listings to return, default to 10.</param>
-            /// <param name="offset">The number of listings to offset the returned listings, default to 0.</param>
-            /// <returns>A list of Game objects matching the query.</returns>
-            public static async Task<List<Models.API.Game.GameByPopularityListing>> GetGamesByPopularityAsync(int limit = 10, int offset = 0) => await Internal.TwitchApi.GetGamesByPopularity(limit, offset);
-
-            /// <summary>
-            /// [SYNC] Execute a search query on Twitch to find a list of games.
-            /// </summary>
-            /// <param name="query">A url-encoded search query.</param>
-            /// <param name="live">If set to true, only games with active streams will be found.</param>
-            /// <returns>A list of Game objects matching the query.</returns>
-            public static List<Models.API.Game.Game> SearchGames(string query, bool live = false) => Task.Run(() => Internal.TwitchApi.SearchGames(query, live)).Result;
-            /// <summary>
-            /// [ASYNC] Execute a search query on Twitch to find a list of games.
-            /// </summary>
-            /// <param name="query">A url-encoded search query.</param>
-            /// <param name="live">If set to true, only games with active streams will be found.</param>
-            /// <returns>A list of Game objects matching the query.</returns>
-            public static async Task<List<Models.API.Game.Game>> SearchGamesAsync(string query, bool live = false) => await Internal.TwitchApi.SearchGames(query, live);
         }
 
         /// <summary>
@@ -754,6 +609,42 @@ namespace TwitchLib
         }
 
         /// <summary>
+        /// Twitch API calls relating to Twitch games.
+        /// </summary>
+        public static class Games
+        {
+            /// <summary>
+            /// [SYNC] Execute a query to return the games with the most current viewers.
+            /// </summary>
+            /// <param name="limit">The number of listings to return, default to 10.</param>
+            /// <param name="offset">The number of listings to offset the returned listings, default to 0.</param>
+            /// <returns>A list of Game objects matching the query.</returns>
+            public static List<Models.API.Game.GameByPopularityListing> GetGamesByPopularity(int limit = 10, int offset = 0) => Task.Run(() => Internal.TwitchApi.GetGamesByPopularity(limit, offset)).Result;
+            /// <summary>
+            /// [ASYNC] Execute a query to return the games with the most current viewers.
+            /// </summary>
+            /// <param name="limit">The number of listings to return, default to 10.</param>
+            /// <param name="offset">The number of listings to offset the returned listings, default to 0.</param>
+            /// <returns>A list of Game objects matching the query.</returns>
+            public static async Task<List<Models.API.Game.GameByPopularityListing>> GetGamesByPopularityAsync(int limit = 10, int offset = 0) => await Internal.TwitchApi.GetGamesByPopularity(limit, offset);
+
+            /// <summary>
+            /// [SYNC] Execute a search query on Twitch to find a list of games.
+            /// </summary>
+            /// <param name="query">A url-encoded search query.</param>
+            /// <param name="live">If set to true, only games with active streams will be found.</param>
+            /// <returns>A list of Game objects matching the query.</returns>
+            public static List<Models.API.Game.Game> SearchGames(string query, bool live = false) => Task.Run(() => Internal.TwitchApi.SearchGames(query, live)).Result;
+            /// <summary>
+            /// [ASYNC] Execute a search query on Twitch to find a list of games.
+            /// </summary>
+            /// <param name="query">A url-encoded search query.</param>
+            /// <param name="live">If set to true, only games with active streams will be found.</param>
+            /// <returns>A list of Game objects matching the query.</returns>
+            public static async Task<List<Models.API.Game.Game>> SearchGamesAsync(string query, bool live = false) => await Internal.TwitchApi.SearchGames(query, live);
+        }
+
+        /// <summary>
         /// Twitch API calls relating to Twitch subscriptions.
         /// </summary>
         public static class Subscriptions
@@ -859,463 +750,5 @@ namespace TwitchLib
             /// <returns>A list of TwitchVideo objects the channel has available.</returns>
             public static async Task<List<Models.API.Video.Video>> GetChannelVideosAsync(string channel, int limit = 10, int offset = 0, bool onlyBroadcasts = false, bool onlyHls = false) => await Internal.TwitchApi.GetChannelVideos(channel, limit, offset, onlyBroadcasts, onlyHls);
         }
-
-        /// <summary>
-        /// Twitch API calls relating to Twitch clips system.
-        /// </summary>
-        public static class Clips
-        {
-            /// <summary>
-            /// [SYNC] Retrieves a list of top clips given specific (or no) parameters.
-            /// </summary>
-            /// <param name="channels">List of channels to get top clips from. Limit is 10.</param>
-            /// <param name="games">List of games to get top clips from. Limit is 10.</param>
-            /// <param name="limit">Number of clip objects to return, limit is 100. Default is 10.</param>
-            /// <param name="cursor">Cursor used to index through all clips.</param>
-            /// <param name="period">Period enum used to specify a date range. Default is Day.</param>
-            /// <param name="trending">Only pull from trending clips? Default is false.</param>
-            /// <returns>ClipsResponse object containing cursor string as well as List of Clip objects.</returns>
-            public static Models.API.Clip.ClipsResponse GetTopClips(List<string> channels = null, List<string> games = null, int limit = 10, string cursor = null, Enums.Period period = Enums.Period.Day, bool trending = false) => Task.Run(() => Internal.TwitchApi.GetTopClips(channels, games, limit, cursor, period, trending)).Result;
-            /// <summary>
-            /// [ASYNC] Retrieves a list of top clips given specific (or no) parameters.
-            /// </summary>
-            /// <param name="channels">List of channels to get top clips from. Limit is 10.</param>
-            /// <param name="games">List of games to get top clips from. Limit is 10.</param>
-            /// <param name="limit">Number of clip objects to return, limit is 100. Default is 10.</param>
-            /// <param name="cursor">Cursor used to index through all clips.</param>
-            /// <param name="period">Period enum used to specify a date range. Default is Day.</param>
-            /// <param name="trending">Only pull from trending clips? Default is false.</param>
-            /// <returns>ClipsResponse object containing cursor string as well as List of Clip objects.</returns>
-            public static async Task<Models.API.Clip.ClipsResponse> GetTopClipsAsync(List<string> channels = null, List<string> games = null, int limit = 10, string cursor = null, Enums.Period period = Enums.Period.Day, bool trending = false) => await Internal.TwitchApi.GetTopClips(channels, games, limit, cursor, period, trending);
-
-            /// <summary>
-            /// [SYNC] Retrieves detailed information regarding a specific clip.
-            /// </summary>
-            /// <param name="channel">The channel that the clip happened in.</param>
-            /// <param name="slug">The string of words that identifies the clip.</param>
-            /// <returns>Clip object.</returns>
-            public static Models.API.Clip.Clip GetClipInformation(string channel, string slug) => Task.Run(() => Internal.TwitchApi.GetClipInformation(channel, slug)).Result;
-            /// <summary>
-            /// [ASYNC] Retrieves detailed information regarding a specific clip.
-            /// </summary>
-            /// <param name="channel">The channel that the clip happened in.</param>
-            /// <param name="slug">The string of words that identifies the clip.</param>
-            /// <returns>Clip object.</returns>
-            public static async Task<Models.API.Clip.Clip> GetClipInformationAsync(string channel, string slug) => await Internal.TwitchApi.GetClipInformation(channel, slug);
-
-            /// <summary>
-            /// [SYNC] Gets the top Clips for a user's followed games. Required scope: user_read
-            /// </summary>
-            /// <param name="cursor">Cursor used to index through all clips.</param>
-            /// <param name="limit">Number of clip objects to return, limit is 100. Default is 10</param>
-            /// <param name="trending">Only pull from trending clips? Default is false.</param>
-            /// <param name="accessToken">An oauth token with the required scope.</param>
-            /// <returns>ClipsResponse object.</returns>
-            public static Models.API.Clip.ClipsResponse GetFollowedClips(string cursor = "0", int limit = 10, bool trending = false, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetFollowedClips(cursor, limit, trending, accessToken)).Result;
-            /// <summary>
-            /// [ASYNC] Gets the top Clips for a user's followed games. Required scope: user_read
-            /// </summary>
-            /// <param name="cursor">Cursor used to index through all clips.</param>
-            /// <param name="limit">Number of clip objects to return, limit is 100. Default is 10</param>
-            /// <param name="trending">Only pull from trending clips? Default is false.</param>
-            /// <param name="accessToken">An oauth token with the required scope.</param>
-            /// <returns>ClipsResponse object.</returns>
-            public static async Task<Models.API.Clip.ClipsResponse> GetFollowedClipsAsync(string cursor = "0", int limit = 10, bool trending = false, string accessToken = null) => await Internal.TwitchApi.GetFollowedClips(cursor, limit, trending, accessToken);
-        }
-
-        /// <summary>
-        /// Twitch API calls relating to Twitch communities.
-        /// </summary>
-        public static class Communities
-        {
-            /// <summary>
-            /// [SYNC] Retrieves a community object representing a Twitch community by the name.
-            /// </summary>
-            /// <param name="communityName">Name of the community to fetch.</param>
-            /// <returns>Community object.</returns>
-            public static Models.API.Community.Community GetCommunityByName(string communityName) => Task.Run(() => Internal.TwitchApi.GetCommunityByName(communityName)).Result;
-
-            /// <summary>
-            /// [ASYNC] Retrieves a community object representing a Twitch community by the name.
-            /// </summary>
-            /// <param name="communityName">Name of the community to fetch.</param>
-            /// <returns>Community object.</returns>
-            public static async Task<Models.API.Community.Community> GetCommunityByNameAsync(string communityName) => await Internal.TwitchApi.GetCommunityByName(communityName);
-
-            /// <summary>
-            /// [SYNC] Retrieves a community object representing a Twitch community by the id.
-            /// </summary>
-            /// <param name="communityId">Id of Twitch community to fetch.</param>
-            /// <returns>Community object.</returns>
-            public static Models.API.Community.Community GetCommunityById(string communityId) => Task.Run(() => Internal.TwitchApi.GetCommunityById(communityId)).Result;
-
-            /// <summary>
-            /// [ASYNC] Retrieves a community object representing a Twitch community by the id.
-            /// </summary>
-            /// <param name="communityId">Id of Twitch community to fetch.</param>
-            /// <returns>Community object.</returns>
-            public static async Task<Models.API.Community.Community> GetCommunityByIdAsync(string communityId) => await Internal.TwitchApi.GetCommunityById(communityId);
-
-            /// <summary>
-            /// [SYNC] Sends request to create a Twitch Community.
-            /// </summary>
-            /// <param name="name">Name of the Twitch Community. 3-25 characters. No spaces.</param>
-            /// <param name="summary">Summary of the Twitch Community. 160 characters max.</param>
-            /// <param name="description">Description of the Twitch Community. Max of 1,572,864 characters.</param>
-            /// <param name="rules">Rules for the Twitch Community. Max of 1,572,864 characters.</param>
-            /// <param name="accessToken">If an access token is not set, set this param.</param>
-            /// <returns>String ID of the new community.</returns>
-            public static string CreateCommunity(string name, string summary, string description, string rules, string accessToken = null) => Task.Run(() => Internal.TwitchApi.CreateCommunity(name, summary, description, rules, accessToken)).Result;
-
-            /// <summary>
-            /// [ASYNC] Sends request to create a Twitch Community.
-            /// </summary>
-            /// <param name="name">Name of the Twitch Community. 3-25 characters. No spaces.</param>
-            /// <param name="summary">Summary of the Twitch Community. 160 characters max.</param>
-            /// <param name="description">Description of the Twitch Community. Max of 1,572,864 characters.</param>
-            /// <param name="rules">Rules for the Twitch Community. Max of 1,572,864 characters.</param>
-            /// <param name="accessToken">If an access token is not set, set this param.</param>
-            /// <returns>String ID of the new community.</returns>
-            public static async Task<string> CreateCommunityAsync(string name, string summary, string description, string rules, string accessToken = null) => await Internal.TwitchApi.CreateCommunity(name, summary, description, rules, accessToken);
-
-            /// <summary>
-            /// [SYNC] Attempts to update details regarding an existing Twitch community.
-            /// </summary>
-            /// <param name="communityId">Unique Twitch community identifier.</param>
-            /// <param name="summary">Summary of the Twitch Community. 160 characters max.</param>
-            /// <param name="description">Description of the Twitch Community. Max of 1,572,864 characters.</param>
-            /// <param name="rules">Rules for the Twitch Community. Max of 1,572,864 characters.</param>
-            /// <param name="email">Contact email for the community.</param>
-            /// <param name="accessToken">If an access token is not set, set this param.</param>
-            /// <returns>String ID of the new community.</returns>
-            public static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UpdateCommunity(communityId, summary, description, rules, email, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Attempts to update details regarding an existing Twitch community.
-            /// </summary>
-            /// <param name="communityId">Unique Twitch community identifier.</param>
-            /// <param name="summary">Summary of the Twitch Community. 160 characters max.</param>
-            /// <param name="description">Description of the Twitch Community. Max of 1,572,864 characters.</param>
-            /// <param name="rules">Rules for the Twitch Community. Max of 1,572,864 characters.</param>
-            /// <param name="email">Contact email for the community.</param>
-            /// <param name="accessToken">If an access token is not set, set this param.</param>
-            /// <returns>String ID of the new community.</returns>
-            public static async void UpdateCommunityAsync(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.UpdateCommunity(communityId, summary, description, rules, email, accessToken));
-
-            /// <summary>
-            /// [SYNC] Fetches the top communities on Twitch currently by viewer count.
-            /// </summary>
-            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
-            /// <param name="cursor">Used to tell server where to start fetching results.</param>
-            /// <returns>TopCommunitiesResponse housing total, cursor, and list of communities.</returns>
-            public static Models.API.Community.TopCommunitiesResponse GetTopCommunities(long? limit = null, string cursor = null) => Task.Run(() => Internal.TwitchApi.GetTopCommunities(limit, cursor)).Result;
-
-            /// <summary>
-            /// [ASYNC] Fetches the top communities on Twitch currently by viewer count.
-            /// </summary>
-            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
-            /// <param name="cursor">Used to tell server where to start fetching results.</param>
-            /// <returns>TopCommunitiesResponse housing total, cursor, and list of communities.</returns>
-            public static async Task<Models.API.Community.TopCommunitiesResponse> GetTopCommunitiesAsync(long? limit = null, string cursor = null) => await Internal.TwitchApi.GetTopCommunities(limit, cursor);
-
-            /// <summary>
-            /// [SYNC] Fetches the banned users in a specific community.
-            /// </summary>
-            /// <param name="communityId">Unique ID of the Twitch community.</param>
-            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
-            /// <param name="cursor">Used to tell server where to start fetching results.</param>
-            /// <param name="accessToken">If not set, you must set this param.</param>
-            /// <returns>CommunityBannedUsersResponse housing cursor and banned users.</returns>
-            public static Models.API.Community.CommunityBannedUsersResponse GetCommunityBannedUsers(string communityId, long? limit = null, string cursor = null, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetCommunityBannedUsers(communityId, limit, cursor, accessToken)).Result;
-
-            /// <summary>
-            /// [ASYNC] Fetches the banned users in a specific community.
-            /// </summary>
-            /// <param name="communityId">Unique ID of the Twitch community.</param>
-            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
-            /// <param name="cursor">Used to tell server where to start fetching results.</param>
-            /// <param name="accessToken">If not set, you must set this param.</param>
-            /// <returns>CommunityBannedUsersResponse housing cursor and banned users.</returns>
-            public static async Task<Models.API.Community.CommunityBannedUsersResponse> GetCommunityBannedUsersAsync(string communityId, long? limit = null, string cursor = null, string accessToken = null) => await Internal.TwitchApi.GetCommunityBannedUsers(communityId, limit, cursor, accessToken);
-
-            /// <summary>
-            /// [SYNC] Gets all streams currently in a community.
-            /// </summary>
-            /// <param name="communityId">Unique ID of the Twitch community.</param>
-            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
-            /// <param name="cursor">Used to tell server where to start fetching results.</param>
-            /// <returns>StreamsInCommunityResponse houses total streams and list of streams.</returns>
-            public static Models.API.Community.StreamsInCommunityResponse GetStreamersInCommunity(string communityId, long? limit = null, string cursor = null) => Task.Run(() => Internal.TwitchApi.GetStreamsInCommunity(communityId, limit, cursor)).Result;
-
-            /// <summary>
-            /// [ASYNC] Gets all streams currently in a community.
-            /// </summary>
-            /// <param name="communityId">Unique ID of the Twitch community.</param>
-            /// <param name="limit">Limit the number of results. Maximum possible is 100.</param>
-            /// <param name="cursor">Used to tell server where to start fetching results.</param>
-            /// <returns>StreamsInCommunityResponse houses total streams and list of streams.</returns>
-            public static async Task<Models.API.Community.StreamsInCommunityResponse> GetStreamersInCommunityAsync(string communityId, long? limit = null, string cursor = null) => await Internal.TwitchApi.GetStreamsInCommunity(communityId, limit, cursor);
-
-            /// <summary>
-            /// [SYNC] Sends request to ban a member in a Twitch community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community that will have the user banned from.</param>
-            /// <param name="userId">The ID of the user to be banned.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static void BanCommunityMember(string communityId, string userId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.BanCommunityUser(communityId, userId, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Sends request to ban a member in a Twitch community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community that will have the user banned from.</param>
-            /// <param name="userId">The ID of the user to be banned.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static async void BanCommunityMemberAsync(string communityId, string userId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.BanCommunityUser(communityId, userId, accessToken));
-
-            /// <summary>
-            /// [SYNC] Sends request to unban a member in a Twitch community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community that will have the user unbanned from.</param>
-            /// <param name="userId">The ID of the user to be unbanned.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static void UnBanCommunityMember(string communityId, string userId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UnBanCommunityUser(communityId, userId, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Sends request to unban a member in a Twitch community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community that will have the user unbanned from.</param>
-            /// <param name="userId">The ID of the user to be unbanned.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static async void UnBanCommunityMemberAsync(string communityId, string userId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.UnBanCommunityUser(communityId, userId, accessToken));
-
-            /// <summary>
-            /// [SYNC] Sends request to timeout a member in a Twitch community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community that will have the user timedout from.</param>
-            /// <param name="userId">The ID of the user to be timedout.</param>
-            /// <param name="durationInHours">THe number of hours the member will be timed out for.</param>
-            /// <param name="reason">Optional parameter to provide a reason why they were timed out.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static void TimeoutCommunityMember(string communityId, string userId, int durationInHours, string reason = null, string accessToken = null) => Task.Run(() => Internal.TwitchApi.TimeoutCommunityUser(communityId, userId, durationInHours, reason, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Sends request to timeout a member in a Twitch community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community that will have the user timedout from.</param>
-            /// <param name="userId">The ID of the user to be timedout.</param>
-            /// <param name="durationInHours">THe number of hours the member will be timed out for.</param>
-            /// <param name="reason">Optional parameter to provide a reason why they were timed out.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static async void TimeoutCommunityMemberAsync(string communityId, string userId, int durationInHours, string reason = null, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.TimeoutCommunityUser(communityId, userId, durationInHours, reason, accessToken));
-
-            /// <summary>
-            /// [SYNC] Sends request to untimeout a member in a Twitch community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community that will have the user untimedout from.</param>
-            /// <param name="userId">The ID of the user to be untimedout.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static void UnTimeoutCommunityMember(string communityId, string userId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.UnTimeoutCommunityUser(communityId, userId, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Sends request to untimeout a member in a Twitch community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community that will have the user untimedout from.</param>
-            /// <param name="userId">The ID of the user to be untimedout.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static async void UnTimeoutCommunityMemberAsync(string communityId, string userId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.UnTimeoutCommunityUser(communityId, userId, accessToken));
-
-            /// <summary>
-            /// [SYNC] Fetches the moderators that exist in a specific Twitch community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to fetch moderators from.</param>
-            /// <returns>List of CommunityModerator objects.</returns>
-            public static List<Models.API.Community.CommunityModerator> GetCommunityModerators(string communityId) => Task.Run(() => Internal.TwitchApi.GetCommunityModerators(communityId)).Result;
-
-            /// <summary>
-            /// [ASYNC] Fetches the moderators that exist in a specific Twitch community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to fetch moderators from.</param>
-            /// <returns>List of CommunityModerator objects.</returns>
-            public static async Task<List<Models.API.Community.CommunityModerator>> GetCommunityModeratorsAsync(string communityId) => await Internal.TwitchApi.GetCommunityModerators(communityId);
-
-            /// <summary>
-            /// [SYNC] Adds a new moderator to a specific community
-            /// </summary>
-            /// <param name="communityId">The ID of the community to fetch moderators from.</param>
-            /// <param name="userId">The ID of the new moderator.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static void AddCommunityModerator(string communityId, string userId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.AddCommunityModerator(communityId, userId, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Adds a new moderator to a specific community
-            /// </summary>
-            /// <param name="communityId">The ID of the community to add the moderator to.</param>
-            /// <param name="userId">The ID of the new moderator.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static async void AddCommunityModeratorAsync(string communityId, string userId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.AddCommunityModerator(communityId, userId, accessToken));
-
-            /// <summary>
-            /// [SYNC] Removes an existing moderator from a specific community
-            /// </summary>
-            /// <param name="communityId">The ID of the community to fetch moderators from.</param>
-            /// <param name="userId">The ID of the moderator to remove..</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static void RemoveCommunityModerator(string communityId, string userId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.RemoveCommunityModerator(communityId, userId, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Removes an existing moderator from a specific community
-            /// </summary>
-            /// <param name="communityId">The ID of the community to fetch moderators from.</param>
-            /// <param name="userId">The ID of the moderator to remove..</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static async void RemoveCommunityModeratorAsync(string communityId, string userId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.RemoveCommunityModerator(communityId, userId, accessToken));
-
-            /// <summary>
-            /// [SYNC] Attempts to create an avatar image for a community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to assign the image to.</param>
-            /// <param name="base64AvatarImage">Base64 encoded image as a string</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static void CreateCommunityAvatarImage(string communityId, string base64AvatarImage, string accessToken = null) => Task.Run(() => Internal.TwitchApi.CreateCommunityAvatarImage(communityId, base64AvatarImage, accessToken));
-
-            /// <summary>
-            /// [SYNC] Attempts to create an avatar image for a community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to assign the image to.</param>
-            /// <param name="avatarImage">Image object representing the avatar image.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static void CreateCommunityAvatarImage(string communityId, Image avatarImage, string accessToken = null) => Task.Run(() => Internal.TwitchApi.CreateCommunityAvatarImage(communityId, avatarImage, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Attempts to create an avatar image for a community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to assign the image to.</param>
-            /// <param name="base64AvatarImage">Base64 encoded image as a string</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static async void CreateCommunityAvatarImageAsync(string communityId, string base64AvatarImage, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.CreateCommunityAvatarImage(communityId, base64AvatarImage, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Attempts to create an avatar image for a community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to assign the image to.</param>
-            /// <param name="avatarImage">Image object representing the avatar image.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static async void CreateCommunityAvatarImageAsync(string communityId, Image avatarImage, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.CreateCommunityAvatarImage(communityId, avatarImage, accessToken));
-
-            /// <summary>
-            /// [SYNC] Attempts to remove a community avatar image.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to remove the avatar image from.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static void RemoveCommunityAvatarImage(string communityId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.RemoveCommunityAvatarImage(communityId, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Attempts to remove a community avatar image.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to remove the avatar image from.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static async void RemoveCommunityAvatarImageAsync(string communityId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.RemoveCommunityAvatarImage(communityId, accessToken));
-
-
-            /// <summary>
-            /// [SYNC] Attempts to create an Cover image for a community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to assign the image to.</param>
-            /// <param name="base64CoverImage">Base64 encoded image as a string</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static void CreateCommunityCoverImage(string communityId, string base64CoverImage, string accessToken = null) => Task.Run(() => Internal.TwitchApi.CreateCommunityCoverImage(communityId, base64CoverImage, accessToken));
-
-            /// <summary>
-            /// [SYNC] Attempts to create an Cover image for a community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to assign the image to.</param>
-            /// <param name="CoverImage">Image object representing the Cover image.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static void CreateCommunityCoverImage(string communityId, Image CoverImage, string accessToken = null) => Task.Run(() => Internal.TwitchApi.CreateCommunityCoverImage(communityId, CoverImage, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Attempts to create an Cover image for a community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to assign the image to.</param>
-            /// <param name="base64CoverImage">Base64 encoded image as a string</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static async void CreateCommunityCoverImageAsync(string communityId, string base64CoverImage, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.CreateCommunityCoverImage(communityId, base64CoverImage, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Attempts to create an Cover image for a community.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to assign the image to.</param>
-            /// <param name="CoverImage">Image object representing the Cover image.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static async void CreateCommunityCoverImageAsync(string communityId, Image CoverImage, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.CreateCommunityCoverImage(communityId, CoverImage, accessToken));
-
-            /// <summary>
-            /// [SYNC] Attempts to remove a community Cover image.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to remove the Cover image from.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static void RemoveCommunityCoverImage(string communityId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.RemoveCommunityCoverImage(communityId, accessToken));
-
-            /// <summary>
-            /// [ASYNC] Attempts to remove a community Cover image.
-            /// </summary>
-            /// <param name="communityId">The ID of the community to remove the Cover image from.</param>
-            /// <param name="accessToken">If access token was not previously set, you must set it here.</param>
-            public static async void RemoveCommunityCoverImageAsync(string communityId, string accessToken = null) => await Task.Run(() => Internal.TwitchApi.RemoveCommunityCoverImage(communityId, accessToken));
-        }
-
-        #region Twitch API Global Functions
-        /// <summary>
-        /// [SYNC] Sets ClientId, which is required for all API calls. Also validates ClientId.
-        /// <param name="clientId">Client-Id to bind to TwitchApi.</param>
-        /// <param name="disableClientIdValidation">Forcefully disables Client-Id validation.</param>
-        /// </summary>
-        public static void SetClientId(string clientId, bool disableClientIdValidation = false) => Internal.TwitchApi.SetClientId(clientId, disableClientIdValidation);
-        /// <summary>
-        /// [ASYNC] Sets ClientId, which is required for all API calls. Also validates ClientId.
-        /// <param name="clientId">Client-Id to bind to TwitchApi.</param>
-        /// <param name="disableClientIdValidation">Forcefully disables Client-Id validation.</param>
-        /// </summary>
-        public static async void SetClientIdAsync(string clientId, bool disableClientIdValidation = false) => await Task.Run(() => Internal.TwitchApi.SetClientId(clientId, disableClientIdValidation));
-
-        /// <summary>
-        /// [SYNC] Sets Access Token, which is saved in memory. This is not necessary, as tokens can be passed into Api calls.
-        /// </summary>
-        /// <param name="accessToken">Twitch account OAuth token to store in memory.</param>
-        public static void SetAccessToken(string accessToken) => Internal.TwitchApi.SetAccessToken(accessToken);
-        /// <summary>
-        /// [ASYNC] Sets Access Token, which is saved in memory. This is not necessary, as tokens can be passed into Api calls.
-        /// </summary>
-        /// <param name="accessToken">Twitch account OAuth token to store in memory.</param>
-        public static async void SetAccessTokenAsync(string accessToken) => await Task.Run(() => Internal.TwitchApi.SetAccessToken(accessToken));
-
-        /// <summary>
-        /// [SYNC] Validates a Client-Id and optionally updates it.
-        /// </summary>
-        /// <param name="clientId">Client-Id string to be validated.</param>
-        /// <param name="updateClientIdOnSuccess">Updates Client-Id if passed Client-Id is valid.</param>
-        /// <returns>True or false depending on the validity of the Client-Id.</returns>
-        public static bool ValidClientId(string clientId, bool updateClientIdOnSuccess = true) => Task.Run(() => Internal.TwitchApi.ValidClientId(clientId, updateClientIdOnSuccess)).Result;
-        /// <summary>
-        /// [ASYNC] Validates a Client-Id and optionally updates it.
-        /// </summary>
-        /// <param name="clientId">Client-Id string to be validated.</param>
-        /// <param name="updateClientIdOnSuccess">Updates Client-Id if passed Client-Id is valid.</param>
-        /// <returns>True or false depending on the validity of the Client-Id.</returns>
-        public static async Task<bool> ValidClientIdAsync(string clientId, bool updateClientIdOnSuccess = true) => await Internal.TwitchApi.ValidClientId(clientId, updateClientIdOnSuccess);
-
-        /// <summary>
-        /// [SYNC] Calls Kraken API base endpoint and returns client ID and access token details.
-        /// </summary>
-        /// <param name="accessToken">You may provide an access token or not. If not, AUthorization model will not be set.</param>
-        /// <returns>ValidationResponse model.</returns>
-        public static Models.API.Other.Validate.ValidationResponse ValidationAPIRequest(string accessToken = null) => Task.Run(() => Internal.TwitchApi.ValidationAPIRequest(accessToken)).Result;
-        /// <summary>
-        /// [ASYNC] Calls Kraken API base endpoint and returns client ID and access token details.
-        /// </summary>
-        /// <param name="accessToken">You may provide an access token or not. If not, AUthorization model will not be set.</param>
-        /// <returns>ValidationResponse model.</returns>
-        public static async Task<Models.API.Other.Validate.ValidationResponse> ValidationAPIRequestAsync(string accessToken = null) => await Internal.TwitchApi.ValidationAPIRequest(accessToken);
-        #endregion
     }
 }
