@@ -234,10 +234,7 @@
     <Compile Include="Models\API\Stream\Stream.cs" />
     <Compile Include="Models\API\Team\TeamMember.cs" />
     <Compile Include="Models\API\Video\Video.cs" />
-    <Compile Include="TwitchAPI\Shared.cs" />
-    <Compile Include="TwitchAPI\v3.cs" />
-    <Compile Include="TwitchAPI\v4.cs" />
-    <Compile Include="TwitchAPI\v5.cs" />
+    <Compile Include="TwitchAPI.cs" />
     <Compile Include="TwitchClient.cs" />
     <Compile Include="Models\Client\SentMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
