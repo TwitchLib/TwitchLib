@@ -209,6 +209,7 @@
     <Compile Include="Exceptions\API\InvalidCredentialException.cs" />
     <Compile Include="Models\Client\CheerBadge.cs" />
     <Compile Include="Models\Client\DetectionReturn.cs" />
+    <Compile Include="Models\Client\ErrorEvent.cs" />
     <Compile Include="Models\Client\JoinedChannel.cs" />
     <Compile Include="Models\Client\MessageEmote.cs" />
     <Compile Include="Models\Client\ReSubscriber.cs" />

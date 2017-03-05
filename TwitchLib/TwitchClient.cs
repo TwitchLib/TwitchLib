@@ -524,7 +524,7 @@ namespace TwitchLib
         {
             Reconnect();
             System.Threading.Thread.Sleep(2000);
-            OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { Username = TwitchUsername });
+            OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { Username = TwitchUsername, Error = new ErrorEvent { Exception = e.Exception, Message = e.Message } });
         }
 
         private void _client_OnDisconnected(object sender, CloseEventArgs e)
