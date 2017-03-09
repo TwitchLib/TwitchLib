@@ -21,7 +21,7 @@ namespace TwitchLib.Models.API.v5
         /// <summary>Property representing the logo of the user.</summary>
         public string Logo { get; protected set; }
         /// <summary>Property representing the Id of the user.</summary>
-        public long Id { get; protected set; }
+        public string Id { get; protected set; }
         /// <summary>Property representing the bio of the user.</summary>
         public string Bio { get; protected set; }
 
@@ -34,7 +34,7 @@ namespace TwitchLib.Models.API.v5
             CreatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("created_at")?.ToString());
             UpdatedAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("updated_at")?.ToString());
             Logo = json.SelectToken("logo")?.ToString();
-            Id = (json.SelectToken("_id") != null) ? long.Parse(json.SelectToken("_id").ToString()) : -1;
+            Id = json.SelectToken("_id")?.ToString();
             Bio = json.SelectToken("bio")?.ToString();
         }
     }
