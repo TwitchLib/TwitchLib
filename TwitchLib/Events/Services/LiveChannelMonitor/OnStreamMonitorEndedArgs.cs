@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Models.Client;
 
-namespace TwitchLib.Events.Services.FollowerService
+namespace TwitchLib.Events.Services.LiveStreamMonitor
 {
     /// <summary>Class representing event args for OnChannelMonitorEnded event.</summary>
-    public class OnChannelMonitorEndedArgs : EventArgs
+    public class OnStreamMonitorEndedArgs : EventArgs
     {
         /// <summary>Event property representing channel the service is currently monitoring.</summary>
         public List<JoinedChannel> Channels;

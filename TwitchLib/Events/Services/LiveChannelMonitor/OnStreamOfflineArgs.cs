@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using TwitchLib.Models.API;
 using TwitchLib.Models.API.Follow;
 
-namespace TwitchLib.Events.Services.FollowerService
+namespace TwitchLib.Events.Services.LiveStreamMonitor
 {
     /// <summary>Class representing event args for OnChannelOffline event.</summary>
-    public class OnChannelOfflineArgs : EventArgs
+    public class OnStreamOfflineArgs : EventArgs
     {
         /// <summary>Event property representing channel that has gone offline.</summary>
         public string Channel;

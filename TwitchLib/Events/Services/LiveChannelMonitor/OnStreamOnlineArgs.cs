@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using TwitchLib.Models.API;
 using TwitchLib.Models.API.Follow;
 
-namespace TwitchLib.Events.Services.FollowerService
+namespace TwitchLib.Events.Services.LiveStreamMonitor
 {
     /// <summary>Class representing event args for OnChannelOnline event.</summary>
-    public class OnChannelOnlineArgs : EventArgs
+    public class OnStreamOnlineArgs : EventArgs
     {
         /// <summary>Event property representing channel that has gone online.</summary>
         public string Channel;
