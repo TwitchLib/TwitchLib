@@ -54,6 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
+    <Compile Include="Events\Services\LiveChannelMonitor\OnChannelMonitorEndedArgs.cs" />
+    <Compile Include="Events\Services\LiveChannelMonitor\OnChannelMonitorStartedArgs.cs" />
+    <Compile Include="Events\Services\LiveChannelMonitor\OnChannelOfflineArgs.cs" />
+    <Compile Include="Events\Services\LiveChannelMonitor\OnChannelOnlineArgs.cs" />
     <Compile Include="Exceptions\API\BadParameterException.cs" />
     <Compile Include="Exceptions\Client\BadListenException.cs" />
     <Compile Include="Exceptions\Client\IllegalAssignmentException.cs" />
@@ -219,6 +223,7 @@
     <Compile Include="Models\PubSub\Responses\Messages\VideoPlayback.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\Whisper.cs" />
     <Compile Include="Services\FollowerService.cs" />
+    <Compile Include="Services\LiveChannelMonitor.cs" />
     <Compile Include="Services\MessageThrottler.cs" />
     <Compile Include="Models\API\Chat\Chatter.cs" />
     <Compile Include="Models\Client\ConnectionCredentials.cs" />
