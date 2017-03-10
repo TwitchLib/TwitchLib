@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.Common
 {
+    /// <summary>Static class for logging data for debugging.</summary>
     public static class Logging
     {
         /// <summary>

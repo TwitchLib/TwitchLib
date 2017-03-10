@@ -575,7 +575,7 @@ namespace TwitchLib.Internal
                     break;
             }
             string trendingStr = (trending) ? "trending=true" : "trending=false";
-            string url = $"https://api.twitch.tv/kraken/clips/top?{limitStr}&{periodStr}";
+            string url = $"https://api.twitch.tv/kraken/clips/top?{limitStr}&{periodStr}&{trendingStr}";
             if (channels != null)
                 url = $"{url}&{channelsStr}";
             if (games != null)
@@ -655,7 +655,7 @@ namespace TwitchLib.Internal
                 return null;
         }
 
-        internal async static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null)
+        internal async static Task<string> UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string accessToken = null)
         {
             if (summary != null && summary.Length > 160)
                 throw new BadParameterException("Summary parameter must be 160 or less characters of length.");
@@ -674,7 +674,7 @@ namespace TwitchLib.Internal
             if (email != null)
                 json["email"] = email;
 
-            string response = (await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}", "PUT", json.ToString(), accessToken, 5));
+            return (await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}", "PUT", json.ToString(), accessToken, 5));
         }
 
         internal async static Task<Models.API.Community.TopCommunitiesResponse> GetTopCommunities(long? limit = null, string cursor = null)
@@ -716,23 +716,23 @@ namespace TwitchLib.Internal
             return new Models.API.Community.StreamsInCommunityResponse(JObject.Parse(resp));
         }
 
-        internal async static void BanCommunityUser(string communityId, string userId, string accessToken = null)
+        internal async static Task<string> BanCommunityUser(string communityId, string userId, string accessToken = null)
         {
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", "PUT", null, accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", "PUT", null, accessToken, 5);
         }
 
-        internal async static void UnBanCommunityUser(string communityId, string userId, string accessToken = null)
+        internal async static Task<string> UnBanCommunityUser(string communityId, string userId, string accessToken = null)
         {
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", "DELETE", null, accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", "DELETE", null, accessToken, 5);
         }
 
-        internal async static void TimeoutCommunityUser(string communityId, string userId, int durationInHours, string reason = null, string accessToken = null)
+        internal async static Task<string> TimeoutCommunityUser(string communityId, string userId, int durationInHours, string reason = null, string accessToken = null)
         {
             JObject json = new JObject();
             json["duration"] = durationInHours;
             if (reason != null)
                 json["reason"] = reason;
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", "PUT", json.ToString(), accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", "PUT", json.ToString(), accessToken, 5);
         }
 
         internal async static Task<Models.API.Community.CommunityTimedOutUsersResponse> GetTimedOutCommunityUsers(string communityId, long? limit = null, string cursor = null, string accessToken = null)
@@ -748,14 +748,14 @@ namespace TwitchLib.Internal
             return new Models.API.Community.CommunityTimedOutUsersResponse(JObject.Parse(resp));
         }
 
-        internal async static void UnTimeoutCommunityUser(string communityId, string userId, string accessToken = null)
+        internal async static Task<string> UnTimeoutCommunityUser(string communityId, string userId, string accessToken = null)
         {
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", "DELETE", null, accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", "DELETE", null, accessToken, 5);
         }
 
-        internal async static void AddCommunityModerator(string communityId, string userId, string accessToken = null)
+        internal async static Task<string> AddCommunityModerator(string communityId, string userId, string accessToken = null)
         {
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", "PUT", null, accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", "PUT", null, accessToken, 5);
         }
 
         internal async static Task<List<Models.API.Community.CommunityModerator>> GetCommunityModerators(string communityId)
@@ -768,9 +768,9 @@ namespace TwitchLib.Internal
             return communityModerators;
         }
 
-        internal async static void RemoveCommunityModerator(string communityId, string userId, string accessToken = null)
+        internal async static Task<string> RemoveCommunityModerator(string communityId, string userId, string accessToken = null)
         {
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", "DELETE", null, accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", "DELETE", null, accessToken, 5);
         }
         
         internal async static Task<Models.API.Community.Community> GetChannelCommunity(string channelId)
@@ -779,52 +779,52 @@ namespace TwitchLib.Internal
             return new Models.API.Community.Community(JObject.Parse(resp));
         }
 
-        internal async static void SetChannelCommunity(string channelId, string communityId, string accessToken = null)
+        internal async static Task<string> SetChannelCommunity(string channelId, string communityId, string accessToken = null)
         {
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channelId}/community/{communityId}", "PUT", null, accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channelId}/community/{communityId}", "PUT", null, accessToken, 5);
         }
 
-        internal async static void RemoveChannelCommunity(string channelId, string accessToken = null)
+        internal async static Task<string> RemoveChannelCommunity(string channelId, string accessToken = null)
         {
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channelId}/community", "DELETE", null, accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/channels/{channelId}/community", "DELETE", null, accessToken, 5);
         }
 
-        internal async static void CreateCommunityAvatarImage(string communityId, string base64AvatarImage, string accessToken = null)
+        internal async static Task<string> CreateCommunityAvatarImage(string communityId, string base64AvatarImage, string accessToken = null)
         {
             JObject json = new JObject();
             json["avatar_image"] = base64AvatarImage;
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "POST", json.ToString(), accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "POST", json.ToString(), accessToken, 5);
         }
 
-        internal async static void CreateCommunityAvatarImage(string communityId, Image avatarImage, string accessToken = null)
+        internal async static Task<string> CreateCommunityAvatarImage(string communityId, Image avatarImage, string accessToken = null)
         {
             JObject json = new JObject();
             json["avatar_image"] = Common.Helpers.ImageToBase64(avatarImage);
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "POST", json.ToString(), accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "POST", json.ToString(), accessToken, 5);
         }
 
-        internal async static void RemoveCommunityAvatarImage(string communityId, string accessToken = null)
+        internal async static Task<string> RemoveCommunityAvatarImage(string communityId, string accessToken = null)
         {
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "DELETE", null, accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "DELETE", null, accessToken, 5);
         }
 
-        internal async static void CreateCommunityCoverImage(string communityId, string base64CoverImage, string accessToken = null)
+        internal async static Task<string> CreateCommunityCoverImage(string communityId, string base64CoverImage, string accessToken = null)
         {
             JObject json = new JObject();
             json["cover_image"] = base64CoverImage;
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", "POST", json.ToString(), accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", "POST", json.ToString(), accessToken, 5);
         }
 
-        internal async static void CreateCommunityCoverImage(string communityId, Image coverImage, string accessToken = null)
+        internal async static Task<string> CreateCommunityCoverImage(string communityId, Image coverImage, string accessToken = null)
         {
             JObject json = new JObject();
             json["cover_image"] = Common.Helpers.ImageToBase64(coverImage);
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", "POST", json.ToString(), accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", "POST", json.ToString(), accessToken, 5);
         }
 
-        internal async static void RemoveCommunityCoverImage(string communityId, string accessToken = null)
+        internal async static Task<string> RemoveCommunityCoverImage(string communityId, string accessToken = null)
         {
-            string resp = await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", "DELETE", null, accessToken, 5);
+            return await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", "DELETE", null, accessToken, 5);
         }
         #endregion
 

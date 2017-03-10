@@ -7,6 +7,7 @@ using TwitchLib.Models.Client;
 
 namespace TwitchLib.Extensions.Client
 {
+    /// <summary>Extension implementing the ability to mod a viewer in TwitchClient.</summary>
     public static class ModExt
     {
         /// <summary>

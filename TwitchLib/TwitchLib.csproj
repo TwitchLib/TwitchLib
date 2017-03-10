@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\VideoPlayback.cs" />
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
     <Compile Include="Exceptions\API\BadParameterException.cs" />
     <Compile Include="Exceptions\Client\BadListenException.cs" />

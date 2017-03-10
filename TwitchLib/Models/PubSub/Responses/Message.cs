@@ -8,12 +8,15 @@ using TwitchLib.Models.PubSub.Responses.Messages;
 
 namespace TwitchLib.Models.PubSub.Responses
 {
+    /// <summary>PubSub Message model.</summary>
     public class Message
     {
+        /// <summary>Topic that the message is relevant to.</summary>
         public string Topic { get; protected set; }
+        /// <summary>Model containing data of the message.</summary>
         public MessageData messageData;
 
-        
+        /// <summary>PubSub Message model constructor.</summary>
         public Message(string jsonStr)
         {
             JToken json = JObject.Parse(jsonStr).SelectToken("data");

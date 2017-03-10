@@ -7,6 +7,7 @@ using TwitchLib.Models.Client;
 
 namespace TwitchLib.Extensions.Client
 {
+    /// <summary>Extension for implementing clear chat functionality in TwitchClient.</summary>
     public static class ClearChatExt
     {
         /// <summary>
