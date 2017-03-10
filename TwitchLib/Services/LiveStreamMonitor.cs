@@ -85,13 +85,14 @@ namespace TwitchLib.Services
                 {
                     OnStreamOnline?.Invoke(this,
                         new OnStreamOnlineArgs { Channel = channel, CheckIntervalSeconds = CheckIntervalSeconds });
+                    _statuses[channel] = current;
                 }
                 else if (!current && _statuses[channel])
                 {
                     OnStreamOffline?.Invoke(this,
                         new OnStreamOfflineArgs { Channel = channel, CheckIntervalSeconds = CheckIntervalSeconds });
+                    _statuses[channel] = current;
                 }
-                _statuses[channel] = current;
             }
             return;
         }
