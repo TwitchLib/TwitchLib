@@ -18,13 +18,13 @@ namespace TwitchLib.Services
         #region Private Variables
         private string _clientId;
         private int _checkIntervalSeconds;
-        private List<JoinedChannel> _channels;
-        private Dictionary<JoinedChannel, bool> _statuses;
+        private List<string> _channels;
+        private Dictionary<string, bool> _statuses;
         private Timer _streamMonitorTimer = new Timer();
         #endregion
         #region Public Variables
         /// <summary>Property representing Twitch channels service is monitoring.</summary>
-        public List<JoinedChannel> Channels { get { return _channels; } protected set { _channels = value; } }
+        public List<string> Channels { get { return _channels; } protected set { _channels = value; } }
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
         public string ClientId { get { return _clientId; } set { _clientId = value; TwitchApi.SetClientId(value); } }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
@@ -45,7 +45,7 @@ namespace TwitchLib.Services
         /// <param name="channels">Represents a list of channels to monitor</param>
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
         /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
-        public LiveStreamMonitor(List<JoinedChannel> channels, int checkIntervalSeconds = 60, string clientId = "")
+        public LiveStreamMonitor(List<string> channels, int checkIntervalSeconds = 60, string clientId = "")
         {
             Channels = channels;
             CheckIntervalSeconds = checkIntervalSeconds;
@@ -60,7 +60,7 @@ namespace TwitchLib.Services
         {
             foreach (var channel in Channels)
             {
-                _statuses.Add(channel, await TwitchApi.Streams.BroadcasterOnlineAsync(channel.Channel));
+                _statuses.Add(channel, await TwitchApi.Streams.BroadcasterOnlineAsync(channel));
             }
             _streamMonitorTimer.Start();
             OnStreamMonitorStarted?.Invoke(this,
@@ -80,16 +80,16 @@ namespace TwitchLib.Services
         {
             foreach (var channel in Channels)
             {
-                bool current = await TwitchApi.Streams.BroadcasterOnlineAsync(channel.Channel);
+                bool current = await TwitchApi.Streams.BroadcasterOnlineAsync(channel);
                 if (current && !_statuses[channel])
                 {
                     OnStreamOnline?.Invoke(this,
-                        new OnStreamOnlineArgs { Channel = channel.Channel, CheckIntervalSeconds = CheckIntervalSeconds });
+                        new OnStreamOnlineArgs { Channel = channel, CheckIntervalSeconds = CheckIntervalSeconds });
                 }
                 else if (!current && _statuses[channel])
                 {
                     OnStreamOffline?.Invoke(this,
-                        new OnStreamOfflineArgs { Channel = channel.Channel, CheckIntervalSeconds = CheckIntervalSeconds });
+                        new OnStreamOfflineArgs { Channel = channel, CheckIntervalSeconds = CheckIntervalSeconds });
                 }
                 _statuses[channel] = current;
             }

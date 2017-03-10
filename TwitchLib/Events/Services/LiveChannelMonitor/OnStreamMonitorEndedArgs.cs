@@ -11,7 +11,7 @@ namespace TwitchLib.Events.Services.LiveStreamMonitor
     public class OnStreamMonitorEndedArgs : EventArgs
     {
         /// <summary>Event property representing channel the service is currently monitoring.</summary>
-        public List<JoinedChannel> Channels;
+        public List<String> Channels;
         /// <summary>Event property representing seconds between queries to Twitch Api.</summary>
         public int CheckIntervalSeconds;
     }
