@@ -55,7 +55,7 @@ namespace TwitchLib.Services
         }
 
         #region CONTROLS
-        /// <summary>Downloads recent followers from Twitch, starts service, fires OnServiceStarted event.</summary>
+        /// <summary>Downloads recent followers from Twitch, starts service, fires OnStreamMonitorStarted event.</summary>
         public async void StartService()
         {
             foreach (var channel in Channels)
