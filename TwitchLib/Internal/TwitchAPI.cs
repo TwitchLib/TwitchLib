@@ -438,11 +438,11 @@ namespace TwitchLib.Internal
             return new Models.API.Video.UploadVideo.CreateVideoResponse(JObject.Parse(resp));
         }
 
-        // TODO: Untested
-        internal static async void UploadVideo(string vidId, string uploadToken, string fileName, string accessToken = null)
+        // TODO: NEEDS TO BE FIXED
+        internal static void UploadVideo(string vidId, string uploadToken, string fileName, string accessToken = null)
         {
             long maxUploadSize = 10737418240; // 10GBs
-            long chunkSize = 10485760; // 10MBs
+            //long chunkSize = 10485760; // 10MBs
         
             // Check if file exists
             if (!File.Exists(fileName))
@@ -456,14 +456,14 @@ namespace TwitchLib.Internal
             // read and upload chunks
             using (var file = File.OpenRead(fileName))
             {
-                int bytes;
+                /*int bytes;
                 var buffer = new byte[chunkSize];
                 int i = 1;
                 while((bytes = file.Read(buffer, 0, buffer.Length)) > 0)
                 {
                     await Requests.MakeRestRequest($"https://uploads.twitch.tv/upload/{vidId}?index={i}&upload_token={uploadToken}", "POST", null, accessToken, 4, buffer);
                     i++;
-                }
+                }*/
             }
         }
 

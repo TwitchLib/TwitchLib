@@ -535,7 +535,6 @@ namespace TwitchLib
 
         private void _client_OnMessage(object sender, MessageEventArgs e)
         {
-            string message = e.Data.Trim();
             string[] stringSeparators = new string[] { "\r\n" };
             string[] lines = e.Data.Split(stringSeparators, StringSplitOptions.None);
             foreach(string line in lines)

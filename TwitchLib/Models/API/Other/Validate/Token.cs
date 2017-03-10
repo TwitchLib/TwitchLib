@@ -26,7 +26,6 @@ namespace TwitchLib.Models.API.Other.Validate
         public Token(JToken json)
         {
             bool isValid;
-            string jsonStr = json.ToString();
             Valid = bool.TryParse(json.SelectToken("valid").ToString(), out isValid) && isValid;
             if (json.SelectToken("authorization") != null)
                 Authorization = new Authorization(json.SelectToken("authorization"));
