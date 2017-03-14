@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.Extensions.Client
 {
+    /// <summary>Extension implementing reply to previous whisper functionality.</summary>
     public static class ReplyWhisperExt
     {
         /// <summary>

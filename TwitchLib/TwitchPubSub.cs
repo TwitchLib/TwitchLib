@@ -8,6 +8,9 @@ using TwitchLib.Internal;
 
 namespace TwitchLib
 {
+    /// <summary>
+    /// Class represneting interactions with the Twitch PubSub
+    /// </summary>
     public class TwitchPubSub
     {
         private WebSocketClient socket;
@@ -195,13 +198,13 @@ namespace TwitchLib
                             VideoPlayback vP = (VideoPlayback)msg.messageData;
                             switch(vP.Type)
                             {
-                                case VideoPlayback.TypeEnum.StreamDown:
+                                case Enums.VideoPlaybackType.StreamDown:
                                    OnStreamDown?.Invoke(this, new OnStreamDownArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
                                     return;
-                                case VideoPlayback.TypeEnum.StreamUp:
+                                case Enums.VideoPlaybackType.StreamUp:
                                    OnStreamUp?.Invoke(this, new OnStreamUpArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
                                     return;
-                                case VideoPlayback.TypeEnum.ViewCount:
+                                case Enums.VideoPlaybackType.ViewCount:
                                    OnViewCount?.Invoke(this, new OnViewCountArgs { ServerTime = vP.ServerTime, Viewers = vP.Viewers });
                                     return;
                             }

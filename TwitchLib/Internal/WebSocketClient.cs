@@ -7,24 +7,32 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.Internal
 {
+    /// <summary>Constructor of native websocket client.</summary>
     public class WebSocketClient
     {
         private const int ReceiveChunkSize = 1024;
         private const int SendChunkSize = 1024;
-
-        public readonly ClientWebSocket Client;
+        private readonly ClientWebSocket Client;
         private readonly Uri _uri;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly CancellationToken _cancellationToken;
 
+        /// <summary>Whether or not to auto reconnect on disconnect.</summary>
         public bool AutoReconnect { get; set; }
+        /// <summary>Connection status of client.</summary>
         public bool IsConnected { get { return Client?.State == WebSocketState.Open ? true : false; } }
 
+        /// <summary>Event fires when connected.</summary>
         public event Action<WebSocketClient> OnConnected;
+        /// <summary>Event fires when message received.</summary>
         public event Action<WebSocketClient, string> OnMessage;
+        /// <summary>Event fires when disconnected.</summary>
         public event Action<WebSocketClient> OnDisconnected;
+        /// <summary>Event fires when error hapens.</summary>
         public event Action<WebSocketClient, Exception> OnError;
 
+        /// <summary>WebSocketClient constructor.</summary>
+        /// <param name="uri"></param>
         protected WebSocketClient(Uri uri)
         {
             Client = new ClientWebSocket();
@@ -197,6 +205,9 @@ namespace TwitchLib.Internal
             Task.Factory.StartNew(action);
         }
 
+        /// <summary>
+        /// Method to dispose of client
+        /// </summary>
         public void Dispose()
         {
             if (Client != null)
