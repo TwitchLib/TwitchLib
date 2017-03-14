@@ -9,6 +9,7 @@ using TwitchLib.Exceptions.Services;
 using TwitchLib.Exceptions.API;
 using TwitchLib.Events.Services.LiveStreamMonitor;
 using TwitchLib.Models.Client;
+using TwitchLib.Enums;
 
 namespace TwitchLib.Services
 {
@@ -21,6 +22,7 @@ namespace TwitchLib.Services
         private List<string> _channels;
         private Dictionary<string, bool> _statuses;
         private Timer _streamMonitorTimer = new Timer();
+        private StreamIdentifierType _identifierType;
         #endregion
         #region Public Variables
         /// <summary>Property representing Twitch channels service is monitoring.</summary>
@@ -29,6 +31,8 @@ namespace TwitchLib.Services
         public string ClientId { get { return _clientId; } set { _clientId = value; TwitchApi.SetClientId(value); } }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _streamMonitorTimer.Interval = value * 1000; } }
+        /// <summary>Property representing whether streams are represented by usernames or userids</summary>
+        public StreamIdentifierType IdentifierType { get { return _identifierType; } protected set { _identifierType = value; } }
         #endregion
         #region EVENTS
         /// <summary>Event fires when Stream goes online</summary>
@@ -42,12 +46,10 @@ namespace TwitchLib.Services
         #endregion
         /// <summary>Service constructor.</summary>
         /// <exception cref="BadResourceException">If channel is invalid, an InvalidChannelException will be thrown.</exception>
-        /// <param name="channels">Represents a list of channels to monitor</param>
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
         /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
-        public LiveStreamMonitor(List<string> channels, int checkIntervalSeconds = 60, string clientId = "")
+        public LiveStreamMonitor(int checkIntervalSeconds = 60, string clientId = "")
         {
-            Channels = channels;
             CheckIntervalSeconds = checkIntervalSeconds;
             _streamMonitorTimer.Elapsed += _streamMonitorTimerElapsed;
             if (clientId != "")
@@ -55,16 +57,20 @@ namespace TwitchLib.Services
         }
 
         #region CONTROLS
-        /// <summary>Downloads recent followers from Twitch, starts service, fires OnStreamMonitorStarted event.</summary>
+        /// <summary>Starts service, updates status of all channels, fires OnStreamMonitorStarted event.</summary>
         public async void StartService()
         {
+            if (Channels == null)
+            {
+                //throw exception here
+            }
             foreach (var channel in Channels)
             {
-                _statuses.Add(channel, await TwitchApi.Streams.BroadcasterOnlineAsync(channel));
+                _statuses.Add(channel, await _checkStreamOnline(channel));
             }
             _streamMonitorTimer.Start();
             OnStreamMonitorStarted?.Invoke(this,
-                new OnStreamMonitorStartedArgs { Channels = Channels, CheckIntervalSeconds = CheckIntervalSeconds });
+                new OnStreamMonitorStartedArgs { Channels = Channels, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
         }
 
         /// <summary>Stops service and fires OnStreamMonitorStopped event.</summary>
@@ -72,7 +78,21 @@ namespace TwitchLib.Services
         {
             _streamMonitorTimer.Stop();
             OnStreamMonitorEnded?.Invoke(this,
-               new OnStreamMonitorEndedArgs { Channels = Channels, CheckIntervalSeconds = CheckIntervalSeconds });
+               new OnStreamMonitorEndedArgs { Channels = Channels, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
+        }
+        /// <summary> Sets the list of channels to monitor by username </summary>
+        /// <param name="usernames">List of channels to monitor as usernames</param>
+        public void SetStreamsByUsername(List<string> usernames)
+        {
+            _channels = usernames;
+            _identifierType = StreamIdentifierType.Usernames;
+        }
+        /// <summary> Sets the list of channels to monitor by username </summary>
+        /// <param name="userids">List of channels to monitor as userids</param>
+        public void SetStreamsByUserID(List<string> userids)
+        {
+            _channels = userids;
+            _identifierType = StreamIdentifierType.UserIds;
         }
         #endregion
 
@@ -80,23 +100,36 @@ namespace TwitchLib.Services
         {
             foreach (var channel in Channels)
             {
-                bool current = await TwitchApi.Streams.BroadcasterOnlineAsync(channel);
+                bool current = await _checkStreamOnline(channel);
                 if (current && !_statuses[channel])
                 {
                     OnStreamOnline?.Invoke(this,
-                        new OnStreamOnlineArgs { Channel = channel, CheckIntervalSeconds = CheckIntervalSeconds });
+                        new OnStreamOnlineArgs { Channel = channel, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
                     _statuses[channel] = current;
                 }
                 else if (!current && _statuses[channel])
                 {
                     OnStreamOffline?.Invoke(this,
-                        new OnStreamOfflineArgs { Channel = channel, CheckIntervalSeconds = CheckIntervalSeconds });
+                        new OnStreamOfflineArgs { Channel = channel, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
                     _statuses[channel] = current;
                 }
             }
             return;
         }
-
+        private async Task<bool> _checkStreamOnline (string channel)
+        {
+            if (_identifierType == StreamIdentifierType.Usernames)
+            {
+                return await TwitchApi.Streams.BroadcasterOnlineAsync(channel);
+            }
+            else if (_identifierType == StreamIdentifierType.UserIds)
+            {
+                //TODO: Implement method for checking if broadcaster is online
+                return false;
+            }
+            //Throw exception (placeholder return statement)
+            return true;
+        }
     
     }
 }

@@ -53,7 +53,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\StreamIdentifierType.cs" />
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
+    <Compile Include="Events\Services\LiveChannelMonitor\OnStreamsSetArgs.cs" />
     <Compile Include="Events\Services\LiveChannelMonitor\OnStreamMonitorEndedArgs.cs" />
     <Compile Include="Events\Services\LiveChannelMonitor\OnStreamMonitorStartedArgs.cs" />
     <Compile Include="Events\Services\LiveChannelMonitor\OnStreamOfflineArgs.cs" />
