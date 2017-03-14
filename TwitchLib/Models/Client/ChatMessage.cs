@@ -215,6 +215,7 @@ namespace TwitchLib.Models.Client
             }
         }
 
+        /// <summary>Chat Message constructor with passed in values.</summary>
         public ChatMessage(List<KeyValuePair<string, string>> badges, string channel, string colorHex, string displayName, 
             EmoteSet emoteSet, bool moderator, bool subscriber, Enums.UserType userType, string message)
         {

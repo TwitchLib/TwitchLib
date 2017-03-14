@@ -7,6 +7,9 @@ using TwitchLib.Models.Client;
 
 namespace TwitchLib.Extensions.Client
 {
+    /// <summary>
+    /// Extension implementing subscriber only functionality in TwitchClient
+    /// </summary>
     public static class SubscribersOnly
     {
         /// <summary>

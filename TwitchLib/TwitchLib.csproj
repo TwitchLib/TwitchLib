@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\StreamIdentifierType.cs" />
+    <Compile Include="Enums\VideoPlayback.cs" />
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
     <Compile Include="Events\Services\LiveChannelMonitor\OnStreamsSetArgs.cs" />
     <Compile Include="Events\Services\LiveChannelMonitor\OnStreamMonitorEndedArgs.cs" />

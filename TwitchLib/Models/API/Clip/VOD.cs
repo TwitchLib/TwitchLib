@@ -14,6 +14,8 @@ namespace TwitchLib.Models.API.Clip
         public long Id { get; protected set; }
         /// <summary>URL to the VOD the Twitch Clip was sourced from.</summary>
         public string Url { get; protected set; }
+        /// <summary>Constructor of VOD model.</summary>
+        /// <param name="json"></param>
         public VOD(JToken json)
         {
             long idParse = -1;

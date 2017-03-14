@@ -7,6 +7,9 @@ using TwitchLib.Models.Client;
 
 namespace TwitchLib.Extensions.Client
 {
+    /// <summary>
+    /// Extension implementing timeout functionality in TwitchClient
+    /// </summary>
     public static class TimeoutUserExt
     {
         #region TimeoutUser

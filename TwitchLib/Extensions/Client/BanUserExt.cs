@@ -7,6 +7,7 @@ using TwitchLib.Models.Client;
 
 namespace TwitchLib.Extensions.Client
 {
+    /// <summary>Extension implementing the ban functionality in TwitchClient.</summary>
     public static class BanUserExt
     {
         /// <summary>

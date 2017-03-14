@@ -7,6 +7,9 @@ using TwitchLib.Models.Client;
 
 namespace TwitchLib.Extensions.Client
 {
+    /// <summary>
+    /// Extension to implement unban functionality.
+    /// </summary>
     public static class UnbanUserExt
     {
         /// <summary>
