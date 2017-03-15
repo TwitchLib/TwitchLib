@@ -28,7 +28,7 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 	* Message throttling handling.
 * **Services**:
 	* **FollowerService**: Automatic notifcations for new followers.
-	* **LiveStreamMonitor**: Automatic notifiers for when channels go online/offline
+	* **LiveStreamMonitor**: Automatic notifications for when channels go online/offline
 * **TwitchApi**:
 	* Retrieve uptime/current status of stream, posts in channel feed, etc.
 	* Retrieve followed channels/check is particular user is a follower or not
