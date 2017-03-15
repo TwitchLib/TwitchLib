@@ -27,8 +27,8 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 	* Ability to timeout/ban/unban users, change username color, clear chat, play commercials (for partnered streams), turn on emote/follower/sub only mode, and retrive list of moderators/followers.
 	* Message throttling handling.
 * **Services**:
-	* **FollowerService**: Automatic notifcations for new followers.
-	* **LiveStreamMonitor**: Automatic notifications for when channels go online/offline
+	* **FollowerService**: Service for detection of new followers.
+	* **LiveStreamMonitor**: Service for detecting when a channel goes online/offline
 * **TwitchApi**:
 	* Retrieve uptime/current status of stream, posts in channel feed, etc.
 	* Retrieve followed channels/check is particular user is a follower or not
