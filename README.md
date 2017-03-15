@@ -178,6 +178,7 @@ You are also more than welcome to clone/fork this repo and build the library you
  * Mr_Examed ([Mr_Examed](https://www.twitch.tv/mr_examed))
  * XuluniX ([XuluniX](https://github.com/XuluniX))
  * prom3theu5 ([@prom3theu5](https://twitter.com/prom3theu5))
+ * Ethan Lu ([elu00](https://github.com/elu00))
 
 ## License
 
