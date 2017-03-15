@@ -18,9 +18,29 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 * **TwitchApi**: With complete V3 and increasing coverage of V5 endpoints, TwitchApi is a static class that allows for modifying of virtually all Twitch account properties and fetching of Twitch data.
 * **TwitchPubSub**: Covers the relatively new Twitch PubSub event system. Currently both topics Twitch supports are supported via this static class.
 
-
-In addition to the above core components, additional parts of the library include services like FollowerService and MessageThrottler, as well as extensions for TwitchClient which contain wrappers for commonly used client funcitonality like changing color and timing users out.
-
+## Features
+* **TwitchClient**:
+	* Handles chat interactions and functionality.
+	* Events for channel being hosted, chat being cleared, moderators/users entering/leaving chat, etc.
+	* Reply to/send chat messages and whispers.
+	* Native support for commands and customizable command identifiers (default is "!")
+	* Ability to timeout/ban/unban users, change username color, clear chat, play commercials (for partnered streams), turn on emote/follower/sub only mode, and retrive list of moderators/followers.
+	* Message throttling handling.
+* **Services**:
+	* **FollowerService**: Automatic notifcations for new followers.
+	* **LiveStreamMonitor**: Automatic notifiers for when channels go online/offline
+* **TwitchApi**:
+	* Retrieve uptime/current status of stream, posts in channel feed, etc.
+	* Retrieve followed channels/check is particular user is a follower or not
+	* Search games by viewcount, name, etc.
+	* Update stream title/current game
+	* Reset stream key, set stream delay
+	* Follow/unfollow channels
+	* (Partnerd streams only) Retrieve subscriber count/list
+	* (Partnered streams) Run commercials
+	* Create/moderate/update/search for communities
+* **TwitchPubSub**:
+	* Chat interactions through Twitch's PubSub system  
 
 ## Implementing
 Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples, but this library can also be used in Visual Basic.
