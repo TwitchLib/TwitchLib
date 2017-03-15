@@ -123,7 +123,7 @@ namespace TwitchLib.Services
                     return await TwitchApi.Streams.BroadcasterOnlineAsync(channel);
                 case StreamIdentifierType.UserIds:
                     //TODO: Implement method for checking if broadcaster is online
-                    return false;
+                    throw new NotImplementedException("v5 BroadcasterOnline method not implemented yet");
                 default:
                     throw new UnintializedChannelList("Channel list must be initialized prior to service starting");
             }
