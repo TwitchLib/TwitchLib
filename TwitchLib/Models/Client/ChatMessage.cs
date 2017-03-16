@@ -181,7 +181,7 @@ namespace TwitchLib.Models.Client
                     firstComma = emote.IndexOf(',');
                     if (firstComma == -1) firstComma = emote.Length;
                     firstDash = emote.IndexOf('-');
-                    if (firstColon > 0 && firstDash > firstColon + 1 && firstComma > firstDash)
+                    if (firstColon > 0 && firstDash > firstColon && firstComma > firstDash)
                     {
                         if (Int32.TryParse(emote.Substring(firstColon + 1, (firstDash - firstColon) - 1), out low) &&
                             Int32.TryParse(emote.Substring(firstDash + 1, (firstComma - firstDash) - 1), out high))
