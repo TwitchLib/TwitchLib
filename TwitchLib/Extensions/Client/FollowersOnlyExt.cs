@@ -7,6 +7,7 @@ using TwitchLib.Models.Client;
 
 namespace TwitchLib.Extensions.Client
 {
+    /// <summary>Extension for implementing followers online mode functionality in TwitchClient</summary>
     public static class FollowersOnlyExt
     {
         // Using variable so it's easily changed if Twitch changes their requirement.
