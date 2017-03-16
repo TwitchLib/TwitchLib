@@ -56,11 +56,11 @@
     <Compile Include="Enums\StreamIdentifierType.cs" />
     <Compile Include="Enums\VideoPlayback.cs" />
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
-    <Compile Include="Events\Services\LiveChannelMonitor\OnStreamsSetArgs.cs" />
-    <Compile Include="Events\Services\LiveChannelMonitor\OnStreamMonitorEndedArgs.cs" />
-    <Compile Include="Events\Services\LiveChannelMonitor\OnStreamMonitorStartedArgs.cs" />
-    <Compile Include="Events\Services\LiveChannelMonitor\OnStreamOfflineArgs.cs" />
-    <Compile Include="Events\Services\LiveChannelMonitor\OnStreamOnlineArgs.cs" />
+    <Compile Include="Events\Services\LiveStreamMonitor\OnStreamsSetArgs.cs" />
+    <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorEndedArgs.cs" />
+    <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorStartedArgs.cs" />
+    <Compile Include="Events\Services\LiveStreamMonitor\OnStreamOfflineArgs.cs" />
+    <Compile Include="Events\Services\LiveStreamMonitor\OnStreamOnlineArgs.cs" />
     <Compile Include="Exceptions\API\BadParameterException.cs" />
     <Compile Include="Exceptions\Client\BadListenException.cs" />
     <Compile Include="Exceptions\Client\IllegalAssignmentException.cs" />

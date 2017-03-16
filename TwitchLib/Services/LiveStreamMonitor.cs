@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using TwitchLib.Exceptions.Services;
 using TwitchLib.Exceptions.API;
 using TwitchLib.Events.Services.LiveStreamMonitor;
-using TwitchLib.Models.Client;
 using TwitchLib.Enums;
 
 namespace TwitchLib.Services
@@ -21,7 +17,7 @@ namespace TwitchLib.Services
         private int _checkIntervalSeconds;
         private List<string> _channels;
         private Dictionary<string, bool> _statuses;
-        private Timer _streamMonitorTimer = new Timer();
+        private readonly Timer _streamMonitorTimer = new Timer();
         private StreamIdentifierType _identifierType;
         #endregion
         #region Public Variables
@@ -43,6 +39,8 @@ namespace TwitchLib.Services
         public event EventHandler<OnStreamMonitorStartedArgs> OnStreamMonitorStarted;
         /// <summary>Event fires when service starts.</summary>
         public event EventHandler<OnStreamMonitorEndedArgs> OnStreamMonitorEnded;
+        /// <summary>Event fires when channels to monitor are intitialized.</summary>
+        public event EventHandler<OnStreamsSetArgs> OnStreamsSet;
         #endregion
         /// <summary>Service constructor.</summary>
         /// <exception cref="BadResourceException">If channel is invalid, an InvalidChannelException will be thrown.</exception>
@@ -62,9 +60,9 @@ namespace TwitchLib.Services
         {
             if (Channels == null)
             {
-                //throw exception here
+                throw new UnintializedChannelList("Channel list must be initialized prior to service starting");
             }
-            foreach (var channel in Channels)
+            foreach (string channel in Channels)
             {
                 _statuses.Add(channel, await _checkStreamOnline(channel));
             }
@@ -89,46 +87,46 @@ namespace TwitchLib.Services
         }
         /// <summary> Sets the list of channels to monitor by username </summary>
         /// <param name="userids">List of channels to monitor as userids</param>
-        public void SetStreamsByUserID(List<string> userids)
+        public void SetStreamsByUserId(List<string> userids)
         {
             _channels = userids;
             _identifierType = StreamIdentifierType.UserIds;
+            OnStreamsSet?.Invoke(this,
+                new OnStreamsSetArgs { Channels = Channels, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
         }
         #endregion
 
         private async void _streamMonitorTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            foreach (var channel in Channels)
+            foreach (string channel in Channels)
             {
                 bool current = await _checkStreamOnline(channel);
                 if (current && !_statuses[channel])
                 {
                     OnStreamOnline?.Invoke(this,
                         new OnStreamOnlineArgs { Channel = channel, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
-                    _statuses[channel] = current;
+                    _statuses[channel] = true;
                 }
                 else if (!current && _statuses[channel])
                 {
                     OnStreamOffline?.Invoke(this,
                         new OnStreamOfflineArgs { Channel = channel, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
-                    _statuses[channel] = current;
+                    _statuses[channel] = false;
                 }
             }
-            return;
         }
         private async Task<bool> _checkStreamOnline (string channel)
         {
-            if (_identifierType == StreamIdentifierType.Usernames)
+            switch (_identifierType)
             {
-                return await TwitchApi.Streams.BroadcasterOnlineAsync(channel);
+                case StreamIdentifierType.Usernames:
+                    return await TwitchApi.Streams.BroadcasterOnlineAsync(channel);
+                case StreamIdentifierType.UserIds:
+                    //TODO: Implement method for checking if broadcaster is online
+                    throw new NotImplementedException("v5 BroadcasterOnline method not implemented yet");
+                default:
+                    throw new UnintializedChannelList("Channel list must be initialized prior to service starting");
             }
-            else if (_identifierType == StreamIdentifierType.UserIds)
-            {
-                //TODO: Implement method for checking if broadcaster is online
-                return false;
-            }
-            //Throw exception (placeholder return statement)
-            return true;
         }
     
     }

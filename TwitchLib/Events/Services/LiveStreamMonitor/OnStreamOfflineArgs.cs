@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib.Models.API;
-using TwitchLib.Models.API.Follow;
 using TwitchLib.Enums;
 
 namespace TwitchLib.Events.Services.LiveStreamMonitor
