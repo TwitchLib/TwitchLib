@@ -29,9 +29,9 @@ namespace TwitchLib.Models.Client
         public static readonly ReadOnlyCollection<string> TwitchEmoteUrls = new ReadOnlyCollection<string>(
             new string[3]
             {
-                "//static-cdn.jtvnw.net/emoticons/v1/{0}/1.0",
-                "//static-cdn.jtvnw.net/emoticons/v1/{0}/2.0",
-                "//static-cdn.jtvnw.net/emoticons/v1/{0}/3.0"
+                "https://static-cdn.jtvnw.net/emoticons/v1/{0}/1.0",
+                "https://static-cdn.jtvnw.net/emoticons/v1/{0}/2.0",
+                "https://static-cdn.jtvnw.net/emoticons/v1/{0}/3.0"
             }
         );
 
