@@ -525,6 +525,12 @@ namespace TwitchLib.Internal
         #endregion
 
         #region API5
+        public async static Task<Models.API.v5.User> GetUserV5ById(string userid)
+        {
+            string response = (await Internal.Requests.MakeGetRequest($"https://api.twitch.tv/kraken/users/{userid}", null, 5));
+            return new Models.API.v5.User(JObject.Parse(response));
+        }
+
         public async static Task<List<Models.API.v5.User>> GetUsersV5(List<string> usernames)
         {
             List<Models.API.v5.User> users = new List<Models.API.v5.User>();
