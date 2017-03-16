@@ -53,11 +53,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\StreamIdentifierType.cs" />
     <Compile Include="Enums\VideoPlayback.cs" />
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
+    <Compile Include="Events\Services\LiveStreamMonitor\OnStreamsSetArgs.cs" />
+    <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorEndedArgs.cs" />
+    <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorStartedArgs.cs" />
+    <Compile Include="Events\Services\LiveStreamMonitor\OnStreamOfflineArgs.cs" />
+    <Compile Include="Events\Services\LiveStreamMonitor\OnStreamOnlineArgs.cs" />
     <Compile Include="Exceptions\API\BadParameterException.cs" />
     <Compile Include="Exceptions\Client\BadListenException.cs" />
     <Compile Include="Exceptions\Client\IllegalAssignmentException.cs" />
+    <Compile Include="Exceptions\Services\UnitializedChannelList.cs" />
     <Compile Include="Internal\Rfc2812.cs" />
     <Compile Include="Internal\WebSocketClient.cs" />
     <Compile Include="Models\API\Community\Community.cs" />
@@ -220,6 +227,7 @@
     <Compile Include="Models\PubSub\Responses\Messages\VideoPlayback.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\Whisper.cs" />
     <Compile Include="Services\FollowerService.cs" />
+    <Compile Include="Services\LiveStreamMonitor.cs" />
     <Compile Include="Services\MessageThrottler.cs" />
     <Compile Include="Models\API\Chat\Chatter.cs" />
     <Compile Include="Models\Client\ConnectionCredentials.cs" />

@@ -5,6 +5,7 @@ using System.Timers;
 using TwitchLib.Events.PubSub;
 using TwitchLib.Models.PubSub.Responses.Messages;
 using TwitchLib.Internal;
+using WebSocketSharp;
 
 namespace TwitchLib
 {
@@ -13,7 +14,7 @@ namespace TwitchLib
     /// </summary>
     public class TwitchPubSub
     {
-        private WebSocketClient socket;
+        private WebSocket socket;
         private Models.PubSub.PreviousRequest previousRequest;
         private bool logging;
         private Timer pingTimer = new Timer();
@@ -79,28 +80,29 @@ namespace TwitchLib
         }
         
 
-        private void OnError(object sender, Exception e)
+        private void OnError(object sender, ErrorEventArgs e)
         {
             if(logging)
                 Console.WriteLine($"[TwitchPubSub]OnError: {e.Message}");
-           OnPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = e });
+           OnPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = new Exception(e.Message) });
         }
 
-        private void OnMessage(object sender, string msg)
+        private void OnMessage(object sender, MessageEventArgs e)
         {
-            if(logging)
+            string msg = e.Data.ToString();
+            if (logging)                
                 Console.WriteLine($"[TwitchPubSub] {msg}");
             parseMessage(msg);
         }
         
-        private void Socket_OnDisconnected(WebSocketClient client)
+        private void Socket_OnDisconnected(object sender, CloseEventArgs e)
         {
             if (logging)
                 Console.WriteLine($"[TwitchPubSub]OnClose");
             OnPubSubServiceClosed?.Invoke(this, null);
         }
 
-        private void Socket_OnConnected(WebSocketClient client)
+        private void Socket_OnConnected(object sender, EventArgs e)
         {
             if (logging)
                 Console.WriteLine($"[TwitchPubSub]OnOpen!");
@@ -115,7 +117,7 @@ namespace TwitchLib
             JObject data = new JObject(
                 new JProperty("type", "PING")
             );
-            socket.SendMessage(data.ToString());
+            socket.Send(data.ToString());
         }
 
         private void parseMessage(string message)
@@ -243,7 +245,7 @@ namespace TwitchLib
             if (oauth != null)
                 ((JObject)jsonData.SelectToken("data")).Add(new JProperty("auth_token", oauth));
 
-            socket.SendMessage(jsonData.ToString());
+            socket.Send(jsonData.ToString());
         }
 
         private void unaccountedFor(string message)
@@ -300,11 +302,11 @@ namespace TwitchLib
         /// </summary>
         public void Connect()
         {
-            socket = WebSocketClient.Create(new Uri("wss://pubsub-edge.twitch.tv"));
-            socket.OnConnected += Socket_OnConnected;
+            socket = new WebSocket("wss://pubsub-edge.twitch.tv");
+            socket.OnOpen += Socket_OnConnected;
             socket.OnError += OnError;
             socket.OnMessage += OnMessage;
-            socket.OnDisconnected += Socket_OnDisconnected;
+            socket.OnClose += Socket_OnDisconnected;
             socket.Connect();
         }
         
@@ -313,7 +315,7 @@ namespace TwitchLib
         /// </summary>
         public void Disconnect()
         {
-            socket.Disconnect();
+            socket.Close();
         }
 
         /// <summary>
