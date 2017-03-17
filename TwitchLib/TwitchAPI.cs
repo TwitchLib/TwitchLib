@@ -268,6 +268,10 @@ namespace TwitchLib
             /// <param name="usernames">List of strings representing usernames.</param>
             /// <returns>List of user objects of the valid usernames.</returns>
             public static async Task<List<Models.API.v5.User>> GetUsersV5Async(List<string> usernames) => await Internal.TwitchApi.GetUsersV5(usernames);
+
+            public static Models.API.v5.User GetUserV5ById(string userid) => Task.Run(() => Internal.TwitchApi.GetUserV5ById(userid)).Result;
+
+            public static async Task<Models.API.v5.User> GetUserV5ByIdAsync(string userid) => await Internal.TwitchApi.GetUserV5ById(userid);
         }
 
         /// <summary>
