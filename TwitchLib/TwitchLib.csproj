@@ -66,6 +66,9 @@
     <Compile Include="Exceptions\Client\IllegalAssignmentException.cs" />
     <Compile Include="Exceptions\Services\UnitializedChannelList.cs" />
     <Compile Include="Internal\Rfc2812.cs" />
+    <Compile Include="Internal\TwitchAPI\v3.cs" />
+    <Compile Include="Internal\TwitchAPI\v4.cs" />
+    <Compile Include="Internal\TwitchAPI\v5.cs" />
     <Compile Include="Internal\WebSocketClient.cs" />
     <Compile Include="Models\API\Community\Community.cs" />
     <Compile Include="Models\API\Community\CommunityModerator.cs" />
@@ -234,7 +237,7 @@
     <Compile Include="Exceptions\Client\ErrorLoggingInException.cs" />
     <Compile Include="Exceptions\API\BadResourceException.cs" />
     <Compile Include="Models\Client\NewSubscriber.cs" />
-    <Compile Include="Internal\TwitchAPI.cs" />
+    <Compile Include="Internal\TwitchAPI\Core.cs" />
     <Compile Include="Models\API\Follow\Follow.cs" />
     <Compile Include="Models\API\Follow\FollowedUsersResponse.cs" />
     <Compile Include="Models\API\Channel\Channel.cs" />
