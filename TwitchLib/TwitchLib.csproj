@@ -177,6 +177,11 @@
     <Compile Include="Models\API\v3\ChannelFeeds\PostResponse.cs" />
     <Compile Include="Models\API\v3\ChannelFeeds\Reaction.cs" />
     <Compile Include="Models\API\v3\Channels\Channel.cs" />
+    <Compile Include="Models\API\v3\Chat\Badge.cs" />
+    <Compile Include="Models\API\v3\Chat\BadgesResponse.cs" />
+    <Compile Include="Models\API\v3\Chat\Emoticon.cs" />
+    <Compile Include="Models\API\v3\Chat\EmoticonImage.cs" />
+    <Compile Include="Models\API\v3\Chat\Image.cs" />
     <Compile Include="Models\API\v3\Teams\Team.cs" />
     <Compile Include="Models\API\v3\Users\User.cs" />
     <Compile Include="Models\Client\ChannelState.cs" />
@@ -222,7 +227,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Libs\" />
-    <Folder Include="Models\API\v3\Chat\" />
     <Folder Include="Models\API\v3\Follows\" />
     <Folder Include="Models\API\v3\Ingests\" />
     <Folder Include="Models\API\v3\Root\" />

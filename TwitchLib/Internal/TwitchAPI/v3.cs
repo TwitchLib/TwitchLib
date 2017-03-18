@@ -89,7 +89,20 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Chat
         {
+            public static Models.API.v3.Chat.BadgesResponse GetBadges(string channel)
+            {
 
+            }
+
+            public static List<Models.API.v3.Chat.Emoticon> GetEmoticons()
+            {
+
+            }
+
+            public static List<Models.API.v3.Chat.EmoticonImage> GetEmoticonImages(string emotesets = null)
+            {
+
+            }
         }
 
         public static class Follows
