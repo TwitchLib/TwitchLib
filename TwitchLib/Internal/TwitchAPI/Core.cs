@@ -835,38 +835,7 @@ namespace TwitchLib.Internal
         #endregion
 
         #region Other
-        internal static void SetClientId(string clientId, bool disableClientIdValidation = false)
-        {
-            if (ClientId != null && clientId == ClientId)
-                return;
-            ClientId = clientId;
-            if (!disableClientIdValidation)
-                ValidClientId();
-        }
-
-        internal static void SetAccessToken(string accessToken)
-        {
-            if (!string.IsNullOrEmpty(accessToken))
-                AccessToken = accessToken;
-        }
-
-        internal static async Task<bool> ValidClientId(string clientId, bool updateClientIdOnSuccess = true)
-        {
-            string oldClientId;
-            if (!string.IsNullOrEmpty(ClientId))
-                oldClientId = ClientId;
-            var resp = await Requests.MakeGetRequest("https://api.twitch.tv/kraken");
-            var json = JObject.Parse(resp);
-            if (json.SelectToken("identified") != null && (bool)json.SelectToken("identified") == true)
-                return true;
-            return false;
-        }
-
-        private static async void ValidClientId()
-        {
-            if (await ValidClientId(ClientId, false) == false)
-                throw new InvalidCredentialException("The provided Client-Id is invalid. Create an application here and obtain a Client-Id from it here: https://www.twitch.tv/settings/connections");
-        }
+        
 
         internal static async Task<Models.API.Other.Validate.ValidationResponse> ValidationAPIRequest(string accessToken = null)
         {
