@@ -182,6 +182,13 @@
     <Compile Include="Models\API\v3\Chat\Emoticon.cs" />
     <Compile Include="Models\API\v3\Chat\EmoticonImage.cs" />
     <Compile Include="Models\API\v3\Chat\Image.cs" />
+    <Compile Include="Models\API\v3\Follows\DirectionEnum.cs" />
+    <Compile Include="Models\API\v3\Follows\Follow.cs" />
+    <Compile Include="Models\API\v3\Follows\FollowsResponse.cs" />
+    <Compile Include="Models\API\v3\Follows\FollowersResponse.cs" />
+    <Compile Include="Models\API\v3\Follows\Follows.cs" />
+    <Compile Include="Models\API\v3\Follows\SortByEnum.cs" />
+    <Compile Include="Models\API\v3\Follows\User.cs" />
     <Compile Include="Models\API\v3\Teams\Team.cs" />
     <Compile Include="Models\API\v3\Users\User.cs" />
     <Compile Include="Models\Client\ChannelState.cs" />
@@ -227,7 +234,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Libs\" />
-    <Folder Include="Models\API\v3\Follows\" />
     <Folder Include="Models\API\v3\Ingests\" />
     <Folder Include="Models\API\v3\Root\" />
     <Folder Include="Models\API\v3\Search\" />

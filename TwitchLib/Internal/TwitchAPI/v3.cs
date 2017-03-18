@@ -107,7 +107,30 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Follows
         {
+            public static Models.API.v3.Follows.FollowersResponse GetFollowers(string channel, int limit = 25, int offset = 0, string cursor = "", Models.API.v3.Follows.Direction direction = Models.API.v3.Follows.Direction.Descending)
+            {
 
+            }
+
+            public static Models.API.v3.Follows.FollowsResponse GetFollows(string channel, int limit = 25, int offset = 0, Models.API.v3.Follows.Direction direction = Models.API.v3.Follows.Direction.Descending, Models.API.v3.Follows.SortBy sortBy = Models.API.v3.Follows.SortBy.CreatedAt)
+            {
+
+            }
+
+            public static Models.API.v3.Follows.Follows GetFollowsStatus(string channel, string targetChannel)
+            {
+
+            }
+
+            public static Models.API.v3.Follows.Follows CreateFollow(string channel, string targetChannel, bool notifications = false, string token = null)
+            {
+
+            }
+
+            public static void RemoveFollow(string channel, string target, string token = null)
+            {
+
+            }
         }
 
         public static class Games
