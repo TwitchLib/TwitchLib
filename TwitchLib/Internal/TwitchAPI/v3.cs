@@ -135,7 +135,10 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Games
         {
+            public static Models.API.v3.Games.TopGamesResponse GetTopGames(int limit = 10, int offset = 0)
+            {
 
+            }
         }
 
         public static class Ingests
