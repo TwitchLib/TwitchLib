@@ -177,7 +177,25 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Streams
         {
+            public static Models.API.v3.Streams.Stream GetStream(string channel)
+            {
 
+            }
+
+            public static Models.API.v3.Streams.StreamsResponse GetStreams(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Models.API.v3.Streams.StreamType streamType = Models.API.v3.Streams.StreamType.All, string language = "en")
+            {
+
+            }
+
+            public static List<Models.API.v3.Streams.FeaturedStream> GetFeaturedStreams(int limit = 25, int offset = 0)
+            {
+
+            }
+
+            public static Models.API.v3.Streams.Summary GetStreamsSummary(string game = null)
+            {
+
+            }
         }
 
         public static class Subscriptions
