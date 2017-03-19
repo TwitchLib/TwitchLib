@@ -151,7 +151,10 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Root
         {
+            public Models.API.v3.Root.Token GetRoot(string token = null)
+            {
 
+            }
         }
 
         public static class Search

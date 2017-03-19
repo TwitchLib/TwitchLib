@@ -189,6 +189,14 @@
     <Compile Include="Models\API\v3\Follows\Follows.cs" />
     <Compile Include="Models\API\v3\Follows\SortByEnum.cs" />
     <Compile Include="Models\API\v3\Follows\User.cs" />
+    <Compile Include="Models\API\v3\Games\Box.cs" />
+    <Compile Include="Models\API\v3\Games\Game.cs" />
+    <Compile Include="Models\API\v3\Games\TopGamesResponse.cs" />
+    <Compile Include="Models\API\v3\Games\Logo.cs" />
+    <Compile Include="Models\API\v3\Games\TopGame.cs" />
+    <Compile Include="Models\API\v3\Ingests\Ingest.cs" />
+    <Compile Include="Models\API\v3\Root\Authorization.cs" />
+    <Compile Include="Models\API\v3\Root\Token.cs" />
     <Compile Include="Models\API\v3\Teams\Team.cs" />
     <Compile Include="Models\API\v3\Users\User.cs" />
     <Compile Include="Models\Client\ChannelState.cs" />
@@ -234,8 +242,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Libs\" />
-    <Folder Include="Models\API\v3\Ingests\" />
-    <Folder Include="Models\API\v3\Root\" />
     <Folder Include="Models\API\v3\Search\" />
     <Folder Include="Models\API\v3\Subscriptions\" />
     <Folder Include="Models\API\v3\Videos\" />
