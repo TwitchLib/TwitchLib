@@ -197,6 +197,11 @@
     <Compile Include="Models\API\v3\Ingests\Ingest.cs" />
     <Compile Include="Models\API\v3\Root\Authorization.cs" />
     <Compile Include="Models\API\v3\Root\Token.cs" />
+    <Compile Include="Models\API\v3\Search\SearchChannelsResponse.cs" />
+    <Compile Include="Models\API\v3\Search\SearchGamesResponse.cs" />
+    <Compile Include="Models\API\v3\Search\SearchStreamsResponse.cs" />
+    <Compile Include="Models\API\v3\Streams\Preview.cs" />
+    <Compile Include="Models\API\v3\Streams\Stream.cs" />
     <Compile Include="Models\API\v3\Teams\Team.cs" />
     <Compile Include="Models\API\v3\Users\User.cs" />
     <Compile Include="Models\Client\ChannelState.cs" />
@@ -242,7 +247,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Libs\" />
-    <Folder Include="Models\API\v3\Search\" />
     <Folder Include="Models\API\v3\Subscriptions\" />
     <Folder Include="Models\API\v3\Videos\" />
   </ItemGroup>

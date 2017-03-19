@@ -151,7 +151,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Root
         {
-            public Models.API.v3.Root.Token GetRoot(string token = null)
+            public static Models.API.v3.Root.Token GetRoot(string token = null)
             {
 
             }
@@ -159,7 +159,20 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Search
         {
+            public static Models.API.v3.Search.SearchChannelsResponse SearchChannels(string query, int limit = 25, int offset = 0)
+            {
 
+            }
+
+            public static Models.API.v3.Search.SearchStreamsResponse SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
+            {
+
+            }
+
+            public static Models.API.v3.Search.SearchGamesResponse SearchGames(string query, Models.API.v3.Search.GameSearchType type, bool live = false)
+            {
+
+            }
         }
 
         public static class Streams
