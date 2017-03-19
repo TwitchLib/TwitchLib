@@ -143,7 +143,10 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Ingests
         {
+            public static List<Models.API.v3.Ingests.Ingest> GetIngests()
+            {
 
+            }
         }
 
         public static class Root
