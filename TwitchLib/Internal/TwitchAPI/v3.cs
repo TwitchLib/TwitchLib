@@ -200,22 +200,69 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Subscriptions
         {
+            public static List<Models.API.v3.Subscriptions.SubscriptionsResponse> GetSubscriptions(string channel, int limit = 25, int offset = 0, Models.API.v3.Subscriptions.Direction direction = Models.API.v3.Subscriptions.Direction.Ascending, string token = null)
+            {
 
+            }
+
+            public static List<Models.API.v3.Subscriptions.Subscription> GetAllSubscriptions(string channel, string token = null)
+            {
+
+            }
+
+            public static bool ChannelHasUserSubscribed(string channel, string targetUser, string token = null)
+            {
+
+            }
+
+            public static bool UserSubscribedToChannel(string user, string targetChannel, string token = null)
+            {
+
+            }
         }
 
         public static class Teams
         {
+            public static List<Models.API.v3.Teams.Team> GetTeams(int limit = 25, int offset = 0)
+            {
 
+            }
+
+            public static List<Models.API.v3.Teams.Team> GetTeam(string teamName)
+            {
+
+            }
         }
 
         public static class Users
         {
+            public static Models.API.v3.Users.User GetUserFromUsername(string username)
+            {
 
+            }
+
+            public static List<Models.API.v3.Users.EmoteSet> GetEmotes(string username, string token = null)
+            {
+
+            }
+
+            public static Models.API.v3.Users.User GetUserFromToken(string token = null)
+            {
+
+            }
         }
 
         public static class Videos
         {
+            public static Models.API.v3.Videos.Video GetVideo(string id)
+            {
 
+            }
+
+            public static List<Models.API.v3.Videos.Video> GetTopVideos(int limit = 100, int offset = 0, string game = null, Models.API.v3.Videos.Period period = Models.API.v3.Videos.Period.Week)
+            {
+
+            }
         }
     }
 }
