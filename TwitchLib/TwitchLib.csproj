@@ -217,6 +217,14 @@
     <Compile Include="Models\API\v3\Videos\Channel.cs" />
     <Compile Include="Models\API\v3\Videos\PeriodEnum.cs" />
     <Compile Include="Models\API\v3\Videos\Video.cs" />
+    <Compile Include="Models\API\v4\Clips\Broadcaster.cs" />
+    <Compile Include="Models\API\v4\Clips\Clip.cs" />
+    <Compile Include="Models\API\v4\Clips\Curator.cs" />
+    <Compile Include="Models\API\v4\Clips\FollowClipsResponse.cs" />
+    <Compile Include="Models\API\v4\Clips\PeriodEnum.cs" />
+    <Compile Include="Models\API\v4\Clips\Thumbnails.cs" />
+    <Compile Include="Models\API\v4\Clips\TopClipsResponse.cs" />
+    <Compile Include="Models\API\v4\Clips\VOD.cs" />
     <Compile Include="Models\Client\ChannelState.cs" />
     <Compile Include="Models\Client\ChatCommand.cs" />
     <Compile Include="Models\Client\EmoteSet.cs" />
