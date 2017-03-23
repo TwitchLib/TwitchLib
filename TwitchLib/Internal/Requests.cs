@@ -84,6 +84,8 @@ namespace TwitchLib.Internal
         private static void handleWebException(WebException e)
         {
             HttpWebResponse errorResp = e.Response as HttpWebResponse;
+            if (errorResp == null)
+                throw e;
             switch (errorResp.StatusCode)
             {
                 case HttpStatusCode.Unauthorized:
