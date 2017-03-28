@@ -10,46 +10,65 @@ namespace TwitchLib.Internal.TwitchAPI
     {
         public static class Blocks
         {
-            public static List<Models.API.v3.Blocks.Block> GetBlocks(string channel, int limit = 25, int offset = 0, string token = null)
+            public static Models.API.v3.Blocks.GetBlocksResponse GetBlocks(string channel, int limit = 25, int offset = 0)
             {
-
+                string pm = $"?limit={limit}&offset={offset}";
+                return Requests.Get<Models.API.v3.Blocks.GetBlocksResponse>($"https://api.twitch.tv/kraken/users/{channel}/blocks{pm}", Requests.API.v3);
             }
 
-            public static Models.API.v3.Blocks.Block CreateBlock(string channel, string target, string token = null)
+            public static Models.API.v3.Blocks.Block CreateBlock(string channel, string target)
             {
-
+                return Requests.Put<Models.API.v3.Blocks.Block>($"https://api.twitch.tv/kraken/users/{channel}/blocks/{target}", Requests.API.v3);
             }
 
-            public static void RemoveBlock(string channel, string target, string token = null)
+            public static void RemoveBlock(string channel, string target)
             {
-
+                Requests.Delete($"https://api.twitch.tv/kraken/users/{channel}/blocks/{target}", Requests.API.v3);
             }
         }
 
         public static class ChannelFeed
         {
-            public static Models.API.v3.ChannelFeeds.ChannelFeedResponse GetChannelFeedPosts(string channel, int limit = 25, int offset = 0, string token = null)
+            public static Models.API.v3.ChannelFeeds.ChannelFeedResponse GetChannelFeedPosts(string channel, int limit = 25, string cursor = null)
             {
-
+                string pm = $"?limit={limit}";
+                if (cursor != null)
+                    pm = $"{pm}&cursor={cursor}";
+                return Requests.Get<Models.API.v3.ChannelFeeds.ChannelFeedResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts{pm}");
             }
 
-            public static Models.API.v3.ChannelFeeds.PostResponse CreatePost(string channel, string content, bool share = false, string token = null)
+            public static Models.API.v3.ChannelFeeds.PostResponse CreatePost(string channel, string content, bool share = false)
             {
-
+                var model = new Models.API.v3.ChannelFeeds.CreatePostRequest()
+                {
+                    Content = content,
+                    Share = share
+                };
+                return Requests.Post<Models.API.v3.ChannelFeeds.PostResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts", model, Requests.API.v3);
             }
 
-            public static Models.API.v3.ChannelFeeds.PostReactionResponse CreateReaction(string channel, string postId, string emoteId, string token = null)
+            public static Models.API.v3.ChannelFeeds.Post GetPost(string channel, string postId)
             {
-
+                return Requests.Get<Models.API.v3.ChannelFeeds.Post>($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", Requests.API.v3);
             }
 
-            public static void RemoveReaction(string channel, string postId, string emoteId, string token = null)
+            public static void DeletePost(string channel, string postId)
             {
+                Requests.Delete($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", Requests.API.v3);
+            }
 
+            public static Models.API.v3.ChannelFeeds.PostReactionResponse CreateReaction(string channel, string postId, string emoteId)
+            {
+                return Requests.Post<Models.API.v3.ChannelFeeds.PostReactionResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}/reactions?emote_id={emoteId}", null, Requests.API.v3);
+            }
+
+            public static void RemoveReaction(string channel, string postId, string emoteId)
+            {
+                Requests.Delete($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}/reactions?emote_id={emoteId}", Requests.API.v3);
             }
         }
 
-        public static class Channels
+        /*public static class Channels
         {
             public static Models.API.v3.Channels.Channel GetChannel(string channel)
             {
@@ -263,6 +282,6 @@ namespace TwitchLib.Internal.TwitchAPI
             {
 
             }
-        }
+        }*/
     }
 }

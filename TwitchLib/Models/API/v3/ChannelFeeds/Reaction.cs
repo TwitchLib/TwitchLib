@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +9,9 @@ namespace TwitchLib.Models.API.v3.ChannelFeeds
 {
     public class Reaction
     {
-        public string Emote { get; protected set; }
-        public int Count { get; protected set; }
-
-        public Reaction(JToken json)
-        {
-
-        }
+        public string Emote { get; set; }
+        public string Count { get; set; }
+        [JsonProperty(PropertyName = "user_ids")]
+        public string[] UserIds { get; set; }
     }
 }

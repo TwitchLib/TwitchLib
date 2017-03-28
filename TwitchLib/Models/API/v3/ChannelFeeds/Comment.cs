@@ -15,7 +15,7 @@ namespace TwitchLib.Models.API.v3.ChannelFeeds
         public string Body { get; protected set; }
         public List<KeyValuePair<string, bool>> Permissions { get; protected set; } = new List<KeyValuePair<string, bool>>();
         public List<Emote> Emotes { get; protected set; } = new List<Emote>();
-        public List<Reaction> Reactions { get; protected set; }
+        public List<CreatedReaction> Reactions { get; protected set; }
         public Users.User User { get; protected set; }
         
         public Comment(JToken json)

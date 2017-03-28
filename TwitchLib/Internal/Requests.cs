@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,74 +12,139 @@ namespace TwitchLib.Internal
 {
     internal class Requests
     {
-        internal static async Task<string> MakeGetRequest(string url, string accessToken = null, int apiVersion = 3)
+        public enum API
         {
-            if (string.IsNullOrEmpty(TwitchApi.ClientId) && string.IsNullOrWhiteSpace(accessToken) && string.IsNullOrWhiteSpace(TwitchApi.AccessToken))
-                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId(\"client_id_here\")");
-
-            accessToken = accessToken?.ToLower().Replace("oauth:", "");
-
-            // If the URL already has GET parameters, we cannot use the GET parameter initializer '?'
-            HttpWebRequest request = url.Contains("?")
-                ? (HttpWebRequest)WebRequest.Create(new Uri($"{url}&client_id={TwitchApi.ClientId}"))
-                : (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={TwitchApi.ClientId}"));
-
-            request.Method = "GET";
-            request.Accept = $"application/vnd.twitchtv.v{apiVersion}+json";
-            request.Headers.Add("Client-ID", TwitchApi.ClientId);
-
-            if (!string.IsNullOrWhiteSpace(accessToken))
-                request.Headers.Add("Authorization", $"OAuth {accessToken}");
-            else if (!string.IsNullOrEmpty(TwitchApi.AccessToken))
-                request.Headers.Add("Authorization", $"OAuth {TwitchApi.AccessToken}");
-
-            try
-            {
-                using (var responseStream = await request.GetResponseAsync())
-                {
-                    return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
-                }
-            }
-            catch (WebException e) { handleWebException(e); return null; }
-
+            v3, v4, v5
         }
 
-        internal static async Task<string> MakeRestRequest(string url, string method, string requestData = null, string accessToken = null, int apiVersion = 3, byte[] data = null)
+        public static T Post<T>(string url, Models.API.RequestModel model, API api = API.v5)
         {
-            if (string.IsNullOrWhiteSpace(TwitchApi.ClientId) && string.IsNullOrWhiteSpace(accessToken))
-                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token.");
+            if (model != null)
+                return JsonConvert.DeserializeObject<T>(Post(url, JsonConvert.SerializeObject(model), api));
+            else
+                return JsonConvert.DeserializeObject<T>(Post(url, "", api));
+        }
 
-            if (data == null)
-                data = new UTF8Encoding().GetBytes(requestData ?? "");
-            accessToken = accessToken?.ToLower().Replace("oauth:", "");
+        public static string Post(string url, string payload, API api = API.v5)
+        {
+            checkForCredentials();
+            url = appendClientId(url);
 
-            var request = (HttpWebRequest)WebRequest.Create(new Uri($"{url}?client_id={TwitchApi.ClientId}"));
-            request.Method = method;
-            request.Accept = $"application/vnd.twitchtv.v{apiVersion}+json";
-            request.ContentType = method == "POST"
-                ? "application/x-www-form-urlencoded"
-                : "application/json";
-            request.Headers.Add("Client-ID", TwitchApi.ClientId);
+            var request = WebRequest.CreateHttp(url);
+            request.Method = "POST";
+            request.ContentType = "application/json";
 
-            if (!string.IsNullOrWhiteSpace(accessToken))
-                request.Headers.Add("Authorization", $"OAuth {accessToken}");
-            else if (!string.IsNullOrWhiteSpace(TwitchApi.AccessToken))
-                request.Headers.Add("Authorization", $"OAuth {TwitchApi.AccessToken}");
+            if (!string.IsNullOrEmpty(TwitchApi.AccessToken))
+                request.Headers["Authorization"] = $"OAuth {TwitchApi.AccessToken}";
+            request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
 
-            using (var requestStream = await request.GetRequestStreamAsync())
-            {
-                await requestStream.WriteAsync(data, 0, data.Length);
-            }
+            using (var writer = new StreamWriter(request.GetRequestStream()))
+                writer.Write(payload);
 
             try
             {
-                using (var responseStream = await request.GetResponseAsync())
-                {
-                    return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
-                }
+                var response = request.GetResponse();
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                    return reader.ReadToEnd();
             }
-            catch (WebException e) { handleWebException(e); return null; }
+            catch (WebException ex) { handleWebException(ex); }
 
+            return null;
+        }
+
+        public static string Get(string url, API api = API.v5)
+        {
+            checkForCredentials();
+            url = appendClientId(url);
+
+            var request = WebRequest.CreateHttp(url);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
+
+            if (!string.IsNullOrEmpty(TwitchApi.AccessToken))
+                request.Headers["Authorization"] = $"OAuth {TwitchApi.AccessToken}";
+
+            try
+            {
+                var response = request.GetResponse();
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                    return reader.ReadToEnd();
+            }
+            catch (WebException ex) { handleWebException(ex); }
+
+            return null;
+        }
+
+        public static T Get<T>(string url, API version = API.v5)
+        {
+            return JsonConvert.DeserializeObject<T>(Get(url));
+        }
+
+        public static void Delete(string url, API api = API.v5)
+        {
+            genericRequest(url, "DELETE", api);
+        }
+
+        public static T Put<T>(string url, API api = API.v5)
+        {
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", api));
+        }
+
+        public static string Put(string url, API api = API.v5)
+        {
+            return genericRequest(url, "PUT", api);
+        }
+
+        private static string genericRequest(string url, string method, API api = API.v5)
+        {
+            checkForCredentials();
+            url = appendClientId(url);
+
+            var request = WebRequest.CreateHttp(url);
+            request.Method = method;
+            request.ContentType = "application/json";
+            request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
+
+            if (!string.IsNullOrEmpty(TwitchApi.AccessToken))
+                request.Headers["Authorization"] = $"OAuth {TwitchApi.AccessToken}";
+
+            try
+            {
+                var response = request.GetResponse();
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                    return reader.ReadToEnd();
+            }
+            catch (WebException ex) { handleWebException(ex); }
+
+            return null;
+        }
+
+        private static int getVersion(API api)
+        {
+            switch (api)
+            {
+                case API.v3:
+                    return 3;
+                case API.v4:
+                    return 4;
+                case API.v5:
+                default:
+                    return 5;
+            }
+        }
+
+        private static string appendClientId(string url)
+        {
+            return url.Contains("?")
+                ? $"{url}&client_id={TwitchApi.ClientId}"
+                : $"{url}?client_id={TwitchApi.ClientId}";
+        }
+
+        private static void checkForCredentials()
+        {
+            if (string.IsNullOrEmpty(TwitchApi.ClientId) && string.IsNullOrWhiteSpace(TwitchApi.AccessToken))
+                throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId(\"client_id_here\")");
         }
 
         private static void handleWebException(WebException e)

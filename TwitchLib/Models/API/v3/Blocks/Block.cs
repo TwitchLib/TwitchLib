@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace TwitchLib.Models.API.v3.Blocks
 {
     public class Block
     {
-        public Block(JToken json)
-        {
-
-        }
+        [JsonProperty(PropertyName = "updated_at")]
+        public string UpdatedAt { get; set; }
+        public Users.User User { get; set; }
+        [JsonProperty(PropertyName = "_id")]
+        public int Id { get; set; }
     }
 }

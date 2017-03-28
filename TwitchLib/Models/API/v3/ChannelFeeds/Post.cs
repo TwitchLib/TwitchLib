@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +11,12 @@ namespace TwitchLib.Models.API.v3.ChannelFeeds
     public class Post
     {
         public string Id { get; protected set; }
-        public DateTime CreatedAt { get; protected set; }
+        [JsonProperty(PropertyName = "created_at")]
+        public string CreatedAt { get; protected set; }
         public bool Deleted { get; protected set; }
-        public List<Emote> Emotes { get; protected set; } = new List<Emote>();
-        public List<Reaction> Reactions { get; protected set; } = new List<Reaction>();
+        public Emote[] Emotes { get; protected set; }
+        public Reaction[] Reactions { get; protected set; }
         public string Body { get; protected set; }
         public Users.User User { get; protected set; }
-
-        public Post(JToken json)
-        {
-
-        }
     }
 }
