@@ -23,6 +23,11 @@ namespace TwitchLib.Internal
         internal static string AccessToken { get; set; } 
 
         #region Get Objects
+        internal static async Task<Models.API.Channel.ChannelEventsResponse> GetChannelEvents(string channelId)
+        {
+            return new Models.API.Channel.ChannelEventsResponse(JObject.Parse(await Requests.MakeGetRequest($"https://api.twitch.tv/v5/channels/{channelId}/events")));
+        }
+
         internal static async Task<Models.API.Channel.Channels> GetChannelsObject(string channel)
         {
             return new Models.API.Channel.Channels(JObject.Parse(await Requests.MakeGetRequest($"https://api.twitch.tv/api/channels/{channel}")));

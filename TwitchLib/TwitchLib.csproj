@@ -67,6 +67,8 @@
     <Compile Include="Exceptions\Services\UnitializedChannelList.cs" />
     <Compile Include="Internal\Rfc2812.cs" />
     <Compile Include="Internal\WebSocketClient.cs" />
+    <Compile Include="Models\API\Channel\ChannelEventsResponse.cs" />
+    <Compile Include="Models\API\Channel\Event.cs" />
     <Compile Include="Models\API\Community\Community.cs" />
     <Compile Include="Models\API\Community\CommunityModerator.cs" />
     <Compile Include="Models\API\Community\CommunityTimedOutUsersResponse.cs" />

@@ -20,6 +20,19 @@ namespace TwitchLib
         public static class Channels
         {
             /// <summary>
+            /// [SYNC] Retrieves all active events for a specific channel (by channel id)
+            /// </summary>
+            /// <param name="channelId">The channel id to fetch channel events from.</param>
+            /// <returns>ChannelEventsResponse</returns>
+            public static Models.API.Channel.ChannelEventsResponse GetChannelEvents(string channelId) => Task.Run(() => Internal.TwitchApi.GetChannelEvents(channelId)).Result;
+            /// <summary>
+            /// [ASYNC] Retrieves all active events for a specific channel (by channel id)
+            /// </summary>
+            /// <param name="channelId">The channel id to fetch channel events from.</param>
+            /// <returns>ChannelEventsResponse</returns>
+            public static async Task<Models.API.Channel.ChannelEventsResponse> GetChannelEventsAsync(string channelId) => await Internal.TwitchApi.GetChannelEvents(channelId);
+
+            /// <summary>
             /// [SYNC] Retrieves a Channels object regarding a specific channel.
             /// </summary>
             /// <param name="channel">The channel to fetch Channels object about.</param>
