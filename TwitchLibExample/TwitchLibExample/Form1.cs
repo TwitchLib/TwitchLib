@@ -1139,5 +1139,13 @@ namespace TwitchLibExample
             else
                 MessageBox.Show($"Client Id set, but no auth set.");
         }
+
+        private async void button86_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchApi.Channels.GetChannelEventsAsync(textBox70.Text);
+            MessageBox.Show("Total: " + resp.Total);
+            foreach (var eventModel in resp.Events)
+                MessageBox.Show($"Event Name: {eventModel.Title}\nEvent Game: {eventModel.Game.Name}");
+        }
     }
 }
