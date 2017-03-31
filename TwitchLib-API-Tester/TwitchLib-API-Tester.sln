@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchLib-API-Tester", "TwitchLib-API-Tester\TwitchLib-API-Tester.csproj", "{9DC15B3A-DF0E-409D-B82B-CAA8B4413BEF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9DC15B3A-DF0E-409D-B82B-CAA8B4413BEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DC15B3A-DF0E-409D-B82B-CAA8B4413BEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DC15B3A-DF0E-409D-B82B-CAA8B4413BEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DC15B3A-DF0E-409D-B82B-CAA8B4413BEF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
