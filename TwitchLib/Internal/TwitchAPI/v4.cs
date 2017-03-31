@@ -10,17 +10,17 @@ namespace TwitchLib.Internal.TwitchAPI
     {
         public Models.API.v4.Clips.Clip GetClip(string slug)
         {
-
+            return null;
         }
 
         public Models.API.v4.Clips.TopClipsResponse GetTopClips(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v4.Clips.Period period = Models.API.v4.Clips.Period.Week, bool trending = false)
         {
-
+            return null;
         }
 
         public Models.API.v4.Clips.FollowClipsResponse GetFollowedClips(long limit = 10, string cursor = null, bool trending = false, string token = null)
         {
-
+            return null;
         }
     }
 }

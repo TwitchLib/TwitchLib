@@ -12,8 +12,14 @@ namespace TwitchLib
     /// <summary>
     /// Fully featured Twitch API wrapper.
     /// </summary>
-    public static class TwitchApi
+    public static class TwitchAPI
     {
+        public static class Settings
+        {
+            public static string ClientId { get { return Internal.TwitchAPI.Shared.ClientId; } set { Internal.TwitchAPI.Shared.ClientId = value; } }
+            public static string AccessToken { get { return Internal.TwitchAPI.Shared.AccessToken; } set { Internal.TwitchAPI.Shared.AccessToken = value; } }
+        }
+
         public static class Blocks
         {
             public static Models.API.v3.Blocks.GetBlocksResponse GetBlocks(string channel, int limit = 25, int offset = 0)

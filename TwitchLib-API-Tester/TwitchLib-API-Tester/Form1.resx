@@ -117,4 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="richTextBox1.Text" xml:space="preserve">
+    <value>You can have the settings auto fill from a test file by doing the following: Create a credentials-api.txt file in the same directory as the exectuable. Then populate the first 4 lines of the file with the settings you want to load into the 4 values to the left.</value>
+  </data>
 </root>

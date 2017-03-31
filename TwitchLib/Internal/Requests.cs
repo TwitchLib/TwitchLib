@@ -34,8 +34,8 @@ namespace TwitchLib.Internal
             request.Method = "POST";
             request.ContentType = "application/json";
 
-            if (!string.IsNullOrEmpty(TwitchApi.AccessToken))
-                request.Headers["Authorization"] = $"OAuth {TwitchApi.AccessToken}";
+            if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
+                request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
             request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
 
             using (var writer = new StreamWriter(request.GetRequestStream()))
@@ -62,8 +62,8 @@ namespace TwitchLib.Internal
             request.ContentType = "application/json";
             request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
 
-            if (!string.IsNullOrEmpty(TwitchApi.AccessToken))
-                request.Headers["Authorization"] = $"OAuth {TwitchApi.AccessToken}";
+            if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
+                request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
 
             try
             {
@@ -76,9 +76,9 @@ namespace TwitchLib.Internal
             return null;
         }
 
-        public static T Get<T>(string url, API version = API.v5)
+        public static T Get<T>(string url, API api = API.v5)
         {
-            return JsonConvert.DeserializeObject<T>(Get(url));
+            return JsonConvert.DeserializeObject<T>(Get(url, api));
         }
 
         public static void Delete(string url, API api = API.v5)
@@ -106,8 +106,8 @@ namespace TwitchLib.Internal
             request.ContentType = "application/json";
             request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
 
-            if (!string.IsNullOrEmpty(TwitchApi.AccessToken))
-                request.Headers["Authorization"] = $"OAuth {TwitchApi.AccessToken}";
+            if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
+                request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
 
             try
             {
@@ -137,13 +137,13 @@ namespace TwitchLib.Internal
         private static string appendClientId(string url)
         {
             return url.Contains("?")
-                ? $"{url}&client_id={TwitchApi.ClientId}"
-                : $"{url}?client_id={TwitchApi.ClientId}";
+                ? $"{url}&client_id={TwitchAPI.Shared.ClientId}"
+                : $"{url}?client_id={TwitchAPI.Shared.ClientId}";
         }
 
         private static void checkForCredentials()
         {
-            if (string.IsNullOrEmpty(TwitchApi.ClientId) && string.IsNullOrWhiteSpace(TwitchApi.AccessToken))
+            if (string.IsNullOrEmpty(TwitchAPI.Shared.ClientId) && string.IsNullOrWhiteSpace(TwitchAPI.Shared.AccessToken))
                 throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId(\"client_id_here\")");
         }
 
