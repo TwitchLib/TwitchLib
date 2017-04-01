@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Exceptions.API;
+using Newtonsoft.Json.Serialization;
 
 namespace TwitchLib.Internal
 {
@@ -19,8 +20,9 @@ namespace TwitchLib.Internal
 
         public static T Post<T>(string url, Models.API.RequestModel model, API api = API.v5)
         {
+            var test = new JsonSerializerSettings();
             if (model != null)
-                return JsonConvert.DeserializeObject<T>(Post(url, JsonConvert.SerializeObject(model), api));
+                return JsonConvert.DeserializeObject<T>(Post(url, LowercaseJsonSerializer.SerializeObject(model), api));
             else
                 return JsonConvert.DeserializeObject<T>(Post(url, "", api));
         }
@@ -45,7 +47,10 @@ namespace TwitchLib.Internal
             {
                 var response = request.GetResponse();
                 using (var reader = new StreamReader(response.GetResponseStream()))
-                    return reader.ReadToEnd();
+                {
+                    string data = reader.ReadToEnd();
+                    return data;
+                }
             }
             catch (WebException ex) { handleWebException(ex); }
 
@@ -69,7 +74,11 @@ namespace TwitchLib.Internal
             {
                 var response = request.GetResponse();
                 using (var reader = new StreamReader(response.GetResponseStream()))
-                    return reader.ReadToEnd();
+                {
+                    string data = reader.ReadToEnd();
+                    return data;
+                }
+                    
             }
             catch (WebException ex) { handleWebException(ex); }
 
@@ -160,6 +169,29 @@ namespace TwitchLib.Internal
                     throw new NotPartneredException("The resource you requested is only available to channels that have been partnered by Twitch.");
                 default:
                     throw e;
+            }
+        }
+
+        // Contract resolver to force keys to lowercase
+        // Credit: http://stackoverflow.com/questions/6288660/net-ensuring-json-keys-are-lowercase
+        public class LowercaseJsonSerializer
+        {
+            private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+            {
+                ContractResolver = new LowercaseContractResolver()
+            };
+
+            public static string SerializeObject(object o)
+            {
+                return JsonConvert.SerializeObject(o, Formatting.Indented, Settings);
+            }
+
+            public class LowercaseContractResolver : DefaultContractResolver
+            {
+                protected override string ResolvePropertyName(string propertyName)
+                {
+                    return propertyName.ToLower();
+                }
             }
         }
     }

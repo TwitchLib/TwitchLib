@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.Models.API.v3.ChannelFeeds
 {
-    public class ChannelFeedResponse
+    public class PostComments
     {
         [JsonProperty(PropertyName = "_total")]
-        public int Total { get; protected set; }
+        public int Total;
         [JsonProperty(PropertyName = "_cursor")]
-        public string Cursor { get; protected set; }
-        [JsonProperty(PropertyName = "posts")]
-        public Post[] Posts { get; protected set; }
+        public string Cursor;
+        [JsonProperty(PropertyName = "comments")]
+        public Comment[] Comments;
     }
 }

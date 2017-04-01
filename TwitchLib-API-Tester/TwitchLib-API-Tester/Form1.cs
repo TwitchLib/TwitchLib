@@ -74,5 +74,39 @@ namespace TwitchLib_API_Tester
         {
             TwitchLib.TwitchAPI.Blocks.RemoveBlockAsync(Channel, textBox5.Text);
         }
+
+        private async void button4_Click(object sender, EventArgs e)
+        {
+            var postsResp = await TwitchLib.TwitchAPI.ChannelFeeds.GetChannelFeedPostsAsync(Channel);
+            foreach (var post in postsResp.Posts)
+                MessageBox.Show($"Post ID: {post.Id}\nPost Body: {post.Body}");
+        }
+
+        private async void button5_Click(object sender, EventArgs e)
+        {
+            var posted = await TwitchLib.TwitchAPI.ChannelFeeds.CreatePostAsync(Channel, richTextBox2.Text);
+            MessageBox.Show(posted.Post.Body);
+        }
+
+        private async void button6_Click(object sender, EventArgs e)
+        {
+            var post = await TwitchLib.TwitchAPI.ChannelFeeds.GetPostByIdAsync(Channel, textBox7.Text);
+            MessageBox.Show($"Post ID: {post.Id}\nPost Body: {post.Body}");
+        }
+
+        private async void button7_Click(object sender, EventArgs e)
+        {
+            await TwitchLib.TwitchAPI.ChannelFeeds.RemovePostAsync(Channel, textBox8.Text);
+        }
+
+        private async void button8_Click(object sender, EventArgs e)
+        {
+            await TwitchLib.TwitchAPI.ChannelFeeds.CreateReactionAsync(Channel, textBox9.Text, textBox10.Text);
+        }
+
+        private async void button9_Click(object sender, EventArgs e)
+        {
+            await TwitchLib.TwitchAPI.ChannelFeeds.RemoveReactionAsync(Channel, textBox12.Text, textBox11.Text);
+        }
     }
 }

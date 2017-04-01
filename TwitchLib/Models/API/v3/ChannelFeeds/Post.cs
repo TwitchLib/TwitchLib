@@ -10,13 +10,24 @@ namespace TwitchLib.Models.API.v3.ChannelFeeds
 {
     public class Post
     {
-        public string Id { get; protected set; }
+        [JsonProperty(PropertyName = "id")]
+        public string Id;
+        [JsonProperty(PropertyName = "body")]
+        public string Body;
         [JsonProperty(PropertyName = "created_at")]
-        public string CreatedAt { get; protected set; }
-        public bool Deleted { get; protected set; }
-        public Emote[] Emotes { get; protected set; }
-        public Reaction[] Reactions { get; protected set; }
-        public string Body { get; protected set; }
-        public Users.User User { get; protected set; }
+        public string CreatedAt;
+        [JsonProperty(PropertyName = "comments")]
+        public PostComments Comments;
+        [JsonProperty(PropertyName = "deleted")]
+        public bool Deleted;
+        [JsonProperty(PropertyName = "emotes")]
+        public Emote[] Emotes;
+        [JsonProperty(PropertyName = "permissions")]
+        public Permissions Permissions;
+        // TODO: Fix this, requires some deserialization magic
+        //[JsonProperty(PropertyName = "reactions")]
+        //public KeyValuePair<string, Reaction>[] Reactions;
+        [JsonProperty(PropertyName = "user")]
+        public Users.User User;
     }
 }

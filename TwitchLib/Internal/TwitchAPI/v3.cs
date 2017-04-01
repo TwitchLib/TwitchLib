@@ -34,7 +34,7 @@ namespace TwitchLib.Internal.TwitchAPI
                 string pm = $"?limit={limit}";
                 if (cursor != null)
                     pm = $"{pm}&cursor={cursor}";
-                return Requests.Get<Models.API.v3.ChannelFeeds.ChannelFeedResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts{pm}");
+                return Requests.Get<Models.API.v3.ChannelFeeds.ChannelFeedResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts{pm}", Requests.API.v3);
             }
 
             public static Models.API.v3.ChannelFeeds.PostResponse CreatePost(string channel, string content, bool share = false)

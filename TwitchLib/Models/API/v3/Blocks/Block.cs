@@ -12,6 +12,7 @@ namespace TwitchLib.Models.API.v3.Blocks
     {
         [JsonProperty(PropertyName = "updated_at")]
         public string UpdatedAt { get; set; }
+        [JsonProperty(PropertyName = "user")]
         public Users.User User { get; set; }
         [JsonProperty(PropertyName = "_id")]
         public int Id { get; set; }

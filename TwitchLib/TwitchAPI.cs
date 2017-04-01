@@ -55,7 +55,65 @@ namespace TwitchLib
 
         public static class ChannelFeeds
         {
+            public static Models.API.v3.ChannelFeeds.ChannelFeedResponse GetChannelFeedPosts(string channel, int limit = 25, string cursor = null)
+            {
+                return Internal.TwitchAPI.v3.ChannelFeed.GetChannelFeedPosts(channel, limit, cursor);
+            }
 
+            public async static Task<Models.API.v3.ChannelFeeds.ChannelFeedResponse> GetChannelFeedPostsAsync(string channel, int limit = 25, string cursor = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.GetChannelFeedPosts(channel, limit, cursor));
+            }
+
+            public static Models.API.v3.ChannelFeeds.PostResponse CreatePost(string channel, string content, bool share = false)
+            {
+                return Internal.TwitchAPI.v3.ChannelFeed.CreatePost(channel, content, share);
+            }
+
+            public static async Task<Models.API.v3.ChannelFeeds.PostResponse> CreatePostAsync(string channel, string content, bool share = false)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.CreatePost(channel, content, share));
+            }
+
+            public static Models.API.v3.ChannelFeeds.Post GetPostById(string channel, string postId)
+            {
+                return Internal.TwitchAPI.v3.ChannelFeed.GetPost(channel, postId);
+            }
+
+            public static async Task<Models.API.v3.ChannelFeeds.Post> GetPostByIdAsync(string channel, string postId)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.GetPost(channel, postId));
+            }
+
+            public static void RemovePost(string channel, string postId)
+            {
+                Internal.TwitchAPI.v3.ChannelFeed.DeletePost(channel, postId);
+            }
+
+            public static async Task RemovePostAsync(string channel, string postId)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.DeletePost(channel, postId));
+            }
+
+            public static void CreateReaction(string channel, string postId, string emoteId)
+            {
+                Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId);
+            }
+
+            public static async Task CreateReactionAsync(string channel, string postId, string emoteId)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId));
+            }
+
+            public static void RemoveReaction(string channel, string postId, string emoteId)
+            {
+                Internal.TwitchAPI.v3.ChannelFeed.RemoveReaction(channel, postId, emoteId);
+            }
+
+            public static async Task RemoveReactionAsync(string channel, string postId, string emoteId)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.RemoveReaction(channel, postId, emoteId));
+            }
         }
     }
 }
