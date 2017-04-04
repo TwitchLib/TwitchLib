@@ -69,7 +69,8 @@ namespace TwitchLib.Models.Client
             BotUsername = botUsername;
             RawIrcMessage = ircString;
             _emoteCollection = emoteCollection;
-            foreach (var part in ircString.Split(';'))
+            var parts = ircString.Split(';');
+            foreach (var part in parts)
             {
                 if (part.Contains("!"))
                 {
@@ -77,6 +78,27 @@ namespace TwitchLib.Models.Client
                         Channel = part.Split('#')[1].Split(' ')[0];
                     if (Username == null)
                         Username = part.Split('!')[1].Split('@')[0];
+                    if(part.Split('=').Count() > 1 && part.Split('=')[1].Contains(" "))
+                    {
+                        switch (part.Split('=')[1].Split(' ')[0])
+                        {
+                            case "mod":
+                                UserType = Enums.UserType.Moderator;
+                                break;
+                            case "global_mod":
+                                UserType = Enums.UserType.GlobalModerator;
+                                break;
+                            case "admin":
+                                UserType = Enums.UserType.Admin;
+                                break;
+                            case "staff":
+                                UserType = Enums.UserType.Staff;
+                                break;
+                            default:
+                                UserType = Enums.UserType.Viewer;
+                                break;
+                        }
+                    }
                 }
                 else if(part.Contains("@badges="))
                 {
@@ -130,27 +152,6 @@ namespace TwitchLib.Models.Client
                 else if (part.Contains("user-id="))
                 {
                     UserId = part.Split('=')[1];
-                }
-                else if (part.Contains("user-type="))
-                {
-                    switch (part.Split('=')[1].Split(' ')[0])
-                    {
-                        case "mod":
-                            UserType = Enums.UserType.Moderator;
-                            break;
-                        case "global_mod":
-                            UserType = Enums.UserType.GlobalModerator;
-                            break;
-                        case "admin":
-                            UserType = Enums.UserType.Admin;
-                            break;
-                        case "staff":
-                            UserType = Enums.UserType.Staff;
-                            break;
-                        default:
-                            UserType = Enums.UserType.Viewer;
-                            break;
-                    }
                 }
                 else if (part.Contains("mod="))
                 {
