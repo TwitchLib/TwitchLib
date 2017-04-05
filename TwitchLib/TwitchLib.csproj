@@ -56,6 +56,7 @@
     <Compile Include="Enums\StreamIdentifierType.cs" />
     <Compile Include="Enums\VideoPlayback.cs" />
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
+    <Compile Include="Events\Client\OnLogArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamsSetArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorEndedArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorStartedArgs.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="Models\API\Stream\FollowedStreamsResponse.cs" />
     <Compile Include="Models\API\v5\User.cs" />
     <Compile Include="Common\Helpers.cs" />
-    <Compile Include="Common\Logging.cs" />
     <Compile Include="Enums\BadgeColor.cs" />
     <Compile Include="Enums\ChatColorPresets.cs" />
     <Compile Include="Enums\CommercialLength.cs" />
