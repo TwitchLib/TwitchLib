@@ -924,9 +924,9 @@ namespace TwitchLib.Internal
         {
             List<Models.API.ThirdParty.UsernameChangeListing> changes = new List<Models.API.ThirdParty.UsernameChangeListing>();
             string resp = await Requests.MakeGetRequestClean($"https://twitch-tools.rootonline.de/username_changelogs_search.php?q={name}&format=json");
-            JObject json = JObject.Parse(resp);
+            JArray json = JArray.Parse(resp);
             foreach (var change in json)
-                changes.Add(new Models.API.ThirdParty.UsernameChangeListing(change.Value));
+                changes.Add(new Models.API.ThirdParty.UsernameChangeListing(change));
             return changes;
         }
         #endregion
