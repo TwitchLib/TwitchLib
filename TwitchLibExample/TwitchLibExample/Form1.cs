@@ -807,6 +807,7 @@ namespace TwitchLibExample
             pubsub.OnBan += new EventHandler<OnBanArgs>(pubsubOnBan);
             pubsub.OnUnban += new EventHandler<OnUnbanArgs>(pubsubOnUnban);
             pubsub.OnWhisper += new EventHandler<OnWhisperArgs>(onWhisper);
+            pubsub.Connect();
         }
 
         private static void onWhisper(object sender, OnWhisperArgs e)
@@ -1146,6 +1147,14 @@ namespace TwitchLibExample
             MessageBox.Show("Total: " + resp.Total);
             foreach (var eventModel in resp.Events)
                 MessageBox.Show($"Event Name: {eventModel.Title}\nEvent Game: {eventModel.Game.Name}");
+        }
+
+        private async void button87_Click(object sender, EventArgs e)
+        {
+            var changes = await TwitchApi.ThirdParty.GetUsernameChangesAsync(textBox71.Text);
+            MessageBox.Show("Total recorded changes: " + changes.Count);
+            foreach (var change in changes)
+                MessageBox.Show($"User Id: {change.UserId}\nOld user: {change.UsernameOld}\nNew user: {change.UsernameNew}\nRecorded on: {change.FoundAt.ToLongDateString()}");
         }
     }
 }
