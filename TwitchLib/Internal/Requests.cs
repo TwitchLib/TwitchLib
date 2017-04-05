@@ -43,6 +43,16 @@ namespace TwitchLib.Internal
 
         }
 
+        public static async Task<string> MakeGetRequestClean(string url)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(new Uri(url));
+
+            using (var responseStream = await request.GetResponseAsync())
+            {
+                return await new StreamReader(responseStream.GetResponseStream(), Encoding.Default, true).ReadToEndAsync();
+            }
+        }
+
         internal static async Task<string> MakeRestRequest(string url, string method, string requestData = null, string accessToken = null, int apiVersion = 3, byte[] data = null)
         {
             if (string.IsNullOrWhiteSpace(TwitchApi.ClientId) && string.IsNullOrWhiteSpace(accessToken))

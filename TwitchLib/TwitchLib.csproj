@@ -82,6 +82,7 @@
     <Compile Include="Models\API\Other\Validate\Token.cs" />
     <Compile Include="Models\API\Other\Validate\ValidationResponse.cs" />
     <Compile Include="Models\API\Stream\FollowedStreamsResponse.cs" />
+    <Compile Include="Models\API\ThirdParty\UsernameChangeListing.cs" />
     <Compile Include="Models\API\v5\User.cs" />
     <Compile Include="Common\Helpers.cs" />
     <Compile Include="Enums\BadgeColor.cs" />

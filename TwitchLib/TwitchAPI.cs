@@ -1334,5 +1334,27 @@ namespace TwitchLib
         /// <returns>ValidationResponse model.</returns>
         public static async Task<Models.API.Other.Validate.ValidationResponse> ValidationAPIRequestAsync(string accessToken = null) => await Internal.TwitchApi.ValidationAPIRequest(accessToken);
         #endregion
+
+        /// <summary>
+        /// Class representing calls to third party (non-official API) sites.
+        /// </summary>
+        public static class ThirdParty
+        {
+            /// <summary>
+            /// [SYNC] Gets any recorded username changes courtesy of https://twitch-tools.rootonline.de/
+            /// Direct call: https://twitch-tools.rootonline.de/username_changelogs_search.php?q={username}&format=json
+            /// </summary>            
+            /// <param name="username">Username to get a history of.</param>
+            /// <returns>List of name changes.</returns>
+            public static List<Models.API.ThirdParty.UsernameChangeListing> GetUsernameChanges(string username) => Task.Run(() => Internal.TwitchApi.GetUsernameChanges(username)).Result;
+
+            /// <summary>
+            /// [SYNC] Gets any recorded username changes courtesy of https://twitch-tools.rootonline.de/
+            /// Direct call: https://twitch-tools.rootonline.de/username_changelogs_search.php?q={username}&format=json
+            /// </summary>            
+            /// <param name="username">Username to get a history of.</param>
+            /// <returns>List of name changes.</returns>
+            public static async Task<List<Models.API.ThirdParty.UsernameChangeListing>> GetUsernameChangesAsync(string username) => await Internal.TwitchApi.GetUsernameChanges(username);
+        }
     }
 }

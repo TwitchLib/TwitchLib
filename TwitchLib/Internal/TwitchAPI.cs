@@ -918,5 +918,18 @@ namespace TwitchLib.Internal
         {
             await Requests.MakeRestRequest($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", "DELETE", null, accessToken);
         }
+
+        #region Third Party
+        internal static async Task<List<Models.API.ThirdParty.UsernameChangeListing>> GetUsernameChanges(string name)
+        {
+            List<Models.API.ThirdParty.UsernameChangeListing> changes = new List<Models.API.ThirdParty.UsernameChangeListing>();
+            string resp = await Requests.MakeGetRequestClean($"https://twitch-tools.rootonline.de/username_changelogs_search.php?q={name}&format=json");
+            JObject json = JObject.Parse(resp);
+            foreach (var change in json)
+                changes.Add(new Models.API.ThirdParty.UsernameChangeListing(change.Value));
+            return changes;
+        }
+        #endregion
+
     }
 }
