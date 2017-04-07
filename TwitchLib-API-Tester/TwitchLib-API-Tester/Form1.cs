@@ -108,5 +108,50 @@ namespace TwitchLib_API_Tester
         {
             await TwitchLib.TwitchAPI.ChannelFeeds.RemoveReactionAsync(Channel, textBox12.Text, textBox11.Text);
         }
+
+        private async void button10_Click(object sender, EventArgs e)
+        {
+            var channel = await TwitchLib.TwitchAPI.Channels.GetChannelByNameAsync(textBox13.Text);
+            MessageBox.Show($"Display name: {channel.DisplayName}\nGame: {channel.Game}\nFollowers: {channel.Followers}");
+        }
+
+        private async void button11_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Channels.GetChannelEditorsAsync(textBox14.Text);
+            foreach (var channel in resp.Editors)
+                MessageBox.Show($"Display name: {channel.DisplayName}");
+        }
+
+        private async void button12_Click(object sender, EventArgs e)
+        {
+            var channel = await TwitchLib.TwitchAPI.Channels.GetChannelAsync();
+            MessageBox.Show($"Display name: {channel.DisplayName}\nGame: {channel.Game}");
+        }
+
+        private async void button13_Click(object sender, EventArgs e)
+        {
+            string channel = textBox15.Text;
+            string status = null;
+            string game = null;
+            string delay = null;
+            bool? channelFeed = null;
+
+            if (textBox16.Text.Count() > 0)
+                status = textBox16.Text;
+            if (textBox17.Text.Count() > 0)
+                game = textBox17.Text;
+            if (textBox18.Text.Count() > 0)
+                delay = textBox18.Text;
+            if(comboBox1.Text != "No Change")
+            {
+                if (comboBox1.Text == "Enable")
+                    channelFeed = true;
+                else
+                    channelFeed = false;
+            }
+
+            var resp = await TwitchLib.TwitchAPI.Channels.UpdateChannelAsync(channel, status, game, delay, channelFeed);
+            MessageBox.Show($"Channel: {resp.DisplayName}\nStatus: {resp.Status}\nGame: {resp.Game}\nDelay: {resp.Delay}");
+        }
     }
 }
