@@ -107,6 +107,20 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBox18 = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
+            this.groupBox16 = new System.Windows.Forms.GroupBox();
+            this.textBox19 = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.button14 = new System.Windows.Forms.Button();
+            this.groupBox17 = new System.Windows.Forms.GroupBox();
+            this.textBox20 = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.button15 = new System.Windows.Forms.Button();
+            this.textBox21 = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.groupBox18 = new System.Windows.Forms.GroupBox();
+            this.textBox22 = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.button16 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -129,6 +143,9 @@
             this.groupBox13.SuspendLayout();
             this.groupBox14.SuspendLayout();
             this.groupBox15.SuspendLayout();
+            this.groupBox16.SuspendLayout();
+            this.groupBox17.SuspendLayout();
+            this.groupBox18.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -672,6 +689,9 @@
             // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.groupBox18);
+            this.tabPage6.Controls.Add(this.groupBox17);
+            this.tabPage6.Controls.Add(this.groupBox16);
             this.tabPage6.Controls.Add(this.groupBox15);
             this.tabPage6.Controls.Add(this.groupBox14);
             this.tabPage6.Controls.Add(this.groupBox13);
@@ -896,6 +916,138 @@
             this.label20.TabIndex = 9;
             this.label20.Text = "Delay:";
             // 
+            // groupBox16
+            // 
+            this.groupBox16.Controls.Add(this.textBox19);
+            this.groupBox16.Controls.Add(this.label21);
+            this.groupBox16.Controls.Add(this.button14);
+            this.groupBox16.Location = new System.Drawing.Point(459, 181);
+            this.groupBox16.Name = "groupBox16";
+            this.groupBox16.Size = new System.Drawing.Size(437, 198);
+            this.groupBox16.TabIndex = 4;
+            this.groupBox16.TabStop = false;
+            this.groupBox16.Text = "Reset Stream Key";
+            // 
+            // textBox19
+            // 
+            this.textBox19.Location = new System.Drawing.Point(161, 40);
+            this.textBox19.Name = "textBox19";
+            this.textBox19.Size = new System.Drawing.Size(252, 38);
+            this.textBox19.TabIndex = 3;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(15, 43);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(146, 32);
+            this.label21.TabIndex = 1;
+            this.label21.Text = "Channnel:";
+            // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(6, 98);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(425, 82);
+            this.button14.TabIndex = 0;
+            this.button14.Text = "Fetch";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // groupBox17
+            // 
+            this.groupBox17.Controls.Add(this.textBox21);
+            this.groupBox17.Controls.Add(this.label23);
+            this.groupBox17.Controls.Add(this.textBox20);
+            this.groupBox17.Controls.Add(this.label22);
+            this.groupBox17.Controls.Add(this.button15);
+            this.groupBox17.Location = new System.Drawing.Point(459, 399);
+            this.groupBox17.Name = "groupBox17";
+            this.groupBox17.Size = new System.Drawing.Size(437, 249);
+            this.groupBox17.TabIndex = 5;
+            this.groupBox17.TabStop = false;
+            this.groupBox17.Text = "Run Commercial";
+            // 
+            // textBox20
+            // 
+            this.textBox20.Location = new System.Drawing.Point(161, 40);
+            this.textBox20.Name = "textBox20";
+            this.textBox20.Size = new System.Drawing.Size(252, 38);
+            this.textBox20.TabIndex = 3;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(15, 43);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(146, 32);
+            this.label22.TabIndex = 1;
+            this.label22.Text = "Channnel:";
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(6, 151);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(425, 82);
+            this.button15.TabIndex = 0;
+            this.button15.Text = "Fetch";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
+            // textBox21
+            // 
+            this.textBox21.Location = new System.Drawing.Point(161, 97);
+            this.textBox21.Name = "textBox21";
+            this.textBox21.Size = new System.Drawing.Size(252, 38);
+            this.textBox21.TabIndex = 5;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(15, 100);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(111, 32);
+            this.label23.TabIndex = 4;
+            this.label23.Text = "Length:";
+            // 
+            // groupBox18
+            // 
+            this.groupBox18.Controls.Add(this.textBox22);
+            this.groupBox18.Controls.Add(this.label24);
+            this.groupBox18.Controls.Add(this.button16);
+            this.groupBox18.Location = new System.Drawing.Point(459, 664);
+            this.groupBox18.Name = "groupBox18";
+            this.groupBox18.Size = new System.Drawing.Size(437, 198);
+            this.groupBox18.TabIndex = 5;
+            this.groupBox18.TabStop = false;
+            this.groupBox18.Text = "Get Teams";
+            // 
+            // textBox22
+            // 
+            this.textBox22.Location = new System.Drawing.Point(161, 40);
+            this.textBox22.Name = "textBox22";
+            this.textBox22.Size = new System.Drawing.Size(252, 38);
+            this.textBox22.TabIndex = 3;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(15, 43);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(146, 32);
+            this.label24.TabIndex = 1;
+            this.label24.Text = "Channnel:";
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(6, 98);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(425, 82);
+            this.button16.TabIndex = 0;
+            this.button16.Text = "Fetch";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -938,6 +1090,12 @@
             this.groupBox14.ResumeLayout(false);
             this.groupBox15.ResumeLayout(false);
             this.groupBox15.PerformLayout();
+            this.groupBox16.ResumeLayout(false);
+            this.groupBox16.PerformLayout();
+            this.groupBox17.ResumeLayout(false);
+            this.groupBox17.PerformLayout();
+            this.groupBox18.ResumeLayout(false);
+            this.groupBox18.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1021,6 +1179,20 @@
         private System.Windows.Forms.Button button13;
         private System.Windows.Forms.TextBox textBox18;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.GroupBox groupBox16;
+        private System.Windows.Forms.TextBox textBox19;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.GroupBox groupBox17;
+        private System.Windows.Forms.TextBox textBox21;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox textBox20;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.GroupBox groupBox18;
+        private System.Windows.Forms.TextBox textBox22;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button button16;
     }
 }
 

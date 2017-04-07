@@ -153,5 +153,47 @@ namespace TwitchLib_API_Tester
             var resp = await TwitchLib.TwitchAPI.Channels.UpdateChannelAsync(channel, status, game, delay, channelFeed);
             MessageBox.Show($"Channel: {resp.DisplayName}\nStatus: {resp.Status}\nGame: {resp.Game}\nDelay: {resp.Delay}");
         }
+
+        private async void button14_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Channels.ResetStreamKeyAsync(textBox19.Text);
+            MessageBox.Show($"Display name: {resp.DisplayName}\nEmail: {resp.Email}\nStream key: {resp.StreamKey}");
+        }
+
+        private async void button15_Click(object sender, EventArgs e)
+        {
+            string lengthStr = textBox21.Text;
+            TwitchLib.Enums.CommercialLength length = TwitchLib.Enums.CommercialLength.Seconds30;
+            switch(lengthStr)
+            {
+                case "30":
+                    length = TwitchLib.Enums.CommercialLength.Seconds30;
+                    break;
+                case "60":
+                    length = TwitchLib.Enums.CommercialLength.Seconds60;
+                    break;
+                case "90":
+                    length = TwitchLib.Enums.CommercialLength.Seconds90;
+                    break;
+                case "120":
+                    length = TwitchLib.Enums.CommercialLength.Seconds120;
+                    break;
+                case "150":
+                    length = TwitchLib.Enums.CommercialLength.Seconds150;
+                    break;
+                case "180":
+                    length = TwitchLib.Enums.CommercialLength.Seconds180;
+                    break;
+            }
+
+            await TwitchLib.TwitchAPI.Channels.RunCommercialAsync(textBox20.Text, length);
+        }
+
+        private async void button16_Click(object sender, EventArgs e)
+        {
+            var teams = await TwitchLib.TwitchAPI.Channels.GetTeamsAsync(textBox22.Text);
+            foreach (var team in teams.Teams)
+                MessageBox.Show($"Team name: {team.Name}");
+        }
     }
 }
