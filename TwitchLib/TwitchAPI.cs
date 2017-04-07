@@ -115,5 +115,48 @@ namespace TwitchLib
                 await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.RemoveReaction(channel, postId, emoteId));
             }
         }
+
+        public static class Channels
+        {
+            public static Models.API.v3.Channels.Channel GetChannelByName(string channel)
+            {
+                return Internal.TwitchAPI.v3.Channels.GetChannelByName(channel);
+            }
+
+            public static async Task<Models.API.v3.Channels.Channel> GetChannelByNameAsync(string channel)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannelByName(channel));
+            }
+
+            public static Models.API.v3.Channels.Channel GetChannel()
+            {
+                return Internal.TwitchAPI.v3.Channels.GetChannel();
+            }
+
+            public static async Task<Models.API.v3.Channels.Channel> GetChannelAsync()
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannel());
+            }
+
+            public static Models.API.v3.Channels.GetEditorsResponse GetChannelEditors(string channel)
+            {
+                return Internal.TwitchAPI.v3.Channels.GetChannelEditors(channel);
+            }
+
+            public static async Task<Models.API.v3.Channels.GetEditorsResponse> GetChannelEditorsAsync(string channel)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannelEditors(channel));
+            }
+
+            public static Models.API.v3.Channels.Channel UpdateChannel(string channel, string status = null, string game = null, string delay = null, bool? channelFeed = null)
+            {
+                return Internal.TwitchAPI.v3.Channels.UpdateChannel(channel, status, game, delay, channelFeed);
+            }
+
+            public static async Task<Models.API.v3.Channels.Channel> UpdateChannelAsync(string channel, string status = null, string game = null, string delay = null, bool? channelFeed = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Channels.UpdateChannel(channel, status, game, delay, channelFeed));
+            }
+        }
     }
 }

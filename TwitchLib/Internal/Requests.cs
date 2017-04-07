@@ -90,22 +90,22 @@ namespace TwitchLib.Internal
             return JsonConvert.DeserializeObject<T>(Get(url, api));
         }
 
-        public static void Delete(string url, API api = API.v5)
+        public static string Delete(string url, API api = API.v5)
         {
-            genericRequest(url, "DELETE", api);
+            return genericRequest(url, "DELETE", null, api);
         }
 
-        public static T Put<T>(string url, API api = API.v5)
+        public static T Put<T>(string url, string payload, API api = API.v5)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", api));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", payload, api));
         }
 
-        public static string Put(string url, API api = API.v5)
+        public static string Put(string url, string payload, API api = API.v5)
         {
-            return genericRequest(url, "PUT", api);
+            return genericRequest(url, "PUT", payload, api);
         }
 
-        private static string genericRequest(string url, string method, API api = API.v5)
+        private static string genericRequest(string url, string method, string payload = null, API api = API.v5)
         {
             checkForCredentials();
             url = appendClientId(url);
@@ -117,6 +117,10 @@ namespace TwitchLib.Internal
 
             if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
                 request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
+
+            if(payload != null)
+                using (var writer = new StreamWriter(request.GetRequestStream()))
+                    writer.Write(payload);
 
             try
             {

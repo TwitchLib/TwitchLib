@@ -18,7 +18,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
             public static Models.API.v3.Blocks.Block CreateBlock(string channel, string target)
             {
-                return Requests.Put<Models.API.v3.Blocks.Block>($"https://api.twitch.tv/kraken/users/{channel}/blocks/{target}", Requests.API.v3);
+                return Requests.Put<Models.API.v3.Blocks.Block>($"https://api.twitch.tv/kraken/users/{channel}/blocks/{target}", null, Requests.API.v3);
             }
 
             public static void RemoveBlock(string channel, string target)
@@ -68,29 +68,56 @@ namespace TwitchLib.Internal.TwitchAPI
             }
         }
 
-        /*public static class Channels
+        public static class Channels
         {
-            public static Models.API.v3.Channels.Channel GetChannel(string channel)
+            public static Models.API.v3.Channels.Channel GetChannelByName(string channel)
             {
-
+                return Requests.Get<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", Requests.API.v3);
             }
 
-            public static Models.API.v3.Channels.Channel GetChannel(string token = null)
+            public static Models.API.v3.Channels.Channel GetChannel()
             {
-
+                return Requests.Get<Models.API.v3.Channels.Channel>("https://api.twitch.tv/kraken/channel", Requests.API.v3);
             }
 
-            public static List<Models.API.v3.Users.User> GetChannelEditors(string channel, string token = null)
+            public static Models.API.v3.Channels.GetEditorsResponse GetChannelEditors(string channel)
             {
-
+                return Requests.Get<Models.API.v3.Channels.GetEditorsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/editors", Requests.API.v3);
             }
 
-            public static Models.API.v3.Users.User UpdateChannel(string channel, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string token = null)
+            public static Models.API.v3.Channels.Channel UpdateChannel(string channel, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null)
             {
+                List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
+                if (status != null)
+                    datas.Add(new KeyValuePair<string, string>("status", "\"" + status + "\""));
+                if (game != null)
+                    datas.Add(new KeyValuePair<string, string>("game", "\"" + game + "\""));
+                if (delay != null)
+                    datas.Add(new KeyValuePair<string, string>("delay", "\"" + delay + "\""));
+                if (channelFeedEnabled != null)
+                    datas.Add(new KeyValuePair<string, string>("channel_feed_enabled", (channelFeedEnabled == true ? "true" : "false")));
 
+                string payload = "";
+                if(datas.Count == 1)
+                {
+                    payload = $"\"{datas[0].Key}\": {datas[0].Value}";
+                } else
+                {
+                    for (int i = 0; i < datas.Count; i++)
+                    {
+                        if ((datas.Count - i) > 1)
+                            payload = $"{payload}\"{datas[i].Key}\": {datas[i].Value},";
+                        else
+                            payload = $"{payload}\"{datas[i].Key}\": {datas[i].Value}";
+                    }
+                }
+
+                payload = "{ \"channel\": {" + payload + "} }";
+
+                return Requests.Put<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", payload, Requests.API.v3);
             }
 
-            public static Models.API.v3.Users.User ResetStreamKey(string channel, string token = null)
+            /*public static Models.API.v3.Users.User ResetStreamKey(string channel, string token = null)
             {
 
             }
@@ -104,7 +131,7 @@ namespace TwitchLib.Internal.TwitchAPI
             {
 
             }
-        }
+        } 
 
         public static class Chat
         {
@@ -283,5 +310,6 @@ namespace TwitchLib.Internal.TwitchAPI
 
             }
         }*/
+        }
     }
 }
