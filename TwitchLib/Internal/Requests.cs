@@ -18,6 +18,7 @@ namespace TwitchLib.Internal
             v3, v4, v5
         }
 
+        #region POST
         public static T Post<T>(string url, Models.API.RequestModel model, API api = API.v5)
         {
             var test = new JsonSerializerSettings();
@@ -25,6 +26,11 @@ namespace TwitchLib.Internal
                 return JsonConvert.DeserializeObject<T>(Post(url, LowercaseJsonSerializer.SerializeObject(model), api));
             else
                 return JsonConvert.DeserializeObject<T>(Post(url, "", api));
+        }
+
+        public static void Post(string url, Models.API.RequestModel model, API api = API.v5)
+        {
+            Post(url, LowercaseJsonSerializer.SerializeObject(model), api);
         }
 
         public static string Post(string url, string payload, API api = API.v5)
@@ -56,7 +62,9 @@ namespace TwitchLib.Internal
 
             return null;
         }
+        #endregion
 
+        #region GET
         public static string Get(string url, API api = API.v5)
         {
             checkForCredentials();
@@ -78,7 +86,7 @@ namespace TwitchLib.Internal
                     string data = reader.ReadToEnd();
                     return data;
                 }
-                    
+
             }
             catch (WebException ex) { handleWebException(ex); }
 
@@ -89,12 +97,21 @@ namespace TwitchLib.Internal
         {
             return JsonConvert.DeserializeObject<T>(Get(url, api));
         }
+        #endregion
 
+        #region DELETE
         public static string Delete(string url, API api = API.v5)
         {
             return genericRequest(url, "DELETE", null, api);
         }
 
+        public static T Delete<T>(string url, API api = API.v5)
+        {
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "DELETE", null, api));
+        }
+        #endregion
+
+        #region PUT
         public static T Put<T>(string url, string payload, API api = API.v5)
         {
             return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", payload, api));
@@ -104,6 +121,7 @@ namespace TwitchLib.Internal
         {
             return genericRequest(url, "PUT", payload, api);
         }
+        #endregion
 
         private static string genericRequest(string url, string method, string payload = null, API api = API.v5)
         {

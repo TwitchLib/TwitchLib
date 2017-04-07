@@ -157,6 +157,36 @@ namespace TwitchLib
             {
                 return await Task.Run(() => Internal.TwitchAPI.v3.Channels.UpdateChannel(channel, status, game, delay, channelFeed));
             }
+
+            public static Models.API.v3.Channels.ResetStreamKeyResponse ResetStreamKey(string channel)
+            {
+                return Internal.TwitchAPI.v3.Channels.ResetStreamKey(channel);
+            }
+
+            public static async Task<Models.API.v3.Channels.ResetStreamKeyResponse> ResetStreamKeyAsync(string channel)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Channels.ResetStreamKey(channel));
+            }
+
+            public static void RunCommercial(string channel, Enums.CommercialLength length)
+            {
+                Internal.TwitchAPI.v3.Channels.RunCommercial(channel, length);
+            }
+
+            public static async Task RunCommercialAsync(string channel, Enums.CommercialLength length)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v3.Channels.RunCommercial(channel, length));
+            }
+
+            public static Models.API.v3.Channels.GetTeamsResponse GetTeams(string channel)
+            {
+                return Internal.TwitchAPI.v3.Channels.GetTeams(channel);
+            }
+
+            public static async Task<Models.API.v3.Channels.GetTeamsResponse> GetTeamsAsync(string channel)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetTeams(channel));
+            }
         }
     }
 }

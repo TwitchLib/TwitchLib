@@ -173,6 +173,8 @@
     <Compile Include="Models\API\v3\Blocks\GetBlocksResponse.cs" />
     <Compile Include="Models\API\v3\ChannelFeeds\ChannelFeedResponse.cs" />
     <Compile Include="Models\API\v3\ChannelFeeds\Comment.cs" />
+    <Compile Include="Models\API\v3\ChannelFeeds\Permissions.cs" />
+    <Compile Include="Models\API\v3\ChannelFeeds\PostComments.cs" />
     <Compile Include="Models\API\v3\ChannelFeeds\CreatePostRequest.cs" />
     <Compile Include="Models\API\v3\ChannelFeeds\Emote.cs" />
     <Compile Include="Models\API\v3\ChannelFeeds\Post.cs" />
@@ -180,6 +182,10 @@
     <Compile Include="Models\API\v3\ChannelFeeds\PostResponse.cs" />
     <Compile Include="Models\API\v3\ChannelFeeds\Reaction.cs" />
     <Compile Include="Models\API\v3\Channels\Channel.cs" />
+    <Compile Include="Models\API\v3\Channels\GetEditorsResponse.cs" />
+    <Compile Include="Models\API\v3\Channels\GetTeamsResponse.cs" />
+    <Compile Include="Models\API\v3\Channels\ResetStreamKeyResponse.cs" />
+    <Compile Include="Models\API\v3\Channels\RunCommercialRequest.cs" />
     <Compile Include="Models\API\v3\Chat\Badge.cs" />
     <Compile Include="Models\API\v3\Chat\BadgesResponse.cs" />
     <Compile Include="Models\API\v3\Chat\Emoticon.cs" />
@@ -252,14 +258,12 @@
     <Compile Include="Models\PubSub\Responses\Messages\MessageData.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\VideoPlayback.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\Whisper.cs" />
-    <Compile Include="Services\FollowerService.cs" />
     <Compile Include="Services\LiveStreamMonitor.cs" />
     <Compile Include="Services\MessageThrottler.cs" />
     <Compile Include="Models\Client\ConnectionCredentials.cs" />
     <Compile Include="Exceptions\Client\ErrorLoggingInException.cs" />
     <Compile Include="Exceptions\API\BadResourceException.cs" />
     <Compile Include="Models\Client\NewSubscriber.cs" />
-    <Compile Include="Internal\TwitchAPI\Core.cs" />
     <Compile Include="TwitchAPI.cs" />
     <Compile Include="TwitchClient.cs" />
     <Compile Include="Models\Client\SentMessage.cs" />

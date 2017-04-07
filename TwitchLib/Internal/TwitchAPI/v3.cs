@@ -117,23 +117,51 @@ namespace TwitchLib.Internal.TwitchAPI
                 return Requests.Put<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", payload, Requests.API.v3);
             }
 
-            /*public static Models.API.v3.Users.User ResetStreamKey(string channel, string token = null)
+            public static Models.API.v3.Channels.ResetStreamKeyResponse ResetStreamKey(string channel)
             {
-
+                return Requests.Delete<Models.API.v3.Channels.ResetStreamKeyResponse>($"https://api.twitch.tv/kraken/channels/{channel}/stream_key", Requests.API.v3);
             }
 
-            public static void RunCommercial(string channel, int length = 30, string token = null)
+            public static void RunCommercial(string channel, Enums.CommercialLength length)
             {
+                int lengthInt = 30;
+                switch(length)
+                {
+                    case Enums.CommercialLength.Seconds30:
+                        lengthInt = 30;
+                        break;
+                    case Enums.CommercialLength.Seconds60:
+                        lengthInt = 60;
+                        break;
+                    case Enums.CommercialLength.Seconds90:
+                        lengthInt = 90;
+                        break;
+                    case Enums.CommercialLength.Seconds120:
+                        lengthInt = 120;
+                        break;
+                    case Enums.CommercialLength.Seconds150:
+                        lengthInt = 150;
+                        break;
+                    case Enums.CommercialLength.Seconds180:
+                        lengthInt = 180;
+                        break;
+                }
 
+                var model = new Models.API.v3.Channels.RunCommercialRequest()
+                {
+                    Length = lengthInt
+                };
+
+                Requests.Post($"https://api.twitch.tv/kraken/channels/{channel}/commercial", model, Requests.API.v3);
             }
 
-            public static Models.API.v3.Teams.Team GetTeams(string channel)
+            public static Models.API.v3.Channels.GetTeamsResponse GetTeams(string channel)
             {
-
+                return Requests.Get<Models.API.v3.Channels.GetTeamsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/teams", Requests.API.v3);
             }
         } 
 
-        public static class Chat
+        /*public static class Chat
         {
             public static Models.API.v3.Chat.BadgesResponse GetBadges(string channel)
             {
@@ -310,6 +338,5 @@ namespace TwitchLib.Internal.TwitchAPI
 
             }
         }*/
-        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +10,23 @@ namespace TwitchLib.Models.API.v3.Teams
 {
     public class Team
     {
-        public string Id { get; protected set; }
-        public string Name { get; protected set; }
-        public string Info { get; protected set; }
-        public string DisplayName { get; protected set; }
-        public DateTime CreatedAt { get; protected set; }
-        public DateTime UpdatedAt { get; protected set; }
-        public string Logo { get; protected set; }
-        public string Banner { get; protected set; }
-        public string Background { get; protected set; }
-
-        public Team(JToken json)
-        {
-
-        }
+        [JsonProperty(PropertyName = "_id")]
+        public string Id { get; set; }
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+        [JsonProperty(PropertyName = "info")]
+        public string Info { get; set; }
+        [JsonProperty(PropertyName = "display_name")]
+        public string DisplayName { get; set; }
+        [JsonProperty(PropertyName = "created_at")]
+        public DateTime CreatedAt { get; set; }
+        [JsonProperty(PropertyName = "updated_at")]
+        public DateTime UpdatedAt { get; set; }
+        [JsonProperty(PropertyName = "logo")]
+        public string Logo { get; set; }
+        [JsonProperty(PropertyName = "banner")]
+        public string Banner { get; set; }
+        [JsonProperty(PropertyName = "background")]
+        public string Background { get; set; }
     }
 }
