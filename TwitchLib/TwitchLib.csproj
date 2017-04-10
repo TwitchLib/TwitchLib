@@ -34,9 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -240,6 +239,20 @@
     <Compile Include="Models\API\v5\Bits\DarkImage.cs" />
     <Compile Include="Models\API\v5\Bits\LightImage.cs" />
     <Compile Include="Models\API\v5\Bits\Tier.cs" />
+    <Compile Include="Models\API\v5\Channels\Channel.cs" />
+    <Compile Include="Models\API\v5\Channels\ChannelCommercial.cs" />
+    <Compile Include="Models\API\v5\Channels\ChannelEditors.cs" />
+    <Compile Include="Models\API\v5\Channels\ChannelFollowers.cs" />
+    <Compile Include="Models\API\v5\Channels\ChannelPrivileged.cs" />
+    <Compile Include="Models\API\v5\Channels\ChannelSubscribers.cs" />
+    <Compile Include="Models\API\v5\Channels\ChannelTeams.cs" />
+    <Compile Include="Models\API\v5\Chat\Badge.cs" />
+    <Compile Include="Models\API\v5\Chat\ChannelBadges.cs" />
+    <Compile Include="Models\API\v5\Follows\Follow.cs" />
+    <Compile Include="Models\API\v5\Subscriptions\Subscription.cs" />
+    <Compile Include="Models\API\v5\Teams\SpecifiedTeam.cs" />
+    <Compile Include="Models\API\v5\Teams\Team.cs" />
+    <Compile Include="Models\API\v5\Users\User.cs" />
     <Compile Include="Models\Client\ChannelState.cs" />
     <Compile Include="Models\Client\ChatCommand.cs" />
     <Compile Include="Models\Client\EmoteSet.cs" />
