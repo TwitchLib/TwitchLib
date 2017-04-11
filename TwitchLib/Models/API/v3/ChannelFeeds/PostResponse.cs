@@ -14,10 +14,5 @@ namespace TwitchLib.Models.API.v3.ChannelFeeds
         public Post Post { get; protected set; }
         [JsonProperty(PropertyName = "tweet")]
         public string TweetURL { get; protected set; }
-
-        public PostResponse(JToken json)
-        {
-
-        }
     }
 }
