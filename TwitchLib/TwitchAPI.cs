@@ -908,17 +908,15 @@ namespace TwitchLib
             /// <summary>
             /// [SYNC] Retrieves detailed information regarding a specific clip.
             /// </summary>
-            /// <param name="channel">The channel that the clip happened in.</param>
             /// <param name="slug">The string of words that identifies the clip.</param>
             /// <returns>Clip object.</returns>
-            public static Models.API.Clip.Clip GetClipInformation(string channel, string slug) => Task.Run(() => Internal.TwitchApi.GetClipInformation(channel, slug)).Result;
+            public static Models.API.Clip.Clip GetClipInformation(string slug) => Task.Run(() => Internal.TwitchApi.GetClipInformation(slug)).Result;
             /// <summary>
             /// [ASYNC] Retrieves detailed information regarding a specific clip.
             /// </summary>
-            /// <param name="channel">The channel that the clip happened in.</param>
             /// <param name="slug">The string of words that identifies the clip.</param>
             /// <returns>Clip object.</returns>
-            public static async Task<Models.API.Clip.Clip> GetClipInformationAsync(string channel, string slug) => await Internal.TwitchApi.GetClipInformation(channel, slug);
+            public static async Task<Models.API.Clip.Clip> GetClipInformationAsync(string slug) => await Internal.TwitchApi.GetClipInformation(slug);
 
             /// <summary>
             /// [SYNC] Gets the top Clips for a user's followed games. Required scope: user_read

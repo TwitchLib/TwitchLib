@@ -596,9 +596,9 @@ namespace TwitchLib.Internal
             return new Models.API.Clip.ClipsResponse(JObject.Parse(await Requests.MakeGetRequest(url, null, 4)));
         }
         
-        internal static async Task<Models.API.Clip.Clip> GetClipInformation(string channel, string slug)
+        internal static async Task<Models.API.Clip.Clip> GetClipInformation(string slug)
         {
-            string url = $"https://api.twitch.tv/kraken/clips/{channel}/{slug}";
+            string url = $"https://api.twitch.tv/kraken/clips/{slug}";
             return new Models.API.Clip.Clip(JObject.Parse(await Requests.MakeGetRequest(url, null, 4)));
         }
 
