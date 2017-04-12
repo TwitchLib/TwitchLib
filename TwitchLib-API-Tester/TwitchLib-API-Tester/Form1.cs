@@ -234,5 +234,26 @@ namespace TwitchLib_API_Tester
                 foreach(var emote in emoticon.Value)
                     MessageBox.Show($"{emoticon.Key}\n{emote.Code}\n{emote.Id}");
         }
+
+        private async void button20_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Clips.GetClipAsync(textBox25.Text);
+
+            MessageBox.Show($"Title: {resp.Title}\nGame: {resp.Game}\nCurator name: {resp.Curator.Name}\nBroadcaster name: {resp.Broadcaster.Name}");
+        }
+
+        private async void button21_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Clips.GetTopClipsAsync();
+            foreach (var clip in resp.Clips)
+                MessageBox.Show($"Title: {clip.Title}\nGame: {clip.Game}\nBroacaster: {clip.Broadcaster.Name}\nViews: {clip.Views}");
+        }
+
+        private async void button22_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Clips.GetFollowedClipsAsync();
+            foreach (var clip in resp.Clips)
+                MessageBox.Show($"Title: {clip.Title}\nGame: {clip.Game}\nBroacaster: {clip.Broadcaster.Name}\nViews: {clip.Views}");
+        }
     }
 }
