@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,9 @@ namespace TwitchLib.Models.API.v3.Chat
 {
     public class EmoticonImage
     {
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; protected set; }
+        [JsonProperty(PropertyName = "code")]
         public string Code { get; protected set; }
-        public string EmoticonSet { get; protected set; }
-
-        public EmoticonImage(JToken json)
-        {
-
-        }
     }
 }

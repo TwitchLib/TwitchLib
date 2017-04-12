@@ -24,9 +24,8 @@ namespace TwitchLib.Models.API.v3.ChannelFeeds
         public Emote[] Emotes { get; protected set; }
         [JsonProperty(PropertyName = "permissions")]
         public Permissions Permissions { get; protected set; }
-        // TODO: Fix this, requires some deserialization magic
-        //[JsonProperty(PropertyName = "reactions")]
-        //public KeyValuePair<string, Reaction>[] Reactions { get; protected set; }
+        [JsonProperty(PropertyName = "reactions")]
+        public Dictionary<string, Reaction> Reactions { get; protected set; }
         [JsonProperty(PropertyName = "user")]
         public Users.User User { get; protected set; }
     }

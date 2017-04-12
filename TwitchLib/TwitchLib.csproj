@@ -186,11 +186,13 @@
     <Compile Include="Models\API\v3\Channels\GetTeamsResponse.cs" />
     <Compile Include="Models\API\v3\Channels\ResetStreamKeyResponse.cs" />
     <Compile Include="Models\API\v3\Channels\RunCommercialRequest.cs" />
+    <Compile Include="Models\API\v3\Chat\AllEmoticonsResponse.cs" />
     <Compile Include="Models\API\v3\Chat\Badge.cs" />
     <Compile Include="Models\API\v3\Chat\BadgesResponse.cs" />
     <Compile Include="Models\API\v3\Chat\Emoticon.cs" />
     <Compile Include="Models\API\v3\Chat\EmoticonImage.cs" />
     <Compile Include="Models\API\v3\Chat\Image.cs" />
+    <Compile Include="Models\API\v3\Chat\SetEmoticonsResponse.cs" />
     <Compile Include="Models\API\v3\Follows\DirectionEnum.cs" />
     <Compile Include="Models\API\v3\Follows\Follow.cs" />
     <Compile Include="Models\API\v3\Follows\FollowsResponse.cs" />

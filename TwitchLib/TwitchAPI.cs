@@ -188,5 +188,38 @@ namespace TwitchLib
                 return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetTeams(channel));
             }
         }
+
+        public static class Chat
+        {
+            public static Models.API.v3.Chat.BadgesResponse GetBadges(string channel)
+            {
+                return Internal.TwitchAPI.v3.Chat.GetBadges(channel);
+            }
+
+            public static async Task<Models.API.v3.Chat.BadgesResponse> GetBadgesAsync(string channel)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetBadges(channel));
+            }
+
+            public static Models.API.v3.Chat.AllEmoticonsResponse GetAllEmoticons()
+            {
+                return Internal.TwitchAPI.v3.Chat.GetAllEmoticons();
+            }
+
+            public static async Task<Models.API.v3.Chat.AllEmoticonsResponse> GetAllEmoticonsAsync()
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetAllEmoticons());
+            }
+
+            public static Models.API.v3.Chat.SetEmoticonsResponse GetEmoticonsBySets(List<int> emotesets)
+            {
+                return Internal.TwitchAPI.v3.Chat.GetEmoticonsBySets(emotesets);
+            }
+
+            public static async Task<Models.API.v3.Chat.SetEmoticonsResponse> GetEmoticonsBySetsAsync(List<int> emotesets)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetEmoticonsBySets(emotesets));
+            }
+        }
     }
 }

@@ -161,25 +161,25 @@ namespace TwitchLib.Internal.TwitchAPI
             }
         } 
 
-        /*public static class Chat
+        public static class Chat
         {
             public static Models.API.v3.Chat.BadgesResponse GetBadges(string channel)
             {
-
+                return Requests.Get<Models.API.v3.Chat.BadgesResponse>($"https://api.twitch.tv/kraken/chat/{channel}/badges", Requests.API.v3);
             }
 
-            public static List<Models.API.v3.Chat.Emoticon> GetEmoticons()
+            public static Models.API.v3.Chat.AllEmoticonsResponse GetAllEmoticons()
             {
-
+                return Requests.Get<Models.API.v3.Chat.AllEmoticonsResponse>("https://api.twitch.tv/kraken/chat/emoticons", Requests.API.v3);
             }
 
-            public static List<Models.API.v3.Chat.EmoticonImage> GetEmoticonImages(string emotesets = null)
+            public static Models.API.v3.Chat.SetEmoticonsResponse GetEmoticonsBySets(List<int> emotesets)
             {
-
+                return Requests.Get<Models.API.v3.Chat.SetEmoticonsResponse>($"https://api.twitch.tv/kraken/chat/emoticon_images?emotesets={string.Join(",", emotesets)}", Requests.API.v3);
             }
         }
 
-        public static class Follows
+        /*public static class Follows
         {
             public static Models.API.v3.Follows.FollowersResponse GetFollowers(string channel, int limit = 25, int offset = 0, string cursor = "", Models.API.v3.Follows.Direction direction = Models.API.v3.Follows.Direction.Descending)
             {
