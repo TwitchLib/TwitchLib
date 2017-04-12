@@ -221,5 +221,40 @@ namespace TwitchLib
                 return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetEmoticonsBySets(emotesets));
             }
         }
+
+
+
+        public static class Clips
+        {
+            public static Models.API.v4.Clips.Clip GetClip(string slug)
+            {
+                return Internal.TwitchAPI.v4.GetClip(slug);
+            }
+
+            public static async Task<Models.API.v4.Clips.Clip> GetClipAsync(string slug)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v4.GetClip(slug));
+            }
+
+            public static Models.API.v4.Clips.TopClipsResponse GetTopClips(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v4.Clips.Period period = Models.API.v4.Clips.Period.Week, bool trending = false)
+            {
+                return Internal.TwitchAPI.v4.GetTopClips(channel, cursor, game, limit, period, trending);
+            }
+
+            public static async Task<Models.API.v4.Clips.TopClipsResponse> GetTopClipsAsync(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v4.Clips.Period period = Models.API.v4.Clips.Period.Week, bool trending = false)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v4.GetTopClips(channel, cursor, game, limit, period, trending));
+            }
+
+            public static Models.API.v4.Clips.FollowClipsResponse GetFollowedClips(long limit = 10, string cursor = null, bool trending = false)
+            {
+                return Internal.TwitchAPI.v4.GetFollowedClips(limit, cursor, trending);
+            }
+
+            public static async Task<Models.API.v4.Clips.FollowClipsResponse> GetFollowedClipsAsync(long limit = 10, string cursor = null, bool trending = false)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v4.GetFollowedClips(limit, cursor, trending));
+            }
+        }
     }
 }
