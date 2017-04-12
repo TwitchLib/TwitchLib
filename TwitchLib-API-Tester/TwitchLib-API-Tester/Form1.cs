@@ -195,5 +195,44 @@ namespace TwitchLib_API_Tester
             foreach (var team in teams.Teams)
                 MessageBox.Show($"Team name: {team.Name}");
         }
+
+        private async void button17_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Chat.GetBadgesAsync(textBox23.Text);
+            MessageBox.Show($"Broadcaster: {resp.Broadcaster.Alpha}\nSubscriber: {resp.Subscriber.Image}");
+        }
+
+        private async void button18_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Chat.GetAllEmoticonsAsync();
+            foreach (var emoticon in resp.Emoticons)
+                MessageBox.Show($"{emoticon.Regex}\n{emoticon.Images[0].EmoticonSet}\n{emoticon.Images[0].URL}");
+        }
+
+        private async void button19_Click(object sender, EventArgs e)
+        {
+            List<int> sets = new List<int>();
+            string setsStr = textBox24.Text;
+            if(setsStr.Contains(","))
+            {
+                foreach (string setId in setsStr.Split(','))
+                    sets.Add(int.Parse(setId));
+            } else
+            {
+                sets.Add(int.Parse(setsStr));
+            }
+
+            var resp = await TwitchLib.TwitchAPI.Chat.GetEmoticonsBySetsAsync(sets);
+
+            if (resp == null || resp.EmoticonSets == null || resp.EmoticonSets.Count() < 1)
+            {
+                MessageBox.Show("No results");
+                return;
+            }
+
+            foreach (var emoticon in resp.EmoticonSets)
+                foreach(var emote in emoticon.Value)
+                    MessageBox.Show($"{emoticon.Key}\n{emote.Code}\n{emote.Id}");
+        }
     }
 }
