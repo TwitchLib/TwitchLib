@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.API.Chat
+﻿namespace TwitchLib.Models.API.Chat
 {
     /// <summary>Class representing a chatter as returned by the Twitch Api.</summary>
     public class Chatter

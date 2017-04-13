@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using TwitchLib.Exceptions.Client;
-using System.Text;
 using TwitchLib.Models.Client;
 using TwitchLib.Events.Client;
 using TwitchLib.Internal;

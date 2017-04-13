@@ -4,7 +4,6 @@ using Newtonsoft.Json.Linq;
 using System.Timers;
 using TwitchLib.Events.PubSub;
 using TwitchLib.Models.PubSub.Responses.Messages;
-using TwitchLib.Internal;
 using WebSocketSharp;
 
 namespace TwitchLib

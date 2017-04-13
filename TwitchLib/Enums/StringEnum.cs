@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Enums
+﻿namespace TwitchLib.Enums
 {
     ///<summary>Really cool way of doing string enums, credits to RogueException (https://github.com/RogueException)</summary>
     public abstract class StringEnum
