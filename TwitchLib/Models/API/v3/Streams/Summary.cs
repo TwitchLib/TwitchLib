@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,9 @@ namespace TwitchLib.Models.API.v3.Streams
 {
     public class Summary
     {
+        [JsonProperty(PropertyName = "viewers")]
         public int Viewers { get; protected set; }
+        [JsonProperty(PropertyName = "channels")]
         public int Channels { get; protected set; }
-
-        public Summary(JToken json)
-        {
-
-        }
     }
 }
