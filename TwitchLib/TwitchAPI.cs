@@ -308,6 +308,82 @@ namespace TwitchLib
             }
         }
 
+        public static class Search
+        {
+            public static Models.API.v3.Search.SearchChannelsResponse SearchChannels(string query, int limit = 25, int offset = 0)
+            {
+                return Internal.TwitchAPI.v3.Search.SearchChannels(query, limit, offset);
+            }
+
+            public async static Task<Models.API.v3.Search.SearchChannelsResponse> SearchChannelsAsync(string query, int limit = 25, int offset = 0)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Search.SearchChannels(query, limit, offset));
+            }
+
+            public static Models.API.v3.Search.SearchStreamsResponse SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
+            {
+                return Internal.TwitchAPI.v3.Search.SearchStreams(query, limit, offset, hls);
+            }
+
+            public async static Task<Models.API.v3.Search.SearchStreamsResponse> SearchStreamsAsync(string query, int limit = 25, int offset = 0, bool? hls = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Search.SearchStreams(query, limit, offset, hls));
+            }
+
+            public static Models.API.v3.Search.SearchGamesResponse SearchGames(string query, Models.API.v3.Search.GameSearchType type = Models.API.v3.Search.GameSearchType.Suggest, bool live = false)
+            {
+                return Internal.TwitchAPI.v3.Search.SearchGames(query, type, live);
+            }
+
+            public async static Task<Models.API.v3.Search.SearchGamesResponse> SearchGamesAsync(string query, Models.API.v3.Search.GameSearchType type = Models.API.v3.Search.GameSearchType.Suggest, bool live = false)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Search.SearchGames(query, type, live));
+            }
+        }
+
+        public static class Streams
+        {
+            public static Models.API.v3.Streams.StreamResponse GetStream(string channel)
+            {
+                return Internal.TwitchAPI.v3.Streams.GetStream(channel);
+            }
+
+            public async static Task<Models.API.v3.Streams.StreamResponse> GetStreamAsync(string channel)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetStream(channel));
+            }
+
+            public static Models.API.v3.Streams.StreamsResponse GetStreams(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Models.API.v3.Streams.StreamType streamType = Models.API.v3.Streams.StreamType.All, string language = "en")
+            {
+                return Internal.TwitchAPI.v3.Streams.GetStreams(game, channel, limit, offset, clientId, streamType, language);
+            }
+
+            public async static Task<Models.API.v3.Streams.StreamsResponse> GetStreamsAsync(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Models.API.v3.Streams.StreamType streamType = Models.API.v3.Streams.StreamType.All, string language = "en")
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetStreams(game, channel, limit, offset, clientId, streamType, language)); 
+            }
+
+            public static Models.API.v3.Streams.FeaturedStreamsResponse GetFeaturedStreams(int limit = 25, int offset = 0)
+            {
+                return Internal.TwitchAPI.v3.Streams.GetFeaturedStreams(limit, offset);
+            }
+
+            public async static Task<Models.API.v3.Streams.FeaturedStreamsResponse> GetFeaturedStreamsAsync(int limit = 25, int offset = 0)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetFeaturedStreams(limit, offset));
+            }
+
+            public static Models.API.v3.Streams.Summary GetStreamsSummary()
+            {
+                return Internal.TwitchAPI.v3.Streams.GetStreamsSummary();
+            }
+
+            public async static Task<Models.API.v3.Streams.Summary> GetStreamsSummaryAsync()
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetStreamsSummary());
+            }
+        }
+
 
 
         public static class Clips

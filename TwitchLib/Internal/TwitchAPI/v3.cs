@@ -265,48 +265,87 @@ namespace TwitchLib.Internal.TwitchAPI
             }
         }
 
-        /*public static class Search
+        public static class Search
         {
             public static Models.API.v3.Search.SearchChannelsResponse SearchChannels(string query, int limit = 25, int offset = 0)
             {
-
+                string paramsStr = $"?query={query}&limit={limit}&offset={0}";
+                return Requests.Get<Models.API.v3.Search.SearchChannelsResponse>($"https://api.twitch.tv/kraken/search/channels{paramsStr}", Requests.API.v3);
             }
 
             public static Models.API.v3.Search.SearchStreamsResponse SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
             {
+                string opHls = "";
+                if(hls != null)
+                {
+                    if ((bool)hls)
+                        opHls = "&hls=true";
+                    else
+                        opHls = "&hls=false";
+                }
 
+                string paramsStr = $"?query={query}&limit={limit}&offset={offset}{opHls}";
+                return Requests.Get<Models.API.v3.Search.SearchStreamsResponse>($"https://api.twitch.tv/kraken/search/streams{paramsStr}", Requests.API.v3);
             }
 
-            public static Models.API.v3.Search.SearchGamesResponse SearchGames(string query, Models.API.v3.Search.GameSearchType type, bool live = false)
+            public static Models.API.v3.Search.SearchGamesResponse SearchGames(string query, Models.API.v3.Search.GameSearchType type = Models.API.v3.Search.GameSearchType.Suggest, bool live = false)
             {
+                string paramsStr = $"?query={query}&live={live.ToString().ToLower()}";
+                switch(type)
+                {
+                    case Models.API.v3.Search.GameSearchType.Suggest:
+                        paramsStr += $"&type=suggest";
+                        break;
+                }
 
+                return Requests.Get<Models.API.v3.Search.SearchGamesResponse>($"https://api.twitch.tv/kraken/search/games{paramsStr}", Requests.API.v3);
             }
         }
 
         public static class Streams
         {
-            public static Models.API.v3.Streams.Stream GetStream(string channel)
+            public static Models.API.v3.Streams.StreamResponse GetStream(string channel)
             {
-
+                return Requests.Get<Models.API.v3.Streams.StreamResponse>($"https://api.twitch.tv/kraken/streams/{channel}", Requests.API.v3);
             }
 
             public static Models.API.v3.Streams.StreamsResponse GetStreams(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Models.API.v3.Streams.StreamType streamType = Models.API.v3.Streams.StreamType.All, string language = "en")
             {
+                string paramsStr = $"?limit={limit}&offset={offset}";
+                if (game != null)
+                    paramsStr += $"&game={game}";
+                if (channel != null)
+                    paramsStr += $"&channel={channel}";
+                if (clientId != null)
+                    paramsStr += $"&client_id={clientId}";
+                if (language != null)
+                    paramsStr += $"&language={language}";
+                switch(streamType)
+                {
+                    case Models.API.v3.Streams.StreamType.All:
+                        break;
+                    case Models.API.v3.Streams.StreamType.Live:
+                        break;
+                    case Models.API.v3.Streams.StreamType.Playlist:
+                        break;
+                }
 
+                return Requests.Get<Models.API.v3.Streams.StreamsResponse>($"https://api.twitch.tv/kraken/streams{paramsStr}", Requests.API.v3);
             }
 
-            public static List<Models.API.v3.Streams.FeaturedStream> GetFeaturedStreams(int limit = 25, int offset = 0)
+            public static Models.API.v3.Streams.FeaturedStreamsResponse GetFeaturedStreams(int limit = 25, int offset = 0)
             {
-
+                string paramsStr = $"?limit={limit}&offset={offset}";
+                return Requests.Get<Models.API.v3.Streams.FeaturedStreamsResponse>($"https://api.twitch.tv/kraken/streams/featured{paramsStr}", Requests.API.v3);
             }
 
-            public static Models.API.v3.Streams.Summary GetStreamsSummary(string game = null)
+            public static Models.API.v3.Streams.Summary GetStreamsSummary()
             {
-
+                return Requests.Get<Models.API.v3.Streams.Summary>("https://api.twitch.tv/kraken/streams/summary", Requests.API.v3);
             }
         }
 
-        public static class Subscriptions
+        /*public static class Subscriptions
         {
             public static List<Models.API.v3.Subscriptions.SubscriptionsResponse> GetSubscriptions(string channel, int limit = 25, int offset = 0, Models.API.v3.Subscriptions.Direction direction = Models.API.v3.Subscriptions.Direction.Ascending, string token = null)
             {

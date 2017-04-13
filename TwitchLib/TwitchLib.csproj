@@ -215,8 +215,10 @@
     <Compile Include="Models\API\v3\Search\SearchGamesResponse.cs" />
     <Compile Include="Models\API\v3\Search\SearchStreamsResponse.cs" />
     <Compile Include="Models\API\v3\Streams\FeaturedStream.cs" />
+    <Compile Include="Models\API\v3\Streams\FeaturedStreamsResponse.cs" />
     <Compile Include="Models\API\v3\Streams\Preview.cs" />
     <Compile Include="Models\API\v3\Streams\Stream.cs" />
+    <Compile Include="Models\API\v3\Streams\StreamResponse.cs" />
     <Compile Include="Models\API\v3\Streams\StreamsResponse.cs" />
     <Compile Include="Models\API\v3\Streams\StreamTypeEnum.cs" />
     <Compile Include="Models\API\v3\Streams\Summary.cs" />
