@@ -216,6 +216,59 @@ namespace TwitchLib
             }
         }
 
+        public static class Follows
+        {
+            public static Models.API.v3.Follows.FollowersResponse GetFollowers(string channel, int limit = 25, int offset = 0, string cursor = null, Models.API.v3.Follows.Direction direction = Models.API.v3.Follows.Direction.Descending)
+            {
+                return Internal.TwitchAPI.v3.Follows.GetFollowers(channel, limit, offset, cursor, direction);
+            }
+
+            public static async Task<Models.API.v3.Follows.FollowersResponse> GetFollowersAsync(string channel, int limit = 25, int offset = 0, string cursor = null, Models.API.v3.Follows.Direction direction = Models.API.v3.Follows.Direction.Descending)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Follows.GetFollowers(channel, limit, offset, cursor, direction));
+            }
+
+            public static Models.API.v3.Follows.FollowsResponse GetFollows(string channel, int limit = 25, int offset = 0, Models.API.v3.Follows.Direction direction = Models.API.v3.Follows.Direction.Descending, Models.API.v3.Follows.SortBy sortBy = Models.API.v3.Follows.SortBy.CreatedAt)
+            {
+                return Internal.TwitchAPI.v3.Follows.GetFollows(channel, limit, offset, direction, sortBy);
+            }
+
+            public static async Task<Models.API.v3.Follows.FollowsResponse> GetFollowsAsync(string channel, int limit = 25, int offset = 0, Models.API.v3.Follows.Direction direction = Models.API.v3.Follows.Direction.Descending, Models.API.v3.Follows.SortBy sortBy = Models.API.v3.Follows.SortBy.CreatedAt)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Follows.GetFollows(channel, limit, offset, direction, sortBy));
+            }
+
+            public static Models.API.v3.Follows.Follows GetFollowsStatus(string user, string targetChannel)
+            {
+                return Internal.TwitchAPI.v3.Follows.GetFollowsStatus(user, targetChannel);
+            }
+
+            public static async Task<Models.API.v3.Follows.Follows> GetFollowsStatusAsync(string user, string targetChannel)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Follows.GetFollowsStatus(user, targetChannel));
+            }
+
+            public static Models.API.v3.Follows.Follows CreateFollow(string user, string targetChannel, bool notifications = false)
+            {
+                return Internal.TwitchAPI.v3.Follows.CreateFollow(user, targetChannel, notifications);
+            }
+
+            public static async Task<Models.API.v3.Follows.Follows> CreateFollowAsync(string user, string targetChannel, bool notifications = false)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Follows.CreateFollow(user, targetChannel, notifications));
+            }
+
+            public static void RemoveFollow(string user, string target)
+            {
+                Internal.TwitchAPI.v3.Follows.RemoveFollow(user, target);
+            }
+
+            public static async Task RemoveFollowAsync(string user, string target)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v3.Follows.RemoveFollow(user, target));
+            }
+        }
+
 
 
         public static class Clips

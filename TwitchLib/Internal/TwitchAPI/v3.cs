@@ -175,35 +175,72 @@ namespace TwitchLib.Internal.TwitchAPI
             }
         }
 
-        /*public static class Follows
+        public static class Follows
         {
-            public static Models.API.v3.Follows.FollowersResponse GetFollowers(string channel, int limit = 25, int offset = 0, string cursor = "", Models.API.v3.Follows.Direction direction = Models.API.v3.Follows.Direction.Descending)
+            public static Models.API.v3.Follows.FollowersResponse GetFollowers(string channel, int limit = 25, int offset = 0, string cursor = null, Models.API.v3.Follows.Direction direction = Models.API.v3.Follows.Direction.Descending)
             {
+                string paramsStr = $"?limit={limit}&offset={offset}";
+                if (cursor != null)
+                    paramsStr += $"&cursor={cursor}";
+                switch(direction)
+                {
+                    case Models.API.v3.Follows.Direction.Ascending:
+                        paramsStr += $"&direction=asc";
+                        break;
+                    case Models.API.v3.Follows.Direction.Descending:
+                        paramsStr += $"&direction=desc";
+                        break;
+                }
 
+                return Requests.Get<Models.API.v3.Follows.FollowersResponse>($"https://api.twitch.tv/kraken/channels/{channel}/follows{paramsStr}", Requests.API.v3);
             }
 
             public static Models.API.v3.Follows.FollowsResponse GetFollows(string channel, int limit = 25, int offset = 0, Models.API.v3.Follows.Direction direction = Models.API.v3.Follows.Direction.Descending, Models.API.v3.Follows.SortBy sortBy = Models.API.v3.Follows.SortBy.CreatedAt)
             {
+                string paramsStr = $"?limit={limit}&offset={offset}";
+                switch (direction)
+                {
+                    case Models.API.v3.Follows.Direction.Ascending:
+                        paramsStr += $"&direction=asc";
+                        break;
+                    case Models.API.v3.Follows.Direction.Descending:
+                        paramsStr += $"&direction=desc";
+                        break;
+                }
+                switch(sortBy)
+                {
+                    case Models.API.v3.Follows.SortBy.CreatedAt:
+                        paramsStr += $"&sortby=created_at";
+                        break;
+                    case Models.API.v3.Follows.SortBy.LastBroadcast:
+                        paramsStr += $"&sortby=last_broadcast";
+                        break;
+                    case Models.API.v3.Follows.SortBy.Login:
+                        paramsStr += $"&sortby=login";
+                        break;
+                }
 
+                return Requests.Get<Models.API.v3.Follows.FollowsResponse>($"https://api.twitch.tv/kraken/users/{channel}/follows/channels", Requests.API.v3);
             }
 
-            public static Models.API.v3.Follows.Follows GetFollowsStatus(string channel, string targetChannel)
+            public static Models.API.v3.Follows.Follows GetFollowsStatus(string user, string targetChannel)
             {
-
+                return Requests.Get<Models.API.v3.Follows.Follows>($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{targetChannel}", Requests.API.v3);
             }
 
-            public static Models.API.v3.Follows.Follows CreateFollow(string channel, string targetChannel, bool notifications = false, string token = null)
+            public static Models.API.v3.Follows.Follows CreateFollow(string user, string targetChannel, bool notifications = false)
             {
-
+                string paramsStr = $"?notifications={notifications.ToString().ToLower()}";
+                return Requests.Put<Models.API.v3.Follows.Follows>($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{targetChannel}", null, Requests.API.v3);
             }
 
-            public static void RemoveFollow(string channel, string target, string token = null)
+            public static void RemoveFollow(string user, string target)
             {
-
+                Requests.Delete($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{target}", Requests.API.v3);
             }
         }
 
-        public static class Games
+        /*public static class Games
         {
             public static Models.API.v3.Games.TopGamesResponse GetTopGames(int limit = 10, int offset = 0)
             {
