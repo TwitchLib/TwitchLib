@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Net;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using System.IO;
 using System.Linq;
 using TwitchLib.Exceptions.API;
-using TwitchLib.Models.API;
 using TwitchLib.Models.API.User;
 using TwitchLib.Models.API.Team;
 using System.Drawing;
