@@ -65,37 +65,9 @@ namespace TwitchLib.Internal
         #endregion
 
         #region GET
-        public static string Get(string url, API api = API.v5)
-        {
-            checkForCredentials();
-            url = appendClientId(url);
-
-            var request = WebRequest.CreateHttp(url);
-            request.Method = "GET";
-            request.ContentType = "application/json";
-            request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
-
-            if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
-                request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
-
-            try
-            {
-                var response = request.GetResponse();
-                using (var reader = new StreamReader(response.GetResponseStream()))
-                {
-                    string data = reader.ReadToEnd();
-                    return data;
-                }
-
-            }
-            catch (WebException ex) { handleWebException(ex); }
-
-            return null;
-        }
-
         public static T Get<T>(string url, API api = API.v5)
         {
-            return JsonConvert.DeserializeObject<T>(Get(url, api));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "GET", null, api));
         }
         #endregion
 
