@@ -295,5 +295,29 @@ namespace TwitchLib_API_Tester
             await TwitchLib.TwitchAPI.Follows.RemoveFollowAsync(textBox32.Text, textBox33.Text);
             MessageBox.Show("Follow removed!");
         }
+
+        private async void button28_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Games.GetTopGamesAsync();
+            MessageBox.Show($"Total live games: {resp.Total}");
+            foreach (var game in resp.TopGames)
+                MessageBox.Show($"Game: {game.Game.Name}\nChannels: {game.Channels}\nViewers: {game.Viewers}");
+        }
+
+        private async void button29_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Ingests.GetIngestsAsync();
+            foreach (var ingest in resp.Ingests)
+                MessageBox.Show($"Name: {ingest.Name}\nAvailability: {ingest.Availability}");
+        }
+
+        private async void button30_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Root.GetRootAsync();
+            if(resp.Token.Authorization != null)
+                MessageBox.Show($"Username: {resp.Token.Username}\nClient Id:{resp.Token.ClientId}\nValid: {resp.Token.Valid}\nAuth scopes: {string.Join(",",resp.Token.Authorization.Scopes)}");
+            else
+                MessageBox.Show($"Username: {resp.Token.Username}\nClient Id:{resp.Token.ClientId}\nValid: {resp.Token.Valid}");
+        }
     }
 }
