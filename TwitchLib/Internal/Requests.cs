@@ -116,7 +116,11 @@ namespace TwitchLib.Internal
             {
                 var response = request.GetResponse();
                 using (var reader = new StreamReader(response.GetResponseStream()))
-                    return reader.ReadToEnd();
+                {
+                    string data = reader.ReadToEnd();
+                    return data;
+                }
+                    
             }
             catch (WebException ex) { handleWebException(ex); }
 
