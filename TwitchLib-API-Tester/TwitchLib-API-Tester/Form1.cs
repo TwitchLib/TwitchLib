@@ -319,5 +319,55 @@ namespace TwitchLib_API_Tester
             else
                 MessageBox.Show($"Username: {resp.Token.Username}\nClient Id:{resp.Token.ClientId}\nValid: {resp.Token.Valid}");
         }
+
+        private async void button31_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Search.SearchChannelsAsync(textBox34.Text);
+            MessageBox.Show($"Total: {resp.Total}");
+            foreach (var channel in resp.Channels)
+                MessageBox.Show($"Name: {channel.Name}");
+        }
+
+        private async void button32_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Search.SearchStreamsAsync(textBox35.Text);
+            MessageBox.Show($"Total: {resp.Total}");
+            foreach (var stream in resp.Streams)
+                MessageBox.Show($"Name: {stream.Channel.Name}\nViewers: {stream.Viewers}\nGame: {stream.Game}");
+        }
+
+        private async void button33_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Search.SearchGamesAsync(textBox36.Text);
+            foreach (var game in resp.Games)
+                MessageBox.Show($"Name: {game.Name}");
+        }
+
+        private async void button34_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Streams.GetStreamAsync(textBox37.Text);
+            MessageBox.Show($"Name: {resp.Stream.Channel.Name}\nGame: {resp.Stream.Game}\nViewers: {resp.Stream.Viewers}");
+        }
+
+        private async void button35_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Streams.GetStreamsAsync(textBox38.Text);
+            MessageBox.Show($"Total: {resp.Total}");
+            foreach (var stream in resp.Streams)
+                MessageBox.Show($"Streamer: {stream.Channel.Name}\nGame: {stream.Game}\nViews: {stream.Viewers}");
+        }
+
+        private async void button36_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Streams.GetFeaturedStreamsAsync();
+            foreach (var stream in resp.FeaturedStreams)
+                MessageBox.Show($"Name: {stream.Title}\nSponsored: {stream.Sponsored}\nScheduled: {stream.Scheduled}");
+        }
+
+        private async void button37_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Streams.GetStreamsSummaryAsync();
+            MessageBox.Show($"Total channels: {resp.Channels}\nTotal viewers: {resp.Viewers}");
+        }
     }
 }
