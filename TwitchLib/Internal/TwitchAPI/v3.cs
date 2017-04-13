@@ -240,31 +240,32 @@ namespace TwitchLib.Internal.TwitchAPI
             }
         }
 
-        /*public static class Games
+        public static class Games
         {
             public static Models.API.v3.Games.TopGamesResponse GetTopGames(int limit = 10, int offset = 0)
             {
-
+                string paramsStr = $"?limit={limit}&offset={offset}";
+                return Requests.Get<Models.API.v3.Games.TopGamesResponse>($"https://api.twitch.tv/kraken/games/top{paramsStr}", Requests.API.v3);
             }
         }
 
         public static class Ingests
         {
-            public static List<Models.API.v3.Ingests.Ingest> GetIngests()
+            public static Models.API.v3.Ingests.IngestsResponse GetIngests()
             {
-
+                return Requests.Get<Models.API.v3.Ingests.IngestsResponse>("https://api.twitch.tv/kraken/ingests", Requests.API.v3);
             }
         }
 
         public static class Root
         {
-            public static Models.API.v3.Root.Token GetRoot(string token = null)
+            public static Models.API.v3.Root.RootResponse GetRoot()
             {
-
+                return Requests.Get<Models.API.v3.Root.RootResponse>("https://api.twitch.tv/kraken", Requests.API.v3);
             }
         }
 
-        public static class Search
+        /*public static class Search
         {
             public static Models.API.v3.Search.SearchChannelsResponse SearchChannels(string query, int limit = 25, int offset = 0)
             {

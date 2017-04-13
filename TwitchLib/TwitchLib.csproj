@@ -206,8 +206,10 @@
     <Compile Include="Models\API\v3\Games\Logo.cs" />
     <Compile Include="Models\API\v3\Games\TopGame.cs" />
     <Compile Include="Models\API\v3\Ingests\Ingest.cs" />
+    <Compile Include="Models\API\v3\Ingests\IngestsResponse.cs" />
     <Compile Include="Models\API\v3\Root\Authorization.cs" />
     <Compile Include="Models\API\v3\Root\Token.cs" />
+    <Compile Include="Models\API\v3\Root\RootResponse.cs" />
     <Compile Include="Models\API\v3\Search\GameSearchTypeEnum.cs" />
     <Compile Include="Models\API\v3\Search\SearchChannelsResponse.cs" />
     <Compile Include="Models\API\v3\Search\SearchGamesResponse.cs" />

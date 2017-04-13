@@ -269,6 +269,45 @@ namespace TwitchLib
             }
         }
 
+        public static class Games
+        {
+            public static Models.API.v3.Games.TopGamesResponse GetTopGames(int limit = 10, int offset = 0)
+            {
+                return Internal.TwitchAPI.v3.Games.GetTopGames(limit, offset);
+            }
+
+            public async static Task<Models.API.v3.Games.TopGamesResponse> GetTopGamesAsync(int limit = 10, int offset = 0)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Games.GetTopGames(limit, offset));
+            }
+        }
+
+        public static class Ingests
+        {
+            public static Models.API.v3.Ingests.IngestsResponse GetIngests()
+            {
+                return Internal.TwitchAPI.v3.Ingests.GetIngests();
+            }
+
+            public async static Task<Models.API.v3.Ingests.IngestsResponse> GetIngestsAsync()
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Ingests.GetIngests());
+            }
+        }
+
+        public static class Root
+        {
+            public static Models.API.v3.Root.RootResponse GetRoot()
+            {
+                return Internal.TwitchAPI.v3.Root.GetRoot();
+            }
+
+            public async static Task<Models.API.v3.Root.RootResponse> GetRootAsync()
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Root.GetRoot());
+            }
+        }
+
 
 
         public static class Clips

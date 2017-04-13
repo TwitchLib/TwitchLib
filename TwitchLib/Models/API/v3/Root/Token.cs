@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,13 @@ namespace TwitchLib.Models.API.v3.Root
 {
     public class Token
     {
-        public Authorization Authorization { get; protected set; }
-        public string Username { get; protected set; }
+        [JsonProperty(PropertyName = "valid")]
         public bool Valid { get; protected set; }
-
-        public Token(JToken json)
-        {
-
-        }
+        [JsonProperty(PropertyName = "authorization", NullValueHandling = NullValueHandling.Ignore)]
+        public Authorization Authorization { get; protected set; }
+        [JsonProperty(PropertyName = "user_name")]
+        public string Username { get; protected set; }
+        [JsonProperty(PropertyName = "client_id")]
+        public string ClientId { get; protected set; }
     }
 }
