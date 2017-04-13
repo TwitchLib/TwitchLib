@@ -255,5 +255,45 @@ namespace TwitchLib_API_Tester
             foreach (var clip in resp.Clips)
                 MessageBox.Show($"Title: {clip.Title}\nGame: {clip.Game}\nBroacaster: {clip.Broadcaster.Name}\nViews: {clip.Views}");
         }
+
+        private async void button23_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Follows.GetFollowersAsync(textBox26.Text);
+            MessageBox.Show($"Total: {resp.Total}");
+            foreach (var follower in resp.Followers)
+                MessageBox.Show($"Name: {follower.User.DisplayName}\nCreated at: {follower.CreatedAt.ToLongDateString()}");
+        }
+
+        private async void button24_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Follows.GetFollowsAsync(textBox27.Text);
+            MessageBox.Show($"Total: {resp.Total}");
+            foreach (var follower in resp.Follows)
+                MessageBox.Show($"Name: {follower.Channel.DisplayName}\nCreated at: {follower.CreatedAt.ToLongDateString()}");
+        }
+
+        private async void button25_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var resp = await TwitchLib.TwitchAPI.Follows.GetFollowsStatusAsync(textBox29.Text, textBox28.Text);
+                MessageBox.Show($"Following! Since: {resp.CreatedAt.ToLongDateString()}");
+            } catch(TwitchLib.Exceptions.API.BadResourceException)
+            {
+                MessageBox.Show("Not following!");
+            }
+        }
+
+        private async void button26_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Follows.CreateFollowAsync(textBox30.Text, textBox31.Text);
+            MessageBox.Show($"Follow created! Created date: {resp.CreatedAt.ToLongDateString()}");
+        }
+
+        private async void button27_Click(object sender, EventArgs e)
+        {
+            await TwitchLib.TwitchAPI.Follows.RemoveFollowAsync(textBox32.Text, textBox33.Text);
+            MessageBox.Show("Follow removed!");
+        }
     }
 }
