@@ -369,5 +369,43 @@ namespace TwitchLib_API_Tester
             var resp = await TwitchLib.TwitchAPI.Streams.GetStreamsSummaryAsync();
             MessageBox.Show($"Total channels: {resp.Channels}\nTotal viewers: {resp.Viewers}");
         }
+
+        private async void button38_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Subscriptions.GetSubscribersAsync(textBox39.Text);
+            MessageBox.Show($"Total: {resp.Total}");
+            foreach (var sub in resp.Subscribers)
+                MessageBox.Show($"Sub name: {sub.User.Name}\nCreated at: {sub.CreatedAt.ToLongDateString()}");
+        }
+
+        private async void button39_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Subscriptions.GetAllSubscribersAsync(textBox40.Text);
+            MessageBox.Show($"Total: {resp.Count()}");
+        }
+
+        private async void button40_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Subscriptions.ChannelHasUserSubscribedAsync(textBox41.Text, textBox42.Text);
+            if (resp != null)
+                MessageBox.Show($"{resp.User.Name} is subscribed to the channel! Created: {resp.CreatedAt.ToLongDateString()}");
+            else
+                MessageBox.Show($"User not subscribed to channel!");
+        }
+
+        private async void button41_Click(object sender, EventArgs e)
+        {
+            int subCount = await TwitchLib.TwitchAPI.Subscriptions.GetSubscriberCountAsync(textBox43.Text);
+            MessageBox.Show($"Sub count: {subCount}");
+        }
+
+        private async void button42_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Subscriptions.UserSubscribedToChannelAsync(textBox44.Text, textBox45.Text);
+            if (resp != null)
+                MessageBox.Show($"User is subscribed to {resp.Channel.Name} and was created on: {resp.CreatedAt.ToLongDateString()}");
+            else
+                MessageBox.Show("User is not subscribed to channel!");
+        }
     }
 }
