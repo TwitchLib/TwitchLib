@@ -467,5 +467,12 @@ namespace TwitchLib_API_Tester
             foreach (var video in resp.TopVideos)
                 MessageBox.Show($"Title: {video.Title}\nStreamer: {video.Channel.Name}\nGame: {video.Game}\nViews: {video.Views}");
         }
+
+        private async void button52_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.ThirdParty.GetUsernameChangesAsync(textBox50.Text);
+            foreach (var change in resp)
+                MessageBox.Show($"User ID: {change.UserId}\nOld name: {change.UsernameOld}\nNew name: {change.UsernameNew}");
+        }
     }
 }

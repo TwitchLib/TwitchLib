@@ -257,6 +257,11 @@
             this.button50 = new System.Windows.Forms.Button();
             this.groupBox53 = new System.Windows.Forms.GroupBox();
             this.button51 = new System.Windows.Forms.Button();
+            this.tabPage19 = new System.Windows.Forms.TabPage();
+            this.groupBox54 = new System.Windows.Forms.GroupBox();
+            this.textBox50 = new System.Windows.Forms.TextBox();
+            this.label52 = new System.Windows.Forms.Label();
+            this.button52 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -329,6 +334,8 @@
             this.tabPage18.SuspendLayout();
             this.groupBox52.SuspendLayout();
             this.groupBox53.SuspendLayout();
+            this.tabPage19.SuspendLayout();
+            this.groupBox54.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -2330,6 +2337,7 @@
             this.tabControl2.Controls.Add(this.tabPage3);
             this.tabControl2.Controls.Add(this.tabPage4);
             this.tabControl2.Controls.Add(this.tabPage7);
+            this.tabControl2.Controls.Add(this.tabPage19);
             this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Location = new System.Drawing.Point(12, 13);
             this.tabControl2.Name = "tabControl2";
@@ -2584,6 +2592,55 @@
             this.button51.UseVisualStyleBackColor = true;
             this.button51.Click += new System.EventHandler(this.button51_Click);
             // 
+            // tabPage19
+            // 
+            this.tabPage19.Controls.Add(this.groupBox54);
+            this.tabPage19.Location = new System.Drawing.Point(10, 48);
+            this.tabPage19.Name = "tabPage19";
+            this.tabPage19.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage19.Size = new System.Drawing.Size(1544, 1046);
+            this.tabPage19.TabIndex = 4;
+            this.tabPage19.Text = "ThirdParty";
+            this.tabPage19.UseVisualStyleBackColor = true;
+            // 
+            // groupBox54
+            // 
+            this.groupBox54.Controls.Add(this.textBox50);
+            this.groupBox54.Controls.Add(this.label52);
+            this.groupBox54.Controls.Add(this.button52);
+            this.groupBox54.Location = new System.Drawing.Point(17, 20);
+            this.groupBox54.Name = "groupBox54";
+            this.groupBox54.Size = new System.Drawing.Size(437, 198);
+            this.groupBox54.TabIndex = 14;
+            this.groupBox54.TabStop = false;
+            this.groupBox54.Text = "Get Username Changes";
+            // 
+            // textBox50
+            // 
+            this.textBox50.Location = new System.Drawing.Point(167, 40);
+            this.textBox50.Name = "textBox50";
+            this.textBox50.Size = new System.Drawing.Size(246, 38);
+            this.textBox50.TabIndex = 3;
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(15, 43);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(153, 32);
+            this.label52.TabIndex = 1;
+            this.label52.Text = "Username:";
+            // 
+            // button52
+            // 
+            this.button52.Location = new System.Drawing.Point(6, 98);
+            this.button52.Name = "button52";
+            this.button52.Size = new System.Drawing.Size(425, 82);
+            this.button52.TabIndex = 0;
+            this.button52.Text = "Fetch";
+            this.button52.UseVisualStyleBackColor = true;
+            this.button52.Click += new System.EventHandler(this.button52_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -2701,6 +2758,9 @@
             this.groupBox52.ResumeLayout(false);
             this.groupBox52.PerformLayout();
             this.groupBox53.ResumeLayout(false);
+            this.tabPage19.ResumeLayout(false);
+            this.groupBox54.ResumeLayout(false);
+            this.groupBox54.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2934,6 +2994,11 @@
         private System.Windows.Forms.Button button50;
         private System.Windows.Forms.GroupBox groupBox53;
         private System.Windows.Forms.Button button51;
+        private System.Windows.Forms.TabPage tabPage19;
+        private System.Windows.Forms.GroupBox groupBox54;
+        private System.Windows.Forms.TextBox textBox50;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.Button button52;
     }
 }
 
