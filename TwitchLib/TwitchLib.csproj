@@ -222,9 +222,10 @@
     <Compile Include="Models\API\v3\Streams\StreamsResponse.cs" />
     <Compile Include="Models\API\v3\Streams\StreamTypeEnum.cs" />
     <Compile Include="Models\API\v3\Streams\Summary.cs" />
+    <Compile Include="Models\API\v3\Subscriptions\ChannelSubscription.cs" />
     <Compile Include="Models\API\v3\Subscriptions\DirectionEnum.cs" />
-    <Compile Include="Models\API\v3\Subscriptions\Subscription.cs" />
-    <Compile Include="Models\API\v3\Subscriptions\SubscriptionsResponse.cs" />
+    <Compile Include="Models\API\v3\Subscriptions\Subscriber.cs" />
+    <Compile Include="Models\API\v3\Subscriptions\SubscribersResponse.cs" />
     <Compile Include="Models\API\v3\Teams\Team.cs" />
     <Compile Include="Models\API\v3\Users\Emote.cs" />
     <Compile Include="Models\API\v3\Users\EmoteSet.cs" />

@@ -348,30 +348,87 @@ namespace TwitchLib.Internal.TwitchAPI
             }
         }
 
-        /*public static class Subscriptions
+        public static class Subscriptions
         {
-            public static List<Models.API.v3.Subscriptions.SubscriptionsResponse> GetSubscriptions(string channel, int limit = 25, int offset = 0, Models.API.v3.Subscriptions.Direction direction = Models.API.v3.Subscriptions.Direction.Ascending, string token = null)
+            public static Models.API.v3.Subscriptions.SubscribersResponse GetSubscribers(string channel, int limit = 25, int offset = 0, Models.API.v3.Subscriptions.Direction direction = Models.API.v3.Subscriptions.Direction.Ascending, string accessToken = null)
             {
+                string paramsStr = $"?limit={limit}&offset={offset}";
+                switch (direction)
+                {
+                    case Models.API.v3.Subscriptions.Direction.Ascending:
+                        paramsStr += "&direction=asc";
+                        break;
+                    case Models.API.v3.Subscriptions.Direction.Descending:
+                        paramsStr += "&direction=desc";
+                        break;
+                }
 
+                return Requests.Get<Models.API.v3.Subscriptions.SubscribersResponse>($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions{paramsStr}", accessToken, Requests.API.v3);
             }
 
-            public static List<Models.API.v3.Subscriptions.Subscription> GetAllSubscriptions(string channel, string token = null)
+            public static List<Models.API.v3.Subscriptions.Subscriber> GetAllSubscribers(string channel, string accessToken = null)
             {
+                // initial stuffs
+                List<Models.API.v3.Subscriptions.Subscriber> allSubs = new List<Models.API.v3.Subscriptions.Subscriber>();
+                int totalSubs;
+                var firstBatch = GetSubscribers(channel, 100, 0, Models.API.v3.Subscriptions.Direction.Ascending, accessToken);
+                totalSubs = firstBatch.Total;
+                allSubs.AddRange(firstBatch.Subscribers);
 
+                // math stuff to determine left over and number of requests
+                int amount = firstBatch.Subscribers.Length;
+                int leftOverSubs = (totalSubs - amount) % 100;
+                int requiredRequests = (totalSubs - amount - leftOverSubs) / 100;
+
+                // perform required requests after initial delay
+                int currentOffset = amount;
+                System.Threading.Thread.Sleep(1000);
+                for (int i = 0; i < requiredRequests; i++)
+                {
+                    var requestedSubs = GetSubscribers(channel, 100, currentOffset, Models.API.v3.Subscriptions.Direction.Ascending, accessToken);
+                    allSubs.AddRange(requestedSubs.Subscribers);
+                    currentOffset += requestedSubs.Subscribers.Length;
+
+                    // We should wait a second before performing another request per Twitch requirements
+                    System.Threading.Thread.Sleep(1000);
+                }
+
+                // get leftover subs
+                var leftOverSubsRequest = GetSubscribers(channel, leftOverSubs, currentOffset, Models.API.v3.Subscriptions.Direction.Ascending, accessToken);
+                allSubs.AddRange(leftOverSubsRequest.Subscribers);
+
+                return allSubs;
             }
 
-            public static bool ChannelHasUserSubscribed(string channel, string targetUser, string token = null)
+            public static Models.API.v3.Subscriptions.Subscriber ChannelHasUserSubscribed(string channel, string targetUser, string accessToken = null)
             {
-
+                try
+                {
+                    return Requests.Get<Models.API.v3.Subscriptions.Subscriber>($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions/{targetUser}", accessToken, Requests.API.v3);
+                } catch
+                {
+                    return null;
+                }
             }
 
-            public static bool UserSubscribedToChannel(string user, string targetChannel, string token = null)
+            public static Models.API.v3.Subscriptions.ChannelSubscription UserSubscribedToChannel(string user, string targetChannel, string accessToken = null)
             {
+                try
+                {
+                    return Requests.Get<Models.API.v3.Subscriptions.ChannelSubscription>($"https://api.twitch.tv/kraken/users/{user}/subscriptions/{targetChannel}", accessToken, Requests.API.v3);
+                }catch
+                {
+                    return null;
+                }
+            }
 
+            public static int GetSubscriberCount(string channel, string accessToken = null)
+            {
+                return GetSubscribers(channel, 1, 0, Models.API.v3.Subscriptions.Direction.Ascending, accessToken).Total;
             }
         }
 
-        public static class Teams
+        /*public static class Teams
         {
             public static List<Models.API.v3.Teams.Team> GetTeams(int limit = 25, int offset = 0)
             {
