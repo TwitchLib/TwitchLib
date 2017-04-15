@@ -513,6 +513,28 @@ namespace TwitchLib
             }
         }
 
+        public static class Videos
+        {
+            public static Models.API.v3.Videos.Video GetVideo(string id)
+            {
+                return Internal.TwitchAPI.v3.Videos.GetVideo(id);
+            }
+
+            public async static Task<Models.API.v3.Videos.Video> GetVideoAsync(string id)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Videos.GetVideo(id));
+            }
+
+            public static Models.API.v3.Videos.TopVideosResponse GetTopVideos(int limit = 25, int offset = 0, string game = null, Models.API.v3.Videos.Period period = Models.API.v3.Videos.Period.Week)
+            {
+                return Internal.TwitchAPI.v3.Videos.GetTopVideos(limit, offset, game, period);
+            }
+
+            public async static Task<Models.API.v3.Videos.TopVideosResponse> GetTopVideosAsync(int limit = 25, int offset = 0, string game = null, Models.API.v3.Videos.Period period = Models.API.v3.Videos.Period.Week)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Videos.GetTopVideos(limit, offset, game, period));
+            }
+        }
 
 
 

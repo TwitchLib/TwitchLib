@@ -499,17 +499,33 @@ namespace TwitchLib.Internal.TwitchAPI
             }
         }
 
-        /*public static class Videos
+        public static class Videos
         {
             public static Models.API.v3.Videos.Video GetVideo(string id)
             {
-
+                return Requests.Get<Models.API.v3.Videos.Video>($"https://api.twitch.tv/kraken/videos/{id}", null, Requests.API.v3);
             }
 
-            public static List<Models.API.v3.Videos.Video> GetTopVideos(int limit = 100, int offset = 0, string game = null, Models.API.v3.Videos.Period period = Models.API.v3.Videos.Period.Week)
+            public static Models.API.v3.Videos.TopVideosResponse GetTopVideos(int limit = 25, int offset = 0, string game = null, Models.API.v3.Videos.Period period = Models.API.v3.Videos.Period.Week)
             {
+                string paramsStr = $"?limit={limit}&offset={offset}";
+                if (game != null)
+                    paramsStr += $"&game={game}";
+                switch(period)
+                {
+                    case Models.API.v3.Videos.Period.Week:
+                        paramsStr += "&period=week";
+                        break;
+                    case Models.API.v3.Videos.Period.Month:
+                        paramsStr += "&period=month";
+                        break;
+                    case Models.API.v3.Videos.Period.All:
+                        paramsStr += "&period=all";
+                        break;
+                }
 
+                return Requests.Get<Models.API.v3.Videos.TopVideosResponse>($"https://api.twitch.tv/kraken/videos/top{paramsStr}", null, Requests.API.v3);
             }
-        }*/
+        }
     }
 }

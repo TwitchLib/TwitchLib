@@ -238,6 +238,7 @@
     <Compile Include="Models\API\v3\Videos\BroadcastTypeEnum.cs" />
     <Compile Include="Models\API\v3\Videos\Channel.cs" />
     <Compile Include="Models\API\v3\Videos\PeriodEnum.cs" />
+    <Compile Include="Models\API\v3\Videos\TopVideosResponse.cs" />
     <Compile Include="Models\API\v3\Videos\Video.cs" />
     <Compile Include="Models\API\v4\Clips\Broadcaster.cs" />
     <Compile Include="Models\API\v4\Clips\Clip.cs" />
