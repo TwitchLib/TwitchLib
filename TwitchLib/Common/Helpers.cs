@@ -15,6 +15,18 @@ namespace TwitchLib.Common
     public static class Helpers
     {
         /// <summary>
+        /// Function that extracts just the token for consistency
+        /// </summary>
+        /// <param name="token">Full token string</param>
+        /// <returns></returns>
+        public static string FormatOAuth(string token)
+        {
+            if (token.Contains(" "))
+                return token.Split(' ')[1];
+            return token;
+        }
+
+        /// <summary>
         /// Function that converts Image object to a base64 string.
         /// </summary>
         /// <param name="image">Image object represting the image to turn to base64 string.</param>

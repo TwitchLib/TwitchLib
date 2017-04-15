@@ -19,21 +19,21 @@ namespace TwitchLib.Internal
         }
 
         #region POST
-        public static T Post<T>(string url, Models.API.RequestModel model, API api = API.v5)
+        public static T Post<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5)
         {
             var test = new JsonSerializerSettings();
             if (model != null)
-                return JsonConvert.DeserializeObject<T>(Post(url, LowercaseJsonSerializer.SerializeObject(model), api));
+                return JsonConvert.DeserializeObject<T>(Post(url, LowercaseJsonSerializer.SerializeObject(model), accessToken, api));
             else
-                return JsonConvert.DeserializeObject<T>(Post(url, "", api));
+                return JsonConvert.DeserializeObject<T>(Post(url, "", accessToken, api));
         }
 
-        public static void Post(string url, Models.API.RequestModel model, API api = API.v5)
+        public static void Post(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5)
         {
-            Post(url, LowercaseJsonSerializer.SerializeObject(model), api);
+            Post(url, LowercaseJsonSerializer.SerializeObject(model), accessToken, api);
         }
 
-        public static string Post(string url, string payload, API api = API.v5)
+        public static string Post(string url, string payload, string accessToken = null, API api = API.v5)
         {
             checkForCredentials();
             url = appendClientId(url);
@@ -65,37 +65,37 @@ namespace TwitchLib.Internal
         #endregion
 
         #region GET
-        public static T Get<T>(string url, API api = API.v5)
+        public static T Get<T>(string url, string accessToken = null, API api = API.v5)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "GET", null, api));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "GET", null, accessToken, api));
         }
         #endregion
 
         #region DELETE
-        public static string Delete(string url, API api = API.v5)
+        public static string Delete(string url, string accessToken = null, API api = API.v5)
         {
-            return genericRequest(url, "DELETE", null, api);
+            return genericRequest(url, "DELETE", null, accessToken, api);
         }
 
-        public static T Delete<T>(string url, API api = API.v5)
+        public static T Delete<T>(string url, string accessToken = null, API api = API.v5)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "DELETE", null, api));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "DELETE", null, accessToken, api));
         }
         #endregion
 
         #region PUT
-        public static T Put<T>(string url, string payload, API api = API.v5)
+        public static T Put<T>(string url, string payload, string accessToken = null, API api = API.v5)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", payload, api));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", payload, accessToken, api));
         }
 
-        public static string Put(string url, string payload, API api = API.v5)
+        public static string Put(string url, string payload, string accessToken = null, API api = API.v5)
         {
-            return genericRequest(url, "PUT", payload, api);
+            return genericRequest(url, "PUT", payload, accessToken, api);
         }
         #endregion
 
-        private static string genericRequest(string url, string method, string payload = null, API api = API.v5)
+        private static string genericRequest(string url, string method, string payload = null, string accessToken = null, API api = API.v5)
         {
             checkForCredentials();
             url = appendClientId(url);
@@ -105,7 +105,9 @@ namespace TwitchLib.Internal
             request.ContentType = "application/json";
             request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
 
-            if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
+            if(!string.IsNullOrEmpty(accessToken))
+                request.Headers["Authorization"] = $"OAuth {Common.Helpers.FormatOAuth(accessToken)}";
+            else if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
                 request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
 
             if(payload != null)

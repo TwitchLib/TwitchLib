@@ -4,7 +4,7 @@
     {
         public static Models.API.v4.Clips.Clip GetClip(string slug)
         {
-            return Requests.Get<Models.API.v4.Clips.Clip>($"https://api.twitch.tv/kraken/clips/{slug}", Requests.API.v4);
+            return Requests.Get<Models.API.v4.Clips.Clip>($"https://api.twitch.tv/kraken/clips/{slug}", null, Requests.API.v4);
         }
 
         public static Models.API.v4.Clips.TopClipsResponse GetTopClips(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v4.Clips.Period period = Models.API.v4.Clips.Period.Week, bool trending = false)
@@ -36,7 +36,7 @@
                     break;
             }
 
-            return Requests.Get<Models.API.v4.Clips.TopClipsResponse>($"https://api.twitch.tv/kraken/clips/top{paramsStr}", Requests.API.v4);
+            return Requests.Get<Models.API.v4.Clips.TopClipsResponse>($"https://api.twitch.tv/kraken/clips/top{paramsStr}", null, Requests.API.v4);
         }
 
         public static Models.API.v4.Clips.FollowClipsResponse GetFollowedClips(long limit = 10, string cursor = null, bool trending = false)
@@ -49,7 +49,7 @@
             else
                 paramsStr += "&trending=false";
 
-            return Requests.Get<Models.API.v4.Clips.FollowClipsResponse>($"https://api.twitch.tv/kraken/clips/followed{paramsStr}", Requests.API.v4);
+            return Requests.Get<Models.API.v4.Clips.FollowClipsResponse>($"https://api.twitch.tv/kraken/clips/followed{paramsStr}", null, Requests.API.v4);
         }
     }
 }
