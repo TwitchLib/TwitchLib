@@ -228,6 +228,13 @@
             this.button42 = new System.Windows.Forms.Button();
             this.textBox45 = new System.Windows.Forms.TextBox();
             this.label47 = new System.Windows.Forms.Label();
+            this.tabPage16 = new System.Windows.Forms.TabPage();
+            this.groupBox45 = new System.Windows.Forms.GroupBox();
+            this.button43 = new System.Windows.Forms.Button();
+            this.groupBox46 = new System.Windows.Forms.GroupBox();
+            this.textBox46 = new System.Windows.Forms.TextBox();
+            this.label48 = new System.Windows.Forms.Label();
+            this.button44 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -288,6 +295,9 @@
             this.groupBox42.SuspendLayout();
             this.groupBox43.SuspendLayout();
             this.groupBox44.SuspendLayout();
+            this.tabPage16.SuspendLayout();
+            this.groupBox45.SuspendLayout();
+            this.groupBox46.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -335,6 +345,7 @@
             this.tabControl1.Controls.Add(this.tabPage13);
             this.tabControl1.Controls.Add(this.tabPage14);
             this.tabControl1.Controls.Add(this.tabPage15);
+            this.tabControl1.Controls.Add(this.tabPage16);
             this.tabControl1.Location = new System.Drawing.Point(6, 6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -2249,6 +2260,76 @@
             this.label47.TabIndex = 4;
             this.label47.Text = "Channel:";
             // 
+            // tabPage16
+            // 
+            this.tabPage16.Controls.Add(this.groupBox46);
+            this.tabPage16.Controls.Add(this.groupBox45);
+            this.tabPage16.Location = new System.Drawing.Point(10, 48);
+            this.tabPage16.Name = "tabPage16";
+            this.tabPage16.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage16.Size = new System.Drawing.Size(1512, 976);
+            this.tabPage16.TabIndex = 11;
+            this.tabPage16.Text = "Teams";
+            this.tabPage16.UseVisualStyleBackColor = true;
+            // 
+            // groupBox45
+            // 
+            this.groupBox45.Controls.Add(this.button43);
+            this.groupBox45.Location = new System.Drawing.Point(18, 16);
+            this.groupBox45.Name = "groupBox45";
+            this.groupBox45.Size = new System.Drawing.Size(437, 137);
+            this.groupBox45.TabIndex = 10;
+            this.groupBox45.TabStop = false;
+            this.groupBox45.Text = "Get Teams";
+            // 
+            // button43
+            // 
+            this.button43.Location = new System.Drawing.Point(6, 37);
+            this.button43.Name = "button43";
+            this.button43.Size = new System.Drawing.Size(425, 82);
+            this.button43.TabIndex = 0;
+            this.button43.Text = "Fetch";
+            this.button43.UseVisualStyleBackColor = true;
+            this.button43.Click += new System.EventHandler(this.button43_Click);
+            // 
+            // groupBox46
+            // 
+            this.groupBox46.Controls.Add(this.textBox46);
+            this.groupBox46.Controls.Add(this.label48);
+            this.groupBox46.Controls.Add(this.button44);
+            this.groupBox46.Location = new System.Drawing.Point(12, 159);
+            this.groupBox46.Name = "groupBox46";
+            this.groupBox46.Size = new System.Drawing.Size(437, 198);
+            this.groupBox46.TabIndex = 11;
+            this.groupBox46.TabStop = false;
+            this.groupBox46.Text = "Get Specific Team";
+            // 
+            // textBox46
+            // 
+            this.textBox46.Location = new System.Drawing.Point(167, 40);
+            this.textBox46.Name = "textBox46";
+            this.textBox46.Size = new System.Drawing.Size(246, 38);
+            this.textBox46.TabIndex = 3;
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(15, 43);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(95, 32);
+            this.label48.TabIndex = 1;
+            this.label48.Text = "Team:";
+            // 
+            // button44
+            // 
+            this.button44.Location = new System.Drawing.Point(6, 98);
+            this.button44.Name = "button44";
+            this.button44.Size = new System.Drawing.Size(425, 82);
+            this.button44.TabIndex = 0;
+            this.button44.Text = "Fetch";
+            this.button44.UseVisualStyleBackColor = true;
+            this.button44.Click += new System.EventHandler(this.button44_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -2350,6 +2431,10 @@
             this.groupBox43.PerformLayout();
             this.groupBox44.ResumeLayout(false);
             this.groupBox44.PerformLayout();
+            this.tabPage16.ResumeLayout(false);
+            this.groupBox45.ResumeLayout(false);
+            this.groupBox46.ResumeLayout(false);
+            this.groupBox46.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2554,6 +2639,13 @@
         private System.Windows.Forms.TextBox textBox44;
         private System.Windows.Forms.Label label46;
         private System.Windows.Forms.Button button42;
+        private System.Windows.Forms.TabPage tabPage16;
+        private System.Windows.Forms.GroupBox groupBox45;
+        private System.Windows.Forms.Button button43;
+        private System.Windows.Forms.GroupBox groupBox46;
+        private System.Windows.Forms.TextBox textBox46;
+        private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.Button button44;
     }
 }
 

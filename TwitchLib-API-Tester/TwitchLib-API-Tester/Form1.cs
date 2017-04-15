@@ -407,5 +407,18 @@ namespace TwitchLib_API_Tester
             else
                 MessageBox.Show("User is not subscribed to channel!");
         }
+
+        private async void button43_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Teams.GetTeamsAsync();
+            foreach (var team in resp.Teams)
+                MessageBox.Show($"Name: {team.Name}\nTeam Info: {team.Info}");
+        }
+
+        private async void button44_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Teams.GetTeamAsync(textBox46.Text);
+            MessageBox.Show($"Team name: {resp.Name}\nTeam info: {resp.Info}");
+        }
     }
 }
