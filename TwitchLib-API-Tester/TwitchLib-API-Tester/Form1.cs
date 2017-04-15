@@ -420,5 +420,39 @@ namespace TwitchLib_API_Tester
             var resp = await TwitchLib.TwitchAPI.Teams.GetTeamAsync(textBox46.Text);
             MessageBox.Show($"Team name: {resp.Name}\nTeam info: {resp.Info}");
         }
+
+        private async void button45_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.User.GetUserFromUsernameAsync(textBox47.Text);
+            MessageBox.Show($"Name: {resp.Name}\nAccount created at: {resp.CreatedAt.ToLongDateString()}");
+        }
+
+        private async void button46_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.User.GetEmotesAsync(textBox48.Text);
+            foreach (var listing in resp.EmoticonSets)
+                foreach(var emote in listing.Value)
+                    MessageBox.Show($"ID: {listing.Key}\nCode: {emote.Code}");
+        }
+
+        private async void button47_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.User.GetUserFromTokenAsync();
+            MessageBox.Show($"Name: {resp.Name}\nEmail: {resp.Email}\nPartnered: {resp.Partnered}\nNotifications, push: {resp.Notifications.Push}");
+        }
+
+        private async void button48_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.User.GetFollowedStreamsAsync();
+            foreach (var stream in resp.Streams)
+                MessageBox.Show($"Name: {stream.Channel.Name}\nGame: {stream.Game}\nViewers: {stream.Viewers}");
+        }
+
+        private async void button49_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.User.GetFollowedVideosAsync();
+            foreach (var video in resp.Videos)
+                MessageBox.Show($"Channel: {video.Channel.Name}\nTitle: {video.Title}\nViews: {video.Views}");
+        }
     }
 }
