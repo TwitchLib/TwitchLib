@@ -454,5 +454,18 @@ namespace TwitchLib_API_Tester
             foreach (var video in resp.Videos)
                 MessageBox.Show($"Channel: {video.Channel.Name}\nTitle: {video.Title}\nViews: {video.Views}");
         }
+
+        private async void button50_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Videos.GetVideoAsync(textBox49.Text);
+            MessageBox.Show($"Video title: {resp.Title}\nGame: {resp.Game}\nViews: {resp.Views}\nRecorded on: {resp.RecordedAt.ToLongDateString()}");
+        }
+
+        private async void button51_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Videos.GetTopVideosAsync();
+            foreach (var video in resp.TopVideos)
+                MessageBox.Show($"Title: {video.Title}\nStreamer: {video.Channel.Name}\nGame: {video.Game}\nViews: {video.Views}");
+        }
     }
 }
