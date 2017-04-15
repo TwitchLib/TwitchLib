@@ -460,6 +460,58 @@ namespace TwitchLib
             }
         }
 
+        public static class User
+        {
+            public static Models.API.v3.Users.User GetUserFromUsername(string username)
+            {
+                return Internal.TwitchAPI.v3.User.GetUserFromUsername(username);
+            }
+
+            public async static Task<Models.API.v3.Users.User> GetUserFromUsernameAsync(string username)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.User.GetUserFromUsername(username));
+            }
+
+            public static Models.API.v3.Users.UserEmotesResponse GetEmotes(string username, string accessToken = null)
+            {
+                return Internal.TwitchAPI.v3.User.GetEmotes(username, accessToken);
+            }
+
+            public async static Task<Models.API.v3.Users.UserEmotesResponse> GetEmotesAsync(string username, string accessToken = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.User.GetEmotes(username, accessToken));
+            }
+
+            public static Models.API.v3.Users.FullUser GetUserFromToken(string accessToken = null)
+            {
+                return Internal.TwitchAPI.v3.User.GetUserFromToken(accessToken);
+            }
+
+            public async static Task<Models.API.v3.Users.FullUser> GetUserFromTokenAsync(string accessToken = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.User.GetUserFromToken(accessToken));
+            }
+
+            public static Models.API.v3.Users.FollowedStreamsResponse GetFollowedStreams(int limit = 25, int offset = 0, Models.API.v3.Streams.StreamType type = Models.API.v3.Streams.StreamType.All, string accessToken = null)
+            {
+                return Internal.TwitchAPI.v3.User.GetFollowedStreams(limit, offset, type, accessToken);
+            }
+
+            public async static Task<Models.API.v3.Users.FollowedStreamsResponse> GetFollowedStreamsAsync(int limit = 25, int offset = 0, Models.API.v3.Streams.StreamType type = Models.API.v3.Streams.StreamType.All, string accessToken = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.User.GetFollowedStreams(limit, offset, type, accessToken));
+            }
+
+            public static Models.API.v3.Users.FollowedVideosResponse GetFollowedVideos(int limit = 25, int offset = 0, Models.API.v3.Videos.BroadcastType broadcastType = Models.API.v3.Videos.BroadcastType.All, string accessToken = null)
+            {
+                return Internal.TwitchAPI.v3.User.GetFollowedVideos(limit, offset, broadcastType, accessToken);
+            }
+
+            public async static Task<Models.API.v3.Users.FollowedVideosResponse> GetFollowedVideosAsync(int limit = 25, int offset = 0, Models.API.v3.Videos.BroadcastType broadcastType = Models.API.v3.Videos.BroadcastType.All, string accessToken = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.User.GetFollowedVideos(limit, offset, broadcastType, accessToken));
+            }
+        }
 
 
 

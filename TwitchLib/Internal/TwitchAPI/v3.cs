@@ -443,25 +443,63 @@ namespace TwitchLib.Internal.TwitchAPI
             }
         }
 
-        /*public static class Users
+        public static class User
         {
             public static Models.API.v3.Users.User GetUserFromUsername(string username)
             {
-
+                return Requests.Get<Models.API.v3.Users.User>($"https://api.twitch.tv/kraken/users/{username}", null, Requests.API.v3);
             }
 
-            public static List<Models.API.v3.Users.EmoteSet> GetEmotes(string username, string token = null)
+            public static Models.API.v3.Users.UserEmotesResponse GetEmotes(string username, string accessToken = null)
             {
-
+                return Requests.Get<Models.API.v3.Users.UserEmotesResponse>($"https://api.twitch.tv/kraken/users/{username}/emotes", accessToken, Requests.API.v3);
             }
 
-            public static Models.API.v3.Users.User GetUserFromToken(string token = null)
+            public static Models.API.v3.Users.FullUser GetUserFromToken(string accessToken = null)
             {
+                return Requests.Get<Models.API.v3.Users.FullUser>("https://api.twitch.tv/kraken/user", accessToken, Requests.API.v3);
+            }
 
+            public static Models.API.v3.Users.FollowedStreamsResponse GetFollowedStreams(int limit = 25, int offset = 0, Models.API.v3.Streams.StreamType type = Models.API.v3.Streams.StreamType.All, string accessToken = null)
+            {
+                string paramsStr = $"?limit={offset}&offset={offset}";
+                switch(type)
+                {
+                    case Models.API.v3.Streams.StreamType.All:
+                        paramsStr += "&stream_type=all";
+                        break;
+                    case Models.API.v3.Streams.StreamType.Live:
+                        paramsStr += "&stream_type=live";
+                        break;
+                    case Models.API.v3.Streams.StreamType.Playlist:
+                        paramsStr += "&stream_type=playlist";
+                        break;
+                }
+
+                return Requests.Get<Models.API.v3.Users.FollowedStreamsResponse>($"https://api.twitch.tv/kraken/streams/followed{paramsStr}", accessToken, Requests.API.v3);
+            }
+
+            public static Models.API.v3.Users.FollowedVideosResponse GetFollowedVideos(int limit = 25, int offset = 0, Models.API.v3.Videos.BroadcastType broadcastType = Models.API.v3.Videos.BroadcastType.All, string accessToken = null)
+            {
+                string paramsStr = $"?limit={limit}&offset={offset}";
+                switch (broadcastType)
+                {
+                    case Models.API.v3.Videos.BroadcastType.All:
+                        paramsStr += "&broadcast_type=all";
+                        break;
+                    case Models.API.v3.Videos.BroadcastType.Archive:
+                        paramsStr += "&broadcast_type=archive";
+                        break;
+                    case Models.API.v3.Videos.BroadcastType.Highlight:
+                        paramsStr += "&broadcast_type=highlight";
+                        break;
+                }
+
+                return Requests.Get<Models.API.v3.Users.FollowedVideosResponse>($"https://api.twitch.tv/kraken/videos/followed{paramsStr}", accessToken, Requests.API.v3);
             }
         }
 
-        public static class Videos
+        /*public static class Videos
         {
             public static Models.API.v3.Videos.Video GetVideo(string id)
             {
