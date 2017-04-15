@@ -536,8 +536,6 @@ namespace TwitchLib
             }
         }
 
-
-
         public static class Clips
         {
             public static Models.API.v4.Clips.Clip GetClip(string slug)
@@ -568,6 +566,23 @@ namespace TwitchLib
             public static async Task<Models.API.v4.Clips.FollowClipsResponse> GetFollowedClipsAsync(long limit = 10, string cursor = null, bool trending = false)
             {
                 return await Task.Run(() => Internal.TwitchAPI.v4.GetFollowedClips(limit, cursor, trending));
+            }
+        }
+
+
+
+
+
+        public static class ThirdParty
+        {
+            public static List<Models.API.ThirdParty.UsernameChangeListing> GetUsernameChanges(string username)
+            {
+                return Internal.TwitchAPI.ThirdParty.GetUsernameChanges(username);
+            }
+
+            public async static Task<List<Models.API.ThirdParty.UsernameChangeListing>> GetUsernameChangesAsync(string username)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.ThirdParty.GetUsernameChanges(username));
             }
         }
     }

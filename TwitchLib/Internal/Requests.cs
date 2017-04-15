@@ -15,7 +15,7 @@ namespace TwitchLib.Internal
     {
         public enum API
         {
-            v3, v4, v5
+            v3, v4, v5, Void
         }
 
         #region POST
@@ -103,7 +103,8 @@ namespace TwitchLib.Internal
             var request = WebRequest.CreateHttp(url);
             request.Method = method;
             request.ContentType = "application/json";
-            request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
+            if(api != API.Void)
+                request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
 
             if(!string.IsNullOrEmpty(accessToken))
                 request.Headers["Authorization"] = $"OAuth {Common.Helpers.FormatOAuth(accessToken)}";
