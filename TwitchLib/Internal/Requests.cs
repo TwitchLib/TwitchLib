@@ -23,44 +23,14 @@ namespace TwitchLib.Internal
         {
             var test = new JsonSerializerSettings();
             if (model != null)
-                return JsonConvert.DeserializeObject<T>(Post(url, LowercaseJsonSerializer.SerializeObject(model), accessToken, api));
+                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", LowercaseJsonSerializer.SerializeObject(model), accessToken, api));
             else
-                return JsonConvert.DeserializeObject<T>(Post(url, "", accessToken, api));
+                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", "", accessToken, api));
         }
 
         public static void Post(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5)
         {
-            Post(url, LowercaseJsonSerializer.SerializeObject(model), accessToken, api);
-        }
-
-        public static string Post(string url, string payload, string accessToken = null, API api = API.v5)
-        {
-            checkForCredentials();
-            url = appendClientId(url);
-
-            var request = WebRequest.CreateHttp(url);
-            request.Method = "POST";
-            request.ContentType = "application/json";
-
-            if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
-                request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
-            request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
-
-            using (var writer = new StreamWriter(request.GetRequestStream()))
-                writer.Write(payload);
-
-            try
-            {
-                var response = request.GetResponse();
-                using (var reader = new StreamReader(response.GetResponseStream()))
-                {
-                    string data = reader.ReadToEnd();
-                    return data;
-                }
-            }
-            catch (WebException ex) { handleWebException(ex); }
-
-            return null;
+            genericRequest(url, "POST", LowercaseJsonSerializer.SerializeObject(model), accessToken, api);
         }
         #endregion
 
