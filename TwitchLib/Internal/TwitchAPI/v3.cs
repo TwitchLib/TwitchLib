@@ -428,20 +428,22 @@ namespace TwitchLib.Internal.TwitchAPI
             }
         }
 
-        /*public static class Teams
+        public static class Teams
         {
-            public static List<Models.API.v3.Teams.Team> GetTeams(int limit = 25, int offset = 0)
+            public static Models.API.v3.Teams.GetTeamsResponse GetTeams(int limit = 25, int offset = 0)
             {
+                string paramsStr = $"?limit={limit}&offset={offset}";
 
+                return Requests.Get<Models.API.v3.Teams.GetTeamsResponse>($"https://api.twitch.tv/kraken/teams{paramsStr}", null, Requests.API.v3);
             }
 
-            public static List<Models.API.v3.Teams.Team> GetTeam(string teamName)
+            public static Models.API.v3.Teams.Team GetTeam(string teamName)
             {
-
+                return Requests.Get<Models.API.v3.Teams.Team>($"https://api.twitch.tv/kraken/teams/{teamName}", null, Requests.API.v3);
             }
         }
 
-        public static class Users
+        /*public static class Users
         {
             public static Models.API.v3.Users.User GetUserFromUsername(string username)
             {

@@ -437,6 +437,31 @@ namespace TwitchLib
             }
         }
 
+        public static class Teams
+        {
+            public static Models.API.v3.Teams.GetTeamsResponse GetTeams(int limit = 25, int offset = 0)
+            {
+                return Internal.TwitchAPI.v3.Teams.GetTeams(limit, offset);
+            }
+
+            public async static Task<Models.API.v3.Teams.GetTeamsResponse> GetTeamsAsync(int limit = 25, int offset = 0)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Teams.GetTeams(limit, offset));
+            }
+
+            public static Models.API.v3.Teams.Team GetTeam(string teamName)
+            {
+                return Internal.TwitchAPI.v3.Teams.GetTeam(teamName);
+            }
+
+            public async static Task<Models.API.v3.Teams.Team> GetTeamAsync(string teamName)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v3.Teams.GetTeam(teamName));
+            }
+        }
+
+
+
 
 
         public static class Clips

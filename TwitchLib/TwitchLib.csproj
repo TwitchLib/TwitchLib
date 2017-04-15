@@ -226,6 +226,7 @@
     <Compile Include="Models\API\v3\Subscriptions\DirectionEnum.cs" />
     <Compile Include="Models\API\v3\Subscriptions\Subscriber.cs" />
     <Compile Include="Models\API\v3\Subscriptions\SubscribersResponse.cs" />
+    <Compile Include="Models\API\v3\Teams\GetTeamsResponse.cs" />
     <Compile Include="Models\API\v3\Teams\Team.cs" />
     <Compile Include="Models\API\v3\Users\Emote.cs" />
     <Compile Include="Models\API\v3\Users\EmoteSet.cs" />
