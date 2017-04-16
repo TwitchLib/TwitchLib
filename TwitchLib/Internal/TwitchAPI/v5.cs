@@ -5,6 +5,16 @@ namespace TwitchLib.Internal.TwitchAPI
 
     public static class v5
     {
+        public static class Root
+        {
+            #region GetRoot
+            public static Models.API.v5.Root.RootResponse GetRoot()
+            {
+                return Requests.Get<Models.API.v5.Root.RootResponse>("https://api.twitch.tv/kraken", Requests.API.v5);
+            }
+            #endregion
+        }
+
         public static class Bits
         {
             #region GetCheermotes
@@ -14,6 +24,22 @@ namespace TwitchLib.Internal.TwitchAPI
                     return Requests.Get<Models.API.v5.Bits.Action[]>("https://api.twitch.tv/kraken/bits/actions");
                 else
                     return Requests.Get<Models.API.v5.Bits.Action[]>($"https://api.twitch.tv/kraken/bits/actions?channel_id={channelId}");
+            }
+            #endregion
+        }
+
+        public static class Badges
+        {
+            #region GetSubscriberBadgesForChannel
+            public static Models.API.v5.Badges.ChannelDisplayBadgesResponse GetSubscriberBadgesForChannel(string channelId)
+            {
+                return Requests.Get<Models.API.v5.Badges.ChannelDisplayBadgesResponse>($"https://badges.twitch.tv/v1/badges/channels/{channelId}/display", Requests.API.v5);
+            }
+            #endregion
+            #region GetGlobalBadges
+            public static Models.API.v5.Badges.GlobalBadgesResponse GetGlobalBadges()
+            {
+                return Requests.Get<Models.API.v5.Badges.GlobalBadgesResponse>("https://badges.twitch.tv/v1/badges/global/display", Requests.API.v5);
             }
             #endregion
         }
@@ -301,9 +327,9 @@ namespace TwitchLib.Internal.TwitchAPI
         public static class Chat
         {
             #region GetChatBadgesByChannel
-            public static void GetChatBadgesByChannel()
+            public static Models.API.v5.Chat.ChannelBadges GetChatBadgesByChannel(string channelId)
             {
-
+                return Requests.Get<Models.API.v5.Chat.ChannelBadges>($"https://api.twitch.tv/kraken/chat/{channelId}/badges", Requests.API.v5);
             }
             #endregion
             #region GetChatEmoticonsBySet
@@ -571,9 +597,9 @@ namespace TwitchLib.Internal.TwitchAPI
             }
             #endregion
             #region GetFollowedStreams
-            public static void GetFollowedStreams()
+            public static Models.API.v5.Streams.FollowedStreams GetFollowedStreams()
             {
-
+                return Requests.Get<Models.API.v5.Streams.FollowedStreams>("https://api.twitch.tv/kraken/streams/followed", Requests.API.v5);
             }
             #endregion
         }
@@ -599,13 +625,13 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetUser
             public static void GetUser()
             {
-
+                
             }
             #endregion
             #region GetUserByID
-            public static void GetUserByID()
+            public static Models.API.v5.Users.User GetUserByID(string userId)
             {
-
+                return Requests.Get<Models.API.v5.Users.User>($"https://api.twitch.tv/kraken/users/{userId}", Requests.API.v5);
             }
             #endregion
             #region GetUserEmotes

@@ -34,7 +34,7 @@
         #region Subscriber TODO: Check if they finally deliver all sub badges
         /// <summary>Property representing the subscriber badge(s).</summary>
         [JsonProperty(PropertyName = "subscriber")]
-        public Badge[] Subscriber { get; protected set; }
+        public Badge Subscriber { get; protected set; }
         #endregion
         #region Turbo
         /// <summary>Property representing the turbo badge.</summary>
@@ -43,8 +43,8 @@
         #endregion
         #region Prime TODO: Check if they finally deliver the prime badge at all
         /// <summary>Property representing the prime badge.</summary>
-        [JsonProperty(PropertyName = "prime")]
-        public Badge Prime { get; protected set; }
+        [JsonProperty(PropertyName = "premium")]
+        public Badge Premium { get; protected set; }
         #endregion
     }
 }

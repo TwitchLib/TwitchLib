@@ -15,7 +15,7 @@
         #region Bio
         /// <summary>Property representing the bio.</summary>
         [JsonProperty(PropertyName = "bio")]
-        public long Bio { get; protected set; }
+        public string Bio { get; protected set; }
         #endregion
         #region CreatedAt
         /// <summary>Property representing the date time of user creation.</summary>

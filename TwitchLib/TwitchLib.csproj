@@ -233,6 +233,10 @@
     <Compile Include="Models\API\v4\Clips\Thumbnails.cs" />
     <Compile Include="Models\API\v4\Clips\TopClipsResponse.cs" />
     <Compile Include="Models\API\v4\Clips\VOD.cs" />
+    <Compile Include="Models\API\v5\Badges\Badge.cs" />
+    <Compile Include="Models\API\v5\Badges\BadgeContent.cs" />
+    <Compile Include="Models\API\v5\Badges\ChannelDisplayBadgesResponse.cs" />
+    <Compile Include="Models\API\v5\Badges\GlobalBadgesResponse.cs" />
     <Compile Include="Models\API\v5\Bits\Action.cs" />
     <Compile Include="Models\API\v5\Bits\Image.cs" />
     <Compile Include="Models\API\v5\Bits\ImageLinks.cs" />
@@ -249,6 +253,10 @@
     <Compile Include="Models\API\v5\Chat\Badge.cs" />
     <Compile Include="Models\API\v5\Chat\ChannelBadges.cs" />
     <Compile Include="Models\API\v5\Follows\Follow.cs" />
+    <Compile Include="Models\API\v5\Root\RootResponse.cs" />
+    <Compile Include="Models\API\v5\Streams\FollowedStreams.cs" />
+    <Compile Include="Models\API\v5\Streams\Stream.cs" />
+    <Compile Include="Models\API\v5\Streams\StreamPreview.cs" />
     <Compile Include="Models\API\v5\Subscriptions\Subscription.cs" />
     <Compile Include="Models\API\v5\Teams\SpecifiedTeam.cs" />
     <Compile Include="Models\API\v5\Teams\Team.cs" />

@@ -24,7 +24,7 @@ namespace TwitchLib.Services
         /// <summary>Property representing Twitch channels service is monitoring.</summary>
         public List<string> Channels { get { return _channels; } protected set { _channels = value; } }
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
-        public string ClientId { get { return _clientId; } set { _clientId = value; TwitchApi.SetClientId(value); } }
+        public string ClientId { get { return _clientId; } set { _clientId = value; TwitchLib.Internal.TwitchAPI.Shared.SetClientId(value); } }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _streamMonitorTimer.Interval = value * 1000; } }
         /// <summary>Property representing whether streams are represented by usernames or userids</summary>
@@ -119,8 +119,8 @@ namespace TwitchLib.Services
         {
             switch (_identifierType)
             {
-                case StreamIdentifierType.Usernames:
-                    return await TwitchApi.Streams.BroadcasterOnlineAsync(channel);
+                //case StreamIdentifierType.Usernames:
+                //    return await TwitchAPI.Streams.BroadcasterOnlineAsync(channel);
                 case StreamIdentifierType.UserIds:
                     //TODO: Implement method for checking if broadcaster is online
                     throw new NotImplementedException("v5 BroadcasterOnline method not implemented yet");
