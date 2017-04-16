@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitchLib.Models.API.v3.Videos
+namespace TwitchLib.Enums
 {
-    public enum BroadcastType
+    public enum Direction
     {
-        All, 
-        Archive,
-        Highlight
+        Ascending,
+        Descending
     }
 }

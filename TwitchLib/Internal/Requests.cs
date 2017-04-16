@@ -19,56 +19,57 @@ namespace TwitchLib.Internal
         }
 
         #region POST
-        public static T Post<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5)
+        public static T Post<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
         {
             var test = new JsonSerializerSettings();
             if (model != null)
-                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", LowercaseJsonSerializer.SerializeObject(model), accessToken, api));
+                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", LowercaseJsonSerializer.SerializeObject(model), accessToken, api, clientId));
             else
                 return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", "", accessToken, api));
         }
 
-        public static void Post(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5)
+        public static void Post(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            genericRequest(url, "POST", LowercaseJsonSerializer.SerializeObject(model), accessToken, api);
+            genericRequest(url, "POST", LowercaseJsonSerializer.SerializeObject(model), accessToken, api, clientId);
         }
         #endregion
 
         #region GET
-        public static T Get<T>(string url, string accessToken = null, API api = API.v5)
+        public static T Get<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "GET", null, accessToken, api));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "GET", null, accessToken, api, clientId));
         }
         #endregion
 
         #region DELETE
-        public static string Delete(string url, string accessToken = null, API api = API.v5)
+        public static string Delete(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return genericRequest(url, "DELETE", null, accessToken, api);
+            return genericRequest(url, "DELETE", null, accessToken, api, clientId);
         }
 
-        public static T Delete<T>(string url, string accessToken = null, API api = API.v5)
+        public static T Delete<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "DELETE", null, accessToken, api));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "DELETE", null, accessToken, api, clientId));
         }
         #endregion
 
         #region PUT
-        public static T Put<T>(string url, string payload, string accessToken = null, API api = API.v5)
+        public static T Put<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", payload, accessToken, api));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", payload, accessToken, api, clientId));
         }
 
-        public static string Put(string url, string payload, string accessToken = null, API api = API.v5)
+        public static string Put(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return genericRequest(url, "PUT", payload, accessToken, api);
+            return genericRequest(url, "PUT", payload, accessToken, api, clientId);
         }
         #endregion
 
-        private static string genericRequest(string url, string method, string payload = null, string accessToken = null, API api = API.v5)
+        private static string genericRequest(string url, string method, string payload = null, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            checkForCredentials();
-            url = appendClientId(url);
+            if(clientId == null)
+                checkForCredentials();
+            url = appendClientId(url, clientId);
 
             var request = WebRequest.CreateHttp(url);
             request.Method = method;
@@ -114,11 +115,16 @@ namespace TwitchLib.Internal
             }
         }
 
-        private static string appendClientId(string url)
+        private static string appendClientId(string url, string clientId = null)
         {
-            return url.Contains("?")
-                ? $"{url}&client_id={TwitchAPI.Shared.ClientId}"
-                : $"{url}?client_id={TwitchAPI.Shared.ClientId}";
+            if(clientId == null)
+                return url.Contains("?")
+                    ? $"{url}&client_id={TwitchAPI.Shared.ClientId}"
+                    : $"{url}?client_id={TwitchAPI.Shared.ClientId}";
+            else
+                return url.Contains("?")
+                    ? $"{url}&client_id={clientId}"
+                    : $"{url}?client_id={clientId}";
         }
 
         private static void checkForCredentials()

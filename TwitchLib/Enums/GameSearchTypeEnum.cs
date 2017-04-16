@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitchLib.Models.API.v3.Streams
+namespace TwitchLib.Enums
 {
-    public enum StreamType
+    public enum GameSearchType
     {
-        All,
-        Playlist,
-        Live
+        Suggest
     }
 }

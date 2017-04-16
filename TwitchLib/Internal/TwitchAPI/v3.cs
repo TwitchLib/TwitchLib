@@ -172,25 +172,25 @@ namespace TwitchLib.Internal.TwitchAPI
                 return Requests.Get<Models.API.v3.Chat.AllEmoticonsResponse>("https://api.twitch.tv/kraken/chat/emoticons", null, Requests.API.v3);
             }
 
-            public static Models.API.v3.Chat.SetEmoticonsResponse GetEmoticonsBySets(List<int> emotesets)
+            public static Models.API.v3.Chat.EmoticonSetsResponse GetEmoticonsBySets(List<int> emotesets)
             {
-                return Requests.Get<Models.API.v3.Chat.SetEmoticonsResponse>($"https://api.twitch.tv/kraken/chat/emoticon_images?emotesets={string.Join(",", emotesets)}", null, Requests.API.v3);
+                return Requests.Get<Models.API.v3.Chat.EmoticonSetsResponse>($"https://api.twitch.tv/kraken/chat/emoticon_images?emotesets={string.Join(",", emotesets)}", null, Requests.API.v3);
             }
         }
 
         public static class Follows
         {
-            public static Models.API.v3.Follows.FollowersResponse GetFollowers(string channel, int limit = 25, int offset = 0, string cursor = null, Models.API.v3.Follows.Direction direction = Models.API.v3.Follows.Direction.Descending)
+            public static Models.API.v3.Follows.FollowersResponse GetFollowers(string channel, int limit = 25, int offset = 0, string cursor = null, Enums.Direction direction = Enums.Direction.Descending)
             {
                 string paramsStr = $"?limit={limit}&offset={offset}";
                 if (cursor != null)
                     paramsStr += $"&cursor={cursor}";
                 switch(direction)
                 {
-                    case Models.API.v3.Follows.Direction.Ascending:
+                    case Enums.Direction.Ascending:
                         paramsStr += $"&direction=asc";
                         break;
-                    case Models.API.v3.Follows.Direction.Descending:
+                    case Enums.Direction.Descending:
                         paramsStr += $"&direction=desc";
                         break;
                 }
@@ -198,27 +198,27 @@ namespace TwitchLib.Internal.TwitchAPI
                 return Requests.Get<Models.API.v3.Follows.FollowersResponse>($"https://api.twitch.tv/kraken/channels/{channel}/follows{paramsStr}", null, Requests.API.v3);
             }
 
-            public static Models.API.v3.Follows.FollowsResponse GetFollows(string channel, int limit = 25, int offset = 0, Models.API.v3.Follows.Direction direction = Models.API.v3.Follows.Direction.Descending, Models.API.v3.Follows.SortBy sortBy = Models.API.v3.Follows.SortBy.CreatedAt)
+            public static Models.API.v3.Follows.FollowsResponse GetFollows(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Descending, Enums.SortBy sortBy = Enums.SortBy.CreatedAt)
             {
                 string paramsStr = $"?limit={limit}&offset={offset}";
                 switch (direction)
                 {
-                    case Models.API.v3.Follows.Direction.Ascending:
+                    case Enums.Direction.Ascending:
                         paramsStr += $"&direction=asc";
                         break;
-                    case Models.API.v3.Follows.Direction.Descending:
+                    case Enums.Direction.Descending:
                         paramsStr += $"&direction=desc";
                         break;
                 }
                 switch(sortBy)
                 {
-                    case Models.API.v3.Follows.SortBy.CreatedAt:
+                    case Enums.SortBy.CreatedAt:
                         paramsStr += $"&sortby=created_at";
                         break;
-                    case Models.API.v3.Follows.SortBy.LastBroadcast:
+                    case Enums.SortBy.LastBroadcast:
                         paramsStr += $"&sortby=last_broadcast";
                         break;
-                    case Models.API.v3.Follows.SortBy.Login:
+                    case Enums.SortBy.Login:
                         paramsStr += $"&sortby=login";
                         break;
                 }
@@ -262,9 +262,9 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Root
         {
-            public static Models.API.v3.Root.RootResponse GetRoot()
+            public static Models.API.v3.Root.RootResponse GetRoot(string accessToken = null, string clientId = null)
             {
-                return Requests.Get<Models.API.v3.Root.RootResponse>("https://api.twitch.tv/kraken", null, Requests.API.v3);
+                return Requests.Get<Models.API.v3.Root.RootResponse>("https://api.twitch.tv/kraken", accessToken, Requests.API.v3, clientId);
             }
         }
 
@@ -291,12 +291,12 @@ namespace TwitchLib.Internal.TwitchAPI
                 return Requests.Get<Models.API.v3.Search.SearchStreamsResponse>($"https://api.twitch.tv/kraken/search/streams{paramsStr}", null, Requests.API.v3);
             }
 
-            public static Models.API.v3.Search.SearchGamesResponse SearchGames(string query, Models.API.v3.Search.GameSearchType type = Models.API.v3.Search.GameSearchType.Suggest, bool live = false)
+            public static Models.API.v3.Search.SearchGamesResponse SearchGames(string query, Enums.GameSearchType type = Enums.GameSearchType.Suggest, bool live = false)
             {
                 string paramsStr = $"?query={query}&live={live.ToString().ToLower()}";
                 switch(type)
                 {
-                    case Models.API.v3.Search.GameSearchType.Suggest:
+                    case Enums.GameSearchType.Suggest:
                         paramsStr += $"&type=suggest";
                         break;
                 }
@@ -312,7 +312,7 @@ namespace TwitchLib.Internal.TwitchAPI
                 return Requests.Get<Models.API.v3.Streams.StreamResponse>($"https://api.twitch.tv/kraken/streams/{channel}", null, Requests.API.v3);
             }
 
-            public static Models.API.v3.Streams.StreamsResponse GetStreams(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Models.API.v3.Streams.StreamType streamType = Models.API.v3.Streams.StreamType.All, string language = "en")
+            public static Models.API.v3.Streams.StreamsResponse GetStreams(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Enums.StreamType streamType = Enums.StreamType.All, string language = "en")
             {
                 string paramsStr = $"?limit={limit}&offset={offset}";
                 if (game != null)
@@ -325,11 +325,11 @@ namespace TwitchLib.Internal.TwitchAPI
                     paramsStr += $"&language={language}";
                 switch(streamType)
                 {
-                    case Models.API.v3.Streams.StreamType.All:
+                    case Enums.StreamType.All:
                         break;
-                    case Models.API.v3.Streams.StreamType.Live:
+                    case Enums.StreamType.Live:
                         break;
-                    case Models.API.v3.Streams.StreamType.Playlist:
+                    case Enums.StreamType.Playlist:
                         break;
                 }
 
@@ -350,15 +350,15 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Subscriptions
         {
-            public static Models.API.v3.Subscriptions.SubscribersResponse GetSubscribers(string channel, int limit = 25, int offset = 0, Models.API.v3.Subscriptions.Direction direction = Models.API.v3.Subscriptions.Direction.Ascending, string accessToken = null)
+            public static Models.API.v3.Subscriptions.SubscribersResponse GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Ascending, string accessToken = null)
             {
                 string paramsStr = $"?limit={limit}&offset={offset}";
                 switch (direction)
                 {
-                    case Models.API.v3.Subscriptions.Direction.Ascending:
+                    case Enums.Direction.Ascending:
                         paramsStr += "&direction=asc";
                         break;
-                    case Models.API.v3.Subscriptions.Direction.Descending:
+                    case Enums.Direction.Descending:
                         paramsStr += "&direction=desc";
                         break;
                 }
@@ -371,7 +371,7 @@ namespace TwitchLib.Internal.TwitchAPI
                 // initial stuffs
                 List<Models.API.v3.Subscriptions.Subscriber> allSubs = new List<Models.API.v3.Subscriptions.Subscriber>();
                 int totalSubs;
-                var firstBatch = GetSubscribers(channel, 100, 0, Models.API.v3.Subscriptions.Direction.Ascending, accessToken);
+                var firstBatch = GetSubscribers(channel, 100, 0, Enums.Direction.Ascending, accessToken);
                 totalSubs = firstBatch.Total;
                 allSubs.AddRange(firstBatch.Subscribers);
 
@@ -385,7 +385,7 @@ namespace TwitchLib.Internal.TwitchAPI
                 System.Threading.Thread.Sleep(1000);
                 for (int i = 0; i < requiredRequests; i++)
                 {
-                    var requestedSubs = GetSubscribers(channel, 100, currentOffset, Models.API.v3.Subscriptions.Direction.Ascending, accessToken);
+                    var requestedSubs = GetSubscribers(channel, 100, currentOffset, Enums.Direction.Ascending, accessToken);
                     allSubs.AddRange(requestedSubs.Subscribers);
                     currentOffset += requestedSubs.Subscribers.Length;
 
@@ -394,7 +394,7 @@ namespace TwitchLib.Internal.TwitchAPI
                 }
 
                 // get leftover subs
-                var leftOverSubsRequest = GetSubscribers(channel, leftOverSubs, currentOffset, Models.API.v3.Subscriptions.Direction.Ascending, accessToken);
+                var leftOverSubsRequest = GetSubscribers(channel, leftOverSubs, currentOffset, Enums.Direction.Ascending, accessToken);
                 allSubs.AddRange(leftOverSubsRequest.Subscribers);
 
                 return allSubs;
@@ -424,7 +424,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
             public static int GetSubscriberCount(string channel, string accessToken = null)
             {
-                return GetSubscribers(channel, 1, 0, Models.API.v3.Subscriptions.Direction.Ascending, accessToken).Total;
+                return GetSubscribers(channel, 1, 0, Enums.Direction.Ascending, accessToken).Total;
             }
         }
 
@@ -460,18 +460,18 @@ namespace TwitchLib.Internal.TwitchAPI
                 return Requests.Get<Models.API.v3.Users.FullUser>("https://api.twitch.tv/kraken/user", accessToken, Requests.API.v3);
             }
 
-            public static Models.API.v3.Users.FollowedStreamsResponse GetFollowedStreams(int limit = 25, int offset = 0, Models.API.v3.Streams.StreamType type = Models.API.v3.Streams.StreamType.All, string accessToken = null)
+            public static Models.API.v3.Users.FollowedStreamsResponse GetFollowedStreams(int limit = 25, int offset = 0, Enums.StreamType type = Enums.StreamType.All, string accessToken = null)
             {
                 string paramsStr = $"?limit={offset}&offset={offset}";
                 switch(type)
                 {
-                    case Models.API.v3.Streams.StreamType.All:
+                    case Enums.StreamType.All:
                         paramsStr += "&stream_type=all";
                         break;
-                    case Models.API.v3.Streams.StreamType.Live:
+                    case Enums.StreamType.Live:
                         paramsStr += "&stream_type=live";
                         break;
-                    case Models.API.v3.Streams.StreamType.Playlist:
+                    case Enums.StreamType.Playlist:
                         paramsStr += "&stream_type=playlist";
                         break;
                 }
@@ -479,18 +479,18 @@ namespace TwitchLib.Internal.TwitchAPI
                 return Requests.Get<Models.API.v3.Users.FollowedStreamsResponse>($"https://api.twitch.tv/kraken/streams/followed{paramsStr}", accessToken, Requests.API.v3);
             }
 
-            public static Models.API.v3.Users.FollowedVideosResponse GetFollowedVideos(int limit = 25, int offset = 0, Models.API.v3.Videos.BroadcastType broadcastType = Models.API.v3.Videos.BroadcastType.All, string accessToken = null)
+            public static Models.API.v3.Users.FollowedVideosResponse GetFollowedVideos(int limit = 25, int offset = 0, Enums.BroadcastType broadcastType = Enums.BroadcastType.All, string accessToken = null)
             {
                 string paramsStr = $"?limit={limit}&offset={offset}";
                 switch (broadcastType)
                 {
-                    case Models.API.v3.Videos.BroadcastType.All:
+                    case Enums.BroadcastType.All:
                         paramsStr += "&broadcast_type=all";
                         break;
-                    case Models.API.v3.Videos.BroadcastType.Archive:
+                    case Enums.BroadcastType.Archive:
                         paramsStr += "&broadcast_type=archive";
                         break;
-                    case Models.API.v3.Videos.BroadcastType.Highlight:
+                    case Enums.BroadcastType.Highlight:
                         paramsStr += "&broadcast_type=highlight";
                         break;
                 }
@@ -506,20 +506,20 @@ namespace TwitchLib.Internal.TwitchAPI
                 return Requests.Get<Models.API.v3.Videos.Video>($"https://api.twitch.tv/kraken/videos/{id}", null, Requests.API.v3);
             }
 
-            public static Models.API.v3.Videos.TopVideosResponse GetTopVideos(int limit = 25, int offset = 0, string game = null, Models.API.v3.Videos.Period period = Models.API.v3.Videos.Period.Week)
+            public static Models.API.v3.Videos.TopVideosResponse GetTopVideos(int limit = 25, int offset = 0, string game = null, Enums.Period period = Enums.Period.Week)
             {
                 string paramsStr = $"?limit={limit}&offset={offset}";
                 if (game != null)
                     paramsStr += $"&game={game}";
                 switch(period)
                 {
-                    case Models.API.v3.Videos.Period.Week:
+                    case Enums.Period.Week:
                         paramsStr += "&period=week";
                         break;
-                    case Models.API.v3.Videos.Period.Month:
+                    case Enums.Period.Month:
                         paramsStr += "&period=month";
                         break;
-                    case Models.API.v3.Videos.Period.All:
+                    case Enums.Period.All:
                         paramsStr += "&period=all";
                         break;
                 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitchLib.Models.API.v3.Follows
+namespace TwitchLib.Enums
 {
     public enum SortBy
     {
