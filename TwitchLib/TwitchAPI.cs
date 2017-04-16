@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace TwitchLib
@@ -11,9 +12,14 @@ namespace TwitchLib
         public static class Settings
         {
             public static string ClientId { get { return Internal.TwitchAPI.Shared.ClientId; } set { Internal.TwitchAPI.Shared.ClientId = value; } }
-            public static bool SkipClientIdValidation { get; set; } = false;
             public static string AccessToken { get { return Internal.TwitchAPI.Shared.AccessToken; } set { Internal.TwitchAPI.Shared.AccessToken = value; } }
-            public static bool SkipAccessTokenValidation { get; set; } = false;
+            public static class Validators
+            {
+                public static bool SkipClientIdValidation { get; set; } = false;
+                public static bool SkipAccessTokenValidation { get; set; } = false;
+                public static bool SkipDynamicScopeValidation { get; set; } = false;
+            }
+            public static List<Enums.AuthScopes> Scopes { get { return Internal.TwitchAPI.Shared.Scopes; } }
         }
 
         public static class Blocks
@@ -587,5 +593,17 @@ namespace TwitchLib
                 return await Task.Run(() => Internal.TwitchAPI.ThirdParty.GetUsernameChanges(username));
             }
         }
+
+        private static class APIHelpers
+        {
+            public static void ValidateScope(Enums.AuthScopes requiredScope, string accessToken = null)
+            {
+                if (accessToken != null)
+                    return;
+                if (!Internal.TwitchAPI.Shared.Scopes.Contains(requiredScope))
+                    throw new Exceptions.API.InvalidCredentialException($"The call you attempted was blocked because you are missing required scope: {requiredScope.ToString().ToLower()}. You can ignore this protection by using TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = false . You can also generate a new token with the required scope here: https://twitchtokengenerator.com");
+            }
+        }
+
     }
 }

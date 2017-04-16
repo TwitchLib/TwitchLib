@@ -17,11 +17,18 @@ namespace TwitchLib.Internal.TwitchAPI
         public static string ClientId { get { return clientIdInternal; } set { setClientId(value); } }
         public static string AccessToken { get { return accessTokenInternal; } set { setAccessToken(value); } }
 
-        public static List<Enums.AuthScopes> Scopes { get; set; } = new List<Enums.AuthScopes>();
+        public static List<Enums.AuthScopes> Scopes { get; set; } = new List<Enums.AuthScopes>() { Enums.AuthScopes.None } ;
+
+        public static void DynamicScopeValidation(Enums.AuthScopes requiredScope, string accessToken = null)
+        {
+            if(!TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation && accessToken == null)
+                if (!Scopes.Contains(requiredScope))
+                    throw new InvalidCredentialException($"The current access token does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
+        }
 
         private static void setClientId(string clientId)
         {
-            if(!TwitchLib.TwitchAPI.Settings.SkipClientIdValidation)
+            if(!TwitchLib.TwitchAPI.Settings.Validators.SkipClientIdValidation)
             {
                 if (string.IsNullOrEmpty(clientId))
                     throw new InvalidCredentialException("Client Id cannot be empty or null. Set it using TwitchLib.TwitchAPI.Settings.ClientId = {clientid}");
@@ -33,7 +40,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
         private static void setAccessToken(string accessToken)
         {
-            if(!TwitchLib.TwitchAPI.Settings.SkipAccessTokenValidation)
+            if(!TwitchLib.TwitchAPI.Settings.Validators.SkipAccessTokenValidation)
             {
                 if (string.IsNullOrEmpty(accessToken))
                     throw new InvalidCredentialException("Access Token cannot be empty or null. Set it using: TwitchLib.TwitchAPI.Settings.AccessToken = {access_token}");
@@ -76,7 +83,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
         private static List<Enums.AuthScopes> buildScopesList(Models.API.v3.Root.Token token)
         {
-            List<Enums.AuthScopes> scopes = new List<Enums.AuthScopes>();
+            List<Enums.AuthScopes> scopes = new List<Enums.AuthScopes>() { Enums.AuthScopes.None };
             foreach(var scope in token.Authorization.Scopes)
             {
                 switch(scope)

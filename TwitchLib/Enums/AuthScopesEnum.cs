@@ -15,7 +15,7 @@ namespace TwitchLib.Enums
         Channel_Feed_Read,
         Channel_Read,
         Channel_Stream,
-        Channel_Subscription,
+        Channel_Subscriptions,
         Chat_Login,
         Collections_Edit,
         Communities_Edit,
@@ -25,6 +25,7 @@ namespace TwitchLib.Enums
         User_Follows_Edit,
         User_Read,
         User_Subscriptions,
-        Viewing_Activity_Read
+        Viewing_Activity_Read,
+        None
     }
 }

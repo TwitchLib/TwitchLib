@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 
 namespace TwitchLib.Internal.TwitchAPI
 {
@@ -8,33 +9,38 @@ namespace TwitchLib.Internal.TwitchAPI
         {
             public static Models.API.v3.Blocks.GetBlocksResponse GetBlocks(string channel, int limit = 25, int offset = 0, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Read, accessToken);
                 string pm = $"?limit={limit}&offset={offset}";
                 return Requests.Get<Models.API.v3.Blocks.GetBlocksResponse>($"https://api.twitch.tv/kraken/users/{channel}/blocks{pm}", accessToken, Requests.API.v3);
             }
 
             public static Models.API.v3.Blocks.Block CreateBlock(string channel, string target, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
                 return Requests.Put<Models.API.v3.Blocks.Block>($"https://api.twitch.tv/kraken/users/{channel}/blocks/{target}", null, accessToken, Requests.API.v3);
             }
 
             public static void RemoveBlock(string channel, string target, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
                 Requests.Delete($"https://api.twitch.tv/kraken/users/{channel}/blocks/{target}", accessToken, Requests.API.v3);
             }
         }
 
         public static class ChannelFeed
         {
-            public static Models.API.v3.ChannelFeeds.ChannelFeedResponse GetChannelFeedPosts(string channel, int limit = 25, string cursor = null)
+            public static Models.API.v3.ChannelFeeds.ChannelFeedResponse GetChannelFeedPosts(string channel, int limit = 25, string cursor = null, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, accessToken);
                 string pm = $"?limit={limit}";
                 if (cursor != null)
                     pm = $"{pm}&cursor={cursor}";
-                return Requests.Get<Models.API.v3.ChannelFeeds.ChannelFeedResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts{pm}", null, Requests.API.v3);
+                return Requests.Get<Models.API.v3.ChannelFeeds.ChannelFeedResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts{pm}", accessToken, Requests.API.v3);
             }
 
             public static Models.API.v3.ChannelFeeds.PostResponse CreatePost(string channel, string content, bool share = false, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
                 var model = new Models.API.v3.ChannelFeeds.CreatePostRequest()
                 {
                     Content = content,
@@ -43,23 +49,27 @@ namespace TwitchLib.Internal.TwitchAPI
                 return Requests.Post<Models.API.v3.ChannelFeeds.PostResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts", model, accessToken, Requests.API.v3);
             }
 
-            public static Models.API.v3.ChannelFeeds.Post GetPost(string channel, string postId)
+            public static Models.API.v3.ChannelFeeds.Post GetPost(string channel, string postId, string accessToken = null)
             {
-                return Requests.Get<Models.API.v3.ChannelFeeds.Post>($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", null, Requests.API.v3);
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
+                return Requests.Get<Models.API.v3.ChannelFeeds.Post>($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", accessToken, Requests.API.v3);
             }
 
             public static void DeletePost(string channel, string postId, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
                 Requests.Delete($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", accessToken, Requests.API.v3);
             }
 
             public static Models.API.v3.ChannelFeeds.PostReactionResponse CreateReaction(string channel, string postId, string emoteId, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
                 return Requests.Post<Models.API.v3.ChannelFeeds.PostReactionResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}/reactions?emote_id={emoteId}", null, accessToken, Requests.API.v3);
             }
 
             public static void RemoveReaction(string channel, string postId, string emoteId, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
                 Requests.Delete($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}/reactions?emote_id={emoteId}", accessToken, Requests.API.v3);
             }
         }
@@ -78,11 +88,13 @@ namespace TwitchLib.Internal.TwitchAPI
 
             public static Models.API.v3.Channels.GetEditorsResponse GetChannelEditors(string channel, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, accessToken);
                 return Requests.Get<Models.API.v3.Channels.GetEditorsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/editors", accessToken, Requests.API.v3);
             }
 
             public static Models.API.v3.Channels.Channel UpdateChannel(string channel, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, accessToken);
                 List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
                 if (status != null)
                     datas.Add(new KeyValuePair<string, string>("status", "\"" + status + "\""));
@@ -118,11 +130,13 @@ namespace TwitchLib.Internal.TwitchAPI
 
             public static Models.API.v3.Channels.ResetStreamKeyResponse ResetStreamKey(string channel, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Stream, accessToken);
                 return Requests.Delete<Models.API.v3.Channels.ResetStreamKeyResponse>($"https://api.twitch.tv/kraken/channels/{channel}/stream_key", accessToken, Requests.API.v3);
             }
 
             public static void RunCommercial(string channel, Enums.CommercialLength length, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Commercial, accessToken);
                 int lengthInt = 30;
                 switch(length)
                 {
@@ -233,12 +247,14 @@ namespace TwitchLib.Internal.TwitchAPI
 
             public static Models.API.v3.Follows.Follows CreateFollow(string user, string targetChannel, bool notifications = false, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, accessToken);
                 string paramsStr = $"?notifications={notifications.ToString().ToLower()}";
                 return Requests.Put<Models.API.v3.Follows.Follows>($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{targetChannel}", null, accessToken, Requests.API.v3);
             }
 
             public static void RemoveFollow(string user, string target, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, accessToken);
                 Requests.Delete($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{target}", accessToken, Requests.API.v3);
             }
         }
@@ -352,6 +368,7 @@ namespace TwitchLib.Internal.TwitchAPI
         {
             public static Models.API.v3.Subscriptions.SubscribersResponse GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Ascending, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
                 string paramsStr = $"?limit={limit}&offset={offset}";
                 switch (direction)
                 {
@@ -368,6 +385,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
             public static List<Models.API.v3.Subscriptions.Subscriber> GetAllSubscribers(string channel, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
                 // initial stuffs
                 List<Models.API.v3.Subscriptions.Subscriber> allSubs = new List<Models.API.v3.Subscriptions.Subscriber>();
                 int totalSubs;
@@ -402,6 +420,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
             public static Models.API.v3.Subscriptions.Subscriber ChannelHasUserSubscribed(string channel, string targetUser, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Check_Subscription, accessToken);
                 try
                 {
                     return Requests.Get<Models.API.v3.Subscriptions.Subscriber>($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions/{targetUser}", accessToken, Requests.API.v3);
@@ -413,6 +432,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
             public static Models.API.v3.Subscriptions.ChannelSubscription UserSubscribedToChannel(string user, string targetChannel, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, accessToken);
                 try
                 {
                     return Requests.Get<Models.API.v3.Subscriptions.ChannelSubscription>($"https://api.twitch.tv/kraken/users/{user}/subscriptions/{targetChannel}", accessToken, Requests.API.v3);
@@ -424,6 +444,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
             public static int GetSubscriberCount(string channel, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
                 return GetSubscribers(channel, 1, 0, Enums.Direction.Ascending, accessToken).Total;
             }
         }
@@ -452,16 +473,19 @@ namespace TwitchLib.Internal.TwitchAPI
 
             public static Models.API.v3.Users.UserEmotesResponse GetEmotes(string username, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, accessToken);
                 return Requests.Get<Models.API.v3.Users.UserEmotesResponse>($"https://api.twitch.tv/kraken/users/{username}/emotes", accessToken, Requests.API.v3);
             }
 
             public static Models.API.v3.Users.FullUser GetUserFromToken(string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, accessToken);
                 return Requests.Get<Models.API.v3.Users.FullUser>("https://api.twitch.tv/kraken/user", accessToken, Requests.API.v3);
             }
 
             public static Models.API.v3.Users.FollowedStreamsResponse GetFollowedStreams(int limit = 25, int offset = 0, Enums.StreamType type = Enums.StreamType.All, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, accessToken);
                 string paramsStr = $"?limit={offset}&offset={offset}";
                 switch(type)
                 {
@@ -481,6 +505,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
             public static Models.API.v3.Users.FollowedVideosResponse GetFollowedVideos(int limit = 25, int offset = 0, Enums.BroadcastType broadcastType = Enums.BroadcastType.All, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, accessToken);
                 string paramsStr = $"?limit={limit}&offset={offset}";
                 switch (broadcastType)
                 {
