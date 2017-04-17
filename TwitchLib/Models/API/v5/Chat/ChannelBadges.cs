@@ -3,7 +3,7 @@
     #region using directives
     using Newtonsoft.Json;
     #endregion
-    /// <summary>Class representing the channel badges response from Twitch API.</summary>
+    /// <summary>[deprecated] Class representing the channel badges response from Twitch API.</summary>
     public class ChannelBadges
     {
         #region Admin
@@ -31,8 +31,8 @@
         [JsonProperty(PropertyName = "staff")]
         public Badge Staff { get; protected set; }
         #endregion
-        #region Subscriber TODO: Check if they finally deliver all sub badges
-        /// <summary>Property representing the subscriber badge(s).</summary>
+        #region Subscriber
+        /// <summary>Property representing the subscriber badge.</summary>
         [JsonProperty(PropertyName = "subscriber")]
         public Badge Subscriber { get; protected set; }
         #endregion
@@ -40,11 +40,6 @@
         /// <summary>Property representing the turbo badge.</summary>
         [JsonProperty(PropertyName = "turbo")]
         public Badge Turbo { get; protected set; }
-        #endregion
-        #region Prime TODO: Check if they finally deliver the prime badge at all
-        /// <summary>Property representing the prime badge.</summary>
-        [JsonProperty(PropertyName = "premium")]
-        public Badge Premium { get; protected set; }
         #endregion
     }
 }

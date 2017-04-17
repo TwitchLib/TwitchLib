@@ -250,8 +250,14 @@
     <Compile Include="Models\API\v5\Channels\ChannelPrivileged.cs" />
     <Compile Include="Models\API\v5\Channels\ChannelSubscribers.cs" />
     <Compile Include="Models\API\v5\Channels\ChannelTeams.cs" />
+    <Compile Include="Models\API\v5\Chat\AllChatEmote.cs" />
     <Compile Include="Models\API\v5\Chat\Badge.cs" />
     <Compile Include="Models\API\v5\Chat\ChannelBadges.cs" />
+    <Compile Include="Models\API\v5\Chat\Emote.cs" />
+    <Compile Include="Models\API\v5\Chat\EmoteSet.cs" />
+    <Compile Include="Models\API\v5\Chat\EmoticonImage.cs" />
+    <Compile Include="Models\API\v5\Chat\GetAllChatEmoticonsResponse.cs" />
+    <Compile Include="Models\API\v5\Communities\Community.cs" />
     <Compile Include="Models\API\v5\Follows\Follow.cs" />
     <Compile Include="Models\API\v5\Root\RootResponse.cs" />
     <Compile Include="Models\API\v5\Streams\FollowedStreams.cs" />

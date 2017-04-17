@@ -227,7 +227,7 @@ namespace TwitchLib.Internal.TwitchAPI
                 {
                     for (int i = 0; i < queryParameters.Count; i++)
                     {
-                        if(i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
                         else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
                     }
                 }
@@ -279,9 +279,17 @@ namespace TwitchLib.Internal.TwitchAPI
             }
             #endregion
             #region CheckChannelSubscriptionByUser
-            public static void CheckChannelSubscriptionByUser()
+            /// <summary>
+            /// <para>Checks if a specified channel has a specified user subscribed to it. Intended for use by channel owners.</para>
+            /// <para>Returns a subscription object which includes the user if that user is subscribed. Requires authentication for the channel.</para>
+            /// <para>Required Authentication Scope: channel_check_subscription</para>
+            /// </summary>
+            /// <param name="channelId">The specified channel to check the subscription on.</param>
+            /// <param name="userId">The specified user to check for.</param>
+            /// <returns>Returns a subscription object or null if not subscribed. OVERWORK DIS PLIS GABEN</returns>
+            public static Models.API.v5.Subscriptions.Subscription CheckChannelSubscriptionByUser(string channelId, string userId)
             {
-                
+                return Requests.Get<Models.API.v5.Subscriptions.Subscription>($"https://api.twitch.tv/kraken/channels/{channelId}/subscriptions/{userId}", Requests.API.v5);
             }
             #endregion
             #region GetChannelVideos
@@ -297,28 +305,51 @@ namespace TwitchLib.Internal.TwitchAPI
             }
             #endregion
             #region ResetChannelStreamKey
-            public static void ResetChannelStreamKey()
+            /// <summary>
+            /// <para>Deletes the stream key for a specified channel. Once it is deleted, the stream key is automatically reset.</para>
+            /// <para>A stream key (also known as authorization key) uniquely identifies a stream. Each broadcast uses an RTMP URL that includes the stream key. Stream keys are assigned by Twitch.</para>
+            /// <para>Required Authentication Scope: channel_stream</para>
+            /// </summary>
+            /// <param name="channelId">The specified channel to reset the StreamKey on.</param>
+            /// <returns>A ChannelPrivileged object that also contains the email and stream key of the channel aside from the normal channel values.</returns>
+            public static Models.API.v5.Channels.ChannelPrivileged ResetChannelStreamKey(string channelId)
             {
-
+                return Requests.Delete<Models.API.v5.Channels.ChannelPrivileged>($"https://api.twitch.tv/kraken/channels/{channelId}/stream_key", Requests.API.v5);
             }
             #endregion
             #region Communities
             #region GetChannelCommunity
-            public static void GetChannelCommunity()
+            /// <summary>
+            /// <para>Gets the community for a specified channel.</para>
+            /// <para>Required Authentication Scope: channel_editor</para>
+            /// </summary>
+            /// <param name="channelId">The specified channel ID to get the community from.</param>
+            /// <returns>A Community object that represents the community the channel is in.</returns>
+            public static Models.API.v5.Communities.Community GetChannelCommunity(string channelId)
             {
-
+                return Requests.Get<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/channels/{channelId}/community", Requests.API.v5);
             }
             #endregion
             #region SetChannelCommunity
-            public static void SetChannelCommunity()
+            /// <summary>
+            /// <para>Sets a specified channel to be in a specified community.</para>
+            /// <para>Required Authentication Scope: channel_editor</para>
+            /// </summary>
+            /// <param name="channelId">The specified channel to set the community for.</param>
+            /// <param name="communityId">The specified community to set the channel to be a part of.</param>
+            public static void SetChannelCommunity(string channelId, string communityId)
             {
-
+                Requests.Put($"https://api.twitch.tv/kraken/channels/{channelId}/community/{communityId}", null, Requests.API.v5);
             }
             #endregion
             #region DeleteChannelFromCommunity
-            public static void DeleteChannelFromCommunity()
+            /// <summary>
+            /// Deletes a specified channel from its community.
+            /// </summary>
+            /// <param name="channelId">The specified channel to be removed.</param>
+            public static void DeleteChannelFromCommunity(string channelId)
             {
-
+                Requests.Delete($"https://api.twitch.tv/kraken/channels/{channelId}/community", Requests.API.v5);
             }
             #endregion
             #endregion
@@ -333,15 +364,24 @@ namespace TwitchLib.Internal.TwitchAPI
             }
             #endregion
             #region GetChatEmoticonsBySet
-            public static void GetChatEmoticonsBySet()
+            public static Models.API.v5.Chat.EmoteSet GetChatEmoticonsBySet(List<int> emotesets = null)
             {
-
+                string payload = string.Empty;
+                if (emotesets != null && emotesets.Count > 0)
+                {
+                    for (int i = 0; i < emotesets.Count; i++)
+                    {
+                        if (i == 0) { payload = $"?emotesets={emotesets[i]}"; }
+                        else { payload += $",{emotesets[i]}"; }
+                    }
+                }
+                return Requests.Get<Models.API.v5.Chat.EmoteSet>($"https://api.twitch.tv/kraken/chat/emoticon_images{payload}", Requests.API.v5);
             }
             #endregion
             #region GetAllChatEmoticons
-            public static void GetAllChatEmoticons()
+            public static Models.API.v5.Chat.GetAllChatEmoticonsResponse GetAllChatEmoticons()
             {
-
+                return Requests.Get<Models.API.v5.Chat.GetAllChatEmoticonsResponse>("https://api.twitch.tv/kraken/chat/emoticons", Requests.API.v5);
             }
             #endregion
         }
@@ -413,21 +453,53 @@ namespace TwitchLib.Internal.TwitchAPI
         public static class Communities
         {
             #region GetCommunityByName
-            public static void GetCommunityByName()
+            public static Models.API.v5.Communities.Community GetCommunityByName(string communityName)
             {
-
+                return Requests.Get<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/communities?name={communityName}", Requests.API.v5);
             }
             #endregion
             #region GetCommunityByID
-            public static void GetCommunityByID()
+            public static Models.API.v5.Communities.Community GetCommunityByID(string communityId)
             {
-
+                return Requests.Get<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/communities/{communityId}", Requests.API.v5);
             }
             #endregion
             #region UpdateCommunity
-            public static void UpdateCommunity()
+            public static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null)
             {
+                List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
+                if (!string.IsNullOrEmpty(summary))
+                    datas.Add(new KeyValuePair<string, string>("status", "\"" + summary + "\""));
+                if (!string.IsNullOrEmpty(description))
+                    datas.Add(new KeyValuePair<string, string>("description", "\"" + description + "\""));
+                if (!string.IsNullOrEmpty(rules))
+                    datas.Add(new KeyValuePair<string, string>("rules", "\"" + rules + "\""));
+                if (!string.IsNullOrEmpty(email))
+                    datas.Add(new KeyValuePair<string, string>("email", "\"" + email + "\""));
 
+                string payload = "";
+                if (datas.Count == 0)
+                {
+                    throw new Exceptions.API.BadParameterException("At least one parameter must be specified: summary, description, rules, email.");
+                }
+                else if (datas.Count == 1)
+                {
+                    payload = $"\"{datas[0].Key}\": {datas[0].Value}";
+                }
+                else
+                {
+                    for (int i = 0; i < datas.Count; i++)
+                    {
+                        if ((datas.Count - i) > 1)
+                            payload = $"{payload}\"{datas[i].Key}\": {datas[i].Value},";
+                        else
+                            payload = $"{payload}\"{datas[i].Key}\": {datas[i].Value}";
+                    }
+                }
+
+                payload = "{" + payload + "}";
+
+                Requests.Put($"https://api.twitch.tv/kraken/communities/{communityId}", payload, Requests.API.v5);
             }
             #endregion
             #region GetTopCommunities
@@ -625,7 +697,7 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetUser
             public static void GetUser()
             {
-                
+
             }
             #endregion
             #region GetUserByID
