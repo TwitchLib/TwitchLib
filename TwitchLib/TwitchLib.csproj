@@ -261,7 +261,15 @@
     <Compile Include="Models\API\v5\Collections\CollectionItem.cs" />
     <Compile Include="Models\API\v5\Collections\CollectionMetadata.cs" />
     <Compile Include="Models\API\v5\Collections\CollectionsByChannel.cs" />
+    <Compile Include="Models\API\v5\Communities\BannedUser.cs" />
+    <Compile Include="Models\API\v5\Communities\BannedUsers.cs" />
     <Compile Include="Models\API\v5\Communities\Community.cs" />
+    <Compile Include="Models\API\v5\Communities\Moderator.cs" />
+    <Compile Include="Models\API\v5\Communities\Moderators.cs" />
+    <Compile Include="Models\API\v5\Communities\TimedOutUser.cs" />
+    <Compile Include="Models\API\v5\Communities\TimedOutUsers.cs" />
+    <Compile Include="Models\API\v5\Communities\TopCommunities.cs" />
+    <Compile Include="Models\API\v5\Communities\TopCommunity.cs" />
     <Compile Include="Models\API\v5\Follows\Follow.cs" />
     <Compile Include="Models\API\v5\Root\RootResponse.cs" />
     <Compile Include="Models\API\v5\Streams\FollowedStreams.cs" />

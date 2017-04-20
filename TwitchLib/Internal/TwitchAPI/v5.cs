@@ -530,99 +530,145 @@ namespace TwitchLib.Internal.TwitchAPI
             }
             #endregion
             #region GetTopCommunities
-            public static void GetTopCommunities()
+            public static Models.API.v5.Communities.TopCommunities GetTopCommunities(long? limit = null, string cursor = null)
             {
+                List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
+                if (limit != null)
+                    datas.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                if (!string.IsNullOrEmpty(cursor))
+                    datas.Add(new KeyValuePair<string, string>("cursor", cursor));
 
+                string optionalQuery = string.Empty;
+                if (datas.Count > 0)
+                {
+                    for (int i = 0; i < datas.Count; i++)
+                    {
+                        if (i == 0) { optionalQuery = $"?{datas[i].Key}={datas[i].Value}"; }
+                        else { optionalQuery += $"&{datas[i].Key}={datas[i].Value}"; }
+                    }
+                }
+                return Requests.Get<Models.API.v5.Communities.TopCommunities>($"https://api.twitch.tv/kraken/communities/top{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
             #region GetCommunityBannedUsers
-            public static void GetCommunityBannedUsers(string authToken = null)
+            public static Models.API.v5.Communities.BannedUsers GetCommunityBannedUsers(string communityId, long? limit = null, string cursor = null, string authToken = null)
             {
+                List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
+                if (limit != null)
+                    datas.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                if (!string.IsNullOrEmpty(cursor))
+                    datas.Add(new KeyValuePair<string, string>("cursor", cursor));
 
+                string optionalQuery = string.Empty;
+                if (datas.Count > 0)
+                {
+                    for (int i = 0; i < datas.Count; i++)
+                    {
+                        if (i == 0) { optionalQuery = $"?{datas[i].Key}={datas[i].Value}"; }
+                        else { optionalQuery += $"&{datas[i].Key}={datas[i].Value}"; }
+                    }
+                }
+                return Requests.Get<Models.API.v5.Communities.BannedUsers>($"https://api.twitch.tv/kraken/communities/{communityId}/bans{optionalQuery}", authToken, Requests.API.v5);
             }
             #endregion
             #region BanCommunityUser
-            public static void BanCommunityUser(string authToken = null)
+            public static void BanCommunityUser(string communityId, string userId, string authToken = null)
             {
-
+                Requests.Put($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", null, authToken, Requests.API.v5);
             }
             #endregion
             #region UnBanCommunityUser
-            public static void UnBanCommunityUser(string authToken = null)
+            public static void UnBanCommunityUser(string communityId, string userId, string authToken = null)
             {
-
+                Requests.Delete($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", authToken, Requests.API.v5);
             }
             #endregion
             #region CreateCommunityAvatarImage
-            public static void CreateCommunityAvatarImage(string authToken = null)
+            public static void CreateCommunityAvatarImage(string communityId, string avatarImage, string authToken = null)
             {
-
+                Requests.Post($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "{\"avatar_image\": \"" + @avatarImage + "\"}", authToken, Requests.API.v5);
             }
             #endregion
             #region DeleteCommunityAvatarImage
-            public static void DeleteCommunityAvatarImage(string authToken = null)
+            public static void DeleteCommunityAvatarImage(string communityId, string authToken = null)
             {
-
+                Requests.Delete($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", authToken, Requests.API.v5);
             }
             #endregion
             #region CreateCommunityCoverImage
-            public static void CreateCommunityCoverImage(string authToken = null)
+            public static void CreateCommunityCoverImage(string communityId, string coverImage, string authToken = null)
             {
-
+                Requests.Post($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", "{\"cover_image\": \"" + @coverImage + "\"}", authToken, Requests.API.v5);
             }
             #endregion
             #region DeleteCommunityCoverImage
-            public static void DeleteCommunityCoverImage(string authToken = null)
+            public static void DeleteCommunityCoverImage(string communityId, string authToken = null)
             {
-
+                Requests.Delete($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", authToken, Requests.API.v5);
             }
             #endregion
             #region GetCommunityModerators
-            public static void GetCommunityModerators()
+            public static Models.API.v5.Communities.Moderators GetCommunityModerators(string communityId)
             {
-
+                return Requests.Get<Models.API.v5.Communities.Moderators>($"https://api.twitch.tv/kraken/communities/{communityId}/moderators", null, Requests.API.v5);
             }
             #endregion
             #region AddCommunityModerator
-            public static void AddCommunityModerator(string authToken = null)
+            public static void AddCommunityModerator(string communityId, string userId, string authToken = null)
             {
-
+                Requests.Put($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", null, authToken, Requests.API.v5);
             }
             #endregion
             #region DeleteCommunityModerator
-            public static void DeleteCommunityModerator(string authToken = null)
+            public static void DeleteCommunityModerator(string communityId, string userId, string authToken = null)
             {
-
+                Requests.Delete($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", authToken, Requests.API.v5);
             }
             #endregion
             #region GetCommunityPermissions
-            public static void GetCommunityPermissions(string authToken = null)
+            public static Dictionary<string, bool> GetCommunityPermissions(string communityId, string authToken = null)
             {
-
+                return Requests.Get<Dictionary<string, bool>>($"https://api.twitch.tv/kraken/communities/{communityId}/permissions", authToken, Requests.API.v5);
             }
             #endregion
             #region ReportCommunityViolation
-            public static void ReportCommunityViolation()
+            public static void ReportCommunityViolation(string communityId, string channelId)
             {
-
+                Requests.Post($"https://api.twitch.tv/kraken/communities/{communityId}/report_channel", "{\"channel_id\": \"" + channelId + "\"}", null, Requests.API.v5);
             }
             #endregion
             #region GetCommunityTimedOutUsers
-            public static void GetCommunityTimedOutUsers(string authToken = null)
+            public static Models.API.v5.Communities.TimedOutUsers GetCommunityTimedOutUsers(string communityId, long? limit = null, string cursor = null, string authToken = null)
             {
+                List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
+                if (limit != null)
+                    datas.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                if (!string.IsNullOrEmpty(cursor))
+                    datas.Add(new KeyValuePair<string, string>("cursor", cursor));
 
+                string optionalQuery = string.Empty;
+                if (datas.Count > 0)
+                {
+                    for (int i = 0; i < datas.Count; i++)
+                    {
+                        if (i == 0) { optionalQuery = $"?{datas[i].Key}={datas[i].Value}"; }
+                        else { optionalQuery += $"&{datas[i].Key}={datas[i].Value}"; }
+                    }
+                }
+                return Requests.Get<Models.API.v5.Communities.TimedOutUsers>($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts{optionalQuery}", authToken, Requests.API.v5);
             }
             #endregion
             #region AddCommunityTimedOutUser
-            public static void AddCommunityTimedOutUser(string authToken = null)
+            public static void AddCommunityTimedOutUser(string communityId, string userId, int duration, string reason = null, string authToken = null)
             {
-
+                string payload = "{\"duration\": \"" + duration + "\"" + ((!string.IsNullOrWhiteSpace(reason)) ? ", \"reason\": \"" + reason + "\"}" : "}");
+                Requests.Put($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", payload, authToken, Requests.API.v5);
             }
             #endregion
             #region DeleteCommunityTimedOutUser
-            public static void DeleteCommunityTimedOutUser(string authToken = null)
+            public static void DeleteCommunityTimedOutUser(string communityId, string userId, string authToken = null)
             {
-
+                Requests.Delete($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", authToken, Requests.API.v5);
             }
             #endregion
         }
