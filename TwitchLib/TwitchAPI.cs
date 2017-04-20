@@ -95,15 +95,15 @@ namespace TwitchLib
                 await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.DeletePost(channel, postId));
             }
 
-            public static void CreateReaction(string channel, string postId, string emoteId)
-            {
-                Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId);
-            }
+            //public static void CreateReaction(string channel, string postId, string emoteId)
+            //{
+            //    Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId);
+            //}
 
-            public static async Task CreateReactionAsync(string channel, string postId, string emoteId)
-            {
-                await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId));
-            }
+            //public static async Task CreateReactionAsync(string channel, string postId, string emoteId)
+            //{
+            //    await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId));
+            //}
 
             public static void RemoveReaction(string channel, string postId, string emoteId)
             {

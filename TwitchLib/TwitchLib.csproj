@@ -257,6 +257,10 @@
     <Compile Include="Models\API\v5\Chat\EmoteSet.cs" />
     <Compile Include="Models\API\v5\Chat\EmoticonImage.cs" />
     <Compile Include="Models\API\v5\Chat\GetAllChatEmoticonsResponse.cs" />
+    <Compile Include="Models\API\v5\Collections\Collection.cs" />
+    <Compile Include="Models\API\v5\Collections\CollectionItem.cs" />
+    <Compile Include="Models\API\v5\Collections\CollectionMetadata.cs" />
+    <Compile Include="Models\API\v5\Collections\CollectionsByChannel.cs" />
     <Compile Include="Models\API\v5\Communities\Community.cs" />
     <Compile Include="Models\API\v5\Follows\Follow.cs" />
     <Compile Include="Models\API\v5\Root\RootResponse.cs" />
@@ -266,6 +270,7 @@
     <Compile Include="Models\API\v5\Subscriptions\Subscription.cs" />
     <Compile Include="Models\API\v5\Teams\SpecifiedTeam.cs" />
     <Compile Include="Models\API\v5\Teams\Team.cs" />
+    <Compile Include="Models\API\v5\Users\GetUsersByNameResponse.cs" />
     <Compile Include="Models\API\v5\Users\User.cs" />
     <Compile Include="Models\Client\ChannelState.cs" />
     <Compile Include="Models\Client\ChatCommand.cs" />

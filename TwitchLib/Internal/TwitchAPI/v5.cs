@@ -8,9 +8,9 @@ namespace TwitchLib.Internal.TwitchAPI
         public static class Root
         {
             #region GetRoot
-            public static Models.API.v5.Root.RootResponse GetRoot()
+            public static Models.API.v5.Root.RootResponse GetRoot(string authToken = null)
             {
-                return Requests.Get<Models.API.v5.Root.RootResponse>("https://api.twitch.tv/kraken", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Root.RootResponse>("https://api.twitch.tv/kraken", authToken, Requests.API.v5);
             }
             #endregion
         }
@@ -33,13 +33,13 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetSubscriberBadgesForChannel
             public static Models.API.v5.Badges.ChannelDisplayBadgesResponse GetSubscriberBadgesForChannel(string channelId)
             {
-                return Requests.Get<Models.API.v5.Badges.ChannelDisplayBadgesResponse>($"https://badges.twitch.tv/v1/badges/channels/{channelId}/display", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Badges.ChannelDisplayBadgesResponse>($"https://badges.twitch.tv/v1/badges/channels/{channelId}/display", null, Requests.API.v5);
             }
             #endregion
             #region GetGlobalBadges
             public static Models.API.v5.Badges.GlobalBadgesResponse GetGlobalBadges()
             {
-                return Requests.Get<Models.API.v5.Badges.GlobalBadgesResponse>("https://badges.twitch.tv/v1/badges/global/display", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Badges.GlobalBadgesResponse>("https://badges.twitch.tv/v1/badges/global/display", null, Requests.API.v5);
             }
             #endregion
         }
@@ -123,9 +123,9 @@ namespace TwitchLib.Internal.TwitchAPI
             /// <para>Required Authentication Scope: channel_read</para>
             /// </summary>
             /// <returns>A ChannelPrivileged object including all Channel object info plus email and streamkey.</returns>
-            public static Models.API.v5.Channels.ChannelPrivileged GetChannel()
+            public static Models.API.v5.Channels.ChannelPrivileged GetChannel(string authToken = null)
             {
-                return Requests.Get<Models.API.v5.Channels.ChannelPrivileged>("https://api.twitch.tv/kraken/channel", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Channels.ChannelPrivileged>("https://api.twitch.tv/kraken/channel", authToken, Requests.API.v5);
             }
             #endregion
             #region GetChannelByID
@@ -136,7 +136,7 @@ namespace TwitchLib.Internal.TwitchAPI
             /// <returns>A Channel object from the response of the Twitch API.</returns>
             public static Models.API.v5.Channels.Channel GetChannelByID(string channelId)
             {
-                return Requests.Get<Models.API.v5.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channelId}", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channelId}", null, Requests.API.v5);
             }
             #endregion
             #region UpdateChannel
@@ -151,7 +151,7 @@ namespace TwitchLib.Internal.TwitchAPI
             /// <param name="delay">Channel delay, in seconds. This inserts a delay in the live feed. Requires the channel owner’s OAuth token.</param>
             /// <param name="channelFeedEnabled">If true, the channel’s feed is turned on. Requires the channel owner’s OAuth token. Default: false.</param>
             /// <returns>A Channel object with the newly changed properties.</returns>
-            public static Models.API.v5.Channels.Channel UpdateChannel(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null)
+            public static Models.API.v5.Channels.Channel UpdateChannel(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
             {
                 List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrEmpty(status))
@@ -185,7 +185,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
                 payload = "{ \"channel\": {" + payload + "} }";
 
-                return Requests.Put<Models.API.v5.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channelId}", payload, Requests.API.v5);
+                return Requests.Put<Models.API.v5.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channelId}", payload, authToken, Requests.API.v5);
             }
             #endregion
             #region GetChannelEditors
@@ -195,9 +195,9 @@ namespace TwitchLib.Internal.TwitchAPI
             /// </summary>
             /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
             /// <returns>A ChannelEditors object that contains an array of the Users which are Editor of the channel.</returns>
-            public static Models.API.v5.Channels.ChannelEditors GetChannelEditors(string channelId)
+            public static Models.API.v5.Channels.ChannelEditors GetChannelEditors(string channelId, string authToken = null)
             {
-                return Requests.Get<Models.API.v5.Channels.ChannelEditors>($"https://api.twitch.tv/kraken/channels/{channelId}/editors", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Channels.ChannelEditors>($"https://api.twitch.tv/kraken/channels/{channelId}/editors", authToken, Requests.API.v5);
             }
             #endregion
             #region GetChannelFollowers
@@ -231,7 +231,7 @@ namespace TwitchLib.Internal.TwitchAPI
                         else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
                     }
                 }
-                return Requests.Get<Models.API.v5.Channels.ChannelFollowers>($"https://api.twitch.tv/kraken/channels/{channelId}/follows" + optionalQuery, Requests.API.v5);
+                return Requests.Get<Models.API.v5.Channels.ChannelFollowers>($"https://api.twitch.tv/kraken/channels/{channelId}/follows" + optionalQuery, null, Requests.API.v5);
             }
             #endregion
             #region GetChannelTeams
@@ -242,7 +242,7 @@ namespace TwitchLib.Internal.TwitchAPI
             /// <returns>An Array of the Teams the Channel belongs to.</returns>
             public static Models.API.v5.Channels.ChannelTeams GetChannelTeams(string channelId)
             {
-                return Requests.Get<Models.API.v5.Channels.ChannelTeams>($"https://api.twitch.tv/kraken/channels/{channelId}/teams", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Channels.ChannelTeams>($"https://api.twitch.tv/kraken/channels/{channelId}/teams", null, Requests.API.v5);
             }
             #endregion
             #region GetChannelSubscribers
@@ -255,7 +255,7 @@ namespace TwitchLib.Internal.TwitchAPI
             /// <param name="offset">Object offset for pagination of results. Default: 0.</param>
             /// <param name="direction">Sorting direction. Valid values: "asc", "desc" (newest first). Default: "desc".</param>
             /// <returns></returns>
-            public static Models.API.v5.Channels.ChannelSubscribers GetChannelSubscribers(string channelId, int? limit = null, int? offset = null, string direction = null)
+            public static Models.API.v5.Channels.ChannelSubscribers GetChannelSubscribers(string channelId, int? limit = null, int? offset = null, string direction = null, string authToken = null)
             {
                 //TODO:Oauth token for other channels? Change Requests.Get method to give other oauth tokens for requests that can appeal to a different channel
                 List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
@@ -275,7 +275,7 @@ namespace TwitchLib.Internal.TwitchAPI
                         else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
                     }
                 }
-                return Requests.Get<Models.API.v5.Channels.ChannelSubscribers>($"https://api.twitch.tv/kraken/channels/{channelId}/subscriptions" + optionalQuery, Requests.API.v5);
+                return Requests.Get<Models.API.v5.Channels.ChannelSubscribers>($"https://api.twitch.tv/kraken/channels/{channelId}/subscriptions" + optionalQuery, authToken, Requests.API.v5);
             }
             #endregion
             #region CheckChannelSubscriptionByUser
@@ -287,9 +287,9 @@ namespace TwitchLib.Internal.TwitchAPI
             /// <param name="channelId">The specified channel to check the subscription on.</param>
             /// <param name="userId">The specified user to check for.</param>
             /// <returns>Returns a subscription object or null if not subscribed. OVERWORK DIS PLIS GABEN</returns>
-            public static Models.API.v5.Subscriptions.Subscription CheckChannelSubscriptionByUser(string channelId, string userId)
+            public static Models.API.v5.Subscriptions.Subscription CheckChannelSubscriptionByUser(string channelId, string userId, string authToken = null)
             {
-                return Requests.Get<Models.API.v5.Subscriptions.Subscription>($"https://api.twitch.tv/kraken/channels/{channelId}/subscriptions/{userId}", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Subscriptions.Subscription>($"https://api.twitch.tv/kraken/channels/{channelId}/subscriptions/{userId}", authToken, Requests.API.v5);
             }
             #endregion
             #region GetChannelVideos
@@ -299,7 +299,7 @@ namespace TwitchLib.Internal.TwitchAPI
             }
             #endregion
             #region StartChannelCommercial
-            public static void StartChannelCommercial()
+            public static void StartChannelCommercial(string channelId, string authToken = null) //plus optional parameters
             {
 
             }
@@ -312,9 +312,9 @@ namespace TwitchLib.Internal.TwitchAPI
             /// </summary>
             /// <param name="channelId">The specified channel to reset the StreamKey on.</param>
             /// <returns>A ChannelPrivileged object that also contains the email and stream key of the channel aside from the normal channel values.</returns>
-            public static Models.API.v5.Channels.ChannelPrivileged ResetChannelStreamKey(string channelId)
+            public static Models.API.v5.Channels.ChannelPrivileged ResetChannelStreamKey(string channelId, string authToken = null)
             {
-                return Requests.Delete<Models.API.v5.Channels.ChannelPrivileged>($"https://api.twitch.tv/kraken/channels/{channelId}/stream_key", Requests.API.v5);
+                return Requests.Delete<Models.API.v5.Channels.ChannelPrivileged>($"https://api.twitch.tv/kraken/channels/{channelId}/stream_key", authToken, Requests.API.v5);
             }
             #endregion
             #region Communities
@@ -327,7 +327,7 @@ namespace TwitchLib.Internal.TwitchAPI
             /// <returns>A Community object that represents the community the channel is in.</returns>
             public static Models.API.v5.Communities.Community GetChannelCommunity(string channelId)
             {
-                return Requests.Get<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/channels/{channelId}/community", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/channels/{channelId}/community", null, Requests.API.v5);
             }
             #endregion
             #region SetChannelCommunity
@@ -337,9 +337,9 @@ namespace TwitchLib.Internal.TwitchAPI
             /// </summary>
             /// <param name="channelId">The specified channel to set the community for.</param>
             /// <param name="communityId">The specified community to set the channel to be a part of.</param>
-            public static void SetChannelCommunity(string channelId, string communityId)
+            public static void SetChannelCommunity(string channelId, string communityId, string authToken = null)
             {
-                Requests.Put($"https://api.twitch.tv/kraken/channels/{channelId}/community/{communityId}", null, Requests.API.v5);
+                Requests.Put($"https://api.twitch.tv/kraken/channels/{channelId}/community/{communityId}", null, authToken, Requests.API.v5);
             }
             #endregion
             #region DeleteChannelFromCommunity
@@ -347,9 +347,9 @@ namespace TwitchLib.Internal.TwitchAPI
             /// Deletes a specified channel from its community.
             /// </summary>
             /// <param name="channelId">The specified channel to be removed.</param>
-            public static void DeleteChannelFromCommunity(string channelId)
+            public static void DeleteChannelFromCommunity(string channelId, string authToken = null)
             {
-                Requests.Delete($"https://api.twitch.tv/kraken/channels/{channelId}/community", Requests.API.v5);
+                Requests.Delete($"https://api.twitch.tv/kraken/channels/{channelId}/community", authToken, Requests.API.v5);
             }
             #endregion
             #endregion
@@ -360,7 +360,7 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetChatBadgesByChannel
             public static Models.API.v5.Chat.ChannelBadges GetChatBadgesByChannel(string channelId)
             {
-                return Requests.Get<Models.API.v5.Chat.ChannelBadges>($"https://api.twitch.tv/kraken/chat/{channelId}/badges", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Chat.ChannelBadges>($"https://api.twitch.tv/kraken/chat/{channelId}/badges", null, Requests.API.v5);
             }
             #endregion
             #region GetChatEmoticonsBySet
@@ -375,13 +375,13 @@ namespace TwitchLib.Internal.TwitchAPI
                         else { payload += $",{emotesets[i]}"; }
                     }
                 }
-                return Requests.Get<Models.API.v5.Chat.EmoteSet>($"https://api.twitch.tv/kraken/chat/emoticon_images{payload}", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Chat.EmoteSet>($"https://api.twitch.tv/kraken/chat/emoticon_images{payload}", null, Requests.API.v5);
             }
             #endregion
             #region GetAllChatEmoticons
             public static Models.API.v5.Chat.GetAllChatEmoticonsResponse GetAllChatEmoticons()
             {
-                return Requests.Get<Models.API.v5.Chat.GetAllChatEmoticonsResponse>("https://api.twitch.tv/kraken/chat/emoticons", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Chat.GetAllChatEmoticonsResponse>("https://api.twitch.tv/kraken/chat/emoticons", null, Requests.API.v5);
             }
             #endregion
         }
@@ -389,63 +389,90 @@ namespace TwitchLib.Internal.TwitchAPI
         public static class Collections
         {
             #region GetCollectionMetadata
-            public static void GetCollectionMetadata()
+            public static Models.API.v5.Collections.CollectionMetadata GetCollectionMetadata(string collectionId)
             {
-
+                return Requests.Get<Models.API.v5.Collections.CollectionMetadata>($"https://api.twitch.tv/kraken/collections/{collectionId}", null, Requests.API.v5);
             }
             #endregion
             #region GetCollection
-            public static void GetCollection()
+            public static Models.API.v5.Collections.Collection GetCollection(string collectionId, bool? includeAllItems = null)
             {
-
+                string optionalQuery = string.Empty;
+                if (includeAllItems != null)
+                    optionalQuery = $"?include_all_items={includeAllItems}";
+                return Requests.Get<Models.API.v5.Collections.Collection>($"https://api.twitch.tv/kraken/collections/{collectionId}/items{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
             #region GetCollectionsByChannel
-            public static void GetCollectionsByChannel()
+            public static Models.API.v5.Collections.CollectionsByChannel GetCollectionsByChannel(string channelId, long? limit = null, string cursor = null, string containingItem = null)
             {
+                List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
+                if (limit != null)
+                    datas.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                if (!string.IsNullOrEmpty(cursor))
+                    datas.Add(new KeyValuePair<string, string>("cursor", cursor));
+                if (!string.IsNullOrEmpty(containingItem))
+                    datas.Add(new KeyValuePair<string, string>("containing_item", (containingItem.StartsWith("video:") ? containingItem : $"video:{containingItem}")));
 
+                string optionalQuery = string.Empty;
+                if (datas.Count > 0)
+                {
+                    for (int i = 0; i < datas.Count; i++)
+                    {
+                        if (i == 0) { optionalQuery = $"?{datas[i].Key}={datas[i].Value}"; }
+                        else { optionalQuery += $"&{datas[i].Key}={datas[i].Value}"; }
+                    }
+                }
+                return Requests.Get<Models.API.v5.Collections.CollectionsByChannel>($"https://api.twitch.tv/kraken/channels/{channelId}/collections{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
             #region CreateCollection
-            public static void CreateCollection()
+            public static Models.API.v5.Collections.CollectionMetadata CreateCollection(string channelId, string collectionTitle, string authToken = null)
             {
-
+                return Requests.Post<Models.API.v5.Collections.CollectionMetadata>($"https://api.twitch.tv/kraken/channels/{channelId}/collections", "{\"title\": \"" + collectionTitle + "\"}", authToken, Requests.API.v5);
             }
             #endregion
             #region UpdateCollection
-            public static void UpdateCollection()
+            public static void UpdateCollection(string collectionId, string newCollectionTitle, string authToken = null)
             {
-
+                Requests.Put($"https://api.twitch.tv/kraken/collections/{collectionId}", "{\"title\": \"" + newCollectionTitle + "\"}", authToken, Requests.API.v5);
             }
             #endregion
             #region CreateCollectionThumbnail
-            public static void CreateCollectionThumbnail()
+            public static void CreateCollectionThumbnail(string collectionId, string itemId, string authToken = null)
             {
-
+                Requests.Put($"https://api.twitch.tv/kraken/collections/{collectionId}/thumbnail", "{\"item_id\": \"" + itemId + "\"}", authToken, Requests.API.v5);
             }
             #endregion
             #region DeleteCollection
-            public static void DeleteCollection()
+            public static void DeleteCollection(string collectionId, string authToken = null)
             {
-
+                Requests.Delete($"https://api.twitch.tv/kraken/collections/{collectionId}", authToken, Requests.API.v5);
             }
             #endregion
             #region AddItemToCollection
-            public static void AddItemToCollection()
+            public static Models.API.v5.Collections.CollectionItem AddItemToCollection(string collectionId, string itemId, string itemType, string authToken = null)
             {
-
+                if (itemType != "video") { throw new Exceptions.API.BadParameterException($"The item_type {itemType} is not valid for a collection. Item type MUST be \"video\"."); }
+                if (string.IsNullOrWhiteSpace(itemId)) { throw new Exceptions.API.BadParameterException("The item_id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
+                return Requests.Post<Models.API.v5.Collections.CollectionItem>($"https://api.twitch.tv/kraken/collections/{collectionId}/items", "{\"id\": \"" + itemId + "\", \"type\": \"" + itemType + "\"}", authToken, Requests.API.v5);
             }
             #endregion
             #region DeleteItemFromCollection
-            public static void DeleteItemFromCollection()
+            public static void DeleteItemFromCollection(string collectionId, string itemId, string authToken = null)
             {
-
+                if (string.IsNullOrWhiteSpace(collectionId)) { throw new Exceptions.API.BadParameterException("The collection_id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(itemId)) { throw new Exceptions.API.BadParameterException("The item_id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
+                Requests.Delete($"https://api.twitch.tv/kraken/collections/{collectionId}/items/{itemId}", authToken, Requests.API.v5);
             }
             #endregion
             #region MoveItemWithinCollection
-            public static void MoveItemWithinCollection()
+            public static void MoveItemWithinCollection(string collectionId, string itemId, int position, string authToken = null)
             {
-
+                if (string.IsNullOrWhiteSpace(collectionId)) { throw new Exceptions.API.BadParameterException("The collection_id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(itemId)) { throw new Exceptions.API.BadParameterException("The item_id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (position < 1) { throw new Exceptions.API.BadParameterException("The position is not valid for a collection. It is not allowed to be less than 1."); }
+                Requests.Put($"https://api.twitch.tv/kraken/collections/{collectionId}/items/{itemId}", "{\"position\": \"" + position + "\"}", authToken, Requests.API.v5);
             }
             #endregion
         }
@@ -455,17 +482,17 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetCommunityByName
             public static Models.API.v5.Communities.Community GetCommunityByName(string communityName)
             {
-                return Requests.Get<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/communities?name={communityName}", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/communities?name={communityName}", null, Requests.API.v5);
             }
             #endregion
             #region GetCommunityByID
             public static Models.API.v5.Communities.Community GetCommunityByID(string communityId)
             {
-                return Requests.Get<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/communities/{communityId}", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/communities/{communityId}", null, Requests.API.v5);
             }
             #endregion
             #region UpdateCommunity
-            public static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null)
+            public static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string authToken = null)
             {
                 List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrEmpty(summary))
@@ -499,7 +526,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
                 payload = "{" + payload + "}";
 
-                Requests.Put($"https://api.twitch.tv/kraken/communities/{communityId}", payload, Requests.API.v5);
+                Requests.Put($"https://api.twitch.tv/kraken/communities/{communityId}", payload, authToken, Requests.API.v5);
             }
             #endregion
             #region GetTopCommunities
@@ -509,43 +536,43 @@ namespace TwitchLib.Internal.TwitchAPI
             }
             #endregion
             #region GetCommunityBannedUsers
-            public static void GetCommunityBannedUsers()
+            public static void GetCommunityBannedUsers(string authToken = null)
             {
 
             }
             #endregion
             #region BanCommunityUser
-            public static void BanCommunityUser()
+            public static void BanCommunityUser(string authToken = null)
             {
 
             }
             #endregion
             #region UnBanCommunityUser
-            public static void UnBanCommunityUser()
+            public static void UnBanCommunityUser(string authToken = null)
             {
 
             }
             #endregion
             #region CreateCommunityAvatarImage
-            public static void CreateCommunityAvatarImage()
+            public static void CreateCommunityAvatarImage(string authToken = null)
             {
 
             }
             #endregion
             #region DeleteCommunityAvatarImage
-            public static void DeleteCommunityAvatarImage()
+            public static void DeleteCommunityAvatarImage(string authToken = null)
             {
 
             }
             #endregion
             #region CreateCommunityCoverImage
-            public static void CreateCommunityCoverImage()
+            public static void CreateCommunityCoverImage(string authToken = null)
             {
 
             }
             #endregion
             #region DeleteCommunityCoverImage
-            public static void DeleteCommunityCoverImage()
+            public static void DeleteCommunityCoverImage(string authToken = null)
             {
 
             }
@@ -557,19 +584,19 @@ namespace TwitchLib.Internal.TwitchAPI
             }
             #endregion
             #region AddCommunityModerator
-            public static void AddCommunityModerator()
+            public static void AddCommunityModerator(string authToken = null)
             {
 
             }
             #endregion
             #region DeleteCommunityModerator
-            public static void DeleteCommunityModerator()
+            public static void DeleteCommunityModerator(string authToken = null)
             {
 
             }
             #endregion
             #region GetCommunityPermissions
-            public static void GetCommunityPermissions()
+            public static void GetCommunityPermissions(string authToken = null)
             {
 
             }
@@ -581,19 +608,19 @@ namespace TwitchLib.Internal.TwitchAPI
             }
             #endregion
             #region GetCommunityTimedOutUsers
-            public static void GetCommunityTimedOutUsers()
+            public static void GetCommunityTimedOutUsers(string authToken = null)
             {
 
             }
             #endregion
             #region AddCommunityTimedOutUser
-            public static void AddCommunityTimedOutUser()
+            public static void AddCommunityTimedOutUser(string authToken = null)
             {
 
             }
             #endregion
             #region DeleteCommunityTimedOutUser
-            public static void DeleteCommunityTimedOutUser()
+            public static void DeleteCommunityTimedOutUser(string authToken = null)
             {
 
             }
@@ -669,9 +696,9 @@ namespace TwitchLib.Internal.TwitchAPI
             }
             #endregion
             #region GetFollowedStreams
-            public static Models.API.v5.Streams.FollowedStreams GetFollowedStreams()
+            public static Models.API.v5.Streams.FollowedStreams GetFollowedStreams(string authToken = null)
             {
-                return Requests.Get<Models.API.v5.Streams.FollowedStreams>("https://api.twitch.tv/kraken/streams/followed", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Streams.FollowedStreams>("https://api.twitch.tv/kraken/streams/followed", authToken, Requests.API.v5);
             }
             #endregion
         }
@@ -694,6 +721,25 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Users
         {
+            #region GetUsersByName
+            public static Models.API.v5.Users.GetUsersByNameResponse GetUsersByName(List<string> usernames)
+            {
+                if (usernames.Count > 0)
+                {
+                    string payload = "?login=";
+                    for (int i = 0; i < usernames.Count; i++)
+                    {
+                        if (i == 0) { payload += usernames[i]; }
+                        else { payload += $",{usernames[i]}"; }
+                    }
+                    return Requests.Get<Models.API.v5.Users.GetUsersByNameResponse>($"https://api.twitch.tv/kraken/users{payload}", null, Requests.API.v5);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            #endregion
             #region GetUser
             public static void GetUser()
             {
@@ -703,7 +749,7 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetUserByID
             public static Models.API.v5.Users.User GetUserByID(string userId)
             {
-                return Requests.Get<Models.API.v5.Users.User>($"https://api.twitch.tv/kraken/users/{userId}", Requests.API.v5);
+                return Requests.Get<Models.API.v5.Users.User>($"https://api.twitch.tv/kraken/users/{userId}", null, Requests.API.v5);
             }
             #endregion
             #region GetUserEmotes

@@ -15,128 +15,84 @@ namespace TwitchLib.Internal
     {
         public enum API
         {
-            v3, v4, v5
+            v3, v4, v5, Void
         }
 
         #region POST
-        public static T Post<T>(string url, Models.API.RequestModel model, API api = API.v5)
+        public static T Post<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
         {
             var test = new JsonSerializerSettings();
             if (model != null)
-                return JsonConvert.DeserializeObject<T>(Post(url, LowercaseJsonSerializer.SerializeObject(model), api));
+                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", LowercaseJsonSerializer.SerializeObject(model), accessToken, api, clientId));
             else
-                return JsonConvert.DeserializeObject<T>(Post(url, "", api));
+                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", "", accessToken, api));
         }
 
-        public static void Post(string url, Models.API.RequestModel model, API api = API.v5)
+        public static void Post(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            Post(url, LowercaseJsonSerializer.SerializeObject(model), api);
+            genericRequest(url, "POST", LowercaseJsonSerializer.SerializeObject(model), accessToken, api, clientId);
         }
 
-        public static string Post(string url, string payload, API api = API.v5)
+        public static T Post<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            checkForCredentials();
-            url = appendClientId(url);
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", payload, accessToken, api, clientId));
+        }
 
-            var request = WebRequest.CreateHttp(url);
-            request.Method = "POST";
-            request.ContentType = "application/json";
-
-            if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
-                request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
-            request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
-
-            using (var writer = new StreamWriter(request.GetRequestStream()))
-                writer.Write(payload);
-
-            try
-            {
-                var response = request.GetResponse();
-                using (var reader = new StreamReader(response.GetResponseStream()))
-                {
-                    string data = reader.ReadToEnd();
-                    return data;
-                }
-            }
-            catch (WebException ex) { handleWebException(ex); }
-
-            return null;
+        public static void Post(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            genericRequest(url, "POST", payload, accessToken, api, clientId);
         }
         #endregion
 
         #region GET
-        public static string Get(string url, API api = API.v5)
+        public static T Get<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            checkForCredentials();
-            url = appendClientId(url);
-
-            var request = WebRequest.CreateHttp(url);
-            request.Method = "GET";
-            request.ContentType = "application/json";
-            request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
-
-            if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
-                request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
-
-            try
-            {
-                var response = request.GetResponse();
-                using (var reader = new StreamReader(response.GetResponseStream()))
-                {
-                    string data = reader.ReadToEnd();
-                    return data;
-                }
-
-            }
-            catch (WebException ex) { handleWebException(ex); }
-
-            return null;
-        }
-
-        public static T Get<T>(string url, API api = API.v5)
-        {
-            return JsonConvert.DeserializeObject<T>(Get(url, api));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "GET", null, accessToken, api, clientId));
         }
         #endregion
 
         #region DELETE
-        public static string Delete(string url, API api = API.v5)
+        public static string Delete(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return genericRequest(url, "DELETE", null, api);
+            return genericRequest(url, "DELETE", null, accessToken, api, clientId);
         }
 
-        public static T Delete<T>(string url, API api = API.v5)
+        public static T Delete<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "DELETE", null, api));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "DELETE", null, accessToken, api, clientId));
         }
         #endregion
 
         #region PUT
-        public static T Put<T>(string url, string payload, API api = API.v5)
+        public static T Put<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", payload, api));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", payload, accessToken, api, clientId));
         }
 
-        public static string Put(string url, string payload, API api = API.v5)
+        public static string Put(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return genericRequest(url, "PUT", payload, api);
+            return genericRequest(url, "PUT", payload, accessToken, api, clientId);
         }
         #endregion
 
-        private static string genericRequest(string url, string method, string payload = null, API api = API.v5)
+        private static string genericRequest(string url, string method, string payload = null, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            checkForCredentials();
-            url = appendClientId(url);
+            if (clientId == null)
+                checkForCredentials();
+            url = appendClientId(url, clientId);
 
             var request = WebRequest.CreateHttp(url);
             request.Method = method;
             request.ContentType = "application/json";
-            request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
+            if (api != API.Void)
+                request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
 
-            if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
+            if (!string.IsNullOrEmpty(accessToken))
+                request.Headers["Authorization"] = $"OAuth {Common.Helpers.FormatOAuth(accessToken)}";
+            else if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
                 request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
 
-            if(payload != null)
+            if (payload != null)
                 using (var writer = new StreamWriter(request.GetRequestStream()))
                     writer.Write(payload);
 
@@ -144,7 +100,11 @@ namespace TwitchLib.Internal
             {
                 var response = request.GetResponse();
                 using (var reader = new StreamReader(response.GetResponseStream()))
-                    return reader.ReadToEnd();
+                {
+                    string data = reader.ReadToEnd();
+                    return data;
+                }
+
             }
             catch (WebException ex) { handleWebException(ex); }
 
@@ -165,11 +125,16 @@ namespace TwitchLib.Internal
             }
         }
 
-        private static string appendClientId(string url)
+        private static string appendClientId(string url, string clientId = null)
         {
-            return url.Contains("?")
-                ? $"{url}&client_id={TwitchAPI.Shared.ClientId}"
-                : $"{url}?client_id={TwitchAPI.Shared.ClientId}";
+            if (clientId == null)
+                return url.Contains("?")
+                    ? $"{url}&client_id={TwitchAPI.Shared.ClientId}"
+                    : $"{url}?client_id={TwitchAPI.Shared.ClientId}";
+            else
+                return url.Contains("?")
+                    ? $"{url}&client_id={clientId}"
+                    : $"{url}?client_id={clientId}";
         }
 
         private static void checkForCredentials()
