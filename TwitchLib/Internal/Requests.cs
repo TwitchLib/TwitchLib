@@ -19,7 +19,7 @@ namespace TwitchLib.Internal
         }
 
         #region POST
-        public static T Post<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
+        public static T PostModel<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
         {
             var test = new JsonSerializerSettings();
             if (model != null)
@@ -28,9 +28,19 @@ namespace TwitchLib.Internal
                 return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", "", accessToken, api));
         }
 
-        public static void Post(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
+        public static T Post<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", payload, accessToken, api, clientId));
+        }
+
+        public static void PostModel(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
         {
             genericRequest(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId);
+        }
+
+        public static void Post(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            genericRequest(url, "POST", payload, accessToken, api, clientId);
         }
         #endregion
       

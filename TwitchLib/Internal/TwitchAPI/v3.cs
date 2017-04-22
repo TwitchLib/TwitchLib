@@ -46,7 +46,7 @@ namespace TwitchLib.Internal.TwitchAPI
                     Content = content,
                     Share = share
                 };
-                return Requests.Post<Models.API.v3.ChannelFeeds.PostResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts", model, accessToken, Requests.API.v3);
+                return Requests.PostModel<Models.API.v3.ChannelFeeds.PostResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts", model, accessToken, Requests.API.v3);
             }
 
             public static Models.API.v3.ChannelFeeds.Post GetPost(string channel, string postId, string accessToken = null)
@@ -166,7 +166,7 @@ namespace TwitchLib.Internal.TwitchAPI
                     Length = lengthInt
                 };
 
-                Requests.Post($"https://api.twitch.tv/kraken/channels/{channel}/commercial", model, accessToken, Requests.API.v3);
+                Requests.PostModel($"https://api.twitch.tv/kraken/channels/{channel}/commercial", model, accessToken, Requests.API.v3);
             }
 
             public static Models.API.v3.Channels.GetTeamsResponse GetTeams(string channel)

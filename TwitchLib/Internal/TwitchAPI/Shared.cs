@@ -1,4 +1,7 @@
-﻿namespace TwitchLib.Internal.TwitchAPI
+﻿using System.Collections.Generic;
+using TwitchLib.Exceptions.API;
+
+namespace TwitchLib.Internal.TwitchAPI
 {
     internal static class Shared
     {

@@ -598,7 +598,7 @@ namespace TwitchLib.Internal.TwitchAPI
             #region CreateCommunityAvatarImage
             public static void CreateCommunityAvatarImage(string communityId, string avatarImage, string authToken = null)
             {
-                Requests.Post($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "{\"avatar_image\": \"" + @avatarImage + "\"}", authToken, Requests.API.v5);
+                Requests.Post($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "{\"avatar_image\": \"" + @avatarImage + "\"}", authToken);
             }
             #endregion
             #region DeleteCommunityAvatarImage
