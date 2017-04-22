@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitchLib.Models.API.v3.Subscriptions
+namespace TwitchLib.Enums
 {
-    public enum Direction
+    public enum BroadcastType
     {
-        Ascending,
-        Descending
+        All, 
+        Archive,
+        Highlight
     }
 }

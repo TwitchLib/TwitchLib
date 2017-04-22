@@ -1,18 +1,16 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace TwitchLib.Models.API.v3.ChannelFeeds
 {
     public class Emote
     {
-
-        public Emote(JToken json)
-        {
-
-        }
+        [JsonProperty(PropertyName = "end")]
+        public int End { get; protected set; }
+        [JsonProperty(PropertyName = "id")]
+        public int Id { get; protected set; }
+        [JsonProperty(PropertyName = "set")]
+        public int Set { get; protected set; }
+        [JsonProperty(PropertyName = "start")]
+        public int Start { get; protected set; }
     }
 }

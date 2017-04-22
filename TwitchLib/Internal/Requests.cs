@@ -23,27 +23,17 @@ namespace TwitchLib.Internal
         {
             var test = new JsonSerializerSettings();
             if (model != null)
-                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", LowercaseJsonSerializer.SerializeObject(model), accessToken, api, clientId));
+                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId));
             else
                 return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", "", accessToken, api));
         }
 
         public static void Post(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            genericRequest(url, "POST", LowercaseJsonSerializer.SerializeObject(model), accessToken, api, clientId);
-        }
-
-        public static T Post<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", payload, accessToken, api, clientId));
-        }
-
-        public static void Post(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            genericRequest(url, "POST", payload, accessToken, api, clientId);
+            genericRequest(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId);
         }
         #endregion
-
+      
         #region GET
         public static T Get<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
@@ -73,21 +63,33 @@ namespace TwitchLib.Internal
         {
             return genericRequest(url, "PUT", payload, accessToken, api, clientId);
         }
+
+        public static void PutBytes(string url, byte[] payload)
+        {
+            try
+            {
+                using (var client = new System.Net.WebClient())
+                    client.UploadData(url, "PUT", payload);
+            }
+            catch (WebException ex) { handleWebException(ex); }
+        }
+
         #endregion
 
-        private static string genericRequest(string url, string method, string payload = null, string accessToken = null, API api = API.v5, string clientId = null)
+        private static string genericRequest(string url, string method, object payload = null, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            if (clientId == null)
+            if(clientId == null)
                 checkForCredentials();
             url = appendClientId(url, clientId);
 
             var request = WebRequest.CreateHttp(url);
             request.Method = method;
             request.ContentType = "application/json";
-            if (api != API.Void)
+          
+            if(api != API.Void)
                 request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
 
-            if (!string.IsNullOrEmpty(accessToken))
+            if(!string.IsNullOrEmpty(accessToken))
                 request.Headers["Authorization"] = $"OAuth {Common.Helpers.FormatOAuth(accessToken)}";
             else if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
                 request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
@@ -104,7 +106,6 @@ namespace TwitchLib.Internal
                     string data = reader.ReadToEnd();
                     return data;
                 }
-
             }
             catch (WebException ex) { handleWebException(ex); }
 
@@ -127,7 +128,7 @@ namespace TwitchLib.Internal
 
         private static string appendClientId(string url, string clientId = null)
         {
-            if (clientId == null)
+            if(clientId == null)
                 return url.Contains("?")
                     ? $"{url}&client_id={TwitchAPI.Shared.ClientId}"
                     : $"{url}?client_id={TwitchAPI.Shared.ClientId}";
@@ -159,13 +160,12 @@ namespace TwitchLib.Internal
             }
         }
 
-        // Contract resolver to force keys to lowercase
-        // Credit: http://stackoverflow.com/questions/6288660/net-ensuring-json-keys-are-lowercase
-        public class LowercaseJsonSerializer
+        public class TwitchLibJsonSerializer
         {
             private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
             {
-                ContractResolver = new LowercaseContractResolver()
+                ContractResolver = new LowercaseContractResolver(),
+                NullValueHandling = NullValueHandling.Ignore
             };
 
             public static string SerializeObject(object o)

@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitchLib.Models.API.v3.Videos
+namespace TwitchLib.Enums
 {
-    public enum Period
+    public enum Direction
     {
-        Week,
-        Month,
-        All
+        Ascending,
+        Descending
     }
 }

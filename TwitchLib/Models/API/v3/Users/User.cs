@@ -11,20 +11,20 @@ namespace TwitchLib.Models.API.v3.Users
     public class User
     {
         [JsonProperty(PropertyName = "updated_at")]
-        public string UpdatedAt;
+        public DateTime UpdatedAt { get; protected set; }
         [JsonProperty(PropertyName = "display_name")]
-        public string DisplayName;
+        public string DisplayName { get; protected set; }
         [JsonProperty(PropertyName = "type")]
-        public string Type;
+        public string Type { get; protected set; }
         [JsonProperty(PropertyName = "bio")]
-        public string Bio;
+        public string Bio { get; protected set; }
         [JsonProperty(PropertyName = "name")]
-        public string Name;
+        public string Name { get; protected set; }
         [JsonProperty(PropertyName = "_id")]
-        public string Id;
+        public string Id { get; protected set; }
         [JsonProperty(PropertyName = "logo")]
-        public string Logo;
+        public string Logo { get; protected set; }
         [JsonProperty(PropertyName = "created_at")]
-        public string CreatedAt;
+        public DateTime CreatedAt { get; protected set; }
     }
 }

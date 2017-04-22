@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,9 @@ namespace TwitchLib.Models.API.v3.Follows
 {
     public class FollowsResponse
     {
+        [JsonProperty(PropertyName = "_total")]
         public int Total { get; protected set; }
-        public List<Follows> Follows { get; protected set; } = new List<v3.Follows.Follows>();
-
-        public FollowsResponse(JToken json)
-        {
-
-        }
+        [JsonProperty(PropertyName = "follows")]
+        public Follows[] Follows { get; protected set; }
     }
 }

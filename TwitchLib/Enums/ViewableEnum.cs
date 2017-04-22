@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitchLib.Models.API.v3.Search
+namespace TwitchLib.Enums
 {
-    public enum GameSearchType
+    public enum Viewable
     {
-        Suggest
+        Public,
+        Private
     }
 }

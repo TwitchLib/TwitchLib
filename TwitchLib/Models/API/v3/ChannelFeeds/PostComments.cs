@@ -1,19 +1,14 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TwitchLib.Models.API.v3.ChannelFeeds
 {
     public class PostComments
     {
         [JsonProperty(PropertyName = "_total")]
-        public int Total;
+        public int Total { get; protected set; }
         [JsonProperty(PropertyName = "_cursor")]
-        public string Cursor;
+        public string Cursor { get; protected set; }
         [JsonProperty(PropertyName = "comments")]
-        public Comment[] Comments;
+        public Comment[] Comments { get; protected set; }
     }
 }
