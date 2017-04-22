@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -542,6 +543,16 @@ namespace TwitchLib
             {
                 return await Task.Run(() => Internal.TwitchAPI.v3.Videos.GetTopVideos(limit, offset, game, period));
             }
+
+            public static Models.API.v4.UploadVideo.UploadedVideo UploadVideo(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
+            {
+                return Internal.TwitchAPI.v4.UploadVideo(channelId, videoPath, title, description, game, language, tagList, viewable, viewableAt, accessToken);
+            }
+
+            public async static Task<Models.API.v4.UploadVideo.UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v4.UploadVideo(channelId, videoPath, title, description, game, language, tagList, viewable, viewableAt, accessToken));
+            }
         }
 
         public static class Clips
@@ -591,6 +602,14 @@ namespace TwitchLib
             public async static Task<List<Models.API.ThirdParty.UsernameChangeListing>> GetUsernameChangesAsync(string username)
             {
                 return await Task.Run(() => Internal.TwitchAPI.ThirdParty.GetUsernameChanges(username));
+            }
+        }
+
+        public static class Debugging
+        {
+            public static T BuildModel<T>(string data)
+            {
+                return JsonConvert.DeserializeObject<T>(data);
             }
         }
 

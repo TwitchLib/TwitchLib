@@ -56,6 +56,7 @@
     <Compile Include="Enums\AuthScopesEnum.cs" />
     <Compile Include="Enums\StreamIdentifierType.cs" />
     <Compile Include="Enums\VideoPlayback.cs" />
+    <Compile Include="Enums\ViewableEnum.cs" />
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamsSetArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorEndedArgs.cs" />
@@ -249,6 +250,10 @@
     <Compile Include="Models\API\v4\Clips\Thumbnails.cs" />
     <Compile Include="Models\API\v4\Clips\TopClipsResponse.cs" />
     <Compile Include="Models\API\v4\Clips\VOD.cs" />
+    <Compile Include="Models\API\v4\UploadVideo\Preview.cs" />
+    <Compile Include="Models\API\v4\UploadVideo\Upload.cs" />
+    <Compile Include="Models\API\v4\UploadVideo\UploadedVideo.cs" />
+    <Compile Include="Models\API\v4\UploadVideo\UploadVideoListing.cs" />
     <Compile Include="Models\API\v5\Bits\Action.cs" />
     <Compile Include="Models\API\v5\Bits\Image.cs" />
     <Compile Include="Models\API\v5\Bits\ImageLinks.cs" />
