@@ -64,6 +64,7 @@
     <Compile Include="Exceptions\Client\BadListenException.cs" />
     <Compile Include="Exceptions\Client\IllegalAssignmentException.cs" />
     <Compile Include="Exceptions\Services\UnitializedChannelList.cs" />
+    <Compile Include="Extensions\API\v5\ChannelPrivilegedExt.cs" />
     <Compile Include="Internal\Rfc2812.cs" />
     <Compile Include="Internal\TwitchAPI\Shared.cs" />
     <Compile Include="Internal\TwitchAPI\v3.cs" />

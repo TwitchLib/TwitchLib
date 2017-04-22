@@ -360,6 +360,7 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetChatBadgesByChannel
             public static Models.API.v5.Chat.ChannelBadges GetChatBadgesByChannel(string channelId)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid for catching the channel badges. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Get<Models.API.v5.Chat.ChannelBadges>($"https://api.twitch.tv/kraken/chat/{channelId}/badges", null, Requests.API.v5);
             }
             #endregion
@@ -391,12 +392,14 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetCollectionMetadata
             public static Models.API.v5.Collections.CollectionMetadata GetCollectionMetadata(string collectionId)
             {
+                if (string.IsNullOrWhiteSpace(collectionId)) { throw new Exceptions.API.BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Get<Models.API.v5.Collections.CollectionMetadata>($"https://api.twitch.tv/kraken/collections/{collectionId}", null, Requests.API.v5);
             }
             #endregion
             #region GetCollection
             public static Models.API.v5.Collections.Collection GetCollection(string collectionId, bool? includeAllItems = null)
             {
+                if (string.IsNullOrWhiteSpace(collectionId)) { throw new Exceptions.API.BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 string optionalQuery = string.Empty;
                 if (includeAllItems != null)
                     optionalQuery = $"?include_all_items={includeAllItems}";
@@ -406,6 +409,7 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetCollectionsByChannel
             public static Models.API.v5.Collections.CollectionsByChannel GetCollectionsByChannel(string channelId, long? limit = null, string cursor = null, string containingItem = null)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid for catching a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
                 if (limit != null)
                     datas.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
@@ -429,48 +433,56 @@ namespace TwitchLib.Internal.TwitchAPI
             #region CreateCollection
             public static Models.API.v5.Collections.CollectionMetadata CreateCollection(string channelId, string collectionTitle, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid for a collection creation. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(collectionTitle)) { throw new Exceptions.API.BadParameterException("The collection title is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Post<Models.API.v5.Collections.CollectionMetadata>($"https://api.twitch.tv/kraken/channels/{channelId}/collections", "{\"title\": \"" + collectionTitle + "\"}", authToken, Requests.API.v5);
             }
             #endregion
             #region UpdateCollection
             public static void UpdateCollection(string collectionId, string newCollectionTitle, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(collectionId)) { throw new Exceptions.API.BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(newCollectionTitle)) { throw new Exceptions.API.BadParameterException("The new collection title is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Put($"https://api.twitch.tv/kraken/collections/{collectionId}", "{\"title\": \"" + newCollectionTitle + "\"}", authToken, Requests.API.v5);
             }
             #endregion
             #region CreateCollectionThumbnail
             public static void CreateCollectionThumbnail(string collectionId, string itemId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(collectionId)) { throw new Exceptions.API.BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(itemId)) { throw new Exceptions.API.BadParameterException("The item id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Put($"https://api.twitch.tv/kraken/collections/{collectionId}/thumbnail", "{\"item_id\": \"" + itemId + "\"}", authToken, Requests.API.v5);
             }
             #endregion
             #region DeleteCollection
             public static void DeleteCollection(string collectionId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(collectionId)) { throw new Exceptions.API.BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Delete($"https://api.twitch.tv/kraken/collections/{collectionId}", authToken, Requests.API.v5);
             }
             #endregion
             #region AddItemToCollection
             public static Models.API.v5.Collections.CollectionItem AddItemToCollection(string collectionId, string itemId, string itemType, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(collectionId)) { throw new Exceptions.API.BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(itemId)) { throw new Exceptions.API.BadParameterException("The item id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (itemType != "video") { throw new Exceptions.API.BadParameterException($"The item_type {itemType} is not valid for a collection. Item type MUST be \"video\"."); }
-                if (string.IsNullOrWhiteSpace(itemId)) { throw new Exceptions.API.BadParameterException("The item_id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Post<Models.API.v5.Collections.CollectionItem>($"https://api.twitch.tv/kraken/collections/{collectionId}/items", "{\"id\": \"" + itemId + "\", \"type\": \"" + itemType + "\"}", authToken, Requests.API.v5);
             }
             #endregion
             #region DeleteItemFromCollection
             public static void DeleteItemFromCollection(string collectionId, string itemId, string authToken = null)
             {
-                if (string.IsNullOrWhiteSpace(collectionId)) { throw new Exceptions.API.BadParameterException("The collection_id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(itemId)) { throw new Exceptions.API.BadParameterException("The item_id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(collectionId)) { throw new Exceptions.API.BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(itemId)) { throw new Exceptions.API.BadParameterException("The item id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Delete($"https://api.twitch.tv/kraken/collections/{collectionId}/items/{itemId}", authToken, Requests.API.v5);
             }
             #endregion
             #region MoveItemWithinCollection
             public static void MoveItemWithinCollection(string collectionId, string itemId, int position, string authToken = null)
             {
-                if (string.IsNullOrWhiteSpace(collectionId)) { throw new Exceptions.API.BadParameterException("The collection_id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(itemId)) { throw new Exceptions.API.BadParameterException("The item_id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(collectionId)) { throw new Exceptions.API.BadParameterException("The collection id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(itemId)) { throw new Exceptions.API.BadParameterException("The item id is not valid for a collection. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (position < 1) { throw new Exceptions.API.BadParameterException("The position is not valid for a collection. It is not allowed to be less than 1."); }
                 Requests.Put($"https://api.twitch.tv/kraken/collections/{collectionId}/items/{itemId}", "{\"position\": \"" + position + "\"}", authToken, Requests.API.v5);
             }
