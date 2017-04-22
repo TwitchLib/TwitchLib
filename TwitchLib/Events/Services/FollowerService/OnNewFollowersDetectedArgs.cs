@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Models.API;
-using TwitchLib.Models.API.Follow;
 
 namespace TwitchLib.Events.Services.FollowerService
 {
@@ -18,6 +17,6 @@ namespace TwitchLib.Events.Services.FollowerService
         /// <summary>Event property representing seconds between queries to Twitch Api.</summary>
         public int CheckIntervalSeconds;
         /// <summary>Event property representing all new followers detected.</summary>
-        public List<Follower> NewFollowers;
+        public List<Models.API.v3.Follows.Follow> NewFollowers;
     }
 }
