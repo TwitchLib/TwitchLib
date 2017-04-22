@@ -474,5 +474,35 @@ namespace TwitchLib_API_Tester
             foreach (var change in resp)
                 MessageBox.Show($"User ID: {change.UserId}\nOld name: {change.UsernameOld}\nNew name: {change.UsernameNew}");
         }
+
+        private void button54_Click(object sender, EventArgs e)
+        {
+            //51
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "MP4 Files|*.mp4";
+            if(ofd.ShowDialog() == DialogResult.OK)
+            {
+                textBox51.Text = ofd.FileName;
+            }
+        }
+
+        private async void button53_Click(object sender, EventArgs e)
+        {
+            /*  55 = channel
+                51 = file
+                52 = title
+                53 = description
+                54 = game
+            */
+
+            var resp = await TwitchLib.TwitchAPI.Videos.UploadVideoAsync(textBox55.Text, textBox51.Text, textBox52.Text, textBox53.Text, textBox54.Text);
+
+            MessageBox.Show($"Uploaded video available here: {resp.Url}");
+        }
+
+        private void button56_Click(object sender, EventArgs e)
+        {
+            var resp = TwitchLib.TwitchAPI.Debugging.BuildModel<TwitchLib.Models.API.v4.UploadVideo.UploadVideoListing>(richTextBox3.Text);
+        }
     }
 }
