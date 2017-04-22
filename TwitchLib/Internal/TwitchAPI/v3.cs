@@ -109,10 +109,11 @@ namespace TwitchLib.Internal.TwitchAPI
                     throw new Exceptions.API.BadParameterException("At least one parameter must be specified: status, game, delay, channel_feed_enabled.");
 
                 string payload = "";
-                if(datas.Count == 1)
+                if (datas.Count == 1)
                 {
                     payload = $"\"{datas[0].Key}\": {datas[0].Value}";
-                } else
+                }
+                else
                 {
                     for (int i = 0; i < datas.Count; i++)
                     {
@@ -138,7 +139,7 @@ namespace TwitchLib.Internal.TwitchAPI
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Commercial, accessToken);
                 int lengthInt = 30;
-                switch(length)
+                switch (length)
                 {
                     case Enums.CommercialLength.Seconds30:
                         lengthInt = 30;
@@ -172,7 +173,7 @@ namespace TwitchLib.Internal.TwitchAPI
             {
                 return Requests.Get<Models.API.v3.Channels.GetTeamsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/teams", null, Requests.API.v3);
             }
-        } 
+        }
 
         public static class Chat
         {

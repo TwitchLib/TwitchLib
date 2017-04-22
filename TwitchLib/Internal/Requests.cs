@@ -33,7 +33,7 @@ namespace TwitchLib.Internal
             genericRequest(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId);
         }
         #endregion
-
+      
         #region GET
         public static T Get<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
@@ -85,6 +85,7 @@ namespace TwitchLib.Internal
             var request = WebRequest.CreateHttp(url);
             request.Method = method;
             request.ContentType = "application/json";
+          
             if(api != API.Void)
                 request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
 
@@ -93,7 +94,7 @@ namespace TwitchLib.Internal
             else if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
                 request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
 
-            if(payload != null)
+            if (payload != null)
                 using (var writer = new StreamWriter(request.GetRequestStream()))
                     writer.Write(payload);
 
@@ -105,7 +106,6 @@ namespace TwitchLib.Internal
                     string data = reader.ReadToEnd();
                     return data;
                 }
-                    
             }
             catch (WebException ex) { handleWebException(ex); }
 

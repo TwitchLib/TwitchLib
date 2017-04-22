@@ -34,9 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -67,6 +66,7 @@
     <Compile Include="Exceptions\Client\BadListenException.cs" />
     <Compile Include="Exceptions\Client\IllegalAssignmentException.cs" />
     <Compile Include="Exceptions\Services\UnitializedChannelList.cs" />
+    <Compile Include="Extensions\API\v5\ChannelPrivilegedExt.cs" />
     <Compile Include="Internal\Rfc2812.cs" />
     <Compile Include="Internal\TwitchAPI\Shared.cs" />
     <Compile Include="Internal\TwitchAPI\ThirdParty.cs" />
@@ -250,6 +250,10 @@
     <Compile Include="Models\API\v4\Clips\Thumbnails.cs" />
     <Compile Include="Models\API\v4\Clips\TopClipsResponse.cs" />
     <Compile Include="Models\API\v4\Clips\VOD.cs" />
+    <Compile Include="Models\API\v5\Badges\Badge.cs" />
+    <Compile Include="Models\API\v5\Badges\BadgeContent.cs" />
+    <Compile Include="Models\API\v5\Badges\ChannelDisplayBadgesResponse.cs" />
+    <Compile Include="Models\API\v5\Badges\GlobalBadgesResponse.cs" />
     <Compile Include="Models\API\v4\UploadVideo\Preview.cs" />
     <Compile Include="Models\API\v4\UploadVideo\Upload.cs" />
     <Compile Include="Models\API\v4\UploadVideo\UploadedVideo.cs" />
@@ -260,6 +264,43 @@
     <Compile Include="Models\API\v5\Bits\DarkImage.cs" />
     <Compile Include="Models\API\v5\Bits\LightImage.cs" />
     <Compile Include="Models\API\v5\Bits\Tier.cs" />
+    <Compile Include="Models\API\v5\Channels\Channel.cs" />
+    <Compile Include="Models\API\v5\Channels\ChannelCommercial.cs" />
+    <Compile Include="Models\API\v5\Channels\ChannelEditors.cs" />
+    <Compile Include="Models\API\v5\Channels\ChannelFollowers.cs" />
+    <Compile Include="Models\API\v5\Channels\ChannelPrivileged.cs" />
+    <Compile Include="Models\API\v5\Channels\ChannelSubscribers.cs" />
+    <Compile Include="Models\API\v5\Channels\ChannelTeams.cs" />
+    <Compile Include="Models\API\v5\Chat\AllChatEmote.cs" />
+    <Compile Include="Models\API\v5\Chat\Badge.cs" />
+    <Compile Include="Models\API\v5\Chat\ChannelBadges.cs" />
+    <Compile Include="Models\API\v5\Chat\Emote.cs" />
+    <Compile Include="Models\API\v5\Chat\EmoteSet.cs" />
+    <Compile Include="Models\API\v5\Chat\EmoticonImage.cs" />
+    <Compile Include="Models\API\v5\Chat\GetAllChatEmoticonsResponse.cs" />
+    <Compile Include="Models\API\v5\Collections\Collection.cs" />
+    <Compile Include="Models\API\v5\Collections\CollectionItem.cs" />
+    <Compile Include="Models\API\v5\Collections\CollectionMetadata.cs" />
+    <Compile Include="Models\API\v5\Collections\CollectionsByChannel.cs" />
+    <Compile Include="Models\API\v5\Communities\BannedUser.cs" />
+    <Compile Include="Models\API\v5\Communities\BannedUsers.cs" />
+    <Compile Include="Models\API\v5\Communities\Community.cs" />
+    <Compile Include="Models\API\v5\Communities\Moderator.cs" />
+    <Compile Include="Models\API\v5\Communities\Moderators.cs" />
+    <Compile Include="Models\API\v5\Communities\TimedOutUser.cs" />
+    <Compile Include="Models\API\v5\Communities\TimedOutUsers.cs" />
+    <Compile Include="Models\API\v5\Communities\TopCommunities.cs" />
+    <Compile Include="Models\API\v5\Communities\TopCommunity.cs" />
+    <Compile Include="Models\API\v5\Follows\Follow.cs" />
+    <Compile Include="Models\API\v5\Root\RootResponse.cs" />
+    <Compile Include="Models\API\v5\Streams\FollowedStreams.cs" />
+    <Compile Include="Models\API\v5\Streams\Stream.cs" />
+    <Compile Include="Models\API\v5\Streams\StreamPreview.cs" />
+    <Compile Include="Models\API\v5\Subscriptions\Subscription.cs" />
+    <Compile Include="Models\API\v5\Teams\SpecifiedTeam.cs" />
+    <Compile Include="Models\API\v5\Teams\Team.cs" />
+    <Compile Include="Models\API\v5\Users\GetUsersByNameResponse.cs" />
+    <Compile Include="Models\API\v5\Users\User.cs" />
     <Compile Include="Models\Client\ChannelState.cs" />
     <Compile Include="Models\Client\ChatCommand.cs" />
     <Compile Include="Models\Client\EmoteSet.cs" />

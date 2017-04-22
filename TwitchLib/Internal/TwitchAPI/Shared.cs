@@ -1,12 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib.Exceptions.API;
-
-namespace TwitchLib.Internal.TwitchAPI
+﻿namespace TwitchLib.Internal.TwitchAPI
 {
     internal static class Shared
     {
