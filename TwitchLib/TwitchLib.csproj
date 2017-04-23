@@ -264,6 +264,14 @@
     <Compile Include="Models\API\v5\Bits\DarkImage.cs" />
     <Compile Include="Models\API\v5\Bits\LightImage.cs" />
     <Compile Include="Models\API\v5\Bits\Tier.cs" />
+    <Compile Include="Models\API\v5\ChannelFeed\FeedPost.cs" />
+    <Compile Include="Models\API\v5\ChannelFeed\FeedPostComment.cs" />
+    <Compile Include="Models\API\v5\ChannelFeed\FeedPostComments.cs" />
+    <Compile Include="Models\API\v5\ChannelFeed\FeedPostCreation.cs" />
+    <Compile Include="Models\API\v5\ChannelFeed\FeedPostEmote.cs" />
+    <Compile Include="Models\API\v5\ChannelFeed\FeedPostReaction.cs" />
+    <Compile Include="Models\API\v5\ChannelFeed\FeedPostReactionPost.cs" />
+    <Compile Include="Models\API\v5\ChannelFeed\MultipleFeedPosts.cs" />
     <Compile Include="Models\API\v5\Channels\Channel.cs" />
     <Compile Include="Models\API\v5\Channels\ChannelCommercial.cs" />
     <Compile Include="Models\API\v5\Channels\ChannelEditors.cs" />
