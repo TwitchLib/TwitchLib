@@ -32,11 +32,13 @@ namespace TwitchLib.Models.Client
         /// <summary>Property representing the user's id.</summary>
         public int UserId { get; protected set; }
         /// <summary>Property representing whether or not the resubscriber is a moderator.</summary>
-        public bool Mod { get; protected set; }
+        public bool IsModerator { get; protected set; }
         /// <summary>Property representing whether or not the resubscriber is a turbo member.</summary>
-        public bool Turbo { get; protected set; }
+        public bool IsTurbo { get; protected set; }
         /// <summary>Property representing whether or not the resubscriber is a subscriber (YES).</summary>
-        public bool Sub { get; protected set; }
+        public bool IsSubscriber { get; protected set; }
+        /// <summary>Property representing whether or not person is a partner.</summary>
+        public bool IsPartner { get; protected set; }
         /// <summary>Property representing the user type of the resubscriber.</summary>
         public Enums.UserType UserType { get; protected set; }
         /// <summary>Property representing the raw IRC message (for debugging/customized parsing)</summary>
@@ -63,6 +65,12 @@ namespace TwitchLib.Models.Client
                             Badges = new List<KeyValuePair<string, string>>();
                             foreach (string badgeValue in value.Split(','))
                                 Badges.Add(new KeyValuePair<string, string>(badgeValue.Split('/')[0], badgeValue.Split('/')[1]));
+                            // iterate through badges for special circumstances
+                            foreach(var badge in Badges)
+                            {
+                                if (badge.Key == "partner")
+                                    IsPartner = true;
+                            }
                             break;
                         case "color":
                             ColorHex = value;
@@ -80,7 +88,7 @@ namespace TwitchLib.Models.Client
                             Login = value;
                             break;
                         case "mod":
-                            Mod = value == "1";
+                            IsModerator = value == "1";
                             break;
                         case "msg-param-months":
                             Months = int.Parse(value);
@@ -89,14 +97,14 @@ namespace TwitchLib.Models.Client
                             RoomId = int.Parse(value);
                             break;
                         case "subscriber":
-                            Sub = value == "1";
+                            IsSubscriber = value == "1";
                             break;
                         case "system-msg":
                             SystemMessage = value;
                             SystemMessageParsed = value.Replace("\\s", " ");
                             break;
                         case "turbo":
-                            Turbo = value == "1";
+                            IsTurbo = value == "1";
                             break;
                         case "user-id":
                             UserId = int.Parse(value);
@@ -164,7 +172,7 @@ namespace TwitchLib.Models.Client
         public override string ToString()
         {
             return $"Badges: {Badges.Count}, color hex: {ColorHex}, display name: {DisplayName}, emote set: {EmoteSet}, login: {Login}, system message: {SystemMessage}, " + 
-                $"resub message: {ResubMessage}, months: {Months}, room id: {RoomId}, user id: {UserId}, mod: {Mod}, turbo: {Turbo}, sub: {Sub}, user type: {UserType}, " + 
+                $"resub message: {ResubMessage}, months: {Months}, room id: {RoomId}, user id: {UserId}, mod: {IsModerator}, turbo: {IsTurbo}, sub: {IsSubscriber}, user type: {UserType}, " + 
                 $"channel: {Channel}, raw irc: {RawIrc}";
         }
     }
