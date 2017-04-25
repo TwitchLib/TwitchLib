@@ -271,7 +271,7 @@ namespace TwitchLibExample
             CheckForIllegalCrossThreadCalls = false;
 
             richTextBox1.BackColor = e.ChatMessage.Color;
-            richTextBox1.Text = String.Format("#{0} {1}[isSub: {2}]: {3}", e.ChatMessage.Channel, e.ChatMessage.DisplayName, e.ChatMessage.Subscriber, e.ChatMessage.Message) + 
+            richTextBox1.Text = String.Format("#{0} {1}[isSub: {2}, isPartner: {3}, subbedFor: {4}]: {3}", e.ChatMessage.Channel, e.ChatMessage.DisplayName, e.ChatMessage.IsSubscriber, e.ChatMessage.IsPartnered, e.ChatMessage.SubscribedMonthCount, e.ChatMessage.Message) + 
                 "\n" + richTextBox1.Text;
         }
 
@@ -937,7 +937,7 @@ namespace TwitchLibExample
 
         private async void button59_Click(object sender, EventArgs e)
         {
-            Clip details = await TwitchApi.Clips.GetClipInformationAsync(textBox46.Text, textBox47.Text);
+            Clip details = await TwitchApi.Clips.GetClipInformationAsync(textBox47.Text);
             MessageBox.Show($"Title: {details.Title}\nGame: {details.Game}\nBroadcaster: {details.Broadcaster.DisplayName}\nCurator: {details.Curator.DisplayName}\nVod URL: {details.VOD.Url}");
         }
 

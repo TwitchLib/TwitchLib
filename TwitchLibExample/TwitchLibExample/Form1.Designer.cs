@@ -179,8 +179,6 @@
             this.textBox47 = new System.Windows.Forms.TextBox();
             this.label54 = new System.Windows.Forms.Label();
             this.button59 = new System.Windows.Forms.Button();
-            this.textBox46 = new System.Windows.Forms.TextBox();
-            this.label53 = new System.Windows.Forms.Label();
             this.groupBox45 = new System.Windows.Forms.GroupBox();
             this.button58 = new System.Windows.Forms.Button();
             this.textBox43 = new System.Windows.Forms.TextBox();
@@ -369,9 +367,9 @@
             this.label51 = new System.Windows.Forms.Label();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.groupBox69 = new System.Windows.Forms.GroupBox();
-            this.button87 = new System.Windows.Forms.Button();
-            this.label81 = new System.Windows.Forms.Label();
             this.textBox71 = new System.Windows.Forms.TextBox();
+            this.label81 = new System.Windows.Forms.Label();
+            this.button87 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -2112,8 +2110,6 @@
             this.groupBox46.Controls.Add(this.textBox47);
             this.groupBox46.Controls.Add(this.label54);
             this.groupBox46.Controls.Add(this.button59);
-            this.groupBox46.Controls.Add(this.textBox46);
-            this.groupBox46.Controls.Add(this.label53);
             this.groupBox46.Location = new System.Drawing.Point(1917, 167);
             this.groupBox46.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox46.Name = "groupBox46";
@@ -2151,24 +2147,6 @@
             this.button59.Text = "Fetch";
             this.button59.UseVisualStyleBackColor = true;
             this.button59.Click += new System.EventHandler(this.button59_Click);
-            // 
-            // textBox46
-            // 
-            this.textBox46.Location = new System.Drawing.Point(172, 36);
-            this.textBox46.Margin = new System.Windows.Forms.Padding(5);
-            this.textBox46.Name = "textBox46";
-            this.textBox46.Size = new System.Drawing.Size(117, 38);
-            this.textBox46.TabIndex = 1;
-            // 
-            // label53
-            // 
-            this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(11, 36);
-            this.label53.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(130, 32);
-            this.label53.TabIndex = 0;
-            this.label53.Text = "Channel:";
             // 
             // groupBox45
             // 
@@ -4217,15 +4195,12 @@
             this.groupBox69.TabStop = false;
             this.groupBox69.Text = "groupBox69";
             // 
-            // button87
+            // textBox71
             // 
-            this.button87.Location = new System.Drawing.Point(17, 159);
-            this.button87.Name = "button87";
-            this.button87.Size = new System.Drawing.Size(455, 68);
-            this.button87.TabIndex = 0;
-            this.button87.Text = "Get Username Changes";
-            this.button87.UseVisualStyleBackColor = true;
-            this.button87.Click += new System.EventHandler(this.button87_Click);
+            this.textBox71.Location = new System.Drawing.Point(177, 78);
+            this.textBox71.Name = "textBox71";
+            this.textBox71.Size = new System.Drawing.Size(295, 38);
+            this.textBox71.TabIndex = 2;
             // 
             // label81
             // 
@@ -4236,12 +4211,15 @@
             this.label81.TabIndex = 1;
             this.label81.Text = "Username: ";
             // 
-            // textBox71
+            // button87
             // 
-            this.textBox71.Location = new System.Drawing.Point(177, 78);
-            this.textBox71.Name = "textBox71";
-            this.textBox71.Size = new System.Drawing.Size(295, 38);
-            this.textBox71.TabIndex = 2;
+            this.button87.Location = new System.Drawing.Point(17, 159);
+            this.button87.Name = "button87";
+            this.button87.Size = new System.Drawing.Size(455, 68);
+            this.button87.TabIndex = 0;
+            this.button87.Text = "Get Username Changes";
+            this.button87.UseVisualStyleBackColor = true;
+            this.button87.Click += new System.EventHandler(this.button87_Click);
             // 
             // Form1
             // 
@@ -4640,8 +4618,6 @@
         private System.Windows.Forms.TextBox textBox47;
         private System.Windows.Forms.Label label54;
         private System.Windows.Forms.Button button59;
-        private System.Windows.Forms.TextBox textBox46;
-        private System.Windows.Forms.Label label53;
         private System.Windows.Forms.GroupBox groupBox47;
         private System.Windows.Forms.Button button60;
         private System.Windows.Forms.Button button61;
