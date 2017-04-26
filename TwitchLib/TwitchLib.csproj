@@ -53,7 +53,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\NoisyEnum.cs" />
     <Compile Include="Enums\StreamIdentifierType.cs" />
+    <Compile Include="Enums\SubscriptionPlanEnum.cs" />
     <Compile Include="Enums\VideoPlayback.cs" />
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
     <Compile Include="Events\Client\OnLogArgs.cs" />

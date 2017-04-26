@@ -23,8 +23,12 @@ namespace TwitchLib.Models.Client
         public string SystemMessage { get; protected set; }
         /// <summary>Property representing internal system message value, parsed.</summary>
         public string SystemMessageParsed { get; protected set; }
-        /// <summary>Property representing </summary>
+        /// <summary>Property representing system message.</summary>
         public string ResubMessage { get; protected set; }
+        /// <summary>Property representing the plan a user is on.</summary>
+        public Enums.SubscriptionPlan SubscriptionPlan { get; protected set; } = Enums.SubscriptionPlan.NotSet;
+        /// <summary>Property representing the subscription plan name.</summary>
+        public string SubscriptionPlanName { get; protected set; }
         /// <summary>Property representing number of months of being subscribed.</summary>
         public int Months { get; protected set; }
         /// <summary>Property representing the room id.</summary>
@@ -92,6 +96,26 @@ namespace TwitchLib.Models.Client
                             break;
                         case "msg-param-months":
                             Months = int.Parse(value);
+                            break;
+                        case "msg-param-sub-plan":
+                            switch(value.ToLower())
+                            {
+                                case "prime":
+                                    SubscriptionPlan = Enums.SubscriptionPlan.Prime;
+                                    break;
+                                case "1000":
+                                    SubscriptionPlan = Enums.SubscriptionPlan.Tier1;
+                                    break;
+                                case "2000":
+                                    SubscriptionPlan = Enums.SubscriptionPlan.Tier2;
+                                    break;
+                                case "3000":
+                                    SubscriptionPlan = Enums.SubscriptionPlan.Tier3;
+                                    break;
+                            }
+                            break;
+                        case "msg-param-sub-plan-name":
+                            SubscriptionPlanName = value.Replace("\\s", " ");
                             break;
                         case "room-id":
                             RoomId = int.Parse(value);

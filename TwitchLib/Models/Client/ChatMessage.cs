@@ -44,6 +44,8 @@ namespace TwitchLib.Models.Client
         public bool IsBroadcaster { get; protected set; }
         /// <summary>Chat message is from a partnered streamer.</summary>
         public bool IsPartnered { get; protected set; }
+        /// <summary>Experimental property noisy determination by Twitch.</summary>
+        public Enums.Noisy Noisy { get; protected set; } = Enums.Noisy.NotSet;
         /// <summary>Raw IRC-style text received from Twitch.</summary>
         public string RawIrcMessage { get; protected set; }
         /// <summary>Text after emotes have been handled (if desired). Will be null if replaceEmotes is false.</summary>
@@ -161,6 +163,10 @@ namespace TwitchLib.Models.Client
                 else if (part.Contains("mod="))
                 {
                     IsModerator = part.Split('=')[1] == "1";
+                }
+                else if(part.Contains("noisy="))
+                {
+                    Noisy = (part.Split('=')[1] == "1") ? Enums.Noisy.True : Enums.Noisy.False;
                 }
             }
             Message = ircString.Split(new[] { $" PRIVMSG #{Channel} :" }, StringSplitOptions.None)[1];
