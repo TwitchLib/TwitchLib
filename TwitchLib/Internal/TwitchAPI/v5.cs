@@ -760,9 +760,24 @@ namespace TwitchLib.Internal.TwitchAPI
         public static class Games
         {
             #region GetTopGames
-            public static void GetTopGames()
+            public static Models.API.v5.Games.TopGames GetTopGames(int? limit = null, int? offset = null)
             {
+                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                if (limit != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                if (offset != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
 
+                string optionalQuery = string.Empty;
+                if (queryParameters.Count > 0)
+                {
+                    for (int i = 0; i < queryParameters.Count; i++)
+                    {
+                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                    }
+                }
+                return Requests.Get<Models.API.v5.Games.TopGames>($"https://api.twitch.tv/kraken/games/top{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
         }
@@ -770,9 +785,9 @@ namespace TwitchLib.Internal.TwitchAPI
         public static class Ingests
         {
             #region GetIngestServerList
-            public static void GetIngestServerList()
+            public static Models.API.v5.Ingests.Ingests GetIngestServerList()
             {
-
+                return Requests.Get<Models.API.v5.Ingests.Ingests>("https://api.twitch.tv/kraken/ingests", null, Requests.API.v5);
             }
             #endregion
         }
@@ -780,21 +795,54 @@ namespace TwitchLib.Internal.TwitchAPI
         public static class Search
         {
             #region SearchChannels
-            public static void SearchChannels()
+            public static Models.API.v5.Search.SearchChannels SearchChannels(string encodedSearchQuery, int? limit = null, int? offset = null)
             {
+                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                if (limit != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                if (offset != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
 
+                string optionalQuery = string.Empty;
+                if (queryParameters.Count > 0)
+                {
+                    for (int i = 0; i < queryParameters.Count; i++)
+                    {
+                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                    }
+                }
+                return Requests.Get<Models.API.v5.Search.SearchChannels>($"https://api.twitch.tv/kraken/search/channels?query={encodedSearchQuery}{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
             #region SearchGames
-            public static void SearchGames()
+            public static Models.API.v5.Search.SearchGames SearchGames(string encodedSearchQuery, bool? live = null)
             {
-
+                string optionalQuery = (live != null) ? $"?live={live}" : string.Empty;
+                return Requests.Get<Models.API.v5.Search.SearchGames>($"https://api.twitch.tv/kraken/search/games?query={encodedSearchQuery}{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
             #region SearchStreams
-            public static void SearchStreams()
+            public static Models.API.v5.Search.SearchStreams SearchStreams(string encodedSearchQuery, int? limit = null, int? offset = null, bool? hls = null)
             {
+                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                if (limit != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                if (offset != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
+                if (hls != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("hls", hls.ToString()));
 
+                string optionalQuery = string.Empty;
+                if (queryParameters.Count > 0)
+                {
+                    for (int i = 0; i < queryParameters.Count; i++)
+                    {
+                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                    }
+                }
+                return Requests.Get<Models.API.v5.Search.SearchStreams>($"https://api.twitch.tv/kraken/search/streams?query={encodedSearchQuery}{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
         }
@@ -802,33 +850,93 @@ namespace TwitchLib.Internal.TwitchAPI
         public static class Streams
         {
             #region GetStreamByUser
-            public static void GetStreamByUser()
+            public static Models.API.v5.Streams.StreamByUser GetStreamByUser(string channelId, string streamType = null)
             {
-
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid for fetching streams. It is not allowed to be null, empty or filled with whitespaces."); }
+                string optionalQuery = string.Empty;
+                if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all"))
+                {
+                    optionalQuery = $"?stream_type={streamType}";
+                }
+                return Requests.Get<Models.API.v5.Streams.StreamByUser>($"https://api.twitch.tv/kraken/streams/{channelId}{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
             #region GetLiveStreams
-            public static void GetLiveStreams()
+            public static Models.API.v5.Streams.LiveStreams GetLiveStreams(List<string> channelList = null, string game = null, string language = null, string streamType = null, int? limit = null, int? offset = null)
             {
+                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                if (channelList != null && channelList.Count > 0)
+                    queryParameters.Add(new KeyValuePair<string, string>("channel", string.Join(",", channelList)));
+                if (!string.IsNullOrWhiteSpace(game))
+                    queryParameters.Add(new KeyValuePair<string, string>("game", game));
+                if (!string.IsNullOrWhiteSpace(language))
+                    queryParameters.Add(new KeyValuePair<string, string>("language", language));
+                if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all"))
+                    queryParameters.Add(new KeyValuePair<string, string>("stream_type", streamType));
+                if (limit != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                if (offset != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
 
+                string optionalQuery = string.Empty;
+                if (queryParameters.Count > 0)
+                {
+                    for (int i = 0; i < queryParameters.Count; i++)
+                    {
+                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                    }
+                }
+                return Requests.Get<Models.API.v5.Streams.LiveStreams>($"https://api.twitch.tv/kraken/streams/{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
             #region GetStreamsSummary
-            public static void GetStreamsSummary()
+            public static Models.API.v5.Streams.StreamsSummary GetStreamsSummary(string game = null)
             {
-
+                string optionalQuery = (!string.IsNullOrWhiteSpace(game)) ? $"?game={game}" : string.Empty;
+                return Requests.Get<Models.API.v5.Streams.StreamsSummary>($"https://api.twitch.tv/kraken/streams/summary{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
             #region GetFeaturedStreams
-            public static void GetFeaturedStreams()
+            public static Models.API.v5.Streams.FeaturedStreams GetFeaturedStreams(int? limit = null, int? offset = null)
             {
-
+                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                if (limit != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                if (offset != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
+                string optionalQuery = string.Empty;
+                if (queryParameters.Count > 0)
+                {
+                    for (int i = 0; i < queryParameters.Count; i++)
+                    {
+                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                    }
+                }
+                return Requests.Get<Models.API.v5.Streams.FeaturedStreams>($"https://api.twitch.tv/kraken/streams/featured{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
             #region GetFollowedStreams
-            public static Models.API.v5.Streams.FollowedStreams GetFollowedStreams(string authToken = null)
+            public static Models.API.v5.Streams.FollowedStreams GetFollowedStreams(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
             {
-                return Requests.Get<Models.API.v5.Streams.FollowedStreams>("https://api.twitch.tv/kraken/streams/followed", authToken, Requests.API.v5);
+                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all"))
+                    queryParameters.Add(new KeyValuePair<string, string>("stream_type", streamType));
+                if (limit != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                if (offset != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
+                string optionalQuery = string.Empty;
+                if (queryParameters.Count > 0)
+                {
+                    for (int i = 0; i < queryParameters.Count; i++)
+                    {
+                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                    }
+                }
+                return Requests.Get<Models.API.v5.Streams.FollowedStreams>($"https://api.twitch.tv/kraken/streams/followed{optionalQuery}", authToken, Requests.API.v5);
             }
             #endregion
         }
@@ -836,15 +944,31 @@ namespace TwitchLib.Internal.TwitchAPI
         public static class Teams
         {
             #region GetAllTeams
-            public static void GetAllTeams()
+            public static Models.API.v5.Teams.AllTeams GetAllTeams(int? limit = null, int? offset = null)
             {
+                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                if (limit != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                if (offset != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
 
+                string optionalQuery = string.Empty;
+                if (queryParameters.Count > 0)
+                {
+                    for (int i = 0; i < queryParameters.Count; i++)
+                    {
+                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                    }
+                }
+                return Requests.Get<Models.API.v5.Teams.AllTeams>($"https://api.twitch.tv/kraken/teams{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
             #region GetTeam
-            public static void GetTeam()
+            public static Models.API.v5.Teams.Team GetTeam(string teamName)
             {
-
+                if (string.IsNullOrWhiteSpace(teamName)) { throw new Exceptions.API.BadParameterException("The team name is not valid for fetching teams. It is not allowed to be null, empty or filled with whitespaces."); }
+                return Requests.Get<Models.API.v5.Teams.Team>($"https://api.twitch.tv/kraken/teams/{teamName}", null, Requests.API.v5);
             }
             #endregion
         }

@@ -17,6 +17,9 @@
         [JsonProperty(PropertyName = "_disabled")]
         public bool Disabled { get; protected set; }
         #endregion
-
+        #region Posts
+        [JsonProperty(PropertyName = "posts")]
+        public FeedPost[] Posts { get; protected set; }
+        #endregion
     }
 }
