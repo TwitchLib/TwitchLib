@@ -123,7 +123,7 @@ namespace TwitchLib.Models.Client
                         if (badge.Key == "partner")
                             IsPartnered = true;
                         if (badge.Key == "subscriber")
-                            SubscribedMonthCount = badge.Value == "0" ? 1 : int.Parse(badge.Value);
+                            SubscribedMonthCount = int.Parse(badge.Value);
                     }
                 }
                 else if(part.Contains("bits="))

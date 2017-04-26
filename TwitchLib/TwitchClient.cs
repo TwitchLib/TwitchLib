@@ -589,7 +589,7 @@ namespace TwitchLib
             response = Internal.Parsing.Chat.detectNewSubscriber(ircMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnNewSubscriber?.Invoke(this, new OnNewSubscriberArgs { Subscriber = new NewSubscriber(ircMessage), Channel = response.Channel });
+                OnNewSubscriber?.Invoke(this, new OnNewSubscriberArgs { Subscriber = new Subscriber(ircMessage), Channel = response.Channel });
                 return;
             }
 
@@ -725,7 +725,7 @@ namespace TwitchLib
             response = Internal.Parsing.Chat.detectedReSubscriber(ircMessage, JoinedChannels);
             if (response.Successful)
             {
-                var resub = new ReSubscriber(ircMessage);
+                var resub = new Subscriber(ircMessage);
                 OnReSubscriber?.Invoke(this, new OnReSubscriberArgs { ReSubscriber = resub });
                 return;
             }

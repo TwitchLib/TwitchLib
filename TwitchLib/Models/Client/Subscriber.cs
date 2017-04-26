@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace TwitchLib.Models.Client
 {
     /// <summary>Class representing a resubscriber.</summary>
-    public class ReSubscriber
+    public class Subscriber
     {
         /// <summary>Property representing list of badges assigned.</summary>
         public List<KeyValuePair<string, string>> Badges { get; protected set; }
         /// <summary>Property representing the colorhex of the resubscriber.</summary>
         public string ColorHex { get; protected set; }
+        /// <summary>Property representing HEX color as a System.Drawing.Color object.</summary>
+        public Color Color { get; protected set; }
         /// <summary>Property representing resubscriber's customized display name.</summary>
         public string DisplayName { get; protected set; }
         /// <summary>Property representing emote set of resubscriber.</summary>
@@ -43,6 +46,8 @@ namespace TwitchLib.Models.Client
         public bool IsSubscriber { get; protected set; }
         /// <summary>Property representing whether or not person is a partner.</summary>
         public bool IsPartner { get; protected set; }
+        /// <summary>Property representing the tmi-sent-ts value.</summary>
+        public string TmiSentTs { get; protected set; }
         /// <summary>Property representing the user type of the resubscriber.</summary>
         public Enums.UserType UserType { get; protected set; }
         /// <summary>Property representing the raw IRC message (for debugging/customized parsing)</summary>
@@ -54,7 +59,7 @@ namespace TwitchLib.Models.Client
         // @badges=subscriber/1,turbo/1;color=#2B119C;display-name=JustFunkIt;emotes=;id=9dasn-asdibas-asdba-as8as;login=justfunkit;mod=0;msg-id=resub;msg-param-months=2;room-id=44338537;subscriber=1;system-msg=JustFunkIt\ssubscribed\sfor\s2\smonths\sin\sa\srow!;turbo=1;user-id=26526370;user-type= :tmi.twitch.tv USERNOTICE #burkeblack :AVAST YEE SCURVY DOG
 
         /// <summary>ReSubscriber object constructor.</summary>
-        public ReSubscriber(string ircString)
+        public Subscriber(string ircString)
         {
             RawIrc = ircString;
             foreach(string section in ircString.Split(';'))
@@ -78,6 +83,8 @@ namespace TwitchLib.Models.Client
                             break;
                         case "color":
                             ColorHex = value;
+                            if (!string.IsNullOrEmpty(ColorHex))
+                                Color = ColorTranslator.FromHtml(ColorHex);
                             break;
                         case "display-name":
                             DisplayName = value.Replace(" ", "");
@@ -126,6 +133,9 @@ namespace TwitchLib.Models.Client
                         case "system-msg":
                             SystemMessage = value;
                             SystemMessageParsed = value.Replace("\\s", " ");
+                            break;
+                        case "tmi-sent-ts":
+                            TmiSentTs = value;
                             break;
                         case "turbo":
                             IsTurbo = value == "1";
@@ -178,7 +188,6 @@ namespace TwitchLib.Models.Client
                         Channel = Channel.Split(':')[0];
                 }
             }
-                
 
             // Parse sub message
             ResubMessage = "";

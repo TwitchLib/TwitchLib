@@ -190,12 +190,12 @@ namespace TwitchLibExample
 
         private void onNewSubscription(object sender, OnNewSubscriberArgs e)
         {
-            MessageBox.Show($"New sub: {e.Subscriber.Name}\nChannel: {e.Subscriber.Channel}\nTwitch Prime? {e.Subscriber.IsTwitchPrime}");
+            MessageBox.Show($"New sub: {e.Subscriber.DisplayName}\nChannel: {e.Subscriber.Channel}\nTwitch Prime? {e.Subscriber.IsTwitchPrime}");
         }
 
         private void onReSubscription(object sender, OnReSubscriberArgs e)
         {
-            MessageBox.Show($"New resub: {e.ReSubscriber.DisplayName}\nChannel: {e.ReSubscriber.Channel}\nMonths: {e.ReSubscriber.Months}");
+            MessageBox.Show($"New resub: {e.ReSubscriber.DisplayName}\nChannel: {e.ReSubscriber.Channel}\nMonths: {e.ReSubscriber.Months}\nTier: {e.ReSubscriber.SubscriptionPlan}\nPlan name: {e.ReSubscriber.SubscriptionPlanName}");
         }
 
         private void onJoinedChannel(object sender, OnJoinedChannelArgs e)

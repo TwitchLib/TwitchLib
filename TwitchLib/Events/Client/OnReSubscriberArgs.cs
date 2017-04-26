@@ -7,6 +7,6 @@ namespace TwitchLib.Events.Client
     public class OnReSubscriberArgs : EventArgs
     {
         /// <summary>Property representing resubscriber object.</summary>
-        public ReSubscriber ReSubscriber;
+        public Subscriber ReSubscriber;
     }
 }

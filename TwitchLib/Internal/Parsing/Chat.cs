@@ -81,8 +81,8 @@ namespace TwitchLib.Internal.Parsing
                 }
             }
 
-            if (readType != null && readType == "PRIVMSG")
-                return new DetectionReturn((message.Split('!')[0] == ":twitchnotify" && (message.Contains("just subscribed!") || message.ToLower().Contains("just subscribed with twitch prime!"))), channelRet);
+            if (readType != null && readType == "USERNOTICE")
+                return new DetectionReturn((message.Split(';')[7].Split('=')[1] == "sub"), channelRet);
             return new DetectionReturn(false);
         }
 

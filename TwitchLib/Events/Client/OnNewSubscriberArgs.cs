@@ -7,7 +7,7 @@ namespace TwitchLib.Events.Client
     public class OnNewSubscriberArgs : EventArgs
     {
         /// <summary>Property representing subscriber object.</summary>
-        public NewSubscriber Subscriber;
+        public Subscriber Subscriber;
         /// <summary>Property representing channel bot is connected to.</summary>
         public string Channel;
     }

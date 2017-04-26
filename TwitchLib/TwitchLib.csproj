@@ -225,7 +225,7 @@
     <Compile Include="Models\Client\ErrorEvent.cs" />
     <Compile Include="Models\Client\JoinedChannel.cs" />
     <Compile Include="Models\Client\MessageEmote.cs" />
-    <Compile Include="Models\Client\ReSubscriber.cs" />
+    <Compile Include="Models\Client\Subscriber.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\ChannelBitsEvents.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\ChatModeratorActions.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\MessageData.cs" />
@@ -238,7 +238,6 @@
     <Compile Include="Models\Client\ConnectionCredentials.cs" />
     <Compile Include="Exceptions\Client\ErrorLoggingInException.cs" />
     <Compile Include="Exceptions\API\BadResourceException.cs" />
-    <Compile Include="Models\Client\NewSubscriber.cs" />
     <Compile Include="Internal\TwitchAPI.cs" />
     <Compile Include="Models\API\Follow\Follow.cs" />
     <Compile Include="Models\API\Follow\FollowedUsersResponse.cs" />
