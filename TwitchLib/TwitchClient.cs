@@ -1,16 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using TwitchLib.Exceptions.Client;
-using System.Text;
-using TwitchLib.Models.Client;
-using TwitchLib.Events.Client;
-using TwitchLib.Internal;
-using WebSocketSharp;
-
-namespace TwitchLib
+﻿namespace TwitchLib
 {
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using WebSocketSharp;
+
+    using Events.Client;
+    using Exceptions.Client;
+    using Internal;
+    using Models.Client;
+    #endregion
     /// <summary>Represents a client connected to a Twitch channel.</summary>
     public class TwitchClient
     {

@@ -17,6 +17,14 @@
         [JsonProperty(PropertyName = "created_at")]
         public DateTime CreatedAt { get; protected set; }
         #endregion
+        #region SubPlan
+        [JsonProperty(PropertyName = "sub_plan")]
+        public string SubPlan { get; protected set; }
+        #endregion
+        #region SubPlanName
+        [JsonProperty(PropertyName = "sub_plan_name")]
+        public string SubPlanName { get; protected set; }
+        #endregion
         #region User
         /// <summary>Property representing the user that subscribed.</summary>
         [JsonProperty(PropertyName = "user")]

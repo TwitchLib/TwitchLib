@@ -1,8 +1,8 @@
 ﻿namespace TwitchLib.Extensions.API.v5
 {
-    public static class ChannelPrivilegedExt
+    public static class ChannelAuthedExt
     {
-        public static Models.API.v5.Channels.Channel ToChannel(this Models.API.v5.Channels.ChannelPrivileged channel)
+        public static Models.API.v5.Channels.Channel ToChannel(this Models.API.v5.Channels.ChannelAuthed channel)
         {
             return new Models.API.v5.Channels.Channel()
             {

@@ -1,11 +1,11 @@
-﻿namespace TwitchLib.Models.API.v5.Follows
+﻿namespace TwitchLib.Models.API.v5.Channels
 {
     #region using directives
     using System;
     using Newtonsoft.Json;
     #endregion
     /// <summary>Class representing a follow object from Twitch API.</summary>
-    public class Follow
+    public class ChannelFollow
     {
         #region CreatedAt
         /// <summary>Property representing the date time of follow creation.</summary>
@@ -19,7 +19,7 @@
         #endregion
         #region User
         /// <summary>Property representing the User that follows.</summary>
-        [JsonProperty(PropertyName = "created_at")]
+        [JsonProperty(PropertyName = "user")]
         public Users.User User { get; protected set; }
         #endregion
     }

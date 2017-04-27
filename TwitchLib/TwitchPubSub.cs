@@ -1,17 +1,17 @@
-﻿using System;
-using System.Linq;
-using Newtonsoft.Json.Linq;
-using System.Timers;
-using TwitchLib.Events.PubSub;
-using TwitchLib.Models.PubSub.Responses.Messages;
-using TwitchLib.Internal;
-using WebSocketSharp;
-
-namespace TwitchLib
+﻿namespace TwitchLib
 {
-    /// <summary>
-    /// Class represneting interactions with the Twitch PubSub
-    /// </summary>
+    #region using directives
+    using System;
+    using System.Linq;
+    using System.Timers;
+
+    using Newtonsoft.Json.Linq;
+    using WebSocketSharp;
+
+    using Events.PubSub;
+    using Models.PubSub.Responses.Messages;
+    #endregion
+    /// <summary>Class represneting interactions with the Twitch PubSub</summary>
     public class TwitchPubSub
     {
         private WebSocket socket;
