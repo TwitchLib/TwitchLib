@@ -853,7 +853,7 @@ namespace TwitchLib.Internal
 
         internal static async Task<bool> ValidClientId(string clientId, bool updateClientIdOnSuccess = true)
         {
-            string oldClientId;
+            string oldClientId = String.Empty;
             if (!string.IsNullOrEmpty(ClientId))
                 oldClientId = ClientId;
 			
@@ -863,7 +863,7 @@ namespace TwitchLib.Internal
             if (json.SelectToken("identified") != null && (bool)json.SelectToken("identified") == true)
                 return true;
 			else {
-                ClientId = String.Empty;
+                ClientId = oldClientId;
                 return false;
             }
         }
