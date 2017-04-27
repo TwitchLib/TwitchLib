@@ -7,6 +7,7 @@ using TwitchLib.Models.Client;
 using TwitchLib.Events.Client;
 using TwitchLib.Internal;
 using WebSocketSharp;
+using System.Reflection;
 
 namespace TwitchLib
 {
@@ -924,9 +925,9 @@ namespace TwitchLib
                     dateTimeStr = $"{DateTime.UtcNow.ToShortTimeString()}";
 
                 if (includeDate || includeTime)
-                    Console.WriteLine($"[TwitchLib - {dateTimeStr}] {message}");
+                    Console.WriteLine($"[TwitchLib, {Assembly.GetExecutingAssembly().GetName().Version.ToString()} - {dateTimeStr}] {message}");
                 else
-                    Console.WriteLine($"[TwitchLib] {message}");
+                    Console.WriteLine($"[TwitchLib, {Assembly.GetExecutingAssembly().GetName().Version.ToString()}] {message}");
 
                 OnLog?.Invoke(this, new OnLogArgs() { BotUsername = ConnectionCredentials.TwitchUsername, Data = message, DateTime = DateTime.UtcNow });
             }
