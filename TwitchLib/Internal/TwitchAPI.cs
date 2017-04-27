@@ -856,11 +856,16 @@ namespace TwitchLib.Internal
             string oldClientId;
             if (!string.IsNullOrEmpty(ClientId))
                 oldClientId = ClientId;
+			
+			ClientId = clientId;
             var resp = await Requests.MakeGetRequest("https://api.twitch.tv/kraken");
             var json = JObject.Parse(resp);
             if (json.SelectToken("identified") != null && (bool)json.SelectToken("identified") == true)
                 return true;
-            return false;
+			else {
+                ClientId = String.Empty;
+                return false;
+            }
         }
 
         private static async void ValidClientId()
