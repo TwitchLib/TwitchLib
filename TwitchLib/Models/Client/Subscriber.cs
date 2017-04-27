@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TwitchLib.Models.Client
 {
-    /// <summary>Class representing a resubscriber.</summary>
+    /// <summary>Class representing a subscriber.</summary>
     public class Subscriber
     {
         /// <summary>Property representing list of badges assigned.</summary>
@@ -54,11 +54,11 @@ namespace TwitchLib.Models.Client
         public string RawIrc { get; protected set; }
         /// <summary>Property representing the channel the resubscription happened in.</summary>
         public string Channel { get; protected set; }
-        /// <summary>Property representing if the resubscription came from Twitch Prime.</summary>
+        /// <summary>[DEPRECATED, USE SUBSCRIPTIONPLAN PROPERTY] Property representing if the resubscription came from Twitch Prime.</summary>
         public bool IsTwitchPrime { get; protected set; }
         // @badges=subscriber/1,turbo/1;color=#2B119C;display-name=JustFunkIt;emotes=;id=9dasn-asdibas-asdba-as8as;login=justfunkit;mod=0;msg-id=resub;msg-param-months=2;room-id=44338537;subscriber=1;system-msg=JustFunkIt\ssubscribed\sfor\s2\smonths\sin\sa\srow!;turbo=1;user-id=26526370;user-type= :tmi.twitch.tv USERNOTICE #burkeblack :AVAST YEE SCURVY DOG
 
-        /// <summary>ReSubscriber object constructor.</summary>
+        /// <summary>Subscriber object constructor.</summary>
         public Subscriber(string ircString)
         {
             RawIrc = ircString;
@@ -198,7 +198,7 @@ namespace TwitchLib.Models.Client
             }
 
             // Check if Twitch Prime
-            IsTwitchPrime = SystemMessageParsed.ToLower().Contains("with twitch prime");
+            IsTwitchPrime = SubscriptionPlan == Enums.SubscriptionPlan.Prime;
         }
 
         /// <summary>Overriden ToString method, prints out all properties related to resub.</summary>
