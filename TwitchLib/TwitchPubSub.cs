@@ -67,6 +67,8 @@ namespace TwitchLib
         public EventHandler<OnViewCountArgs> OnViewCount;
         /// <summary>EventHandler for named event.</summary>
         public EventHandler<OnWhisperArgs> OnWhisper;
+        /// <summary>EventHandler for channel subscriptions.</summary>
+        public EventHandler<OnChannelSubscriptionArgs> OnChannelSubscription;
         #endregion
 
         /// <summary>
@@ -137,6 +139,10 @@ namespace TwitchLib
                     Models.PubSub. Responses.Message msg = new Models.PubSub.Responses.Message(message);
                     switch(msg.Topic.Split('.')[0])
                     {
+                        case "channel-subscribe-events-v1":
+                            ChannelSubscription subscription = (ChannelSubscription)msg.messageData;
+                            OnChannelSubscription?.Invoke(this, new OnChannelSubscriptionArgs { Subscription = subscription });
+                            return;
                         case "whispers":
                             Whisper whisper = (Whisper)msg.messageData;
                             OnWhisper?.Invoke(this, new OnWhisperArgs { Whisper = whisper });
@@ -226,6 +232,8 @@ namespace TwitchLib
 
         private void listenToTopic(string topic, string oauth = null, bool unlisten = false)
         {
+            if (oauth.Contains("oauth:"))
+                oauth = oauth.Replace("oauth:", "");
             string nonce = generateNonce();
             previousRequest = new Models.PubSub.PreviousRequest(nonce, Enums.PubSubRequestType.ListenToTopic, topic);
             JObject jsonData = new JObject(
@@ -293,6 +301,16 @@ namespace TwitchLib
         public void ListenToWhispers(int channelTwitchId, string channelOAuth)
         {
             listenToTopic($"whispers.{channelTwitchId}", channelOAuth);
+        }
+
+        /// <summary>
+        /// Sends request to listen to channel subscriptions.
+        /// </summary>
+        /// <param name="channelId">Id of the channel to listen to.</param>
+        /// <param name="channelOAuth">OAuth with channel_subscriptions scope.</param>
+        public void ListenToSubscriptions(string channelId, string channelOAuth)
+        {
+            listenToTopic($"channel-subscribe-events-v1.{channelId}", channelOAuth);
         }
         #endregion
 

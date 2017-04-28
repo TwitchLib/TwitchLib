@@ -59,6 +59,7 @@
     <Compile Include="Enums\VideoPlayback.cs" />
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
     <Compile Include="Events\Client\OnLogArgs.cs" />
+    <Compile Include="Events\PubSub\OnChannelSubscriptionArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamsSetArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorEndedArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorStartedArgs.cs" />
@@ -229,6 +230,8 @@
     <Compile Include="Models\PubSub\Responses\Messages\ChannelBitsEvents.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\ChatModeratorActions.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\MessageData.cs" />
+    <Compile Include="Models\PubSub\Responses\Messages\ChannelSubscription.cs" />
+    <Compile Include="Models\PubSub\Responses\Messages\SubMessage.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\VideoPlayback.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\Whisper.cs" />
     <Compile Include="Services\FollowerService.cs" />
