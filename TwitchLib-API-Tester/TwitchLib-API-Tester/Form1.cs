@@ -525,5 +525,11 @@ namespace TwitchLib_API_Tester
             foreach (var host in resp.Hosts)
                 MessageBox.Show($"Host: {host.HostDisplayName}");
         }
+
+        private async void button59_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Undocumented.GetChatPropertiesAsync(textBox58.Text);
+            MessageBox.Show($"Game: {resp.Game}\nDevchat: {resp.DevChat}\nRules: {String.Join("\n", resp.ChatRules)}");
+        }
     }
 }
