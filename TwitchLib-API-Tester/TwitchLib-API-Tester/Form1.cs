@@ -511,5 +511,12 @@ namespace TwitchLib_API_Tester
             foreach (var message in resp.Messages)
                 MessageBox.Show($"Message said in: {message.Attributes.Room}\nMessage from: {message.Attributes.From}\nMessage contents: {message.Attributes.Message}");
         }
+
+        private async void button57_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Undocumented.GetTwitchPrimeOffersAsync();
+            foreach (var offer in resp.Offers)
+                MessageBox.Show($"Offer: {offer.ApplicableGame}\nOffer description: {offer.OfferDescription}");
+        }
     }
 }

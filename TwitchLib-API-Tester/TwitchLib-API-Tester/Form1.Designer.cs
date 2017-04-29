@@ -280,10 +280,13 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.tabPage21 = new System.Windows.Forms.TabPage();
             this.groupBox57 = new System.Windows.Forms.GroupBox();
             this.textBox56 = new System.Windows.Forms.TextBox();
             this.label59 = new System.Windows.Forms.Label();
             this.button55 = new System.Windows.Forms.Button();
+            this.groupBox58 = new System.Windows.Forms.GroupBox();
+            this.button57 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -361,7 +364,9 @@
             this.tabPage5.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabPage21.SuspendLayout();
             this.groupBox57.SuspendLayout();
+            this.groupBox58.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -2434,6 +2439,7 @@
             this.tabControl2.Controls.Add(this.tabPage4);
             this.tabControl2.Controls.Add(this.tabPage7);
             this.tabControl2.Controls.Add(this.tabPage19);
+            this.tabControl2.Controls.Add(this.tabPage21);
             this.tabControl2.Controls.Add(this.tabPage20);
             this.tabControl2.Controls.Add(this.tabPage5);
             this.tabControl2.Location = new System.Drawing.Point(12, 13);
@@ -2455,7 +2461,6 @@
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.groupBox57);
             this.tabPage4.Controls.Add(this.groupBox55);
             this.tabPage4.Controls.Add(this.groupBox24);
             this.tabPage4.Controls.Add(this.groupBox23);
@@ -2841,15 +2846,27 @@
             this.label6.TabIndex = 6;
             this.label6.Text = "Channel ID";
             // 
+            // tabPage21
+            // 
+            this.tabPage21.Controls.Add(this.groupBox58);
+            this.tabPage21.Controls.Add(this.groupBox57);
+            this.tabPage21.Location = new System.Drawing.Point(10, 48);
+            this.tabPage21.Name = "tabPage21";
+            this.tabPage21.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage21.Size = new System.Drawing.Size(1544, 1046);
+            this.tabPage21.TabIndex = 6;
+            this.tabPage21.Text = "Undocumented";
+            this.tabPage21.UseVisualStyleBackColor = true;
+            // 
             // groupBox57
             // 
             this.groupBox57.Controls.Add(this.textBox56);
             this.groupBox57.Controls.Add(this.label59);
             this.groupBox57.Controls.Add(this.button55);
-            this.groupBox57.Location = new System.Drawing.Point(16, 557);
+            this.groupBox57.Location = new System.Drawing.Point(19, 22);
             this.groupBox57.Name = "groupBox57";
             this.groupBox57.Size = new System.Drawing.Size(437, 198);
-            this.groupBox57.TabIndex = 6;
+            this.groupBox57.TabIndex = 7;
             this.groupBox57.TabStop = false;
             this.groupBox57.Text = "Get Clip Chat";
             // 
@@ -2877,7 +2894,26 @@
             this.button55.TabIndex = 0;
             this.button55.Text = "Fetch";
             this.button55.UseVisualStyleBackColor = true;
-            this.button55.Click += new System.EventHandler(this.button55_Click);
+            // 
+            // groupBox58
+            // 
+            this.groupBox58.Controls.Add(this.button57);
+            this.groupBox58.Location = new System.Drawing.Point(482, 22);
+            this.groupBox58.Name = "groupBox58";
+            this.groupBox58.Size = new System.Drawing.Size(437, 135);
+            this.groupBox58.TabIndex = 8;
+            this.groupBox58.TabStop = false;
+            this.groupBox58.Text = "Get Twitch Prime Offers";
+            // 
+            // button57
+            // 
+            this.button57.Location = new System.Drawing.Point(6, 37);
+            this.button57.Name = "button57";
+            this.button57.Size = new System.Drawing.Size(425, 82);
+            this.button57.TabIndex = 0;
+            this.button57.Text = "Fetch";
+            this.button57.UseVisualStyleBackColor = true;
+            this.button57.Click += new System.EventHandler(this.button57_Click);
             // 
             // Form1
             // 
@@ -3004,8 +3040,10 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabPage21.ResumeLayout(false);
             this.groupBox57.ResumeLayout(false);
             this.groupBox57.PerformLayout();
+            this.groupBox58.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3262,6 +3300,9 @@
         private System.Windows.Forms.RichTextBox richTextBox3;
         private System.Windows.Forms.Label label58;
         private System.Windows.Forms.Button button56;
+        private System.Windows.Forms.TabPage tabPage21;
+        private System.Windows.Forms.GroupBox groupBox58;
+        private System.Windows.Forms.Button button57;
         private System.Windows.Forms.GroupBox groupBox57;
         private System.Windows.Forms.TextBox textBox56;
         private System.Windows.Forms.Label label59;
