@@ -518,5 +518,12 @@ namespace TwitchLib_API_Tester
             foreach (var offer in resp.Offers)
                 MessageBox.Show($"Offer: {offer.ApplicableGame}\nOffer description: {offer.OfferDescription}");
         }
+
+        private async void button58_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Undocumented.GetChannelHostsAsync(textBox57.Text);
+            foreach (var host in resp.Hosts)
+                MessageBox.Show($"Host: {host.HostDisplayName}");
+        }
     }
 }

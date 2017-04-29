@@ -269,6 +269,13 @@
             this.textBox50 = new System.Windows.Forms.TextBox();
             this.label52 = new System.Windows.Forms.Label();
             this.button52 = new System.Windows.Forms.Button();
+            this.tabPage21 = new System.Windows.Forms.TabPage();
+            this.groupBox58 = new System.Windows.Forms.GroupBox();
+            this.button57 = new System.Windows.Forms.Button();
+            this.groupBox57 = new System.Windows.Forms.GroupBox();
+            this.textBox56 = new System.Windows.Forms.TextBox();
+            this.label59 = new System.Windows.Forms.Label();
+            this.button55 = new System.Windows.Forms.Button();
             this.tabPage20 = new System.Windows.Forms.TabPage();
             this.groupBox56 = new System.Windows.Forms.GroupBox();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
@@ -280,13 +287,10 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.tabPage21 = new System.Windows.Forms.TabPage();
-            this.groupBox57 = new System.Windows.Forms.GroupBox();
-            this.textBox56 = new System.Windows.Forms.TextBox();
-            this.label59 = new System.Windows.Forms.Label();
-            this.button55 = new System.Windows.Forms.Button();
-            this.groupBox58 = new System.Windows.Forms.GroupBox();
-            this.button57 = new System.Windows.Forms.Button();
+            this.groupBox59 = new System.Windows.Forms.GroupBox();
+            this.textBox57 = new System.Windows.Forms.TextBox();
+            this.label60 = new System.Windows.Forms.Label();
+            this.button58 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -359,14 +363,15 @@
             this.groupBox22.SuspendLayout();
             this.tabPage19.SuspendLayout();
             this.groupBox54.SuspendLayout();
+            this.tabPage21.SuspendLayout();
+            this.groupBox58.SuspendLayout();
+            this.groupBox57.SuspendLayout();
             this.tabPage20.SuspendLayout();
             this.groupBox56.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tabPage21.SuspendLayout();
-            this.groupBox57.SuspendLayout();
-            this.groupBox58.SuspendLayout();
+            this.groupBox59.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -2731,6 +2736,76 @@
             this.button52.UseVisualStyleBackColor = true;
             this.button52.Click += new System.EventHandler(this.button52_Click);
             // 
+            // tabPage21
+            // 
+            this.tabPage21.Controls.Add(this.groupBox59);
+            this.tabPage21.Controls.Add(this.groupBox58);
+            this.tabPage21.Controls.Add(this.groupBox57);
+            this.tabPage21.Location = new System.Drawing.Point(10, 48);
+            this.tabPage21.Name = "tabPage21";
+            this.tabPage21.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage21.Size = new System.Drawing.Size(1544, 1046);
+            this.tabPage21.TabIndex = 6;
+            this.tabPage21.Text = "Undocumented";
+            this.tabPage21.UseVisualStyleBackColor = true;
+            // 
+            // groupBox58
+            // 
+            this.groupBox58.Controls.Add(this.button57);
+            this.groupBox58.Location = new System.Drawing.Point(482, 22);
+            this.groupBox58.Name = "groupBox58";
+            this.groupBox58.Size = new System.Drawing.Size(437, 135);
+            this.groupBox58.TabIndex = 8;
+            this.groupBox58.TabStop = false;
+            this.groupBox58.Text = "Get Twitch Prime Offers";
+            // 
+            // button57
+            // 
+            this.button57.Location = new System.Drawing.Point(6, 37);
+            this.button57.Name = "button57";
+            this.button57.Size = new System.Drawing.Size(425, 82);
+            this.button57.TabIndex = 0;
+            this.button57.Text = "Fetch";
+            this.button57.UseVisualStyleBackColor = true;
+            this.button57.Click += new System.EventHandler(this.button57_Click);
+            // 
+            // groupBox57
+            // 
+            this.groupBox57.Controls.Add(this.textBox56);
+            this.groupBox57.Controls.Add(this.label59);
+            this.groupBox57.Controls.Add(this.button55);
+            this.groupBox57.Location = new System.Drawing.Point(19, 22);
+            this.groupBox57.Name = "groupBox57";
+            this.groupBox57.Size = new System.Drawing.Size(437, 198);
+            this.groupBox57.TabIndex = 7;
+            this.groupBox57.TabStop = false;
+            this.groupBox57.Text = "Get Clip Chat";
+            // 
+            // textBox56
+            // 
+            this.textBox56.Location = new System.Drawing.Point(167, 40);
+            this.textBox56.Name = "textBox56";
+            this.textBox56.Size = new System.Drawing.Size(246, 38);
+            this.textBox56.TabIndex = 3;
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(15, 43);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(138, 32);
+            this.label59.TabIndex = 1;
+            this.label59.Text = "Clip Slug:";
+            // 
+            // button55
+            // 
+            this.button55.Location = new System.Drawing.Point(6, 98);
+            this.button55.Name = "button55";
+            this.button55.Size = new System.Drawing.Size(425, 82);
+            this.button55.TabIndex = 0;
+            this.button55.Text = "Fetch";
+            this.button55.UseVisualStyleBackColor = true;
+            // 
             // tabPage20
             // 
             this.tabPage20.Controls.Add(this.groupBox56);
@@ -2846,74 +2921,43 @@
             this.label6.TabIndex = 6;
             this.label6.Text = "Channel ID";
             // 
-            // tabPage21
+            // groupBox59
             // 
-            this.tabPage21.Controls.Add(this.groupBox58);
-            this.tabPage21.Controls.Add(this.groupBox57);
-            this.tabPage21.Location = new System.Drawing.Point(10, 48);
-            this.tabPage21.Name = "tabPage21";
-            this.tabPage21.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage21.Size = new System.Drawing.Size(1544, 1046);
-            this.tabPage21.TabIndex = 6;
-            this.tabPage21.Text = "Undocumented";
-            this.tabPage21.UseVisualStyleBackColor = true;
+            this.groupBox59.Controls.Add(this.textBox57);
+            this.groupBox59.Controls.Add(this.label60);
+            this.groupBox59.Controls.Add(this.button58);
+            this.groupBox59.Location = new System.Drawing.Point(19, 226);
+            this.groupBox59.Name = "groupBox59";
+            this.groupBox59.Size = new System.Drawing.Size(437, 198);
+            this.groupBox59.TabIndex = 8;
+            this.groupBox59.TabStop = false;
+            this.groupBox59.Text = "Get Channel Hosts";
             // 
-            // groupBox57
+            // textBox57
             // 
-            this.groupBox57.Controls.Add(this.textBox56);
-            this.groupBox57.Controls.Add(this.label59);
-            this.groupBox57.Controls.Add(this.button55);
-            this.groupBox57.Location = new System.Drawing.Point(19, 22);
-            this.groupBox57.Name = "groupBox57";
-            this.groupBox57.Size = new System.Drawing.Size(437, 198);
-            this.groupBox57.TabIndex = 7;
-            this.groupBox57.TabStop = false;
-            this.groupBox57.Text = "Get Clip Chat";
+            this.textBox57.Location = new System.Drawing.Point(185, 40);
+            this.textBox57.Name = "textBox57";
+            this.textBox57.Size = new System.Drawing.Size(228, 38);
+            this.textBox57.TabIndex = 3;
             // 
-            // textBox56
+            // label60
             // 
-            this.textBox56.Location = new System.Drawing.Point(167, 40);
-            this.textBox56.Name = "textBox56";
-            this.textBox56.Size = new System.Drawing.Size(246, 38);
-            this.textBox56.TabIndex = 3;
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(15, 43);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(164, 32);
+            this.label60.TabIndex = 1;
+            this.label60.Text = "CHannel Id:";
             // 
-            // label59
+            // button58
             // 
-            this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(15, 43);
-            this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(138, 32);
-            this.label59.TabIndex = 1;
-            this.label59.Text = "Clip Slug:";
-            // 
-            // button55
-            // 
-            this.button55.Location = new System.Drawing.Point(6, 98);
-            this.button55.Name = "button55";
-            this.button55.Size = new System.Drawing.Size(425, 82);
-            this.button55.TabIndex = 0;
-            this.button55.Text = "Fetch";
-            this.button55.UseVisualStyleBackColor = true;
-            // 
-            // groupBox58
-            // 
-            this.groupBox58.Controls.Add(this.button57);
-            this.groupBox58.Location = new System.Drawing.Point(482, 22);
-            this.groupBox58.Name = "groupBox58";
-            this.groupBox58.Size = new System.Drawing.Size(437, 135);
-            this.groupBox58.TabIndex = 8;
-            this.groupBox58.TabStop = false;
-            this.groupBox58.Text = "Get Twitch Prime Offers";
-            // 
-            // button57
-            // 
-            this.button57.Location = new System.Drawing.Point(6, 37);
-            this.button57.Name = "button57";
-            this.button57.Size = new System.Drawing.Size(425, 82);
-            this.button57.TabIndex = 0;
-            this.button57.Text = "Fetch";
-            this.button57.UseVisualStyleBackColor = true;
-            this.button57.Click += new System.EventHandler(this.button57_Click);
+            this.button58.Location = new System.Drawing.Point(6, 98);
+            this.button58.Name = "button58";
+            this.button58.Size = new System.Drawing.Size(425, 82);
+            this.button58.TabIndex = 0;
+            this.button58.Text = "Fetch";
+            this.button58.UseVisualStyleBackColor = true;
+            this.button58.Click += new System.EventHandler(this.button58_Click);
             // 
             // Form1
             // 
@@ -3033,6 +3077,10 @@
             this.tabPage19.ResumeLayout(false);
             this.groupBox54.ResumeLayout(false);
             this.groupBox54.PerformLayout();
+            this.tabPage21.ResumeLayout(false);
+            this.groupBox58.ResumeLayout(false);
+            this.groupBox57.ResumeLayout(false);
+            this.groupBox57.PerformLayout();
             this.tabPage20.ResumeLayout(false);
             this.groupBox56.ResumeLayout(false);
             this.groupBox56.PerformLayout();
@@ -3040,10 +3088,8 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabPage21.ResumeLayout(false);
-            this.groupBox57.ResumeLayout(false);
-            this.groupBox57.PerformLayout();
-            this.groupBox58.ResumeLayout(false);
+            this.groupBox59.ResumeLayout(false);
+            this.groupBox59.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3307,6 +3353,10 @@
         private System.Windows.Forms.TextBox textBox56;
         private System.Windows.Forms.Label label59;
         private System.Windows.Forms.Button button55;
+        private System.Windows.Forms.GroupBox groupBox59;
+        private System.Windows.Forms.TextBox textBox57;
+        private System.Windows.Forms.Label label60;
+        private System.Windows.Forms.Button button58;
     }
 }
 
