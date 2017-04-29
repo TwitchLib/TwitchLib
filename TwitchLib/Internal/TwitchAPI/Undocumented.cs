@@ -39,5 +39,10 @@ namespace TwitchLib.Internal.TwitchAPI
         {
             return Requests.Get<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffersResponse>($"https://api.twitch.tv/api/premium/offers?on_site=1");
         }
+
+        public static Models.API.Undocumented.Hosting.ChannelHostsResponse GetChannelHosts(string channelId)
+        {
+            return Requests.GetSimple<Models.API.Undocumented.Hosting.ChannelHostsResponse>($"https://tmi.twitch.tv/hosts?include_logins=1&target={channelId}");
+        }
     }
 }

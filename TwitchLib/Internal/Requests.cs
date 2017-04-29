@@ -47,6 +47,11 @@
         {
             return JsonConvert.DeserializeObject<T>(genericRequest(url, "GET", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
+
+        public static T GetSimple<T>(string url)
+        {
+            return JsonConvert.DeserializeObject<T>(simpleRequest(url), TwitchLibJsonDeserializer);
+        }
         #endregion
 
         #region DELETE
@@ -118,6 +123,11 @@
             catch (WebException ex) { handleWebException(ex); }
 
             return null;
+        }
+
+        public static string simpleRequest(string url)
+        {
+            return new WebClient().DownloadString(url);
         }
 
         private static string appendClientId(string url, string clientId = null)

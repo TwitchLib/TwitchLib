@@ -610,6 +610,15 @@
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetTwitchPrimeOffers());
             }
 
+            public static Models.API.Undocumented.Hosting.ChannelHostsResponse GetChannelHosts(string channelId)
+            {
+                return Internal.TwitchAPI.Undocumented.GetChannelHosts(channelId);
+            }
+
+            public static async Task<Models.API.Undocumented.Hosting.ChannelHostsResponse> GetChannelHostsAsync(string channelId)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetChannelHosts(channelId));
+            }
         }
 
         /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>
