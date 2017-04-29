@@ -639,6 +639,16 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetChannelPanels(channelName));
             }
+
+            public static Models.API.Undocumented.CSMaps.CSMapsResponse GetCSMaps()
+            {
+                return Internal.TwitchAPI.Undocumented.GetCSMaps();
+            }
+
+            public static async Task<Models.API.Undocumented.CSMaps.CSMapsResponse> GetCSMapsAsync()
+            {
+                return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetCSMaps());
+            }
         }
 
         /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>

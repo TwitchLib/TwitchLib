@@ -179,6 +179,8 @@
     <Compile Include="Models\API\Undocumented\ChannelPanels\Data.cs" />
     <Compile Include="Models\API\Undocumented\ChannelPanels\Panel.cs" />
     <Compile Include="Models\API\Undocumented\ChatProperties\ChatProperties.cs" />
+    <Compile Include="Models\API\Undocumented\CSMaps\CSMapsResponse.cs" />
+    <Compile Include="Models\API\Undocumented\CSMaps\Map.cs" />
     <Compile Include="Models\API\Undocumented\Hosting\ChannelHostsResponse.cs" />
     <Compile Include="Models\API\Undocumented\Hosting\HostListing.cs" />
     <Compile Include="Models\API\Undocumented\TwitchPrimeOffers\Asset.cs" />

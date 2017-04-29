@@ -54,5 +54,10 @@ namespace TwitchLib.Internal.TwitchAPI
         {
             return Requests.Get<Models.API.Undocumented.ChannelPanels.Panel[]>($"https://api.twitch.tv/api/channels/{channelName}/panels");
         }
+
+        public static Models.API.Undocumented.CSMaps.CSMapsResponse GetCSMaps()
+        {
+            return Requests.Get<Models.API.Undocumented.CSMaps.CSMapsResponse>("https://api.twitch.tv/api/cs/maps");
+        }
     }
 }
