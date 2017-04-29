@@ -601,6 +601,17 @@ namespace TwitchLib
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetClipChat(slug));
             }
+
+            public static Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffersResponse GetTwitchPrimeOffers()
+            {
+                return Internal.TwitchAPI.Undocumented.GetTwitchPrimeOffers();
+            }
+
+            public static async Task<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffersResponse> GetTwitchPrimeOffersAsync()
+            {
+                return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetTwitchPrimeOffers());
+            }
+
         }
 
         /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>

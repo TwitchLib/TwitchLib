@@ -34,5 +34,10 @@ namespace TwitchLib.Internal.TwitchAPI
             var rechatResource = $"https://rechat.twitch.tv/rechat-messages?video_id={vodId}&offset_seconds={offsetSeconds}";
             return Requests.Get<Models.API.Undocumented.ClipChat.GetClipChatResponse>(rechatResource);
         }
+
+        public static Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffersResponse GetTwitchPrimeOffers()
+        {
+            return Requests.Get<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffersResponse>($"https://api.twitch.tv/api/premium/offers?on_site=1");
+        }
     }
 }
