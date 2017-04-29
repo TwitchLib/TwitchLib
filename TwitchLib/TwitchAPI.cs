@@ -590,16 +590,16 @@ namespace TwitchLib
 
 
         /// <summary>These endpoints are pretty cool, but they may stop working at anytime due to changes Twitch makes.</summary>
-        public static class UndocumentedEndpoints
+        public static class Undocumented
         {
-            public static Models.API.v4.Clips.GetClipChatResponse GetClipChat(string slug)
+            public static Models.API.Undocumented.ClipChat.GetClipChatResponse GetClipChat(string slug)
             {
-                return Internal.TwitchAPI.v4.GetClipChat(slug);
+                return Internal.TwitchAPI.Undocumented.GetClipChat(slug);
             }
 
-            public static async Task<Models.API.v4.Clips.GetClipChatResponse> GetClipChatAsync(string slug)
+            public static async Task<Models.API.Undocumented.ClipChat.GetClipChatResponse> GetClipChatAsync(string slug)
             {
-                return await Task.Run(() => Internal.TwitchAPI.v4.GetClipChat(slug));
+                return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetClipChat(slug));
             }
         }
 

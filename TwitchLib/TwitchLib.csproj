@@ -70,6 +70,7 @@
     <Compile Include="Internal\Rfc2812.cs" />
     <Compile Include="Internal\TwitchAPI\Shared.cs" />
     <Compile Include="Internal\TwitchAPI\ThirdParty.cs" />
+    <Compile Include="Internal\TwitchAPI\Undocumented.cs" />
     <Compile Include="Internal\TwitchAPI\v3.cs" />
     <Compile Include="Internal\TwitchAPI\v4.cs" />
     <Compile Include="Internal\TwitchAPI\v5.cs" />
@@ -246,11 +247,11 @@
     <Compile Include="Models\API\v4\Clips\Clip.cs" />
     <Compile Include="Models\API\v4\Clips\Curator.cs" />
     <Compile Include="Models\API\v4\Clips\FollowClipsResponse.cs" />
-    <Compile Include="Models\API\v4\Clips\GetClipChatResponse.cs" />
+    <Compile Include="Models\API\Undocumented\ClipChat\GetClipChatResponse.cs" />
     <Compile Include="Models\API\v4\Clips\PeriodEnum.cs" />
-    <Compile Include="Models\API\v4\Clips\ReChatMessage.cs" />
-    <Compile Include="Models\API\v4\Clips\ReChatMessageAttributes.cs" />
-    <Compile Include="Models\API\v4\Clips\ReChatMessageAttributesTags.cs" />
+    <Compile Include="Models\API\Undocumented\ClipChat\ReChatMessage.cs" />
+    <Compile Include="Models\API\Undocumented\ClipChat\ReChatMessageAttributes.cs" />
+    <Compile Include="Models\API\Undocumented\ClipChat\ReChatMessageAttributesTags.cs" />
     <Compile Include="Models\API\v4\Clips\Thumbnails.cs" />
     <Compile Include="Models\API\v4\Clips\TopClipsResponse.cs" />
     <Compile Include="Models\API\v4\Clips\VOD.cs" />
@@ -346,6 +347,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Libs\" />
+    <Folder Include="Models\API\Undocumented\TwitchPrimeOffers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

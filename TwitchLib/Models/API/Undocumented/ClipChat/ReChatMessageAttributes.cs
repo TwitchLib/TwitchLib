@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitchLib.Models.API.v4.Clips
+namespace TwitchLib.Models.API.Undocumented.ClipChat
 {
     public class ReChatMessageAttributes
     {
