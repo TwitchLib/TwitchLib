@@ -659,6 +659,16 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetRecentMessages(channelId));
             }
+
+            public static Models.API.Undocumented.Chatters.ChattersResponse GetChatters(string channelName)
+            {
+                return Internal.TwitchAPI.Undocumented.GetChatters(channelName);
+            }
+
+            public static async Task<Models.API.Undocumented.Chatters.ChattersResponse> GetChattersAsync(string channelName)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetChatters(channelName));
+            }
         }
 
         /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>

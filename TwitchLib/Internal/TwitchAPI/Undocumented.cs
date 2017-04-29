@@ -64,5 +64,10 @@ namespace TwitchLib.Internal.TwitchAPI
         {
             return Requests.Get<Models.API.Undocumented.RecentMessages.RecentMessagesResponse>($"https://tmi.twitch.tv/api/rooms/{channelId}/recent_messages");
         }
+
+        public static Models.API.Undocumented.Chatters.ChattersResponse GetChatters(string channelName)
+        {
+            return Requests.Get<Models.API.Undocumented.Chatters.ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName}/chatters");
+        }
     }
 }
