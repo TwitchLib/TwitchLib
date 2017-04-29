@@ -299,6 +299,8 @@
             this.textBox59 = new System.Windows.Forms.TextBox();
             this.label62 = new System.Windows.Forms.Label();
             this.button60 = new System.Windows.Forms.Button();
+            this.groupBox62 = new System.Windows.Forms.GroupBox();
+            this.button61 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -382,6 +384,7 @@
             this.groupBox59.SuspendLayout();
             this.groupBox60.SuspendLayout();
             this.groupBox61.SuspendLayout();
+            this.groupBox62.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -2748,6 +2751,7 @@
             // 
             // tabPage21
             // 
+            this.tabPage21.Controls.Add(this.groupBox62);
             this.tabPage21.Controls.Add(this.groupBox61);
             this.tabPage21.Controls.Add(this.groupBox60);
             this.tabPage21.Controls.Add(this.groupBox59);
@@ -3047,6 +3051,26 @@
             this.button60.UseVisualStyleBackColor = true;
             this.button60.Click += new System.EventHandler(this.button60_Click);
             // 
+            // groupBox62
+            // 
+            this.groupBox62.Controls.Add(this.button61);
+            this.groupBox62.Location = new System.Drawing.Point(482, 166);
+            this.groupBox62.Name = "groupBox62";
+            this.groupBox62.Size = new System.Drawing.Size(437, 135);
+            this.groupBox62.TabIndex = 9;
+            this.groupBox62.TabStop = false;
+            this.groupBox62.Text = "Get CS Maps";
+            // 
+            // button61
+            // 
+            this.button61.Location = new System.Drawing.Point(6, 37);
+            this.button61.Name = "button61";
+            this.button61.Size = new System.Drawing.Size(425, 82);
+            this.button61.TabIndex = 0;
+            this.button61.Text = "Fetch";
+            this.button61.UseVisualStyleBackColor = true;
+            this.button61.Click += new System.EventHandler(this.button61_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -3182,6 +3206,7 @@
             this.groupBox60.PerformLayout();
             this.groupBox61.ResumeLayout(false);
             this.groupBox61.PerformLayout();
+            this.groupBox62.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -3457,6 +3482,8 @@
         private System.Windows.Forms.TextBox textBox59;
         private System.Windows.Forms.Label label62;
         private System.Windows.Forms.Button button60;
+        private System.Windows.Forms.GroupBox groupBox62;
+        private System.Windows.Forms.Button button61;
     }
 }
 

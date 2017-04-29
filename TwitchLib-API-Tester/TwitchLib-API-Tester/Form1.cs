@@ -538,5 +538,13 @@ namespace TwitchLib_API_Tester
             foreach (var panel in resp)
                 MessageBox.Show($"Panel image: {panel.Data.Image}");
         }
+
+        private async void button61_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Undocumented.GetCSMapsAsync();
+            MessageBox.Show($"Total: {resp.Total}");
+            foreach (var map in resp.Maps)
+                MessageBox.Show($"Map code: {map.MapCode}\nMap name: {map.MapName}\nViewers: {map.Viewers}");
+        }
     }
 }
