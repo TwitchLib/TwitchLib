@@ -546,5 +546,12 @@ namespace TwitchLib_API_Tester
             foreach (var map in resp.Maps)
                 MessageBox.Show($"Map code: {map.MapCode}\nMap name: {map.MapName}\nViewers: {map.Viewers}");
         }
+
+        private async void button62_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Undocumented.GetRecentMessagesAsync(textBox60.Text);
+            foreach (var message in resp.Messages)
+                MessageBox.Show(message);
+        }
     }
 }

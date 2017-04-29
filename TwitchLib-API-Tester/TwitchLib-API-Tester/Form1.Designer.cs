@@ -301,6 +301,10 @@
             this.button60 = new System.Windows.Forms.Button();
             this.groupBox62 = new System.Windows.Forms.GroupBox();
             this.button61 = new System.Windows.Forms.Button();
+            this.groupBox63 = new System.Windows.Forms.GroupBox();
+            this.textBox60 = new System.Windows.Forms.TextBox();
+            this.label63 = new System.Windows.Forms.Label();
+            this.button62 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -385,6 +389,7 @@
             this.groupBox60.SuspendLayout();
             this.groupBox61.SuspendLayout();
             this.groupBox62.SuspendLayout();
+            this.groupBox63.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -2751,6 +2756,7 @@
             // 
             // tabPage21
             // 
+            this.tabPage21.Controls.Add(this.groupBox63);
             this.tabPage21.Controls.Add(this.groupBox62);
             this.tabPage21.Controls.Add(this.groupBox61);
             this.tabPage21.Controls.Add(this.groupBox60);
@@ -3071,6 +3077,44 @@
             this.button61.UseVisualStyleBackColor = true;
             this.button61.Click += new System.EventHandler(this.button61_Click);
             // 
+            // groupBox63
+            // 
+            this.groupBox63.Controls.Add(this.textBox60);
+            this.groupBox63.Controls.Add(this.label63);
+            this.groupBox63.Controls.Add(this.button62);
+            this.groupBox63.Location = new System.Drawing.Point(937, 22);
+            this.groupBox63.Name = "groupBox63";
+            this.groupBox63.Size = new System.Drawing.Size(437, 198);
+            this.groupBox63.TabIndex = 9;
+            this.groupBox63.TabStop = false;
+            this.groupBox63.Text = "Get Recent Messages";
+            // 
+            // textBox60
+            // 
+            this.textBox60.Location = new System.Drawing.Point(185, 40);
+            this.textBox60.Name = "textBox60";
+            this.textBox60.Size = new System.Drawing.Size(228, 38);
+            this.textBox60.TabIndex = 3;
+            // 
+            // label63
+            // 
+            this.label63.AutoSize = true;
+            this.label63.Location = new System.Drawing.Point(15, 43);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(164, 32);
+            this.label63.TabIndex = 1;
+            this.label63.Text = "CHannel Id:";
+            // 
+            // button62
+            // 
+            this.button62.Location = new System.Drawing.Point(6, 98);
+            this.button62.Name = "button62";
+            this.button62.Size = new System.Drawing.Size(425, 82);
+            this.button62.TabIndex = 0;
+            this.button62.Text = "Fetch";
+            this.button62.UseVisualStyleBackColor = true;
+            this.button62.Click += new System.EventHandler(this.button62_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -3207,6 +3251,8 @@
             this.groupBox61.ResumeLayout(false);
             this.groupBox61.PerformLayout();
             this.groupBox62.ResumeLayout(false);
+            this.groupBox63.ResumeLayout(false);
+            this.groupBox63.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3484,6 +3530,10 @@
         private System.Windows.Forms.Button button60;
         private System.Windows.Forms.GroupBox groupBox62;
         private System.Windows.Forms.Button button61;
+        private System.Windows.Forms.GroupBox groupBox63;
+        private System.Windows.Forms.TextBox textBox60;
+        private System.Windows.Forms.Label label63;
+        private System.Windows.Forms.Button button62;
     }
 }
 
