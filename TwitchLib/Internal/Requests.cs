@@ -1,21 +1,20 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib.Exceptions.API;
-using Newtonsoft.Json.Serialization;
-
-namespace TwitchLib.Internal
+﻿namespace TwitchLib.Internal
 {
+    #region using directives
+    using Newtonsoft.Json;
+    using System.IO;
+    using System.Net;
+    using Exceptions.API;
+    using Newtonsoft.Json.Serialization;
+    #endregion
     internal class Requests
     {
         public enum API
         {
-            v3, v4, v5, Void
+            v3 = 3,
+            v4 = 4,
+            v5 = 5,
+            Void = 0
         }
 
         #region POST
@@ -42,7 +41,7 @@ namespace TwitchLib.Internal
             genericRequest(url, "POST", payload, accessToken, api, clientId);
         }
         #endregion
-      
+
         #region GET
         public static T Get<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
@@ -87,18 +86,18 @@ namespace TwitchLib.Internal
 
         private static string genericRequest(string url, string method, object payload = null, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            if(clientId == null)
+            if (clientId == null)
                 checkForCredentials();
             url = appendClientId(url, clientId);
 
             var request = WebRequest.CreateHttp(url);
             request.Method = method;
             request.ContentType = "application/json";
-          
-            if(api != API.Void)
-                request.Accept = $"application/vnd.twitchtv.v{getVersion(api)}+json";
 
-            if(!string.IsNullOrEmpty(accessToken))
+            if (api != API.Void)
+                request.Accept = $"application/vnd.twitchtv.v{(int)api}+json";
+
+            if (!string.IsNullOrEmpty(accessToken))
                 request.Headers["Authorization"] = $"OAuth {Common.Helpers.FormatOAuth(accessToken)}";
             else if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
                 request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
@@ -121,23 +120,9 @@ namespace TwitchLib.Internal
             return null;
         }
 
-        private static int getVersion(API api)
-        {
-            switch (api)
-            {
-                case API.v3:
-                    return 3;
-                case API.v4:
-                    return 4;
-                case API.v5:
-                default:
-                    return 5;
-            }
-        }
-
         private static string appendClientId(string url, string clientId = null)
         {
-            if(clientId == null)
+            if (clientId == null)
                 return url.Contains("?")
                     ? $"{url}&client_id={TwitchAPI.Shared.ClientId}"
                     : $"{url}?client_id={TwitchAPI.Shared.ClientId}";

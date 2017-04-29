@@ -3,15 +3,15 @@
     #region using directives
     using Newtonsoft.Json;
     #endregion
-    public class GetUsersByNameResponse
+    public class UserFollows
     {
         #region Total
-        [JsonProperty(PropertyName ="_total")]
+        [JsonProperty(PropertyName = "_total")]
         public int Total { get; protected set; }
         #endregion
-        #region Users
-        [JsonProperty(PropertyName ="users")]
-        public User[] Users { get; protected set; }
+        #region Follows
+        [JsonProperty(PropertyName = "follows")]
+        public UserFollow[] Follows { get; protected set; }
         #endregion
     }
 }

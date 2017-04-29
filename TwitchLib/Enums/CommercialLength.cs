@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Enums
+﻿namespace TwitchLib.Enums
 {
-    /// <summary>
-    /// A list of valid commercial lengths.
-    /// </summary>
+    /// <summary>A list of valid commercial lengths.</summary>
     public enum CommercialLength
     {
         /// <summary>30 second commercial</summary>
-        Seconds30,
+        Seconds30 = 30,
         /// <summary>60 second commercial</summary>
-        Seconds60,
+        Seconds60 = 60,
         /// <summary>90 second commercial</summary>
-        Seconds90,
+        Seconds90 = 90,
         /// <summary>120 second commercial</summary>
-        Seconds120,
+        Seconds120 = 120,
         /// <summary>150 second commercial</summary>
-        Seconds150,
+        Seconds150 = 150,
         /// <summary>180 second commercial</summary>
-        Seconds180
+        Seconds180 = 180
     }
 }

@@ -19,7 +19,7 @@
         #region Follows
         /// <summary>Property representing the Follow collection.</summary>
         [JsonProperty(PropertyName = "follows")]
-        public Follows.Follow[] Follows { get; protected set; }
+        public ChannelFollow[] Follows { get; protected set; }
         #endregion
     }
 }

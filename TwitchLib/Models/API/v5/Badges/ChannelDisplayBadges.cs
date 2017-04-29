@@ -3,7 +3,7 @@
     #region using directives
     using Newtonsoft.Json;
     #endregion
-    public class ChannelDisplayBadgesResponse
+    public class ChannelDisplayBadges
     {
         #region BadgeSets
         [JsonProperty(PropertyName = "badge_sets")]

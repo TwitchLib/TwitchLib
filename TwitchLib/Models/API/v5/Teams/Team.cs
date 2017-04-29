@@ -4,7 +4,7 @@
     using System;
     using Newtonsoft.Json;
     #endregion
-    /// <summary>Class representing a team object from Twitch API</summary>
+    /// <summary>Class representing a more detailed team object from Twitch API</summary>
     public class Team
     {
         #region Id
@@ -51,6 +51,11 @@
         /// <summary>Property representing the date time of last team update.</summary>
         [JsonProperty(PropertyName = "updated_at")]
         public DateTime UpdatedAt { get; protected set; }
+        #endregion
+        #region Users (or rather said, channels)
+        /// <summary>Property representing the users in the team.</summary>
+        [JsonProperty(PropertyName = "users")]
+        public Channels.Channel[] Users { get; protected set; }
         #endregion
     }
 }

@@ -1,13 +1,11 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Threading.Tasks;
-
-namespace TwitchLib
+﻿namespace TwitchLib
 {
-    /// <summary>
-    /// Fully featured Twitch API wrapper.
-    /// </summary>
+    #region using directives
+    using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    #endregion
+    /// <summary>Fully featured Twitch API wrapper.</summary>
     public static class TwitchAPI
     {
         public static class Settings
@@ -369,7 +367,7 @@ namespace TwitchLib
 
             public async static Task<Models.API.v3.Streams.StreamsResponse> GetStreamsAsync(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Enums.StreamType streamType = Enums.StreamType.All, string language = "en")
             {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetStreams(game, channel, limit, offset, clientId, streamType, language)); 
+                return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetStreams(game, channel, limit, offset, clientId, streamType, language));
             }
 
             public static Models.API.v3.Streams.FeaturedStreamsResponse GetFeaturedStreams(int limit = 25, int offset = 0)

@@ -3,7 +3,7 @@
     #region using directives
     using Newtonsoft.Json;
     #endregion
-    public class GetAllChatEmoticonsResponse
+    public class AllChatEmotes
     {
         #region Emoticons
         [JsonProperty(PropertyName = "emoticons")]

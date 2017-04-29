@@ -8,7 +8,7 @@
     /// Class representing a privileged channel object from Twitch API.
     /// This class contains more data than the Channel class because the channel object is based on a specified oauth token.
     /// </summary>
-    public class ChannelPrivileged
+    public class ChannelAuthed
     {
         #region Id
         /// <summary>Property representing the channel ID.</summary>
