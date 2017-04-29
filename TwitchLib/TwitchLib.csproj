@@ -176,6 +176,8 @@
     <Compile Include="Models\API\RequestModel.cs" />
     <Compile Include="Models\API\ThirdParty\UsernameChangeListing.cs" />
     <Compile Include="Models\API\ThirdParty\UsernameChangeResponse.cs" />
+    <Compile Include="Models\API\Undocumented\ChannelPanels\Data.cs" />
+    <Compile Include="Models\API\Undocumented\ChannelPanels\Panel.cs" />
     <Compile Include="Models\API\Undocumented\ChatProperties\ChatProperties.cs" />
     <Compile Include="Models\API\Undocumented\Hosting\ChannelHostsResponse.cs" />
     <Compile Include="Models\API\Undocumented\Hosting\HostListing.cs" />

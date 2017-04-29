@@ -49,5 +49,10 @@ namespace TwitchLib.Internal.TwitchAPI
         {
             return Requests.Get<Models.API.Undocumented.ChatProperties.ChatProperties>($"https://api.twitch.tv/api/channels/{channelName}/chat_properties");
         }
+
+        public static Models.API.Undocumented.ChannelPanels.Panel[] GetChannelPanels(string channelName)
+        {
+            return Requests.Get<Models.API.Undocumented.ChannelPanels.Panel[]>($"https://api.twitch.tv/api/channels/{channelName}/panels");
+        }
     }
 }
