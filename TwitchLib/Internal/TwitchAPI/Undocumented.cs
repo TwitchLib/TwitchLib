@@ -59,5 +59,10 @@ namespace TwitchLib.Internal.TwitchAPI
         {
             return Requests.Get<Models.API.Undocumented.CSMaps.CSMapsResponse>("https://api.twitch.tv/api/cs/maps");
         }
+
+        public static Models.API.Undocumented.RecentMessages.RecentMessagesResponse GetRecentMessages(string channelId)
+        {
+            return Requests.Get<Models.API.Undocumented.RecentMessages.RecentMessagesResponse>($"https://tmi.twitch.tv/api/rooms/{channelId}/recent_messages");
+        }
     }
 }

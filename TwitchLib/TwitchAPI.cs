@@ -649,6 +649,16 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetCSMaps());
             }
+
+            public static Models.API.Undocumented.RecentMessages.RecentMessagesResponse GetRecentMessages(string channelId)
+            {
+                return Internal.TwitchAPI.Undocumented.GetRecentMessages(channelId);
+            }
+
+            public static async Task<Models.API.Undocumented.RecentMessages.RecentMessagesResponse> GetRecentMessagesAsync(string channelId)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetRecentMessages(channelId));
+            }
         }
 
         /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>

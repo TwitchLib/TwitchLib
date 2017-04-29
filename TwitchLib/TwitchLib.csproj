@@ -183,6 +183,7 @@
     <Compile Include="Models\API\Undocumented\CSMaps\Map.cs" />
     <Compile Include="Models\API\Undocumented\Hosting\ChannelHostsResponse.cs" />
     <Compile Include="Models\API\Undocumented\Hosting\HostListing.cs" />
+    <Compile Include="Models\API\Undocumented\RecentMessages\RecentMessagesResponse.cs" />
     <Compile Include="Models\API\Undocumented\TwitchPrimeOffers\Asset.cs" />
     <Compile Include="Models\API\Undocumented\TwitchPrimeOffers\Offer.cs" />
     <Compile Include="Models\API\Undocumented\TwitchPrimeOffers\TwitchPrimeOffersResponse.cs" />
