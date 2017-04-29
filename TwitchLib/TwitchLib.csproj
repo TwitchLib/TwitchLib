@@ -246,7 +246,11 @@
     <Compile Include="Models\API\v4\Clips\Clip.cs" />
     <Compile Include="Models\API\v4\Clips\Curator.cs" />
     <Compile Include="Models\API\v4\Clips\FollowClipsResponse.cs" />
+    <Compile Include="Models\API\v4\Clips\GetClipChatResponse.cs" />
     <Compile Include="Models\API\v4\Clips\PeriodEnum.cs" />
+    <Compile Include="Models\API\v4\Clips\ReChatMessage.cs" />
+    <Compile Include="Models\API\v4\Clips\ReChatMessageAttributes.cs" />
+    <Compile Include="Models\API\v4\Clips\ReChatMessageAttributesTags.cs" />
     <Compile Include="Models\API\v4\Clips\Thumbnails.cs" />
     <Compile Include="Models\API\v4\Clips\TopClipsResponse.cs" />
     <Compile Include="Models\API\v4\Clips\VOD.cs" />

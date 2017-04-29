@@ -11,6 +11,33 @@ namespace TwitchLib.Internal.TwitchAPI
             return Requests.Get<Models.API.v4.Clips.Clip>($"https://api.twitch.tv/kraken/clips/{slug}", null, Requests.API.v4);
         }
 
+        public static Models.API.v4.Clips.GetClipChatResponse GetClipChat(string slug)
+        {
+            var clip = GetClip(slug);
+            if (clip == null)
+                return null;
+
+            string vodId = $"v{clip.VOD.Id}";
+            string offsetTime = clip.VOD.Url.Split('=')[1];
+            long offsetSeconds = 2; // for some reason, VODs have 2 seconds behind where clips start
+
+            if(offsetTime.Contains("h"))
+            {
+                offsetSeconds += int.Parse(offsetTime.Split('h')[0]) * 60 * 60;
+                offsetTime = offsetTime.Replace(offsetTime.Split('h')[0] + "h", "");
+            }
+            if(offsetTime.Contains("m"))
+            {
+                offsetSeconds += int.Parse(offsetTime.Split('m')[0]) * 60;
+                offsetTime = offsetTime.Replace(offsetTime.Split('m')[0] + "m", "");
+            }
+            if(offsetTime.Contains("s"))
+                offsetSeconds += int.Parse(offsetTime.Split('s')[0]);
+
+            var rechatResource = $"https://rechat.twitch.tv/rechat-messages?video_id={vodId}&offset_seconds={offsetSeconds}";
+            return Requests.Get<Models.API.v4.Clips.GetClipChatResponse>(rechatResource);
+        }
+
         public static Models.API.v4.Clips.TopClipsResponse GetTopClips(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v4.Clips.Period period = Models.API.v4.Clips.Period.Week, bool trending = false)
         {
             string paramsStr = $"?limit={limit}";

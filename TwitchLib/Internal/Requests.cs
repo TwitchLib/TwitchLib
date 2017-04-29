@@ -21,16 +21,15 @@ namespace TwitchLib.Internal
         #region POST
         public static T PostModel<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            var test = new JsonSerializerSettings();
             if (model != null)
-                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId));
+                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId), TwitchLibJsonDeserializer);
             else
-                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", "", accessToken, api));
+                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", "", accessToken, api), TwitchLibJsonDeserializer);
         }
 
         public static T Post<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", payload, accessToken, api, clientId));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
 
         public static void PostModel(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
@@ -47,7 +46,7 @@ namespace TwitchLib.Internal
         #region GET
         public static T Get<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "GET", null, accessToken, api, clientId));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "GET", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
         #endregion
 
@@ -59,14 +58,14 @@ namespace TwitchLib.Internal
 
         public static T Delete<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "DELETE", null, accessToken, api, clientId));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "DELETE", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
         #endregion
 
         #region PUT
         public static T Put<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", payload, accessToken, api, clientId));
+            return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
 
         public static string Put(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
@@ -169,6 +168,8 @@ namespace TwitchLib.Internal
                     throw e;
             }
         }
+
+        public static JsonSerializerSettings TwitchLibJsonDeserializer = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore };
 
         public class TwitchLibJsonSerializer
         {

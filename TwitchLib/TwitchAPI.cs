@@ -589,9 +589,21 @@ namespace TwitchLib
         }
 
 
+        /// <summary>These endpoints are pretty cool, but they may stop working at anytime due to changes Twitch makes.</summary>
+        public static class UndocumentedEndpoints
+        {
+            public static Models.API.v4.Clips.GetClipChatResponse GetClipChat(string slug)
+            {
+                return Internal.TwitchAPI.v4.GetClipChat(slug);
+            }
 
+            public static async Task<Models.API.v4.Clips.GetClipChatResponse> GetClipChatAsync(string slug)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v4.GetClipChat(slug));
+            }
+        }
 
-
+        /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>
         public static class ThirdParty
         {
             public static List<Models.API.ThirdParty.UsernameChangeListing> GetUsernameChanges(string username)
@@ -605,6 +617,7 @@ namespace TwitchLib
             }
         }
 
+        /// <summary>These methods are intended to aid in developing the library.</summary>
         public static class Debugging
         {
             public static T BuildModel<T>(string data)
@@ -613,6 +626,7 @@ namespace TwitchLib
             }
         }
 
+        /// <summary>Private methods that are used within the API.</summary>
         private static class APIHelpers
         {
             public static void ValidateScope(Enums.AuthScopes requiredScope, string accessToken = null)
