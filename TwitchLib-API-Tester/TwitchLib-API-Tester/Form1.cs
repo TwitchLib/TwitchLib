@@ -553,5 +553,12 @@ namespace TwitchLib_API_Tester
             foreach (var message in resp.Messages)
                 MessageBox.Show(message);
         }
+
+        private async void button63_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Undocumented.GetChattersAsync(textBox61.Text);
+            foreach (var chatter in resp.Chatters.Moderators)
+                MessageBox.Show($"Moderator: {chatter}");
+        }
     }
 }

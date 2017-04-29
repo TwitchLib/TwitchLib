@@ -305,6 +305,10 @@
             this.textBox60 = new System.Windows.Forms.TextBox();
             this.label63 = new System.Windows.Forms.Label();
             this.button62 = new System.Windows.Forms.Button();
+            this.groupBox64 = new System.Windows.Forms.GroupBox();
+            this.textBox61 = new System.Windows.Forms.TextBox();
+            this.label64 = new System.Windows.Forms.Label();
+            this.button63 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -390,6 +394,7 @@
             this.groupBox61.SuspendLayout();
             this.groupBox62.SuspendLayout();
             this.groupBox63.SuspendLayout();
+            this.groupBox64.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -2756,6 +2761,7 @@
             // 
             // tabPage21
             // 
+            this.tabPage21.Controls.Add(this.groupBox64);
             this.tabPage21.Controls.Add(this.groupBox63);
             this.tabPage21.Controls.Add(this.groupBox62);
             this.tabPage21.Controls.Add(this.groupBox61);
@@ -3115,6 +3121,44 @@
             this.button62.UseVisualStyleBackColor = true;
             this.button62.Click += new System.EventHandler(this.button62_Click);
             // 
+            // groupBox64
+            // 
+            this.groupBox64.Controls.Add(this.textBox61);
+            this.groupBox64.Controls.Add(this.label64);
+            this.groupBox64.Controls.Add(this.button63);
+            this.groupBox64.Location = new System.Drawing.Point(937, 226);
+            this.groupBox64.Name = "groupBox64";
+            this.groupBox64.Size = new System.Drawing.Size(437, 198);
+            this.groupBox64.TabIndex = 10;
+            this.groupBox64.TabStop = false;
+            this.groupBox64.Text = "Get Chatters";
+            // 
+            // textBox61
+            // 
+            this.textBox61.Location = new System.Drawing.Point(233, 40);
+            this.textBox61.Name = "textBox61";
+            this.textBox61.Size = new System.Drawing.Size(180, 38);
+            this.textBox61.TabIndex = 3;
+            // 
+            // label64
+            // 
+            this.label64.AutoSize = true;
+            this.label64.Location = new System.Drawing.Point(15, 43);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(212, 32);
+            this.label64.TabIndex = 1;
+            this.label64.Text = "Channel Name:";
+            // 
+            // button63
+            // 
+            this.button63.Location = new System.Drawing.Point(6, 98);
+            this.button63.Name = "button63";
+            this.button63.Size = new System.Drawing.Size(425, 82);
+            this.button63.TabIndex = 0;
+            this.button63.Text = "Fetch";
+            this.button63.UseVisualStyleBackColor = true;
+            this.button63.Click += new System.EventHandler(this.button63_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -3253,6 +3297,8 @@
             this.groupBox62.ResumeLayout(false);
             this.groupBox63.ResumeLayout(false);
             this.groupBox63.PerformLayout();
+            this.groupBox64.ResumeLayout(false);
+            this.groupBox64.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3534,6 +3580,10 @@
         private System.Windows.Forms.TextBox textBox60;
         private System.Windows.Forms.Label label63;
         private System.Windows.Forms.Button button62;
+        private System.Windows.Forms.GroupBox groupBox64;
+        private System.Windows.Forms.TextBox textBox61;
+        private System.Windows.Forms.Label label64;
+        private System.Windows.Forms.Button button63;
     }
 }
 
