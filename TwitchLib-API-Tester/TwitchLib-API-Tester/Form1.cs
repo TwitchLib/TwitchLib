@@ -531,5 +531,12 @@ namespace TwitchLib_API_Tester
             var resp = await TwitchLib.TwitchAPI.Undocumented.GetChatPropertiesAsync(textBox58.Text);
             MessageBox.Show($"Game: {resp.Game}\nDevchat: {resp.DevChat}\nRules: {String.Join("\n", resp.ChatRules)}");
         }
+
+        private async void button60_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Undocumented.GetChannelPanelsAsync(textBox59.Text);
+            foreach (var panel in resp)
+                MessageBox.Show($"Panel image: {panel.Data.Image}");
+        }
     }
 }

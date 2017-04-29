@@ -295,6 +295,10 @@
             this.textBox58 = new System.Windows.Forms.TextBox();
             this.label61 = new System.Windows.Forms.Label();
             this.button59 = new System.Windows.Forms.Button();
+            this.groupBox61 = new System.Windows.Forms.GroupBox();
+            this.textBox59 = new System.Windows.Forms.TextBox();
+            this.label62 = new System.Windows.Forms.Label();
+            this.button60 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -377,6 +381,7 @@
             this.groupBox1.SuspendLayout();
             this.groupBox59.SuspendLayout();
             this.groupBox60.SuspendLayout();
+            this.groupBox61.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -2743,6 +2748,7 @@
             // 
             // tabPage21
             // 
+            this.tabPage21.Controls.Add(this.groupBox61);
             this.tabPage21.Controls.Add(this.groupBox60);
             this.tabPage21.Controls.Add(this.groupBox59);
             this.tabPage21.Controls.Add(this.groupBox58);
@@ -3003,6 +3009,44 @@
             this.button59.UseVisualStyleBackColor = true;
             this.button59.Click += new System.EventHandler(this.button59_Click);
             // 
+            // groupBox61
+            // 
+            this.groupBox61.Controls.Add(this.textBox59);
+            this.groupBox61.Controls.Add(this.label62);
+            this.groupBox61.Controls.Add(this.button60);
+            this.groupBox61.Location = new System.Drawing.Point(13, 646);
+            this.groupBox61.Name = "groupBox61";
+            this.groupBox61.Size = new System.Drawing.Size(437, 198);
+            this.groupBox61.TabIndex = 10;
+            this.groupBox61.TabStop = false;
+            this.groupBox61.Text = "Get Channel Panels";
+            // 
+            // textBox59
+            // 
+            this.textBox59.Location = new System.Drawing.Point(233, 40);
+            this.textBox59.Name = "textBox59";
+            this.textBox59.Size = new System.Drawing.Size(180, 38);
+            this.textBox59.TabIndex = 3;
+            // 
+            // label62
+            // 
+            this.label62.AutoSize = true;
+            this.label62.Location = new System.Drawing.Point(15, 43);
+            this.label62.Name = "label62";
+            this.label62.Size = new System.Drawing.Size(212, 32);
+            this.label62.TabIndex = 1;
+            this.label62.Text = "Channel Name:";
+            // 
+            // button60
+            // 
+            this.button60.Location = new System.Drawing.Point(6, 98);
+            this.button60.Name = "button60";
+            this.button60.Size = new System.Drawing.Size(425, 82);
+            this.button60.TabIndex = 0;
+            this.button60.Text = "Fetch";
+            this.button60.UseVisualStyleBackColor = true;
+            this.button60.Click += new System.EventHandler(this.button60_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -3136,6 +3180,8 @@
             this.groupBox59.PerformLayout();
             this.groupBox60.ResumeLayout(false);
             this.groupBox60.PerformLayout();
+            this.groupBox61.ResumeLayout(false);
+            this.groupBox61.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3407,6 +3453,10 @@
         private System.Windows.Forms.TextBox textBox58;
         private System.Windows.Forms.Label label61;
         private System.Windows.Forms.Button button59;
+        private System.Windows.Forms.GroupBox groupBox61;
+        private System.Windows.Forms.TextBox textBox59;
+        private System.Windows.Forms.Label label62;
+        private System.Windows.Forms.Button button60;
     }
 }
 
