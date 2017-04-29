@@ -504,5 +504,12 @@ namespace TwitchLib_API_Tester
         {
             var resp = TwitchLib.TwitchAPI.Debugging.BuildModel<TwitchLib.Models.API.v4.UploadVideo.UploadVideoListing>(richTextBox3.Text);
         }
+
+        private async void button55_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Clips.GetClipChatAsync(textBox56.Text);
+            foreach (var message in resp.Messages)
+                MessageBox.Show($"Message said in: {message.Attributes.Room}\nMessage from: {message.Attributes.From}\nMessage contents: {message.Attributes.Message}");
+        }
     }
 }
