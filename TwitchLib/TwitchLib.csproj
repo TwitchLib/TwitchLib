@@ -253,7 +253,7 @@
     <Compile Include="Models\API\v4\Clips\VOD.cs" />
     <Compile Include="Models\API\v5\Badges\Badge.cs" />
     <Compile Include="Models\API\v5\Badges\BadgeContent.cs" />
-    <Compile Include="Models\API\v5\Badges\ChannelDisplayBadgesResponse.cs" />
+    <Compile Include="Models\API\v5\Badges\ChannelDisplayBadges.cs" />
     <Compile Include="Models\API\v5\Badges\GlobalBadgesResponse.cs" />
     <Compile Include="Models\API\v4\UploadVideo\Preview.cs" />
     <Compile Include="Models\API\v4\UploadVideo\Upload.cs" />
@@ -287,7 +287,7 @@
     <Compile Include="Models\API\v5\Chat\Emote.cs" />
     <Compile Include="Models\API\v5\Chat\EmoteSet.cs" />
     <Compile Include="Models\API\v5\Chat\EmoticonImage.cs" />
-    <Compile Include="Models\API\v5\Chat\GetAllChatEmoticonsResponse.cs" />
+    <Compile Include="Models\API\v5\Chat\AllChatEmotes.cs" />
     <Compile Include="Models\API\v5\Collections\Collection.cs" />
     <Compile Include="Models\API\v5\Collections\CollectionItem.cs" />
     <Compile Include="Models\API\v5\Collections\CollectionMetadata.cs" />
@@ -309,7 +309,9 @@
     <Compile Include="Models\API\v5\Games\TopGames.cs" />
     <Compile Include="Models\API\v5\Ingests\Ingest.cs" />
     <Compile Include="Models\API\v5\Ingests\Ingests.cs" />
-    <Compile Include="Models\API\v5\Root\RootResponse.cs" />
+    <Compile Include="Models\API\v5\Root\Root.cs" />
+    <Compile Include="Models\API\v5\Root\RootAuthorization.cs" />
+    <Compile Include="Models\API\v5\Root\RootToken.cs" />
     <Compile Include="Models\API\v5\Search\SearchChannels.cs" />
     <Compile Include="Models\API\v5\Search\SearchGames.cs" />
     <Compile Include="Models\API\v5\Search\SearchStreams.cs" />

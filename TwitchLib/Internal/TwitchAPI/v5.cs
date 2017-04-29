@@ -6,16 +6,18 @@
     #endregion
     public static class v5
     {
+        #region Root
         public static class Root
         {
             #region GetRoot
-            public static Models.API.v5.Root.RootResponse GetRoot(string authToken = null)
+            public static Models.API.v5.Root.Root GetRoot(string authToken = null)
             {
-                return Requests.Get<Models.API.v5.Root.RootResponse>("https://api.twitch.tv/kraken", authToken, Requests.API.v5);
+                return Requests.Get<Models.API.v5.Root.Root>("https://api.twitch.tv/kraken", authToken, Requests.API.v5);
             }
             #endregion
         }
-
+        #endregion
+        #region Bits
         public static class Bits
         {
             #region GetCheermotes
@@ -26,14 +28,15 @@
             }
             #endregion
         }
-
+        #endregion
+        #region Badges
         public static class Badges
         {
             #region GetSubscriberBadgesForChannel
-            public static Models.API.v5.Badges.ChannelDisplayBadgesResponse GetSubscriberBadgesForChannel(string channelId)
+            public static Models.API.v5.Badges.ChannelDisplayBadges GetSubscriberBadgesForChannel(string channelId)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return Requests.Get<Models.API.v5.Badges.ChannelDisplayBadgesResponse>($"https://badges.twitch.tv/v1/badges/channels/{channelId}/display", null, Requests.API.v5);
+                return Requests.Get<Models.API.v5.Badges.ChannelDisplayBadges>($"https://badges.twitch.tv/v1/badges/channels/{channelId}/display", null, Requests.API.v5);
             }
             #endregion
             #region GetGlobalBadges
@@ -43,7 +46,8 @@
             }
             #endregion
         }
-
+        #endregion
+        #region ChannelFeed
         public static class ChannelFeed
         {
             #region GetMultipleFeedPosts
@@ -185,7 +189,8 @@
             }
             #endregion
         }
-
+        #endregion
+        #region Channels
         public static class Channels
         {
             #region GetChannel
@@ -208,6 +213,7 @@
             /// <returns>A Channel object from the response of the Twitch API.</returns>
             public static Models.API.v5.Channels.Channel GetChannelByID(string channelId)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Get<Models.API.v5.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channelId}", null, Requests.API.v5);
             }
             #endregion
@@ -225,6 +231,7 @@
             /// <returns>A Channel object with the newly changed properties.</returns>
             public static Models.API.v5.Channels.Channel UpdateChannel(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrEmpty(status))
                     datas.Add(new KeyValuePair<string, string>("status", "\"" + status + "\""));
@@ -269,6 +276,7 @@
             /// <returns>A ChannelEditors object that contains an array of the Users which are Editor of the channel.</returns>
             public static Models.API.v5.Channels.ChannelEditors GetChannelEditors(string channelId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Get<Models.API.v5.Channels.ChannelEditors>($"https://api.twitch.tv/kraken/channels/{channelId}/editors", authToken, Requests.API.v5);
             }
             #endregion
@@ -284,6 +292,7 @@
             /// <returns>A ChannelFollowers object that represents the response from the Twitch API.</returns>
             public static Models.API.v5.Channels.ChannelFollowers GetChannelFollowers(string channelId, int? limit = null, int? offset = null, string cursor = null, string direction = null)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
                 if (limit != null)
                     queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
@@ -314,6 +323,7 @@
             /// <returns>An Array of the Teams the Channel belongs to.</returns>
             public static Models.API.v5.Channels.ChannelTeams GetChannelTeams(string channelId)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Get<Models.API.v5.Channels.ChannelTeams>($"https://api.twitch.tv/kraken/channels/{channelId}/teams", null, Requests.API.v5);
             }
             #endregion
@@ -326,10 +336,11 @@
             /// <param name="limit">Maximum number of objects to return. Default: 25. Maximum: 100.</param>
             /// <param name="offset">Object offset for pagination of results. Default: 0.</param>
             /// <param name="direction">Sorting direction. Valid values: "asc", "desc" (newest first). Default: "desc".</param>
+            /// <param name="authToken">The associated auth token for this request.</param>
             /// <returns></returns>
             public static Models.API.v5.Channels.ChannelSubscribers GetChannelSubscribers(string channelId, int? limit = null, int? offset = null, string direction = null, string authToken = null)
             {
-                //TODO:Oauth token for other channels? Change Requests.Get method to give other oauth tokens for requests that can appeal to a different channel
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
                 if (limit != null)
                     queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
@@ -361,6 +372,8 @@
             /// <returns>Returns a subscription object or null if not subscribed.</returns>
             public static Models.API.v5.Subscriptions.Subscription CheckChannelSubscriptionByUser(string channelId, string userId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Get<Models.API.v5.Subscriptions.Subscription>($"https://api.twitch.tv/kraken/channels/{channelId}/subscriptions/{userId}", authToken, Requests.API.v5);
             }
             #endregion
@@ -418,6 +431,7 @@
             /// <returns>A ChannelPrivileged object that also contains the email and stream key of the channel aside from the normal channel values.</returns>
             public static Models.API.v5.Channels.ChannelAuthed ResetChannelStreamKey(string channelId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Delete<Models.API.v5.Channels.ChannelAuthed>($"https://api.twitch.tv/kraken/channels/{channelId}/stream_key", authToken, Requests.API.v5);
             }
             #endregion
@@ -431,6 +445,7 @@
             /// <returns>A Community object that represents the community the channel is in.</returns>
             public static Models.API.v5.Communities.Community GetChannelCommunity(string channelId)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Get<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/channels/{channelId}/community", null, Requests.API.v5);
             }
             #endregion
@@ -443,6 +458,8 @@
             /// <param name="communityId">The specified community to set the channel to be a part of.</param>
             public static void SetChannelCommunity(string channelId, string communityId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Put($"https://api.twitch.tv/kraken/channels/{channelId}/community/{communityId}", null, authToken, Requests.API.v5);
             }
             #endregion
@@ -453,12 +470,14 @@
             /// <param name="channelId">The specified channel to be removed.</param>
             public static void DeleteChannelFromCommunity(string channelId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Delete($"https://api.twitch.tv/kraken/channels/{channelId}/community", authToken, Requests.API.v5);
             }
             #endregion
             #endregion
         }
-
+        #endregion
+        #region Chat
         public static class Chat
         {
             #region GetChatBadgesByChannel
@@ -484,13 +503,14 @@
             }
             #endregion
             #region GetAllChatEmoticons
-            public static Models.API.v5.Chat.GetAllChatEmoticonsResponse GetAllChatEmoticons()
+            public static Models.API.v5.Chat.AllChatEmotes GetAllChatEmoticons()
             {
-                return Requests.Get<Models.API.v5.Chat.GetAllChatEmoticonsResponse>("https://api.twitch.tv/kraken/chat/emoticons", null, Requests.API.v5);
+                return Requests.Get<Models.API.v5.Chat.AllChatEmotes>("https://api.twitch.tv/kraken/chat/emoticons", null, Requests.API.v5);
             }
             #endregion
         }
-
+        #endregion
+        #region Collections
         public static class Collections
         {
             #region GetCollectionMetadata
@@ -592,24 +612,28 @@
             }
             #endregion
         }
-
+        #endregion
+        #region Communities
         public static class Communities
         {
             #region GetCommunityByName
             public static Models.API.v5.Communities.Community GetCommunityByName(string communityName)
             {
+                if (string.IsNullOrWhiteSpace(communityName)) { throw new Exceptions.API.BadParameterException("The community name is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Get<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/communities?name={communityName}", null, Requests.API.v5);
             }
             #endregion
             #region GetCommunityByID
             public static Models.API.v5.Communities.Community GetCommunityByID(string communityId)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Get<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/communities/{communityId}", null, Requests.API.v5);
             }
             #endregion
             #region UpdateCommunity
             public static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrEmpty(summary))
                     datas.Add(new KeyValuePair<string, string>("status", "\"" + summary + "\""));
@@ -669,6 +693,7 @@
             #region GetCommunityBannedUsers
             public static Models.API.v5.Communities.BannedUsers GetCommunityBannedUsers(string communityId, long? limit = null, string cursor = null, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
                 if (limit != null)
                     datas.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
@@ -690,72 +715,91 @@
             #region BanCommunityUser
             public static void BanCommunityUser(string communityId, string userId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Put($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", null, authToken, Requests.API.v5);
             }
             #endregion
             #region UnBanCommunityUser
             public static void UnBanCommunityUser(string communityId, string userId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Delete($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", authToken, Requests.API.v5);
             }
             #endregion
             #region CreateCommunityAvatarImage
             public static void CreateCommunityAvatarImage(string communityId, string avatarImage, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(avatarImage)) { throw new Exceptions.API.BadParameterException("The avatar image is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Post($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", "{\"avatar_image\": \"" + @avatarImage + "\"}", authToken);
             }
             #endregion
             #region DeleteCommunityAvatarImage
             public static void DeleteCommunityAvatarImage(string communityId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Delete($"https://api.twitch.tv/kraken/communities/{communityId}/images/avatar", authToken, Requests.API.v5);
             }
             #endregion
             #region CreateCommunityCoverImage
             public static void CreateCommunityCoverImage(string communityId, string coverImage, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(coverImage)) { throw new Exceptions.API.BadParameterException("The cover image is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Post($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", "{\"cover_image\": \"" + @coverImage + "\"}", authToken, Requests.API.v5);
             }
             #endregion
             #region DeleteCommunityCoverImage
             public static void DeleteCommunityCoverImage(string communityId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Delete($"https://api.twitch.tv/kraken/communities/{communityId}/images/cover", authToken, Requests.API.v5);
             }
             #endregion
             #region GetCommunityModerators
             public static Models.API.v5.Communities.Moderators GetCommunityModerators(string communityId)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Get<Models.API.v5.Communities.Moderators>($"https://api.twitch.tv/kraken/communities/{communityId}/moderators", null, Requests.API.v5);
             }
             #endregion
             #region AddCommunityModerator
             public static void AddCommunityModerator(string communityId, string userId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Put($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", null, authToken, Requests.API.v5);
             }
             #endregion
             #region DeleteCommunityModerator
             public static void DeleteCommunityModerator(string communityId, string userId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Delete($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", authToken, Requests.API.v5);
             }
             #endregion
             #region GetCommunityPermissions
             public static Dictionary<string, bool> GetCommunityPermissions(string communityId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return Requests.Get<Dictionary<string, bool>>($"https://api.twitch.tv/kraken/communities/{communityId}/permissions", authToken, Requests.API.v5);
             }
             #endregion
             #region ReportCommunityViolation
             public static void ReportCommunityViolation(string communityId, string channelId)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Post($"https://api.twitch.tv/kraken/communities/{communityId}/report_channel", "{\"channel_id\": \"" + channelId + "\"}", null, Requests.API.v5);
             }
             #endregion
             #region GetCommunityTimedOutUsers
             public static Models.API.v5.Communities.TimedOutUsers GetCommunityTimedOutUsers(string communityId, long? limit = null, string cursor = null, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
                 if (limit != null)
                     datas.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
@@ -777,6 +821,8 @@
             #region AddCommunityTimedOutUser
             public static void AddCommunityTimedOutUser(string communityId, string userId, int duration, string reason = null, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 string payload = "{\"duration\": \"" + duration + "\"" + ((!string.IsNullOrWhiteSpace(reason)) ? ", \"reason\": \"" + reason + "\"}" : "}");
                 Requests.Put($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", payload, authToken, Requests.API.v5);
             }
@@ -784,11 +830,14 @@
             #region DeleteCommunityTimedOutUser
             public static void DeleteCommunityTimedOutUser(string communityId, string userId, string authToken = null)
             {
+                if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 Requests.Delete($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", authToken, Requests.API.v5);
             }
             #endregion
         }
-
+        #endregion
+        #region Games
         public static class Games
         {
             #region GetTopGames
@@ -813,7 +862,8 @@
             }
             #endregion
         }
-
+        #endregion
+        #region Ingests
         public static class Ingests
         {
             #region GetIngestServerList
@@ -823,7 +873,8 @@
             }
             #endregion
         }
-
+        #endregion
+        #region Search
         public static class Search
         {
             #region SearchChannels
@@ -878,7 +929,8 @@
             }
             #endregion
         }
-
+        #endregion
+        #region Streams
         public static class Streams
         {
             #region GetStreamByUser
@@ -972,7 +1024,8 @@
             }
             #endregion
         }
-
+        #endregion
+        #region Teams
         public static class Teams
         {
             #region GetAllTeams
@@ -1004,7 +1057,8 @@
             }
             #endregion
         }
-
+        #endregion
+        #region Users
         public static class Users
         {
             #region GetUsersByName
@@ -1154,7 +1208,8 @@
             #endregion
             #endregion
         }
-
+        #endregion
+        #region Videos
         public static class Videos
         {
             #region GetVideo
@@ -1323,5 +1378,6 @@
             }
             #endregion
         }
+        #endregion
     }
 }
