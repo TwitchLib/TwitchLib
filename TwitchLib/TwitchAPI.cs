@@ -619,6 +619,16 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetChannelHosts(channelId));
             }
+
+            public static Models.API.Undocumented.ChatProperties.ChatProperties GetChatProperties(string channelName)
+            {
+                return Internal.TwitchAPI.Undocumented.GetChatProperties(channelName);
+            }
+
+            public static async Task<Models.API.Undocumented.ChatProperties.ChatProperties> GetChatPropertiesAsync(string channelName)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetChatProperties(channelName));
+            }
         }
 
         /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>

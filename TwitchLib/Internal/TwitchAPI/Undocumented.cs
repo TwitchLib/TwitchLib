@@ -44,5 +44,10 @@ namespace TwitchLib.Internal.TwitchAPI
         {
             return Requests.GetSimple<Models.API.Undocumented.Hosting.ChannelHostsResponse>($"https://tmi.twitch.tv/hosts?include_logins=1&target={channelId}");
         }
+
+        public static Models.API.Undocumented.ChatProperties.ChatProperties GetChatProperties(string channelName)
+        {
+            return Requests.Get<Models.API.Undocumented.ChatProperties.ChatProperties>($"https://api.twitch.tv/api/channels/{channelName}/chat_properties");
+        }
     }
 }
