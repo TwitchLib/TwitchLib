@@ -122,15 +122,21 @@ namespace TwitchLib.Services
                 case StreamIdentifierType.Usernames:
                     try
                     {
-                        var stream = await TwitchAPI.Streams.GetStreamAsync(channel);
+                        var stream = await TwitchAPI.Streams.v3.GetStreamAsync(channel);
                         return true;
                     } catch(Exception)
                     {
                         return false;
                     }
                 case StreamIdentifierType.UserIds:
-                    //TODO: Implement method for checking if broadcaster is online
-                    throw new NotImplementedException("v5 BroadcasterOnline method not implemented yet");
+                    try
+                    {
+                        var stream = await TwitchAPI.Streams.v5.GetStreamByUserAsync(channel);
+                        return true;
+                    }catch(Exception)
+                    {
+                        return false;
+                    }
                 default:
                     throw new UnintializedChannelList("Channel list must be initialized prior to service starting");
             }
