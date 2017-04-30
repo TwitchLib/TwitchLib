@@ -797,31 +797,316 @@
             }
             #endregion
             #region GetCollection
+            public static Models.API.v5.Collections.Collection GetCollection(string collectionId, bool? includeAllItems = null)
+            {
+                return Internal.TwitchAPI.v5.Collections.GetCollection(collectionId, includeAllItems);
+            }
 
+            public async static Task<Models.API.v5.Collections.Collection> GetCollectionAsync(string collectionId, bool? includeAllItems = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Collections.GetCollection(collectionId, includeAllItems));
+            }
             #endregion
             #region GetCollectionsByChannel
+            public static Models.API.v5.Collections.CollectionsByChannel GetCollectionsByChannel(string channelId, long? limit = null, string cursor = null, string containingItem = null)
+            {
+                return Internal.TwitchAPI.v5.Collections.GetCollectionsByChannel(channelId, limit, cursor, containingItem);
+            }
 
+            public async static Task<Models.API.v5.Collections.CollectionsByChannel> GetCollectionsByChannelAsync(string channelId, long? limit = null, string cursor = null, string containingItem = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Collections.GetCollectionsByChannel(channelId, limit, cursor, containingItem));
+            }
             #endregion
             #region CreateCollection
+            public static Models.API.v5.Collections.CollectionMetadata CreateCollection(string channelId, string collectionTitle, string authToken = null)
+            {
+                return Internal.TwitchAPI.v5.Collections.CreateCollection(channelId, collectionTitle, authToken);
+            }
 
+            public async static Task<Models.API.v5.Collections.CollectionMetadata> CreateCollectionAsync(string channelId, string collectionTitle, string authToken = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Collections.CreateCollection(channelId, collectionTitle, authToken));
+            }
             #endregion
             #region UpdateCollection
+            public static void UpdateCollection(string collectionId, string newCollectionTitle, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Collections.UpdateCollection(collectionId, newCollectionTitle, authToken);
+            }
 
+            public async static Task UpdateCollectionAsync(string collectionId, string newCollectionTitle, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Collections.UpdateCollection(collectionId, newCollectionTitle, authToken));
+            }
             #endregion
             #region CreateCollectionThumbnail
+            public static void CreateCollectionThumbnail(string collectionId, string itemId, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Collections.CreateCollectionThumbnail(collectionId, itemId, authToken);
+            }
 
+            public async static Task CreateCollectionThumbnailAsync(string collectionId, string itemId, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Collections.CreateCollectionThumbnail(collectionId, itemId, authToken));
+            }
             #endregion
             #region DeleteCollection
+            public static void DeleteCollection(string collectionId, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Collections.DeleteCollection(collectionId, authToken);
+            }
 
+            public async static Task DeleteCollectionAsync(string collectionId, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Collections.DeleteCollection(collectionId, authToken));
+            }
             #endregion
             #region AddItemToCollection
+            public static Models.API.v5.Collections.CollectionItem AddItemToCollection(string collectionId, string itemId, string itemType, string authToken = null)
+            {
+                return Internal.TwitchAPI.v5.Collections.AddItemToCollection(collectionId, itemId, itemType, authToken);
+            }
 
+            public async static Task<Models.API.v5.Collections.CollectionItem> AddItemToCollectionAsync(string collectionId, string itemId, string itemType, string authToken = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Collections.AddItemToCollection(collectionId, itemId, itemType, authToken));
+            }
             #endregion
             #region DeleteItemFromCollection
+            public static void DeleteItemFromCollection(string collectionId, string itemId, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Collections.DeleteItemFromCollection(collectionId, itemId, authToken);
+            }
 
+            public async static Task DeleteItemFromCollectionAsync(string collectionId, string itemId, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Collections.DeleteItemFromCollection(collectionId, itemId, authToken));
+            }
             #endregion
             #region MoveItemWithinCollection
+            public static void MoveItemWithinCollection(string collectionId, string itemId, int position, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Collections.MoveItemWithinCollection(collectionId, itemId, position, authToken);
+            }
 
+            public async static Task MoveItemWithinCollectionAsync(string collectionId, string itemId, int position, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Collections.MoveItemWithinCollection(collectionId, itemId, position, authToken));
+            }
+            #endregion
+        }
+
+        public static class Communities
+        {
+            #region GetCommunityByName
+            public static Models.API.v5.Communities.Community GetCommunityByName(string communityName)
+            {
+                return Internal.TwitchAPI.v5.Communities.GetCommunityByName(communityName);
+            }
+
+            public async static Task<Models.API.v5.Communities.Community> GetCommunityByNameAsync(string communityName)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Communities.GetCommunityByName(communityName));
+            }
+            #endregion
+            #region GetCommunityByID
+            public static Models.API.v5.Communities.Community GetCommunityByID(string communityId)
+            {
+                return Internal.TwitchAPI.v5.Communities.GetCommunityByID(communityId);
+            }
+
+            public async static Task<Models.API.v5.Communities.Community> GetCommunityByIDAsync(string communityId)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Communities.GetCommunityByID(communityId));
+            }
+            #endregion
+            #region UpdateCommunity
+            public static void UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Communities.UpdateCommunity(communityId, summary, description, rules, email, authToken);
+            }
+
+            public async static Task UpdateCommunityAsync(string communityId, string summary = null, string description = null, string rules = null, string email = null, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Communities.UpdateCommunity(communityId, summary, description, rules, email, authToken));
+            }
+            #endregion
+            #region GetTopCommunities
+            public static Models.API.v5.Communities.TopCommunities GetTopCommunities(long? limit = null, string cursor = null)
+            {
+                return Internal.TwitchAPI.v5.Communities.GetTopCommunities(limit, cursor);
+            }
+
+            public async static Task<Models.API.v5.Communities.TopCommunities> GetTopCommunitiesAsync(long? limit = null, string cursor = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Communities.GetTopCommunities(limit, cursor));
+            }
+            #endregion
+            #region GetCommunityBannedUsers
+            public static Models.API.v5.Communities.BannedUsers GetCommunityBannedUsers(string communityId, long? limit = null, string cursor = null, string authToken = null)
+            {
+                return Internal.TwitchAPI.v5.Communities.GetCommunityBannedUsers(communityId, limit, cursor, authToken);
+            }
+
+            public async static Task<Models.API.v5.Communities.BannedUsers> GetCommunityBannedUsersAsync(string communityId, long? limit = null, string cursor = null, string authToken = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Communities.GetCommunityBannedUsers(communityId, limit, cursor, authToken));
+            }
+            #endregion
+            #region BanCommunityUser
+            public static void BanCommunityUser(string communityId, string userId, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Communities.BanCommunityUser(communityId, userId, authToken);
+            }
+
+            public static void BanCommunityUserAsync(string communityId, string userId, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Communities.BanCommunityUser(communityId, userId, authToken);
+            }
+            #endregion
+            #region UnBanCommunityUser
+            public static void UnBanCommunityUser(string communityId, string userId, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Communities.UnBanCommunityUser(communityId, userId, authToken);
+            }
+
+            public async static Task UnBanCommunityUserAsync(string communityId, string userId, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Communities.UnBanCommunityUser(communityId, userId, authToken));
+            }
+            #endregion
+            #region CreateCommunityAvatarImage
+            public static void CreateCommunityAvatarImage(string communityId, string avatarImage, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Communities.CreateCommunityAvatarImage(communityId, avatarImage, authToken);
+            }
+
+            public async static Task CreateCommunityAvatarImageAsync(string communityId, string avatarImage, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Communities.CreateCommunityAvatarImage(communityId, avatarImage, authToken));
+            }
+            #endregion
+            #region DeleteCommunityAvatarImage
+            public static void DeleteCommunityAvatarImage(string communityId, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Communities.DeleteCommunityAvatarImage(communityId, authToken);
+            }
+
+            public async static Task DeleteCommunityAvatarImageAsync(string communityId, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Communities.DeleteCommunityAvatarImage(communityId, authToken));
+            }
+            #endregion
+            #region CreateCommunityCoverImage
+            public static void CreateCommunityCoverImage(string communityId, string coverImage, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Communities.CreateCommunityCoverImage(communityId, coverImage, authToken);
+            }
+
+            public async static Task CreateCommunityCoverImageAsync(string communityId, string coverImage, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Communities.CreateCommunityCoverImage(communityId, coverImage, authToken));
+            }
+            #endregion
+            #region DeleteCommunityCoverImage
+            public static void DeleteCommunityCoverImage(string communityId, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Communities.DeleteCommunityCoverImage(communityId, authToken);
+            }
+
+            public async static Task DeleteCommunityCoverImageAsync(string communityId, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Communities.DeleteCommunityCoverImage(communityId, authToken));
+            }
+            #endregion
+            #region GetCommunityModerators
+            public static Models.API.v5.Communities.Moderators GetCommunityModerators(string communityId)
+            {
+                return Internal.TwitchAPI.v5.Communities.GetCommunityModerators(communityId);
+            }
+
+            public async static Task<Models.API.v5.Communities.Moderators> GetCommunityModeratorsAsync(string communityId)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Communities.GetCommunityModerators(communityId));
+            }
+            #endregion
+            #region AddCommunityModerator
+            public static void AddCommunityModerator(string communityId, string userId, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Communities.AddCommunityModerator(communityId, userId, authToken);
+            }
+
+            public async static Task AddCommunityModeratorAsync(string communityId, string userId, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Communities.AddCommunityModerator(communityId, userId, authToken));
+            }
+            #endregion
+            #region DeleteCommunityModerator
+            public static void DeleteCommunityModerator(string communityId, string userId, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Communities.DeleteCommunityModerator(communityId, userId, authToken);
+            }
+
+            public async static Task DeleteCommunityModeratorAsync(string communityId, string userId, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Communities.DeleteCommunityModerator(communityId, userId, authToken));
+            }
+            #endregion
+            #region GetCommunityPermissions
+            public static Dictionary<string, bool> GetCommunityPermissions(string communityId, string authToken = null)
+            {
+                return Internal.TwitchAPI.v5.Communities.GetCommunityPermissions(communityId, authToken);
+            }
+
+            public async static Task<Dictionary<string, bool>> GetCommunityPermissionsAsync(string communityId, string authToken = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Communities.GetCommunityPermissions(communityId, authToken));
+            }
+            #endregion
+            #region ReportCommunityViolation
+            public static void ReportCommunityViolation(string communityId, string channelId)
+            {
+                Internal.TwitchAPI.v5.Communities.ReportCommunityViolation(communityId, channelId);
+            }
+
+            public async static Task ReportCommunityViolationAsync(string communityId, string channelId)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Communities.ReportCommunityViolation(communityId, channelId));
+            }
+            #endregion
+            #region GetCommunityTimedOutUsers
+            public static Models.API.v5.Communities.TimedOutUsers GetCommunityTimedOutUsers(string communityId, long? limit = null, string cursor = null, string authToken = null)
+            {
+                return Internal.TwitchAPI.v5.Communities.GetCommunityTimedOutUsers(communityId, limit, cursor, authToken);
+            }
+
+            public async static Task<Models.API.v5.Communities.TimedOutUsers> GetCommunityTimedOutUsersAsync(string communityId, long? limit = null, string cursor = null, string authToken = null)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Communities.GetCommunityTimedOutUsers(communityId, limit, cursor, authToken));
+            }
+            #endregion
+            #region AddCommunityTimedOutUser
+            public static void AddCommunityTimedOutUser(string communityId, string userId, int duration, string reason = null, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Communities.AddCommunityTimedOutUser(communityId, userId, duration, reason, authToken);
+            }
+
+            public async static Task AddCommunityTimedOutUserAsync(string communityId, string userId, int duration, string reason = null, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Communities.AddCommunityTimedOutUser(communityId, userId, duration, reason, authToken));
+            }
+            #endregion
+            #region DeleteCommunityTimedOutUser
+            public static void DeleteCommunityTimedOutUser(string communityId, string userId, string authToken = null)
+            {
+                Internal.TwitchAPI.v5.Communities.DeleteCommunityTimedOutUser(communityId, userId, authToken);
+            }
+
+            public async static Task DeleteCommunityTimedOutUserAsync(string communityId, string userId, string authToken = null)
+            {
+                await Task.Run(() => Internal.TwitchAPI.v5.Communities.DeleteCommunityTimedOutUser(communityId, userId, authToken));
+            }
             #endregion
         }
 
