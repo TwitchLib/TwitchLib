@@ -4,7 +4,7 @@
     using System;
     using System.Collections.Generic;
     #endregion
-    public static class v5
+    internal static class v5
     {
         #region Root
         public static class Root

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace TwitchLib.Internal.TwitchAPI
 {
-    public static class v4
+    internal static class v4
     {
         public static Models.API.v4.Clips.Clip GetClip(string slug)
         {

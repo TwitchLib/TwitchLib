@@ -21,8 +21,50 @@
             public static List<Enums.AuthScopes> Scopes { get { return Internal.TwitchAPI.Shared.Scopes; } }
         }
 
+        public static class Badges
+        {
+            #region GetSubscriberBadgesForChannel
+            public static Models.API.v5.Badges.ChannelDisplayBadges GetSubscriberBadgesForChannel(string channelId)
+            {
+                return Internal.TwitchAPI.v5.Badges.GetSubscriberBadgesForChannel(channelId);
+            }
+
+            public static async Task<Models.API.v5.Badges.ChannelDisplayBadges> GetSubscriberBadgesForChannelAsync(string channelId)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Badges.GetSubscriberBadgesForChannel(channelId));
+            }
+            #endregion
+            #region GetGlobalBadges
+            public static Models.API.v5.Badges.GlobalBadgesResponse GetGlobalBadges()
+            {
+                return Internal.TwitchAPI.v5.Badges.GetGlobalBadges();
+            }
+
+            public static async Task<Models.API.v5.Badges.GlobalBadgesResponse> GetGlobalBadgesAsync()
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Badges.GetGlobalBadges());
+            }
+            #endregion
+        }
+
+        public static class Bits
+        {
+            #region GetCheermotes
+            public static Models.API.v5.Bits.Action[] GetCheermotes(string channelId = null)
+            {
+                return Internal.TwitchAPI.v5.Bits.GetCheermotes(channelId);
+            }
+
+            public static async Task<Models.API.v5.Bits.Action[]> GetCheermotesAsync(string channelId = null)
+            {
+                return Internal.TwitchAPI.v5.Bits.GetCheermotes(channelId);
+            }
+            #endregion
+        }
+
         public static class Blocks
         {
+            #region GetBlocks
             public static Models.API.v3.Blocks.GetBlocksResponse GetBlocks(string channel, int limit = 25, int offset = 0, string accessToken = null)
             {
                 return Internal.TwitchAPI.v3.Blocks.GetBlocks(channel, limit, offset, accessToken);
@@ -32,7 +74,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.v3.Blocks.GetBlocks(channel, limit, offset, accessToken));
             }
-
+            #endregion
+            #region CreateBlock
             public static Models.API.v3.Blocks.Block CreateBlock(string channel, string target, string accessToken = null)
             {
                 return Internal.TwitchAPI.v3.Blocks.CreateBlock(channel, target, accessToken);
@@ -42,7 +85,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.v3.Blocks.CreateBlock(channel, target, accessToken));
             }
-
+            #endregion
+            #region RemoveBlock
             public static void RemoveBlock(string channel, string target, string accessToken = null)
             {
                 Internal.TwitchAPI.v3.Blocks.RemoveBlock(channel, target, accessToken);
@@ -52,175 +96,698 @@
             {
                 await Task.Run(() => Internal.TwitchAPI.v3.Blocks.RemoveBlock(channel, target, accessToken));
             }
+            #endregion
         }
 
         public static class ChannelFeeds
         {
-            public static Models.API.v3.ChannelFeeds.ChannelFeedResponse GetChannelFeedPosts(string channel, int limit = 25, string cursor = null)
+            public static class v3
             {
-                return Internal.TwitchAPI.v3.ChannelFeed.GetChannelFeedPosts(channel, limit, cursor);
-            }
+                #region GetChannelFeedPosts
+                public static Models.API.v3.ChannelFeeds.ChannelFeedResponse GetChannelFeedPosts(string channel, int limit = 25, string cursor = null)
+                {
+                    return Internal.TwitchAPI.v3.ChannelFeed.GetChannelFeedPosts(channel, limit, cursor);
+                }
 
-            public async static Task<Models.API.v3.ChannelFeeds.ChannelFeedResponse> GetChannelFeedPostsAsync(string channel, int limit = 25, string cursor = null)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.GetChannelFeedPosts(channel, limit, cursor));
-            }
+                public async static Task<Models.API.v3.ChannelFeeds.ChannelFeedResponse> GetChannelFeedPostsAsync(string channel, int limit = 25, string cursor = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.GetChannelFeedPosts(channel, limit, cursor));
+                }
+                #endregion
+                #region CreatePost
+                public static Models.API.v3.ChannelFeeds.PostResponse CreatePost(string channel, string content, bool share = false, string accessToken = null)
+                {
+                    return Internal.TwitchAPI.v3.ChannelFeed.CreatePost(channel, content, share, accessToken);
+                }
 
-            public static Models.API.v3.ChannelFeeds.PostResponse CreatePost(string channel, string content, bool share = false, string accessToken = null)
-            {
-                return Internal.TwitchAPI.v3.ChannelFeed.CreatePost(channel, content, share, accessToken);
-            }
+                public static async Task<Models.API.v3.ChannelFeeds.PostResponse> CreatePostAsync(string channel, string content, bool share = false, string accessToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.CreatePost(channel, content, share, accessToken));
+                }
+                #endregion
+                #region GetPostById
+                public static Models.API.v3.ChannelFeeds.Post GetPostById(string channel, string postId)
+                {
+                    return Internal.TwitchAPI.v3.ChannelFeed.GetPost(channel, postId);
+                }
 
-            public static async Task<Models.API.v3.ChannelFeeds.PostResponse> CreatePostAsync(string channel, string content, bool share = false, string accessToken = null)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.CreatePost(channel, content, share, accessToken));
-            }
+                public static async Task<Models.API.v3.ChannelFeeds.Post> GetPostByIdAsync(string channel, string postId)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.GetPost(channel, postId));
+                }
+                #endregion
+                #region RemovePost
+                public static void RemovePost(string channel, string postId, string accessToken = null)
+                {
+                    Internal.TwitchAPI.v3.ChannelFeed.DeletePost(channel, postId, accessToken);
+                }
 
-            public static Models.API.v3.ChannelFeeds.Post GetPostById(string channel, string postId)
-            {
-                return Internal.TwitchAPI.v3.ChannelFeed.GetPost(channel, postId);
-            }
+                public static async Task RemovePostAsync(string channel, string postId, string accessToken = null)
+                {
+                    await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.DeletePost(channel, postId, accessToken));
+                }
+                #endregion
+                #region CreateReaction
+                public static void CreateReaction(string channel, string postId, string emoteId, string accessToken = null)
+                {
+                    Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId, accessToken);
+                }
 
-            public static async Task<Models.API.v3.ChannelFeeds.Post> GetPostByIdAsync(string channel, string postId)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.GetPost(channel, postId));
-            }
+                public static async Task CreateReactionAsync(string channel, string postId, string emoteId, string accessToken = null)
+                {
+                    await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId, accessToken));
+                }
+                #endregion
+                #region RemoveReaction
+                public static void RemoveReaction(string channel, string postId, string emoteId, string accessToken = null)
+                {
+                    Internal.TwitchAPI.v3.ChannelFeed.RemoveReaction(channel, postId, emoteId, accessToken);
+                }
 
-            public static void RemovePost(string channel, string postId, string accessToken = null)
-            {
-                Internal.TwitchAPI.v3.ChannelFeed.DeletePost(channel, postId, accessToken);
+                public static async Task RemoveReactionAsync(string channel, string postId, string emoteId, string accessToken = null)
+                {
+                    await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.RemoveReaction(channel, postId, emoteId, accessToken));
+                }
+                #endregion
             }
-
-            public static async Task RemovePostAsync(string channel, string postId, string accessToken = null)
+            
+            public static class v5
             {
-                await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.DeletePost(channel, postId, accessToken));
-            }
+                #region GetMultipleFeedPosts
+                public static Models.API.v5.ChannelFeed.MultipleFeedPosts GetMultipleFeedPosts(string channelId, long? limit = null, string cursor = null, long? comments = null, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.ChannelFeed.GetMultipleFeedPosts(channelId, limit, cursor, comments, authToken);
+                }
 
-            public static void CreateReaction(string channel, string postId, string emoteId, string accessToken = null)
-            {
-                Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId, accessToken);
-            }
+                public async static Task<Models.API.v5.ChannelFeed.MultipleFeedPosts> GetMultipleFeedPostsAsync(string channelId, long? limit = null, string cursor = null, long? comments = null, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.GetMultipleFeedPosts(channelId, limit, cursor, comments, authToken));
+                }
+                #endregion
+                #region GetFeedPosts
+                public static Models.API.v5.ChannelFeed.FeedPost GetFeedPost(string channelId, string postId, long? comments = null, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.ChannelFeed.GetFeedPost(channelId, postId, comments, authToken);
+                }
 
-            public static async Task CreateReactionAsync(string channel, string postId, string emoteId, string accessToken = null)
-            {
-                await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId, accessToken));
-            }
+                public async static Task<Models.API.v5.ChannelFeed.FeedPost> GetFeedPostAsync(string channelId, string postId, long? comments = null, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.GetFeedPost(channelId, postId, comments, authToken));
+                }
+                #endregion
+                #region CreateFeedPost
+                public static Models.API.v5.ChannelFeed.FeedPostCreation CreateFeedPost(string channelId, string content, bool? share = null, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.ChannelFeed.CreateFeedPost(channelId, content, share, authToken);
+                }
 
-            public static void RemoveReaction(string channel, string postId, string emoteId, string accessToken = null)
-            {
-                Internal.TwitchAPI.v3.ChannelFeed.RemoveReaction(channel, postId, emoteId, accessToken);
-            }
+                public async static Task<Models.API.v5.ChannelFeed.FeedPostCreation> CreateFeedPostAsync(string channelId, string content, bool? share = null, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.CreateFeedPost(channelId, content, share, authToken));
+                }
+                #endregion
+                #region DeleteFeedPost
+                public static Models.API.v5.ChannelFeed.FeedPost DeleteFeedPost(string channelId, string postId, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.ChannelFeed.DeleteFeedPost(channelId, postId, authToken);
+                }
 
-            public static async Task RemoveReactionAsync(string channel, string postId, string emoteId, string accessToken = null)
-            {
-                await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.RemoveReaction(channel, postId, emoteId, accessToken));
+                public async static Task<Models.API.v5.ChannelFeed.FeedPost> DeleteFeedPostAsync(string channelId, string postId, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.DeleteFeedPost(channelId, postId, authToken));
+                }
+                #endregion
+                #region CreateReactionToFeedPost
+                public static Models.API.v5.ChannelFeed.FeedPostReactionPost CreateReactionToFeedPost(string channelId, string postId, string emoteId, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.ChannelFeed.CreateReactionToFeedPost(channelId, postId, emoteId, authToken);
+                }
+
+                public async static Task<Models.API.v5.ChannelFeed.FeedPostReactionPost> CreateReactionToFeedPostAsync(string channelId, string postId, string emoteId, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.CreateReactionToFeedPost(channelId, postId, emoteId, authToken));
+                }
+                #endregion
+                #region DeleteReactionToFeedPost
+                public static void DeleteReactionToFeedPost(string channelId, string postId, string emoteId, string authToken = null)
+                {
+                    Internal.TwitchAPI.v5.ChannelFeed.DeleteReactionToFeedPost(channelId, postId, emoteId, authToken);
+                }
+
+                public static Task DeleteReactionToFeedPostAsync(string channelId, string postId, string emoteId, string authToken = null)
+                {
+                    return Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.DeleteReactionToFeedPost(channelId, postId, emoteId, authToken));
+                }
+                #endregion
+                #region GetFeedComments
+                public static Models.API.v5.ChannelFeed.FeedPostComments GetFeedComments(string channelId, string postId, long? limit = null, string cursor = null, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.ChannelFeed.GetFeedComments(channelId, postId, limit, cursor, authToken);
+                }
+
+                public async static Task<Models.API.v5.ChannelFeed.FeedPostComments> GetFeedCommentsAsync(string channelId, string postId, long? limit = null, string cursor = null, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.GetFeedComments(channelId, postId, limit, cursor, authToken));
+                }
+                #endregion
+                #region CreateFeedComment
+                public static Models.API.v5.ChannelFeed.FeedPostComment CreateFeedComment(string channelId, string postId, string content, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.ChannelFeed.CreateFeedComment(channelId, postId, content, authToken);
+                }
+
+                public async static Task<Models.API.v5.ChannelFeed.FeedPostComment> CreateFeedCommentAsync(string channelId, string postId, string content, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.CreateFeedComment(channelId, postId, content, authToken));
+                }
+                #endregion
+                #region DeleteFeedComment
+                public static Models.API.v5.ChannelFeed.FeedPostComment DeleteFeedComment(string channelId, string postId, string commentId, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.ChannelFeed.DeleteFeedComment(channelId, postId, commentId, authToken);
+                }
+
+                public async static Task<Models.API.v5.ChannelFeed.FeedPostComment> DeleteFeedCommentAsync(string channelId, string postId, string commentId, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.DeleteFeedComment(channelId, postId, commentId, authToken));
+                }
+                #endregion
+                #region CreateReactionToFeedComments
+                public static Models.API.v5.ChannelFeed.FeedPostReactionPost CreateReactionToFeedComment(string channelId, string postId, string commentId, string emoteId, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.ChannelFeed.CreateReactionToFeedComment(channelId, postId, commentId, emoteId, authToken);
+                }
+
+                public async static Task<Models.API.v5.ChannelFeed.FeedPostReactionPost> CreateReactionToFeedCommentAsync(string channelId, string postId, string commentId, string emoteId, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.CreateReactionToFeedComment(channelId, postId, commentId, emoteId, authToken));
+                }
+                #endregion
+                #region DeleteReactionToFeedComments
+                public static void DeleteReactionToFeedComment(string channelId, string postId, string commentId, string emoteId, string authToken = null)
+                {
+                    Internal.TwitchAPI.v5.ChannelFeed.DeleteReactionToFeedComment(channelId, postId, commentId, emoteId, authToken);
+                }
+
+                public static Task DeleteReactionToFeedCommentAsync(string channelId, string postId, string commentId, string emoteId, string authToken = null)
+                {
+                    return Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.DeleteReactionToFeedComment(channelId, postId, commentId, emoteId, authToken));
+                }
+                #endregion
             }
         }
 
         public static class Channels
         {
-            public static Models.API.v3.Channels.Channel GetChannelByName(string channel)
+            public static class v3
             {
-                return Internal.TwitchAPI.v3.Channels.GetChannelByName(channel);
-            }
+                #region GetChannelByName
+                public static Models.API.v3.Channels.Channel GetChannelByName(string channel)
+                {
+                    return Internal.TwitchAPI.v3.Channels.GetChannelByName(channel);
+                }
 
-            public static async Task<Models.API.v3.Channels.Channel> GetChannelByNameAsync(string channel)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannelByName(channel));
-            }
+                public static async Task<Models.API.v3.Channels.Channel> GetChannelByNameAsync(string channel)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannelByName(channel));
+                }
+                #endregion
+                #region GetChannel
+                public static Models.API.v3.Channels.Channel GetChannel()
+                {
+                    return Internal.TwitchAPI.v3.Channels.GetChannel();
+                }
 
-            public static Models.API.v3.Channels.Channel GetChannel()
-            {
-                return Internal.TwitchAPI.v3.Channels.GetChannel();
-            }
+                public static async Task<Models.API.v3.Channels.Channel> GetChannelAsync()
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannel());
+                }
+                #endregion
+                #region GetChannelEditors
+                public static Models.API.v3.Channels.GetEditorsResponse GetChannelEditors(string channel, string accessToken = null)
+                {
+                    return Internal.TwitchAPI.v3.Channels.GetChannelEditors(channel, accessToken);
+                }
 
-            public static async Task<Models.API.v3.Channels.Channel> GetChannelAsync()
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannel());
-            }
+                public static async Task<Models.API.v3.Channels.GetEditorsResponse> GetChannelEditorsAsync(string channel, string accessToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannelEditors(channel, accessToken));
+                }
+                #endregion
+                #region UpdateChannel
+                public static Models.API.v3.Channels.Channel UpdateChannel(string channel, string status = null, string game = null, string delay = null, bool? channelFeed = null, string accessToken = null)
+                {
+                    return Internal.TwitchAPI.v3.Channels.UpdateChannel(channel, status, game, delay, channelFeed, accessToken);
+                }
 
-            public static Models.API.v3.Channels.GetEditorsResponse GetChannelEditors(string channel, string accessToken = null)
-            {
-                return Internal.TwitchAPI.v3.Channels.GetChannelEditors(channel, accessToken);
-            }
+                public static async Task<Models.API.v3.Channels.Channel> UpdateChannelAsync(string channel, string status = null, string game = null, string delay = null, bool? channelFeed = null, string accessToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Channels.UpdateChannel(channel, status, game, delay, channelFeed, accessToken));
+                }
+                #endregion
+                #region ResetStreamKey
+                public static Models.API.v3.Channels.ResetStreamKeyResponse ResetStreamKey(string channel, string accessToken = null)
+                {
+                    return Internal.TwitchAPI.v3.Channels.ResetStreamKey(channel, accessToken);
+                }
 
-            public static async Task<Models.API.v3.Channels.GetEditorsResponse> GetChannelEditorsAsync(string channel, string accessToken = null)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannelEditors(channel, accessToken));
-            }
+                public static async Task<Models.API.v3.Channels.ResetStreamKeyResponse> ResetStreamKeyAsync(string channel, string accessToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Channels.ResetStreamKey(channel, accessToken));
+                }
+                #endregion
+                #region RunCommercial
+                public static void RunCommercial(string channel, Enums.CommercialLength length, string accessToken = null)
+                {
+                    Internal.TwitchAPI.v3.Channels.RunCommercial(channel, length, accessToken);
+                }
 
-            public static Models.API.v3.Channels.Channel UpdateChannel(string channel, string status = null, string game = null, string delay = null, bool? channelFeed = null, string accessToken = null)
-            {
-                return Internal.TwitchAPI.v3.Channels.UpdateChannel(channel, status, game, delay, channelFeed, accessToken);
-            }
+                public static async Task RunCommercialAsync(string channel, Enums.CommercialLength length, string accessToken = null)
+                {
+                    await Task.Run(() => Internal.TwitchAPI.v3.Channels.RunCommercial(channel, length, accessToken));
+                }
+                #endregion
+                #region GetTeams
+                public static Models.API.v3.Channels.GetTeamsResponse GetTeams(string channel)
+                {
+                    return Internal.TwitchAPI.v3.Channels.GetTeams(channel);
+                }
 
-            public static async Task<Models.API.v3.Channels.Channel> UpdateChannelAsync(string channel, string status = null, string game = null, string delay = null, bool? channelFeed = null, string accessToken = null)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Channels.UpdateChannel(channel, status, game, delay, channelFeed, accessToken));
+                public static async Task<Models.API.v3.Channels.GetTeamsResponse> GetTeamsAsync(string channel)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetTeams(channel));
+                }
+                #endregion
             }
-
-            public static Models.API.v3.Channels.ResetStreamKeyResponse ResetStreamKey(string channel, string accessToken = null)
+            public static class v5
             {
-                return Internal.TwitchAPI.v3.Channels.ResetStreamKey(channel, accessToken);
-            }
+                #region GetChannel
+                /// <summary>
+                /// [SYNC] Gets a channel object based on a specified OAuth token.<para/>
+                /// Get Channel returns more data than Get Channel by ID because Get Channel is privileged.<para/>
+                /// <para>Required Authentication Scope: channel_read</para>
+                /// </summary>
+                /// <returns>A ChannelPrivileged object including all Channel object info plus email and streamkey.</returns>
+                public static Models.API.v5.Channels.ChannelAuthed GetChannel(string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Channels.GetChannel(authToken);
+                }
 
-            public static async Task<Models.API.v3.Channels.ResetStreamKeyResponse> ResetStreamKeyAsync(string channel, string accessToken = null)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Channels.ResetStreamKey(channel, accessToken));
-            }
+                /// <summary>
+                /// [ASYNC] Gets a channel object based on a specified OAuth token.<para/>
+                /// Get Channel returns more data than Get Channel by ID because Get Channel is privileged.<para/>
+                /// <para>Required Authentication Scope: channel_read</para>
+                /// </summary>
+                /// <returns>A ChannelPrivileged object including all Channel object info plus email and streamkey.</returns>
+                public async static Task<Models.API.v5.Channels.ChannelAuthed> GetChannelAsync(string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannel(authToken));
+                }
+                #endregion
+                #region GetChannelById
+                /// <summary>
+                /// [SYNC] Gets a speicified channel object.<para/>
+                /// </summary>
+                /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
+                /// <returns>A Channel object from the response of the Twitch API.</returns>
+                public static Models.API.v5.Channels.Channel GetChannelByID(string channelId)
+                {
+                    return Internal.TwitchAPI.v5.Channels.GetChannelByID(channelId);
+                }
 
-            public static void RunCommercial(string channel, Enums.CommercialLength length, string accessToken = null)
-            {
-                Internal.TwitchAPI.v3.Channels.RunCommercial(channel, length, accessToken);
-            }
+                /// <summary>
+                /// [ASYNC] Gets a speicified channel object.<para/>
+                /// </summary>
+                /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
+                /// <returns>A Channel object from the response of the Twitch API.</returns>
+                public async static Task<Models.API.v5.Channels.Channel> GetChannelByIDAsync(string channelId)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannelByID(channelId));
+                }
+                #endregion
+                #region UpdateChannel
+                /// <summary>
+                /// [SYNC] Updates specified properties of a specified channel.<para/>
+                /// In the request, the new properties are specified as a JSON object representation.<para/>
+                /// <para>Required Authentication Scopes: To update delay or channel_feed_enabled parameter: a channel_editor token from the channel owner. To update other parameters: channel_editor.</para>
+                /// </summary>
+                /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
+                /// <param name="status">Description of the broadcaster’s status, displayed as a title on the channel page.</param>
+                /// <param name="game">Name of the game.</param>
+                /// <param name="delay">Channel delay, in seconds. This inserts a delay in the live feed. Requires the channel owner’s OAuth token.</param>
+                /// <param name="channelFeedEnabled">If true, the channel’s feed is turned on. Requires the channel owner’s OAuth token. Default: false.</param>
+                /// <returns>A Channel object with the newly changed properties.</returns>
+                public static Models.API.v5.Channels.Channel UpdateChannel(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Channels.UpdateChannel(channelId, status, game, delay, channelFeedEnabled, authToken);
+                }
 
-            public static async Task RunCommercialAsync(string channel, Enums.CommercialLength length, string accessToken = null)
-            {
-                await Task.Run(() => Internal.TwitchAPI.v3.Channels.RunCommercial(channel, length, accessToken));
-            }
+                /// <summary>
+                /// [ASYNC] Updates specified properties of a specified channel.<para/>
+                /// In the request, the new properties are specified as a JSON object representation.<para/>
+                /// <para>Required Authentication Scopes: To update delay or channel_feed_enabled parameter: a channel_editor token from the channel owner. To update other parameters: channel_editor.</para>
+                /// </summary>
+                /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
+                /// <param name="status">Description of the broadcaster’s status, displayed as a title on the channel page.</param>
+                /// <param name="game">Name of the game.</param>
+                /// <param name="delay">Channel delay, in seconds. This inserts a delay in the live feed. Requires the channel owner’s OAuth token.</param>
+                /// <param name="channelFeedEnabled">If true, the channel’s feed is turned on. Requires the channel owner’s OAuth token. Default: false.</param>
+                /// <returns>A Channel object with the newly changed properties.</returns>
+                public async static Task<Models.API.v5.Channels.Channel> UpdateChannelAsync(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.UpdateChannel(channelId, status, game, delay, channelFeedEnabled, authToken));
+                }
+                #endregion
+                #region GetChannelEditors
+                /// <summary>
+                /// <para>[SYNC] Gets a list of users who are editors for a specified channel.</para>
+                /// <para>Required Authentication Scope: channel_read</para>
+                /// </summary>
+                /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
+                /// <returns>A ChannelEditors object that contains an array of the Users which are Editor of the channel.</returns>
+                public static Models.API.v5.Channels.ChannelEditors GetChannelEditors(string channelId, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Channels.GetChannelEditors(channelId, authToken);
+                }
 
-            public static Models.API.v3.Channels.GetTeamsResponse GetTeams(string channel)
-            {
-                return Internal.TwitchAPI.v3.Channels.GetTeams(channel);
-            }
+                /// <summary>
+                /// <para>[ASYNC] Gets a list of users who are editors for a specified channel.</para>
+                /// <para>Required Authentication Scope: channel_read</para>
+                /// </summary>
+                /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
+                /// <returns>A ChannelEditors object that contains an array of the Users which are Editor of the channel.</returns>
+                public async static Task<Models.API.v5.Channels.ChannelEditors> GetChannelEditorsAsync(string channelId, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannelEditors(channelId, authToken));
+                }
+                #endregion
+                #region GetChannelFollowers
+                /// <summary>
+                /// <para>[SYNC] Gets a list of users who follow a specified channel, sorted by the date when they started following the channel (newest first, unless specified otherwise).</para>
+                /// </summary>
+                /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
+                /// <param name="limit">Maximum number of objects to return. Default: 25. Maximum: 100.</param>
+                /// <param name="offset">Object offset for pagination of results. Default: 0.</param>
+                /// <param name="cursor">Tells the server where to start fetching the next set of results, in a multi-page response.</param>
+                /// <param name="direction">Sorting direction. Valid values: "asc", "desc" (newest first). Default: "desc".</param>
+                /// <returns>A ChannelFollowers object that represents the response from the Twitch API.</returns>
+                public static Models.API.v5.Channels.ChannelFollowers GetChannelFollowers(string channelId, int? limit = null, int? offset = null, string cursor = null, string direction = null)
+                {
+                    return Internal.TwitchAPI.v5.Channels.GetChannelFollowers(channelId, limit, offset, cursor, direction);
+                }
 
-            public static async Task<Models.API.v3.Channels.GetTeamsResponse> GetTeamsAsync(string channel)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetTeams(channel));
+                /// <summary>
+                /// <para>[ASYNC] Gets a list of users who follow a specified channel, sorted by the date when they started following the channel (newest first, unless specified otherwise).</para>
+                /// </summary>
+                /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
+                /// <param name="limit">Maximum number of objects to return. Default: 25. Maximum: 100.</param>
+                /// <param name="offset">Object offset for pagination of results. Default: 0.</param>
+                /// <param name="cursor">Tells the server where to start fetching the next set of results, in a multi-page response.</param>
+                /// <param name="direction">Sorting direction. Valid values: "asc", "desc" (newest first). Default: "desc".</param>
+                /// <returns>A ChannelFollowers object that represents the response from the Twitch API.</returns>
+                public async static Task<Models.API.v5.Channels.ChannelFollowers> GetChannelFollowersAsync(string channelId, int? limit = null, int? offset = null, string cursor = null, string direction = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannelFollowers(channelId, limit, offset, cursor, direction));
+                }
+                #endregion
+                #region GetChannelTeams
+                /// <summary>
+                /// <para>[SYNC] Gets a list of teams to which a specified channel belongs.</para>
+                /// </summary>
+                /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
+                /// <returns>An Array of the Teams the Channel belongs to.</returns>
+                public static Models.API.v5.Channels.ChannelTeams GetChannelTeams(string channelId)
+                {
+                    return Internal.TwitchAPI.v5.Channels.GetChannelTeams(channelId);
+                }
+
+                /// <summary>
+                /// <para>[ASYNC] Gets a list of teams to which a specified channel belongs.</para>
+                /// </summary>
+                /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
+                /// <returns>An Array of the Teams the Channel belongs to.</returns>
+                public async static Task<Models.API.v5.Channels.ChannelTeams> GetChannelTeamsAsync(string channelId)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannelTeams(channelId));
+                }
+                #endregion
+                #region GetChannelSubscribers
+                /// <summary>
+                /// <para>[SYNC] Gets a list of users subscribed to a specified channel, sorted by the date when they subscribed.</para>
+                /// <para>Required Authentication Scope: channel_subscriptions</para>
+                /// </summary>
+                /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
+                /// <param name="limit">Maximum number of objects to return. Default: 25. Maximum: 100.</param>
+                /// <param name="offset">Object offset for pagination of results. Default: 0.</param>
+                /// <param name="direction">Sorting direction. Valid values: "asc", "desc" (newest first). Default: "desc".</param>
+                /// <param name="authToken">The associated auth token for this request.</param>
+                /// <returns></returns>
+                public static Models.API.v5.Channels.ChannelSubscribers GetChannelSubscribers(string channelId, int? limit = null, int? offset = null, string direction = null, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Channels.GetChannelSubscribers(channelId, limit, offset, direction, authToken);
+                }
+
+                /// <summary>
+                /// <para>[ASYNC] Gets a list of users subscribed to a specified channel, sorted by the date when they subscribed.</para>
+                /// <para>Required Authentication Scope: channel_subscriptions</para>
+                /// </summary>
+                /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
+                /// <param name="limit">Maximum number of objects to return. Default: 25. Maximum: 100.</param>
+                /// <param name="offset">Object offset for pagination of results. Default: 0.</param>
+                /// <param name="direction">Sorting direction. Valid values: "asc", "desc" (newest first). Default: "desc".</param>
+                /// <param name="authToken">The associated auth token for this request.</param>
+                /// <returns></returns>
+                public async static Task<Models.API.v5.Channels.ChannelSubscribers> GetChannelSubscribersAsync(string channelId, int? limit = null, int? offset = null, string direction = null, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannelSubscribers(channelId, limit, offset, direction, authToken));
+                }
+                #endregion
+                #region CheckChannelSubscriptionByUser
+                /// <summary>
+                /// <para>[SYNC] Checks if a specified channel has a specified user subscribed to it. Intended for use by channel owners.</para>
+                /// <para>Returns a subscription object which includes the user if that user is subscribed. Requires authentication for the channel.</para>
+                /// <para>Required Authentication Scope: channel_check_subscription</para>
+                /// </summary>
+                /// <param name="channelId">The specified channel to check the subscription on.</param>
+                /// <param name="userId">The specified user to check for.</param>
+                /// <returns>Returns a subscription object or null if not subscribed.</returns>
+                public static Models.API.v5.Subscriptions.Subscription CheckChannelSubscriptionByUser(string channelId, string userId, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Channels.CheckChannelSubscriptionByUser(channelId, userId, authToken);
+                }
+
+                /// <summary>
+                /// <para>[ASYNC] Checks if a specified channel has a specified user subscribed to it. Intended for use by channel owners.</para>
+                /// <para>Returns a subscription object which includes the user if that user is subscribed. Requires authentication for the channel.</para>
+                /// <para>Required Authentication Scope: channel_check_subscription</para>
+                /// </summary>
+                /// <param name="channelId">The specified channel to check the subscription on.</param>
+                /// <param name="userId">The specified user to check for.</param>
+                /// <returns>Returns a subscription object or null if not subscribed.</returns>
+                public async static Task<Models.API.v5.Subscriptions.Subscription> CheckChannelSubscriptionByUserAsync(string channelId, string userId, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.CheckChannelSubscriptionByUser(channelId, userId, authToken));
+                }
+                #endregion
+                #region GetChannelVideos
+                public static Models.API.v5.Channels.ChannelVideos GetChannelVideos(string channelId, int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
+                {
+                    return Internal.TwitchAPI.v5.Channels.GetChannelVideos(channelId, limit, offset, broadcastType, language, sort);
+                }
+
+                public async static Task<Models.API.v5.Channels.ChannelVideos> GetChannelVideosAsync(string channelId, int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannelVideos(channelId, limit, offset, broadcastType, language, sort));
+                }
+                #endregion
+                #region StartChannelCommercial
+                public static Models.API.v5.Channels.ChannelCommercial StartChannelCommercial(string channelId, Enums.CommercialLength duration, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Channels.StartChannelCommercial(channelId, duration, authToken);
+                }
+
+                public async static Task<Models.API.v5.Channels.ChannelCommercial> StartChannelCommercialAsync(string channelId, Enums.CommercialLength duration, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.StartChannelCommercial(channelId, duration, authToken));
+                }
+                #endregion
+                #region ResetChannelStreamKey
+                /// <summary>
+                /// <para>[SYNC] Deletes the stream key for a specified channel. Once it is deleted, the stream key is automatically reset.</para>
+                /// <para>A stream key (also known as authorization key) uniquely identifies a stream. Each broadcast uses an RTMP URL that includes the stream key. Stream keys are assigned by Twitch.</para>
+                /// <para>Required Authentication Scope: channel_stream</para>
+                /// </summary>
+                /// <param name="channelId">The specified channel to reset the StreamKey on.</param>
+                /// <returns>A ChannelPrivileged object that also contains the email and stream key of the channel aside from the normal channel values.</returns>
+                public static Models.API.v5.Channels.ChannelAuthed ResetChannelStreamKey(string channelId, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Channels.ResetChannelStreamKey(channelId, authToken);
+                }
+
+                /// <summary>
+                /// <para>[ASYNC] Deletes the stream key for a specified channel. Once it is deleted, the stream key is automatically reset.</para>
+                /// <para>A stream key (also known as authorization key) uniquely identifies a stream. Each broadcast uses an RTMP URL that includes the stream key. Stream keys are assigned by Twitch.</para>
+                /// <para>Required Authentication Scope: channel_stream</para>
+                /// </summary>
+                /// <param name="channelId">The specified channel to reset the StreamKey on.</param>
+                /// <returns>A ChannelPrivileged object that also contains the email and stream key of the channel aside from the normal channel values.</returns>
+                public async static Task<Models.API.v5.Channels.ChannelAuthed> ResetChannelStreamKeyAsync(string channelId, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.ResetChannelStreamKey(channelId, authToken));
+                }
+                #endregion
+                #region Communities
+                #region GetChannelCommunity
+                /// <summary>
+                /// <para>[SYNC] Gets the community for a specified channel.</para>
+                /// <para>Required Authentication Scope: channel_editor</para>
+                /// </summary>
+                /// <param name="channelId">The specified channel ID to get the community from.</param>
+                /// <returns>A Community object that represents the community the channel is in.</returns>
+                public static Models.API.v5.Communities.Community GetChannelCommunity(string channelId)
+                {
+                    return Internal.TwitchAPI.v5.Channels.GetChannelCommunity(channelId);
+                }
+
+                /// <summary>
+                /// <para>[ASYNC] Gets the community for a specified channel.</para>
+                /// <para>Required Authentication Scope: channel_editor</para>
+                /// </summary>
+                /// <param name="channelId">The specified channel ID to get the community from.</param>
+                /// <returns>A Community object that represents the community the channel is in.</returns>
+                public async static Task<Models.API.v5.Communities.Community> GetChannelCommunityAsync(string channelId)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannelCommunity(channelId));
+                }
+                #endregion
+                #region SetChannelCommunity
+                /// <summary>
+                /// <para>[SYNC] Sets a specified channel to be in a specified community.</para>
+                /// <para>Required Authentication Scope: channel_editor</para>
+                /// </summary>
+                /// <param name="channelId">The specified channel to set the community for.</param>
+                /// <param name="communityId">The specified community to set the channel to be a part of.</param>
+                public static void SetChannelCommunity(string channelId, string communityId, string authToken = null)
+                {
+                    Internal.TwitchAPI.v5.Channels.SetChannelCommunity(channelId, communityId, authToken);
+                }
+
+                /// <summary>
+                /// <para>[ASYNC]Sets a specified channel to be in a specified community.</para>
+                /// <para>Required Authentication Scope: channel_editor</para>
+                /// </summary>
+                /// <param name="channelId">The specified channel to set the community for.</param>
+                /// <param name="communityId">The specified community to set the channel to be a part of.</param>
+                public async static Task SetChannelCommunityAsync(string channelId, string communityId, string authToken = null)
+                {
+                    await Task.Run(() => Internal.TwitchAPI.v5.Channels.SetChannelCommunity(channelId, communityId, authToken));
+                }
+                #endregion
+                #region DeleteChannelFromCommunity
+                /// <summary>
+                /// [SYNC] Deletes a specified channel from its community.
+                /// </summary>
+                /// <param name="channelId">The specified channel to be removed.</param>
+                public static void DeleteChannelFromCommunity(string channelId, string authToken = null)
+                {
+                    Internal.TwitchAPI.v5.Channels.DeleteChannelFromCommunity(channelId, authToken);
+                }
+
+                /// <summary>
+                /// [ASYNC] Deletes a specified channel from its community.
+                /// </summary>
+                /// <param name="channelId">The specified channel to be removed.</param>
+                public async static Task DeleteChannelFromCommunityAsync(string channelId, string authToken = null)
+                {
+                    await Task.Run(() => Internal.TwitchAPI.v5.Channels.DeleteChannelFromCommunity(channelId, authToken));
+                }
+                #endregion
+                #endregion
             }
         }
 
         public static class Chat
         {
-            public static Models.API.v3.Chat.BadgesResponse GetBadges(string channel)
+            public static class v3
             {
-                return Internal.TwitchAPI.v3.Chat.GetBadges(channel);
+                #region GetBadges
+                public static Models.API.v3.Chat.BadgesResponse GetBadges(string channel)
+                {
+                    return Internal.TwitchAPI.v3.Chat.GetBadges(channel);
+                }
+
+                public static async Task<Models.API.v3.Chat.BadgesResponse> GetBadgesAsync(string channel)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetBadges(channel));
+                }
+                #endregion
+                #region GetAllEmoticons
+                public static Models.API.v3.Chat.AllEmoticonsResponse GetAllEmoticons()
+                {
+                    return Internal.TwitchAPI.v3.Chat.GetAllEmoticons();
+                }
+
+                public static async Task<Models.API.v3.Chat.AllEmoticonsResponse> GetAllEmoticonsAsync()
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetAllEmoticons());
+                }
+                #endregion
+                #region GetEmoticonsBySets
+                public static Models.API.v3.Chat.EmoticonSetsResponse GetEmoticonsBySets(List<int> emotesets)
+                {
+                    return Internal.TwitchAPI.v3.Chat.GetEmoticonsBySets(emotesets);
+                }
+
+                public static async Task<Models.API.v3.Chat.EmoticonSetsResponse> GetEmoticonsBySetsAsync(List<int> emotesets)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetEmoticonsBySets(emotesets));
+                }
+                #endregion
             }
 
-            public static async Task<Models.API.v3.Chat.BadgesResponse> GetBadgesAsync(string channel)
+            public static class v5
             {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetBadges(channel));
-            }
+                #region GetChatBadgesByChannel
+                public static Models.API.v5.Chat.ChannelBadges GetChatBadgesByChannel(string channelId)
+                {
+                    return Internal.TwitchAPI.v5.Chat.GetChatBadgesByChannel(channelId);
+                }
 
-            public static Models.API.v3.Chat.AllEmoticonsResponse GetAllEmoticons()
-            {
-                return Internal.TwitchAPI.v3.Chat.GetAllEmoticons();
-            }
+                public async static Task<Models.API.v5.Chat.ChannelBadges> GetChatBadgesByChannelAsync(string channelId)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Chat.GetChatBadgesByChannel(channelId));
+                }
+                #endregion
+                #region GetChatEmoticonsBySet
+                public static Models.API.v5.Chat.EmoteSet GetChatEmoticonsBySet(List<int> emotesets = null)
+                {
+                    return Internal.TwitchAPI.v5.Chat.GetChatEmoticonsBySet(emotesets);
+                }
 
-            public static async Task<Models.API.v3.Chat.AllEmoticonsResponse> GetAllEmoticonsAsync()
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetAllEmoticons());
-            }
+                public async static Task<Models.API.v5.Chat.EmoteSet> GetChatEmoticonsBySetAsync(List<int> emotesets = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Chat.GetChatEmoticonsBySet(emotesets));
+                }
+                #endregion
+                #region GetAllChatEmoticons
+                public static Models.API.v5.Chat.AllChatEmotes GetAllChatEmoticons()
+                {
+                    return Internal.TwitchAPI.v5.Chat.GetAllChatEmoticons();
+                }
 
-            public static Models.API.v3.Chat.EmoticonSetsResponse GetEmoticonsBySets(List<int> emotesets)
-            {
-                return Internal.TwitchAPI.v3.Chat.GetEmoticonsBySets(emotesets);
+                public async static Task<Models.API.v5.Chat.AllChatEmotes> GetAllChatEmoticonsAsync()
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Chat.GetAllChatEmoticons());
+                }
+                #endregion
             }
+        }
 
-            public static async Task<Models.API.v3.Chat.EmoticonSetsResponse> GetEmoticonsBySetsAsync(List<int> emotesets)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetEmoticonsBySets(emotesets));
-            }
+        //TODO: Finish cleaning up and importing v5 endpoints below vvv
+
+        public static class Collections
+        {
+
         }
 
         public static class Follows
@@ -304,15 +871,32 @@
 
         public static class Root
         {
-            public static Models.API.v3.Root.RootResponse GetRoot()
+            public static class v3
             {
-                return Internal.TwitchAPI.v3.Root.GetRoot();
+                public static Models.API.v3.Root.RootResponse GetRoot(string accessToken = null)
+                {
+                    return Internal.TwitchAPI.v3.Root.GetRoot(accessToken);
+                }
+
+                public async static Task<Models.API.v3.Root.RootResponse> GetRootAsync(string accessToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Root.GetRoot(accessToken));
+                }
             }
 
-            public async static Task<Models.API.v3.Root.RootResponse> GetRootAsync()
+            public static class v5
             {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Root.GetRoot());
+                public static Models.API.v5.Root.Root GetRoot(string accessToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Root.GetRoot(accessToken);
+                }
+
+                public async static Task<Models.API.v5.Root.Root> GetRootAsync(string accessToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Root.GetRoot(accessToken));
+                }
             }
+            
         }
 
         public static class Search
@@ -590,6 +1174,7 @@
         /// <summary>These endpoints are pretty cool, but they may stop working at anytime due to changes Twitch makes.</summary>
         public static class Undocumented
         {
+            #region GetClipChat
             public static Models.API.Undocumented.ClipChat.GetClipChatResponse GetClipChat(string slug)
             {
                 return Internal.TwitchAPI.Undocumented.GetClipChat(slug);
@@ -599,7 +1184,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetClipChat(slug));
             }
-
+            #endregion
+            #region GetTwitchPrimeOffers
             public static Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffersResponse GetTwitchPrimeOffers()
             {
                 return Internal.TwitchAPI.Undocumented.GetTwitchPrimeOffers();
@@ -609,7 +1195,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetTwitchPrimeOffers());
             }
-
+            #endregion
+            #region GetChannelHosts
             public static Models.API.Undocumented.Hosting.ChannelHostsResponse GetChannelHosts(string channelId)
             {
                 return Internal.TwitchAPI.Undocumented.GetChannelHosts(channelId);
@@ -619,7 +1206,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetChannelHosts(channelId));
             }
-
+            #endregion
+            #region GetChatProperties
             public static Models.API.Undocumented.ChatProperties.ChatProperties GetChatProperties(string channelName)
             {
                 return Internal.TwitchAPI.Undocumented.GetChatProperties(channelName);
@@ -629,7 +1217,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetChatProperties(channelName));
             }
-
+            #endregion
+            #region GetChannelPanels
             public static Models.API.Undocumented.ChannelPanels.Panel[] GetChannelPanels(string channelName)
             {
                 return Internal.TwitchAPI.Undocumented.GetChannelPanels(channelName);
@@ -639,7 +1228,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetChannelPanels(channelName));
             }
-
+            #endregion
+            #region GetCSMaps
             public static Models.API.Undocumented.CSMaps.CSMapsResponse GetCSMaps()
             {
                 return Internal.TwitchAPI.Undocumented.GetCSMaps();
@@ -649,7 +1239,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetCSMaps());
             }
-
+            #endregion
+            #region GetRecentMessages
             public static Models.API.Undocumented.RecentMessages.RecentMessagesResponse GetRecentMessages(string channelId)
             {
                 return Internal.TwitchAPI.Undocumented.GetRecentMessages(channelId);
@@ -659,7 +1250,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetRecentMessages(channelId));
             }
-
+            #endregion
+            #region GetChatters
             public static Models.API.Undocumented.Chatters.ChattersResponse GetChatters(string channelName)
             {
                 return Internal.TwitchAPI.Undocumented.GetChatters(channelName);
@@ -669,11 +1261,13 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetChatters(channelName));
             }
+            #endregion
         }
 
         /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>
         public static class ThirdParty
         {
+            #region GetUsernameChanges
             public static List<Models.API.ThirdParty.UsernameChangeListing> GetUsernameChanges(string username)
             {
                 return Internal.TwitchAPI.ThirdParty.GetUsernameChanges(username);
@@ -683,6 +1277,7 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.ThirdParty.GetUsernameChanges(username));
             }
+            #endregion
         }
 
         /// <summary>These methods are intended to aid in developing the library.</summary>
