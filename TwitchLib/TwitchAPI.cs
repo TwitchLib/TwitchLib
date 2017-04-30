@@ -1241,6 +1241,7 @@
         {
             public static class v3
             {
+                #region GetRoot
                 public static Models.API.v3.Root.RootResponse GetRoot(string accessToken = null)
                 {
                     return Internal.TwitchAPI.v3.Root.GetRoot(accessToken);
@@ -1250,10 +1251,12 @@
                 {
                     return await Task.Run(() => Internal.TwitchAPI.v3.Root.GetRoot(accessToken));
                 }
+                #endregion
             }
 
             public static class v5
             {
+                #region GetRoot
                 public static Models.API.v5.Root.Root GetRoot(string accessToken = null)
                 {
                     return Internal.TwitchAPI.v5.Root.GetRoot(accessToken);
@@ -1263,83 +1266,194 @@
                 {
                     return await Task.Run(() => Internal.TwitchAPI.v5.Root.GetRoot(accessToken));
                 }
+                #endregion
             }
             
         }
 
         public static class Search
         {
-            public static Models.API.v3.Search.SearchChannelsResponse SearchChannels(string query, int limit = 25, int offset = 0)
+            public static class v3
             {
-                return Internal.TwitchAPI.v3.Search.SearchChannels(query, limit, offset);
+                #region SearchChannels
+                public static Models.API.v3.Search.SearchChannelsResponse SearchChannels(string query, int limit = 25, int offset = 0)
+                {
+                    return Internal.TwitchAPI.v3.Search.SearchChannels(query, limit, offset);
+                }
+
+                public async static Task<Models.API.v3.Search.SearchChannelsResponse> SearchChannelsAsync(string query, int limit = 25, int offset = 0)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Search.SearchChannels(query, limit, offset));
+                }
+                #endregion
+                #region SearchStreams
+                public static Models.API.v3.Search.SearchStreamsResponse SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
+                {
+                    return Internal.TwitchAPI.v3.Search.SearchStreams(query, limit, offset, hls);
+                }
+
+                public async static Task<Models.API.v3.Search.SearchStreamsResponse> SearchStreamsAsync(string query, int limit = 25, int offset = 0, bool? hls = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Search.SearchStreams(query, limit, offset, hls));
+                }
+                #endregion
+                #region SearchGames
+                public static Models.API.v3.Search.SearchGamesResponse SearchGames(string query, Enums.GameSearchType type = Enums.GameSearchType.Suggest, bool live = false)
+                {
+                    return Internal.TwitchAPI.v3.Search.SearchGames(query, type, live);
+                }
+
+                public async static Task<Models.API.v3.Search.SearchGamesResponse> SearchGamesAsync(string query, Enums.GameSearchType type = Enums.GameSearchType.Suggest, bool live = false)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Search.SearchGames(query, type, live));
+                }
+                #endregion
             }
 
-            public async static Task<Models.API.v3.Search.SearchChannelsResponse> SearchChannelsAsync(string query, int limit = 25, int offset = 0)
+            public static class v5
             {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Search.SearchChannels(query, limit, offset));
-            }
+                #region SearchChannels
+                public static Models.API.v5.Search.SearchChannels SearchChannels(string encodedSearchQuery, int? limit = null, int? offset = null)
+                {
+                    return Internal.TwitchAPI.v5.Search.SearchChannels(encodedSearchQuery, limit, offset);
+                }
 
-            public static Models.API.v3.Search.SearchStreamsResponse SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
-            {
-                return Internal.TwitchAPI.v3.Search.SearchStreams(query, limit, offset, hls);
-            }
+                public async static Task<Models.API.v5.Search.SearchChannels> SearchChannelsAsync(string encodedSearchQuery, int? limit = null, int? offset = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Search.SearchChannels(encodedSearchQuery, limit, offset));
+                }
+                #endregion
+                #region SearchGames
+                public static Models.API.v5.Search.SearchGames SearchGames(string encodedSearchQuery, bool? live = null)
+                {
+                    return Internal.TwitchAPI.v5.Search.SearchGames(encodedSearchQuery, live);
+                }
+                public async static Task<Models.API.v5.Search.SearchGames> SearchGamesAsync(string encodedSearchQuery, bool? live = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Search.SearchGames(encodedSearchQuery, live));
+                }
+                #endregion
+                #region SearchStreams
+                public static Models.API.v5.Search.SearchStreams SearchStreams(string encodedSearchQuery, int? limit = null, int? offset = null, bool? hls = null)
+                {
+                    return Internal.TwitchAPI.v5.Search.SearchStreams(encodedSearchQuery, limit, offset, hls);
+                }
 
-            public async static Task<Models.API.v3.Search.SearchStreamsResponse> SearchStreamsAsync(string query, int limit = 25, int offset = 0, bool? hls = null)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Search.SearchStreams(query, limit, offset, hls));
-            }
-
-            public static Models.API.v3.Search.SearchGamesResponse SearchGames(string query, Enums.GameSearchType type = Enums.GameSearchType.Suggest, bool live = false)
-            {
-                return Internal.TwitchAPI.v3.Search.SearchGames(query, type, live);
-            }
-
-            public async static Task<Models.API.v3.Search.SearchGamesResponse> SearchGamesAsync(string query, Enums.GameSearchType type = Enums.GameSearchType.Suggest, bool live = false)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Search.SearchGames(query, type, live));
+                public async static Task<Models.API.v5.Search.SearchStreams> SearchStreamsAsync(string encodedSearchQuery, int? limit = null, int? offset = null, bool? hls = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Search.SearchStreams(encodedSearchQuery, limit, offset, hls));
+                }
+                #endregion
             }
         }
 
         public static class Streams
         {
-            public static Models.API.v3.Streams.StreamResponse GetStream(string channel)
+            public static class v3
             {
-                return Internal.TwitchAPI.v3.Streams.GetStream(channel);
+                #region GetStream
+                public static Models.API.v3.Streams.StreamResponse GetStream(string channel)
+                {
+                    return Internal.TwitchAPI.v3.Streams.GetStream(channel);
+                }
+
+                public async static Task<Models.API.v3.Streams.StreamResponse> GetStreamAsync(string channel)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetStream(channel));
+                }
+                #endregion
+                #region GetStreams
+                public static Models.API.v3.Streams.StreamsResponse GetStreams(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Enums.StreamType streamType = Enums.StreamType.All, string language = "en")
+                {
+                    return Internal.TwitchAPI.v3.Streams.GetStreams(game, channel, limit, offset, clientId, streamType, language);
+                }
+
+                public async static Task<Models.API.v3.Streams.StreamsResponse> GetStreamsAsync(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Enums.StreamType streamType = Enums.StreamType.All, string language = "en")
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetStreams(game, channel, limit, offset, clientId, streamType, language));
+                }
+                #endregion
+                #region GetFeaturedStreams
+                public static Models.API.v3.Streams.FeaturedStreamsResponse GetFeaturedStreams(int limit = 25, int offset = 0)
+                {
+                    return Internal.TwitchAPI.v3.Streams.GetFeaturedStreams(limit, offset);
+                }
+
+                public async static Task<Models.API.v3.Streams.FeaturedStreamsResponse> GetFeaturedStreamsAsync(int limit = 25, int offset = 0)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetFeaturedStreams(limit, offset));
+                }
+                #endregion
+                #region GetStreamsSummary
+                public static Models.API.v3.Streams.Summary GetStreamsSummary()
+                {
+                    return Internal.TwitchAPI.v3.Streams.GetStreamsSummary();
+                }
+
+                public async static Task<Models.API.v3.Streams.Summary> GetStreamsSummaryAsync()
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetStreamsSummary());
+                }
+                #endregion
             }
 
-            public async static Task<Models.API.v3.Streams.StreamResponse> GetStreamAsync(string channel)
+            public static class v5
             {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetStream(channel));
-            }
+                #region GetStreamByUser
+                public static Models.API.v5.Streams.StreamByUser GetStreamByUser(string channelId, string streamType = null)
+                {
+                    return Internal.TwitchAPI.v5.Streams.GetStreamByUser(channelId, streamType);
+                }
 
-            public static Models.API.v3.Streams.StreamsResponse GetStreams(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Enums.StreamType streamType = Enums.StreamType.All, string language = "en")
-            {
-                return Internal.TwitchAPI.v3.Streams.GetStreams(game, channel, limit, offset, clientId, streamType, language);
-            }
+                public async static Task<Models.API.v5.Streams.StreamByUser> GetStreamByUserAsync(string channelId, string streamType = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Streams.GetStreamByUser(channelId, streamType));
+                }
+                #endregion
+                #region GetLiveStreams
+                public static Models.API.v5.Streams.LiveStreams GetLiveStreams(List<string> channelList = null, string game = null, string language = null, string streamType = null, int? limit = null, int? offset = null)
+                {
+                    return Internal.TwitchAPI.v5.Streams.GetLiveStreams(channelList, game, language, streamType, limit, offset);
+                }
 
-            public async static Task<Models.API.v3.Streams.StreamsResponse> GetStreamsAsync(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Enums.StreamType streamType = Enums.StreamType.All, string language = "en")
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetStreams(game, channel, limit, offset, clientId, streamType, language));
-            }
+                public async static Task<Models.API.v5.Streams.LiveStreams> GetLiveStreamsAsync(List<string> channelList = null, string game = null, string language = null, string streamType = null, int? limit = null, int? offset = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Streams.GetLiveStreams(channelList, game, language, streamType, limit, offset));
+                }
+                #endregion
+                #region GetStreamsSummary
+                public static Models.API.v5.Streams.StreamsSummary GetStreamsSummary(string game = null)
+                {
+                    return Internal.TwitchAPI.v5.Streams.GetStreamsSummary(game);
+                }
 
-            public static Models.API.v3.Streams.FeaturedStreamsResponse GetFeaturedStreams(int limit = 25, int offset = 0)
-            {
-                return Internal.TwitchAPI.v3.Streams.GetFeaturedStreams(limit, offset);
-            }
+                public async static Task<Models.API.v5.Streams.StreamsSummary> GetStreamsSummaryAsync(string game = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Streams.GetStreamsSummary(game));
+                }
+                #endregion
+                #region GetFeaturedStreams
+                public static Models.API.v5.Streams.FeaturedStreams GetFeaturedStreams(int? limit = null, int? offset = null)
+                {
+                    return Internal.TwitchAPI.v5.Streams.GetFeaturedStreams(limit, offset);
+                }
 
-            public async static Task<Models.API.v3.Streams.FeaturedStreamsResponse> GetFeaturedStreamsAsync(int limit = 25, int offset = 0)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetFeaturedStreams(limit, offset));
-            }
+                public async static Task<Models.API.v5.Streams.FeaturedStreams> GetFeaturedStreamsAsync(int? limit = null, int? offset = null)
+                {
+                    return Internal.TwitchAPI.v5.Streams.GetFeaturedStreams(limit, offset);
+                }
+                #endregion
+                #region GetFollowedStreams
+                public static Models.API.v5.Streams.FollowedStreams GetFollowedStreams(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Streams.GetFollowedStreams(streamType, limit, offset, authToken);
+                }
 
-            public static Models.API.v3.Streams.Summary GetStreamsSummary()
-            {
-                return Internal.TwitchAPI.v3.Streams.GetStreamsSummary();
-            }
-
-            public async static Task<Models.API.v3.Streams.Summary> GetStreamsSummaryAsync()
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Streams.GetStreamsSummary());
+                public async static Task<Models.API.v5.Streams.FollowedStreams> GetFollowedStreamsAsync(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Streams.GetFollowedStreams(streamType, limit, offset, authToken));
+                }
+                #endregion
             }
         }
 
