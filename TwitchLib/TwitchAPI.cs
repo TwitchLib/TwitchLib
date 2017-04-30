@@ -1800,39 +1800,110 @@
 
         public static class Videos
         {
-            public static Models.API.v3.Videos.Video GetVideo(string id)
+            public static class v3
             {
-                return Internal.TwitchAPI.v3.Videos.GetVideo(id);
+                #region GetVideo
+                public static Models.API.v3.Videos.Video GetVideo(string id)
+                {
+                    return Internal.TwitchAPI.v3.Videos.GetVideo(id);
+                }
+
+                public async static Task<Models.API.v3.Videos.Video> GetVideoAsync(string id)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Videos.GetVideo(id));
+                }
+                #endregion
+                #region GetTopVideos
+                public static Models.API.v3.Videos.TopVideosResponse GetTopVideos(int limit = 25, int offset = 0, string game = null, Enums.Period period = Enums.Period.Week)
+                {
+                    return Internal.TwitchAPI.v3.Videos.GetTopVideos(limit, offset, game, period);
+                }
+
+                public async static Task<Models.API.v3.Videos.TopVideosResponse> GetTopVideosAsync(int limit = 25, int offset = 0, string game = null, Enums.Period period = Enums.Period.Week)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Videos.GetTopVideos(limit, offset, game, period));
+                }
+                #endregion
             }
 
-            public async static Task<Models.API.v3.Videos.Video> GetVideoAsync(string id)
+            public static class v4
             {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Videos.GetVideo(id));
+                #region UploadVideo
+                public static Models.API.v4.UploadVideo.UploadedVideo UploadVideo(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
+                {
+                    return Internal.TwitchAPI.v4.UploadVideo(channelId, videoPath, title, description, game, language, tagList, viewable, viewableAt, accessToken);
+                }
+
+                public async static Task<Models.API.v4.UploadVideo.UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v4.UploadVideo(channelId, videoPath, title, description, game, language, tagList, viewable, viewableAt, accessToken));
+                }
+                #endregion
             }
 
-            public static Models.API.v3.Videos.TopVideosResponse GetTopVideos(int limit = 25, int offset = 0, string game = null, Enums.Period period = Enums.Period.Week)
+            public static class v5
             {
-                return Internal.TwitchAPI.v3.Videos.GetTopVideos(limit, offset, game, period);
-            }
+                #region GetVideo
+                public static Models.API.v5.Videos.Video GetVideo(string videoId)
+                {
+                    return Internal.TwitchAPI.v5.Videos.GetVideo(videoId);
+                }
 
-            public async static Task<Models.API.v3.Videos.TopVideosResponse> GetTopVideosAsync(int limit = 25, int offset = 0, string game = null, Enums.Period period = Enums.Period.Week)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Videos.GetTopVideos(limit, offset, game, period));
-            }
+                public async static Task<Models.API.v5.Videos.Video> GetVideoAsync(string videoId)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Videos.GetVideo(videoId));
+                }
+                #endregion
+                #region GetTopVideos
+                public static Models.API.v5.Videos.TopVideos GetTopVideos(int? limit = null, int? offset = null, string game = null, string period = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
+                {
+                    return Internal.TwitchAPI.v5.Videos.GetTopVideos(limit, offset, game, period, broadcastType, language, sort);
+                }
 
-            public static Models.API.v4.UploadVideo.UploadedVideo UploadVideo(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
-            {
-                return Internal.TwitchAPI.v4.UploadVideo(channelId, videoPath, title, description, game, language, tagList, viewable, viewableAt, accessToken);
-            }
+                public async static Task<Models.API.v5.Videos.TopVideos> GetTopVideosAsync(int? limit = null, int? offset = null, string game = null, string period = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Videos.GetTopVideos(limit, offset, game, period, broadcastType, language, sort));
+                }
+                #endregion
+                #region GetFollowedVideos
+                public static Models.API.v5.Videos.FollowedVideos GetFollowedVideos(int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Videos.GetFollowedVideos(limit, offset, broadcastType, language, sort, authToken);
+                }
 
-            public async static Task<Models.API.v4.UploadVideo.UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v4.UploadVideo(channelId, videoPath, title, description, game, language, tagList, viewable, viewableAt, accessToken));
+                public async static Task<Models.API.v5.Videos.FollowedVideos> GetFollowedVideosAsync(int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Videos.GetFollowedVideos(limit, offset, broadcastType, language, sort, authToken));
+                }
+                #endregion
+                #region UpdateVideo
+                public static Models.API.v5.Videos.Video UpdateVideo(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Videos.UpdateVideo(videoId, description, game, language, tagList, title, authToken);
+                }
+
+                public async static Task<Models.API.v5.Videos.Video> UpdateVideoAsync(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Videos.UpdateVideo(videoId, description, game, language, tagList, title, authToken));
+                }
+                #endregion
+                #region DeleteVideo
+                public static void DeleteVideo(string videoId, string authToken = null)
+                {
+                    Internal.TwitchAPI.v5.Videos.DeleteVideo(videoId, authToken);
+                }
+
+                public async static Task DeleteVideoAsync(string videoId, string authToken = null)
+                {
+                    await Task.Run(() => Internal.TwitchAPI.v5.Videos.DeleteVideo(videoId, authToken));
+                }
+                #endregion
             }
         }
 
         public static class Clips
         {
+            #region GetClip
             public static Models.API.v4.Clips.Clip GetClip(string slug)
             {
                 return Internal.TwitchAPI.v4.GetClip(slug);
@@ -1842,7 +1913,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.v4.GetClip(slug));
             }
-
+            #endregion
+            #region GetTopClips
             public static Models.API.v4.Clips.TopClipsResponse GetTopClips(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v4.Clips.Period period = Models.API.v4.Clips.Period.Week, bool trending = false)
             {
                 return Internal.TwitchAPI.v4.GetTopClips(channel, cursor, game, limit, period, trending);
@@ -1852,7 +1924,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.v4.GetTopClips(channel, cursor, game, limit, period, trending));
             }
-
+            #endregion
+            #region GetFollowedClips
             public static Models.API.v4.Clips.FollowClipsResponse GetFollowedClips(long limit = 10, string cursor = null, bool trending = false)
             {
                 return Internal.TwitchAPI.v4.GetFollowedClips(limit, cursor, trending);
@@ -1862,6 +1935,7 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.v4.GetFollowedClips(limit, cursor, trending));
             }
+            #endregion
         }
 
 
