@@ -783,12 +783,49 @@
             }
         }
 
-        //TODO: Finish cleaning up and importing v5 endpoints below vvv
-
         public static class Collections
         {
+            #region GetCollectionMetadata
+            public static Models.API.v5.Collections.CollectionMetadata GetCollectionMetadata(string collectionId)
+            {
+                return Internal.TwitchAPI.v5.Collections.GetCollectionMetadata(collectionId);
+            }
 
+            public async static Task<Models.API.v5.Collections.CollectionMetadata> GetCollectionMetadataAsync(string collectionId)
+            {
+                return await Task.Run(() => Internal.TwitchAPI.v5.Collections.GetCollectionMetadata(collectionId));
+            }
+            #endregion
+            #region GetCollection
+
+            #endregion
+            #region GetCollectionsByChannel
+
+            #endregion
+            #region CreateCollection
+
+            #endregion
+            #region UpdateCollection
+
+            #endregion
+            #region CreateCollectionThumbnail
+
+            #endregion
+            #region DeleteCollection
+
+            #endregion
+            #region AddItemToCollection
+
+            #endregion
+            #region DeleteItemFromCollection
+
+            #endregion
+            #region MoveItemWithinCollection
+
+            #endregion
         }
+
+        //TODO: Finish cleaning up and importing v5 endpoints below vvv
 
         public static class Follows
         {
