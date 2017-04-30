@@ -1512,77 +1512,289 @@
 
         public static class Teams
         {
-            public static Models.API.v3.Teams.GetTeamsResponse GetTeams(int limit = 25, int offset = 0)
+            public static class v3
             {
-                return Internal.TwitchAPI.v3.Teams.GetTeams(limit, offset);
+                #region GetTeams
+                public static Models.API.v3.Teams.GetTeamsResponse GetTeams(int limit = 25, int offset = 0)
+                {
+                    return Internal.TwitchAPI.v3.Teams.GetTeams(limit, offset);
+                }
+
+                public async static Task<Models.API.v3.Teams.GetTeamsResponse> GetTeamsAsync(int limit = 25, int offset = 0)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Teams.GetTeams(limit, offset));
+                }
+                #endregion
+                #region GetTeam
+                public static Models.API.v3.Teams.Team GetTeam(string teamName)
+                {
+                    return Internal.TwitchAPI.v3.Teams.GetTeam(teamName);
+                }
+
+                public async static Task<Models.API.v3.Teams.Team> GetTeamAsync(string teamName)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Teams.GetTeam(teamName));
+                }
+                #endregion
             }
 
-            public async static Task<Models.API.v3.Teams.GetTeamsResponse> GetTeamsAsync(int limit = 25, int offset = 0)
+            public static class v5
             {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Teams.GetTeams(limit, offset));
-            }
+                #region GetAllTeams
+                public static Models.API.v5.Teams.AllTeams GetAllTeams(int? limit = null, int? offset = null)
+                {
+                    return Internal.TwitchAPI.v5.Teams.GetAllTeams(limit, offset);
+                }
 
-            public static Models.API.v3.Teams.Team GetTeam(string teamName)
-            {
-                return Internal.TwitchAPI.v3.Teams.GetTeam(teamName);
-            }
+                public async static Task<Models.API.v5.Teams.AllTeams> GetAllTeamsAsync(int? limit = null, int? offset = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Teams.GetAllTeams(limit, offset));
+                }
+                #endregion
+                #region GetTeam
+                public static Models.API.v5.Teams.Team GetTeam(string teamName)
+                {
+                    return Internal.TwitchAPI.v5.Teams.GetTeam(teamName);
+                }
 
-            public async static Task<Models.API.v3.Teams.Team> GetTeamAsync(string teamName)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Teams.GetTeam(teamName));
+                public async static Task<Models.API.v5.Teams.Team> GetTeamAsync(string teamName)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Teams.GetTeam(teamName));
+                }
+                #endregion
             }
         }
 
-        public static class User
+        public static class Users
         {
-            public static Models.API.v3.Users.User GetUserFromUsername(string username)
+            public static class v3
             {
-                return Internal.TwitchAPI.v3.User.GetUserFromUsername(username);
+                #region GetUserFromUsername
+                public static Models.API.v3.Users.User GetUserFromUsername(string username)
+                {
+                    return Internal.TwitchAPI.v3.User.GetUserFromUsername(username);
+                }
+
+                public async static Task<Models.API.v3.Users.User> GetUserFromUsernameAsync(string username)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.User.GetUserFromUsername(username));
+                }
+                #endregion
+                #region GetEmotes
+                public static Models.API.v3.Users.UserEmotesResponse GetEmotes(string username, string accessToken = null)
+                {
+                    return Internal.TwitchAPI.v3.User.GetEmotes(username, accessToken);
+                }
+
+                public async static Task<Models.API.v3.Users.UserEmotesResponse> GetEmotesAsync(string username, string accessToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.User.GetEmotes(username, accessToken));
+                }
+                #endregion
+                #region GetUserFromToken
+                public static Models.API.v3.Users.FullUser GetUserFromToken(string accessToken = null)
+                {
+                    return Internal.TwitchAPI.v3.User.GetUserFromToken(accessToken);
+                }
+
+                public async static Task<Models.API.v3.Users.FullUser> GetUserFromTokenAsync(string accessToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.User.GetUserFromToken(accessToken));
+                }
+                #endregion
+                #region GetFollowedStreams
+                public static Models.API.v3.Users.FollowedStreamsResponse GetFollowedStreams(int limit = 25, int offset = 0, Enums.StreamType type = Enums.StreamType.All, string accessToken = null)
+                {
+                    return Internal.TwitchAPI.v3.User.GetFollowedStreams(limit, offset, type, accessToken);
+                }
+
+                public async static Task<Models.API.v3.Users.FollowedStreamsResponse> GetFollowedStreamsAsync(int limit = 25, int offset = 0, Enums.StreamType type = Enums.StreamType.All, string accessToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.User.GetFollowedStreams(limit, offset, type, accessToken));
+                }
+                #endregion
+                #region GetFollowedVideos
+                public static Models.API.v3.Users.FollowedVideosResponse GetFollowedVideos(int limit = 25, int offset = 0, Enums.BroadcastType broadcastType = Enums.BroadcastType.All, string accessToken = null)
+                {
+                    return Internal.TwitchAPI.v3.User.GetFollowedVideos(limit, offset, broadcastType, accessToken);
+                }
+
+                public async static Task<Models.API.v3.Users.FollowedVideosResponse> GetFollowedVideosAsync(int limit = 25, int offset = 0, Enums.BroadcastType broadcastType = Enums.BroadcastType.All, string accessToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.User.GetFollowedVideos(limit, offset, broadcastType, accessToken));
+                }
+                #endregion
             }
 
-            public async static Task<Models.API.v3.Users.User> GetUserFromUsernameAsync(string username)
+            public static class v5
             {
-                return await Task.Run(() => Internal.TwitchAPI.v3.User.GetUserFromUsername(username));
-            }
+                #region GetUsersByName
+                public static Models.API.v5.Users.Users GetUsersByName(List<string> usernames)
+                {
+                    return Internal.TwitchAPI.v5.Users.GetUsersByName(usernames);
+                }
 
-            public static Models.API.v3.Users.UserEmotesResponse GetEmotes(string username, string accessToken = null)
-            {
-                return Internal.TwitchAPI.v3.User.GetEmotes(username, accessToken);
-            }
+                public async static Task<Models.API.v5.Users.Users> GetUsersByNameAsync(List<string> usernames)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Users.GetUsersByName(usernames));
+                }
+                #endregion
+                #region GetUser
+                public static Models.API.v5.Users.UserAuthed GetUser(string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Users.GetUser(authToken);
+                }
 
-            public async static Task<Models.API.v3.Users.UserEmotesResponse> GetEmotesAsync(string username, string accessToken = null)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.User.GetEmotes(username, accessToken));
-            }
+                public async static Task<Models.API.v5.Users.UserAuthed> GetUserAsync(string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Users.GetUser(authToken));
+                }
+                #endregion
+                #region GetUserByID
+                public static Models.API.v5.Users.User GetUserByID(string userId)
+                {
+                    return Internal.TwitchAPI.v5.Users.GetUserByID(userId);
+                }
 
-            public static Models.API.v3.Users.FullUser GetUserFromToken(string accessToken = null)
-            {
-                return Internal.TwitchAPI.v3.User.GetUserFromToken(accessToken);
-            }
+                public async static Task<Models.API.v5.Users.User> GetUserByIDAsync(string userId)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Users.GetUserByID(userId));
+                }
+                #endregion
+                #region GetUserEmotes
+                public static Models.API.v5.Users.UserEmotes GetUserEmotes(string userId, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Users.GetUserEmotes(userId, authToken);
+                }
 
-            public async static Task<Models.API.v3.Users.FullUser> GetUserFromTokenAsync(string accessToken = null)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.User.GetUserFromToken(accessToken));
-            }
+                public async static Task<Models.API.v5.Users.UserEmotes> GetUserEmotesAsync(string userId, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Users.GetUserEmotes(userId, authToken));
+                }
+                #endregion
+                #region CheckUserSubscriptionByChannel
+                public static Models.API.v5.Subscriptions.Subscription CheckUserSubscriptionByChannel(string userId, string channelId, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Users.CheckUserSubscriptionByChannel(userId, channelId, authToken);
+                }
 
-            public static Models.API.v3.Users.FollowedStreamsResponse GetFollowedStreams(int limit = 25, int offset = 0, Enums.StreamType type = Enums.StreamType.All, string accessToken = null)
-            {
-                return Internal.TwitchAPI.v3.User.GetFollowedStreams(limit, offset, type, accessToken);
-            }
+                public async static Task<Models.API.v5.Subscriptions.Subscription> CheckUserSubscriptionByChannelAsync(string userId, string channelId, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Users.CheckUserSubscriptionByChannel(userId, channelId, authToken));
+                }
+                #endregion
+                #region GetUserFollows
+                public static Models.API.v5.Users.UserFollows GetUserFollows(string userId, int? limit = null, int? offset = null, string direction = null, string sortby = null)
+                {
+                    return Internal.TwitchAPI.v5.Users.GetUserFollows(userId, limit, offset, direction, sortby);
+                }
 
-            public async static Task<Models.API.v3.Users.FollowedStreamsResponse> GetFollowedStreamsAsync(int limit = 25, int offset = 0, Enums.StreamType type = Enums.StreamType.All, string accessToken = null)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.User.GetFollowedStreams(limit, offset, type, accessToken));
-            }
+                public async static Task<Models.API.v5.Users.UserFollows> GetUserFollowsAsync(string userId, int? limit = null, int? offset = null, string direction = null, string sortby = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Users.GetUserFollows(userId, limit, offset, direction, sortby));
+                }
+                #endregion
+                #region CheckUserFollowsByChannel
+                public static Models.API.v5.Users.UserFollow CheckUserFollowsByChannel(string userId, string channelId)
+                {
+                    return Internal.TwitchAPI.v5.Users.CheckUserFollowsByChannel(userId, channelId);
+                }
 
-            public static Models.API.v3.Users.FollowedVideosResponse GetFollowedVideos(int limit = 25, int offset = 0, Enums.BroadcastType broadcastType = Enums.BroadcastType.All, string accessToken = null)
-            {
-                return Internal.TwitchAPI.v3.User.GetFollowedVideos(limit, offset, broadcastType, accessToken);
-            }
+                public async static Task<Models.API.v5.Users.UserFollow> CheckUserFollowsByChannelAsync(string userId, string channelId)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Users.CheckUserFollowsByChannel(userId, channelId));
+                }
+                #endregion
+                #region FollowChannel
+                public static Models.API.v5.Users.UserFollow FollowChannel(string userId, string channelId, bool? notifications = null, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Users.FollowChannel(userId, channelId, notifications, authToken);
+                }
 
-            public async static Task<Models.API.v3.Users.FollowedVideosResponse> GetFollowedVideosAsync(int limit = 25, int offset = 0, Enums.BroadcastType broadcastType = Enums.BroadcastType.All, string accessToken = null)
-            {
-                return await Task.Run(() => Internal.TwitchAPI.v3.User.GetFollowedVideos(limit, offset, broadcastType, accessToken));
+                public async static Task<Models.API.v5.Users.UserFollow> FollowChannelAsync(string userId, string channelId, bool? notifications = null, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Users.FollowChannel(userId, channelId, notifications, authToken));
+                }
+                #endregion
+                #region UnfollowChannel
+                public static void UnfollowChannel(string userId, string channelId, string authToken = null)
+                {
+                    Internal.TwitchAPI.v5.Users.UnfollowChannel(userId, channelId, authToken);
+                }
+
+                public async static Task UnfollowChannelAsync(string userId, string channelId, string authToken = null)
+                {
+                    await Task.Run(() => Internal.TwitchAPI.v5.Users.UnfollowChannel(userId, channelId, authToken));
+                }
+                #endregion
+                #region GetUserBlockList
+                public static Models.API.v5.Users.UserBlocks GetUserBlockList(string userId, int? limit = null, int? offset = null, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Users.GetUserBlockList(userId, limit, offset, authToken);
+                }
+
+                public async static Task<Models.API.v5.Users.UserBlocks> GetUserBlockListAsync(string userId, int? limit = null, int? offset = null, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Users.GetUserBlockList(userId, limit, offset, authToken));
+                }
+                #endregion
+                #region BlockUser
+                public static Models.API.v5.Users.UserBlock BlockUser(string sourceUserId, string targetUserId, string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Users.BlockUser(sourceUserId, targetUserId, authToken);
+                }
+
+                public async static Task<Models.API.v5.Users.UserBlock> BlockUserAsync(string sourceUserId, string targetUserId, string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Users.BlockUser(sourceUserId, targetUserId, authToken));
+                }
+                #endregion
+                #region UnblockUser
+                public static void UnblockUser(string sourceUserId, string targetUserId, string authToken = null)
+                {
+                    Internal.TwitchAPI.v5.Users.UnblockUser(sourceUserId, targetUserId, authToken);
+                }
+
+                public async static Task UnblockUserAsync(string sourceUserId, string targetUserId, string authToken = null)
+                {
+                    await Task.Run(() => Internal.TwitchAPI.v5.Users.UnblockUser(sourceUserId, targetUserId, authToken));
+                }
+                #endregion
+                #region ViewerHeartbeatService
+                #region CreateUserConnectionToViewerHeartbeatService
+                public static void CreateUserConnectionToViewerHeartbeatService(string identifier, string authToken = null)
+                {
+                    Internal.TwitchAPI.v5.Users.CreateUserConnectionToViewerHeartbeatService(identifier, authToken);
+                }
+
+                public async static Task CreateUserConnectionToViewerHeartbeatServiceAsync(string identifier, string authToken = null)
+                {
+                    await Task.Run(() => Internal.TwitchAPI.v5.Users.CreateUserConnectionToViewerHeartbeatService(identifier, authToken));
+                }
+                #endregion
+                #region CheckUserConnectionToViewerHeartbeatService
+                public static Models.API.v5.ViewerHeartbeatService.VHSConnectionCheck CheckUserConnectionToViewerHeartbeatService(string authToken = null)
+                {
+                    return Internal.TwitchAPI.v5.Users.CheckUserConnectionToViewerHeartbeatService(authToken);
+                }
+
+                public async static Task<Models.API.v5.ViewerHeartbeatService.VHSConnectionCheck> CheckUserConnectionToViewerHeartbeatServiceAsync(string authToken = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Users.CheckUserConnectionToViewerHeartbeatService(authToken));
+                }
+                #endregion
+                #region DeleteUserConnectionToViewerHeartbeatService
+                public static void DeleteUserConnectionToViewerHeartbeatServicechStreams(string authToken = null)
+                {
+                    Internal.TwitchAPI.v5.Users.DeleteUserConnectionToViewerHeartbeatServicechStreams(authToken);
+                }
+
+                public async static Task DeleteUserConnectionToViewerHeartbeatServicechStreamsAsync(string authToken = null)
+                {
+                    await Task.Run(() => Internal.TwitchAPI.v5.Users.DeleteUserConnectionToViewerHeartbeatServicechStreams(authToken));
+                }
+                #endregion
+                #endregion
             }
         }
 

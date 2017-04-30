@@ -1118,7 +1118,7 @@
             }
             #endregion
             #region DeleteUserConnectionToViewerHeartbeatService
-            public static void SearDeleteUserConnectionToViewerHeartbeatServicechStreams(string authToken = null)
+            public static void DeleteUserConnectionToViewerHeartbeatServicechStreams(string authToken = null)
             {
                 Requests.Delete("https://api.twitch.tv/kraken/user/vhs", authToken, Requests.API.v5);
             }
