@@ -1114,6 +1114,7 @@
 
         public static class Follows
         {
+            #region GetFollowers
             public static Models.API.v3.Follows.FollowersResponse GetFollowers(string channel, int limit = 25, int offset = 0, string cursor = null, Enums.Direction direction = Enums.Direction.Descending)
             {
                 return Internal.TwitchAPI.v3.Follows.GetFollowers(channel, limit, offset, cursor, direction);
@@ -1123,7 +1124,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.v3.Follows.GetFollowers(channel, limit, offset, cursor, direction));
             }
-
+            #endregion
+            #region GetFollows
             public static Models.API.v3.Follows.FollowsResponse GetFollows(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Descending, Enums.SortBy sortBy = Enums.SortBy.CreatedAt)
             {
                 return Internal.TwitchAPI.v3.Follows.GetFollows(channel, limit, offset, direction, sortBy);
@@ -1133,7 +1135,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.v3.Follows.GetFollows(channel, limit, offset, direction, sortBy));
             }
-
+            #endregion
+            #region GetFollowStatus
             public static Models.API.v3.Follows.Follows GetFollowsStatus(string user, string targetChannel)
             {
                 return Internal.TwitchAPI.v3.Follows.GetFollowsStatus(user, targetChannel);
@@ -1143,7 +1146,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.v3.Follows.GetFollowsStatus(user, targetChannel));
             }
-
+            #endregion
+            #region CreateFollow
             public static Models.API.v3.Follows.Follows CreateFollow(string user, string targetChannel, bool notifications = false, string accessToken = null)
             {
                 return Internal.TwitchAPI.v3.Follows.CreateFollow(user, targetChannel, notifications, accessToken);
@@ -1153,7 +1157,8 @@
             {
                 return await Task.Run(() => Internal.TwitchAPI.v3.Follows.CreateFollow(user, targetChannel, notifications, accessToken));
             }
-
+            #endregion
+            #region RemoveFollow
             public static void RemoveFollow(string user, string target, string accessToken = null)
             {
                 Internal.TwitchAPI.v3.Follows.RemoveFollow(user, target, accessToken);
@@ -1163,31 +1168,72 @@
             {
                 await Task.Run(() => Internal.TwitchAPI.v3.Follows.RemoveFollow(user, target, accessToken));
             }
+            #endregion
         }
 
         public static class Games
         {
-            public static Models.API.v3.Games.TopGamesResponse GetTopGames(int limit = 10, int offset = 0)
+            public static class v3
             {
-                return Internal.TwitchAPI.v3.Games.GetTopGames(limit, offset);
+                #region GetTopGames
+                public static Models.API.v3.Games.TopGamesResponse GetTopGames(int limit = 10, int offset = 0)
+                {
+                    return Internal.TwitchAPI.v3.Games.GetTopGames(limit, offset);
+                }
+
+                public async static Task<Models.API.v3.Games.TopGamesResponse> GetTopGamesAsync(int limit = 10, int offset = 0)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Games.GetTopGames(limit, offset));
+                }
+                #endregion
             }
 
-            public async static Task<Models.API.v3.Games.TopGamesResponse> GetTopGamesAsync(int limit = 10, int offset = 0)
+            public static class v5
             {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Games.GetTopGames(limit, offset));
+                #region GetTopGames
+                public static Models.API.v5.Games.TopGames GetTopGames(int? limit = null, int? offset = null)
+                {
+                    return Internal.TwitchAPI.v5.Games.GetTopGames(limit, offset);
+                }
+
+                public async static Task<Models.API.v5.Games.TopGames> GetTopGamesAsync(int? limit = null, int? offset = null)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Games.GetTopGames(limit, offset));
+                }
+                #endregion
             }
         }
 
         public static class Ingests
         {
-            public static Models.API.v3.Ingests.IngestsResponse GetIngests()
+            public static class v3
             {
-                return Internal.TwitchAPI.v3.Ingests.GetIngests();
+                #region GetIngests
+                public static Models.API.v3.Ingests.IngestsResponse GetIngests()
+                {
+                    return Internal.TwitchAPI.v3.Ingests.GetIngests();
+                }
+
+                public async static Task<Models.API.v3.Ingests.IngestsResponse> GetIngestsAsync()
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v3.Ingests.GetIngests());
+                }
+                #endregion
             }
 
-            public async static Task<Models.API.v3.Ingests.IngestsResponse> GetIngestsAsync()
+            public static class v5
             {
-                return await Task.Run(() => Internal.TwitchAPI.v3.Ingests.GetIngests());
+                #region GetIngestServerList
+                public static Models.API.v5.Ingests.Ingests GetIngestServerList()
+                {
+                    return Internal.TwitchAPI.v5.Ingests.GetIngestServerList();
+                }
+
+                public static async Task<Models.API.v5.Ingests.Ingests> GetIngestServerListAsync()
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Ingests.GetIngestServerList());
+                }
+                #endregion
             }
         }
 
