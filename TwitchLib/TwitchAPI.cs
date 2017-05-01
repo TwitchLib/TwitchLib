@@ -825,6 +825,10 @@ namespace TwitchLib
             /// <returns>List of channel subscribers</returns>
             public static async Task<Models.API.Subscriber.SubscribersResponse> GetChannelSubscribersAsync(string channel, string accessToken = null) => await Internal.TwitchApi.GetAllSubscribers(channel, accessToken);
 
+            public static Models.API.Subscriber.SubscribersResponsev5 GetChannelSubscribersv5(string channelId, string accessToken = null) => Task.Run(() => Internal.TwitchApi.GetAllSubscribersv5(channelId, accessToken)).Result;
+
+            public static async Task<Models.API.Subscriber.SubscribersResponsev5> GetChannelSubscribersv5Async(string channelId, string accessToken = null) => await Internal.TwitchApi.GetAllSubscribersv5(channelId, accessToken);
+
             /// <summary>
             /// [SYNC] Retrieves channel subscribers from Twitch using limit and offset
             /// </summary>

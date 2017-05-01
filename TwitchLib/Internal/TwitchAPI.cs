@@ -395,6 +395,39 @@ namespace TwitchLib.Internal
             return new Models.API.Subscriber.SubscribersResponse(allSubs, totalSubs);
         }
 
+        internal static async Task<Models.API.Subscriber.SubscribersResponsev5> GetAllSubscribersv5(string channelId, string accessToken = null)
+        {
+            // initial stuffs
+            List<Models.API.Subscriber.Subscriptionv5> allSubs = new List<Models.API.Subscriber.Subscriptionv5>();
+            int totalSubs;
+            var firstBatch = await GetSubscribersv5(channelId, 100, 0, Enums.SortDirection.Ascending, accessToken);
+            totalSubs = firstBatch.TotalSubscriberCount;
+            allSubs.AddRange(firstBatch.Subscribers);
+
+            // math stuff to determine left over and number of requests
+            int leftOverSubs = (totalSubs - firstBatch.Subscribers.Count) % 100;
+            int requiredRequests = (totalSubs - firstBatch.Subscribers.Count - leftOverSubs) / 100;
+
+            // perform required requests after initial delay
+            int currentOffset = firstBatch.Subscribers.Count;
+            System.Threading.Thread.Sleep(1000);
+            for (int i = 0; i < requiredRequests; i++)
+            {
+                var requestedSubs = await GetSubscribersv5(channelId, 100, currentOffset, Enums.SortDirection.Ascending, accessToken);
+                allSubs.AddRange(requestedSubs.Subscribers);
+                currentOffset += requestedSubs.Subscribers.Count;
+
+                // We should wait a second before performing another request per Twitch requirements
+                System.Threading.Thread.Sleep(1000);
+            }
+
+            // get leftover subs
+            var leftOverSubsRequest = await GetSubscribersv5(channelId, leftOverSubs, currentOffset, Enums.SortDirection.Ascending, accessToken);
+            allSubs.AddRange(leftOverSubsRequest.Subscribers);
+
+            return new Models.API.Subscriber.SubscribersResponsev5(allSubs, totalSubs);
+        }
+
         internal static async Task<Models.API.Subscriber.SubscribersResponse> GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.SortDirection direction = Enums.SortDirection.Ascending, string accessToken = null)
         {
             string args = $"?limit={limit}";
@@ -402,6 +435,15 @@ namespace TwitchLib.Internal
             args += $"&direction={(direction == Enums.SortDirection.Descending ? "desc" : "asc")}";
 
             return new Models.API.Subscriber.SubscribersResponse(JObject.Parse(await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions{args}", accessToken)));
+        }
+
+        internal static async Task<Models.API.Subscriber.SubscribersResponsev5> GetSubscribersv5(string channelId, int limit = 25, int offset = 0, Enums.SortDirection direction = Enums.SortDirection.Ascending, string accessToken = null)
+        {
+            string args = $"?limit={limit}";
+            args += $"&offset={offset}";
+            args += $"&direction={(direction == Enums.SortDirection.Descending ? "desc" : "asc")}";
+
+            return new Models.API.Subscriber.SubscribersResponsev5(JObject.Parse(await Requests.MakeGetRequest($"https://api.twitch.tv/kraken/channels/{channelId}/subscriptions{args}", accessToken, 5)));
         }
 
         internal static async Task<Models.API.Channel.ChannelHasUserSubscribedResponse> ChannelHasUserSubscribed(string username, string channel, string accessToken = null)
