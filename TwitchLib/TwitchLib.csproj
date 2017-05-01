@@ -59,6 +59,7 @@
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamOfflineArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamOnlineArgs.cs" />
     <Compile Include="Exceptions\API\BadParameterException.cs" />
+    <Compile Include="Exceptions\API\MissingClientIdException.cs" />
     <Compile Include="Exceptions\Client\BadListenException.cs" />
     <Compile Include="Exceptions\Client\IllegalAssignmentException.cs" />
     <Compile Include="Exceptions\Services\UnitializedChannelList.cs" />

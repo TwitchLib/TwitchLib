@@ -153,6 +153,8 @@
             HttpWebResponse errorResp = e.Response as HttpWebResponse;
             switch (errorResp.StatusCode)
             {
+                case HttpStatusCode.BadRequest:
+                    throw new MissingClientIdException("Your request was sent without a client-id set. Use TwitchAPI.");
                 case HttpStatusCode.Unauthorized:
                     throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
                 case HttpStatusCode.NotFound:
