@@ -366,44 +366,52 @@
                 #region GetChannelEditors
                 public static Models.API.v3.Channels.GetEditorsResponse GetChannelEditors(string channel, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, accessToken);
                     return Internal.TwitchAPI.v3.Channels.GetChannelEditors(channel, accessToken);
                 }
 
                 public static async Task<Models.API.v3.Channels.GetEditorsResponse> GetChannelEditorsAsync(string channel, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, accessToken);
                     return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannelEditors(channel, accessToken));
                 }
                 #endregion
                 #region UpdateChannel
                 public static Models.API.v3.Channels.Channel UpdateChannel(string channel, string status = null, string game = null, string delay = null, bool? channelFeed = null, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, accessToken);
                     return Internal.TwitchAPI.v3.Channels.UpdateChannel(channel, status, game, delay, channelFeed, accessToken);
                 }
 
                 public static async Task<Models.API.v3.Channels.Channel> UpdateChannelAsync(string channel, string status = null, string game = null, string delay = null, bool? channelFeed = null, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, accessToken);
                     return await Task.Run(() => Internal.TwitchAPI.v3.Channels.UpdateChannel(channel, status, game, delay, channelFeed, accessToken));
                 }
                 #endregion
                 #region ResetStreamKey
                 public static Models.API.v3.Channels.ResetStreamKeyResponse ResetStreamKey(string channel, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Stream, accessToken);
                     return Internal.TwitchAPI.v3.Channels.ResetStreamKey(channel, accessToken);
                 }
 
                 public static async Task<Models.API.v3.Channels.ResetStreamKeyResponse> ResetStreamKeyAsync(string channel, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Stream, accessToken);
                     return await Task.Run(() => Internal.TwitchAPI.v3.Channels.ResetStreamKey(channel, accessToken));
                 }
                 #endregion
                 #region RunCommercial
                 public static void RunCommercial(string channel, Enums.CommercialLength length, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Commercial, accessToken);
                     Internal.TwitchAPI.v3.Channels.RunCommercial(channel, length, accessToken);
                 }
 
                 public static async Task RunCommercialAsync(string channel, Enums.CommercialLength length, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Commercial, accessToken);
                     await Task.Run(() => Internal.TwitchAPI.v3.Channels.RunCommercial(channel, length, accessToken));
                 }
                 #endregion
@@ -479,6 +487,7 @@
                 /// <returns>A Channel object with the newly changed properties.</returns>
                 public static Models.API.v5.Channels.Channel UpdateChannel(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
                     return Internal.TwitchAPI.v5.Channels.UpdateChannel(channelId, status, game, delay, channelFeedEnabled, authToken);
                 }
 
@@ -495,6 +504,7 @@
                 /// <returns>A Channel object with the newly changed properties.</returns>
                 public async static Task<Models.API.v5.Channels.Channel> UpdateChannelAsync(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.Channels.UpdateChannel(channelId, status, game, delay, channelFeedEnabled, authToken));
                 }
                 #endregion
@@ -507,6 +517,7 @@
                 /// <returns>A ChannelEditors object that contains an array of the Users which are Editor of the channel.</returns>
                 public static Models.API.v5.Channels.ChannelEditors GetChannelEditors(string channelId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, authToken);
                     return Internal.TwitchAPI.v5.Channels.GetChannelEditors(channelId, authToken);
                 }
 
@@ -518,6 +529,7 @@
                 /// <returns>A ChannelEditors object that contains an array of the Users which are Editor of the channel.</returns>
                 public async static Task<Models.API.v5.Channels.ChannelEditors> GetChannelEditorsAsync(string channelId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannelEditors(channelId, authToken));
                 }
                 #endregion
@@ -584,6 +596,7 @@
                 /// <returns></returns>
                 public static Models.API.v5.Channels.ChannelSubscribers GetChannelSubscribers(string channelId, int? limit = null, int? offset = null, string direction = null, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, authToken);
                     return Internal.TwitchAPI.v5.Channels.GetChannelSubscribers(channelId, limit, offset, direction, authToken);
                 }
 
@@ -599,6 +612,7 @@
                 /// <returns></returns>
                 public async static Task<Models.API.v5.Channels.ChannelSubscribers> GetChannelSubscribersAsync(string channelId, int? limit = null, int? offset = null, string direction = null, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannelSubscribers(channelId, limit, offset, direction, authToken));
                 }
                 #endregion
@@ -613,6 +627,7 @@
                 /// <returns>Returns a subscription object or null if not subscribed.</returns>
                 public static Models.API.v5.Subscriptions.Subscription CheckChannelSubscriptionByUser(string channelId, string userId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Check_Subscription, authToken);
                     return Internal.TwitchAPI.v5.Channels.CheckChannelSubscriptionByUser(channelId, userId, authToken);
                 }
 
@@ -626,6 +641,7 @@
                 /// <returns>Returns a subscription object or null if not subscribed.</returns>
                 public async static Task<Models.API.v5.Subscriptions.Subscription> CheckChannelSubscriptionByUserAsync(string channelId, string userId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Check_Subscription, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.Channels.CheckChannelSubscriptionByUser(channelId, userId, authToken));
                 }
                 #endregion
@@ -643,11 +659,13 @@
                 #region StartChannelCommercial
                 public static Models.API.v5.Channels.ChannelCommercial StartChannelCommercial(string channelId, Enums.CommercialLength duration, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Commercial, authToken);
                     return Internal.TwitchAPI.v5.Channels.StartChannelCommercial(channelId, duration, authToken);
                 }
 
                 public async static Task<Models.API.v5.Channels.ChannelCommercial> StartChannelCommercialAsync(string channelId, Enums.CommercialLength duration, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Commercial, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.Channels.StartChannelCommercial(channelId, duration, authToken));
                 }
                 #endregion
@@ -661,6 +679,7 @@
                 /// <returns>A ChannelPrivileged object that also contains the email and stream key of the channel aside from the normal channel values.</returns>
                 public static Models.API.v5.Channels.ChannelAuthed ResetChannelStreamKey(string channelId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Stream, authToken);
                     return Internal.TwitchAPI.v5.Channels.ResetChannelStreamKey(channelId, authToken);
                 }
 
@@ -673,6 +692,7 @@
                 /// <returns>A ChannelPrivileged object that also contains the email and stream key of the channel aside from the normal channel values.</returns>
                 public async static Task<Models.API.v5.Channels.ChannelAuthed> ResetChannelStreamKeyAsync(string channelId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Stream, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.Channels.ResetChannelStreamKey(channelId, authToken));
                 }
                 #endregion
@@ -684,8 +704,9 @@
                 /// </summary>
                 /// <param name="channelId">The specified channel ID to get the community from.</param>
                 /// <returns>A Community object that represents the community the channel is in.</returns>
-                public static Models.API.v5.Communities.Community GetChannelCommunity(string channelId)
+                public static Models.API.v5.Communities.Community GetChannelCommunity(string channelId, string authToken)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
                     return Internal.TwitchAPI.v5.Channels.GetChannelCommunity(channelId);
                 }
 
@@ -695,9 +716,10 @@
                 /// </summary>
                 /// <param name="channelId">The specified channel ID to get the community from.</param>
                 /// <returns>A Community object that represents the community the channel is in.</returns>
-                public async static Task<Models.API.v5.Communities.Community> GetChannelCommunityAsync(string channelId)
+                public async static Task<Models.API.v5.Communities.Community> GetChannelCommunityAsync(string channelId, string authToken)
                 {
-                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannelCommunity(channelId));
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannelCommunity(channelId, authToken));
                 }
                 #endregion
                 #region SetChannelCommunity
@@ -709,6 +731,7 @@
                 /// <param name="communityId">The specified community to set the channel to be a part of.</param>
                 public static void SetChannelCommunity(string channelId, string communityId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
                     Internal.TwitchAPI.v5.Channels.SetChannelCommunity(channelId, communityId, authToken);
                 }
 
@@ -720,6 +743,7 @@
                 /// <param name="communityId">The specified community to set the channel to be a part of.</param>
                 public async static Task SetChannelCommunityAsync(string channelId, string communityId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
                     await Task.Run(() => Internal.TwitchAPI.v5.Channels.SetChannelCommunity(channelId, communityId, authToken));
                 }
                 #endregion
@@ -730,6 +754,7 @@
                 /// <param name="channelId">The specified channel to be removed.</param>
                 public static void DeleteChannelFromCommunity(string channelId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
                     Internal.TwitchAPI.v5.Channels.DeleteChannelFromCommunity(channelId, authToken);
                 }
 
@@ -739,6 +764,7 @@
                 /// <param name="channelId">The specified channel to be removed.</param>
                 public async static Task DeleteChannelFromCommunityAsync(string channelId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
                     await Task.Run(() => Internal.TwitchAPI.v5.Channels.DeleteChannelFromCommunity(channelId, authToken));
                 }
                 #endregion
