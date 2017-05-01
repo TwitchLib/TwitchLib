@@ -1573,6 +1573,7 @@
 
         public static class Subscriptions
         {
+            #region GetSubscribers
             public static Models.API.v3.Subscriptions.SubscribersResponse GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Ascending, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
@@ -1584,7 +1585,8 @@
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
                 return await Task.Run(() => Internal.TwitchAPI.v3.Subscriptions.GetSubscribers(channel, limit, offset, direction, accessToken));
             }
-
+            #endregion
+            #region GetAllSubscribers
             public static List<Models.API.v3.Subscriptions.Subscriber> GetAllSubscribers(string channel, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
@@ -1596,7 +1598,8 @@
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
                 return await Task.Run(() => Internal.TwitchAPI.v3.Subscriptions.GetAllSubscribers(channel, accessToken));
             }
-
+            #endregion
+            #region ChannelHasUserSubscribed
             public static Models.API.v3.Subscriptions.Subscriber ChannelHasUserSubscribed(string channel, string targetUser, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Check_Subscription, accessToken);
@@ -1608,7 +1611,8 @@
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Check_Subscription, accessToken);
                 return await Task.Run(() => Internal.TwitchAPI.v3.Subscriptions.ChannelHasUserSubscribed(channel, targetUser, accessToken));
             }
-
+            #endregion
+            #region UserSubscribedToChannel
             public static Models.API.v3.Subscriptions.ChannelSubscription UserSubscribedToChannel(string user, string targetChannel, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, accessToken);
@@ -1620,7 +1624,8 @@
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, accessToken);
                 return await Task.Run(() => Internal.TwitchAPI.v3.Subscriptions.UserSubscribedToChannel(user, targetChannel, accessToken));
             }
-
+            #endregion
+            #region GetSubscriberCount
             public static int GetSubscriberCount(string channel, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
@@ -1632,6 +1637,7 @@
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
                 return await Task.Run(() => Internal.TwitchAPI.v3.Subscriptions.GetSubscriberCount(channel, accessToken));
             }
+            #endregion
         }
 
         public static class Teams
