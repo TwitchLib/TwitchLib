@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Exceptions.API
+﻿namespace TwitchLib.Exceptions.API
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Exception representing a detection that sent credentials were invalid.</summary>
     public class InvalidCredentialException : Exception
     {

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Enums
+﻿namespace TwitchLib.Enums
 {
-    /// <summary>
-    /// Period value used to specify time frame for clips.
-    /// </summary>
+    /// <summary>Period value used to specify time frame for clips.</summary>
     public enum Period
     {
         /// <summary>Represents a single day.</summary>

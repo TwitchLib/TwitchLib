@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
-
-namespace TwitchLib.Models.Client
+﻿namespace TwitchLib.Models.Client
 {
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Text.RegularExpressions;
+    #endregion
     /// <summary>Class for maintaining emotes that may be substituted into messages.</summary>
     /// <remarks>
     ///     Also contains helpers to aid in performing actual replacements.
@@ -200,7 +201,7 @@ namespace TwitchLib.Models.Client
         public MessageEmote(string id, string text,
             EmoteSource source = EmoteSource.Twitch,
             EmoteSize size = EmoteSize.Small,
-            ReplaceEmoteDelegate replacementDelegate = null )
+            ReplaceEmoteDelegate replacementDelegate = null)
         {
             _id = id;
             _text = text;
@@ -282,7 +283,7 @@ namespace TwitchLib.Models.Client
         ///     Constructor which specifies a particular preferred <see cref="EmoteFilterDelegate"/>
         /// </summary>
         /// <param name="preferredFilter"></param>
-        public MessageEmoteCollection(EmoteFilterDelegate preferredFilter) :this ()
+        public MessageEmoteCollection(EmoteFilterDelegate preferredFilter) : this()
         {
             _preferredFilter = preferredFilter;
         }
@@ -300,7 +301,7 @@ namespace TwitchLib.Models.Client
                 _emoteList.Add(emote.Text, emote);
             }
 
-            
+
             if (CurrentPattern == null)
             {
                 //string i = String.Format(_basePattern, "(" + emote.EscapedText + "){0}");

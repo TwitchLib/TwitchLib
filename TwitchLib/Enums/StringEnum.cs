@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Enums
+﻿namespace TwitchLib.Enums
 {
     ///<summary>Really cool way of doing string enums, credits to RogueException (https://github.com/RogueException)</summary>
     public abstract class StringEnum
@@ -18,9 +12,7 @@ namespace TwitchLib.Enums
             Value = value;
         }
 
-        /// <summary>
-        /// Returns string value for overriden ToString()
-        /// </summary>
+        /// <summary>Returns string value for overriden ToString()</summary>
         /// <returns>Enum value</returns>
         public override string ToString() => Value;
     }

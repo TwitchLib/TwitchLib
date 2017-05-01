@@ -1,17 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Common
+﻿namespace TwitchLib.Common
 {
-    /// <summary>
-    /// Static class of helper functions used around the project.
-    /// </summary>
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.IO;
+
+    using Newtonsoft.Json.Linq;
+    #endregion
+    /// <summary>Static class of helper functions used around the project.</summary>
     public static class Helpers
     {
         /// <summary>

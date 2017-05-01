@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Exceptions.API.UploadVideo.CreateVideo
+﻿namespace TwitchLib.Exceptions.API.UploadVideo.CreateVideo
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Exception thrown when attempting to upload to an invalid channel.</summary>
     public class InvalidChannelException : Exception
     {

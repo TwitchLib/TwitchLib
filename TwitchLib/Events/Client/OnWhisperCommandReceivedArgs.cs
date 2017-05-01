@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib.Models.Client;
-
-namespace TwitchLib.Events.Client
+﻿namespace TwitchLib.Events.Client
 {
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+
+    using Models.Client;
+    #endregion
     /// <summary>Args representing whisper command received event.</summary>
     public class OnWhisperCommandReceivedArgs : EventArgs
     {

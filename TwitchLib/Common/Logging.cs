@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Common
+﻿namespace TwitchLib.Common
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Static class for logging data for debugging.</summary>
     public static class Logging
     {

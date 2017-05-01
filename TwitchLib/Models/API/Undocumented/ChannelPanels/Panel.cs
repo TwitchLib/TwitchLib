@@ -1,12 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.API.Undocumented.ChannelPanels
+﻿namespace TwitchLib.Models.API.Undocumented.ChannelPanels
 {
+    #region using directives
+    using Newtonsoft.Json;
+    #endregion
     public class Panel
     {
         [JsonProperty(PropertyName = "_id")]

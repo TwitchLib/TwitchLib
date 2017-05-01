@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using TwitchLib.Enums;
-
-namespace TwitchLib.Events.Services.LiveStreamMonitor
+﻿namespace TwitchLib.Events.Services.LiveStreamMonitor
 {
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+
+    using Enums;
+    #endregion
     /// <summary>Class representing event args for OnChannelMonitorStarted event.</summary>
     public class OnStreamMonitorStartedArgs : EventArgs
     {

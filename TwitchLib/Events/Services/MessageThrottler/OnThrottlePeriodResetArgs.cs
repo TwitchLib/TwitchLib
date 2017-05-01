@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Events.Services.MessageThrottler
+﻿namespace TwitchLib.Events.Services.MessageThrottler
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Class representing event args for OnServiceStopped event.</summary>
     public class OnThrottlePeriodResetArgs : EventArgs
     {

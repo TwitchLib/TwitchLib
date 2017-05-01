@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using TwitchLib.Models.Client;
-
-namespace TwitchLib.Internal.Parsing
+﻿namespace TwitchLib.Internal.Parsing
 {
+    #region using directives
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using Models.Client;
+    #endregion
     internal static class Chat
     {
         /// <summary>Function returning the type of message received from Twitch</summary>

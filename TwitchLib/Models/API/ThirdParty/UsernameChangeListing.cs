@@ -1,12 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.API.ThirdParty
+﻿namespace TwitchLib.Models.API.ThirdParty
 {
+    #region using directives
+    using System;
+    using Newtonsoft.Json;
+    #endregion
     public class UsernameChangeListing
     {
         [JsonProperty(PropertyName = "userid")]

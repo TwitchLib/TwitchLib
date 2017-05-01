@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.Client
+﻿namespace TwitchLib.Models.Client
 {
     /// <summary>Class representing cheer badge.</summary>
     public class CheerBadge

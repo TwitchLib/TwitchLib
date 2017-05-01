@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Events.Client
+﻿namespace TwitchLib.Events.Client
 {
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+    #endregion
     /// <summary>Args representing existing user(s) detected event.</summary>
     public class OnExistingUsersDetectedArgs : EventArgs
     {

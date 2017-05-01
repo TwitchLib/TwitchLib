@@ -1,12 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.API.Undocumented.CSMaps
+﻿namespace TwitchLib.Models.API.Undocumented.CSMaps
 {
+    #region using directives
+    using Newtonsoft.Json;
+    #endregion
     public class CSMapsResponse
     {
         [JsonProperty(PropertyName = "_total")]

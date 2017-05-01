@@ -1,9 +1,9 @@
-
-﻿using System;
-using System.IO;
-
 namespace TwitchLib.Internal.TwitchAPI
 {
+    #region using directives
+    using System;
+    using System.IO;
+    #endregion
     internal static class v4
     {
         public static Models.API.v4.Clips.Clip GetClip(string slug)
@@ -24,7 +24,7 @@ namespace TwitchLib.Internal.TwitchAPI
                 paramsStr += "&trending=true";
             else
                 paramsStr += "&trending=false";
-            switch(period)
+            switch (period)
             {
                 case Models.API.v4.Clips.Period.All:
                     paramsStr += "&period=all";
@@ -66,7 +66,7 @@ namespace TwitchLib.Internal.TwitchAPI
 
         #region Upload Video Helpers
 
-        private static Models.API.v4.UploadVideo.UploadVideoListing createVideo(string channelId, string title, string description = null,  string game = null, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
+        private static Models.API.v4.UploadVideo.UploadVideoListing createVideo(string channelId, string title, string description = null, string game = null, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
         {
             string paramsStr = $"?channel_id={channelId}&title={title}";
             if (description != null)
@@ -97,18 +97,19 @@ namespace TwitchLib.Internal.TwitchAPI
             byte[] file = File.ReadAllBytes(videoPath);
             long size24mb = 25165824;
             long fileSize = videoInfo.Length;
-            if(fileSize > size24mb)
+            if (fileSize > size24mb)
             {
                 long finalChunkSize = fileSize % size24mb;
                 long parts = (fileSize - finalChunkSize) / size24mb;
-                for(int currentPart = 1; currentPart <= parts; currentPart++)
+                for (int currentPart = 1; currentPart <= parts; currentPart++)
                 {
                     byte[] chunk;
                     if (currentPart == parts)
                     {
                         chunk = new byte[finalChunkSize];
                         Array.Copy(file, (currentPart - 1) * size24mb, chunk, 0, finalChunkSize);
-                    } else
+                    }
+                    else
                     {
                         chunk = new byte[size24mb];
                         Array.Copy(file, (currentPart - 1) * size24mb, chunk, 0, size24mb);
@@ -116,7 +117,8 @@ namespace TwitchLib.Internal.TwitchAPI
                     Requests.PutBytes($"{upload.Url}?part={currentPart}&upload_token={upload.Token}", chunk);
                     System.Threading.Thread.Sleep(1000);
                 }
-            } else
+            }
+            else
             {
                 Requests.PutBytes($"{upload.Url}?part=1&upload_token={upload.Token}", file);
             }

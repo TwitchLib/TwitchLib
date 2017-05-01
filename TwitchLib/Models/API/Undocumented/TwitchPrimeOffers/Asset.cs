@@ -1,12 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.API.Undocumented.TwitchPrimeOffers
+﻿namespace TwitchLib.Models.API.Undocumented.TwitchPrimeOffers
 {
+    #region using directives
+    using Newtonsoft.Json;
+    #endregion
     public class Asset
     {
         [JsonProperty(PropertyName = "assetType")]

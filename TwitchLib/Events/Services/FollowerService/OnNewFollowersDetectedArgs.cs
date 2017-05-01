@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib.Models.API;
-
-namespace TwitchLib.Events.Services.FollowerService
+﻿namespace TwitchLib.Events.Services.FollowerService
 {
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+    #endregion
     /// <summary>Class representing event args for OnNewFollowersDetected event.</summary>
     public class OnNewFollowersDetectedArgs : EventArgs
     {

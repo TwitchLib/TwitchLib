@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Exceptions.Services
+﻿namespace TwitchLib.Exceptions.Services
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Exception representing an invalid cache size provided.</summary>
     public class BadQueryCountException : Exception
     {
