@@ -8,7 +8,7 @@ namespace TwitchLib.Enums
 {
     public enum AuthScopes
     {
-        Channel_Subscription,
+        Any,
         Channel_Check_Subscription,
         Channel_Commercial,
         Channel_Editor,
