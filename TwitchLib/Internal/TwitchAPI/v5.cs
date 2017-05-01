@@ -10,9 +10,9 @@
         public static class Root
         {
             #region GetRoot
-            public static Models.API.v5.Root.Root GetRoot(string authToken = null)
+            public static Models.API.v5.Root.Root GetRoot(string authToken = null, string clientId = null)
             {
-                return Requests.Get<Models.API.v5.Root.Root>("https://api.twitch.tv/kraken", authToken, Requests.API.v5);
+                return Requests.Get<Models.API.v5.Root.Root>("https://api.twitch.tv/kraken", authToken, Requests.API.v5, clientId);
             }
             #endregion
         }
