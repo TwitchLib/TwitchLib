@@ -59,9 +59,10 @@
         {
             try
             {
-                return v3.Root.GetRoot(null, clientId).Identified;
+                v5.Root.GetRoot(null, clientId);
+                return true;
             }
-            catch
+            catch(MissingClientIdException)
             {
                 return false;
             }
