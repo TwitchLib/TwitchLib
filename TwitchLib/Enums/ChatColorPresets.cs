@@ -19,7 +19,9 @@
         OrangeRed,
         /// <summary>Chat color name.</summary>
         Red,
-        /// <summary>Chat color name.</summary>GoldenRod,
+        /// <summary>Chat color name.</summary>
+        GoldenRod,
+        /// <summary>Chat color name.</summary>
         HotPink,
         /// <summary>Chat color name.</summary>
         CadetBlue,
