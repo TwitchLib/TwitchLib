@@ -43,7 +43,7 @@ namespace TwitchLib.Internal.TwitchAPI
             return Requests.Get<Models.API.v4.Clips.TopClipsResponse>($"https://api.twitch.tv/kraken/clips/top{paramsStr}", null, Requests.API.v4);
         }
 
-        public static Models.API.v4.Clips.FollowClipsResponse GetFollowedClips(long limit = 10, string cursor = null, bool trending = false)
+        public static Models.API.v4.Clips.FollowClipsResponse GetFollowedClips(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
         {
             string paramsStr = $"?limit={limit}";
             if (cursor != null)
@@ -53,7 +53,7 @@ namespace TwitchLib.Internal.TwitchAPI
             else
                 paramsStr += "&trending=false";
 
-            return Requests.Get<Models.API.v4.Clips.FollowClipsResponse>($"https://api.twitch.tv/kraken/clips/followed{paramsStr}", null, Requests.API.v4);
+            return Requests.Get<Models.API.v4.Clips.FollowClipsResponse>($"https://api.twitch.tv/kraken/clips/followed{paramsStr}", authToken, Requests.API.v4);
         }
 
         public static Models.API.v4.UploadVideo.UploadedVideo UploadVideo(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
