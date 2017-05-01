@@ -4,6 +4,7 @@
     using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using TwitchLib.Internal.TwitchAPI;
     #endregion
     /// <summary>Fully featured Twitch API wrapper.</summary>
     public static class TwitchAPI
@@ -67,33 +68,39 @@
             #region GetBlocks
             public static Models.API.v3.Blocks.GetBlocksResponse GetBlocks(string channel, int limit = 25, int offset = 0, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Read, accessToken);
                 return Internal.TwitchAPI.v3.Blocks.GetBlocks(channel, limit, offset, accessToken);
             }
 
             public static async Task<Models.API.v3.Blocks.GetBlocksResponse> GetBlocksAsync(string channel, int limit = 25, int offset = 0, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Read, accessToken);
                 return await Task.Run(() => Internal.TwitchAPI.v3.Blocks.GetBlocks(channel, limit, offset, accessToken));
             }
             #endregion
             #region CreateBlock
             public static Models.API.v3.Blocks.Block CreateBlock(string channel, string target, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
                 return Internal.TwitchAPI.v3.Blocks.CreateBlock(channel, target, accessToken);
             }
 
             public static async Task<Models.API.v3.Blocks.Block> CreateBlockAsync(string channel, string target, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
                 return await Task.Run(() => Internal.TwitchAPI.v3.Blocks.CreateBlock(channel, target, accessToken));
             }
             #endregion
             #region RemoveBlock
             public static void RemoveBlock(string channel, string target, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
                 Internal.TwitchAPI.v3.Blocks.RemoveBlock(channel, target, accessToken);
             }
 
             public static async void RemoveBlockAsync(string channel, string target, string accessToken = null)
             {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
                 await Task.Run(() => Internal.TwitchAPI.v3.Blocks.RemoveBlock(channel, target, accessToken));
             }
             #endregion
@@ -104,68 +111,80 @@
             public static class v3
             {
                 #region GetChannelFeedPosts
-                public static Models.API.v3.ChannelFeeds.ChannelFeedResponse GetChannelFeedPosts(string channel, int limit = 25, string cursor = null)
+                public static Models.API.v3.ChannelFeeds.ChannelFeedResponse GetChannelFeedPosts(string channel, int limit = 25, string cursor = null, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, accessToken);
                     return Internal.TwitchAPI.v3.ChannelFeed.GetChannelFeedPosts(channel, limit, cursor);
                 }
 
-                public async static Task<Models.API.v3.ChannelFeeds.ChannelFeedResponse> GetChannelFeedPostsAsync(string channel, int limit = 25, string cursor = null)
+                public async static Task<Models.API.v3.ChannelFeeds.ChannelFeedResponse> GetChannelFeedPostsAsync(string channel, int limit = 25, string cursor = null, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, accessToken);
                     return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.GetChannelFeedPosts(channel, limit, cursor));
                 }
                 #endregion
                 #region CreatePost
                 public static Models.API.v3.ChannelFeeds.PostResponse CreatePost(string channel, string content, bool share = false, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
                     return Internal.TwitchAPI.v3.ChannelFeed.CreatePost(channel, content, share, accessToken);
                 }
 
                 public static async Task<Models.API.v3.ChannelFeeds.PostResponse> CreatePostAsync(string channel, string content, bool share = false, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
                     return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.CreatePost(channel, content, share, accessToken));
                 }
                 #endregion
                 #region GetPostById
-                public static Models.API.v3.ChannelFeeds.Post GetPostById(string channel, string postId)
+                public static Models.API.v3.ChannelFeeds.Post GetPostById(string channel, string postId, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, accessToken);
                     return Internal.TwitchAPI.v3.ChannelFeed.GetPost(channel, postId);
                 }
 
-                public static async Task<Models.API.v3.ChannelFeeds.Post> GetPostByIdAsync(string channel, string postId)
+                public static async Task<Models.API.v3.ChannelFeeds.Post> GetPostByIdAsync(string channel, string postId, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, accessToken);
                     return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.GetPost(channel, postId));
                 }
                 #endregion
                 #region RemovePost
                 public static void RemovePost(string channel, string postId, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
                     Internal.TwitchAPI.v3.ChannelFeed.DeletePost(channel, postId, accessToken);
                 }
 
                 public static async Task RemovePostAsync(string channel, string postId, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
                     await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.DeletePost(channel, postId, accessToken));
                 }
                 #endregion
                 #region CreateReaction
                 public static void CreateReaction(string channel, string postId, string emoteId, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
                     Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId, accessToken);
                 }
 
                 public static async Task CreateReactionAsync(string channel, string postId, string emoteId, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
                     await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId, accessToken));
                 }
                 #endregion
                 #region RemoveReaction
                 public static void RemoveReaction(string channel, string postId, string emoteId, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
                     Internal.TwitchAPI.v3.ChannelFeed.RemoveReaction(channel, postId, emoteId, accessToken);
                 }
 
                 public static async Task RemoveReactionAsync(string channel, string postId, string emoteId, string accessToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
                     await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.RemoveReaction(channel, postId, emoteId, accessToken));
                 }
                 #endregion
@@ -176,116 +195,137 @@
                 #region GetMultipleFeedPosts
                 public static Models.API.v5.ChannelFeed.MultipleFeedPosts GetMultipleFeedPosts(string channelId, long? limit = null, string cursor = null, long? comments = null, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, authToken);
                     return Internal.TwitchAPI.v5.ChannelFeed.GetMultipleFeedPosts(channelId, limit, cursor, comments, authToken);
                 }
 
                 public async static Task<Models.API.v5.ChannelFeed.MultipleFeedPosts> GetMultipleFeedPostsAsync(string channelId, long? limit = null, string cursor = null, long? comments = null, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.GetMultipleFeedPosts(channelId, limit, cursor, comments, authToken));
                 }
                 #endregion
                 #region GetFeedPosts
                 public static Models.API.v5.ChannelFeed.FeedPost GetFeedPost(string channelId, string postId, long? comments = null, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, authToken);
                     return Internal.TwitchAPI.v5.ChannelFeed.GetFeedPost(channelId, postId, comments, authToken);
                 }
 
                 public async static Task<Models.API.v5.ChannelFeed.FeedPost> GetFeedPostAsync(string channelId, string postId, long? comments = null, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.GetFeedPost(channelId, postId, comments, authToken));
                 }
                 #endregion
                 #region CreateFeedPost
                 public static Models.API.v5.ChannelFeed.FeedPostCreation CreateFeedPost(string channelId, string content, bool? share = null, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return Internal.TwitchAPI.v5.ChannelFeed.CreateFeedPost(channelId, content, share, authToken);
                 }
 
                 public async static Task<Models.API.v5.ChannelFeed.FeedPostCreation> CreateFeedPostAsync(string channelId, string content, bool? share = null, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.CreateFeedPost(channelId, content, share, authToken));
                 }
                 #endregion
                 #region DeleteFeedPost
                 public static Models.API.v5.ChannelFeed.FeedPost DeleteFeedPost(string channelId, string postId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return Internal.TwitchAPI.v5.ChannelFeed.DeleteFeedPost(channelId, postId, authToken);
                 }
 
                 public async static Task<Models.API.v5.ChannelFeed.FeedPost> DeleteFeedPostAsync(string channelId, string postId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.DeleteFeedPost(channelId, postId, authToken));
                 }
                 #endregion
                 #region CreateReactionToFeedPost
                 public static Models.API.v5.ChannelFeed.FeedPostReactionPost CreateReactionToFeedPost(string channelId, string postId, string emoteId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return Internal.TwitchAPI.v5.ChannelFeed.CreateReactionToFeedPost(channelId, postId, emoteId, authToken);
                 }
 
                 public async static Task<Models.API.v5.ChannelFeed.FeedPostReactionPost> CreateReactionToFeedPostAsync(string channelId, string postId, string emoteId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.CreateReactionToFeedPost(channelId, postId, emoteId, authToken));
                 }
                 #endregion
                 #region DeleteReactionToFeedPost
                 public static void DeleteReactionToFeedPost(string channelId, string postId, string emoteId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     Internal.TwitchAPI.v5.ChannelFeed.DeleteReactionToFeedPost(channelId, postId, emoteId, authToken);
                 }
 
                 public static Task DeleteReactionToFeedPostAsync(string channelId, string postId, string emoteId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.DeleteReactionToFeedPost(channelId, postId, emoteId, authToken));
                 }
                 #endregion
                 #region GetFeedComments
                 public static Models.API.v5.ChannelFeed.FeedPostComments GetFeedComments(string channelId, string postId, long? limit = null, string cursor = null, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, authToken);
                     return Internal.TwitchAPI.v5.ChannelFeed.GetFeedComments(channelId, postId, limit, cursor, authToken);
                 }
 
                 public async static Task<Models.API.v5.ChannelFeed.FeedPostComments> GetFeedCommentsAsync(string channelId, string postId, long? limit = null, string cursor = null, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.GetFeedComments(channelId, postId, limit, cursor, authToken));
                 }
                 #endregion
                 #region CreateFeedComment
                 public static Models.API.v5.ChannelFeed.FeedPostComment CreateFeedComment(string channelId, string postId, string content, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return Internal.TwitchAPI.v5.ChannelFeed.CreateFeedComment(channelId, postId, content, authToken);
                 }
 
                 public async static Task<Models.API.v5.ChannelFeed.FeedPostComment> CreateFeedCommentAsync(string channelId, string postId, string content, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.CreateFeedComment(channelId, postId, content, authToken));
                 }
                 #endregion
                 #region DeleteFeedComment
                 public static Models.API.v5.ChannelFeed.FeedPostComment DeleteFeedComment(string channelId, string postId, string commentId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return Internal.TwitchAPI.v5.ChannelFeed.DeleteFeedComment(channelId, postId, commentId, authToken);
                 }
 
                 public async static Task<Models.API.v5.ChannelFeed.FeedPostComment> DeleteFeedCommentAsync(string channelId, string postId, string commentId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.DeleteFeedComment(channelId, postId, commentId, authToken));
                 }
                 #endregion
                 #region CreateReactionToFeedComments
                 public static Models.API.v5.ChannelFeed.FeedPostReactionPost CreateReactionToFeedComment(string channelId, string postId, string commentId, string emoteId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return Internal.TwitchAPI.v5.ChannelFeed.CreateReactionToFeedComment(channelId, postId, commentId, emoteId, authToken);
                 }
 
                 public async static Task<Models.API.v5.ChannelFeed.FeedPostReactionPost> CreateReactionToFeedCommentAsync(string channelId, string postId, string commentId, string emoteId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.ChannelFeed.CreateReactionToFeedComment(channelId, postId, commentId, emoteId, authToken));
                 }
                 #endregion
                 #region DeleteReactionToFeedComments
                 public static void DeleteReactionToFeedComment(string channelId, string postId, string commentId, string emoteId, string authToken = null)
                 {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
                     Internal.TwitchAPI.v5.ChannelFeed.DeleteReactionToFeedComment(channelId, postId, commentId, emoteId, authToken);
                 }
 
