@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Internal.TwitchAPI
+﻿namespace TwitchLib.Internal.TwitchAPI
 {
+    #region using directives
+    using System.Collections.Generic;
+    #endregion
     public static class ThirdParty
     {
         public static List<Models.API.ThirdParty.UsernameChangeListing> GetUsernameChanges(string username)

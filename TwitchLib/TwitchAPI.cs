@@ -2117,12 +2117,12 @@
             }
             #endregion
             #region GetTwitchPrimeOffers
-            public static Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffersResponse GetTwitchPrimeOffers()
+            public static Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers GetTwitchPrimeOffers()
             {
                 return Internal.TwitchAPI.Undocumented.GetTwitchPrimeOffers();
             }
 
-            public static async Task<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffersResponse> GetTwitchPrimeOffersAsync()
+            public static async Task<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers> GetTwitchPrimeOffersAsync()
             {
                 return await Task.Run(() => Internal.TwitchAPI.Undocumented.GetTwitchPrimeOffers());
             }

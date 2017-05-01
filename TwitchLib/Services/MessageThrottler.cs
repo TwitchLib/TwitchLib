@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-
-namespace TwitchLib.Services
+﻿namespace TwitchLib.Services
 {
+    #region using directives
+    using System;
+    using System.Timers;
+    #endregion
     /// <summary>Class used to throttle chat and whsiper messages to enforce guidelines.</summary>
     public class MessageThrottler
     {
@@ -26,7 +23,7 @@ namespace TwitchLib.Services
         public bool ApplyThrottlingToRawMessages { get; set; }
 
         /// <summary>messageThrottler constructor.</summary>
-        public MessageThrottler(int messagesAllowedInPeriod, TimeSpan periodDuration, bool applyThrottlingToRawMessages = false, int minimumMessageLengthAllowed = -1, int maximumMessageLengthAllowed = -1) 
+        public MessageThrottler(int messagesAllowedInPeriod, TimeSpan periodDuration, bool applyThrottlingToRawMessages = false, int minimumMessageLengthAllowed = -1, int maximumMessageLengthAllowed = -1)
         {
             MessagesAllowedInPeriod = messagesAllowedInPeriod;
             PeriodDuration = periodDuration;
@@ -41,26 +38,37 @@ namespace TwitchLib.Services
         {
             if (!_periodTimer.Enabled)
                 _periodTimer.Start();
-            if(message.Length > MaximumMessageLengthAllowed && MaximumMessageLengthAllowed != -1)
+            if (message.Length > MaximumMessageLengthAllowed && MaximumMessageLengthAllowed != -1)
             {
                 OnClientThrottled?.Invoke(this,
                     new Events.Services.MessageThrottler.OnClientThrottledArgs
-                    { Message = message, PeriodDuration = PeriodDuration,
-                        ThrottleViolation = Enums.ThrottleType.MessageTooLong });
+                    {
+                        Message = message,
+                        PeriodDuration = PeriodDuration,
+                        ThrottleViolation = Enums.ThrottleType.MessageTooLong
+                    });
                 return false;
             }
-            if(message.Length < MinimumMessageLengthAllowed)
+            if (message.Length < MinimumMessageLengthAllowed)
             {
                 OnClientThrottled?.Invoke(this,
-                    new Events.Services.MessageThrottler.OnClientThrottledArgs { Message = message, PeriodDuration = PeriodDuration,
-                        ThrottleViolation = Enums.ThrottleType.MessageTooShort });
+                    new Events.Services.MessageThrottler.OnClientThrottledArgs
+                    {
+                        Message = message,
+                        PeriodDuration = PeriodDuration,
+                        ThrottleViolation = Enums.ThrottleType.MessageTooShort
+                    });
                 return false;
             }
-            if(_currentMessageCount == MessagesAllowedInPeriod)
+            if (_currentMessageCount == MessagesAllowedInPeriod)
             {
                 OnClientThrottled?.Invoke(this,
-                    new Events.Services.MessageThrottler.OnClientThrottledArgs { Message = message, PeriodDuration = PeriodDuration,
-                        ThrottleViolation = Enums.ThrottleType.TooManyMessages });
+                    new Events.Services.MessageThrottler.OnClientThrottledArgs
+                    {
+                        Message = message,
+                        PeriodDuration = PeriodDuration,
+                        ThrottleViolation = Enums.ThrottleType.TooManyMessages
+                    });
                 return false;
             }
 

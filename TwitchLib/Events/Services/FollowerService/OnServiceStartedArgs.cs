@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Events.Services.FollowerService
+﻿namespace TwitchLib.Events.Services.FollowerService
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Class representing event args for OnServiceStarted event.</summary>
     public class OnServiceStartedArgs : EventArgs
     {

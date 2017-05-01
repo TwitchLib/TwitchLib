@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Enums
+﻿namespace TwitchLib.Enums
 {
-    /// <summary>
-    /// Types of a stream
-    /// </summary>
+    /// <summary>Types of a stream</summary>
     public enum StreamType
     {
         /// <summary>Live stream</summary>

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Exceptions.API.UploadVideo
+﻿namespace TwitchLib.Exceptions.API.UploadVideo
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Exception thrown when the identifying video token is invalid.</summary>
     public class InvalidUploadTokenException : Exception
     {

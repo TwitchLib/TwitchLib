@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib.Models.Client;
-
-namespace TwitchLib.Internal.Parsing
+﻿namespace TwitchLib.Internal.Parsing
 {
+    #region using directives
+    using System.Collections.Generic;
+    using Models.Client;
+    #endregion
     /// <summary>Static class used for detecting whisper commands and messages.</summary>
     internal static class Whisper
     {
@@ -23,7 +20,7 @@ namespace TwitchLib.Internal.Parsing
         /// <summary>Function used to detect if a whisper command was received or not.</summary>
         public static bool detectedWhisperCommandReceived(string message, string username, HashSet<char> commandIdentifiers)
         {
-            if(detectedWhisperReceived(message, username))
+            if (detectedWhisperReceived(message, username))
             {
                 var whisperMessage = new WhisperMessage(message, username);
                 return (commandIdentifiers.Count > 0 && commandIdentifiers.Contains(whisperMessage.Message[0]));

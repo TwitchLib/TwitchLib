@@ -1,12 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.API.Undocumented.ChatProperties
+﻿namespace TwitchLib.Models.API.Undocumented.ChatProperties
 {
+    #region using directives
+    using Newtonsoft.Json;
+    #endregion
     public class ChatProperties
     {
         [JsonProperty(PropertyName = "_id")]

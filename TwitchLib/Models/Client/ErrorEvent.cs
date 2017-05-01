@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.Client
+﻿namespace TwitchLib.Models.Client
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Class representing the error that the websocket encountered.</summary>
     public class ErrorEvent
     {

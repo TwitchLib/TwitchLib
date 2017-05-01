@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Internal.TwitchAPI
+﻿namespace TwitchLib.Internal.TwitchAPI
 {
     public static class Undocumented
     {
@@ -35,9 +29,9 @@ namespace TwitchLib.Internal.TwitchAPI
             return Requests.Get<Models.API.Undocumented.ClipChat.GetClipChatResponse>(rechatResource);
         }
 
-        public static Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffersResponse GetTwitchPrimeOffers()
+        public static Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers GetTwitchPrimeOffers()
         {
-            return Requests.Get<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffersResponse>($"https://api.twitch.tv/api/premium/offers?on_site=1");
+            return Requests.Get<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers>($"https://api.twitch.tv/api/premium/offers?on_site=1");
         }
 
         public static Models.API.Undocumented.Hosting.ChannelHostsResponse GetChannelHosts(string channelId)

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Internal
+﻿namespace TwitchLib.Internal
 {
+    #region using directives
+    using System;
+    using System.Linq;
+    using System.Net.WebSockets;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+    #endregion
     /// <summary>Constructor of native websocket client.</summary>
     public class WebSocketClient
     {
@@ -150,14 +151,13 @@ namespace TwitchLib.Internal
                     var messages = stringResult
                         .ToString()
                         .Split(new string[] { "\r", "\n" }, StringSplitOptions.None)
-                        .Where(c=>!string.IsNullOrWhiteSpace(c))
+                        .Where(c => !string.IsNullOrWhiteSpace(c))
                         .ToList();
-                    
+
                     foreach (var msg in messages)
                     {
                         CallOnMessage(msg);
                     }
-
                 }
             }
             catch (Exception e)
@@ -185,7 +185,6 @@ namespace TwitchLib.Internal
                 message = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(message));
                 RunInTask(() => OnMessage(this, message));
             }
-                
         }
 
         private void CallOnDisconnected()
@@ -205,9 +204,7 @@ namespace TwitchLib.Internal
             Task.Factory.StartNew(action);
         }
 
-        /// <summary>
-        /// Method to dispose of client
-        /// </summary>
+        /// <summary>Method to dispose of client</summary>
         public void Dispose()
         {
             if (Client != null)

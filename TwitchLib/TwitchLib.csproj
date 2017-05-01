@@ -38,13 +38,9 @@
       <HintPath>..\..\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="websocket-sharp, Version=1.0.2.32519, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
       <HintPath>..\packages\WebSocketSharp-NonPreRelease.1.0.0\lib\net35\websocket-sharp.dll</HintPath>
@@ -188,7 +184,7 @@
     <Compile Include="Models\API\Undocumented\RecentMessages\RecentMessagesResponse.cs" />
     <Compile Include="Models\API\Undocumented\TwitchPrimeOffers\Asset.cs" />
     <Compile Include="Models\API\Undocumented\TwitchPrimeOffers\Offer.cs" />
-    <Compile Include="Models\API\Undocumented\TwitchPrimeOffers\TwitchPrimeOffersResponse.cs" />
+    <Compile Include="Models\API\Undocumented\TwitchPrimeOffers\TwitchPrimeOffers.cs" />
     <Compile Include="Models\API\v3\Blocks\Block.cs" />
     <Compile Include="Models\API\v3\Blocks\GetBlocksResponse.cs" />
     <Compile Include="Models\API\v3\ChannelFeeds\ChannelFeedResponse.cs" />

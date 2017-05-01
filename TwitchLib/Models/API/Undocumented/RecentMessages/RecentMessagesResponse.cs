@@ -1,12 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.API.Undocumented.RecentMessages
+﻿namespace TwitchLib.Models.API.Undocumented.RecentMessages
 {
+    #region using directives
+    using Newtonsoft.Json;
+    #endregion
     public class RecentMessagesResponse
     {
         [JsonProperty(PropertyName = "messages")]

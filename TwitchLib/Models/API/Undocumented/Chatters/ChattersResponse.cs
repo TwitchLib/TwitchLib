@@ -1,12 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.API.Undocumented.Chatters
+﻿namespace TwitchLib.Models.API.Undocumented.Chatters
 {
+    #region using directives
+    using Newtonsoft.Json;
+    #endregion
     public class ChattersResponse
     {
         [JsonProperty(PropertyName = "chatter_count")]
