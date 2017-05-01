@@ -77,54 +77,54 @@ namespace TwitchLib_API_Tester
 
         private async void button4_Click(object sender, EventArgs e)
         {
-            var postsResp = await TwitchLib.TwitchAPI.ChannelFeeds.GetChannelFeedPostsAsync(Channel);
+            var postsResp = await TwitchLib.TwitchAPI.ChannelFeeds.v3.GetChannelFeedPostsAsync(Channel);
             foreach (var post in postsResp.Posts)
                 MessageBox.Show($"Post ID: {post.Id}\nPost Body: {post.Body}");
         }
 
         private async void button5_Click(object sender, EventArgs e)
         {
-            var posted = await TwitchLib.TwitchAPI.ChannelFeeds.CreatePostAsync(Channel, richTextBox2.Text);
+            var posted = await TwitchLib.TwitchAPI.ChannelFeeds.v3.CreatePostAsync(Channel, richTextBox2.Text);
             MessageBox.Show(posted.Post.Body);
         }
 
         private async void button6_Click(object sender, EventArgs e)
         {
-            var post = await TwitchLib.TwitchAPI.ChannelFeeds.GetPostByIdAsync(Channel, textBox7.Text);
+            var post = await TwitchLib.TwitchAPI.ChannelFeeds.v3.GetPostByIdAsync(Channel, textBox7.Text);
             MessageBox.Show($"Post ID: {post.Id}\nPost Body: {post.Body}");
         }
 
         private async void button7_Click(object sender, EventArgs e)
         {
-            await TwitchLib.TwitchAPI.ChannelFeeds.RemovePostAsync(Channel, textBox8.Text);
+            await TwitchLib.TwitchAPI.ChannelFeeds.v3.RemovePostAsync(Channel, textBox8.Text);
         }
 
         private async void button8_Click(object sender, EventArgs e)
         {
-            await TwitchLib.TwitchAPI.ChannelFeeds.CreateReactionAsync(Channel, textBox9.Text, textBox10.Text);
+            await TwitchLib.TwitchAPI.ChannelFeeds.v3.CreateReactionAsync(Channel, textBox9.Text, textBox10.Text);
         }
 
         private async void button9_Click(object sender, EventArgs e)
         {
-            await TwitchLib.TwitchAPI.ChannelFeeds.RemoveReactionAsync(Channel, textBox12.Text, textBox11.Text);
+            await TwitchLib.TwitchAPI.ChannelFeeds.v3.RemoveReactionAsync(Channel, textBox12.Text, textBox11.Text);
         }
 
         private async void button10_Click(object sender, EventArgs e)
         {
-            var channel = await TwitchLib.TwitchAPI.Channels.GetChannelByNameAsync(textBox13.Text);
+            var channel = await TwitchLib.TwitchAPI.Channels.v3.GetChannelByNameAsync(textBox13.Text);
             MessageBox.Show($"Display name: {channel.DisplayName}\nGame: {channel.Game}\nFollowers: {channel.Followers}");
         }
 
         private async void button11_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Channels.GetChannelEditorsAsync(textBox14.Text);
+            var resp = await TwitchLib.TwitchAPI.Channels.v3.GetChannelEditorsAsync(textBox14.Text);
             foreach (var channel in resp.Editors)
                 MessageBox.Show($"Display name: {channel.DisplayName}");
         }
 
         private async void button12_Click(object sender, EventArgs e)
         {
-            var channel = await TwitchLib.TwitchAPI.Channels.GetChannelAsync();
+            var channel = await TwitchLib.TwitchAPI.Channels.v3.GetChannelAsync();
             MessageBox.Show($"Display name: {channel.DisplayName}\nGame: {channel.Game}");
         }
 
@@ -150,13 +150,13 @@ namespace TwitchLib_API_Tester
                     channelFeed = false;
             }
 
-            var resp = await TwitchLib.TwitchAPI.Channels.UpdateChannelAsync(channel, status, game, delay, channelFeed);
+            var resp = await TwitchLib.TwitchAPI.Channels.v3.UpdateChannelAsync(channel, status, game, delay, channelFeed);
             MessageBox.Show($"Channel: {resp.DisplayName}\nStatus: {resp.Status}\nGame: {resp.Game}\nDelay: {resp.Delay}");
         }
 
         private async void button14_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Channels.ResetStreamKeyAsync(textBox19.Text);
+            var resp = await TwitchLib.TwitchAPI.Channels.v3.ResetStreamKeyAsync(textBox19.Text);
             MessageBox.Show($"Display name: {resp.DisplayName}\nEmail: {resp.Email}\nStream key: {resp.StreamKey}");
         }
 
@@ -186,25 +186,25 @@ namespace TwitchLib_API_Tester
                     break;
             }
 
-            await TwitchLib.TwitchAPI.Channels.RunCommercialAsync(textBox20.Text, length);
+            await TwitchLib.TwitchAPI.Channels.v3.RunCommercialAsync(textBox20.Text, length);
         }
 
         private async void button16_Click(object sender, EventArgs e)
         {
-            var teams = await TwitchLib.TwitchAPI.Channels.GetTeamsAsync(textBox22.Text);
+            var teams = await TwitchLib.TwitchAPI.Channels.v3.GetTeamsAsync(textBox22.Text);
             foreach (var team in teams.Teams)
                 MessageBox.Show($"Team name: {team.Name}");
         }
 
         private async void button17_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Chat.GetBadgesAsync(textBox23.Text);
+            var resp = await TwitchLib.TwitchAPI.Chat.v3.GetBadgesAsync(textBox23.Text);
             MessageBox.Show($"Broadcaster: {resp.Broadcaster.Alpha}\nSubscriber: {resp.Subscriber.Image}");
         }
 
         private async void button18_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Chat.GetAllEmoticonsAsync();
+            var resp = await TwitchLib.TwitchAPI.Chat.v3.GetAllEmoticonsAsync();
             foreach (var emoticon in resp.Emoticons)
                 MessageBox.Show($"{emoticon.Regex}\n{emoticon.Images[0].EmoticonSet}\n{emoticon.Images[0].URL}");
         }
@@ -222,7 +222,7 @@ namespace TwitchLib_API_Tester
                 sets.Add(int.Parse(setsStr));
             }
 
-            var resp = await TwitchLib.TwitchAPI.Chat.GetEmoticonsBySetsAsync(sets);
+            var resp = await TwitchLib.TwitchAPI.Chat.v3.GetEmoticonsBySetsAsync(sets);
 
             if (resp == null || resp.EmoticonSets == null || resp.EmoticonSets.Count() < 1)
             {
@@ -298,7 +298,7 @@ namespace TwitchLib_API_Tester
 
         private async void button28_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Games.GetTopGamesAsync();
+            var resp = await TwitchLib.TwitchAPI.Games.v3.GetTopGamesAsync();
             MessageBox.Show($"Total live games: {resp.Total}");
             foreach (var game in resp.TopGames)
                 MessageBox.Show($"Game: {game.Game.Name}\nChannels: {game.Channels}\nViewers: {game.Viewers}");
@@ -306,14 +306,14 @@ namespace TwitchLib_API_Tester
 
         private async void button29_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Ingests.GetIngestsAsync();
+            var resp = await TwitchLib.TwitchAPI.Ingests.v3.GetIngestsAsync();
             foreach (var ingest in resp.Ingests)
                 MessageBox.Show($"Name: {ingest.Name}\nAvailability: {ingest.Availability}");
         }
 
         private async void button30_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Root.GetRootAsync();
+            var resp = await TwitchLib.TwitchAPI.Root.v3.GetRootAsync();
             if(resp.Token.Authorization != null)
                 MessageBox.Show($"Username: {resp.Token.Username}\nClient Id:{resp.Token.ClientId}\nValid: {resp.Token.Valid}\nAuth scopes: {string.Join(",",resp.Token.Authorization.Scopes)}");
             else
@@ -322,7 +322,7 @@ namespace TwitchLib_API_Tester
 
         private async void button31_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Search.SearchChannelsAsync(textBox34.Text);
+            var resp = await TwitchLib.TwitchAPI.Search.v3.SearchChannelsAsync(textBox34.Text);
             MessageBox.Show($"Total: {resp.Total}");
             foreach (var channel in resp.Channels)
                 MessageBox.Show($"Name: {channel.Name}");
@@ -330,7 +330,7 @@ namespace TwitchLib_API_Tester
 
         private async void button32_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Search.SearchStreamsAsync(textBox35.Text);
+            var resp = await TwitchLib.TwitchAPI.Search.v3.SearchStreamsAsync(textBox35.Text);
             MessageBox.Show($"Total: {resp.Total}");
             foreach (var stream in resp.Streams)
                 MessageBox.Show($"Name: {stream.Channel.Name}\nViewers: {stream.Viewers}\nGame: {stream.Game}");
@@ -338,20 +338,20 @@ namespace TwitchLib_API_Tester
 
         private async void button33_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Search.SearchGamesAsync(textBox36.Text);
+            var resp = await TwitchLib.TwitchAPI.Search.v3.SearchGamesAsync(textBox36.Text);
             foreach (var game in resp.Games)
                 MessageBox.Show($"Name: {game.Name}");
         }
 
         private async void button34_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Streams.GetStreamAsync(textBox37.Text);
+            var resp = await TwitchLib.TwitchAPI.Streams.v3.GetStreamAsync(textBox37.Text);
             MessageBox.Show($"Name: {resp.Stream.Channel.Name}\nGame: {resp.Stream.Game}\nViewers: {resp.Stream.Viewers}");
         }
 
         private async void button35_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Streams.GetStreamsAsync(textBox38.Text);
+            var resp = await TwitchLib.TwitchAPI.Streams.v3.GetStreamsAsync(textBox38.Text);
             MessageBox.Show($"Total: {resp.Total}");
             foreach (var stream in resp.Streams)
                 MessageBox.Show($"Streamer: {stream.Channel.Name}\nGame: {stream.Game}\nViews: {stream.Viewers}");
@@ -359,14 +359,14 @@ namespace TwitchLib_API_Tester
 
         private async void button36_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Streams.GetFeaturedStreamsAsync();
+            var resp = await TwitchLib.TwitchAPI.Streams.v3.GetFeaturedStreamsAsync();
             foreach (var stream in resp.FeaturedStreams)
                 MessageBox.Show($"Name: {stream.Title}\nSponsored: {stream.Sponsored}\nScheduled: {stream.Scheduled}");
         }
 
         private async void button37_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Streams.GetStreamsSummaryAsync();
+            var resp = await TwitchLib.TwitchAPI.Streams.v3.GetStreamsSummaryAsync();
             MessageBox.Show($"Total channels: {resp.Channels}\nTotal viewers: {resp.Viewers}");
         }
 
@@ -410,26 +410,26 @@ namespace TwitchLib_API_Tester
 
         private async void button43_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Teams.GetTeamsAsync();
+            var resp = await TwitchLib.TwitchAPI.Teams.v3.GetTeamsAsync();
             foreach (var team in resp.Teams)
                 MessageBox.Show($"Name: {team.Name}\nTeam Info: {team.Info}");
         }
 
         private async void button44_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Teams.GetTeamAsync(textBox46.Text);
+            var resp = await TwitchLib.TwitchAPI.Teams.v3.GetTeamAsync(textBox46.Text);
             MessageBox.Show($"Team name: {resp.Name}\nTeam info: {resp.Info}");
         }
 
         private async void button45_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.User.GetUserFromUsernameAsync(textBox47.Text);
+            var resp = await TwitchLib.TwitchAPI.Users.v3.GetUserFromUsernameAsync(textBox47.Text);
             MessageBox.Show($"Name: {resp.Name}\nAccount created at: {resp.CreatedAt.ToLongDateString()}");
         }
 
         private async void button46_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.User.GetEmotesAsync(textBox48.Text);
+            var resp = await TwitchLib.TwitchAPI.Users.v3.GetEmotesAsync(textBox48.Text);
             foreach (var listing in resp.EmoticonSets)
                 foreach(var emote in listing.Value)
                     MessageBox.Show($"ID: {listing.Key}\nCode: {emote.Code}");
@@ -437,33 +437,33 @@ namespace TwitchLib_API_Tester
 
         private async void button47_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.User.GetUserFromTokenAsync();
+            var resp = await TwitchLib.TwitchAPI.Users.v3.GetUserFromTokenAsync();
             MessageBox.Show($"Name: {resp.Name}\nEmail: {resp.Email}\nPartnered: {resp.Partnered}\nNotifications, push: {resp.Notifications.Push}");
         }
 
         private async void button48_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.User.GetFollowedStreamsAsync();
+            var resp = await TwitchLib.TwitchAPI.Users.v3.GetFollowedStreamsAsync();
             foreach (var stream in resp.Streams)
                 MessageBox.Show($"Name: {stream.Channel.Name}\nGame: {stream.Game}\nViewers: {stream.Viewers}");
         }
 
         private async void button49_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.User.GetFollowedVideosAsync();
+            var resp = await TwitchLib.TwitchAPI.Users.v3.GetFollowedVideosAsync();
             foreach (var video in resp.Videos)
                 MessageBox.Show($"Channel: {video.Channel.Name}\nTitle: {video.Title}\nViews: {video.Views}");
         }
 
         private async void button50_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Videos.GetVideoAsync(textBox49.Text);
+            var resp = await TwitchLib.TwitchAPI.Videos.v3.GetVideoAsync(textBox49.Text);
             MessageBox.Show($"Video title: {resp.Title}\nGame: {resp.Game}\nViews: {resp.Views}\nRecorded on: {resp.RecordedAt.ToLongDateString()}");
         }
 
         private async void button51_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Videos.GetTopVideosAsync();
+            var resp = await TwitchLib.TwitchAPI.Videos.v3.GetTopVideosAsync();
             foreach (var video in resp.TopVideos)
                 MessageBox.Show($"Title: {video.Title}\nStreamer: {video.Channel.Name}\nGame: {video.Game}\nViews: {video.Views}");
         }
@@ -495,7 +495,7 @@ namespace TwitchLib_API_Tester
                 54 = game
             */
 
-            var resp = await TwitchLib.TwitchAPI.Videos.UploadVideoAsync(textBox55.Text, textBox51.Text, textBox52.Text, textBox53.Text, textBox54.Text);
+            var resp = await TwitchLib.TwitchAPI.Videos.v4.UploadVideoAsync(textBox55.Text, textBox51.Text, textBox52.Text, textBox53.Text, textBox54.Text);
 
             MessageBox.Show($"Uploaded video available here: {resp.Url}");
         }
