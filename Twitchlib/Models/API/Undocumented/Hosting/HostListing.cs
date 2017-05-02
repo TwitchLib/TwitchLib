@@ -16,6 +16,6 @@
         [JsonProperty(PropertyName = "host_display_name")]
         public string HostDisplayName { get; protected set; }
         [JsonProperty(PropertyName = "target_display_name")]
-        public string TargetDisplayName { get; protected set; }
+        public string TargetDisplayName { get; protected set; } 
     }
 }
