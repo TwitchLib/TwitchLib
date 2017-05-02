@@ -4,10 +4,10 @@
     using System;
     #endregion
     /// <summary>Exception representing no channel list being provided.</summary>
-    public class UnintializedChannelList : Exception
+    public class UnintializedChannelListException : Exception
     {
         /// <summary>Exception constructor.</summary>
-        public UnintializedChannelList(string data)
+        public UnintializedChannelListException(string data)
             : base(data)
         {
         }

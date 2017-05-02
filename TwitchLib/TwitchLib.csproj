@@ -49,6 +49,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Logging.cs" />
+    <Compile Include="Enums\ChanneldentifierTypeEnum.cs" />
     <Compile Include="Enums\NoisyEnum.cs" />
     <Compile Include="Enums\AuthScopesEnum.cs" />
     <Compile Include="Enums\StreamIdentifierType.cs" />
@@ -67,7 +69,8 @@
     <Compile Include="Exceptions\API\MissingClientIdException.cs" />
     <Compile Include="Exceptions\Client\BadListenException.cs" />
     <Compile Include="Exceptions\Client\IllegalAssignmentException.cs" />
-    <Compile Include="Exceptions\Services\UnitializedChannelList.cs" />
+    <Compile Include="Exceptions\Services\UnitializedChannelDataException.cs" />
+    <Compile Include="Exceptions\Services\UnitializedChannelListException.cs" />
     <Compile Include="Extensions\API\v5\ChannelAuthedExt.cs" />
     <Compile Include="Extensions\API\v5\UserAuthedExt.cs" />
     <Compile Include="Internal\Rfc2812.cs" />
@@ -174,7 +177,11 @@
     <Compile Include="Extensions\Client\UnbanUserExt.cs" />
     <Compile Include="Internal\Parsing\Chat.cs" />
     <Compile Include="Internal\Requests.cs" />
+    <Compile Include="Models\API\Channel\ChannelEventsResponse.cs" />
+    <Compile Include="Models\API\Channel\Event.cs" />
     <Compile Include="Models\API\RequestModel.cs" />
+    <Compile Include="Models\API\Subscriber\SubscribersResponsev5.cs" />
+    <Compile Include="Models\API\Subscriber\Subscriptionv5.cs" />
     <Compile Include="Models\API\ThirdParty\UsernameChangeListing.cs" />
     <Compile Include="Models\API\ThirdParty\UsernameChangeResponse.cs" />
     <Compile Include="Models\API\Undocumented\ChannelPanels\Data.cs" />
@@ -386,6 +393,7 @@
     <Compile Include="Models\PubSub\Responses\Messages\SubMessage.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\VideoPlayback.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\Whisper.cs" />
+    <Compile Include="Services\FollowerService.cs" />
     <Compile Include="Services\LiveStreamMonitor.cs" />
     <Compile Include="Services\MessageThrottler.cs" />
     <Compile Include="Models\Client\ConnectionCredentials.cs" />
