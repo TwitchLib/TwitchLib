@@ -58,7 +58,7 @@ namespace TwitchLib
 
             public static async Task<Models.API.v5.Bits.Action[]> GetCheermotesAsync(string channelId = null)
             {
-                return Internal.TwitchAPI.v5.Bits.GetCheermotes(channelId);
+                return await Task.Run(() => v5.Bits.GetCheermotes(channelId));
             }
             #endregion
         }
