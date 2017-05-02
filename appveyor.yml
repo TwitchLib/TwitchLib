@@ -1,5 +1,0 @@
-version: 1.6.{build}
-before_build:
-- cmd: nuget restore
-build:
-  project: TwitchLib.sln
