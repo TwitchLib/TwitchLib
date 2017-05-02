@@ -124,7 +124,7 @@
                 case StreamIdentifierType.Usernames:
                     try
                     {
-                        var stream = await TwitchAPI.Streams.v3.GetStreamAsync(channel);
+                        await TwitchAPI.Streams.v3.GetStreamAsync(channel);
                         return true;
                     }
                     catch (Exception)
@@ -134,7 +134,7 @@
                 case StreamIdentifierType.UserIds:
                     try
                     {
-                        var stream = await TwitchAPI.Streams.v5.GetStreamByUserAsync(channel);
+                        await TwitchAPI.Streams.v5.GetStreamByUserAsync(channel);
                         return true;
                     }
                     catch (Exception)

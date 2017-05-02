@@ -58,7 +58,7 @@ namespace TwitchLib
 
             public static async Task<Models.API.v5.Bits.Action[]> GetCheermotesAsync(string channelId = null)
             {
-                return Internal.TwitchAPI.v5.Bits.GetCheermotes(channelId);
+                return await Task.Run(() => v5.Bits.GetCheermotes(channelId));
             }
             #endregion
         }
@@ -1552,7 +1552,7 @@ namespace TwitchLib
 
                 public async static Task<Models.API.v5.Streams.FeaturedStreams> GetFeaturedStreamsAsync(int? limit = null, int? offset = null)
                 {
-                    return Internal.TwitchAPI.v5.Streams.GetFeaturedStreams(limit, offset);
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Streams.GetFeaturedStreams(limit, offset));
                 }
                 #endregion
                 #region GetFollowedStreams
