@@ -250,7 +250,7 @@ namespace TwitchLib.Internal.TwitchAPI
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, accessToken);
                 string paramsStr = $"?notifications={notifications.ToString().ToLower()}";
-                return Requests.Put<Models.API.v3.Follows.Follows>($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{targetChannel}", null, accessToken, Requests.API.v3);
+                return Requests.Put<Models.API.v3.Follows.Follows>($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{targetChannel}{paramsStr}", null, accessToken, Requests.API.v3);
             }
 
             public static void RemoveFollow(string user, string target, string accessToken = null)
