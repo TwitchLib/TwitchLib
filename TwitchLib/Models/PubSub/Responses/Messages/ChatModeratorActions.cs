@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-
-namespace TwitchLib.Models.PubSub.Responses.Messages
+﻿namespace TwitchLib.Models.PubSub.Responses.Messages
 {
+    #region using directives
+    using System.Collections.Generic;
+    using Newtonsoft.Json.Linq;
+    #endregion
     /// <summary>ChatModeratorActions model.</summary>
     public class ChatModeratorActions : MessageData
     {

@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
-using TwitchLib.Models.PubSub.Responses.Messages;
-
-namespace TwitchLib.Models.PubSub.Responses
+﻿namespace TwitchLib.Models.PubSub.Responses
 {
+    #region using directives
+    using Newtonsoft.Json.Linq;
+
+    using Messages;
+    #endregion
     /// <summary>PubSub Message model.</summary>
     public class Message
     {
@@ -17,7 +19,7 @@ namespace TwitchLib.Models.PubSub.Responses
             JToken json = JObject.Parse(jsonStr).SelectToken("data");
             Topic = json.SelectToken("topic")?.ToString();
             var encodedJsonMessage = json.SelectToken("message").ToString();
-            switch(Topic.Split('.')[0])
+            switch (Topic.Split('.')[0])
             {
                 case "chat_moderator_actions":
                     messageData = new ChatModeratorActions(encodedJsonMessage);

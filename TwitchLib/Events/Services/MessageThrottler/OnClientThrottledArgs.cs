@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace TwitchLib.Events.Services.MessageThrottler
+﻿namespace TwitchLib.Events.Services.MessageThrottler
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Class representing event args for OnClientThrottled.</summary>
     public class OnClientThrottledArgs : EventArgs
     {

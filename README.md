@@ -169,6 +169,7 @@ You are also more than welcome to clone/fork this repo and build the library you
 
 ## Contributors
  * Cole ([@swiftyspiffy](http://twitter.com/swiftyspiffy))
+ * SkyHuk ([@SkyHukTV](http://twitter.com/SkyHukTV))
  * Nadermane ([@Nadermane](http://twitter.com/nadermane))
  * BenWoodford ([BenWoodford](https://github.com/BenWoodford))
  * igor523 ([igor523](https://github.com/igor523))

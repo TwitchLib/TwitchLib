@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace TwitchLib.Exceptions.API.UploadVideo.UploadVideoPart
+﻿namespace TwitchLib.Exceptions.API.UploadVideo.UploadVideoPart
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Thrown when Twitch reports a failure of the upload.</summary>
     public class UploadFailedException : Exception
     {

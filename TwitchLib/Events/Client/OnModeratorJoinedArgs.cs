@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace TwitchLib.Events.Client
+﻿namespace TwitchLib.Events.Client
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Args representing moderator joined event.</summary>
     public class OnModeratorJoinedArgs : EventArgs
     {

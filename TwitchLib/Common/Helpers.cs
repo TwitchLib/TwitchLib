@@ -1,16 +1,28 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-
-namespace TwitchLib.Common
+﻿namespace TwitchLib.Common
 {
-    /// <summary>
-    /// Static class of helper functions used around the project.
-    /// </summary>
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.IO;
+
+    using Newtonsoft.Json.Linq;
+    #endregion
+    /// <summary>Static class of helper functions used around the project.</summary>
     public static class Helpers
     {
+        /// <summary>
+        /// Function that extracts just the token for consistency
+        /// </summary>
+        /// <param name="token">Full token string</param>
+        /// <returns></returns>
+        public static string FormatOAuth(string token)
+        {
+            if (token.Contains(" "))
+                return token.Split(' ')[1];
+            return token;
+        }
+
         /// <summary>
         /// Function that converts Image object to a base64 string.
         /// </summary>

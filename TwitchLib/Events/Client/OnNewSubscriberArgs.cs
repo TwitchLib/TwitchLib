@@ -1,8 +1,9 @@
-﻿using System;
-using TwitchLib.Models.Client;
-
-namespace TwitchLib.Events.Client
+﻿namespace TwitchLib.Events.Client
 {
+    #region using directives
+    using System;
+    using Models.Client;
+    #endregion
     /// <summary>Args representing new subscriber event.</summary>
     public class OnNewSubscriberArgs : EventArgs
     {

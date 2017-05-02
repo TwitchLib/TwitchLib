@@ -12,9 +12,7 @@
             Value = value;
         }
 
-        /// <summary>
-        /// Returns string value for overriden ToString()
-        /// </summary>
+        /// <summary>Returns string value for overriden ToString()</summary>
         /// <returns>Enum value</returns>
         public override string ToString() => Value;
     }

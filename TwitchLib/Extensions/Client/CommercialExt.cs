@@ -1,7 +1,8 @@
-﻿using TwitchLib.Models.Client;
-
-namespace TwitchLib.Extensions.Client
+﻿namespace TwitchLib.Extensions.Client
 {
+    #region using directives
+    using Models.Client;
+    #endregion
     /// <summary>Extension for implementing Commercial functionality in TwitchClient.</summary>
     public static class CommercialExt
     {

@@ -1,13 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
-using TwitchLib.Enums;
-
-namespace TwitchLib.Models.PubSub.Responses.Messages
+﻿namespace TwitchLib.Models.PubSub.Responses.Messages
 {
+    #region using directives
+    using Newtonsoft.Json.Linq;
+    using Enums;
+    #endregion
     /// <summary>VideoPlayback model constructor.</summary>
     public class VideoPlayback : MessageData
     {
         /// <summary>Video playback type</summary>
-        public Enums.VideoPlaybackType Type { get; protected set; }
+        public VideoPlaybackType Type { get; protected set; }
         /// <summary>Server time stamp</summary>
         public string ServerTime { get; protected set; }
         /// <summary>Current delay (if one exists)</summary>

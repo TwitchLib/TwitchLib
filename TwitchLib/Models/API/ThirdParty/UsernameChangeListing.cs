@@ -1,22 +1,18 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-
 namespace TwitchLib.Models.API.ThirdParty
 {
+    #region using directives
+    using System;
+    using Newtonsoft.Json;
+    #endregion
     public class UsernameChangeListing
     {
-
+        [JsonProperty(PropertyName = "userid")]
         public string UserId { get; protected set; }
+        [JsonProperty(PropertyName = "username_old")]
         public string UsernameOld { get; protected set; }
+        [JsonProperty(PropertyName = "username_new")]
         public string UsernameNew { get; protected set; }
+        [JsonProperty(PropertyName = "found_at")]
         public DateTime FoundAt { get; protected set; }
-
-        public UsernameChangeListing(JToken json)
-        {
-            UserId = json.SelectToken("userid")?.ToString();
-            UsernameOld = json.SelectToken("username_old")?.ToString();
-            UsernameNew = json.SelectToken("username_new")?.ToString();
-            FoundAt = Common.Helpers.DateTimeStringToObject(json.SelectToken("found_at").ToString());
-        }
     }
 }

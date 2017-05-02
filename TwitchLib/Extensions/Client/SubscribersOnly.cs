@@ -1,10 +1,9 @@
-﻿using TwitchLib.Models.Client;
-
-namespace TwitchLib.Extensions.Client
+﻿namespace TwitchLib.Extensions.Client
 {
-    /// <summary>
-    /// Extension implementing subscriber only functionality in TwitchClient
-    /// </summary>
+    #region using directives
+    using Models.Client;
+    #endregion
+    /// <summary>Extension implementing subscriber only functionality in TwitchClient</summary>
     public static class SubscribersOnly
     {
         /// <summary>

@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace TwitchLib.Models.Client
+﻿namespace TwitchLib.Models.Client
 {
-    /// <summary>
-    /// Model representing a sent message.
-    /// </summary>
+    #region using directives
+    using System.Collections.Generic;
+    #endregion
+    /// <summary>Model representing a sent message.</summary>
     public class SentMessage
     {
         /// <summary>Badges the sender has</summary>

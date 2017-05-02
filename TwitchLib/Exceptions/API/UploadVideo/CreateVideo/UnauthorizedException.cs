@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace TwitchLib.Exceptions.API.UploadVideo.CreateVideo
+﻿namespace TwitchLib.Exceptions.API.UploadVideo.CreateVideo
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Exception thrown when the passed access token doesn't have the correct scope.</summary>
     public class UnauthorizedException : Exception
     {

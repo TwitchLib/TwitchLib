@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-
 namespace TwitchLib.Models.Client
 {
-    /// <summary>Class representing a subscriber.</summary>
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Linq;
+    #endregion
+    /// <summary>Class representing a resubscriber.</summary>
     public class Subscriber
     {
         /// <summary>Property representing list of badges assigned.</summary>
@@ -62,9 +63,9 @@ namespace TwitchLib.Models.Client
         public Subscriber(string ircString)
         {
             RawIrc = ircString;
-            foreach(string section in ircString.Split(';'))
+            foreach (string section in ircString.Split(';'))
             {
-                if(section.Contains("="))
+                if (section.Contains("="))
                 {
                     string key = section.Split('=')[0];
                     string value = section.Split('=')[1];
@@ -147,7 +148,7 @@ namespace TwitchLib.Models.Client
                 }
             }
             // Parse user-type
-            if(ircString.Contains("=") && ircString.Contains(" "))
+            if (ircString.Contains("=") && ircString.Contains(" "))
             {
                 switch (ircString.Split(' ')[0].Split(';')[13].Split('=')[1])
                 {
@@ -173,13 +174,14 @@ namespace TwitchLib.Models.Client
             // Parse channel
             if (ircString.Contains("#"))
             {
-                if(ircString.Split('#').Count() > 2)
+                if (ircString.Split('#').Count() > 2)
                 {
                     if (ircString.Split('#')[2].Contains(" "))
                         Channel = ircString.Split('#')[2].Split(' ')[0].Replace(" ", "");
                     else
                         Channel = ircString.Split('#')[2].Replace(" ", "");
-                } else
+                }
+                else
                 {
                     Channel = ircString.Split('#')[1];
                     if (Channel.Contains(" "))
@@ -191,7 +193,7 @@ namespace TwitchLib.Models.Client
 
             // Parse sub message
             ResubMessage = "";
-            if(ircString.Contains($"#{Channel} :"))
+            if (ircString.Contains($"#{Channel} :"))
             {
                 string rawParsedIrc = ircString.Split(new string[] { $"#{Channel} :" }, StringSplitOptions.None)[0];
                 ResubMessage = ircString.Replace($"{rawParsedIrc}#{Channel} :", "");
@@ -205,8 +207,7 @@ namespace TwitchLib.Models.Client
         public override string ToString()
         {
             return $"Badges: {Badges.Count}, color hex: {ColorHex}, display name: {DisplayName}, emote set: {EmoteSet}, login: {Login}, system message: {SystemMessage}, " + 
-                $"resub message: {ResubMessage}, months: {Months}, room id: {RoomId}, user id: {UserId}, mod: {IsModerator}, turbo: {IsTurbo}, sub: {IsSubscriber}, user type: {UserType}, " + 
-                $"channel: {Channel}, raw irc: {RawIrc}";
+                "resub message: {ResubMessage}, months: {Months}, room id: {RoomId}, user id: {UserId}, mod: {IsModerator}, turbo: {IsTurbo}, sub: {IsSubscriber}, user type: {UserType}, " + "channel: {Channel}, raw irc: {RawIrc}";
         }
     }
 }

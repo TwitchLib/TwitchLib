@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-
-namespace TwitchLib.Models.PubSub.Responses.Messages
+﻿namespace TwitchLib.Models.PubSub.Responses.Messages
 {
-    /// <summary>
-    /// Class representing a whisper received via PubSub.
-    /// </summary>
+    #region using directives
+    using System.Collections.Generic;
+    using Newtonsoft.Json.Linq;
+    #endregion
+    /// <summary>Class representing a whisper received via PubSub.</summary>
     public class Whisper : MessageData
     {
         /// <summary>Type of MessageData</summary>

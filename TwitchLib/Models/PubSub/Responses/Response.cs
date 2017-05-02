@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace TwitchLib.Models.PubSub.Responses
+﻿namespace TwitchLib.Models.PubSub.Responses
 {
+    #region using directives
+    using Newtonsoft.Json.Linq;
+    #endregion
     /// <summary>Response object detailing pubsub response</summary>
     public class Response
     {

@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace TwitchLib.Exceptions.Services
+﻿namespace TwitchLib.Exceptions.Services
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Exception representing no channel list being provided.</summary>
     public class UnintializedChannelList : Exception
     {

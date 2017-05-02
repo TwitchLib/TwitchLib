@@ -1,8 +1,6 @@
 ﻿namespace TwitchLib.Enums
 {
-    /// <summary>
-    /// Enum to alter color effects in log
-    /// </summary>
+    /// <summary>Enum to alter color effects in log</summary>
     public enum LogType
     {
         /// <summary>White</summary>

@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Timers;
-using TwitchLib.Exceptions.Services;
-using TwitchLib.Exceptions.API;
-using TwitchLib.Events.Services.LiveStreamMonitor;
-using TwitchLib.Enums;
-
-namespace TwitchLib.Services
+﻿namespace TwitchLib.Services
 {
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using System.Timers;
+
+    using Enums;
+    using Events.Services.LiveStreamMonitor;
+    using Exceptions.API;
+    using Exceptions.Services;
+    #endregion
     /// <summary>Service that allows customizability and subscribing to detection of channels going online/offline.</summary>
     public class LiveStreamMonitor
     {
@@ -24,7 +26,7 @@ namespace TwitchLib.Services
         /// <summary>Property representing Twitch channels service is monitoring.</summary>
         public List<string> Channels { get { return _channels; } protected set { _channels = value; } }
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
-        public string ClientId { get { return _clientId; } set { _clientId = value; TwitchApi.SetClientId(value); } }
+        public string ClientId { get { return _clientId; } set { _clientId = value; TwitchAPI.Settings.ClientId = value; } }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _streamMonitorTimer.Interval = value * 1000; } }
         /// <summary>Property representing whether streams are represented by usernames or userids</summary>
@@ -115,19 +117,34 @@ namespace TwitchLib.Services
                 }
             }
         }
-        private async Task<bool> _checkStreamOnline (string channel)
+        private async Task<bool> _checkStreamOnline(string channel)
         {
             switch (_identifierType)
             {
                 case StreamIdentifierType.Usernames:
-                    return await TwitchApi.Streams.BroadcasterOnlineAsync(channel);
+                    try
+                    {
+                        var stream = await TwitchAPI.Streams.v3.GetStreamAsync(channel);
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
                 case StreamIdentifierType.UserIds:
-                    //TODO: Implement method for checking if broadcaster is online
-                    throw new NotImplementedException("v5 BroadcasterOnline method not implemented yet");
+                    try
+                    {
+                        var stream = await TwitchAPI.Streams.v5.GetStreamByUserAsync(channel);
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
                 default:
                     throw new UnintializedChannelList("Channel list must be initialized prior to service starting");
             }
         }
-    
+
     }
 }

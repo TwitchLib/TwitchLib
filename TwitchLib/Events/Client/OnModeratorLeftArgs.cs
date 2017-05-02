@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace TwitchLib.Events.Client
+﻿namespace TwitchLib.Events.Client
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Args representing moderator leave event.</summary>
     public class OnModeratorLeftArgs : EventArgs
     {

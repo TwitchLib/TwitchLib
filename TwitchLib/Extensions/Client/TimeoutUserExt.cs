@@ -1,11 +1,10 @@
-﻿using System;
-using TwitchLib.Models.Client;
-
-namespace TwitchLib.Extensions.Client
+﻿namespace TwitchLib.Extensions.Client
 {
-    /// <summary>
-    /// Extension implementing timeout functionality in TwitchClient
-    /// </summary>
+    #region using directives
+    using System;
+    using Models.Client;
+    #endregion
+    /// <summary>Extension implementing timeout functionality in TwitchClient</summary>
     public static class TimeoutUserExt
     {
         #region TimeoutUser

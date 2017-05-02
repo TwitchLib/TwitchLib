@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace TwitchLib.Exceptions.Client
+﻿namespace TwitchLib.Exceptions.Client
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Exception representing credentials provided for logging in were bad.</summary>
     public class ErrorLoggingInException : Exception
     {

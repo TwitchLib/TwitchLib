@@ -1,8 +1,9 @@
-﻿using System;
-using TwitchLib.Models.Client;
-
-namespace TwitchLib.Extensions.Client
+﻿namespace TwitchLib.Extensions.Client
 {
+    #region using directives
+    using System;
+    using Models.Client;
+    #endregion
     /// <summary>Extension for implementing followers online mode functionality in TwitchClient</summary>
     public static class FollowersOnlyExt
     {

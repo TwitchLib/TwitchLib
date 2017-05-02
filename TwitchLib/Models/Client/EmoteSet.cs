@@ -1,24 +1,17 @@
-﻿using System.Collections.Generic;
-
-namespace TwitchLib.Models.Client
+﻿namespace TwitchLib.Models.Client
 {
-    /// <summary>
-    /// Object representing emote set from a chat message.
-    /// </summary>
+    #region using directives
+    using System.Collections.Generic;
+    #endregion
+    /// <summary>Object representing emote set from a chat message.</summary>
     public class EmoteSet
     {
-        /// <summary>
-        /// List containing all emotes in the message.
-        /// </summary>
+        /// <summary>List containing all emotes in the message.</summary>
         public List<Emote> Emotes { get; protected set; }
-        /// <summary>
-        /// The raw emote set string obtained from Twitch, for legacy purposes.
-        /// </summary>
+        /// <summary>The raw emote set string obtained from Twitch, for legacy purposes.</summary>
         public string RawEmoteSetString { get; protected set; }
 
-        /// <summary>
-        /// Constructor for ChatEmoteSet object.
-        /// </summary>
+        /// <summary>Constructor for ChatEmoteSet object.</summary>
         /// <param name="emoteSetData"></param>
         /// <param name="message"></param>
         public EmoteSet(string emoteSetData, string message)

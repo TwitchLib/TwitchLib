@@ -1,16 +1,20 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using TwitchLib.Exceptions.Client;
-using TwitchLib.Models.Client;
-using TwitchLib.Events.Client;
-using TwitchLib.Internal;
-using WebSocketSharp;
-using System.Reflection;
-
-namespace TwitchLib
+﻿namespace TwitchLib
 {
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using WebSocketSharp;
+    using System.Reflection;
+
+    using Events.Client;
+    using Exceptions.Client;
+    using Internal;
+    using Models.Client;
+    using Models.API.v3.Subscriptions;
+    #endregion
     /// <summary>Represents a client connected to a Twitch channel.</summary>
     public class TwitchClient
     {
@@ -590,7 +594,7 @@ namespace TwitchLib
             response = Internal.Parsing.Chat.detectNewSubscriber(ircMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnNewSubscriber?.Invoke(this, new OnNewSubscriberArgs { Subscriber = new Subscriber(ircMessage), Channel = response.Channel });
+                OnNewSubscriber?.Invoke(this, new OnNewSubscriberArgs { Subscriber = new Models.Client.Subscriber(ircMessage), Channel = response.Channel });
                 return;
             }
 
@@ -726,7 +730,7 @@ namespace TwitchLib
             response = Internal.Parsing.Chat.detectedReSubscriber(ircMessage, JoinedChannels);
             if (response.Successful)
             {
-                var resub = new Subscriber(ircMessage);
+                var resub = new Models.Client.Subscriber(ircMessage);
                 OnReSubscriber?.Invoke(this, new OnReSubscriberArgs { ReSubscriber = resub });
                 return;
             }

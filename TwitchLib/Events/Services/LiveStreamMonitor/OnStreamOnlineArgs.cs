@@ -1,8 +1,10 @@
-﻿using System;
-using TwitchLib.Enums;
-
-namespace TwitchLib.Events.Services.LiveStreamMonitor
+﻿namespace TwitchLib.Events.Services.LiveStreamMonitor
 {
+    #region using directives
+    using System;
+
+    using Enums;
+    #endregion
     /// <summary>Class representing event args for OnChannelOnline event.</summary>
     public class OnStreamOnlineArgs : EventArgs
     {

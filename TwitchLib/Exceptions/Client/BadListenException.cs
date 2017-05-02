@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace TwitchLib.Exceptions.Client
+﻿namespace TwitchLib.Exceptions.Client
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Exception thrown when an event is subscribed to when it shouldn't be.</summary>
     public class BadListenException : Exception
     {

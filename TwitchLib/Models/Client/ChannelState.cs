@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace TwitchLib.Models.Client
+﻿namespace TwitchLib.Models.Client
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Class representing a channel state as received from Twitch chat.</summary>
     public class ChannelState
     {

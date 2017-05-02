@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace TwitchLib.Events.Client
+﻿namespace TwitchLib.Events.Client
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Args representing a user was banned event.</summary>
     public class OnUserBannedArgs : EventArgs
     {

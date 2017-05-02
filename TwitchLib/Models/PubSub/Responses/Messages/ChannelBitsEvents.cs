@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace TwitchLib.Models.PubSub.Responses.Messages
+﻿namespace TwitchLib.Models.PubSub.Responses.Messages
 {
+    #region using directives
+    using Newtonsoft.Json.Linq;
+    #endregion
     /// <summary>Model representing the data in a channel bits event.</summary>
     public class ChannelBitsEvents : MessageData
     {
