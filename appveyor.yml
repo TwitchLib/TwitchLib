@@ -2,5 +2,4 @@ version: 1.6.{build}
 before_build:
 - cmd: nuget restore
 build:
-  project: /Bot/Bot.sln
-  verbosity: minimal
+  project: TwitchLib.sln
