@@ -18,8 +18,10 @@
         public string BroadcasterLanguage { get; protected set; }
         /// <summary>Property representing the current channel.</summary>
         public string Channel { get; protected set; }
-        /// <summary>Property </summary>
+        /// <summary>Property representing how long needed to be following to talk </summary>
         public TimeSpan FollowersOnly { get; protected set; }
+        /// <summary>Twitch assignedc room id</summary>
+        public string RoomId { get; protected set; }
 
         /// <summary>ChannelState object constructor.</summary>
         public ChannelState(string ircString)
@@ -51,6 +53,9 @@
                             FollowersOnly = TimeSpan.FromMinutes(0);
                         else
                             FollowersOnly = TimeSpan.FromMinutes(minutes);
+                        break;
+                    case "room-id":
+                        RoomId = part.Split('=')[1];
                         break;
                     default:
                         Console.WriteLine("[TwitchLib][ChannelState] Unaccounted for: " + part);

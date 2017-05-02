@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Models.API.ThirdParty
+namespace TwitchLib.Models.API.ThirdParty
 {
     #region using directives
     using System;

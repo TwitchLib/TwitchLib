@@ -33,6 +33,9 @@
                 case "whispers":
                     messageData = new Whisper(encodedJsonMessage);
                     break;
+                case "channel-subscribe-events-v1":
+                    messageData = new ChannelSubscription(encodedJsonMessage);
+                    break;
             }
         }
     }

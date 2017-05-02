@@ -34,8 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -48,11 +49,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\NoisyEnum.cs" />
     <Compile Include="Enums\AuthScopesEnum.cs" />
     <Compile Include="Enums\StreamIdentifierType.cs" />
+    <Compile Include="Enums\SubscriptionPlanEnum.cs" />
     <Compile Include="Enums\VideoPlayback.cs" />
     <Compile Include="Enums\ViewableEnum.cs" />
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
+    <Compile Include="Events\Client\OnLogArgs.cs" />
+    <Compile Include="Events\PubSub\OnChannelSubscriptionArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamsSetArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorEndedArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorStartedArgs.cs" />
@@ -74,7 +79,6 @@
     <Compile Include="Internal\TwitchAPI\v5.cs" />
     <Compile Include="Internal\WebSocketClient.cs" />
     <Compile Include="Common\Helpers.cs" />
-    <Compile Include="Common\Logging.cs" />
     <Compile Include="Enums\BadgeColor.cs" />
     <Compile Include="Enums\ChatColorPresets.cs" />
     <Compile Include="Enums\CommercialLength.cs" />
@@ -374,10 +378,12 @@
     <Compile Include="Models\Client\ErrorEvent.cs" />
     <Compile Include="Models\Client\JoinedChannel.cs" />
     <Compile Include="Models\Client\MessageEmote.cs" />
-    <Compile Include="Models\Client\ReSubscriber.cs" />
+    <Compile Include="Models\Client\Subscriber.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\ChannelBitsEvents.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\ChatModeratorActions.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\MessageData.cs" />
+    <Compile Include="Models\PubSub\Responses\Messages\ChannelSubscription.cs" />
+    <Compile Include="Models\PubSub\Responses\Messages\SubMessage.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\VideoPlayback.cs" />
     <Compile Include="Models\PubSub\Responses\Messages\Whisper.cs" />
     <Compile Include="Services\LiveStreamMonitor.cs" />
@@ -385,7 +391,6 @@
     <Compile Include="Models\Client\ConnectionCredentials.cs" />
     <Compile Include="Exceptions\Client\ErrorLoggingInException.cs" />
     <Compile Include="Exceptions\API\BadResourceException.cs" />
-    <Compile Include="Models\Client\NewSubscriber.cs" />
     <Compile Include="TwitchAPI.cs" />
     <Compile Include="TwitchClient.cs" />
     <Compile Include="Models\Client\SentMessage.cs" />

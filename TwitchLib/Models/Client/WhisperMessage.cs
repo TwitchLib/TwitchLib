@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Models.Client
+namespace TwitchLib.Models.Client
 {
     #region using directives
     using System.Collections.Generic;
@@ -112,9 +112,6 @@
                                 UserType = Enums.UserType.Viewer;
                                 break;
                         }
-                        break;
-                    default:
-                        Common.Logging.Log($"Unaccounted for [WhisperMessage.cs]: key: {key}, value: {value}");
                         break;
                 }
             }

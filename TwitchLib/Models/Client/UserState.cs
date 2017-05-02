@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Models.Client
+namespace TwitchLib.Models.Client
 {
     #region using directives
     using System;

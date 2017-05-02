@@ -1,4 +1,4 @@
-﻿namespace TwitchLib
+namespace TwitchLib
 {
     #region using directives
     using Newtonsoft.Json;
@@ -2237,6 +2237,5 @@
                     throw new Exceptions.API.InvalidCredentialException($"The call you attempted was blocked because you are missing required scope: {requiredScope.ToString().ToLower()}. You can ignore this protection by using TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = false . You can also generate a new token with the required scope here: https://twitchtokengenerator.com");
             }
         }
-
     }
 }

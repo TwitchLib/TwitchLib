@@ -1,17 +1,20 @@
-﻿namespace TwitchLib.Models.Client
+namespace TwitchLib.Models.Client
 {
     #region using directives
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
     using System.Linq;
     #endregion
     /// <summary>Class representing a resubscriber.</summary>
-    public class ReSubscriber
+    public class Subscriber
     {
         /// <summary>Property representing list of badges assigned.</summary>
         public List<KeyValuePair<string, string>> Badges { get; protected set; }
         /// <summary>Property representing the colorhex of the resubscriber.</summary>
         public string ColorHex { get; protected set; }
+        /// <summary>Property representing HEX color as a System.Drawing.Color object.</summary>
+        public Color Color { get; protected set; }
         /// <summary>Property representing resubscriber's customized display name.</summary>
         public string DisplayName { get; protected set; }
         /// <summary>Property representing emote set of resubscriber.</summary>
@@ -24,8 +27,12 @@
         public string SystemMessage { get; protected set; }
         /// <summary>Property representing internal system message value, parsed.</summary>
         public string SystemMessageParsed { get; protected set; }
-        /// <summary>Property representing </summary>
+        /// <summary>Property representing system message.</summary>
         public string ResubMessage { get; protected set; }
+        /// <summary>Property representing the plan a user is on.</summary>
+        public Enums.SubscriptionPlan SubscriptionPlan { get; protected set; } = Enums.SubscriptionPlan.NotSet;
+        /// <summary>Property representing the subscription plan name.</summary>
+        public string SubscriptionPlanName { get; protected set; }
         /// <summary>Property representing number of months of being subscribed.</summary>
         public int Months { get; protected set; }
         /// <summary>Property representing the room id.</summary>
@@ -33,23 +40,27 @@
         /// <summary>Property representing the user's id.</summary>
         public int UserId { get; protected set; }
         /// <summary>Property representing whether or not the resubscriber is a moderator.</summary>
-        public bool Mod { get; protected set; }
+        public bool IsModerator { get; protected set; }
         /// <summary>Property representing whether or not the resubscriber is a turbo member.</summary>
-        public bool Turbo { get; protected set; }
+        public bool IsTurbo { get; protected set; }
         /// <summary>Property representing whether or not the resubscriber is a subscriber (YES).</summary>
-        public bool Sub { get; protected set; }
+        public bool IsSubscriber { get; protected set; }
+        /// <summary>Property representing whether or not person is a partner.</summary>
+        public bool IsPartner { get; protected set; }
+        /// <summary>Property representing the tmi-sent-ts value.</summary>
+        public string TmiSentTs { get; protected set; }
         /// <summary>Property representing the user type of the resubscriber.</summary>
         public Enums.UserType UserType { get; protected set; }
         /// <summary>Property representing the raw IRC message (for debugging/customized parsing)</summary>
         public string RawIrc { get; protected set; }
         /// <summary>Property representing the channel the resubscription happened in.</summary>
         public string Channel { get; protected set; }
-        /// <summary>Property representing if the resubscription came from Twitch Prime.</summary>
+        /// <summary>[DEPRECATED, USE SUBSCRIPTIONPLAN PROPERTY] Property representing if the resubscription came from Twitch Prime.</summary>
         public bool IsTwitchPrime { get; protected set; }
         // @badges=subscriber/1,turbo/1;color=#2B119C;display-name=JustFunkIt;emotes=;id=9dasn-asdibas-asdba-as8as;login=justfunkit;mod=0;msg-id=resub;msg-param-months=2;room-id=44338537;subscriber=1;system-msg=JustFunkIt\ssubscribed\sfor\s2\smonths\sin\sa\srow!;turbo=1;user-id=26526370;user-type= :tmi.twitch.tv USERNOTICE #burkeblack :AVAST YEE SCURVY DOG
 
-        /// <summary>ReSubscriber object constructor.</summary>
-        public ReSubscriber(string ircString)
+        /// <summary>Subscriber object constructor.</summary>
+        public Subscriber(string ircString)
         {
             RawIrc = ircString;
             foreach (string section in ircString.Split(';'))
@@ -64,9 +75,17 @@
                             Badges = new List<KeyValuePair<string, string>>();
                             foreach (string badgeValue in value.Split(','))
                                 Badges.Add(new KeyValuePair<string, string>(badgeValue.Split('/')[0], badgeValue.Split('/')[1]));
+                            // iterate through badges for special circumstances
+                            foreach(var badge in Badges)
+                            {
+                                if (badge.Key == "partner")
+                                    IsPartner = true;
+                            }
                             break;
                         case "color":
                             ColorHex = value;
+                            if (!string.IsNullOrEmpty(ColorHex))
+                                Color = ColorTranslator.FromHtml(ColorHex);
                             break;
                         case "display-name":
                             DisplayName = value.Replace(" ", "");
@@ -81,23 +100,46 @@
                             Login = value;
                             break;
                         case "mod":
-                            Mod = value == "1";
+                            IsModerator = value == "1";
                             break;
                         case "msg-param-months":
                             Months = int.Parse(value);
+                            break;
+                        case "msg-param-sub-plan":
+                            switch(value.ToLower())
+                            {
+                                case "prime":
+                                    SubscriptionPlan = Enums.SubscriptionPlan.Prime;
+                                    break;
+                                case "1000":
+                                    SubscriptionPlan = Enums.SubscriptionPlan.Tier1;
+                                    break;
+                                case "2000":
+                                    SubscriptionPlan = Enums.SubscriptionPlan.Tier2;
+                                    break;
+                                case "3000":
+                                    SubscriptionPlan = Enums.SubscriptionPlan.Tier3;
+                                    break;
+                            }
+                            break;
+                        case "msg-param-sub-plan-name":
+                            SubscriptionPlanName = value.Replace("\\s", " ");
                             break;
                         case "room-id":
                             RoomId = int.Parse(value);
                             break;
                         case "subscriber":
-                            Sub = value == "1";
+                            IsSubscriber = value == "1";
                             break;
                         case "system-msg":
                             SystemMessage = value;
                             SystemMessageParsed = value.Replace("\\s", " ");
                             break;
+                        case "tmi-sent-ts":
+                            TmiSentTs = value;
+                            break;
                         case "turbo":
-                            Turbo = value == "1";
+                            IsTurbo = value == "1";
                             break;
                         case "user-id":
                             UserId = int.Parse(value);
@@ -149,7 +191,6 @@
                 }
             }
 
-
             // Parse sub message
             ResubMessage = "";
             if (ircString.Contains($"#{Channel} :"))
@@ -159,15 +200,14 @@
             }
 
             // Check if Twitch Prime
-            IsTwitchPrime = SystemMessageParsed.ToLower().Contains("with twitch prime");
+            IsTwitchPrime = SubscriptionPlan == Enums.SubscriptionPlan.Prime;
         }
 
         /// <summary>Overriden ToString method, prints out all properties related to resub.</summary>
         public override string ToString()
         {
-            return $"Badges: {Badges.Count}, color hex: {ColorHex}, display name: {DisplayName}, emote set: {EmoteSet}, login: {Login}, system message: {SystemMessage}, " +
-                $"resub message: {ResubMessage}, months: {Months}, room id: {RoomId}, user id: {UserId}, mod: {Mod}, turbo: {Turbo}, sub: {Sub}, user type: {UserType}, " +
-                $"channel: {Channel}, raw irc: {RawIrc}";
+            return $"Badges: {Badges.Count}, color hex: {ColorHex}, display name: {DisplayName}, emote set: {EmoteSet}, login: {Login}, system message: {SystemMessage}, " + 
+                "resub message: {ResubMessage}, months: {Months}, room id: {RoomId}, user id: {UserId}, mod: {IsModerator}, turbo: {IsTurbo}, sub: {IsSubscriber}, user type: {UserType}, " + "channel: {Channel}, raw irc: {RawIrc}";
         }
     }
 }

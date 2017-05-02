@@ -32,15 +32,21 @@
         /// <summary>Twitch channel message was sent from (useful for multi-channel bots).</summary>
         public string Channel { get; protected set; }
         /// <summary>Channel specific subscriber status.</summary>
-        public bool Subscriber { get; protected set; }
+        public bool IsSubscriber { get; protected set; }
+        /// <summary>Number of months a person has been subbed.</summary>
+        public int SubscribedMonthCount { get; protected set; }
         /// <summary>Twitch site-wide turbo status.</summary>
-        public bool Turbo { get; protected set; }
+        public bool IsTurbo { get; protected set; }
         /// <summary>Channel specific moderator status.</summary>
         public bool IsModerator { get; protected set; }
         /// <summary>Chat message /me identifier flag.</summary>
         public bool IsMe { get; protected set; }
         /// <summary>Chat message from broadcaster identifier flag</summary>
         public bool IsBroadcaster { get; protected set; }
+        /// <summary>Chat message is from a partnered streamer.</summary>
+        public bool IsPartnered { get; protected set; }
+        /// <summary>Experimental property noisy determination by Twitch.</summary>
+        public Enums.Noisy Noisy { get; protected set; } = Enums.Noisy.NotSet;
         /// <summary>Raw IRC-style text received from Twitch.</summary>
         public string RawIrcMessage { get; protected set; }
         /// <summary>Text after emotes have been handled (if desired). Will be null if replaceEmotes is false.</summary>
@@ -67,7 +73,8 @@
             BotUsername = botUsername;
             RawIrcMessage = ircString;
             _emoteCollection = emoteCollection;
-            foreach (var part in ircString.Split(';'))
+            var parts = ircString.Split(';');
+            foreach (var part in parts)
             {
                 if (part.Contains("!"))
                 {
@@ -75,6 +82,27 @@
                         Channel = part.Split('#')[1].Split(' ')[0];
                     if (Username == null)
                         Username = part.Split('!')[1].Split('@')[0];
+                    if(part.Split('=').Count() > 1 && part.Split('=')[1].Contains(" "))
+                    {
+                        switch (part.Split('=')[1].Split(' ')[0])
+                        {
+                            case "mod":
+                                UserType = Enums.UserType.Moderator;
+                                break;
+                            case "global_mod":
+                                UserType = Enums.UserType.GlobalModerator;
+                                break;
+                            case "admin":
+                                UserType = Enums.UserType.Admin;
+                                break;
+                            case "staff":
+                                UserType = Enums.UserType.Staff;
+                                break;
+                            default:
+                                UserType = Enums.UserType.Viewer;
+                                break;
+                        }
+                    }
                 }
                 else if (part.Contains("@badges="))
                 {
@@ -93,6 +121,10 @@
                     {
                         if (badge.Key == "bits")
                             CheerBadge = new CheerBadge(int.Parse(badge.Value));
+                        if (badge.Key == "partner")
+                            IsPartnered = true;
+                        if (badge.Key == "subscriber")
+                            SubscribedMonthCount = int.Parse(badge.Value);
                     }
                 }
                 else if (part.Contains("bits="))
@@ -119,40 +151,23 @@
                 }
                 else if (part.Contains("subscriber="))
                 {
-                    Subscriber = part.Split('=')[1] == "1";
+                    IsSubscriber = part.Split('=')[1] == "1";
                 }
                 else if (part.Contains("turbo="))
                 {
-                    Turbo = part.Split('=')[1] == "1";
+                    IsTurbo = part.Split('=')[1] == "1";
                 }
                 else if (part.Contains("user-id="))
                 {
                     UserId = part.Split('=')[1];
                 }
-                else if (part.Contains("user-type="))
-                {
-                    switch (part.Split('=')[1].Split(' ')[0])
-                    {
-                        case "mod":
-                            UserType = Enums.UserType.Moderator;
-                            break;
-                        case "global_mod":
-                            UserType = Enums.UserType.GlobalModerator;
-                            break;
-                        case "admin":
-                            UserType = Enums.UserType.Admin;
-                            break;
-                        case "staff":
-                            UserType = Enums.UserType.Staff;
-                            break;
-                        default:
-                            UserType = Enums.UserType.Viewer;
-                            break;
-                    }
-                }
                 else if (part.Contains("mod="))
                 {
                     IsModerator = part.Split('=')[1] == "1";
+                }
+                else if(part.Contains("noisy="))
+                {
+                    Noisy = (part.Split('=')[1] == "1") ? Enums.Noisy.True : Enums.Noisy.False;
                 }
             }
             Message = ircString.Split(new[] { $" PRIVMSG #{Channel} :" }, StringSplitOptions.None)[1];
@@ -223,7 +238,7 @@
             Username = DisplayName = displayName;
             EmoteSet = emoteSet;
             IsModerator = moderator;
-            Subscriber = subscriber;
+            IsSubscriber = subscriber;
             UserType = userType;
             Message = message;
         }

@@ -190,12 +190,12 @@ namespace TwitchLibExample
 
         private void onNewSubscription(object sender, OnNewSubscriberArgs e)
         {
-            MessageBox.Show($"New sub: {e.Subscriber.Name}\nChannel: {e.Subscriber.Channel}\nTwitch Prime? {e.Subscriber.IsTwitchPrime}");
+            MessageBox.Show($"New sub: {e.Subscriber.DisplayName}\nChannel: {e.Subscriber.Channel}\nTwitch Prime? {e.Subscriber.IsTwitchPrime}");
         }
 
         private void onReSubscription(object sender, OnReSubscriberArgs e)
         {
-            MessageBox.Show($"New resub: {e.ReSubscriber.DisplayName}\nChannel: {e.ReSubscriber.Channel}\nMonths: {e.ReSubscriber.Months}");
+            MessageBox.Show($"New resub: {e.ReSubscriber.DisplayName}\nChannel: {e.ReSubscriber.Channel}\nMonths: {e.ReSubscriber.Months}\nTier: {e.ReSubscriber.SubscriptionPlan}\nPlan name: {e.ReSubscriber.SubscriptionPlanName}");
         }
 
         private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
@@ -271,7 +271,7 @@ namespace TwitchLibExample
             CheckForIllegalCrossThreadCalls = false;
 
             richTextBox1.BackColor = e.ChatMessage.Color;
-            richTextBox1.Text = String.Format("#{0} {1}[isSub: {2}]: {3}", e.ChatMessage.Channel, e.ChatMessage.DisplayName, e.ChatMessage.Subscriber, e.ChatMessage.Message) + 
+            richTextBox1.Text = String.Format("#{0} {1}[isSub: {2}, isPartner: {3}, subbedFor: {4}]: {3}", e.ChatMessage.Channel, e.ChatMessage.DisplayName, e.ChatMessage.IsSubscriber, e.ChatMessage.IsPartnered, e.ChatMessage.SubscribedMonthCount, e.ChatMessage.Message) + 
                 "\n" + richTextBox1.Text;
         }
 
@@ -765,7 +765,7 @@ namespace TwitchLibExample
             // MODERATOR ACCOUNT ID, CHANNEL ACCOUNT ID, MODERATOR OAUTH
             pubsub.ListenToChatModeratorActions(0, 0, "moderators_oauth");
             // MY ACCOUNT ID, MY OAUTH
-            pubsub.ListenToWhispers(0, "oauth_token");
+            //pubsub.ListenToWhispers(0, "oauth_token");
         }
 
         private void pubsubOnListenResponse(object sender, OnListenResponseArgs e)
@@ -807,11 +807,18 @@ namespace TwitchLibExample
             pubsub.OnBan += new EventHandler<OnBanArgs>(pubsubOnBan);
             pubsub.OnUnban += new EventHandler<OnUnbanArgs>(pubsubOnUnban);
             pubsub.OnWhisper += new EventHandler<OnWhisperArgs>(onWhisper);
+            pubsub.OnChannelSubscription += new EventHandler<OnChannelSubscriptionArgs>(onChannelSubscription);
+            pubsub.Connect();
         }
 
         private static void onWhisper(object sender, OnWhisperArgs e)
         {
             MessageBox.Show($"Whisper received from: {e.Whisper.DataObject.Tags.DisplayName}\nBody: {e.Whisper.DataObject.Body}");
+        }
+
+        private static void onChannelSubscription(object sender, OnChannelSubscriptionArgs e)
+        {
+            MessageBox.Show($"Channel: {e.Subscription.ChannelName}\nSubscriber name: {e.Subscription.Username}\nTier: {e.Subscription.SubscriptionPlan}\nTier name: {e.Subscription.SubscriptionPlanName}\nSub message: {e.Subscription.SubMessage.Message}");
         }
 
         private async void button48_Click(object sender, EventArgs e)
@@ -936,7 +943,7 @@ namespace TwitchLibExample
 
         private async void button59_Click(object sender, EventArgs e)
         {
-            Clip details = await TwitchApi.Clips.GetClipInformationAsync(textBox46.Text, textBox47.Text);
+            Clip details = await TwitchApi.Clips.GetClipInformationAsync(textBox47.Text);
             MessageBox.Show($"Title: {details.Title}\nGame: {details.Game}\nBroadcaster: {details.Broadcaster.DisplayName}\nCurator: {details.Curator.DisplayName}\nVod URL: {details.VOD.Url}");
         }
 
@@ -1138,6 +1145,22 @@ namespace TwitchLibExample
                 MessageBox.Show($"{resp.Token.Username}\nClient Id: {resp.Token.ClientId}\n\nScopes {String.Join(",", resp.Token.Authorization.Scopes)}");
             else
                 MessageBox.Show($"Client Id set, but no auth set.");
+        }
+
+        private async void button86_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchApi.Channels.GetChannelEventsAsync(textBox70.Text);
+            MessageBox.Show("Total: " + resp.Total);
+            foreach (var eventModel in resp.Events)
+                MessageBox.Show($"Event Name: {eventModel.Title}\nEvent Game: {eventModel.Game.Name}");
+        }
+
+        private async void button87_Click(object sender, EventArgs e)
+        {
+            var changes = await TwitchApi.ThirdParty.GetUsernameChangesAsync(textBox71.Text);
+            MessageBox.Show("Total recorded changes: " + changes.Count);
+            foreach (var change in changes)
+                MessageBox.Show($"User Id: {change.UserId}\nOld user: {change.UsernameOld}\nNew user: {change.UsernameNew}\nRecorded on: {change.FoundAt.ToLongDateString()}");
         }
     }
 }

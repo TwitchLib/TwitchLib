@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Internal
+namespace TwitchLib.Internal
 {
     #region using directives
     using Newtonsoft.Json;
@@ -151,6 +151,8 @@
         private static void handleWebException(WebException e)
         {
             HttpWebResponse errorResp = e.Response as HttpWebResponse;
+            if (errorResp == null)
+                throw e;
             switch (errorResp.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
