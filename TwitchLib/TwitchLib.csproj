@@ -177,11 +177,7 @@
     <Compile Include="Extensions\Client\UnbanUserExt.cs" />
     <Compile Include="Internal\Parsing\Chat.cs" />
     <Compile Include="Internal\Requests.cs" />
-    <Compile Include="Models\API\Channel\ChannelEventsResponse.cs" />
-    <Compile Include="Models\API\Channel\Event.cs" />
     <Compile Include="Models\API\RequestModel.cs" />
-    <Compile Include="Models\API\Subscriber\SubscribersResponsev5.cs" />
-    <Compile Include="Models\API\Subscriber\Subscriptionv5.cs" />
     <Compile Include="Models\API\ThirdParty\UsernameChangeListing.cs" />
     <Compile Include="Models\API\ThirdParty\UsernameChangeResponse.cs" />
     <Compile Include="Models\API\Undocumented\ChannelPanels\Data.cs" />
