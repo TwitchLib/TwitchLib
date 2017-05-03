@@ -62,7 +62,7 @@
         {
             if (Channels == null)
             {
-                throw new UnintializedChannelList("Channel list must be initialized prior to service starting");
+                throw new UnintializedChannelListException("Channel list must be initialized prior to service starting");
             }
             foreach (string channel in Channels)
             {
