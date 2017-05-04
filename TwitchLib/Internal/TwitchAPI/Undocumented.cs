@@ -4,7 +4,7 @@
     {
         public static Models.API.Undocumented.ClipChat.GetClipChatResponse GetClipChat(string slug)
         {
-            var clip = v4.GetClip(slug);
+            var clip = v5.GetClip(slug);
             if (clip == null)
                 return null;
 

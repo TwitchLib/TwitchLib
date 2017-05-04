@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Models.API.v3.Videos;
 
-namespace TwitchLib.Models.API.v4.UploadVideo
+namespace TwitchLib.Models.API.v5.UploadVideo
 {
     public class UploadedVideo
     {

@@ -3,6 +3,7 @@
     #region using directives
     using System;
     using System.Collections.Generic;
+    using System.IO;
     #endregion
     internal static class v5
     {
@@ -1248,52 +1249,80 @@
                 return Requests.Get<Models.API.v5.Videos.FollowedVideos>($"https://api.twitch.tv/kraken/videos/followed{optionalQuery}", authToken, Requests.API.v5);
             }
             #endregion
-            #region CreateVideo
-            public static Models.API.v5.Videos.VideoCreation CreateVideo(string channelId, string videoTitle, string description = null, string game = null, string language = null, string tagList = null, string viewable = null, DateTime? viewableAt = null, string authToken = null)
+            #region UploadVideo
+            public static Models.API.v5.UploadVideo.UploadedVideo UploadVideo(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
             {
-                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(videoTitle)) { throw new Exceptions.API.BadParameterException("The video title is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
-                if (!string.IsNullOrWhiteSpace(description))
-                    queryParameters.Add(new KeyValuePair<string, string>("description", description));
-                if (!string.IsNullOrWhiteSpace(game))
-                    queryParameters.Add(new KeyValuePair<string, string>("game", game));
-                if (!string.IsNullOrWhiteSpace(language))
-                    queryParameters.Add(new KeyValuePair<string, string>("language", language));
-                if (!string.IsNullOrWhiteSpace(tagList))
-                    queryParameters.Add(new KeyValuePair<string, string>("tagList", tagList));
-                if (!string.IsNullOrWhiteSpace(viewable) && (viewable == "public" || viewable == "private"))
-                    queryParameters.Add(new KeyValuePair<string, string>("viewable", viewable));
-                if (viewableAt != null && !string.IsNullOrWhiteSpace(viewable) && viewable == "private")
-                    queryParameters.Add(new KeyValuePair<string, string>("viewableAt", viewableAt.Value.ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ssZ")));
+                var listing = createVideo(channelId, title, description, game, language, tagList, viewable, viewableAt);
+                uploadVideoParts(videoPath, listing.Upload);
+                completeVideoUpload(listing.Upload, accessToken);
+                return listing.Video;
+            }
+            #endregion
+            #region Upload Video Helpers
 
-                string optionalQuery = string.Empty;
-                if (queryParameters.Count > 0)
+            private static Models.API.v5.UploadVideo.UploadVideoListing createVideo(string channelId, string title, string description = null, string game = null, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
+            {
+                string paramsStr = $"?channel_id={channelId}&title={title}";
+                if (description != null)
+                    paramsStr += $"&description={description}";
+                if (game != null)
+                    paramsStr += $"&game={game}";
+                if (language != null)
+                    paramsStr += $"&language={language}";
+                if (tagList != null)
+                    paramsStr += $"&tag_list={tagList}";
+                if (viewable == Enums.Viewable.Public)
+                    paramsStr += $"&viewable=public";
+                else
+                    paramsStr += $"&viewable=private";
+                //TODO: Create RFC3339 date out of viewableAt
+                return Requests.Post<Models.API.v5.UploadVideo.UploadVideoListing>($"https://api.twitch.tv/kraken/videos{paramsStr}", null, accessToken);
+            }
+
+            private static long MAX_VIDEO_SIZE = 10737418240;
+            private static void uploadVideoParts(string videoPath, Models.API.v5.UploadVideo.Upload upload)
+            {
+                if (!File.Exists(videoPath))
+                    throw new Exceptions.API.BadParameterException($"The provided path for a video upload does not appear to be value: {videoPath}");
+                FileInfo videoInfo = new FileInfo(videoPath);
+                if (videoInfo.Length >= MAX_VIDEO_SIZE)
+                    throw new Exceptions.API.BadParameterException($"The provided file was too large (larger than 10gb). File size: {videoInfo.Length}");
+
+                byte[] file = File.ReadAllBytes(videoPath);
+                long size24mb = 25165824;
+                long fileSize = videoInfo.Length;
+                if (fileSize > size24mb)
                 {
-                    for (int i = 0; i < queryParameters.Count; i++)
+                    long finalChunkSize = fileSize % size24mb;
+                    long parts = (fileSize - finalChunkSize) / size24mb;
+                    for (int currentPart = 1; currentPart <= parts; currentPart++)
                     {
-                        optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}";
+                        byte[] chunk;
+                        if (currentPart == parts)
+                        {
+                            chunk = new byte[finalChunkSize];
+                            Array.Copy(file, (currentPart - 1) * size24mb, chunk, 0, finalChunkSize);
+                        }
+                        else
+                        {
+                            chunk = new byte[size24mb];
+                            Array.Copy(file, (currentPart - 1) * size24mb, chunk, 0, size24mb);
+                        }
+                        Requests.PutBytes($"{upload.Url}?part={currentPart}&upload_token={upload.Token}", chunk);
+                        System.Threading.Thread.Sleep(1000);
                     }
                 }
-                return Requests.Post<Models.API.v5.Videos.VideoCreation>($"https://api.twitch.tv/kraken/videos?channel_id={channelId}&title={videoTitle}{optionalQuery}", null, authToken, Requests.API.v5);
+                else
+                {
+                    Requests.PutBytes($"{upload.Url}?part=1&upload_token={upload.Token}", file);
+                }
             }
-            #endregion
-            #region UploadVideoPart
-            //public static void UploadVideoPart(string videoId, int part, string uploadToken)
-            //{
-            //    if (string.IsNullOrWhiteSpace(videoId)) { throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-            //    if (part < 1) { throw new Exceptions.API.BadParameterException("The part number is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-            //    if (string.IsNullOrWhiteSpace(uploadToken)) { throw new Exceptions.API.BadParameterException("The upload token is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-            //    Requests.Put($"https://uploads.twitch.tv/upload/{videoId}?part={part}&upload_token={uploadToken}", null, null, Requests.API.v5);
-            //}
-            #endregion
-            #region CompleteVideoUpload
-            public static void CompleteVideoUpload(string videoId, string uploadToken)
+
+            private static void completeVideoUpload(Models.API.v5.UploadVideo.Upload upload, string accessToken)
             {
-                if (string.IsNullOrWhiteSpace(videoId)) { throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(uploadToken)) { throw new Exceptions.API.BadParameterException("The upload token is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                Requests.Post($"https://uploads.twitch.tv/upload/{videoId}/complete?upload_token={uploadToken}", null, null, Requests.API.v5);
+                Requests.Post($"{upload.Url}/complete?upload_token={upload.Token}", null, accessToken, Requests.API.v4);
             }
+
             #endregion
             #region UpdateVideo
             public static Models.API.v5.Videos.Video UpdateVideo(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
@@ -1331,6 +1360,61 @@
             }
             #endregion
         }
+        #endregion
+        #region Clips
+        #region GetClip
+        public static Models.API.v5.Clips.Clip GetClip(string slug)
+        {
+            return Requests.Get<Models.API.v5.Clips.Clip>($"https://api.twitch.tv/kraken/clips/{slug}", null);
+        }
+        #endregion
+        #region GetTopClips
+        public static Models.API.v5.Clips.TopClipsResponse GetTopClips(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v5.Clips.Period period = Models.API.v5.Clips.Period.Week, bool trending = false)
+        {
+            string paramsStr = $"?limit={limit}";
+            if (channel != null)
+                paramsStr += $"&channel={channel}";
+            if (cursor != null)
+                paramsStr += $"&cursor={cursor}";
+            if (game != null)
+                paramsStr += $"&game={game}";
+            if (trending)
+                paramsStr += "&trending=true";
+            else
+                paramsStr += "&trending=false";
+            switch (period)
+            {
+                case Models.API.v5.Clips.Period.All:
+                    paramsStr += "&period=all";
+                    break;
+                case Models.API.v5.Clips.Period.Month:
+                    paramsStr += "&period=month";
+                    break;
+                case Models.API.v5.Clips.Period.Week:
+                    paramsStr += "&period=week";
+                    break;
+                case Models.API.v5.Clips.Period.Day:
+                    paramsStr += "&period=day";
+                    break;
+            }
+
+            return Requests.Get<Models.API.v5.Clips.TopClipsResponse>($"https://api.twitch.tv/kraken/clips/top{paramsStr}", null);
+        }
+        #endregion
+        #region GetFollowedClips
+        public static Models.API.v5.Clips.FollowClipsResponse GetFollowedClips(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
+        {
+            string paramsStr = $"?limit={limit}";
+            if (cursor != null)
+                paramsStr += $"&cursor={cursor}";
+            if (trending)
+                paramsStr += "&trending=true";
+            else
+                paramsStr += "&trending=false";
+
+            return Requests.Get<Models.API.v5.Clips.FollowClipsResponse>($"https://api.twitch.tv/kraken/clips/followed{paramsStr}", authToken);
+        }
+        #endregion
         #endregion
     }
 }

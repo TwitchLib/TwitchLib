@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitchLib.Models.API.v4.UploadVideo
+namespace TwitchLib.Models.API.v5.UploadVideo
 {
     public class UploadVideoListing
     {

@@ -1988,19 +1988,7 @@ namespace TwitchLib
 
             public static class v4
             {
-                #region UploadVideo
-                public static Models.API.v4.UploadVideo.UploadedVideo UploadVideo(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
-                {
-                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, accessToken);
-                    return Internal.TwitchAPI.v4.UploadVideo(channelId, videoPath, title, description, game, language, tagList, viewable, viewableAt, accessToken);
-                }
-
-                public async static Task<Models.API.v4.UploadVideo.UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
-                {
-                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, accessToken);
-                    return await Task.Run(() => Internal.TwitchAPI.v4.UploadVideo(channelId, videoPath, title, description, game, language, tagList, viewable, viewableAt, accessToken));
-                }
-                #endregion
+                
             }
 
             public static class v5
@@ -2040,6 +2028,19 @@ namespace TwitchLib
                     return await Task.Run(() => Internal.TwitchAPI.v5.Videos.GetFollowedVideos(limit, offset, broadcastType, language, sort, authToken));
                 }
                 #endregion
+                #region UploadVideo
+                public static Models.API.v5.UploadVideo.UploadedVideo UploadVideo(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, accessToken);
+                    return Internal.TwitchAPI.v5.Videos.UploadVideo(channelId, videoPath, title, description, game, language, tagList, viewable, viewableAt, accessToken);
+                }
+
+                public async static Task<Models.API.v5.UploadVideo.UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, accessToken);
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Videos.UploadVideo(channelId, videoPath, title, description, game, language, tagList, viewable, viewableAt, accessToken));
+                }
+                #endregion
                 #region UpdateVideo
                 public static Models.API.v5.Videos.Video UpdateVideo(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
                 {
@@ -2072,38 +2073,38 @@ namespace TwitchLib
         public static class Clips
         {
             #region GetClip
-            public static Models.API.v4.Clips.Clip GetClip(string slug)
+            public static Models.API.v5.Clips.Clip GetClip(string slug)
             {
-                return Internal.TwitchAPI.v4.GetClip(slug);
+                return Internal.TwitchAPI.v5.GetClip(slug);
             }
 
-            public static async Task<Models.API.v4.Clips.Clip> GetClipAsync(string slug)
+            public static async Task<Models.API.v5.Clips.Clip> GetClipAsync(string slug)
             {
-                return await Task.Run(() => Internal.TwitchAPI.v4.GetClip(slug));
+                return await Task.Run(() => Internal.TwitchAPI.v5.GetClip(slug));
             }
             #endregion
             #region GetTopClips
-            public static Models.API.v4.Clips.TopClipsResponse GetTopClips(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v4.Clips.Period period = Models.API.v4.Clips.Period.Week, bool trending = false)
+            public static Models.API.v5.Clips.TopClipsResponse GetTopClips(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v5.Clips.Period period = Models.API.v5.Clips.Period.Week, bool trending = false)
             {
-                return Internal.TwitchAPI.v4.GetTopClips(channel, cursor, game, limit, period, trending);
+                return Internal.TwitchAPI.v5.GetTopClips(channel, cursor, game, limit, period, trending);
             }
 
-            public static async Task<Models.API.v4.Clips.TopClipsResponse> GetTopClipsAsync(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v4.Clips.Period period = Models.API.v4.Clips.Period.Week, bool trending = false)
+            public static async Task<Models.API.v5.Clips.TopClipsResponse> GetTopClipsAsync(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v5.Clips.Period period = Models.API.v5.Clips.Period.Week, bool trending = false)
             {
-                return await Task.Run(() => Internal.TwitchAPI.v4.GetTopClips(channel, cursor, game, limit, period, trending));
+                return await Task.Run(() => Internal.TwitchAPI.v5.GetTopClips(channel, cursor, game, limit, period, trending));
             }
             #endregion
             #region GetFollowedClips
-            public static Models.API.v4.Clips.FollowClipsResponse GetFollowedClips(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
+            public static Models.API.v5.Clips.FollowClipsResponse GetFollowedClips(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
-                return Internal.TwitchAPI.v4.GetFollowedClips(limit, cursor, trending, authToken);
+                return Internal.TwitchAPI.v5.GetFollowedClips(limit, cursor, trending, authToken);
             }
 
-            public static async Task<Models.API.v4.Clips.FollowClipsResponse> GetFollowedClipsAsync(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
+            public static async Task<Models.API.v5.Clips.FollowClipsResponse> GetFollowedClipsAsync(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
-                return await Task.Run(() => Internal.TwitchAPI.v4.GetFollowedClips(limit, cursor, trending, authToken));
+                return await Task.Run(() => Internal.TwitchAPI.v5.GetFollowedClips(limit, cursor, trending, authToken));
             }
             #endregion
         }
