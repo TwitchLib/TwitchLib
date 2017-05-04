@@ -309,6 +309,42 @@
                 return Requests.Get<Models.API.v5.Channels.ChannelSubscribers>($"https://api.twitch.tv/kraken/channels/{channelId}/subscriptions" + optionalQuery, authToken, Requests.API.v5);
             }
             #endregion
+            #region GetAllSubscribers
+            public static List<Models.API.v5.Subscriptions.Subscription> GetAllSubscribers(string channelId, string accessToken = null)
+            {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
+                // initial stuffs
+                List<Models.API.v5.Subscriptions.Subscription> allSubs = new List<Models.API.v5.Subscriptions.Subscription>();
+                int totalSubs;
+                var firstBatch = GetChannelSubscribers(channelId, 100, 0, "asc", accessToken);
+                totalSubs = firstBatch.Total;
+                allSubs.AddRange(firstBatch.Subscriptions);
+
+                // math stuff to determine left over and number of requests
+                int amount = firstBatch.Subscriptions.Length;
+                int leftOverSubs = (totalSubs - amount) % 100;
+                int requiredRequests = (totalSubs - amount - leftOverSubs) / 100;
+
+                // perform required requests after initial delay
+                int currentOffset = amount;
+                System.Threading.Thread.Sleep(1000);
+                for (int i = 0; i < requiredRequests; i++)
+                {
+                    var requestedSubs = GetChannelSubscribers(channelId, 100, currentOffset, "asc", accessToken);
+                    allSubs.AddRange(requestedSubs.Subscriptions);
+                    currentOffset += requestedSubs.Subscriptions.Length;
+
+                    // We should wait a second before performing another request per Twitch requirements
+                    System.Threading.Thread.Sleep(1000);
+                }
+
+                // get leftover subs
+                var leftOverSubsRequest = GetChannelSubscribers(channelId, leftOverSubs, currentOffset, "asc", accessToken);
+                allSubs.AddRange(leftOverSubsRequest.Subscriptions);
+
+                return allSubs;
+            }
+            #endregion
             #region CheckChannelSubscriptionByUser
             public static Models.API.v5.Subscriptions.Subscription CheckChannelSubscriptionByUser(string channelId, string userId, string authToken = null)
             {
