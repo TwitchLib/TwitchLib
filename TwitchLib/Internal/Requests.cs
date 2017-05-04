@@ -12,7 +12,6 @@ namespace TwitchLib.Internal
         public enum API
         {
             v3 = 3,
-            v4 = 4,
             v5 = 5,
             Void = 0
         }

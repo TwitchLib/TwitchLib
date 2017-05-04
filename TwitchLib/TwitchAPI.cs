@@ -616,6 +616,31 @@ namespace TwitchLib
                     return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetChannelSubscribers(channelId, limit, offset, direction, authToken));
                 }
                 #endregion
+                #region GetAllSubscribers
+                /// <summary>
+                /// [SYNC] Makes a number of calls to get all subscriber objects belonging to a channel. THIS IS AN EXPENSIVE OPERATION.
+                /// </summary>
+                /// <param name="channelId">ChannelId indicating channel to get subs from.</param>
+                /// <param name="accessToken">The associated auth token for this request.</param>
+                /// <returns></returns>
+                public static List<Models.API.v5.Subscriptions.Subscription> GetAllSubscribers(string channelId, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
+                    return Internal.TwitchAPI.v5.Channels.GetAllSubscribers(channelId, accessToken);
+                }
+
+                /// <summary>
+                /// [ASYNC] Makes a number of calls to get all subscriber objects belonging to a channel. THIS IS AN EXPENSIVE OPERATION.
+                /// </summary>
+                /// <param name="channelId">ChannelId indicating channel to get subs from.</param>
+                /// <param name="accessToken">The associated auth token for this request.</param>
+                /// <returns></returns>
+                public async static Task<List<Models.API.v5.Subscriptions.Subscription>> GetAllSubscribersAsync(string channelId, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Channels.GetAllSubscribers(channelId, accessToken));
+                }
+                #endregion
                 #region CheckChannelSubscriptionByUser
                 /// <summary>
                 /// <para>[SYNC] Checks if a specified channel has a specified user subscribed to it. Intended for use by channel owners.</para>
@@ -1984,11 +2009,6 @@ namespace TwitchLib
                     return await Task.Run(() => Internal.TwitchAPI.v3.Videos.GetTopVideos(limit, offset, game, period));
                 }
                 #endregion
-            }
-
-            public static class v4
-            {
-                
             }
 
             public static class v5

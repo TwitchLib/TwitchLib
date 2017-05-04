@@ -1320,7 +1320,7 @@
 
             private static void completeVideoUpload(Models.API.v5.UploadVideo.Upload upload, string accessToken)
             {
-                Requests.Post($"{upload.Url}/complete?upload_token={upload.Token}", null, accessToken, Requests.API.v4);
+                Requests.Post($"{upload.Url}/complete?upload_token={upload.Token}", null, accessToken);
             }
 
             #endregion
