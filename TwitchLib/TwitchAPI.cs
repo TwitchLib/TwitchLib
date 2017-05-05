@@ -2,6 +2,7 @@ namespace TwitchLib
 {
     #region using directives
     using Newtonsoft.Json;
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using TwitchLib.Internal.TwitchAPI;
@@ -1591,6 +1592,17 @@ namespace TwitchLib
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
                     return await Task.Run(() => Internal.TwitchAPI.v5.Streams.GetFollowedStreams(streamType, limit, offset, authToken));
+                }
+                #endregion
+                #region GetUptime
+                public static TimeSpan? GetUptime(string channelId)
+                {
+                    return Internal.TwitchAPI.v5.Streams.GetUptime(channelId);
+                }
+
+                public async static Task<TimeSpan?> GetUptimeAsync(string channelId)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Streams.GetUptime(channelId));
                 }
                 #endregion
             }

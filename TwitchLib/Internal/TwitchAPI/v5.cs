@@ -977,6 +977,19 @@
                 return Requests.Get<Models.API.v5.Streams.FollowedStreams>($"https://api.twitch.tv/kraken/streams/followed{optionalQuery}", authToken, Requests.API.v5);
             }
             #endregion
+            #region GetUptime
+            public static TimeSpan? GetUptime(string channelId)
+            {
+                try
+                {
+                    var stream = Streams.GetStreamByUser(channelId);
+                    return DateTime.UtcNow - stream.Stream.CreatedAt;
+                } catch(Exception)
+                {
+                    return null;
+                }
+            }
+            #endregion
         }
         #endregion
         #region Teams
