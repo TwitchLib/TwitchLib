@@ -990,6 +990,20 @@
                 }
             }
             #endregion
+            #region BroadcasterOnline
+            public static bool BroadcasterOnline(string channelId)
+            {
+                try
+                {
+                    Streams.GetStreamByUser(channelId);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            #endregion
         }
         #endregion
         #region Teams

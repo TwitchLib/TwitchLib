@@ -1605,6 +1605,17 @@ namespace TwitchLib
                     return await Task.Run(() => Internal.TwitchAPI.v5.Streams.GetUptime(channelId));
                 }
                 #endregion
+                #region BroadcasterOnline
+                public static bool BroadcasterOnline(string channelId)
+                {
+                    return Internal.TwitchAPI.v5.Streams.BroadcasterOnline(channelId);
+                }
+                
+                public async static Task<bool> BroadcasterOnlineAsync(string channelId)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Streams.BroadcasterOnline(channelId));
+                }
+                #endregion
             }
         }
 
