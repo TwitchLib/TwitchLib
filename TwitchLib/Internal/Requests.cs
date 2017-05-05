@@ -6,6 +6,8 @@ namespace TwitchLib.Internal
     using System.Net;
     using Exceptions.API;
     using Newtonsoft.Json.Serialization;
+    using System.Threading.Tasks;
+    using System;
     #endregion
     internal class Requests
     {
@@ -17,63 +19,122 @@ namespace TwitchLib.Internal
         }
 
         #region POST
-        public static T PostModel<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
+        #region PostGenericModel
+        public static T PostGenericModel<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
         {
             if (model != null)
-                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId), TwitchLibJsonDeserializer);
+                return JsonConvert.DeserializeObject<T>(generalRequest(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId), TwitchLibJsonDeserializer);
             else
-                return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", "", accessToken, api), TwitchLibJsonDeserializer);
+                return JsonConvert.DeserializeObject<T>(generalRequest(url, "POST", "", accessToken, api), TwitchLibJsonDeserializer);
         }
-
-        public static T Post<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        public async static Task<T> PostGenericModelAsync<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "POST", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
-        }
-
-        public static void PostModel(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            genericRequest(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId);
-        }
-
-        public static void Post(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            genericRequest(url, "POST", payload, accessToken, api, clientId);
+            if (model != null)
+                return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId), TwitchLibJsonDeserializer);
+            else
+                return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "POST", "", accessToken, api), TwitchLibJsonDeserializer);
         }
         #endregion
-
-        #region GET
-        public static T Get<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
+        #region PostGeneric
+        public static T PostGeneric<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "GET", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
+            return JsonConvert.DeserializeObject<T>(generalRequest(url, "POST", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
-
-        public static T GetSimple<T>(string url)
+        public async static Task<T> PostGenericAsync<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "POST", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
+        }
+        #endregion
+        #region PostModel
+        public static void PostModel(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            generalRequest(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId);
+        }
+        public async static Task PostModelAsync(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            await generalRequestAsync(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId);
+        }
+        #endregion
+        #region Post
+        public static void Post(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            generalRequest(url, "POST", payload, accessToken, api, clientId);
+        }
+        public async static Task PostAsync(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            await generalRequestAsync(url, "POST", payload, accessToken, api, clientId);
+        }
+        #endregion
+        #endregion
+        #region GET
+        #region GetGeneric
+        public static T GetGeneric<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            return JsonConvert.DeserializeObject<T>(generalRequest(url, "GET", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
+        }
+        public async static Task<T> GetGenericAsync<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "GET", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
+        }
+        #endregion
+        #region GetSimpleGeneric
+        public static T GetSimpleGeneric<T>(string url)
         {
             return JsonConvert.DeserializeObject<T>(simpleRequest(url), TwitchLibJsonDeserializer);
         }
+        public async static Task<T> GetSimpleGenericAsync<T>(string url)
+        {
+            return JsonConvert.DeserializeObject<T>(await simpleRequestAsync(url), TwitchLibJsonDeserializer);
+        }
         #endregion
-
+        #endregion
         #region DELETE
+        #region Delete
         public static string Delete(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return genericRequest(url, "DELETE", null, accessToken, api, clientId);
+            return generalRequest(url, "DELETE", null, accessToken, api, clientId);
         }
-
-        public static T Delete<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
+        public async static Task<string> DeleteAsync(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "DELETE", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
+            return await generalRequestAsync(url, "DELETE", null, accessToken, api, clientId);
+        }
+        #endregion
+        #region DeleteGeneric
+        public static T DeleteGeneric<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            return JsonConvert.DeserializeObject<T>(generalRequest(url, "DELETE", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
+        }
+        public async static Task<T> DeleteGenericAsync<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "DELETE", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
         #endregion
 
+
+
+        #endregion
         #region PUT
-        public static T Put<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        #region PutGeneric
+        public static T PutGeneric<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>(genericRequest(url, "PUT", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
+            return JsonConvert.DeserializeObject<T>(generalRequest(url, "PUT", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
+        public async static Task<T> PutGenericAsync<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "PUT", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
+        }
+        #endregion
+        #region Put
+
+        #endregion
+        #region PutBytes
+
+        #endregion
+
 
         public static string Put(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            return genericRequest(url, "PUT", payload, accessToken, api, clientId);
+            return generalRequest(url, "PUT", payload, accessToken, api, clientId);
         }
 
         public static void PutBytes(string url, byte[] payload)
@@ -88,7 +149,8 @@ namespace TwitchLib.Internal
 
         #endregion
 
-        private static string genericRequest(string url, string method, object payload = null, string accessToken = null, API api = API.v5, string clientId = null)
+        #region generalRequest
+        private static string generalRequest(string url, string method, object payload = null, string accessToken = null, API api = API.v5, string clientId = null)
         {
             if (clientId == null)
                 checkForCredentials();
@@ -123,11 +185,73 @@ namespace TwitchLib.Internal
 
             return null;
         }
+        private async static Task<string> generalRequestAsync(string url, string method, object payload = null, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            if (clientId == null)
+                checkForCredentials();
+            url = appendClientId(url, clientId);
 
+            var request = WebRequest.CreateHttp(url);
+            request.Method = method;
+            request.ContentType = "application/json";
+
+            if (api != API.Void)
+                request.Accept = $"application/vnd.twitchtv.v{(int)api}+json";
+
+            if (!string.IsNullOrEmpty(accessToken))
+                request.Headers["Authorization"] = $"OAuth {Common.Helpers.FormatOAuth(accessToken)}";
+            else if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
+                request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
+
+            if (payload != null)
+                using (var writer = new StreamWriter(await request.GetRequestStreamAsync()))
+                    writer.Write(payload);
+
+            try
+            {
+                var response = request.GetResponse();
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    string data = await reader.ReadToEndAsync();
+                    return data;
+                }
+            }
+            catch (WebException ex) { handleWebException(ex); }
+
+            return null;
+        }
+        #endregion
+        #region simpleRequest
         public static string simpleRequest(string url)
         {
             return new WebClient().DownloadString(url);
         }
+        // credit: https://stackoverflow.com/questions/14290988/populate-and-return-entities-from-downloadstringcompleted-handler-in-windows-pho
+        public async static Task<string> simpleRequestAsync(string url)
+        {
+            var tcs = new TaskCompletionSource<string>();
+            var client = new WebClient();
+
+            DownloadStringCompletedEventHandler h = null;
+            h = (sender, args) =>
+            {
+                if (args.Cancelled)
+                    tcs.SetCanceled();
+                else if (args.Error != null)
+                    tcs.SetException(args.Error);
+                else
+                    tcs.SetResult(args.Result);
+
+                client.DownloadStringCompleted -= h;
+            };
+
+            client.DownloadStringCompleted += h;
+            client.DownloadStringAsync(new Uri(url));
+
+            return await tcs.Task;
+        }
+        #endregion
+
 
         private static string appendClientId(string url, string clientId = null)
         {

@@ -7,7 +7,7 @@
     {
         public static List<Models.API.ThirdParty.UsernameChangeListing> GetUsernameChanges(string username)
         {
-            return Requests.Get<List<Models.API.ThirdParty.UsernameChangeListing>>($"https://twitch-tools.rootonline.de/username_changelogs_search.php?q={username}&format=json", null, Requests.API.Void);
+            return Requests.GetGeneric<List<Models.API.ThirdParty.UsernameChangeListing>>($"https://twitch-tools.rootonline.de/username_changelogs_search.php?q={username}&format=json", null, Requests.API.Void);
         }
     }
 }
