@@ -243,7 +243,7 @@
 
                 payload = "{ \"channel\": {" + payload + "} }";
 
-                return Requests.Put<Models.API.v5.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channelId}", payload, authToken, Requests.API.v5);
+                return Requests.PutGeneric<Models.API.v5.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channelId}", payload, authToken, Requests.API.v5);
             }
             #endregion
             #region GetChannelEditors
@@ -1118,7 +1118,7 @@
                 if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 string optionalRequestBody = (notifications != null) ? "{\"notifications\": " + notifications + "}" : null;
-                return Requests.Put<Models.API.v5.Users.UserFollow>($"https://api.twitch.tv/kraken/users/{userId}/follows/channels/{channelId}", optionalRequestBody, authToken, Requests.API.v5);
+                return Requests.PutGeneric<Models.API.v5.Users.UserFollow>($"https://api.twitch.tv/kraken/users/{userId}/follows/channels/{channelId}", optionalRequestBody, authToken, Requests.API.v5);
             }
             #endregion
             #region UnfollowChannel
@@ -1156,7 +1156,7 @@
             {
                 if (string.IsNullOrWhiteSpace(sourceUserId)) { throw new Exceptions.API.BadParameterException("The source user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(targetUserId)) { throw new Exceptions.API.BadParameterException("The target user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return Requests.Put<Models.API.v5.Users.UserBlock>($"https://api.twitch.tv/kraken/users/{sourceUserId}/blocks/{targetUserId}", null, authToken, Requests.API.v5);
+                return Requests.PutGeneric<Models.API.v5.Users.UserBlock>($"https://api.twitch.tv/kraken/users/{sourceUserId}/blocks/{targetUserId}", null, authToken, Requests.API.v5);
             }
             #endregion
             #region UnblockUser
@@ -1376,7 +1376,7 @@
                         else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
                     }
                 }
-                return Requests.Put<Models.API.v5.Videos.Video>($"https://api.twitch.tv/kraken/videos/{videoId}{optionalQuery}", null, authToken, Requests.API.v5);
+                return Requests.PutGeneric<Models.API.v5.Videos.Video>($"https://api.twitch.tv/kraken/videos/{videoId}{optionalQuery}", null, authToken, Requests.API.v5);
             }
             #endregion
             #region DeleteVideo

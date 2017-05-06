@@ -76,7 +76,7 @@ namespace TwitchLib
             public static async Task<Models.API.v3.Blocks.GetBlocksResponse> GetBlocksAsync(string channel, int limit = 25, int offset = 0, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Read, accessToken);
-                return await Task.Run(() => Internal.TwitchAPI.v3.Blocks.GetBlocks(channel, limit, offset, accessToken));
+                return await Internal.TwitchAPI.v3.Blocks.GetBlocksAsync(channel, limit, offset, accessToken);
             }
             #endregion
             #region CreateBlock
@@ -89,7 +89,7 @@ namespace TwitchLib
             public static async Task<Models.API.v3.Blocks.Block> CreateBlockAsync(string channel, string target, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
-                return await Task.Run(() => Internal.TwitchAPI.v3.Blocks.CreateBlock(channel, target, accessToken));
+                return await Internal.TwitchAPI.v3.Blocks.CreateBlockAsync(channel, target, accessToken);
             }
             #endregion
             #region RemoveBlock
@@ -102,7 +102,7 @@ namespace TwitchLib
             public static async void RemoveBlockAsync(string channel, string target, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
-                await Task.Run(() => Internal.TwitchAPI.v3.Blocks.RemoveBlock(channel, target, accessToken));
+                await Internal.TwitchAPI.v3.Blocks.RemoveBlockAsync(channel, target, accessToken);
             }
             #endregion
         }
@@ -121,7 +121,7 @@ namespace TwitchLib
                 public async static Task<Models.API.v3.ChannelFeeds.ChannelFeedResponse> GetChannelFeedPostsAsync(string channel, int limit = 25, string cursor = null, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, accessToken);
-                    return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.GetChannelFeedPosts(channel, limit, cursor));
+                    return await Internal.TwitchAPI.v3.ChannelFeed.GetChannelFeedPostsAsync(channel, limit, cursor);
                 }
                 #endregion
                 #region CreatePost
@@ -134,7 +134,7 @@ namespace TwitchLib
                 public static async Task<Models.API.v3.ChannelFeeds.PostResponse> CreatePostAsync(string channel, string content, bool share = false, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
-                    return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.CreatePost(channel, content, share, accessToken));
+                    return await Internal.TwitchAPI.v3.ChannelFeed.CreatePostAsync(channel, content, share, accessToken);
                 }
                 #endregion
                 #region GetPostById
@@ -147,7 +147,7 @@ namespace TwitchLib
                 public static async Task<Models.API.v3.ChannelFeeds.Post> GetPostByIdAsync(string channel, string postId, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, accessToken);
-                    return await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.GetPost(channel, postId));
+                    return await Internal.TwitchAPI.v3.ChannelFeed.GetPostAsync(channel, postId);
                 }
                 #endregion
                 #region RemovePost
@@ -160,7 +160,7 @@ namespace TwitchLib
                 public static async Task RemovePostAsync(string channel, string postId, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
-                    await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.DeletePost(channel, postId, accessToken));
+                    await Internal.TwitchAPI.v3.ChannelFeed.DeletePostAsync(channel, postId, accessToken);
                 }
                 #endregion
                 #region CreateReaction
@@ -173,7 +173,7 @@ namespace TwitchLib
                 public static async Task CreateReactionAsync(string channel, string postId, string emoteId, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
-                    await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId, accessToken));
+                    await Internal.TwitchAPI.v3.ChannelFeed.CreateReactionAsync(channel, postId, emoteId, accessToken);
                 }
                 #endregion
                 #region RemoveReaction
@@ -186,7 +186,7 @@ namespace TwitchLib
                 public static async Task RemoveReactionAsync(string channel, string postId, string emoteId, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
-                    await Task.Run(() => Internal.TwitchAPI.v3.ChannelFeed.RemoveReaction(channel, postId, emoteId, accessToken));
+                    await Internal.TwitchAPI.v3.ChannelFeed.RemoveReactionAsync(channel, postId, emoteId, accessToken);
                 }
                 #endregion
             }

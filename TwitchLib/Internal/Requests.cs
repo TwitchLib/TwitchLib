@@ -125,28 +125,35 @@ namespace TwitchLib.Internal
         }
         #endregion
         #region Put
-
-        #endregion
-        #region PutBytes
-
-        #endregion
-
-
         public static string Put(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
             return generalRequest(url, "PUT", payload, accessToken, api, clientId);
         }
-
+        public async static Task<string> PutAsync(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        {
+            return await generalRequestAsync(url, "PUT", payload, accessToken, api, clientId);
+        }
+        #endregion
+        #region PutBytes
         public static void PutBytes(string url, byte[] payload)
         {
             try
             {
-                using (var client = new System.Net.WebClient())
+                using (var client = new WebClient())
                     client.UploadData(url, "PUT", payload);
             }
             catch (WebException ex) { handleWebException(ex); }
         }
-
+        public async static Task PutBytesAsync(string url, byte[] payload)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                    client.UploadDataAsync(new Uri(url), "PUT", payload);
+            }
+            catch (WebException ex) { handleWebException(ex); }
+        }
+        #endregion
         #endregion
 
         #region generalRequest
@@ -252,7 +259,7 @@ namespace TwitchLib.Internal
         }
         #endregion
 
-
+        #region appendClientId
         private static string appendClientId(string url, string clientId = null)
         {
             if (clientId == null)
@@ -264,13 +271,16 @@ namespace TwitchLib.Internal
                     ? $"{url}&client_id={clientId}"
                     : $"{url}?client_id={clientId}";
         }
-
+        #endregion
+        #region checkForCredentials
         private static void checkForCredentials()
         {
             if (string.IsNullOrEmpty(TwitchAPI.Shared.ClientId) && string.IsNullOrWhiteSpace(TwitchAPI.Shared.AccessToken))
                 throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId(\"client_id_here\")");
         }
+        #endregion
 
+        #region handleWebException
         private static void handleWebException(WebException e)
         {
             HttpWebResponse errorResp = e.Response as HttpWebResponse;
@@ -290,7 +300,9 @@ namespace TwitchLib.Internal
                     throw e;
             }
         }
+        #endregion
 
+        #region SerialiazationSettings
         public static JsonSerializerSettings TwitchLibJsonDeserializer = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore };
 
         public class TwitchLibJsonSerializer
@@ -314,5 +326,6 @@ namespace TwitchLib.Internal
                 }
             }
         }
+        #endregion
     }
 }
