@@ -8,7 +8,7 @@
     {
         #region Id
         [JsonProperty(PropertyName = "_id")]
-        public long Id { get; protected set; }
+        public string Id { get; protected set; }
         #endregion
         #region Bio
         [JsonProperty(PropertyName = "bio")]
