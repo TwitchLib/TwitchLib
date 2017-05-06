@@ -142,22 +142,39 @@ namespace TwitchLib.Internal.TwitchAPI
 
         public static class Channels
         {
+            #region GetChannelByName
             public static Models.API.v3.Channels.Channel GetChannelByName(string channel)
             {
                 return Requests.GetGeneric<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", null, Requests.API.v3);
             }
-
+            public async static Task<Models.API.v3.Channels.Channel> GetChannelByNameAsync(string channel)
+            {
+                return await Requests.GetGenericAsync<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", null, Requests.API.v3);
+            }
+            #endregion
+            #region GetChannel
             public static Models.API.v3.Channels.Channel GetChannel()
             {
                 return Requests.GetGeneric<Models.API.v3.Channels.Channel>("https://api.twitch.tv/kraken/channel", null, Requests.API.v3);
             }
-
+            public async static Task<Models.API.v3.Channels.Channel> GetChannelAsync()
+            {
+                return await Requests.GetGenericAsync<Models.API.v3.Channels.Channel>("https://api.twitch.tv/kraken/channel", null, Requests.API.v3);
+            }
+            #endregion
+            #region GetChannelEditors
             public static Models.API.v3.Channels.GetEditorsResponse GetChannelEditors(string channel, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, accessToken);
                 return Requests.GetGeneric<Models.API.v3.Channels.GetEditorsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/editors", accessToken, Requests.API.v3);
             }
-
+            public async static Task<Models.API.v3.Channels.GetEditorsResponse> GetChannelEditorsAsync(string channel, string accessToken = null)
+            {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, accessToken);
+                return await Requests.GetGenericAsync<Models.API.v3.Channels.GetEditorsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/editors", accessToken, Requests.API.v3);
+            }
+            #endregion
+            #region UpdateChannel
             public static Models.API.v3.Channels.Channel UpdateChannel(string channel, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, accessToken);
@@ -194,13 +211,56 @@ namespace TwitchLib.Internal.TwitchAPI
 
                 return Requests.PutGeneric<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", payload, accessToken, Requests.API.v3);
             }
+            public async static Task<Models.API.v3.Channels.Channel> UpdateChannelAsync(string channel, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string accessToken = null)
+            {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, accessToken);
+                List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
+                if (status != null)
+                    datas.Add(new KeyValuePair<string, string>("status", "\"" + status + "\""));
+                if (game != null)
+                    datas.Add(new KeyValuePair<string, string>("game", "\"" + game + "\""));
+                if (delay != null)
+                    datas.Add(new KeyValuePair<string, string>("delay", "\"" + delay + "\""));
+                if (channelFeedEnabled != null)
+                    datas.Add(new KeyValuePair<string, string>("channel_feed_enabled", (channelFeedEnabled == true ? "true" : "false")));
 
+                if (datas.Count == 0)
+                    throw new Exceptions.API.BadParameterException("At least one parameter must be specified: status, game, delay, channel_feed_enabled.");
+
+                string payload = "";
+                if (datas.Count == 1)
+                {
+                    payload = $"\"{datas[0].Key}\": {datas[0].Value}";
+                }
+                else
+                {
+                    for (int i = 0; i < datas.Count; i++)
+                    {
+                        if ((datas.Count - i) > 1)
+                            payload = $"{payload}\"{datas[i].Key}\": {datas[i].Value},";
+                        else
+                            payload = $"{payload}\"{datas[i].Key}\": {datas[i].Value}";
+                    }
+                }
+
+                payload = "{ \"channel\": {" + payload + "} }";
+
+                return await Requests.PutGenericAsync<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", payload, accessToken, Requests.API.v3);
+            }
+            #endregion
+            #region ResetStreamKey
             public static Models.API.v3.Channels.ResetStreamKeyResponse ResetStreamKey(string channel, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Stream, accessToken);
                 return Requests.DeleteGeneric<Models.API.v3.Channels.ResetStreamKeyResponse>($"https://api.twitch.tv/kraken/channels/{channel}/stream_key", accessToken, Requests.API.v3);
             }
-
+            public async static Task<Models.API.v3.Channels.ResetStreamKeyResponse> ResetStreamKeyAsync(string channel, string accessToken = null)
+            {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Stream, accessToken);
+                return await Requests.DeleteGenericAsync<Models.API.v3.Channels.ResetStreamKeyResponse>($"https://api.twitch.tv/kraken/channels/{channel}/stream_key", accessToken, Requests.API.v3);
+            }
+            #endregion
+            #region RunCommercial
             public static void RunCommercial(string channel, Enums.CommercialLength length, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Commercial, accessToken);
@@ -234,29 +294,84 @@ namespace TwitchLib.Internal.TwitchAPI
 
                 Requests.PostModel($"https://api.twitch.tv/kraken/channels/{channel}/commercial", model, accessToken, Requests.API.v3);
             }
+            public async static Task RunCommercialAsync(string channel, Enums.CommercialLength length, string accessToken = null)
+            {
+                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Commercial, accessToken);
+                int lengthInt = 30;
+                switch (length)
+                {
+                    case Enums.CommercialLength.Seconds30:
+                        lengthInt = 30;
+                        break;
+                    case Enums.CommercialLength.Seconds60:
+                        lengthInt = 60;
+                        break;
+                    case Enums.CommercialLength.Seconds90:
+                        lengthInt = 90;
+                        break;
+                    case Enums.CommercialLength.Seconds120:
+                        lengthInt = 120;
+                        break;
+                    case Enums.CommercialLength.Seconds150:
+                        lengthInt = 150;
+                        break;
+                    case Enums.CommercialLength.Seconds180:
+                        lengthInt = 180;
+                        break;
+                }
 
+                var model = new Models.API.v3.Channels.RunCommercialRequest()
+                {
+                    Length = lengthInt
+                };
+
+                await Requests.PostModelAsync($"https://api.twitch.tv/kraken/channels/{channel}/commercial", model, accessToken, Requests.API.v3);
+            }
+            #endregion
+            #region GetTeams
             public static Models.API.v3.Channels.GetTeamsResponse GetTeams(string channel)
             {
                 return Requests.GetGeneric<Models.API.v3.Channels.GetTeamsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/teams", null, Requests.API.v3);
             }
+            public async static Task<Models.API.v3.Channels.GetTeamsResponse> GetTeamsAsync(string channel)
+            {
+                return await Requests.GetGenericAsync<Models.API.v3.Channels.GetTeamsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/teams", null, Requests.API.v3);
+            }
+            #endregion
         }
 
         public static class Chat
         {
+            #region GetBadges
             public static Models.API.v3.Chat.BadgesResponse GetBadges(string channel)
             {
                 return Requests.GetGeneric<Models.API.v3.Chat.BadgesResponse>($"https://api.twitch.tv/kraken/chat/{channel}/badges", null, Requests.API.v3);
             }
-
+            public async static Task<Models.API.v3.Chat.BadgesResponse> GetBadgesAsync(string channel)
+            {
+                return await Requests.GetGenericAsync<Models.API.v3.Chat.BadgesResponse>($"https://api.twitch.tv/kraken/chat/{channel}/badges", null, Requests.API.v3);
+            }
+            #endregion
+            #region GetAllEmoticons
             public static Models.API.v3.Chat.AllEmoticonsResponse GetAllEmoticons()
             {
                 return Requests.GetGeneric<Models.API.v3.Chat.AllEmoticonsResponse>("https://api.twitch.tv/kraken/chat/emoticons", null, Requests.API.v3);
             }
-
+            public async static Task<Models.API.v3.Chat.AllEmoticonsResponse> GetAllEmoticonsAsync()
+            {
+                return await Requests.GetGenericAsync<Models.API.v3.Chat.AllEmoticonsResponse>("https://api.twitch.tv/kraken/chat/emoticons", null, Requests.API.v3);
+            }
+            #endregion
+            #region GetEmoticonsBySets
             public static Models.API.v3.Chat.EmoticonSetsResponse GetEmoticonsBySets(List<int> emotesets)
             {
                 return Requests.GetGeneric<Models.API.v3.Chat.EmoticonSetsResponse>($"https://api.twitch.tv/kraken/chat/emoticon_images?emotesets={string.Join(",", emotesets)}", null, Requests.API.v3);
             }
+            public async static Task<Models.API.v3.Chat.EmoticonSetsResponse> GetEmoticonsBySetsAsync(List<int> emotesets)
+            {
+                return await Requests.GetGenericAsync<Models.API.v3.Chat.EmoticonSetsResponse>($"https://api.twitch.tv/kraken/chat/emoticon_images?emotesets={string.Join(",", emotesets)}", null, Requests.API.v3);
+            }
+            #endregion
         }
 
         public static class Follows

@@ -350,7 +350,7 @@ namespace TwitchLib
 
                 public static async Task<Models.API.v3.Channels.Channel> GetChannelByNameAsync(string channel)
                 {
-                    return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannelByName(channel));
+                    return await Internal.TwitchAPI.v3.Channels.GetChannelByNameAsync(channel);
                 }
                 #endregion
                 #region GetChannel
@@ -361,7 +361,7 @@ namespace TwitchLib
 
                 public static async Task<Models.API.v3.Channels.Channel> GetChannelAsync()
                 {
-                    return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannel());
+                    return await Internal.TwitchAPI.v3.Channels.GetChannelAsync();
                 }
                 #endregion
                 #region GetChannelEditors
@@ -374,7 +374,7 @@ namespace TwitchLib
                 public static async Task<Models.API.v3.Channels.GetEditorsResponse> GetChannelEditorsAsync(string channel, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, accessToken);
-                    return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetChannelEditors(channel, accessToken));
+                    return await Internal.TwitchAPI.v3.Channels.GetChannelEditorsAsync(channel, accessToken);
                 }
                 #endregion
                 #region UpdateChannel
@@ -387,7 +387,7 @@ namespace TwitchLib
                 public static async Task<Models.API.v3.Channels.Channel> UpdateChannelAsync(string channel, string status = null, string game = null, string delay = null, bool? channelFeed = null, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, accessToken);
-                    return await Task.Run(() => Internal.TwitchAPI.v3.Channels.UpdateChannel(channel, status, game, delay, channelFeed, accessToken));
+                    return await Internal.TwitchAPI.v3.Channels.UpdateChannelAsync(channel, status, game, delay, channelFeed, accessToken);
                 }
                 #endregion
                 #region ResetStreamKey
@@ -400,7 +400,7 @@ namespace TwitchLib
                 public static async Task<Models.API.v3.Channels.ResetStreamKeyResponse> ResetStreamKeyAsync(string channel, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Stream, accessToken);
-                    return await Task.Run(() => Internal.TwitchAPI.v3.Channels.ResetStreamKey(channel, accessToken));
+                    return await Internal.TwitchAPI.v3.Channels.ResetStreamKeyAsync(channel, accessToken);
                 }
                 #endregion
                 #region RunCommercial
@@ -413,7 +413,7 @@ namespace TwitchLib
                 public static async Task RunCommercialAsync(string channel, Enums.CommercialLength length, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Commercial, accessToken);
-                    await Task.Run(() => Internal.TwitchAPI.v3.Channels.RunCommercial(channel, length, accessToken));
+                    await Internal.TwitchAPI.v3.Channels.RunCommercialAsync(channel, length, accessToken);
                 }
                 #endregion
                 #region GetTeams
@@ -424,7 +424,7 @@ namespace TwitchLib
 
                 public static async Task<Models.API.v3.Channels.GetTeamsResponse> GetTeamsAsync(string channel)
                 {
-                    return await Task.Run(() => Internal.TwitchAPI.v3.Channels.GetTeams(channel));
+                    return await Internal.TwitchAPI.v3.Channels.GetTeamsAsync(channel);
                 }
                 #endregion
             }
@@ -810,7 +810,7 @@ namespace TwitchLib
 
                 public static async Task<Models.API.v3.Chat.BadgesResponse> GetBadgesAsync(string channel)
                 {
-                    return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetBadges(channel));
+                    return await Internal.TwitchAPI.v3.Chat.GetBadgesAsync(channel);
                 }
                 #endregion
                 #region GetAllEmoticons
@@ -821,7 +821,7 @@ namespace TwitchLib
 
                 public static async Task<Models.API.v3.Chat.AllEmoticonsResponse> GetAllEmoticonsAsync()
                 {
-                    return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetAllEmoticons());
+                    return await Internal.TwitchAPI.v3.Chat.GetAllEmoticonsAsync();
                 }
                 #endregion
                 #region GetEmoticonsBySets
@@ -832,7 +832,7 @@ namespace TwitchLib
 
                 public static async Task<Models.API.v3.Chat.EmoticonSetsResponse> GetEmoticonsBySetsAsync(List<int> emotesets)
                 {
-                    return await Task.Run(() => Internal.TwitchAPI.v3.Chat.GetEmoticonsBySets(emotesets));
+                    return await Internal.TwitchAPI.v3.Chat.GetEmoticonsBySetsAsync(emotesets);
                 }
                 #endregion
             }
