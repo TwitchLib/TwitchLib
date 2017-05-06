@@ -1849,6 +1849,16 @@ namespace TwitchLib
                     return await Task.Run(() => Internal.TwitchAPI.v5.Users.GetUserByID(userId));
                 }
                 #endregion
+                #region GetUserByName
+                public static Models.API.v5.Users.Users GetUserByName(string username)
+                {
+                    return Internal.TwitchAPI.v5.Users.GetUserByName(username);
+                }
+                public async static Task<Models.API.v5.Users.Users> GetUserByNameAsync(string username)
+                {
+                    return await Task.Run(() => Internal.TwitchAPI.v5.Users.GetUserByName(username));
+                }
+                #endregion
                 #region GetUserEmotes
                 public static Models.API.v5.Users.UserEmotes GetUserEmotes(string userId, string authToken = null)
                 {

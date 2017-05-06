@@ -1063,6 +1063,13 @@
                 return Requests.GetGeneric<Models.API.v5.Users.User>($"https://api.twitch.tv/kraken/users/{userId}", null, Requests.API.v5);
             }
             #endregion
+            #region GetUserByName
+            public static Models.API.v5.Users.Users GetUserByName(string username)
+            {
+                if (string.IsNullOrEmpty(username)) { throw new Exceptions.API.BadParameterException("The username is not valid."); }
+                return Requests.GetGeneric<Models.API.v5.Users.Users>($"https://api.twitch.tv/kraken/users?login={username}");
+            }
+            #endregion
             #region GetUserEmotes
             public static Models.API.v5.Users.UserEmotes GetUserEmotes(string userId, string authToken = null)
             {
