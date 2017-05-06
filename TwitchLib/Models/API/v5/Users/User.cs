@@ -10,7 +10,7 @@
         #region Id
         /// <summary>Property representing the user ID.</summary>
         [JsonProperty(PropertyName = "_id")]
-        public long Id { get; internal set; }
+        public string Id { get; internal set; }
         #endregion
         #region Bio
         /// <summary>Property representing the bio.</summary>
