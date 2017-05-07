@@ -5,6 +5,7 @@ using System.Timers;
 using TwitchLib.Exceptions.Services;
 using TwitchLib.Exceptions.API;
 using TwitchLib.Events.Services.FollowerService;
+using System.Threading.Tasks;
 
 namespace TwitchLib.Services
 {
@@ -47,7 +48,7 @@ namespace TwitchLib.Services
 
         #region CONTROLS
         /// <summary>Downloads recent followers from Twitch, starts service, fires OnServiceStarted event.</summary>
-        public async void StartService()
+        public async Task StartService()
         {
             if (ChannelData == null)
             {
@@ -56,12 +57,12 @@ namespace TwitchLib.Services
 
             if(ChannelIdentifier == Enums.ChannelIdentifierType.Username)
             {
-                var response = await TwitchAPI.Follows.GetFollowersAsync(ChannelData, QueryCount);
+                var response = await TwitchAPI.Follows.GetFollowers(ChannelData, QueryCount);
                 foreach (var follower in response.Followers)
                     ActiveCache.Add(follower.User.Name);
             } else
             {
-                var response = await TwitchAPI.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
+                var response = await TwitchAPI.Channels.v5.GetChannelFollowers(ChannelData, QueryCount);
                 foreach (var follower in response.Follows)
                     ActiveCache.Add(follower.User.Name);
             }
@@ -103,12 +104,12 @@ namespace TwitchLib.Services
             {
                 if(ChannelIdentifier == Enums.ChannelIdentifierType.Username)
                 {
-                    var followers = await TwitchAPI.Follows.GetFollowersAsync(ChannelData, QueryCount);
+                    var followers = await TwitchAPI.Follows.GetFollowers(ChannelData, QueryCount);
                     foreach (var follower in followers.Followers)
                         mostRecentFollowers.Add(follower.User.Name);
                 } else
                 {
-                    var followers = await TwitchAPI.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
+                    var followers = await TwitchAPI.Channels.v5.GetChannelFollowers(ChannelData, QueryCount);
                     foreach (var follower in followers.Follows)
                         mostRecentFollowers.Add(follower.User.Name);
                 }

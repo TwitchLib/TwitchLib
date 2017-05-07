@@ -134,7 +134,7 @@
                 case StreamIdentifierType.UserIds:
                     try
                     {
-                        await TwitchAPI.Streams.v5.GetStreamByUserAsync(channel);
+                        await TwitchAPI.Streams.v5.GetStreamByUser(channel);
                         return true;
                     }
                     catch (Exception)

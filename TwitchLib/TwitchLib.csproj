@@ -79,7 +79,6 @@
     <Compile Include="Internal\TwitchAPI\Undocumented.cs" />
     <Compile Include="Internal\TwitchAPI\v3.cs" />
     <Compile Include="Internal\TwitchAPI\v5.cs" />
-    <Compile Include="Internal\WebSocketClient.cs" />
     <Compile Include="Common\Helpers.cs" />
     <Compile Include="Enums\BadgeColor.cs" />
     <Compile Include="Enums\ChatColorPresets.cs" />

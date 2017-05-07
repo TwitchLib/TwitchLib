@@ -13,21 +13,21 @@ namespace TwitchLib.Internal.TwitchAPI
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Read, accessToken);
                 string pm = $"?limit={limit}&offset={offset}";
-                return await Requests.GetGenericAsync<Models.API.v3.Blocks.GetBlocksResponse>($"https://api.twitch.tv/kraken/users/{channel}/blocks{pm}", accessToken, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Blocks.GetBlocksResponse>($"https://api.twitch.tv/kraken/users/{channel}/blocks{pm}", accessToken, Requests.API.v3);
             }
             #endregion
             #region CreateBlock
             public async static Task<Models.API.v3.Blocks.Block> CreateBlock(string channel, string target, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
-                return await Requests.PutGenericAsync<Models.API.v3.Blocks.Block>($"https://api.twitch.tv/kraken/users/{channel}/blocks/{target}", null, accessToken, Requests.API.v3);
+                return await Requests.PutGeneric<Models.API.v3.Blocks.Block>($"https://api.twitch.tv/kraken/users/{channel}/blocks/{target}", null, accessToken, Requests.API.v3);
             }
             #endregion
             #region RemoveBlock
             public async static Task RemoveBlock(string channel, string target, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
-                await Requests.DeleteAsync($"https://api.twitch.tv/kraken/users/{channel}/blocks/{target}", accessToken, Requests.API.v3);
+                await Requests.Delete($"https://api.twitch.tv/kraken/users/{channel}/blocks/{target}", accessToken, Requests.API.v3);
             }
             #endregion
         }
@@ -41,7 +41,7 @@ namespace TwitchLib.Internal.TwitchAPI
                 string pm = $"?limit={limit}";
                 if (cursor != null)
                     pm = $"{pm}&cursor={cursor}";
-                return await Requests.GetGenericAsync<Models.API.v3.ChannelFeeds.ChannelFeedResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts{pm}", accessToken, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.ChannelFeeds.ChannelFeedResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts{pm}", accessToken, Requests.API.v3);
             }
             #endregion
             #region CreatePost
@@ -53,35 +53,35 @@ namespace TwitchLib.Internal.TwitchAPI
                     Content = content,
                     Share = share
                 };
-                return await Requests.PostGenericModelAsync<Models.API.v3.ChannelFeeds.PostResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts", model, accessToken, Requests.API.v3);
+                return await Requests.PostGenericModel<Models.API.v3.ChannelFeeds.PostResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts", model, accessToken, Requests.API.v3);
             }
             #endregion
             #region GetPost
             public async static Task<Models.API.v3.ChannelFeeds.Post> GetPost(string channel, string postId, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
-                return await Requests.GetGenericAsync<Models.API.v3.ChannelFeeds.Post>($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", accessToken, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.ChannelFeeds.Post>($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", accessToken, Requests.API.v3);
             }
             #endregion
             #region DeletePost
             public async static Task DeletePost(string channel, string postId, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
-                await Requests.DeleteAsync($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", accessToken, Requests.API.v3);
+                await Requests.Delete($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}", accessToken, Requests.API.v3);
             }
             #endregion
             #region CreateReaction
             public async static Task<Models.API.v3.ChannelFeeds.PostReactionResponse> CreateReaction(string channel, string postId, string emoteId, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
-                return await Requests.PostGenericAsync<Models.API.v3.ChannelFeeds.PostReactionResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}/reactions?emote_id={emoteId}", null, accessToken, Requests.API.v3);
+                return await Requests.PostGeneric<Models.API.v3.ChannelFeeds.PostReactionResponse>($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}/reactions?emote_id={emoteId}", null, accessToken, Requests.API.v3);
             }
             #endregion
             #region RemoveReaction
             public async static Task RemoveReaction(string channel, string postId, string emoteId, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
-                await Requests.DeleteAsync($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}/reactions?emote_id={emoteId}", accessToken, Requests.API.v3);
+                await Requests.Delete($"https://api.twitch.tv/kraken/feed/{channel}/posts/{postId}/reactions?emote_id={emoteId}", accessToken, Requests.API.v3);
             }
             #endregion
         }
@@ -91,20 +91,20 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetChannelByName
             public async static Task<Models.API.v3.Channels.Channel> GetChannelByName(string channel)
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", null, Requests.API.v3);
             }
             #endregion
             #region GetChannel
-            public async static Task<Models.API.v3.Channels.Channel> GetChannel()
+            public async static Task<Models.API.v3.Channels.Channel> GetChannel(string accessToken = null)
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Channels.Channel>("https://api.twitch.tv/kraken/channel", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Channels.Channel>("https://api.twitch.tv/kraken/channel", accessToken, Requests.API.v3);
             }
             #endregion
             #region GetChannelEditors
             public async static Task<Models.API.v3.Channels.GetEditorsResponse> GetChannelEditors(string channel, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, accessToken);
-                return await Requests.GetGenericAsync<Models.API.v3.Channels.GetEditorsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/editors", accessToken, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Channels.GetEditorsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/editors", accessToken, Requests.API.v3);
             }
             #endregion
             #region UpdateChannel
@@ -142,14 +142,14 @@ namespace TwitchLib.Internal.TwitchAPI
 
                 payload = "{ \"channel\": {" + payload + "} }";
 
-                return await Requests.PutGenericAsync<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", payload, accessToken, Requests.API.v3);
+                return await Requests.PutGeneric<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", payload, accessToken, Requests.API.v3);
             }
             #endregion
             #region ResetStreamKey
             public async static Task<Models.API.v3.Channels.ResetStreamKeyResponse> ResetStreamKey(string channel, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Stream, accessToken);
-                return await Requests.DeleteGenericAsync<Models.API.v3.Channels.ResetStreamKeyResponse>($"https://api.twitch.tv/kraken/channels/{channel}/stream_key", accessToken, Requests.API.v3);
+                return await Requests.DeleteGeneric<Models.API.v3.Channels.ResetStreamKeyResponse>($"https://api.twitch.tv/kraken/channels/{channel}/stream_key", accessToken, Requests.API.v3);
             }
             #endregion
             #region RunCommercial
@@ -184,13 +184,13 @@ namespace TwitchLib.Internal.TwitchAPI
                     Length = lengthInt
                 };
 
-                await Requests.PostModelAsync($"https://api.twitch.tv/kraken/channels/{channel}/commercial", model, accessToken, Requests.API.v3);
+                await Requests.PostModel($"https://api.twitch.tv/kraken/channels/{channel}/commercial", model, accessToken, Requests.API.v3);
             }
             #endregion
             #region GetTeams
             public async static Task<Models.API.v3.Channels.GetTeamsResponse> GetTeams(string channel)
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Channels.GetTeamsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/teams", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Channels.GetTeamsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/teams", null, Requests.API.v3);
             }
             #endregion
         }
@@ -200,19 +200,19 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetBadges
             public async static Task<Models.API.v3.Chat.BadgesResponse> GetBadges(string channel)
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Chat.BadgesResponse>($"https://api.twitch.tv/kraken/chat/{channel}/badges", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Chat.BadgesResponse>($"https://api.twitch.tv/kraken/chat/{channel}/badges", null, Requests.API.v3);
             }
             #endregion
             #region GetAllEmoticons
             public async static Task<Models.API.v3.Chat.AllEmoticonsResponse> GetAllEmoticons()
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Chat.AllEmoticonsResponse>("https://api.twitch.tv/kraken/chat/emoticons", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Chat.AllEmoticonsResponse>("https://api.twitch.tv/kraken/chat/emoticons", null, Requests.API.v3);
             }
             #endregion
             #region GetEmoticonsBySets
             public async static Task<Models.API.v3.Chat.EmoticonSetsResponse> GetEmoticonsBySets(List<int> emotesets)
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Chat.EmoticonSetsResponse>($"https://api.twitch.tv/kraken/chat/emoticon_images?emotesets={string.Join(",", emotesets)}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Chat.EmoticonSetsResponse>($"https://api.twitch.tv/kraken/chat/emoticon_images?emotesets={string.Join(",", emotesets)}", null, Requests.API.v3);
             }
             #endregion
         }
@@ -235,7 +235,7 @@ namespace TwitchLib.Internal.TwitchAPI
                         break;
                 }
 
-                return await Requests.GetGenericAsync<Models.API.v3.Follows.FollowersResponse>($"https://api.twitch.tv/kraken/channels/{channel}/follows{paramsStr}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Follows.FollowersResponse>($"https://api.twitch.tv/kraken/channels/{channel}/follows{paramsStr}", null, Requests.API.v3);
             }
             #endregion
             #region GetFollows
@@ -264,13 +264,13 @@ namespace TwitchLib.Internal.TwitchAPI
                         break;
                 }
 
-                return await Requests.GetGenericAsync<Models.API.v3.Follows.FollowsResponse>($"https://api.twitch.tv/kraken/users/{channel}/follows/channels", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Follows.FollowsResponse>($"https://api.twitch.tv/kraken/users/{channel}/follows/channels", null, Requests.API.v3);
             }
             #endregion
             #region GetFollowStatus
             public async static Task<Models.API.v3.Follows.Follows> GetFollowsStatus(string user, string targetChannel)
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Follows.Follows>($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{targetChannel}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Follows.Follows>($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{targetChannel}", null, Requests.API.v3);
             }
             #endregion
             #region CreateFollow
@@ -278,14 +278,14 @@ namespace TwitchLib.Internal.TwitchAPI
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, accessToken);
                 string paramsStr = $"?notifications={notifications.ToString().ToLower()}";
-                return await Requests.PutGenericAsync<Models.API.v3.Follows.Follows>($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{targetChannel}{paramsStr}", null, accessToken, Requests.API.v3);
+                return await Requests.PutGeneric<Models.API.v3.Follows.Follows>($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{targetChannel}{paramsStr}", null, accessToken, Requests.API.v3);
             }
             #endregion
             #region RemoveFollow
             public async static Task RemoveFollow(string user, string target, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, accessToken);
-                await Requests.DeleteAsync($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{target}", accessToken, Requests.API.v3);
+                await Requests.Delete($"https://api.twitch.tv/kraken/users/{user}/follows/channels/{target}", accessToken, Requests.API.v3);
             }
             #endregion
         }
@@ -296,7 +296,7 @@ namespace TwitchLib.Internal.TwitchAPI
             public async static Task<Models.API.v3.Games.TopGamesResponse> GetTopGames(int limit = 10, int offset = 0)
             {
                 string paramsStr = $"?limit={limit}&offset={offset}";
-                return await Requests.GetGenericAsync<Models.API.v3.Games.TopGamesResponse>($"https://api.twitch.tv/kraken/games/top{paramsStr}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Games.TopGamesResponse>($"https://api.twitch.tv/kraken/games/top{paramsStr}", null, Requests.API.v3);
             }
             #endregion
         }
@@ -306,7 +306,7 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetIngests
             public async static Task<Models.API.v3.Ingests.IngestsResponse> GetIngests()
             {
-                return Requests.GetGeneric<Models.API.v3.Ingests.IngestsResponse>("https://api.twitch.tv/kraken/ingests", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Ingests.IngestsResponse>("https://api.twitch.tv/kraken/ingests", null, Requests.API.v3);
             }
             #endregion
         }
@@ -316,7 +316,7 @@ namespace TwitchLib.Internal.TwitchAPI
             #region Root
             public async static Task<Models.API.v3.Root.RootResponse> GetRoot(string accessToken = null, string clientId = null)
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Root.RootResponse>("https://api.twitch.tv/kraken", accessToken, Requests.API.v3, clientId);
+                return await Requests.GetGeneric<Models.API.v3.Root.RootResponse>("https://api.twitch.tv/kraken", accessToken, Requests.API.v3, clientId);
             }
             #endregion
         }
@@ -327,7 +327,7 @@ namespace TwitchLib.Internal.TwitchAPI
             public async static Task<Models.API.v3.Search.SearchChannelsResponse> SearchChannels(string query, int limit = 25, int offset = 0)
             {
                 string paramsStr = $"?query={query}&limit={limit}&offset={0}";
-                return await Requests.GetGenericAsync<Models.API.v3.Search.SearchChannelsResponse>($"https://api.twitch.tv/kraken/search/channels{paramsStr}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Search.SearchChannelsResponse>($"https://api.twitch.tv/kraken/search/channels{paramsStr}", null, Requests.API.v3);
             }
             #endregion
             #region SearchStreams
@@ -343,7 +343,7 @@ namespace TwitchLib.Internal.TwitchAPI
                 }
 
                 string paramsStr = $"?query={query}&limit={limit}&offset={offset}{opHls}";
-                return await Requests.GetGenericAsync<Models.API.v3.Search.SearchStreamsResponse>($"https://api.twitch.tv/kraken/search/streams{paramsStr}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Search.SearchStreamsResponse>($"https://api.twitch.tv/kraken/search/streams{paramsStr}", null, Requests.API.v3);
             }
             #endregion
             #region SearchGames
@@ -357,7 +357,7 @@ namespace TwitchLib.Internal.TwitchAPI
                         break;
                 }
 
-                return await Requests.GetGenericAsync<Models.API.v3.Search.SearchGamesResponse>($"https://api.twitch.tv/kraken/search/games{paramsStr}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Search.SearchGamesResponse>($"https://api.twitch.tv/kraken/search/games{paramsStr}", null, Requests.API.v3);
             }
             #endregion
         }
@@ -367,7 +367,7 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetStream
             public async static Task<Models.API.v3.Streams.StreamResponse> GetStream(string channel)
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Streams.StreamResponse>($"https://api.twitch.tv/kraken/streams/{channel}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Streams.StreamResponse>($"https://api.twitch.tv/kraken/streams/{channel}", null, Requests.API.v3);
             }
             #endregion
             #region GetStreams
@@ -392,20 +392,20 @@ namespace TwitchLib.Internal.TwitchAPI
                         break;
                 }
 
-                return await Requests.GetGenericAsync<Models.API.v3.Streams.StreamsResponse>($"https://api.twitch.tv/kraken/streams{paramsStr}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Streams.StreamsResponse>($"https://api.twitch.tv/kraken/streams{paramsStr}", null, Requests.API.v3);
             }
             #endregion
             #region GetFeaturedStreams
             public async static Task<Models.API.v3.Streams.FeaturedStreamsResponse> GetFeaturedStreams(int limit = 25, int offset = 0)
             {
                 string paramsStr = $"?limit={limit}&offset={offset}";
-                return await Requests.GetGenericAsync<Models.API.v3.Streams.FeaturedStreamsResponse>($"https://api.twitch.tv/kraken/streams/featured{paramsStr}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Streams.FeaturedStreamsResponse>($"https://api.twitch.tv/kraken/streams/featured{paramsStr}", null, Requests.API.v3);
             }
             #endregion
             #region GetStreamsSummary
             public async static Task<Models.API.v3.Streams.Summary> GetStreamsSummary()
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Streams.Summary>("https://api.twitch.tv/kraken/streams/summary", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Streams.Summary>("https://api.twitch.tv/kraken/streams/summary", null, Requests.API.v3);
             }
             #endregion
         }
@@ -427,7 +427,7 @@ namespace TwitchLib.Internal.TwitchAPI
                         break;
                 }
 
-                return await Requests.GetGenericAsync<Models.API.v3.Subscriptions.SubscribersResponse>($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions{paramsStr}", accessToken, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Subscriptions.SubscribersResponse>($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions{paramsStr}", accessToken, Requests.API.v3);
             }
             #endregion
             #region GetAllSubscribers
@@ -472,7 +472,7 @@ namespace TwitchLib.Internal.TwitchAPI
                 Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Check_Subscription, accessToken);
                 try
                 {
-                    return await Requests.GetGenericAsync<Models.API.v3.Subscriptions.Subscriber>($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions/{targetUser}", accessToken, Requests.API.v3);
+                    return await Requests.GetGeneric<Models.API.v3.Subscriptions.Subscriber>($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions/{targetUser}", accessToken, Requests.API.v3);
                 }
                 catch
                 {
@@ -486,7 +486,7 @@ namespace TwitchLib.Internal.TwitchAPI
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, accessToken);
                 try
                 {
-                    return await Requests.GetGenericAsync<Models.API.v3.Subscriptions.ChannelSubscription>($"https://api.twitch.tv/kraken/users/{user}/subscriptions/{targetChannel}", accessToken, Requests.API.v3);
+                    return await Requests.GetGeneric<Models.API.v3.Subscriptions.ChannelSubscription>($"https://api.twitch.tv/kraken/users/{user}/subscriptions/{targetChannel}", accessToken, Requests.API.v3);
                 }
                 catch
                 {
@@ -509,13 +509,13 @@ namespace TwitchLib.Internal.TwitchAPI
             public async static Task<Models.API.v3.Teams.GetTeamsResponse> GetTeams(int limit = 25, int offset = 0)
             {
                 string paramsStr = $"?limit={limit}&offset={offset}";
-                return await Requests.GetGenericAsync<Models.API.v3.Teams.GetTeamsResponse>($"https://api.twitch.tv/kraken/teams{paramsStr}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Teams.GetTeamsResponse>($"https://api.twitch.tv/kraken/teams{paramsStr}", null, Requests.API.v3);
             }
             #endregion
             #region GetTeam
             public async static Task<Models.API.v3.Teams.Team> GetTeam(string teamName)
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Teams.Team>($"https://api.twitch.tv/kraken/teams/{teamName}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Teams.Team>($"https://api.twitch.tv/kraken/teams/{teamName}", null, Requests.API.v3);
             }
             #endregion
         }
@@ -525,21 +525,21 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetUserFromUsername
             public async static Task<Models.API.v3.Users.User> GetUserFromUsername(string username)
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Users.User>($"https://api.twitch.tv/kraken/users/{username}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Users.User>($"https://api.twitch.tv/kraken/users/{username}", null, Requests.API.v3);
             }
             #endregion
             #region GetEmotes
             public async static Task<Models.API.v3.Users.UserEmotesResponse> GetEmotes(string username, string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, accessToken);
-                return await Requests.GetGenericAsync<Models.API.v3.Users.UserEmotesResponse>($"https://api.twitch.tv/kraken/users/{username}/emotes", accessToken, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Users.UserEmotesResponse>($"https://api.twitch.tv/kraken/users/{username}/emotes", accessToken, Requests.API.v3);
             }
             #endregion
             #region GetUserFromToken
             public async static Task<Models.API.v3.Users.FullUser> GetUserFromToken(string accessToken = null)
             {
                 Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, accessToken);
-                return await Requests.GetGenericAsync<Models.API.v3.Users.FullUser>("https://api.twitch.tv/kraken/user", accessToken, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Users.FullUser>("https://api.twitch.tv/kraken/user", accessToken, Requests.API.v3);
             }
             #endregion
             #region GetFollowedStreams
@@ -560,7 +560,7 @@ namespace TwitchLib.Internal.TwitchAPI
                         break;
                 }
 
-                return await Requests.GetGenericAsync<Models.API.v3.Users.FollowedStreamsResponse>($"https://api.twitch.tv/kraken/streams/followed{paramsStr}", accessToken, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Users.FollowedStreamsResponse>($"https://api.twitch.tv/kraken/streams/followed{paramsStr}", accessToken, Requests.API.v3);
             }
             #endregion
             #region GetFollowedVideos
@@ -581,7 +581,7 @@ namespace TwitchLib.Internal.TwitchAPI
                         break;
                 }
 
-                return await Requests.GetGenericAsync<Models.API.v3.Users.FollowedVideosResponse>($"https://api.twitch.tv/kraken/videos/followed{paramsStr}", accessToken, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Users.FollowedVideosResponse>($"https://api.twitch.tv/kraken/videos/followed{paramsStr}", accessToken, Requests.API.v3);
             }
             #endregion
         }
@@ -591,7 +591,7 @@ namespace TwitchLib.Internal.TwitchAPI
             #region GetVideo
             public async static Task<Models.API.v3.Videos.Video> GetVideo(string id)
             {
-                return await Requests.GetGenericAsync<Models.API.v3.Videos.Video>($"https://api.twitch.tv/kraken/videos/{id}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Videos.Video>($"https://api.twitch.tv/kraken/videos/{id}", null, Requests.API.v3);
             }
             #endregion
             #region GetTopVideos
@@ -613,7 +613,7 @@ namespace TwitchLib.Internal.TwitchAPI
                         break;
                 }
 
-                return await Requests.GetGenericAsync<Models.API.v3.Videos.TopVideosResponse>($"https://api.twitch.tv/kraken/videos/top{paramsStr}", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Videos.TopVideosResponse>($"https://api.twitch.tv/kraken/videos/top{paramsStr}", null, Requests.API.v3);
             }
             #endregion
         }
