@@ -124,7 +124,7 @@
                 case StreamIdentifierType.Usernames:
                     try
                     {
-                        await TwitchAPI.Streams.v3.GetStreamAsync(channel);
+                        await TwitchAPI.Streams.v3.GetStream(channel);
                         return true;
                     }
                     catch (Exception)
