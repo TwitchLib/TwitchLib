@@ -20,14 +20,7 @@ namespace TwitchLib.Internal
 
         #region POST
         #region PostGenericModel
-        public static T PostGenericModel<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            if (model != null)
-                return JsonConvert.DeserializeObject<T>(generalRequest(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId), TwitchLibJsonDeserializer);
-            else
-                return JsonConvert.DeserializeObject<T>(generalRequest(url, "POST", "", accessToken, api), TwitchLibJsonDeserializer);
-        }
-        public async static Task<T> PostGenericModelAsync<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
+        public async static Task<T> PostGenericModel<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
         {
             if (model != null)
                 return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId), TwitchLibJsonDeserializer);
@@ -36,31 +29,19 @@ namespace TwitchLib.Internal
         }
         #endregion
         #region PostGeneric
-        public static T PostGeneric<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            return JsonConvert.DeserializeObject<T>(generalRequest(url, "POST", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
-        }
-        public async static Task<T> PostGenericAsync<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        public async static Task<T> PostGeneric<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
             return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "POST", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
         #endregion
         #region PostModel
-        public static void PostModel(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            generalRequest(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId);
-        }
-        public async static Task PostModelAsync(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
+        public async static Task PostModel(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
         {
             await generalRequestAsync(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId);
         }
         #endregion
         #region Post
-        public static void Post(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            generalRequest(url, "POST", payload, accessToken, api, clientId);
-        }
-        public async static Task PostAsync(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        public async static Task Post(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
             await generalRequestAsync(url, "POST", payload, accessToken, api, clientId);
         }
@@ -68,21 +49,13 @@ namespace TwitchLib.Internal
         #endregion
         #region GET
         #region GetGeneric
-        public static T GetGeneric<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            return JsonConvert.DeserializeObject<T>(generalRequest(url, "GET", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
-        }
-        public async static Task<T> GetGenericAsync<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
+        public async static Task<T> GetGeneric<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
             return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "GET", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
         #endregion
         #region GetSimpleGeneric
-        public static T GetSimpleGeneric<T>(string url)
-        {
-            return JsonConvert.DeserializeObject<T>(simpleRequest(url), TwitchLibJsonDeserializer);
-        }
-        public async static Task<T> GetSimpleGenericAsync<T>(string url)
+        public async static Task<T> GetSimpleGeneric<T>(string url)
         {
             return JsonConvert.DeserializeObject<T>(await simpleRequestAsync(url), TwitchLibJsonDeserializer);
         }
@@ -90,21 +63,13 @@ namespace TwitchLib.Internal
         #endregion
         #region DELETE
         #region Delete
-        public static string Delete(string url, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            return generalRequest(url, "DELETE", null, accessToken, api, clientId);
-        }
-        public async static Task<string> DeleteAsync(string url, string accessToken = null, API api = API.v5, string clientId = null)
+        public async static Task<string> Delete(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
             return await generalRequestAsync(url, "DELETE", null, accessToken, api, clientId);
         }
         #endregion
         #region DeleteGeneric
-        public static T DeleteGeneric<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            return JsonConvert.DeserializeObject<T>(generalRequest(url, "DELETE", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
-        }
-        public async static Task<T> DeleteGenericAsync<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
+        public async static Task<T> DeleteGeneric<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
         {
             return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "DELETE", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
@@ -115,36 +80,19 @@ namespace TwitchLib.Internal
         #endregion
         #region PUT
         #region PutGeneric
-        public static T PutGeneric<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            return JsonConvert.DeserializeObject<T>(generalRequest(url, "PUT", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
-        }
-        public async static Task<T> PutGenericAsync<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        public async static Task<T> PutGeneric<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
             return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "PUT", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
         #endregion
         #region Put
-        public static string Put(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
-        {
-            return generalRequest(url, "PUT", payload, accessToken, api, clientId);
-        }
-        public async static Task<string> PutAsync(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        public async static Task<string> Put(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
             return await generalRequestAsync(url, "PUT", payload, accessToken, api, clientId);
         }
         #endregion
         #region PutBytes
-        public static void PutBytes(string url, byte[] payload)
-        {
-            try
-            {
-                using (var client = new WebClient())
-                    client.UploadData(url, "PUT", payload);
-            }
-            catch (WebException ex) { handleWebException(ex); }
-        }
-        public async static Task PutBytesAsync(string url, byte[] payload)
+        public async static Task PutBytes(string url, byte[] payload)
         {
             try
             {
