@@ -1099,6 +1099,12 @@ namespace TwitchLib
                     return await Internal.TwitchAPI.v5.Users.CheckUserFollowsByChannel(userId, channelId);
                 }
                 #endregion
+                #region UserFollowsChannel
+                public async static Task<bool> UserFollowsChannel(string userId, string channelId)
+                {
+                    return await Internal.TwitchAPI.v5.Users.UserFollowsChannel(userId, channelId);
+                }
+                #endregion
                 #region FollowChannel
                 public async static Task<Models.API.v5.Users.UserFollow> FollowChannel(string userId, string channelId, bool? notifications = null, string authToken = null)
                 {
