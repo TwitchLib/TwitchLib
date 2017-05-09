@@ -139,6 +139,9 @@
                     case "user_blocks_edit":
                         scopes.Add(Enums.AuthScopes.User_Blocks_Edit);
                         break;
+                    case "user_blocks_read":
+                        scopes.Add(Enums.AuthScopes.User_Blocks_Read);
+                        break;
                     case "user_follows_edit":
                         scopes.Add(Enums.AuthScopes.User_Follows_Edit);
                         break;
