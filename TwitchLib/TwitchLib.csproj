@@ -187,6 +187,9 @@
     <Compile Include="Models\API\Undocumented\CSMaps\Map.cs" />
     <Compile Include="Models\API\Undocumented\Hosting\ChannelHostsResponse.cs" />
     <Compile Include="Models\API\Undocumented\Hosting\HostListing.cs" />
+    <Compile Include="Models\API\Undocumented\RecentEvents\Recent.cs" />
+    <Compile Include="Models\API\Undocumented\RecentEvents\RecentEvents.cs" />
+    <Compile Include="Models\API\Undocumented\RecentEvents\Top.cs" />
     <Compile Include="Models\API\Undocumented\RecentMessages\RecentMessagesResponse.cs" />
     <Compile Include="Models\API\Undocumented\TwitchPrimeOffers\Asset.cs" />
     <Compile Include="Models\API\Undocumented\TwitchPrimeOffers\Offer.cs" />

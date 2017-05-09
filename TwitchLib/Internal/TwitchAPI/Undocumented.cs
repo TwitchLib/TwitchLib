@@ -65,5 +65,10 @@ namespace TwitchLib.Internal.TwitchAPI
         {
             return await Requests.GetGeneric<Models.API.Undocumented.Chatters.ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName}/chatters");
         }
+
+        public async static Task<Models.API.Undocumented.RecentEvents.RecentEvents> GetRecentChannelEvents(string channelId)
+        {
+            return await Requests.GetGeneric<Models.API.Undocumented.RecentEvents.RecentEvents>($"https://api.twitch.tv/bits/channels/{channelId}/events/recent");
+        }
     }
 }

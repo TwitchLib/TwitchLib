@@ -1298,6 +1298,13 @@ namespace TwitchLib
                 return await Internal.TwitchAPI.Undocumented.GetChatters(channelName);
             }
             #endregion
+
+            #region GetRecentChannelEvents
+            public async static Task<Models.API.Undocumented.RecentEvents.RecentEvents> GetRecentChannelEvents(string channelId)
+            {
+                return await Internal.TwitchAPI.Undocumented.GetRecentChannelEvents(channelId);
+            }
+            #endregion
         }
 
         /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>
