@@ -559,8 +559,42 @@ namespace TwitchLib_API_Tester
         private async void button63_Click(object sender, EventArgs e)
         {
             var resp = await TwitchLib.TwitchAPI.Undocumented.GetChatters(textBox61.Text);
-            foreach (var chatter in resp.Chatters.Moderators)
-                MessageBox.Show($"Moderator: {chatter}");
+            foreach (var chatter in resp)
+                MessageBox.Show($"Username: {chatter.Username}\nUserType: {chatter.UserType}");
+        }
+
+        private async void button64_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Streams.v5.BroadcasterOnline(textBox62.Text);
+            if (resp)
+                MessageBox.Show("online!");
+            else
+                MessageBox.Show("offline!");
+        }
+
+        private async void button65_Click(object sender, EventArgs e)
+        {
+            var channelId = textBox63.Text;
+            var userId = textBox64.Text;
+            try
+            {
+                var resp = await TwitchLib.TwitchAPI.Users.v5.CheckUserFollowsByChannel(userId, channelId);
+                MessageBox.Show($"User follows channel! Follow created on: {resp.CreatedAt.ToLongDateString()}. Notifications: {resp.Notifications}");
+            }
+            catch(TwitchLib.Exceptions.API.BadResourceException)
+            {
+                MessageBox.Show("User doesn't follow channel!");
+            } 
+        }
+
+        private async void button66_Click(object sender, EventArgs e)
+        {
+            var channelId = textBox65.Text;
+            var userId = textBox66.Text;
+            if ((await TwitchLib.TwitchAPI.Users.v5.UserFollowsChannel(userId, channelId)))
+                MessageBox.Show("User follows channel!");
+            else
+                MessageBox.Show("User doesn't follow channel!");
         }
     }
 }
