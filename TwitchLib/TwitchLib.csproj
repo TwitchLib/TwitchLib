@@ -182,6 +182,7 @@
     <Compile Include="Models\API\Undocumented\ChannelPanels\Panel.cs" />
     <Compile Include="Models\API\Undocumented\ChatProperties\ChatProperties.cs" />
     <Compile Include="Models\API\Undocumented\Chatters\Chatters.cs" />
+    <Compile Include="Models\API\Undocumented\Chatters\ChatterFormatted.cs" />
     <Compile Include="Models\API\Undocumented\Chatters\ChattersResponse.cs" />
     <Compile Include="Models\API\Undocumented\CSMaps\CSMapsResponse.cs" />
     <Compile Include="Models\API\Undocumented\CSMaps\Map.cs" />

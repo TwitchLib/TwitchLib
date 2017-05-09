@@ -1299,7 +1299,7 @@ namespace TwitchLib
             }
             #endregion
             #region GetChatters
-            public static async Task<Models.API.Undocumented.Chatters.ChattersResponse> GetChatters(string channelName)
+            public static async Task<List<Models.API.Undocumented.Chatters.ChatterFormatted>> GetChatters(string channelName)
             {
                 return await Internal.TwitchAPI.Undocumented.GetChatters(channelName);
             }

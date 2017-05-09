@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TwitchLib.Internal.TwitchAPI
 {
@@ -61,9 +62,24 @@ namespace TwitchLib.Internal.TwitchAPI
             return await Requests.GetGeneric<Models.API.Undocumented.RecentMessages.RecentMessagesResponse>($"https://tmi.twitch.tv/api/rooms/{channelId}/recent_messages");
         }
 
-        public async static Task<Models.API.Undocumented.Chatters.ChattersResponse> GetChatters(string channelName)
+        public async static Task<List<Models.API.Undocumented.Chatters.ChatterFormatted>> GetChatters(string channelName)
         {
-            return await Requests.GetGeneric<Models.API.Undocumented.Chatters.ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName}/chatters");
+            var resp = await Requests.GetGeneric<Models.API.Undocumented.Chatters.ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName}/chatters");
+
+            List<Models.API.Undocumented.Chatters.ChatterFormatted> chatters = new List<Models.API.Undocumented.Chatters.ChatterFormatted>();
+            chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(channelName, Enums.UserType.Broadcaster));
+            foreach (var chatter in resp.Chatters.Staff)
+                chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Staff));
+            foreach (var chatter in resp.Chatters.Admins)
+                chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Admin));
+            foreach (var chatter in resp.Chatters.GlobalMods)
+                chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.GlobalModerator));
+            foreach (var chatter in resp.Chatters.Moderators)
+                chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Moderator));
+            foreach (var chatter in resp.Chatters.Viewers)
+                chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Viewer));
+
+            return chatters;
         }
 
         public async static Task<Models.API.Undocumented.RecentEvents.RecentEvents> GetRecentChannelEvents(string channelId)
