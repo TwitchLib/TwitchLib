@@ -19,7 +19,7 @@ namespace TwitchLib.Models.API.v3.Channels
         public string Delay { get; protected set; }
         [JsonProperty(PropertyName = "language")]
         public string Language { get; protected set; }
-        [JsonProperty(PropertyName = "id")]
+        [JsonProperty(PropertyName = "_id")]
         public string Id { get; protected set; }
         [JsonProperty(PropertyName = "name")]
         public string Name { get; protected set; }
