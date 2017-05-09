@@ -994,15 +994,8 @@
             #region BroadcasterOnline
             public async static Task<bool> BroadcasterOnline(string channelId)
             {
-                try
-                {
-                    await Streams.GetStreamByUser(channelId);
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                var res = await Streams.GetStreamByUser(channelId);
+                return res.Stream != null;
             }
             #endregion
         }
