@@ -7,6 +7,8 @@ TwitchLib/TwitchLib.nuspec
 .travis.yml
 TwitchLib.Tests/
 !Libs/Meebey.SmartIrc4net.dll
+Visual Studio 2017/
+credentials-api.txt
 
 # Files used to weave for NuGet
 TwitchLib/FodyWeavers.xml

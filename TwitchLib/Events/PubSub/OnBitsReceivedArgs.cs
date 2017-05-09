@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Events.PubSub
+﻿namespace TwitchLib.Events.PubSub
 {
     /// <summary>Object representing the arguments for bits received event</summary>
     public class OnBitsReceivedArgs

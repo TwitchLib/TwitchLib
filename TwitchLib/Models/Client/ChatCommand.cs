@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.Client
+﻿namespace TwitchLib.Models.Client
 {
-    /// <summary>
-    /// Object representing a command received via Twitch chat.
-    /// </summary>
+    #region using directives
+    using System.Collections.Generic;
+    using System.Linq;
+    #endregion
+    /// <summary>Object representing a command received via Twitch chat.</summary>
     public class ChatCommand
     {
         /// <summary>Property representing the chat message that the command came in.</summary>
@@ -22,9 +18,7 @@ namespace TwitchLib.Models.Client
         /// <summary>Property representing the command identifier (ie command prefix).</summary>
         public char CommandIdentifier { get; protected set; }
 
-        /// <summary>
-        /// ChatCommand constructor.
-        /// </summary>
+        /// <summary>ChatCommand constructor.</summary>
         /// <param name="ircString"></param>
         /// <param name="chatMessage"></param>
         public ChatCommand(string ircString, ChatMessage chatMessage)

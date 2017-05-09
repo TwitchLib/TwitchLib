@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib.Exceptions.Client;
-
-namespace TwitchLib.Events.Client
+﻿namespace TwitchLib.Events.Client
 {
+    #region using directives
+    using System;
+    using Exceptions.Client;
+    #endregion
     /// <summary>Args representing an incorrect login event.</summary>
     public class OnIncorrectLoginArgs : EventArgs
     {

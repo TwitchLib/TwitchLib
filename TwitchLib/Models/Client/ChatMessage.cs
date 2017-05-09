@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using System.Drawing;
-
-namespace TwitchLib.Models.Client
+﻿namespace TwitchLib.Models.Client
 {
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Linq;
+    #endregion
     /// <summary>Class represents ChatMessage in a Twitch channel.</summary>
     public class ChatMessage
     {
@@ -34,21 +32,27 @@ namespace TwitchLib.Models.Client
         /// <summary>Twitch channel message was sent from (useful for multi-channel bots).</summary>
         public string Channel { get; protected set; }
         /// <summary>Channel specific subscriber status.</summary>
-        public bool Subscriber { get; protected set; }
+        public bool IsSubscriber { get; protected set; }
+        /// <summary>Number of months a person has been subbed.</summary>
+        public int SubscribedMonthCount { get; protected set; }
         /// <summary>Twitch site-wide turbo status.</summary>
-        public bool Turbo { get; protected set; }
+        public bool IsTurbo { get; protected set; }
         /// <summary>Channel specific moderator status.</summary>
         public bool IsModerator { get; protected set; }
         /// <summary>Chat message /me identifier flag.</summary>
         public bool IsMe { get; protected set; }
         /// <summary>Chat message from broadcaster identifier flag</summary>
         public bool IsBroadcaster { get; protected set; }
+        /// <summary>Chat message is from a partnered streamer.</summary>
+        public bool IsPartnered { get; protected set; }
+        /// <summary>Experimental property noisy determination by Twitch.</summary>
+        public Enums.Noisy Noisy { get; protected set; } = Enums.Noisy.NotSet;
         /// <summary>Raw IRC-style text received from Twitch.</summary>
         public string RawIrcMessage { get; protected set; }
         /// <summary>Text after emotes have been handled (if desired). Will be null if replaceEmotes is false.</summary>
         public string EmoteReplacedMessage { get; protected set; }
         /// <summary>List of key-value pair badges.</summary>
-        public List<KeyValuePair<string,string>> Badges { get; protected set; }
+        public List<KeyValuePair<string, string>> Badges { get; protected set; }
         /// <summary>If a cheer badge exists, this property represents the raw value and color (more later). Can be null.</summary>
         public CheerBadge CheerBadge { get; protected set; }
         /// <summary>If viewer sent bits in their message, total amount will be here.</summary>
@@ -69,7 +73,8 @@ namespace TwitchLib.Models.Client
             BotUsername = botUsername;
             RawIrcMessage = ircString;
             _emoteCollection = emoteCollection;
-            foreach (var part in ircString.Split(';'))
+            var parts = ircString.Split(';');
+            foreach (var part in parts)
             {
                 if (part.Contains("!"))
                 {
@@ -77,12 +82,33 @@ namespace TwitchLib.Models.Client
                         Channel = part.Split('#')[1].Split(' ')[0];
                     if (Username == null)
                         Username = part.Split('!')[1].Split('@')[0];
+                    if(part.Split('=').Count() > 1 && part.Split('=')[1].Contains(" "))
+                    {
+                        switch (part.Split('=')[1].Split(' ')[0])
+                        {
+                            case "mod":
+                                UserType = Enums.UserType.Moderator;
+                                break;
+                            case "global_mod":
+                                UserType = Enums.UserType.GlobalModerator;
+                                break;
+                            case "admin":
+                                UserType = Enums.UserType.Admin;
+                                break;
+                            case "staff":
+                                UserType = Enums.UserType.Staff;
+                                break;
+                            default:
+                                UserType = Enums.UserType.Viewer;
+                                break;
+                        }
+                    }
                 }
-                else if(part.Contains("@badges="))
+                else if (part.Contains("@badges="))
                 {
                     Badges = new List<KeyValuePair<string, string>>();
                     string badges = part.Split('=')[1];
-                    if(badges.Contains('/'))
+                    if (badges.Contains('/'))
                     {
                         if (!badges.Contains(","))
                             Badges.Add(new KeyValuePair<string, string>(badges.Split('/')[0], badges.Split('/')[1]));
@@ -91,13 +117,17 @@ namespace TwitchLib.Models.Client
                                 Badges.Add(new KeyValuePair<string, string>(badge.Split('/')[0], badge.Split('/')[1]));
                     }
                     // Iterate through saved badges for special circumstances
-                    foreach(KeyValuePair<string, string> badge in Badges)
+                    foreach (KeyValuePair<string, string> badge in Badges)
                     {
                         if (badge.Key == "bits")
                             CheerBadge = new CheerBadge(int.Parse(badge.Value));
+                        if (badge.Key == "partner")
+                            IsPartnered = true;
+                        if (badge.Key == "subscriber")
+                            SubscribedMonthCount = int.Parse(badge.Value);
                     }
                 }
-                else if(part.Contains("bits="))
+                else if (part.Contains("bits="))
                 {
                     Bits = int.Parse(part.Split('=')[1]);
                     BitsInDollars = convertBitsToUSD(Bits);
@@ -121,52 +151,35 @@ namespace TwitchLib.Models.Client
                 }
                 else if (part.Contains("subscriber="))
                 {
-                    Subscriber = part.Split('=')[1] == "1";
+                    IsSubscriber = part.Split('=')[1] == "1";
                 }
                 else if (part.Contains("turbo="))
                 {
-                    Turbo = part.Split('=')[1] == "1";
+                    IsTurbo = part.Split('=')[1] == "1";
                 }
                 else if (part.Contains("user-id="))
                 {
                     UserId = part.Split('=')[1];
                 }
-                else if (part.Contains("user-type="))
-                {
-                    switch (part.Split('=')[1].Split(' ')[0])
-                    {
-                        case "mod":
-                            UserType = Enums.UserType.Moderator;
-                            break;
-                        case "global_mod":
-                            UserType = Enums.UserType.GlobalModerator;
-                            break;
-                        case "admin":
-                            UserType = Enums.UserType.Admin;
-                            break;
-                        case "staff":
-                            UserType = Enums.UserType.Staff;
-                            break;
-                        default:
-                            UserType = Enums.UserType.Viewer;
-                            break;
-                    }
-                }
                 else if (part.Contains("mod="))
                 {
                     IsModerator = part.Split('=')[1] == "1";
                 }
+                else if(part.Contains("noisy="))
+                {
+                    Noisy = (part.Split('=')[1] == "1") ? Enums.Noisy.True : Enums.Noisy.False;
+                }
             }
             Message = ircString.Split(new[] { $" PRIVMSG #{Channel} :" }, StringSplitOptions.None)[1];
             EmoteSet = new EmoteSet(emoteSetStorage, Message);
-            if ((byte)Message[0] == 1 && (byte)Message[Message.Length-1] == 1)
+            if ((byte)Message[0] == 1 && (byte)Message[Message.Length - 1] == 1)
             {
-              //Actions (/me {action}) are wrapped by byte=1 and prepended with "ACTION "
-              //This setup clears all of that leaving just the action's text.
-              //If you want to clear just the nonstandard bytes, use:
-              //_message = _message.Substring(1, text.Length-2);
-              Message = Message.Substring(8, Message.Length-9);
-              IsMe = true;
+                //Actions (/me {action}) are wrapped by byte=1 and prepended with "ACTION "
+                //This setup clears all of that leaving just the action's text.
+                //If you want to clear just the nonstandard bytes, use:
+                //_message = _message.Substring(1, text.Length-2);
+                Message = Message.Substring(8, Message.Length - 9);
+                IsMe = true;
             }
 
             //Parse the emoteSet
@@ -208,7 +221,7 @@ namespace TwitchLib.Models.Client
                 DisplayName = Username;
 
             // Check if message is from broadcaster
-            if(Channel.ToLower() == Username.ToLower())
+            if (Channel.ToLower() == Username.ToLower())
             {
                 UserType = Enums.UserType.Broadcaster;
                 IsBroadcaster = true;
@@ -216,7 +229,7 @@ namespace TwitchLib.Models.Client
         }
 
         /// <summary>Chat Message constructor with passed in values.</summary>
-        public ChatMessage(List<KeyValuePair<string, string>> badges, string channel, string colorHex, string displayName, 
+        public ChatMessage(List<KeyValuePair<string, string>> badges, string channel, string colorHex, string displayName,
             EmoteSet emoteSet, bool moderator, bool subscriber, Enums.UserType userType, string message)
         {
             Badges = badges;
@@ -225,7 +238,7 @@ namespace TwitchLib.Models.Client
             Username = DisplayName = displayName;
             EmoteSet = emoteSet;
             IsModerator = moderator;
-            Subscriber = subscriber;
+            IsSubscriber = subscriber;
             UserType = userType;
             Message = message;
         }
@@ -246,19 +259,19 @@ namespace TwitchLib.Models.Client
             10000 bits = $126.00 (10%)
             25000 bits = $308.00 (12%)
             */
-            if(bits < 1500)
+            if (bits < 1500)
             {
                 return (bits / 100) * 1.4;
             }
-            if(bits < 5000)
+            if (bits < 5000)
             {
                 return (bits / 1500) * 19.95;
             }
-            if(bits < 10000)
+            if (bits < 10000)
             {
                 return (bits / 5000) * 64.40;
             }
-            if(bits < 25000)
+            if (bits < 25000)
             {
                 return (bits / 10000) * 126;
             }

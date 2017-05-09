@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Enums
+﻿namespace TwitchLib.Enums
 {
-    /// <summary>
     /// <summary>Enum representing the available chat name color presets.</summary>
-    /// </summary>
     public enum ChatColorPresets
     {
         /// <summary>Chat color name.</summary>
@@ -27,7 +19,9 @@ namespace TwitchLib.Enums
         OrangeRed,
         /// <summary>Chat color name.</summary>
         Red,
-        /// <summary>Chat color name.</summary>GoldenRod,
+        /// <summary>Chat color name.</summary>
+        GoldenRod,
+        /// <summary>Chat color name.</summary>
         HotPink,
         /// <summary>Chat color name.</summary>
         CadetBlue,

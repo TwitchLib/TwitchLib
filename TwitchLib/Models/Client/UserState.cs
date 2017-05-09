@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace TwitchLib.Models.Client
 {
+    #region using directives
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    #endregion
     /// <summary>Class representing state of a specific user.</summary>
     public class UserState
     {
@@ -32,18 +31,18 @@ namespace TwitchLib.Models.Client
         /// <param name="ircString"></param>
         public UserState(string ircString)
         {
-            foreach(string part in ircString.Split(';'))
+            foreach (string part in ircString.Split(';'))
             {
                 // The 'user-type' section does not have a ; suffix, we will account for this outside of for loop, we should exit loop immediately
                 if (part.Contains(" :tmi.twitch.tv USERSTATE "))
                     break;
-                if(!part.Contains("="))
+                if (!part.Contains("="))
                 {
                     // This should never happen, unless Twitch changes their shit.
                     Console.WriteLine($"Unaccounted for [UserState]: {part}");
                     continue;
                 }
-                switch(part.Split('=')[0])
+                switch (part.Split('=')[0])
                 {
                     case "@badges":
                         string badges = part.Split('=')[1];

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Models.Client
+﻿namespace TwitchLib.Models.Client
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Class representing a channel state as received from Twitch chat.</summary>
     public class ChannelState
     {
@@ -21,8 +18,10 @@ namespace TwitchLib.Models.Client
         public string BroadcasterLanguage { get; protected set; }
         /// <summary>Property representing the current channel.</summary>
         public string Channel { get; protected set; }
-        /// <summary>Property </summary>
+        /// <summary>Property representing how long needed to be following to talk </summary>
         public TimeSpan FollowersOnly { get; protected set; }
+        /// <summary>Twitch assignedc room id</summary>
+        public string RoomId { get; protected set; }
 
         /// <summary>ChannelState object constructor.</summary>
         public ChannelState(string ircString)
@@ -54,6 +53,9 @@ namespace TwitchLib.Models.Client
                             FollowersOnly = TimeSpan.FromMinutes(0);
                         else
                             FollowersOnly = TimeSpan.FromMinutes(minutes);
+                        break;
+                    case "room-id":
+                        RoomId = part.Split('=')[1];
                         break;
                     default:
                         Console.WriteLine("[TwitchLib][ChannelState] Unaccounted for: " + part);

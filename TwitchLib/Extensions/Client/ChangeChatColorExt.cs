@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib.Models.Client;
-
-namespace TwitchLib.Extensions.Client
+﻿namespace TwitchLib.Extensions.Client
 {
+    #region using directives
+    using Models.Client;
+    #endregion
+    /// <summary>Extension implementing the change chat color functionality in TwitchClient</summary>
     public static class ChangeChatColorExt
     {
         /// <summary>

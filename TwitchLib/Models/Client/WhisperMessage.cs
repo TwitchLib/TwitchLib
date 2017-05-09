@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace TwitchLib.Models.Client
 {
-    /// <summary>
-    /// Class representing a received whisper from TwitchWhisperClient
-    /// </summary>
+    #region using directives
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Linq;
+    #endregion
+    /// <summary>Class representing a received whisper from TwitchWhisperClient</summary>
     public class WhisperMessage
     {
         /// <summary>Property representing dynamic badges assigned to message.</summary>
@@ -50,13 +46,13 @@ namespace TwitchLib.Models.Client
             BotUsername = botUsername;
             Message = ircString.Replace($"{ircString.Split('!')[0]}!{Username}@{Username}.tmi.twitch.tv WHISPER {botUsername.ToLower()} :", "");
 
-            foreach(string part in ircString.Split(';'))
+            foreach (string part in ircString.Split(';'))
             {
                 string key = part.Split('=')[0];
                 string value = part.Split('=')[1];
-                switch(key)
+                switch (key)
                 {
-                    
+
                     case "@badges":
                         Badges = new List<KeyValuePair<string, string>>();
                         if (value.Contains('/'))
@@ -116,9 +112,6 @@ namespace TwitchLib.Models.Client
                                 UserType = Enums.UserType.Viewer;
                                 break;
                         }
-                        break;
-                    default:
-                        Common.Logging.Log($"Unaccounted for [WhisperMessage.cs]: key: {key}, value: {value}");
                         break;
                 }
             }

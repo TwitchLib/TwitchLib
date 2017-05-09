@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Exceptions.Client
+﻿namespace TwitchLib.Exceptions.Client
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Exception thrown when an event that is not handled is required to be handled.</summary>
     public class EventNotHandled : Exception
     {

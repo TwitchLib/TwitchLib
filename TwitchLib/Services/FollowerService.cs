@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 using TwitchLib.Exceptions.Services;
 using TwitchLib.Exceptions.API;
 using TwitchLib.Events.Services.FollowerService;
+using System.Threading.Tasks;
 
 namespace TwitchLib.Services
 {
@@ -19,28 +17,28 @@ namespace TwitchLib.Services
 
         private Timer _followerServiceTimer = new Timer();
         /// <summary>Property representing Twitch channel service is monitoring.</summary>
-        public string Channel { get { return _channel; } protected set { _channel = value; } }
+        public string ChannelData { get { return _channel; } protected set { _channel = value; } }
+        /// <summary>Property representing whether channeldata is a channel name or channel id.</summary>
+        public Enums.ChannelIdentifierType ChannelIdentifier { get; protected set; }
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
-        public string ClientId { get { return _clientId; } set { _clientId = value; TwitchApi.SetClientId(value); } }
+        public string ClientId { get { return _clientId; } set { _clientId = value; TwitchAPI.Settings.ClientId = value; } }
         /// <summary>Property representing the number of followers to compare a fresh query against for new followers. Default: 1000.</summary>
         public int CacheSize { get; set; } = 1000;
         /// <summary>Property representing number of recent followers that service should request. Recommended: 25, increase for larger channels. MAX: 100, MINIMUM: 1</summary>
         /// <exception cref="BadQueryCountException">Throws BadQueryCountException if queryCount is larger than 100 or smaller than 1.</exception>
         public int QueryCount { get { return _queryCount; } set { if (value < 1 || value > 100) { throw new BadQueryCountException("Query count was smaller than 1 or exceeded 100"); } _queryCount = value; } }
         /// <summary>Property representing the cache where detected followers are stored and compared against.</summary>
-        public List<Models.API.Follow.Follower> ActiveCache { get; set; }
+        public List<string> ActiveCache { get; set; }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _followerServiceTimer.Interval = value * 1000; } }
 
         /// <summary>Service constructor.</summary>
         /// <exception cref="BadResourceException">If channel is invalid, an InvalidChannelException will be thrown.</exception>
-        /// <param name="channel">Param representing the channel the service should monitor.</param>
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
         /// <param name="queryCount">Number of recent followers service should request from Twitch Api. Max: 100, Min: 1</param>
         /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
-        public FollowerService(string channel, int checkIntervalSeconds = 60, int queryCount = 25, string clientId = "")
+        public FollowerService(int checkIntervalSeconds = 60, int queryCount = 25, string clientId = "")
         {
-            Channel = channel;
             CheckIntervalSeconds = checkIntervalSeconds;
             QueryCount = queryCount;
             _followerServiceTimer.Elapsed += _followerServiceTimerElapsed;
@@ -50,13 +48,28 @@ namespace TwitchLib.Services
 
         #region CONTROLS
         /// <summary>Downloads recent followers from Twitch, starts service, fires OnServiceStarted event.</summary>
-        public async void StartService()
+        public async Task StartService()
         {
-            Models.API.Follow.FollowersResponse response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
-            ActiveCache = response.Followers;
+            if (ChannelData == null)
+            {
+                throw new UninitializedChannelDataException("ChannelData must be set before starting the FollowerService. Use SetChannelByName() or SetChannelById()");
+            }
+
+            if(ChannelIdentifier == Enums.ChannelIdentifierType.Username)
+            {
+                var response = await TwitchAPI.Follows.GetFollowers(ChannelData, QueryCount);
+                foreach (var follower in response.Followers)
+                    ActiveCache.Add(follower.User.Name);
+            } else
+            {
+                var response = await TwitchAPI.Channels.v5.GetChannelFollowers(ChannelData, QueryCount);
+                foreach (var follower in response.Follows)
+                    ActiveCache.Add(follower.User.Name);
+            }
+            
             _followerServiceTimer.Start();
             OnServiceStarted?.Invoke(this, 
-                new OnServiceStartedArgs { Channel = Channel, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount });
+                new OnServiceStartedArgs { ChannelIdentifier = ChannelIdentifier, ChannelData = ChannelData, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount });
         }
 
         /// <summary>Stops service and fires OnServiceStopped event.</summary>
@@ -64,31 +77,55 @@ namespace TwitchLib.Services
         {
             _followerServiceTimer.Stop();
             OnServiceStopped?.Invoke(this,
-                new OnServiceStoppedArgs { Channel = Channel, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount });
+                new OnServiceStoppedArgs { ChannelIdentifier = ChannelIdentifier, ChannelData = ChannelData, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount });
+        }
+
+        /// <summary>Tells FollowerService to request the channel by the channel name.</summary>
+        /// <param name="channelName"></param>
+        public void SetChannelByName(string channelName)
+        {
+            ChannelIdentifier = Enums.ChannelIdentifierType.Username;
+            ChannelData = channelName;
+        }
+
+        /// <summary>Tells FollowerService to request the channel by the channel Id</summary>
+        /// <param name="channelId"></param>
+        public void SetChannelByChannelId(string channelId)
+        {
+            ChannelIdentifier = Enums.ChannelIdentifierType.UserId;
+            ChannelData = channelId;
         }
         #endregion
 
         private async void _followerServiceTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            Models.API.Follow.FollowersResponse response;
+            List<string> mostRecentFollowers = new List<string>();
             try
             {
-                response = await TwitchApi.Follows.GetFollowersAsync(Channel, QueryCount);
+                if(ChannelIdentifier == Enums.ChannelIdentifierType.Username)
+                {
+                    var followers = await TwitchAPI.Follows.GetFollowers(ChannelData, QueryCount);
+                    foreach (var follower in followers.Followers)
+                        mostRecentFollowers.Add(follower.User.Name);
+                } else
+                {
+                    var followers = await TwitchAPI.Channels.v5.GetChannelFollowers(ChannelData, QueryCount);
+                    foreach (var follower in followers.Follows)
+                        mostRecentFollowers.Add(follower.User.Name);
+                }
             }
             catch (WebException)
             {
-                //Logging.Log("Twitch API is unavailable. Skipping FollowerService iteration...");
                 return;
             }
-            List<Models.API.Follow.Follower> mostRecentFollowers = response.Followers;
-            List<Models.API.Follow.Follower> newFollowers = new List<Models.API.Follow.Follower>();
+            List<string> newFollowers = new List<string>();
 
-            foreach (Models.API.Follow.Follower recentFollower in mostRecentFollowers)
+            foreach (var recentFollower in mostRecentFollowers)
             {
                 bool found = false;
-                foreach (Models.API.Follow.Follower cachedFollower in ActiveCache)
+                foreach (var cachedFollower in ActiveCache)
                 {
-                    if (recentFollower.User.Name.ToLower() == cachedFollower.User.Name.ToLower())
+                    if (recentFollower == cachedFollower)
                         found = true;
                 }
                 if (!found)
@@ -109,7 +146,8 @@ namespace TwitchLib.Services
                 OnNewFollowersDetected?.Invoke(this,
                     new OnNewFollowersDetectedArgs
                     {
-                        Channel = Channel,
+                        ChannelIdentifier = ChannelIdentifier,
+                        ChannelData = ChannelData,
                         CheckIntervalSeconds = CheckIntervalSeconds,
                         QueryCount = QueryCount,
                         NewFollowers = newFollowers

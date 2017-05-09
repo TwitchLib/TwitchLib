@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Exceptions.Client
+﻿namespace TwitchLib.Exceptions.Client
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Exception representing bad information being provided to function/method.</summary>
     public class InvalidParameterException : Exception
     {

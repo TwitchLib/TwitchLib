@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib.Models.Client;
-
-namespace TwitchLib.Extensions.Client
+﻿namespace TwitchLib.Extensions.Client
 {
-    /// <summary>
-    /// Extension to implement slowmode functionality in TwitchClient
-    /// </summary>
+    #region using directives
+    using System;
+    using Models.Client;
+    #endregion
+    /// <summary>Extension to implement slowmode functionality in TwitchClient</summary>
     public static class SlowModeExt
     {
         /// <summary>

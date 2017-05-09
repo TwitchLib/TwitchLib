@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib.Models.Client;
-
-namespace TwitchLib.Events.Client
+﻿namespace TwitchLib.Events.Client
 {
+    #region using directives
+    using System;
+
+    using Models.Client;
+    #endregion
     /// <summary>Args representing on channel state changed event.</summary>
     public class OnChannelStateChangedArgs : EventArgs
     {
