@@ -7,8 +7,8 @@
     <ProjectGuid>{3CEB6EEB-6330-4154-B81D-03ACB797072A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TwitchLibExample</RootNamespace>
-    <AssemblyName>TwitchLibExample</AssemblyName>
+    <RootNamespace>TwitchLib-Client-PubSub-Tester</RootNamespace>
+    <AssemblyName>TwitchLib-Client-PubSub-Tester</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
