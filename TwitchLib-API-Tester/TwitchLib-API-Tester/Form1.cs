@@ -43,6 +43,8 @@ namespace TwitchLib_API_Tester
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            ClientId = textBox2.Text;
+            AccessToken = textBox3.Text;
             setCredentials();
         }
 
