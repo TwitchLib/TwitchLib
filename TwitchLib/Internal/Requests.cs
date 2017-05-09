@@ -198,7 +198,7 @@ namespace TwitchLib.Internal
             switch (errorResp.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
-                    throw new MissingClientIdException("Your request was sent without a client-id set. Use TwitchAPI.");
+                    throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set.\n 2. You requested a username when the server was expecting a user ID.");
                 case HttpStatusCode.Unauthorized:
                     throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
                 case HttpStatusCode.NotFound:

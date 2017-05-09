@@ -63,7 +63,7 @@
                 await v5.Root.GetRoot(null, clientId);
                 return true;
             }
-            catch(MissingClientIdException)
+            catch(BadRequestException)
             {
                 return false;
             }

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace TwitchLib.Exceptions.API
 {
     /// <summary>Exception representing a request that doesn't have a clientid attached.</summary>
-    public class MissingClientIdException : Exception
+    public class BadRequestException : Exception
     {
         /// <summary>Exception constructor</summary>
-        public MissingClientIdException(string apiData)
+        public BadRequestException(string apiData)
             : base(apiData)
         {
         }
