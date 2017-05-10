@@ -264,7 +264,7 @@ namespace TwitchLib.Internal.TwitchAPI
                         break;
                 }
 
-                return await Requests.GetGeneric<Models.API.v3.Follows.FollowsResponse>($"https://api.twitch.tv/kraken/users/{channel}/follows/channels", null, Requests.API.v3);
+                return await Requests.GetGeneric<Models.API.v3.Follows.FollowsResponse>($"https://api.twitch.tv/kraken/users/{channel}/follows/channels{paramsStr}", null, Requests.API.v3);
             }
             #endregion
             #region GetFollowStatus
