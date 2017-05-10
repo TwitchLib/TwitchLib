@@ -101,6 +101,7 @@
         {
             if (logging)
                 Console.WriteLine($"[TwitchPubSub]OnClose");
+            pingTimer.Stop();
             OnPubSubServiceClosed?.Invoke(this, null);
         }
 
