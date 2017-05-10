@@ -29,7 +29,7 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 * **Services**:
 	* **FollowerService**: Service for detection of new followers.
 	* **LiveStreamMonitor**: Service for detecting when a channel goes online/offline
-* **TwitchApi**:
+* **TwitchAPI**:
 	* Retrieve uptime/current status of stream, posts in channel feed, etc.
 	* Retrieve followed channels/check is particular user is a follower or not
 	* Search games by viewcount, name, etc.
@@ -95,7 +95,7 @@ using TwitchLib;
 using TwitchLib.Models.API;
 
 TwitchAPI.Settings.ClientId = "my-client-id";
-TwitchApi.Settings.AccessToken = "my-oauth-token";
+TwitchAPI.Settings.AccessToken = "my-oauth-token";
 
 bool isSubbed = await TwitchAPI.Channels.v5.CheckChannelSubscriptionByUser("channel-id", "user-id");
 
