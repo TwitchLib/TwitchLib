@@ -46,7 +46,8 @@ namespace TwitchLib.Models.Client
             BotUsername = botUsername;
             Message = ircString.Replace($"{ircString.Split('!')[0]}!{Username}@{Username}.tmi.twitch.tv WHISPER {botUsername.ToLower()} :", "");
 
-            foreach (string part in ircString.Split(';'))
+            var props = ircString.Replace(Message, "");
+            foreach (string part in props.Split(';'))
             {
                 string key = part.Split('=')[0];
                 string value = part.Split('=')[1];
