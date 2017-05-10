@@ -21,6 +21,18 @@ namespace TwitchLib_API_Tester
         private void Form1_Load(object sender, EventArgs e)
         {
             readCredentails();
+            monitor.OnStreamOnline += onStreamOnline;
+            monitor.OnStreamOffline += onStreamOfffline;
+        }
+
+        private void onStreamOnline(object sender, TwitchLib.Events.Services.LiveStreamMonitor.OnStreamOnlineArgs e)
+        {
+            MessageBox.Show($"Stream up! Stream: {e.Channel}");
+        }
+
+        private void onStreamOfffline(object sender, TwitchLib.Events.Services.LiveStreamMonitor.OnStreamOfflineArgs e)
+        {
+            MessageBox.Show($"Stream down! Stream: {e.Channel}");
         }
 
         private void readCredentails()
@@ -595,6 +607,18 @@ namespace TwitchLib_API_Tester
                 MessageBox.Show("User follows channel!");
             else
                 MessageBox.Show("User doesn't follow channel!");
+        }
+
+        private static TwitchLib.Services.LiveStreamMonitor monitor = new TwitchLib.Services.LiveStreamMonitor(30);
+        private void button67_Click(object sender, EventArgs e)
+        {
+            monitor.SetStreamsByUserId(new List<string>() { textBox67.Text });
+            monitor.StartService();
+        }
+
+        private void button68_Click(object sender, EventArgs e)
+        {
+            monitor.StopService();
         }
     }
 }

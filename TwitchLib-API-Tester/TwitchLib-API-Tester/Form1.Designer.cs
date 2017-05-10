@@ -242,6 +242,59 @@
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.tabControl3 = new System.Windows.Forms.TabControl();
+            this.tabPage22 = new System.Windows.Forms.TabPage();
+            this.tabPage23 = new System.Windows.Forms.TabPage();
+            this.tabPage24 = new System.Windows.Forms.TabPage();
+            this.tabPage25 = new System.Windows.Forms.TabPage();
+            this.tabPage26 = new System.Windows.Forms.TabPage();
+            this.tabPage27 = new System.Windows.Forms.TabPage();
+            this.tabPage28 = new System.Windows.Forms.TabPage();
+            this.tabPage29 = new System.Windows.Forms.TabPage();
+            this.tabPage30 = new System.Windows.Forms.TabPage();
+            this.tabPage31 = new System.Windows.Forms.TabPage();
+            this.tabPage32 = new System.Windows.Forms.TabPage();
+            this.groupBox65 = new System.Windows.Forms.GroupBox();
+            this.textBox62 = new System.Windows.Forms.TextBox();
+            this.label65 = new System.Windows.Forms.Label();
+            this.button64 = new System.Windows.Forms.Button();
+            this.tabPage33 = new System.Windows.Forms.TabPage();
+            this.tabPage34 = new System.Windows.Forms.TabPage();
+            this.groupBox67 = new System.Windows.Forms.GroupBox();
+            this.textBox65 = new System.Windows.Forms.TextBox();
+            this.label68 = new System.Windows.Forms.Label();
+            this.textBox66 = new System.Windows.Forms.TextBox();
+            this.label69 = new System.Windows.Forms.Label();
+            this.button66 = new System.Windows.Forms.Button();
+            this.groupBox66 = new System.Windows.Forms.GroupBox();
+            this.textBox63 = new System.Windows.Forms.TextBox();
+            this.label66 = new System.Windows.Forms.Label();
+            this.textBox64 = new System.Windows.Forms.TextBox();
+            this.label67 = new System.Windows.Forms.Label();
+            this.button65 = new System.Windows.Forms.Button();
+            this.tabPage35 = new System.Windows.Forms.TabPage();
+            this.groupBox55 = new System.Windows.Forms.GroupBox();
+            this.textBox55 = new System.Windows.Forms.TextBox();
+            this.label57 = new System.Windows.Forms.Label();
+            this.textBox54 = new System.Windows.Forms.TextBox();
+            this.label56 = new System.Windows.Forms.Label();
+            this.textBox53 = new System.Windows.Forms.TextBox();
+            this.label55 = new System.Windows.Forms.Label();
+            this.textBox52 = new System.Windows.Forms.TextBox();
+            this.label54 = new System.Windows.Forms.Label();
+            this.button54 = new System.Windows.Forms.Button();
+            this.textBox51 = new System.Windows.Forms.TextBox();
+            this.label53 = new System.Windows.Forms.Label();
+            this.button53 = new System.Windows.Forms.Button();
+            this.tabPage36 = new System.Windows.Forms.TabPage();
+            this.groupBox24 = new System.Windows.Forms.GroupBox();
+            this.button22 = new System.Windows.Forms.Button();
+            this.groupBox23 = new System.Windows.Forms.GroupBox();
+            this.button21 = new System.Windows.Forms.Button();
+            this.groupBox22 = new System.Windows.Forms.GroupBox();
+            this.textBox25 = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.button20 = new System.Windows.Forms.Button();
             this.tabPage19 = new System.Windows.Forms.TabPage();
             this.groupBox54 = new System.Windows.Forms.GroupBox();
             this.textBox50 = new System.Windows.Forms.TextBox();
@@ -287,59 +340,12 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.tabControl3 = new System.Windows.Forms.TabControl();
-            this.tabPage22 = new System.Windows.Forms.TabPage();
-            this.tabPage23 = new System.Windows.Forms.TabPage();
-            this.tabPage24 = new System.Windows.Forms.TabPage();
-            this.tabPage25 = new System.Windows.Forms.TabPage();
-            this.tabPage26 = new System.Windows.Forms.TabPage();
-            this.tabPage27 = new System.Windows.Forms.TabPage();
-            this.tabPage28 = new System.Windows.Forms.TabPage();
-            this.tabPage29 = new System.Windows.Forms.TabPage();
-            this.tabPage30 = new System.Windows.Forms.TabPage();
-            this.tabPage31 = new System.Windows.Forms.TabPage();
-            this.tabPage32 = new System.Windows.Forms.TabPage();
-            this.tabPage33 = new System.Windows.Forms.TabPage();
-            this.tabPage34 = new System.Windows.Forms.TabPage();
-            this.tabPage35 = new System.Windows.Forms.TabPage();
-            this.tabPage36 = new System.Windows.Forms.TabPage();
-            this.groupBox65 = new System.Windows.Forms.GroupBox();
-            this.textBox62 = new System.Windows.Forms.TextBox();
-            this.label65 = new System.Windows.Forms.Label();
-            this.button64 = new System.Windows.Forms.Button();
-            this.groupBox66 = new System.Windows.Forms.GroupBox();
-            this.textBox63 = new System.Windows.Forms.TextBox();
-            this.label66 = new System.Windows.Forms.Label();
-            this.textBox64 = new System.Windows.Forms.TextBox();
-            this.label67 = new System.Windows.Forms.Label();
-            this.button65 = new System.Windows.Forms.Button();
-            this.groupBox67 = new System.Windows.Forms.GroupBox();
-            this.textBox65 = new System.Windows.Forms.TextBox();
-            this.label68 = new System.Windows.Forms.Label();
-            this.textBox66 = new System.Windows.Forms.TextBox();
-            this.label69 = new System.Windows.Forms.Label();
-            this.button66 = new System.Windows.Forms.Button();
-            this.groupBox24 = new System.Windows.Forms.GroupBox();
-            this.button22 = new System.Windows.Forms.Button();
-            this.groupBox23 = new System.Windows.Forms.GroupBox();
-            this.button21 = new System.Windows.Forms.Button();
-            this.groupBox22 = new System.Windows.Forms.GroupBox();
-            this.textBox25 = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.button20 = new System.Windows.Forms.Button();
-            this.groupBox55 = new System.Windows.Forms.GroupBox();
-            this.textBox55 = new System.Windows.Forms.TextBox();
-            this.label57 = new System.Windows.Forms.Label();
-            this.textBox54 = new System.Windows.Forms.TextBox();
-            this.label56 = new System.Windows.Forms.Label();
-            this.textBox53 = new System.Windows.Forms.TextBox();
-            this.label55 = new System.Windows.Forms.Label();
-            this.textBox52 = new System.Windows.Forms.TextBox();
-            this.label54 = new System.Windows.Forms.Label();
-            this.button54 = new System.Windows.Forms.Button();
-            this.textBox51 = new System.Windows.Forms.TextBox();
-            this.label53 = new System.Windows.Forms.Label();
-            this.button53 = new System.Windows.Forms.Button();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox68 = new System.Windows.Forms.GroupBox();
+            this.button68 = new System.Windows.Forms.Button();
+            this.textBox67 = new System.Windows.Forms.TextBox();
+            this.label70 = new System.Windows.Forms.Label();
+            this.button67 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -406,6 +412,18 @@
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage7.SuspendLayout();
+            this.tabControl3.SuspendLayout();
+            this.tabPage32.SuspendLayout();
+            this.groupBox65.SuspendLayout();
+            this.tabPage34.SuspendLayout();
+            this.groupBox67.SuspendLayout();
+            this.groupBox66.SuspendLayout();
+            this.tabPage35.SuspendLayout();
+            this.groupBox55.SuspendLayout();
+            this.tabPage36.SuspendLayout();
+            this.groupBox24.SuspendLayout();
+            this.groupBox23.SuspendLayout();
+            this.groupBox22.SuspendLayout();
             this.tabPage19.SuspendLayout();
             this.groupBox54.SuspendLayout();
             this.tabPage21.SuspendLayout();
@@ -422,18 +440,8 @@
             this.tabPage5.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tabControl3.SuspendLayout();
-            this.tabPage32.SuspendLayout();
-            this.tabPage34.SuspendLayout();
-            this.tabPage35.SuspendLayout();
-            this.tabPage36.SuspendLayout();
-            this.groupBox65.SuspendLayout();
-            this.groupBox66.SuspendLayout();
-            this.groupBox67.SuspendLayout();
-            this.groupBox24.SuspendLayout();
-            this.groupBox23.SuspendLayout();
-            this.groupBox22.SuspendLayout();
-            this.groupBox55.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.groupBox68.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -2508,6 +2516,7 @@
             this.tabControl2.Controls.Add(this.tabPage21);
             this.tabControl2.Controls.Add(this.tabPage20);
             this.tabControl2.Controls.Add(this.tabPage5);
+            this.tabControl2.Controls.Add(this.tabPage4);
             this.tabControl2.Location = new System.Drawing.Point(12, 13);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
@@ -2535,6 +2544,517 @@
             this.tabPage7.TabIndex = 3;
             this.tabPage7.Text = "v5";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // tabControl3
+            // 
+            this.tabControl3.Controls.Add(this.tabPage22);
+            this.tabControl3.Controls.Add(this.tabPage23);
+            this.tabControl3.Controls.Add(this.tabPage24);
+            this.tabControl3.Controls.Add(this.tabPage25);
+            this.tabControl3.Controls.Add(this.tabPage26);
+            this.tabControl3.Controls.Add(this.tabPage27);
+            this.tabControl3.Controls.Add(this.tabPage28);
+            this.tabControl3.Controls.Add(this.tabPage29);
+            this.tabControl3.Controls.Add(this.tabPage30);
+            this.tabControl3.Controls.Add(this.tabPage31);
+            this.tabControl3.Controls.Add(this.tabPage32);
+            this.tabControl3.Controls.Add(this.tabPage33);
+            this.tabControl3.Controls.Add(this.tabPage34);
+            this.tabControl3.Controls.Add(this.tabPage35);
+            this.tabControl3.Controls.Add(this.tabPage36);
+            this.tabControl3.Location = new System.Drawing.Point(19, 20);
+            this.tabControl3.Name = "tabControl3";
+            this.tabControl3.SelectedIndex = 0;
+            this.tabControl3.Size = new System.Drawing.Size(1495, 998);
+            this.tabControl3.TabIndex = 0;
+            // 
+            // tabPage22
+            // 
+            this.tabPage22.Location = new System.Drawing.Point(10, 48);
+            this.tabPage22.Name = "tabPage22";
+            this.tabPage22.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage22.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage22.TabIndex = 0;
+            this.tabPage22.Text = "Root";
+            this.tabPage22.UseVisualStyleBackColor = true;
+            // 
+            // tabPage23
+            // 
+            this.tabPage23.Location = new System.Drawing.Point(10, 48);
+            this.tabPage23.Name = "tabPage23";
+            this.tabPage23.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage23.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage23.TabIndex = 1;
+            this.tabPage23.Text = "Bits";
+            this.tabPage23.UseVisualStyleBackColor = true;
+            // 
+            // tabPage24
+            // 
+            this.tabPage24.Location = new System.Drawing.Point(10, 48);
+            this.tabPage24.Name = "tabPage24";
+            this.tabPage24.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage24.TabIndex = 2;
+            this.tabPage24.Text = "ChannelFeed";
+            this.tabPage24.UseVisualStyleBackColor = true;
+            // 
+            // tabPage25
+            // 
+            this.tabPage25.Location = new System.Drawing.Point(10, 48);
+            this.tabPage25.Name = "tabPage25";
+            this.tabPage25.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage25.TabIndex = 3;
+            this.tabPage25.Text = "Channels";
+            this.tabPage25.UseVisualStyleBackColor = true;
+            // 
+            // tabPage26
+            // 
+            this.tabPage26.Location = new System.Drawing.Point(10, 48);
+            this.tabPage26.Name = "tabPage26";
+            this.tabPage26.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage26.TabIndex = 4;
+            this.tabPage26.Text = "Chat";
+            this.tabPage26.UseVisualStyleBackColor = true;
+            // 
+            // tabPage27
+            // 
+            this.tabPage27.Location = new System.Drawing.Point(10, 48);
+            this.tabPage27.Name = "tabPage27";
+            this.tabPage27.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage27.TabIndex = 5;
+            this.tabPage27.Text = "Collections";
+            this.tabPage27.UseVisualStyleBackColor = true;
+            // 
+            // tabPage28
+            // 
+            this.tabPage28.Location = new System.Drawing.Point(10, 48);
+            this.tabPage28.Name = "tabPage28";
+            this.tabPage28.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage28.TabIndex = 6;
+            this.tabPage28.Text = "Communities";
+            this.tabPage28.UseVisualStyleBackColor = true;
+            // 
+            // tabPage29
+            // 
+            this.tabPage29.Location = new System.Drawing.Point(10, 48);
+            this.tabPage29.Name = "tabPage29";
+            this.tabPage29.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage29.TabIndex = 7;
+            this.tabPage29.Text = "Games";
+            this.tabPage29.UseVisualStyleBackColor = true;
+            // 
+            // tabPage30
+            // 
+            this.tabPage30.Location = new System.Drawing.Point(10, 48);
+            this.tabPage30.Name = "tabPage30";
+            this.tabPage30.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage30.TabIndex = 8;
+            this.tabPage30.Text = "Ingests";
+            this.tabPage30.UseVisualStyleBackColor = true;
+            // 
+            // tabPage31
+            // 
+            this.tabPage31.Location = new System.Drawing.Point(10, 48);
+            this.tabPage31.Name = "tabPage31";
+            this.tabPage31.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage31.TabIndex = 9;
+            this.tabPage31.Text = "Search";
+            this.tabPage31.UseVisualStyleBackColor = true;
+            // 
+            // tabPage32
+            // 
+            this.tabPage32.Controls.Add(this.groupBox65);
+            this.tabPage32.Location = new System.Drawing.Point(10, 48);
+            this.tabPage32.Name = "tabPage32";
+            this.tabPage32.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage32.TabIndex = 10;
+            this.tabPage32.Text = "Streams";
+            this.tabPage32.UseVisualStyleBackColor = true;
+            // 
+            // groupBox65
+            // 
+            this.groupBox65.Controls.Add(this.textBox62);
+            this.groupBox65.Controls.Add(this.label65);
+            this.groupBox65.Controls.Add(this.button64);
+            this.groupBox65.Location = new System.Drawing.Point(18, 17);
+            this.groupBox65.Name = "groupBox65";
+            this.groupBox65.Size = new System.Drawing.Size(437, 198);
+            this.groupBox65.TabIndex = 3;
+            this.groupBox65.TabStop = false;
+            this.groupBox65.Text = "Broadcaster Online";
+            // 
+            // textBox62
+            // 
+            this.textBox62.Location = new System.Drawing.Point(179, 44);
+            this.textBox62.Name = "textBox62";
+            this.textBox62.Size = new System.Drawing.Size(243, 38);
+            this.textBox62.TabIndex = 2;
+            // 
+            // label65
+            // 
+            this.label65.AutoSize = true;
+            this.label65.Location = new System.Drawing.Point(6, 47);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(160, 32);
+            this.label65.TabIndex = 1;
+            this.label65.Text = "Channel Id:";
+            // 
+            // button64
+            // 
+            this.button64.Location = new System.Drawing.Point(6, 100);
+            this.button64.Name = "button64";
+            this.button64.Size = new System.Drawing.Size(425, 82);
+            this.button64.TabIndex = 0;
+            this.button64.Text = "Send";
+            this.button64.UseVisualStyleBackColor = true;
+            this.button64.Click += new System.EventHandler(this.button64_Click);
+            // 
+            // tabPage33
+            // 
+            this.tabPage33.Location = new System.Drawing.Point(10, 48);
+            this.tabPage33.Name = "tabPage33";
+            this.tabPage33.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage33.TabIndex = 11;
+            this.tabPage33.Text = "Teams";
+            this.tabPage33.UseVisualStyleBackColor = true;
+            // 
+            // tabPage34
+            // 
+            this.tabPage34.Controls.Add(this.groupBox67);
+            this.tabPage34.Controls.Add(this.groupBox66);
+            this.tabPage34.Location = new System.Drawing.Point(10, 48);
+            this.tabPage34.Name = "tabPage34";
+            this.tabPage34.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage34.TabIndex = 12;
+            this.tabPage34.Text = "Users";
+            this.tabPage34.UseVisualStyleBackColor = true;
+            // 
+            // groupBox67
+            // 
+            this.groupBox67.Controls.Add(this.textBox65);
+            this.groupBox67.Controls.Add(this.label68);
+            this.groupBox67.Controls.Add(this.textBox66);
+            this.groupBox67.Controls.Add(this.label69);
+            this.groupBox67.Controls.Add(this.button66);
+            this.groupBox67.Location = new System.Drawing.Point(9, 282);
+            this.groupBox67.Name = "groupBox67";
+            this.groupBox67.Size = new System.Drawing.Size(437, 250);
+            this.groupBox67.TabIndex = 7;
+            this.groupBox67.TabStop = false;
+            this.groupBox67.Text = "UserFollowsChannel";
+            // 
+            // textBox65
+            // 
+            this.textBox65.Location = new System.Drawing.Point(196, 97);
+            this.textBox65.Name = "textBox65";
+            this.textBox65.Size = new System.Drawing.Size(217, 38);
+            this.textBox65.TabIndex = 5;
+            // 
+            // label68
+            // 
+            this.label68.AutoSize = true;
+            this.label68.Location = new System.Drawing.Point(15, 100);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(160, 32);
+            this.label68.TabIndex = 4;
+            this.label68.Text = "Channel Id:";
+            // 
+            // textBox66
+            // 
+            this.textBox66.Location = new System.Drawing.Point(196, 40);
+            this.textBox66.Name = "textBox66";
+            this.textBox66.Size = new System.Drawing.Size(217, 38);
+            this.textBox66.TabIndex = 3;
+            // 
+            // label69
+            // 
+            this.label69.AutoSize = true;
+            this.label69.Location = new System.Drawing.Point(15, 43);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(112, 32);
+            this.label69.TabIndex = 1;
+            this.label69.Text = "User Id:";
+            // 
+            // button66
+            // 
+            this.button66.Location = new System.Drawing.Point(6, 153);
+            this.button66.Name = "button66";
+            this.button66.Size = new System.Drawing.Size(425, 82);
+            this.button66.TabIndex = 0;
+            this.button66.Text = "Fetch";
+            this.button66.UseVisualStyleBackColor = true;
+            this.button66.Click += new System.EventHandler(this.button66_Click);
+            // 
+            // groupBox66
+            // 
+            this.groupBox66.Controls.Add(this.textBox63);
+            this.groupBox66.Controls.Add(this.label66);
+            this.groupBox66.Controls.Add(this.textBox64);
+            this.groupBox66.Controls.Add(this.label67);
+            this.groupBox66.Controls.Add(this.button65);
+            this.groupBox66.Location = new System.Drawing.Point(15, 12);
+            this.groupBox66.Name = "groupBox66";
+            this.groupBox66.Size = new System.Drawing.Size(437, 250);
+            this.groupBox66.TabIndex = 6;
+            this.groupBox66.TabStop = false;
+            this.groupBox66.Text = "CheckUserFollowsByChannel";
+            // 
+            // textBox63
+            // 
+            this.textBox63.Location = new System.Drawing.Point(196, 97);
+            this.textBox63.Name = "textBox63";
+            this.textBox63.Size = new System.Drawing.Size(217, 38);
+            this.textBox63.TabIndex = 5;
+            // 
+            // label66
+            // 
+            this.label66.AutoSize = true;
+            this.label66.Location = new System.Drawing.Point(15, 100);
+            this.label66.Name = "label66";
+            this.label66.Size = new System.Drawing.Size(160, 32);
+            this.label66.TabIndex = 4;
+            this.label66.Text = "Channel Id:";
+            // 
+            // textBox64
+            // 
+            this.textBox64.Location = new System.Drawing.Point(196, 40);
+            this.textBox64.Name = "textBox64";
+            this.textBox64.Size = new System.Drawing.Size(217, 38);
+            this.textBox64.TabIndex = 3;
+            // 
+            // label67
+            // 
+            this.label67.AutoSize = true;
+            this.label67.Location = new System.Drawing.Point(15, 43);
+            this.label67.Name = "label67";
+            this.label67.Size = new System.Drawing.Size(112, 32);
+            this.label67.TabIndex = 1;
+            this.label67.Text = "User Id:";
+            // 
+            // button65
+            // 
+            this.button65.Location = new System.Drawing.Point(6, 153);
+            this.button65.Name = "button65";
+            this.button65.Size = new System.Drawing.Size(425, 82);
+            this.button65.TabIndex = 0;
+            this.button65.Text = "Fetch";
+            this.button65.UseVisualStyleBackColor = true;
+            this.button65.Click += new System.EventHandler(this.button65_Click);
+            // 
+            // tabPage35
+            // 
+            this.tabPage35.Controls.Add(this.groupBox55);
+            this.tabPage35.Location = new System.Drawing.Point(10, 48);
+            this.tabPage35.Name = "tabPage35";
+            this.tabPage35.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage35.TabIndex = 13;
+            this.tabPage35.Text = "Videos";
+            this.tabPage35.UseVisualStyleBackColor = true;
+            // 
+            // groupBox55
+            // 
+            this.groupBox55.Controls.Add(this.textBox55);
+            this.groupBox55.Controls.Add(this.label57);
+            this.groupBox55.Controls.Add(this.textBox54);
+            this.groupBox55.Controls.Add(this.label56);
+            this.groupBox55.Controls.Add(this.textBox53);
+            this.groupBox55.Controls.Add(this.label55);
+            this.groupBox55.Controls.Add(this.textBox52);
+            this.groupBox55.Controls.Add(this.label54);
+            this.groupBox55.Controls.Add(this.button54);
+            this.groupBox55.Controls.Add(this.textBox51);
+            this.groupBox55.Controls.Add(this.label53);
+            this.groupBox55.Controls.Add(this.button53);
+            this.groupBox55.Location = new System.Drawing.Point(13, 22);
+            this.groupBox55.Name = "groupBox55";
+            this.groupBox55.Size = new System.Drawing.Size(450, 515);
+            this.groupBox55.TabIndex = 7;
+            this.groupBox55.TabStop = false;
+            this.groupBox55.Text = "Upload Video";
+            // 
+            // textBox55
+            // 
+            this.textBox55.Location = new System.Drawing.Point(187, 55);
+            this.textBox55.Name = "textBox55";
+            this.textBox55.Size = new System.Drawing.Size(244, 38);
+            this.textBox55.TabIndex = 12;
+            // 
+            // label57
+            // 
+            this.label57.AutoSize = true;
+            this.label57.Location = new System.Drawing.Point(15, 55);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(130, 32);
+            this.label57.TabIndex = 11;
+            this.label57.Text = "Channel:";
+            // 
+            // textBox54
+            // 
+            this.textBox54.Location = new System.Drawing.Point(134, 313);
+            this.textBox54.Name = "textBox54";
+            this.textBox54.Size = new System.Drawing.Size(297, 38);
+            this.textBox54.TabIndex = 10;
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Location = new System.Drawing.Point(15, 313);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(100, 32);
+            this.label56.TabIndex = 9;
+            this.label56.Text = "Game:";
+            // 
+            // textBox53
+            // 
+            this.textBox53.Location = new System.Drawing.Point(187, 253);
+            this.textBox53.Name = "textBox53";
+            this.textBox53.Size = new System.Drawing.Size(244, 38);
+            this.textBox53.TabIndex = 8;
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Location = new System.Drawing.Point(15, 253);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(166, 32);
+            this.label55.TabIndex = 7;
+            this.label55.Text = "Description:";
+            // 
+            // textBox52
+            // 
+            this.textBox52.Location = new System.Drawing.Point(99, 185);
+            this.textBox52.Name = "textBox52";
+            this.textBox52.Size = new System.Drawing.Size(332, 38);
+            this.textBox52.TabIndex = 6;
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(15, 188);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(78, 32);
+            this.label54.TabIndex = 5;
+            this.label54.Text = "Title:";
+            // 
+            // button54
+            // 
+            this.button54.Location = new System.Drawing.Point(359, 116);
+            this.button54.Name = "button54";
+            this.button54.Size = new System.Drawing.Size(72, 53);
+            this.button54.TabIndex = 4;
+            this.button54.Text = "...";
+            this.button54.UseVisualStyleBackColor = true;
+            // 
+            // textBox51
+            // 
+            this.textBox51.Location = new System.Drawing.Point(91, 119);
+            this.textBox51.Name = "textBox51";
+            this.textBox51.Size = new System.Drawing.Size(262, 38);
+            this.textBox51.TabIndex = 3;
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(15, 122);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(70, 32);
+            this.label53.TabIndex = 1;
+            this.label53.Text = "File:";
+            // 
+            // button53
+            // 
+            this.button53.Location = new System.Drawing.Point(21, 416);
+            this.button53.Name = "button53";
+            this.button53.Size = new System.Drawing.Size(410, 82);
+            this.button53.TabIndex = 0;
+            this.button53.Text = "Fetch";
+            this.button53.UseVisualStyleBackColor = true;
+            // 
+            // tabPage36
+            // 
+            this.tabPage36.Controls.Add(this.groupBox24);
+            this.tabPage36.Controls.Add(this.groupBox23);
+            this.tabPage36.Controls.Add(this.groupBox22);
+            this.tabPage36.Location = new System.Drawing.Point(10, 48);
+            this.tabPage36.Name = "tabPage36";
+            this.tabPage36.Size = new System.Drawing.Size(1475, 940);
+            this.tabPage36.TabIndex = 14;
+            this.tabPage36.Text = "Clips";
+            this.tabPage36.UseVisualStyleBackColor = true;
+            // 
+            // groupBox24
+            // 
+            this.groupBox24.Controls.Add(this.button22);
+            this.groupBox24.Location = new System.Drawing.Point(18, 390);
+            this.groupBox24.Name = "groupBox24";
+            this.groupBox24.Size = new System.Drawing.Size(437, 142);
+            this.groupBox24.TabIndex = 10;
+            this.groupBox24.TabStop = false;
+            this.groupBox24.Text = "Get Followed Clips";
+            // 
+            // button22
+            // 
+            this.button22.Location = new System.Drawing.Point(6, 43);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(425, 82);
+            this.button22.TabIndex = 0;
+            this.button22.Text = "Fetch";
+            this.button22.UseVisualStyleBackColor = true;
+            // 
+            // groupBox23
+            // 
+            this.groupBox23.Controls.Add(this.button21);
+            this.groupBox23.Location = new System.Drawing.Point(18, 233);
+            this.groupBox23.Name = "groupBox23";
+            this.groupBox23.Size = new System.Drawing.Size(437, 142);
+            this.groupBox23.TabIndex = 9;
+            this.groupBox23.TabStop = false;
+            this.groupBox23.Text = "Get Top Clips";
+            // 
+            // button21
+            // 
+            this.button21.Location = new System.Drawing.Point(6, 43);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(425, 82);
+            this.button21.TabIndex = 0;
+            this.button21.Text = "Fetch";
+            this.button21.UseVisualStyleBackColor = true;
+            // 
+            // groupBox22
+            // 
+            this.groupBox22.Controls.Add(this.textBox25);
+            this.groupBox22.Controls.Add(this.label27);
+            this.groupBox22.Controls.Add(this.button20);
+            this.groupBox22.Location = new System.Drawing.Point(18, 17);
+            this.groupBox22.Name = "groupBox22";
+            this.groupBox22.Size = new System.Drawing.Size(437, 198);
+            this.groupBox22.TabIndex = 8;
+            this.groupBox22.TabStop = false;
+            this.groupBox22.Text = "Get Clip Information";
+            // 
+            // textBox25
+            // 
+            this.textBox25.Location = new System.Drawing.Point(167, 40);
+            this.textBox25.Name = "textBox25";
+            this.textBox25.Size = new System.Drawing.Size(246, 38);
+            this.textBox25.TabIndex = 3;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(15, 43);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(138, 32);
+            this.label27.TabIndex = 1;
+            this.label27.Text = "Clip Slug:";
+            // 
+            // button20
+            // 
+            this.button20.Location = new System.Drawing.Point(6, 98);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(425, 82);
+            this.button20.TabIndex = 0;
+            this.button20.Text = "Fetch";
+            this.button20.UseVisualStyleBackColor = true;
             // 
             // tabPage19
             // 
@@ -2985,516 +3505,65 @@
             this.label6.TabIndex = 6;
             this.label6.Text = "Channel ID";
             // 
-            // tabControl3
-            // 
-            this.tabControl3.Controls.Add(this.tabPage22);
-            this.tabControl3.Controls.Add(this.tabPage23);
-            this.tabControl3.Controls.Add(this.tabPage24);
-            this.tabControl3.Controls.Add(this.tabPage25);
-            this.tabControl3.Controls.Add(this.tabPage26);
-            this.tabControl3.Controls.Add(this.tabPage27);
-            this.tabControl3.Controls.Add(this.tabPage28);
-            this.tabControl3.Controls.Add(this.tabPage29);
-            this.tabControl3.Controls.Add(this.tabPage30);
-            this.tabControl3.Controls.Add(this.tabPage31);
-            this.tabControl3.Controls.Add(this.tabPage32);
-            this.tabControl3.Controls.Add(this.tabPage33);
-            this.tabControl3.Controls.Add(this.tabPage34);
-            this.tabControl3.Controls.Add(this.tabPage35);
-            this.tabControl3.Controls.Add(this.tabPage36);
-            this.tabControl3.Location = new System.Drawing.Point(19, 20);
-            this.tabControl3.Name = "tabControl3";
-            this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(1495, 998);
-            this.tabControl3.TabIndex = 0;
-            // 
-            // tabPage22
-            // 
-            this.tabPage22.Location = new System.Drawing.Point(10, 48);
-            this.tabPage22.Name = "tabPage22";
-            this.tabPage22.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage22.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage22.TabIndex = 0;
-            this.tabPage22.Text = "Root";
-            this.tabPage22.UseVisualStyleBackColor = true;
-            // 
-            // tabPage23
-            // 
-            this.tabPage23.Location = new System.Drawing.Point(10, 48);
-            this.tabPage23.Name = "tabPage23";
-            this.tabPage23.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage23.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage23.TabIndex = 1;
-            this.tabPage23.Text = "Bits";
-            this.tabPage23.UseVisualStyleBackColor = true;
-            // 
-            // tabPage24
-            // 
-            this.tabPage24.Location = new System.Drawing.Point(10, 48);
-            this.tabPage24.Name = "tabPage24";
-            this.tabPage24.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage24.TabIndex = 2;
-            this.tabPage24.Text = "ChannelFeed";
-            this.tabPage24.UseVisualStyleBackColor = true;
-            // 
-            // tabPage25
-            // 
-            this.tabPage25.Location = new System.Drawing.Point(10, 48);
-            this.tabPage25.Name = "tabPage25";
-            this.tabPage25.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage25.TabIndex = 3;
-            this.tabPage25.Text = "Channels";
-            this.tabPage25.UseVisualStyleBackColor = true;
-            // 
-            // tabPage26
-            // 
-            this.tabPage26.Location = new System.Drawing.Point(10, 48);
-            this.tabPage26.Name = "tabPage26";
-            this.tabPage26.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage26.TabIndex = 4;
-            this.tabPage26.Text = "Chat";
-            this.tabPage26.UseVisualStyleBackColor = true;
-            // 
-            // tabPage27
-            // 
-            this.tabPage27.Location = new System.Drawing.Point(10, 48);
-            this.tabPage27.Name = "tabPage27";
-            this.tabPage27.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage27.TabIndex = 5;
-            this.tabPage27.Text = "Collections";
-            this.tabPage27.UseVisualStyleBackColor = true;
-            // 
-            // tabPage28
-            // 
-            this.tabPage28.Location = new System.Drawing.Point(10, 48);
-            this.tabPage28.Name = "tabPage28";
-            this.tabPage28.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage28.TabIndex = 6;
-            this.tabPage28.Text = "Communities";
-            this.tabPage28.UseVisualStyleBackColor = true;
-            // 
-            // tabPage29
-            // 
-            this.tabPage29.Location = new System.Drawing.Point(10, 48);
-            this.tabPage29.Name = "tabPage29";
-            this.tabPage29.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage29.TabIndex = 7;
-            this.tabPage29.Text = "Games";
-            this.tabPage29.UseVisualStyleBackColor = true;
-            // 
-            // tabPage30
-            // 
-            this.tabPage30.Location = new System.Drawing.Point(10, 48);
-            this.tabPage30.Name = "tabPage30";
-            this.tabPage30.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage30.TabIndex = 8;
-            this.tabPage30.Text = "Ingests";
-            this.tabPage30.UseVisualStyleBackColor = true;
-            // 
-            // tabPage31
-            // 
-            this.tabPage31.Location = new System.Drawing.Point(10, 48);
-            this.tabPage31.Name = "tabPage31";
-            this.tabPage31.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage31.TabIndex = 9;
-            this.tabPage31.Text = "Search";
-            this.tabPage31.UseVisualStyleBackColor = true;
-            // 
-            // tabPage32
-            // 
-            this.tabPage32.Controls.Add(this.groupBox65);
-            this.tabPage32.Location = new System.Drawing.Point(10, 48);
-            this.tabPage32.Name = "tabPage32";
-            this.tabPage32.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage32.TabIndex = 10;
-            this.tabPage32.Text = "Streams";
-            this.tabPage32.UseVisualStyleBackColor = true;
-            // 
-            // tabPage33
-            // 
-            this.tabPage33.Location = new System.Drawing.Point(10, 48);
-            this.tabPage33.Name = "tabPage33";
-            this.tabPage33.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage33.TabIndex = 11;
-            this.tabPage33.Text = "Teams";
-            this.tabPage33.UseVisualStyleBackColor = true;
-            // 
-            // tabPage34
-            // 
-            this.tabPage34.Controls.Add(this.groupBox67);
-            this.tabPage34.Controls.Add(this.groupBox66);
-            this.tabPage34.Location = new System.Drawing.Point(10, 48);
-            this.tabPage34.Name = "tabPage34";
-            this.tabPage34.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage34.TabIndex = 12;
-            this.tabPage34.Text = "Users";
-            this.tabPage34.UseVisualStyleBackColor = true;
-            // 
-            // tabPage35
-            // 
-            this.tabPage35.Controls.Add(this.groupBox55);
-            this.tabPage35.Location = new System.Drawing.Point(10, 48);
-            this.tabPage35.Name = "tabPage35";
-            this.tabPage35.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage35.TabIndex = 13;
-            this.tabPage35.Text = "Videos";
-            this.tabPage35.UseVisualStyleBackColor = true;
-            // 
-            // tabPage36
-            // 
-            this.tabPage36.Controls.Add(this.groupBox24);
-            this.tabPage36.Controls.Add(this.groupBox23);
-            this.tabPage36.Controls.Add(this.groupBox22);
-            this.tabPage36.Location = new System.Drawing.Point(10, 48);
-            this.tabPage36.Name = "tabPage36";
-            this.tabPage36.Size = new System.Drawing.Size(1475, 940);
-            this.tabPage36.TabIndex = 14;
-            this.tabPage36.Text = "Clips";
-            this.tabPage36.UseVisualStyleBackColor = true;
-            // 
-            // groupBox65
-            // 
-            this.groupBox65.Controls.Add(this.textBox62);
-            this.groupBox65.Controls.Add(this.label65);
-            this.groupBox65.Controls.Add(this.button64);
-            this.groupBox65.Location = new System.Drawing.Point(18, 17);
-            this.groupBox65.Name = "groupBox65";
-            this.groupBox65.Size = new System.Drawing.Size(437, 198);
-            this.groupBox65.TabIndex = 3;
-            this.groupBox65.TabStop = false;
-            this.groupBox65.Text = "Broadcaster Online";
-            // 
-            // textBox62
-            // 
-            this.textBox62.Location = new System.Drawing.Point(179, 44);
-            this.textBox62.Name = "textBox62";
-            this.textBox62.Size = new System.Drawing.Size(243, 38);
-            this.textBox62.TabIndex = 2;
-            // 
-            // label65
-            // 
-            this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(6, 47);
-            this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(160, 32);
-            this.label65.TabIndex = 1;
-            this.label65.Text = "Channel Id:";
-            // 
-            // button64
-            // 
-            this.button64.Location = new System.Drawing.Point(6, 100);
-            this.button64.Name = "button64";
-            this.button64.Size = new System.Drawing.Size(425, 82);
-            this.button64.TabIndex = 0;
-            this.button64.Text = "Send";
-            this.button64.UseVisualStyleBackColor = true;
-            this.button64.Click += new System.EventHandler(this.button64_Click);
-            // 
-            // groupBox66
-            // 
-            this.groupBox66.Controls.Add(this.textBox63);
-            this.groupBox66.Controls.Add(this.label66);
-            this.groupBox66.Controls.Add(this.textBox64);
-            this.groupBox66.Controls.Add(this.label67);
-            this.groupBox66.Controls.Add(this.button65);
-            this.groupBox66.Location = new System.Drawing.Point(15, 12);
-            this.groupBox66.Name = "groupBox66";
-            this.groupBox66.Size = new System.Drawing.Size(437, 250);
-            this.groupBox66.TabIndex = 6;
-            this.groupBox66.TabStop = false;
-            this.groupBox66.Text = "CheckUserFollowsByChannel";
-            // 
-            // textBox63
-            // 
-            this.textBox63.Location = new System.Drawing.Point(196, 97);
-            this.textBox63.Name = "textBox63";
-            this.textBox63.Size = new System.Drawing.Size(217, 38);
-            this.textBox63.TabIndex = 5;
-            // 
-            // label66
-            // 
-            this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(15, 100);
-            this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(160, 32);
-            this.label66.TabIndex = 4;
-            this.label66.Text = "Channel Id:";
-            // 
-            // textBox64
-            // 
-            this.textBox64.Location = new System.Drawing.Point(196, 40);
-            this.textBox64.Name = "textBox64";
-            this.textBox64.Size = new System.Drawing.Size(217, 38);
-            this.textBox64.TabIndex = 3;
-            // 
-            // label67
-            // 
-            this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(15, 43);
-            this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(112, 32);
-            this.label67.TabIndex = 1;
-            this.label67.Text = "User Id:";
-            // 
-            // button65
-            // 
-            this.button65.Location = new System.Drawing.Point(6, 153);
-            this.button65.Name = "button65";
-            this.button65.Size = new System.Drawing.Size(425, 82);
-            this.button65.TabIndex = 0;
-            this.button65.Text = "Fetch";
-            this.button65.UseVisualStyleBackColor = true;
-            this.button65.Click += new System.EventHandler(this.button65_Click);
-            // 
-            // groupBox67
-            // 
-            this.groupBox67.Controls.Add(this.textBox65);
-            this.groupBox67.Controls.Add(this.label68);
-            this.groupBox67.Controls.Add(this.textBox66);
-            this.groupBox67.Controls.Add(this.label69);
-            this.groupBox67.Controls.Add(this.button66);
-            this.groupBox67.Location = new System.Drawing.Point(9, 282);
-            this.groupBox67.Name = "groupBox67";
-            this.groupBox67.Size = new System.Drawing.Size(437, 250);
-            this.groupBox67.TabIndex = 7;
-            this.groupBox67.TabStop = false;
-            this.groupBox67.Text = "UserFollowsChannel";
-            // 
-            // textBox65
-            // 
-            this.textBox65.Location = new System.Drawing.Point(196, 97);
-            this.textBox65.Name = "textBox65";
-            this.textBox65.Size = new System.Drawing.Size(217, 38);
-            this.textBox65.TabIndex = 5;
-            // 
-            // label68
-            // 
-            this.label68.AutoSize = true;
-            this.label68.Location = new System.Drawing.Point(15, 100);
-            this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(160, 32);
-            this.label68.TabIndex = 4;
-            this.label68.Text = "Channel Id:";
-            // 
-            // textBox66
-            // 
-            this.textBox66.Location = new System.Drawing.Point(196, 40);
-            this.textBox66.Name = "textBox66";
-            this.textBox66.Size = new System.Drawing.Size(217, 38);
-            this.textBox66.TabIndex = 3;
-            // 
-            // label69
-            // 
-            this.label69.AutoSize = true;
-            this.label69.Location = new System.Drawing.Point(15, 43);
-            this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(112, 32);
-            this.label69.TabIndex = 1;
-            this.label69.Text = "User Id:";
-            // 
-            // button66
-            // 
-            this.button66.Location = new System.Drawing.Point(6, 153);
-            this.button66.Name = "button66";
-            this.button66.Size = new System.Drawing.Size(425, 82);
-            this.button66.TabIndex = 0;
-            this.button66.Text = "Fetch";
-            this.button66.UseVisualStyleBackColor = true;
-            this.button66.Click += new System.EventHandler(this.button66_Click);
-            // 
-            // groupBox24
-            // 
-            this.groupBox24.Controls.Add(this.button22);
-            this.groupBox24.Location = new System.Drawing.Point(18, 390);
-            this.groupBox24.Name = "groupBox24";
-            this.groupBox24.Size = new System.Drawing.Size(437, 142);
-            this.groupBox24.TabIndex = 10;
-            this.groupBox24.TabStop = false;
-            this.groupBox24.Text = "Get Followed Clips";
-            // 
-            // button22
-            // 
-            this.button22.Location = new System.Drawing.Point(6, 43);
-            this.button22.Name = "button22";
-            this.button22.Size = new System.Drawing.Size(425, 82);
-            this.button22.TabIndex = 0;
-            this.button22.Text = "Fetch";
-            this.button22.UseVisualStyleBackColor = true;
-            // 
-            // groupBox23
-            // 
-            this.groupBox23.Controls.Add(this.button21);
-            this.groupBox23.Location = new System.Drawing.Point(18, 233);
-            this.groupBox23.Name = "groupBox23";
-            this.groupBox23.Size = new System.Drawing.Size(437, 142);
-            this.groupBox23.TabIndex = 9;
-            this.groupBox23.TabStop = false;
-            this.groupBox23.Text = "Get Top Clips";
-            // 
-            // button21
-            // 
-            this.button21.Location = new System.Drawing.Point(6, 43);
-            this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(425, 82);
-            this.button21.TabIndex = 0;
-            this.button21.Text = "Fetch";
-            this.button21.UseVisualStyleBackColor = true;
-            // 
-            // groupBox22
-            // 
-            this.groupBox22.Controls.Add(this.textBox25);
-            this.groupBox22.Controls.Add(this.label27);
-            this.groupBox22.Controls.Add(this.button20);
-            this.groupBox22.Location = new System.Drawing.Point(18, 17);
-            this.groupBox22.Name = "groupBox22";
-            this.groupBox22.Size = new System.Drawing.Size(437, 198);
-            this.groupBox22.TabIndex = 8;
-            this.groupBox22.TabStop = false;
-            this.groupBox22.Text = "Get Clip Information";
-            // 
-            // textBox25
-            // 
-            this.textBox25.Location = new System.Drawing.Point(167, 40);
-            this.textBox25.Name = "textBox25";
-            this.textBox25.Size = new System.Drawing.Size(246, 38);
-            this.textBox25.TabIndex = 3;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(15, 43);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(138, 32);
-            this.label27.TabIndex = 1;
-            this.label27.Text = "Clip Slug:";
-            // 
-            // button20
-            // 
-            this.button20.Location = new System.Drawing.Point(6, 98);
-            this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(425, 82);
-            this.button20.TabIndex = 0;
-            this.button20.Text = "Fetch";
-            this.button20.UseVisualStyleBackColor = true;
-            // 
-            // groupBox55
-            // 
-            this.groupBox55.Controls.Add(this.textBox55);
-            this.groupBox55.Controls.Add(this.label57);
-            this.groupBox55.Controls.Add(this.textBox54);
-            this.groupBox55.Controls.Add(this.label56);
-            this.groupBox55.Controls.Add(this.textBox53);
-            this.groupBox55.Controls.Add(this.label55);
-            this.groupBox55.Controls.Add(this.textBox52);
-            this.groupBox55.Controls.Add(this.label54);
-            this.groupBox55.Controls.Add(this.button54);
-            this.groupBox55.Controls.Add(this.textBox51);
-            this.groupBox55.Controls.Add(this.label53);
-            this.groupBox55.Controls.Add(this.button53);
-            this.groupBox55.Location = new System.Drawing.Point(13, 22);
-            this.groupBox55.Name = "groupBox55";
-            this.groupBox55.Size = new System.Drawing.Size(450, 515);
-            this.groupBox55.TabIndex = 7;
-            this.groupBox55.TabStop = false;
-            this.groupBox55.Text = "Upload Video";
-            // 
-            // textBox55
-            // 
-            this.textBox55.Location = new System.Drawing.Point(187, 55);
-            this.textBox55.Name = "textBox55";
-            this.textBox55.Size = new System.Drawing.Size(244, 38);
-            this.textBox55.TabIndex = 12;
-            // 
-            // label57
-            // 
-            this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(15, 55);
-            this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(130, 32);
-            this.label57.TabIndex = 11;
-            this.label57.Text = "Channel:";
-            // 
-            // textBox54
-            // 
-            this.textBox54.Location = new System.Drawing.Point(134, 313);
-            this.textBox54.Name = "textBox54";
-            this.textBox54.Size = new System.Drawing.Size(297, 38);
-            this.textBox54.TabIndex = 10;
-            // 
-            // label56
-            // 
-            this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(15, 313);
-            this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(100, 32);
-            this.label56.TabIndex = 9;
-            this.label56.Text = "Game:";
-            // 
-            // textBox53
-            // 
-            this.textBox53.Location = new System.Drawing.Point(187, 253);
-            this.textBox53.Name = "textBox53";
-            this.textBox53.Size = new System.Drawing.Size(244, 38);
-            this.textBox53.TabIndex = 8;
-            // 
-            // label55
-            // 
-            this.label55.AutoSize = true;
-            this.label55.Location = new System.Drawing.Point(15, 253);
-            this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(166, 32);
-            this.label55.TabIndex = 7;
-            this.label55.Text = "Description:";
-            // 
-            // textBox52
-            // 
-            this.textBox52.Location = new System.Drawing.Point(99, 185);
-            this.textBox52.Name = "textBox52";
-            this.textBox52.Size = new System.Drawing.Size(332, 38);
-            this.textBox52.TabIndex = 6;
-            // 
-            // label54
-            // 
-            this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(15, 188);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(78, 32);
-            this.label54.TabIndex = 5;
-            this.label54.Text = "Title:";
-            // 
-            // button54
-            // 
-            this.button54.Location = new System.Drawing.Point(359, 116);
-            this.button54.Name = "button54";
-            this.button54.Size = new System.Drawing.Size(72, 53);
-            this.button54.TabIndex = 4;
-            this.button54.Text = "...";
-            this.button54.UseVisualStyleBackColor = true;
-            // 
-            // textBox51
-            // 
-            this.textBox51.Location = new System.Drawing.Point(91, 119);
-            this.textBox51.Name = "textBox51";
-            this.textBox51.Size = new System.Drawing.Size(262, 38);
-            this.textBox51.TabIndex = 3;
-            // 
-            // label53
-            // 
-            this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(15, 122);
-            this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(70, 32);
-            this.label53.TabIndex = 1;
-            this.label53.Text = "File:";
-            // 
-            // button53
-            // 
-            this.button53.Location = new System.Drawing.Point(21, 416);
-            this.button53.Name = "button53";
-            this.button53.Size = new System.Drawing.Size(410, 82);
-            this.button53.TabIndex = 0;
-            this.button53.Text = "Fetch";
-            this.button53.UseVisualStyleBackColor = true;
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.groupBox68);
+            this.tabPage4.Location = new System.Drawing.Point(10, 48);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(1544, 1046);
+            this.tabPage4.TabIndex = 7;
+            this.tabPage4.Text = "Services";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox68
+            // 
+            this.groupBox68.Controls.Add(this.button68);
+            this.groupBox68.Controls.Add(this.textBox67);
+            this.groupBox68.Controls.Add(this.label70);
+            this.groupBox68.Controls.Add(this.button67);
+            this.groupBox68.Location = new System.Drawing.Point(19, 17);
+            this.groupBox68.Name = "groupBox68";
+            this.groupBox68.Size = new System.Drawing.Size(437, 198);
+            this.groupBox68.TabIndex = 3;
+            this.groupBox68.TabStop = false;
+            this.groupBox68.Text = "LiveStreamMonitor";
+            // 
+            // button68
+            // 
+            this.button68.Location = new System.Drawing.Point(266, 98);
+            this.button68.Name = "button68";
+            this.button68.Size = new System.Drawing.Size(147, 82);
+            this.button68.TabIndex = 4;
+            this.button68.Text = "Stop";
+            this.button68.UseVisualStyleBackColor = true;
+            this.button68.Click += new System.EventHandler(this.button68_Click);
+            // 
+            // textBox67
+            // 
+            this.textBox67.Location = new System.Drawing.Point(174, 40);
+            this.textBox67.Name = "textBox67";
+            this.textBox67.Size = new System.Drawing.Size(239, 38);
+            this.textBox67.TabIndex = 3;
+            // 
+            // label70
+            // 
+            this.label70.AutoSize = true;
+            this.label70.Location = new System.Drawing.Point(15, 43);
+            this.label70.Name = "label70";
+            this.label70.Size = new System.Drawing.Size(153, 32);
+            this.label70.TabIndex = 1;
+            this.label70.Text = "ChannelId:";
+            // 
+            // button67
+            // 
+            this.button67.Location = new System.Drawing.Point(6, 98);
+            this.button67.Name = "button67";
+            this.button67.Size = new System.Drawing.Size(147, 82);
+            this.button67.TabIndex = 0;
+            this.button67.Text = "Start";
+            this.button67.UseVisualStyleBackColor = true;
+            this.button67.Click += new System.EventHandler(this.button67_Click);
             // 
             // Form1
             // 
@@ -3605,6 +3674,23 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
+            this.tabControl3.ResumeLayout(false);
+            this.tabPage32.ResumeLayout(false);
+            this.groupBox65.ResumeLayout(false);
+            this.groupBox65.PerformLayout();
+            this.tabPage34.ResumeLayout(false);
+            this.groupBox67.ResumeLayout(false);
+            this.groupBox67.PerformLayout();
+            this.groupBox66.ResumeLayout(false);
+            this.groupBox66.PerformLayout();
+            this.tabPage35.ResumeLayout(false);
+            this.groupBox55.ResumeLayout(false);
+            this.groupBox55.PerformLayout();
+            this.tabPage36.ResumeLayout(false);
+            this.groupBox24.ResumeLayout(false);
+            this.groupBox23.ResumeLayout(false);
+            this.groupBox22.ResumeLayout(false);
+            this.groupBox22.PerformLayout();
             this.tabPage19.ResumeLayout(false);
             this.groupBox54.ResumeLayout(false);
             this.groupBox54.PerformLayout();
@@ -3630,23 +3716,9 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabControl3.ResumeLayout(false);
-            this.tabPage32.ResumeLayout(false);
-            this.tabPage34.ResumeLayout(false);
-            this.tabPage35.ResumeLayout(false);
-            this.tabPage36.ResumeLayout(false);
-            this.groupBox65.ResumeLayout(false);
-            this.groupBox65.PerformLayout();
-            this.groupBox66.ResumeLayout(false);
-            this.groupBox66.PerformLayout();
-            this.groupBox67.ResumeLayout(false);
-            this.groupBox67.PerformLayout();
-            this.groupBox24.ResumeLayout(false);
-            this.groupBox23.ResumeLayout(false);
-            this.groupBox22.ResumeLayout(false);
-            this.groupBox22.PerformLayout();
-            this.groupBox55.ResumeLayout(false);
-            this.groupBox55.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.groupBox68.ResumeLayout(false);
+            this.groupBox68.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3963,6 +4035,12 @@
         private System.Windows.Forms.TextBox textBox25;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.GroupBox groupBox68;
+        private System.Windows.Forms.TextBox textBox67;
+        private System.Windows.Forms.Label label70;
+        private System.Windows.Forms.Button button67;
+        private System.Windows.Forms.Button button68;
     }
 }
 
