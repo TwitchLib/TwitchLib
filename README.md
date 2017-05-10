@@ -14,8 +14,8 @@
 ## About
 TwitchLib is a powerful C# library that allows for interaction with various Twitch services like chat, whispers, API, and PubSub event system. Below are the descriptions of the core components that make up TwitchLib.
 
-* **TwitchClient**: Handles chat and whisper Twitch services. Complete witha suite of events that fire for virtually every piece of data received from Twitch.
-* **TwitchApi**: With complete V3 and increasing coverage of V5 endpoints, TwitchApi is a static class that allows for modifying of virtually all Twitch account properties and fetching of Twitch data.
+* **TwitchClient**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch.
+* **TwitchAPI**: With complete v3 and v5 endpoints, TwitchAPI is a static asynchronous class that allows for modifying of virtually all Twitch account properties and fetching of Twitch data. The class also sports undocumented endpoints and thirdparty endpoints.
 * **TwitchPubSub**: Covers the relatively new Twitch PubSub event system. Currently both topics Twitch supports are supported via this static class.
 
 ## Features
@@ -42,6 +42,10 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 * **TwitchPubSub**:
 	* Chat interactions through Twitch's PubSub system  
 
+## Documentation
+#### Doxygen
+For complete library documentation, view the doxygen docs <a href="http://swiftyspiffy.com/TwitchLib/index.html" target="_blank">here</a>.
+	
 ## Implementing
 Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples, but this library can also be used in Visual Basic.
 #### TwitchClient
@@ -83,35 +87,29 @@ private void onNewSubscriber(object sender, OnNewSubscriberArgs e) {
     	client.SendMessage($"Welcome {} to the substers! You just earned 500 points!");
 }
 ```
-For a complete list of TwitchClient events and calls, click <a href="http://swiftyspiffy.com/TwitchLib/client.html" target="_blank">here</a>
-#### TwitchApi
-Note: All calls below are synchronous, but TwitchApi supports both synchronous and asynchronous. To access asynch calls, simply append Async. For example, ChannelHasUserSubscribedAsync.
+For a complete list of TwitchClient events and calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_client.html" target="_blank">here</a>
+#### TwitchAPI
+Note: TwitchAPI is an asynchronous static class. Each subclass of TwitchAPI represents a part of the TwitchAPI. Each part of the TwitchAPI has a v3 and v5 static class. These classes represent Twitch's v3 and v5 API iterations. v5 ONLY uses UserID's, unless specified, and v3 ONLY uses Usernames, unless specified. If a part does not have v3 and v5, this indicates that the part only exists in one of the two versions. Look at the method arguments to determine if the method wants a userid or username.
 ```csharp
 using TwitchLib;
 using TwitchLib.Models.API;
 
-TwitchApi.SetClientId("my_client_id");
-TwitchApi.SetAccessToken("channel_access_token");
+TwitchAPI.Settings.ClientId = "my-client-id";
+TwitchApi.Settings.AccessToken = "my-oauth-token";
 
-bool isSubbed = TwitchApi.Subscriptions.ChannelHasUserSubscribed("user", "channel");
-List<Subscription> allSubs = TwitchApi.Subscriptions.GetChannelSubscribers("channel");
+bool isSubbed = await TwitchAPI.Channels.v5.CheckChannelSubscriptionByUser("channel-id", "user-id");
 
-List<Follow> follows = TwitchApi.Follows.GetFollowedUsers("channel");
-Follow resp = TwitchApi.Follows.FollowChannel("user", "channel");
+List<TwitchLib.Models.API.v5.Subscriptions.Subscription> allSubs = await TwitchAPI.Channels.v5.GetAllSubscribers("channel-id");
 
-bool isStreaming = TwitchApi.Streams.BroadcasterOnline("channel");
-Channel resp = TwitchApi.Streams.UpdateStreamTitleAndGame("new status", "new game", "channel");
+TwitchLib.Models.API.v5.Channels.ChannelFollowers followers = await TwitchAPI.Channels.v5.GetChannelFollowers("channel-id");
 
-List<User> editors = TwitchApi.Channels.GetChannelEditors("channel");
-PostToChannelFeedResponse resp  =TwitchApi.Channels.PostToChannelFeed("This is a new feed post.", true, "channel");
+TwitchLib.Models.API.v5.Users.UserFollow follow = await TwitchAPI.Users.v5.FollowChannel("user-id", "channel-id");
 
-Clip clip = TwitchApi.Clips.GetClipInformation("channel", "ChannelSlugHere");
-List<Clip> topClips = TwitchApi.Clips.GetTopClips().Clips;
+bool isStreaming = await TwitchAPI.Streams.v5.BroadcasterOnline("channel-id");
 
-string communityId = TwitchApi.Communities.CreateCommunity("community_name", "community summary", "community description", "community rules");
-TwitchApi.Communities.BanCommunityMember("community_id", "user_id");
+TwitchLib.Models.API.v5.Channels.Channel channel = await TwitchAPI.Channels.v5.UpdateChannel("channel-id", "New status here", "Game here");
 ```
-For a complete list of TwitchApi calls, click <a href="http://swiftyspiffy.com/TwitchLib/api.html" target="_blank">here</a>
+For a complete list of TwitchAPI calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_a_p_i.html" target="_blank">here</a>
 #### TwitchPubSub
 ```csharp
 using TwitchLib;
@@ -137,16 +135,19 @@ private void onPubSubBitsReceived() {
 	MessageBox.Show($"Just received {e.BitsUsed} bits from {e.Username}. That brings their total to {e.TotalBitsUsed} bits!");
 }
 ```
-For a complete list of TwitchPubSub functionality, click <a href="http://swiftyspiffy.com/TwitchLib/pubsub.html" target="_blank">here</a>
+For a complete list of TwitchPubSub functionality, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_pub_sub.html" target="_blank">here</a>
 
 ## Examples, Applications, and Community Work
-- TwitchLibExample - Included in this repo is an example application that demos almost all of the library's functionality.
-- Bacon_Donut VOD on building a Twitch bot using TwitchLib: [twitch.tv/videos/115788601](https://www.twitch.tv/videos/115788601)
+
+- TwitchLib-API-Tester: Repo testing application for TwitchAPI and Services: [Link](https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib-API-Tester)
+- TwitchLib-Client-PubSub-Tester: Repo testing application for TwitchClient and TwitchPubSub: [Link](https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib-Client-PubSub-Tester)
+- [Bacon_Donut](https://www.twitch.tv/bacon_donut)'s VOD on building a Twitch bot using TwitchLib: [twitch.tv/videos/115788601](https://www.twitch.tv/videos/115788601)
 - Prom3theu5's Conan Exiles Dedicated Server Updater / Service - [Steam](http://steamcommunity.com/app/440900/discussions/6/133256240742484919/) [Github](https://steamcommunity.com/linkfilter/?url=https://github.com/prom3theu5/ConanExilesServerUpdater)
 - Von Jan Suchotzki's German Video Tutorial Series - [His Website](http://www.lernmoment.de/csharp-tutorial-deutsch/twitch-client-architektur/) [Youtube](https://www.youtube.com/watch?v=N0OPTdTGgTI)
 - DHSean's TwitchAutomator [Reddit](https://www.reddit.com/r/pcgaming/comments/4wfosp/ive_created_an_app_called_twitchautomator_which/) [Github](https://github.com/XenZibe/TwitchUpdater)
 - PFCKrutonium's [TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot) - This project implements the bot using VisualBasic.
 - Moerty's Avia Bot, a fully featured bot that is a good example of a built out bot: [https://github.com/Moerty/AivaBot](https://github.com/Moerty/AivaBot)
+- [HardlyDifficult](https://www.twitch.tv/hardlydifficult)'s Chat Bot Creation VODs: [#1](https://www.twitch.tv/videos/141096702) [#2](https://www.twitch.tv/videos/141154684) [#3](https://www.twitch.tv/videos/141210422) [#4](https://www.twitch.tv/videos/141535267)
 
 ## Installation
 
@@ -164,8 +165,8 @@ You are also more than welcome to clone/fork this repo and build the library you
 
 ## Dependencies
 
-* Newtonsoft.Json 7.0.1+ ([nuget link](https://www.nuget.org/packages/Newtonsoft.Json/7.0.1))
-* WebSocketSharp-NonPreRelease ([nuget link](https://www.nuget.org/packages/WebSocketSharp-NonPreRelease/))
+* Newtonsoft.Json 7.0.1+ ([nuget link](https://www.nuget.org/packages/Newtonsoft.Json/7.0.1)) ([GitHub](https://github.com/JamesNK/Newtonsoft.Json))
+* WebSocketSharp-NonPreRelease ([nuget link](https://www.nuget.org/packages/WebSocketSharp-NonPreRelease/)) ([GitHub](https://github.com/sta/websocket-sharp))
 
 ## Contributors
  * Cole ([@swiftyspiffy](http://twitter.com/swiftyspiffy))
@@ -181,6 +182,8 @@ You are also more than welcome to clone/fork this repo and build the library you
  * XuluniX ([XuluniX](https://github.com/XuluniX))
  * prom3theu5 ([@prom3theu5](https://twitter.com/prom3theu5))
  * Ethan Lu ([elu00](https://github.com/elu00))
+ * BeerHawk ([BeerHawk](https://github.com/BeerHawk))
+ * Tobias Teske ([Syzuna](https://github.com/Syzuna))
 
 ## License
 
