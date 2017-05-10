@@ -18,7 +18,7 @@
         private string _clientId;
         private int _checkIntervalSeconds;
         private List<string> _channels;
-        private Dictionary<string, bool> _statuses;
+        private Dictionary<string, bool> _statuses = new Dictionary<string, bool>();
         private readonly Timer _streamMonitorTimer = new Timer();
         private StreamIdentifierType _identifierType;
         #endregion
@@ -66,7 +66,8 @@
             }
             foreach (string channel in Channels)
             {
-                _statuses.Add(channel, await _checkStreamOnline(channel));
+                var initialStatus = await _checkStreamOnline(channel);
+                _statuses.Add(channel, initialStatus);
             }
             _streamMonitorTimer.Start();
             OnStreamMonitorStarted?.Invoke(this,
@@ -124,8 +125,11 @@
                 case StreamIdentifierType.Usernames:
                     try
                     {
-                        await TwitchAPI.Streams.v3.GetStream(channel);
-                        return true;
+                        var resp = await TwitchAPI.Streams.v3.GetStream(channel);
+                        if (resp == null || resp.Stream == null)
+                            return false;
+                        else
+                            return true;
                     }
                     catch (Exception)
                     {
@@ -134,8 +138,11 @@
                 case StreamIdentifierType.UserIds:
                     try
                     {
-                        await TwitchAPI.Streams.v5.GetStreamByUser(channel);
-                        return true;
+                        var resp = await TwitchAPI.Streams.v5.GetStreamByUser(channel);
+                        if (resp == null || resp.Stream == null)
+                            return false;
+                        else
+                            return true;
                     }
                     catch (Exception)
                     {
