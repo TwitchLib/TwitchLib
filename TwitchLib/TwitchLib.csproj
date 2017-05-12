@@ -186,6 +186,13 @@
     <Compile Include="Models\API\Undocumented\Chatters\ChattersResponse.cs" />
     <Compile Include="Models\API\Undocumented\CSMaps\CSMapsResponse.cs" />
     <Compile Include="Models\API\Undocumented\CSMaps\Map.cs" />
+    <Compile Include="Models\API\Undocumented\CSStreams\Box.cs" />
+    <Compile Include="Models\API\Undocumented\CSStreams\CSStream.cs" />
+    <Compile Include="Models\API\Undocumented\CSStreams\CSStreams.cs" />
+    <Compile Include="Models\API\Undocumented\CSStreams\LocalizedGame.cs" />
+    <Compile Include="Models\API\Undocumented\CSStreams\Logo.cs" />
+    <Compile Include="Models\API\Undocumented\CSStreams\Preview.cs" />
+    <Compile Include="Models\API\Undocumented\CSStreams\User.cs" />
     <Compile Include="Models\API\Undocumented\Hosting\ChannelHostsResponse.cs" />
     <Compile Include="Models\API\Undocumented\Hosting\HostListing.cs" />
     <Compile Include="Models\API\Undocumented\RecentEvents\Recent.cs" />

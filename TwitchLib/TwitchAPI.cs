@@ -12,15 +12,27 @@ namespace TwitchLib
     {
         public static class Settings
         {
-            public static string ClientId { get { return Internal.TwitchAPI.Shared.ClientId; } set { Internal.TwitchAPI.Shared.ClientId = value; } }
-            public static string AccessToken { get { return Internal.TwitchAPI.Shared.AccessToken; } set { Internal.TwitchAPI.Shared.AccessToken = value; } }
+            #region ClientId
+            public static string ClientId { get { return Internal.TwitchAPI.Shared.ClientId; } set { Shared.ClientId = value; } }
+            #endregion
+            #region AccessToken
+            public static string AccessToken { get { return Internal.TwitchAPI.Shared.AccessToken; } set { Shared.AccessToken = value; } }
+            #endregion
             public static class Validators
             {
+                #region ClientIdValidation
                 public static bool SkipClientIdValidation { get; set; } = false;
+                #endregion
+                #region AccessTokenValidation
                 public static bool SkipAccessTokenValidation { get; set; } = false;
+                #endregion
+                #region DynamicScopeValidation
                 public static bool SkipDynamicScopeValidation { get; set; } = false;
+                #endregion
             }
-            public static List<Enums.AuthScopes> Scopes { get { return Internal.TwitchAPI.Shared.Scopes; } }
+            #region Scopes
+            public static List<Enums.AuthScopes> Scopes { get { return Shared.Scopes; } }
+            #endregion
         }
 
         public static class Badges
@@ -1292,6 +1304,12 @@ namespace TwitchLib
                 return await Internal.TwitchAPI.Undocumented.GetCSMaps();
             }
             #endregion
+            #region GetCSStreams
+            public static async Task<Models.API.Undocumented.CSStreams.CSStreams> GetCSStreams(int limit = 25, int offset = 0)
+            {
+                return await Internal.TwitchAPI.Undocumented.GetCSStreams(limit, offset);
+            }
+            #endregion
             #region GetRecentMessages
             public static async Task<Models.API.Undocumented.RecentMessages.RecentMessagesResponse> GetRecentMessages(string channelId)
             {
@@ -1304,7 +1322,6 @@ namespace TwitchLib
                 return await Internal.TwitchAPI.Undocumented.GetChatters(channelName);
             }
             #endregion
-
             #region GetRecentChannelEvents
             public async static Task<Models.API.Undocumented.RecentEvents.RecentEvents> GetRecentChannelEvents(string channelId)
             {
