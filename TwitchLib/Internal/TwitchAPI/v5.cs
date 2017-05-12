@@ -1113,7 +1113,7 @@
                 return await Requests.GetGeneric<Models.API.v5.Users.UserFollow>($"https://api.twitch.tv/kraken/users/{userId}/follows/channels/{channelId}", null, Requests.API.v5);
             }
             #endregion
-            #region
+            #region UserFollowsChannel
             public async static Task<bool>UserFollowsChannel(string userId, string channelId)
             {
                 if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }

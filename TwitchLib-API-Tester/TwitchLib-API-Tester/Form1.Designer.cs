@@ -346,6 +346,8 @@
             this.textBox67 = new System.Windows.Forms.TextBox();
             this.label70 = new System.Windows.Forms.Label();
             this.button67 = new System.Windows.Forms.Button();
+            this.groupBox69 = new System.Windows.Forms.GroupBox();
+            this.button69 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -442,6 +444,7 @@
             this.groupBox1.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.groupBox68.SuspendLayout();
+            this.groupBox69.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -3107,6 +3110,7 @@
             // 
             // tabPage21
             // 
+            this.tabPage21.Controls.Add(this.groupBox69);
             this.tabPage21.Controls.Add(this.groupBox64);
             this.tabPage21.Controls.Add(this.groupBox63);
             this.tabPage21.Controls.Add(this.groupBox62);
@@ -3565,6 +3569,26 @@
             this.button67.UseVisualStyleBackColor = true;
             this.button67.Click += new System.EventHandler(this.button67_Click);
             // 
+            // groupBox69
+            // 
+            this.groupBox69.Controls.Add(this.button69);
+            this.groupBox69.Location = new System.Drawing.Point(482, 324);
+            this.groupBox69.Name = "groupBox69";
+            this.groupBox69.Size = new System.Drawing.Size(437, 135);
+            this.groupBox69.TabIndex = 10;
+            this.groupBox69.TabStop = false;
+            this.groupBox69.Text = "Get CS Streams";
+            // 
+            // button69
+            // 
+            this.button69.Location = new System.Drawing.Point(6, 37);
+            this.button69.Name = "button69";
+            this.button69.Size = new System.Drawing.Size(425, 82);
+            this.button69.TabIndex = 0;
+            this.button69.Text = "Fetch";
+            this.button69.UseVisualStyleBackColor = true;
+            this.button69.Click += new System.EventHandler(this.button69_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -3719,6 +3743,7 @@
             this.tabPage4.ResumeLayout(false);
             this.groupBox68.ResumeLayout(false);
             this.groupBox68.PerformLayout();
+            this.groupBox69.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -4041,6 +4066,8 @@
         private System.Windows.Forms.Label label70;
         private System.Windows.Forms.Button button67;
         private System.Windows.Forms.Button button68;
+        private System.Windows.Forms.GroupBox groupBox69;
+        private System.Windows.Forms.Button button69;
     }
 }
 

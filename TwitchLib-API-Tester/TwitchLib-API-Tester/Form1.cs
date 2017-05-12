@@ -620,5 +620,13 @@ namespace TwitchLib_API_Tester
         {
             monitor.StopService();
         }
+
+        private async void button69_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Undocumented.GetCSStreams();
+            MessageBox.Show($"Total: {resp.Total}");
+            foreach (var csstream in resp.Streams)
+                MessageBox.Show($"Streamer: {csstream.User.DisplayName}\nPlaying on map: {csstream.MapName}\nWith {csstream.Viewers} viewers watching.");
+        }
     }
 }
