@@ -95,7 +95,7 @@
         #region buildScopesList
         private static List<Enums.AuthScopes> buildScopesList(Models.API.v5.Root.RootToken token)
         {
-            List<Enums.AuthScopes> scopes = new List<Enums.AuthScopes>() { Enums.AuthScopes.None };
+            List<Enums.AuthScopes> scopes = new List<Enums.AuthScopes>();
             foreach (string scope in token.Auth.Scopes)
             {
                 switch (scope)
@@ -156,6 +156,9 @@
                         break;
                 }
             }
+
+            if (scopes.Count == 0)
+                scopes.Add(Enums.AuthScopes.None);
             return scopes;
         }
         #endregion
