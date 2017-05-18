@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
+    using TwitchLib.NetCore.Extensions.NetCore;
     #endregion
     /// <summary>Class represents ChatMessage in a Twitch channel.</summary>
     public class ChatMessage
