@@ -74,7 +74,7 @@ private void onMessageReceived(object sender, OnMessageReceivedArgs e) {
 }
 private void onCommandReceived(object sender, OnWhisperCommandReceivedArgs e) {
 	if(e.Command == "help")
-    	client.SendMessage($"Hi there {e.ChatMessage.Username}! You can view all commands using !command");
+    	client.SendMessage($"Hi there {e.WhisperMessage.Username}! You can view all commands using !command");
 }
 private void onWhisperReceived(object sender, OnWhisperReceivedArgs e) {
 	if(e.WhisperMessage.Username == "my_friend")
