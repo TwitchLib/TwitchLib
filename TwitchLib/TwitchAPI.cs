@@ -37,53 +37,63 @@ namespace TwitchLib
 
         public static class Badges
         {
-            #region GetSubscriberBadgesForChannel
-            public static async Task<Models.API.v5.Badges.ChannelDisplayBadges> GetSubscriberBadgesForChannel(string channelId)
+            public static class v5
             {
-                return await v5.Badges.GetSubscriberBadgesForChannel(channelId);
+                #region GetSubscriberBadgesForChannel
+                public static async Task<Models.API.v5.Badges.ChannelDisplayBadges> GetSubscriberBadgesForChannel(string channelId)
+                {
+                    return await Internal.TwitchAPI.v5.Badges.GetSubscriberBadgesForChannel(channelId);
+                }
+                #endregion
+                #region GetGlobalBadges
+                public static async Task<Models.API.v5.Badges.GlobalBadgesResponse> GetGlobalBadges()
+                {
+                    return await Internal.TwitchAPI.v5.Badges.GetGlobalBadges();
+                }
+                #endregion
             }
-            #endregion
-            #region GetGlobalBadges
-            public static async Task<Models.API.v5.Badges.GlobalBadgesResponse> GetGlobalBadges()
-            {
-                return await v5.Badges.GetGlobalBadges();
-            }
-            #endregion
         }
 
         public static class Bits
         {
-            #region GetCheermotes
-            public static async Task<Models.API.v5.Bits.Action[]> GetCheermotes(string channelId = null)
+            public static class v5
             {
-                return await v5.Bits.GetCheermotes(channelId);
+                #region GetCheermotes
+                public static async Task<Models.API.v5.Bits.Action[]> GetCheermotes(string channelId = null)
+                {
+                    return await Internal.TwitchAPI.v5.Bits.GetCheermotes(channelId);
+                }
+                #endregion
             }
-            #endregion
         }
 
         public static class Blocks
         {
-            #region GetBlocks
-            public static async Task<Models.API.v3.Blocks.GetBlocksResponse> GetBlocks(string channel, int limit = 25, int offset = 0, string accessToken = null)
+            public static class v3
             {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Read, accessToken);
-                return await Internal.TwitchAPI.v3.Blocks.GetBlocks(channel, limit, offset, accessToken);
+                #region GetBlocks
+                public static async Task<Models.API.v3.Blocks.GetBlocksResponse> GetBlocks(string channel, int limit = 25, int offset = 0, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Read, accessToken);
+                    return await Internal.TwitchAPI.v3.Blocks.GetBlocks(channel, limit, offset, accessToken);
+                }
+                #endregion
+                #region CreateBlock
+                public static async Task<Models.API.v3.Blocks.Block> CreateBlock(string channel, string target, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
+                    return await Internal.TwitchAPI.v3.Blocks.CreateBlock(channel, target, accessToken);
+                }
+                #endregion
+                #region RemoveBlock
+                public static async Task RemoveBlock(string channel, string target, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
+                    await Internal.TwitchAPI.v3.Blocks.RemoveBlock(channel, target, accessToken);
+                }
+                #endregion
             }
-            #endregion
-            #region CreateBlock
-            public static async Task<Models.API.v3.Blocks.Block> CreateBlock(string channel, string target, string accessToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
-                return await Internal.TwitchAPI.v3.Blocks.CreateBlock(channel, target, accessToken);
-            }
-            #endregion
-            #region RemoveBlock
-            public static async Task RemoveBlock(string channel, string target, string accessToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
-                await Internal.TwitchAPI.v3.Blocks.RemoveBlock(channel, target, accessToken);
-            }
-            #endregion
+
         }
 
         public static class ChannelFeeds
@@ -511,242 +521,253 @@ namespace TwitchLib
 
         public static class Collections
         {
-            #region GetCollectionMetadata
-            public async static Task<Models.API.v5.Collections.CollectionMetadata> GetCollectionMetadata(string collectionId)
+            public static class v5
             {
-                return await v5.Collections.GetCollectionMetadata(collectionId);
+                #region GetCollectionMetadata
+                public async static Task<Models.API.v5.Collections.CollectionMetadata> GetCollectionMetadata(string collectionId)
+                {
+                    return await Internal.TwitchAPI.v5.Collections.GetCollectionMetadata(collectionId);
+                }
+                #endregion
+                #region GetCollection
+                public async static Task<Models.API.v5.Collections.Collection> GetCollection(string collectionId, bool? includeAllItems = null)
+                {
+                    return await Internal.TwitchAPI.v5.Collections.GetCollection(collectionId, includeAllItems);
+                }
+                #endregion
+                #region GetCollectionsByChannel
+                public async static Task<Models.API.v5.Collections.CollectionsByChannel> GetCollectionsByChannel(string channelId, long? limit = null, string cursor = null, string containingItem = null)
+                {
+                    return await Internal.TwitchAPI.v5.Collections.GetCollectionsByChannel(channelId, limit, cursor, containingItem);
+                }
+                #endregion
+                #region CreateCollection
+                public async static Task<Models.API.v5.Collections.CollectionMetadata> CreateCollection(string channelId, string collectionTitle, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
+                    return await Internal.TwitchAPI.v5.Collections.CreateCollection(channelId, collectionTitle, authToken);
+                }
+                #endregion
+                #region UpdateCollection
+                public async static Task UpdateCollection(string collectionId, string newCollectionTitle, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
+                    await Internal.TwitchAPI.v5.Collections.UpdateCollection(collectionId, newCollectionTitle, authToken);
+                }
+                #endregion
+                #region CreateCollectionThumbnail
+                public async static Task CreateCollectionThumbnail(string collectionId, string itemId, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
+                    await Internal.TwitchAPI.v5.Collections.CreateCollectionThumbnail(collectionId, itemId, authToken);
+                }
+                #endregion
+                #region DeleteCollection
+                public async static Task DeleteCollection(string collectionId, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
+                    await Internal.TwitchAPI.v5.Collections.DeleteCollection(collectionId, authToken);
+                }
+                #endregion
+                #region AddItemToCollection
+                public async static Task<Models.API.v5.Collections.CollectionItem> AddItemToCollection(string collectionId, string itemId, string itemType, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
+                    return await Internal.TwitchAPI.v5.Collections.AddItemToCollection(collectionId, itemId, itemType, authToken);
+                }
+                #endregion
+                #region DeleteItemFromCollection
+                public async static Task DeleteItemFromCollection(string collectionId, string itemId, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
+                    await Internal.TwitchAPI.v5.Collections.DeleteItemFromCollection(collectionId, itemId, authToken);
+                }
+                #endregion
+                #region MoveItemWithinCollection
+                public async static Task MoveItemWithinCollection(string collectionId, string itemId, int position, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
+                    await Internal.TwitchAPI.v5.Collections.MoveItemWithinCollection(collectionId, itemId, position, authToken);
+                }
+                #endregion
             }
-            #endregion
-            #region GetCollection
-            public async static Task<Models.API.v5.Collections.Collection> GetCollection(string collectionId, bool? includeAllItems = null)
-            {
-                return await v5.Collections.GetCollection(collectionId, includeAllItems);
-            }
-            #endregion
-            #region GetCollectionsByChannel
-            public async static Task<Models.API.v5.Collections.CollectionsByChannel> GetCollectionsByChannel(string channelId, long? limit = null, string cursor = null, string containingItem = null)
-            {
-                return await v5.Collections.GetCollectionsByChannel(channelId, limit, cursor, containingItem);
-            }
-            #endregion
-            #region CreateCollection
-            public async static Task<Models.API.v5.Collections.CollectionMetadata> CreateCollection(string channelId, string collectionTitle, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                return await v5.Collections.CreateCollection(channelId, collectionTitle, authToken);
-            }
-            #endregion
-            #region UpdateCollection
-            public async static Task UpdateCollection(string collectionId, string newCollectionTitle, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                await v5.Collections.UpdateCollection(collectionId, newCollectionTitle, authToken);
-            }
-            #endregion
-            #region CreateCollectionThumbnail
-            public async static Task CreateCollectionThumbnail(string collectionId, string itemId, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                await v5.Collections.CreateCollectionThumbnail(collectionId, itemId, authToken);
-            }
-            #endregion
-            #region DeleteCollection
-            public async static Task DeleteCollection(string collectionId, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                await v5.Collections.DeleteCollection(collectionId, authToken);
-            }
-            #endregion
-            #region AddItemToCollection
-            public async static Task<Models.API.v5.Collections.CollectionItem> AddItemToCollection(string collectionId, string itemId, string itemType, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                return await v5.Collections.AddItemToCollection(collectionId, itemId, itemType, authToken);
-            }
-            #endregion
-            #region DeleteItemFromCollection
-            public async static Task DeleteItemFromCollection(string collectionId, string itemId, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                await v5.Collections.DeleteItemFromCollection(collectionId, itemId, authToken);
-            }
-            #endregion
-            #region MoveItemWithinCollection
-            public async static Task MoveItemWithinCollection(string collectionId, string itemId, int position, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                await v5.Collections.MoveItemWithinCollection(collectionId, itemId, position, authToken);
-            }
-            #endregion
+
         }
 
         public static class Communities
         {
-            #region GetCommunityByName
-            public async static Task<Models.API.v5.Communities.Community> GetCommunityByName(string communityName)
+            public static class v5
             {
-                return await v5.Communities.GetCommunityByName(communityName);
+                #region GetCommunityByName
+                public async static Task<Models.API.v5.Communities.Community> GetCommunityByName(string communityName)
+                {
+                    return await Internal.TwitchAPI.v5.Communities.GetCommunityByName(communityName);
+                }
+                #endregion
+                #region GetCommunityByID
+                public async static Task<Models.API.v5.Communities.Community> GetCommunityByID(string communityId)
+                {
+                    return await Internal.TwitchAPI.v5.Communities.GetCommunityByID(communityId);
+                }
+                #endregion
+                #region UpdateCommunity
+                public async static Task UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
+                    await Internal.TwitchAPI.v5.Communities.UpdateCommunity(communityId, summary, description, rules, email, authToken);
+                }
+                #endregion
+                #region GetTopCommunities
+                public async static Task<Models.API.v5.Communities.TopCommunities> GetTopCommunities(long? limit = null, string cursor = null)
+                {
+                    return await Internal.TwitchAPI.v5.Communities.GetTopCommunities(limit, cursor);
+                }
+                #endregion
+                #region GetCommunityBannedUsers
+                public async static Task<Models.API.v5.Communities.BannedUsers> GetCommunityBannedUsers(string communityId, long? limit = null, string cursor = null, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
+                    return await Internal.TwitchAPI.v5.Communities.GetCommunityBannedUsers(communityId, limit, cursor, authToken);
+                }
+                #endregion
+                #region BanCommunityUser
+                public async static Task BanCommunityUser(string communityId, string userId, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
+                    await Internal.TwitchAPI.v5.Communities.BanCommunityUser(communityId, userId, authToken);
+                }
+                #endregion
+                #region UnBanCommunityUser
+                public async static Task UnBanCommunityUser(string communityId, string userId, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
+                    await Internal.TwitchAPI.v5.Communities.UnBanCommunityUser(communityId, userId, authToken);
+                }
+                #endregion
+                #region CreateCommunityAvatarImage
+                public async static Task CreateCommunityAvatarImage(string communityId, string avatarImage, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
+                    await Internal.TwitchAPI.v5.Communities.CreateCommunityAvatarImage(communityId, avatarImage, authToken);
+                }
+                #endregion
+                #region DeleteCommunityAvatarImage
+                public async static Task DeleteCommunityAvatarImage(string communityId, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
+                    await Internal.TwitchAPI.v5.Communities.DeleteCommunityAvatarImage(communityId, authToken);
+                }
+                #endregion
+                #region CreateCommunityCoverImage
+                public async static Task CreateCommunityCoverImage(string communityId, string coverImage, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
+                    await Internal.TwitchAPI.v5.Communities.CreateCommunityCoverImage(communityId, coverImage, authToken);
+                }
+                #endregion
+                #region DeleteCommunityCoverImage
+                public async static Task DeleteCommunityCoverImage(string communityId, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
+                    await Internal.TwitchAPI.v5.Communities.DeleteCommunityCoverImage(communityId, authToken);
+                }
+                #endregion
+                #region GetCommunityModerators
+                public async static Task<Models.API.v5.Communities.Moderators> GetCommunityModerators(string communityId, string authToken)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
+                    return await Internal.TwitchAPI.v5.Communities.GetCommunityModerators(communityId, authToken);
+                }
+                #endregion
+                #region AddCommunityModerator
+                public async static Task AddCommunityModerator(string communityId, string userId, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
+                    await Internal.TwitchAPI.v5.Communities.AddCommunityModerator(communityId, userId, authToken);
+                }
+                #endregion
+                #region DeleteCommunityModerator
+                public async static Task DeleteCommunityModerator(string communityId, string userId, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
+                    await Internal.TwitchAPI.v5.Communities.DeleteCommunityModerator(communityId, userId, authToken);
+                }
+                #endregion
+                #region GetCommunityPermissions
+                public async static Task<Dictionary<string, bool>> GetCommunityPermissions(string communityId, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Any, authToken);
+                    return await Internal.TwitchAPI.v5.Communities.GetCommunityPermissions(communityId, authToken);
+                }
+                #endregion
+                #region ReportCommunityViolation
+                public async static Task ReportCommunityViolation(string communityId, string channelId)
+                {
+                    await Internal.TwitchAPI.v5.Communities.ReportCommunityViolation(communityId, channelId);
+                }
+                #endregion
+                #region GetCommunityTimedOutUsers
+                public async static Task<Models.API.v5.Communities.TimedOutUsers> GetCommunityTimedOutUsers(string communityId, long? limit = null, string cursor = null, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
+                    return await Internal.TwitchAPI.v5.Communities.GetCommunityTimedOutUsers(communityId, limit, cursor, authToken);
+                }
+                #endregion
+                #region AddCommunityTimedOutUser
+                public async static Task AddCommunityTimedOutUser(string communityId, string userId, int duration, string reason = null, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
+                    await Internal.TwitchAPI.v5.Communities.AddCommunityTimedOutUser(communityId, userId, duration, reason, authToken);
+                }
+                #endregion
+                #region DeleteCommunityTimedOutUser
+                public async static Task DeleteCommunityTimedOutUser(string communityId, string userId, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
+                    await Internal.TwitchAPI.v5.Communities.DeleteCommunityTimedOutUser(communityId, userId, authToken);
+                }
+                #endregion
             }
-            #endregion
-            #region GetCommunityByID
-            public async static Task<Models.API.v5.Communities.Community> GetCommunityByID(string communityId)
-            {
-                return await v5.Communities.GetCommunityByID(communityId);
-            }
-            #endregion
-            #region UpdateCommunity
-            public async static Task UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                await v5.Communities.UpdateCommunity(communityId, summary, description, rules, email, authToken);
-            }
-            #endregion
-            #region GetTopCommunities
-            public async static Task<Models.API.v5.Communities.TopCommunities> GetTopCommunities(long? limit = null, string cursor = null)
-            {
-                return await v5.Communities.GetTopCommunities(limit, cursor);
-            }
-            #endregion
-            #region GetCommunityBannedUsers
-            public async static Task<Models.API.v5.Communities.BannedUsers> GetCommunityBannedUsers(string communityId, long? limit = null, string cursor = null, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
-                return await v5.Communities.GetCommunityBannedUsers(communityId, limit, cursor, authToken);
-            }
-            #endregion
-            #region BanCommunityUser
-            public async static Task BanCommunityUser(string communityId, string userId, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
-                await v5.Communities.BanCommunityUser(communityId, userId, authToken);
-            }
-            #endregion
-            #region UnBanCommunityUser
-            public async static Task UnBanCommunityUser(string communityId, string userId, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
-                await v5.Communities.UnBanCommunityUser(communityId, userId, authToken);
-            }
-            #endregion
-            #region CreateCommunityAvatarImage
-            public async static Task CreateCommunityAvatarImage(string communityId, string avatarImage, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                await v5.Communities.CreateCommunityAvatarImage(communityId, avatarImage, authToken);
-            }
-            #endregion
-            #region DeleteCommunityAvatarImage
-            public async static Task DeleteCommunityAvatarImage(string communityId, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                await v5.Communities.DeleteCommunityAvatarImage(communityId, authToken);
-            }
-            #endregion
-            #region CreateCommunityCoverImage
-            public async static Task CreateCommunityCoverImage(string communityId, string coverImage, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                await v5.Communities.CreateCommunityCoverImage(communityId, coverImage, authToken);
-            }
-            #endregion
-            #region DeleteCommunityCoverImage
-            public async static Task DeleteCommunityCoverImage(string communityId, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                await v5.Communities.DeleteCommunityCoverImage(communityId, authToken);
-            }
-            #endregion
-            #region GetCommunityModerators
-            public async static Task<Models.API.v5.Communities.Moderators> GetCommunityModerators(string communityId, string authToken)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                return await v5.Communities.GetCommunityModerators(communityId, authToken);
-            }
-            #endregion
-            #region AddCommunityModerator
-            public async static Task AddCommunityModerator(string communityId, string userId, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                await v5.Communities.AddCommunityModerator(communityId, userId, authToken);
-            }
-            #endregion
-            #region DeleteCommunityModerator
-            public async static Task DeleteCommunityModerator(string communityId, string userId, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                await v5.Communities.DeleteCommunityModerator(communityId, userId, authToken);
-            }
-            #endregion
-            #region GetCommunityPermissions
-            public async static Task<Dictionary<string, bool>> GetCommunityPermissions(string communityId, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Any, authToken);
-                return await v5.Communities.GetCommunityPermissions(communityId, authToken);
-            }
-            #endregion
-            #region ReportCommunityViolation
-            public async static Task ReportCommunityViolation(string communityId, string channelId)
-            {
-                await v5.Communities.ReportCommunityViolation(communityId, channelId);
-            }
-            #endregion
-            #region GetCommunityTimedOutUsers
-            public async static Task<Models.API.v5.Communities.TimedOutUsers> GetCommunityTimedOutUsers(string communityId, long? limit = null, string cursor = null, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
-                return await v5.Communities.GetCommunityTimedOutUsers(communityId, limit, cursor, authToken);
-            }
-            #endregion
-            #region AddCommunityTimedOutUser
-            public async static Task AddCommunityTimedOutUser(string communityId, string userId, int duration, string reason = null, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
-                await v5.Communities.AddCommunityTimedOutUser(communityId, userId, duration, reason, authToken);
-            }
-            #endregion
-            #region DeleteCommunityTimedOutUser
-            public async static Task DeleteCommunityTimedOutUser(string communityId, string userId, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
-                await v5.Communities.DeleteCommunityTimedOutUser(communityId, userId, authToken);
-            }
-            #endregion
         }
 
         public static class Follows
         {
-            #region GetFollowers
-            public static async Task<Models.API.v3.Follows.FollowersResponse> GetFollowers(string channel, int limit = 25, int offset = 0, string cursor = null, Enums.Direction direction = Enums.Direction.Descending)
+            public static class v3
             {
-                return await v3.Follows.GetFollowers(channel, limit, offset, cursor, direction);
+                #region GetFollowers
+                public static async Task<Models.API.v3.Follows.FollowersResponse> GetFollowers(string channel, int limit = 25, int offset = 0, string cursor = null, Enums.Direction direction = Enums.Direction.Descending)
+                {
+                    return await Internal.TwitchAPI.v3.Follows.GetFollowers(channel, limit, offset, cursor, direction);
+                }
+                #endregion
+                #region GetFollows
+                public static async Task<Models.API.v3.Follows.FollowsResponse> GetFollows(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Descending, Enums.SortBy sortBy = Enums.SortBy.CreatedAt)
+                {
+                    return await Internal.TwitchAPI.v3.Follows.GetFollows(channel, limit, offset, direction, sortBy);
+                }
+                #endregion
+                #region GetFollowStatus
+                public static async Task<Models.API.v3.Follows.Follows> GetFollowsStatus(string user, string targetChannel)
+                {
+                    return await Internal.TwitchAPI.v3.Follows.GetFollowsStatus(user, targetChannel);
+                }
+                #endregion
+                #region CreateFollow
+                public static async Task<Models.API.v3.Follows.Follows> CreateFollow(string user, string targetChannel, bool notifications = false, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, accessToken);
+                    return await Internal.TwitchAPI.v3.Follows.CreateFollow(user, targetChannel, notifications, accessToken);
+                }
+                #endregion
+                #region RemoveFollow
+                public static async Task RemoveFollow(string user, string target, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, accessToken);
+                    await Internal.TwitchAPI.v3.Follows.RemoveFollow(user, target, accessToken);
+                }
+                #endregion
             }
-            #endregion
-            #region GetFollows
-            public static async Task<Models.API.v3.Follows.FollowsResponse> GetFollows(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Descending, Enums.SortBy sortBy = Enums.SortBy.CreatedAt)
-            {
-                return await v3.Follows.GetFollows(channel, limit, offset, direction, sortBy);
-            }
-            #endregion
-            #region GetFollowStatus
-            public static async Task<Models.API.v3.Follows.Follows> GetFollowsStatus(string user, string targetChannel)
-            {
-                return await v3.Follows.GetFollowsStatus(user, targetChannel);
-            }
-            #endregion
-            #region CreateFollow
-            public static async Task<Models.API.v3.Follows.Follows> CreateFollow(string user, string targetChannel, bool notifications = false, string accessToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, accessToken);
-                return await v3.Follows.CreateFollow(user, targetChannel, notifications, accessToken);
-            }
-            #endregion
-            #region RemoveFollow
-            public static async Task RemoveFollow(string user, string target, string accessToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, accessToken);
-                await v3.Follows.RemoveFollow(user, target, accessToken);
-            }
-            #endregion
+
         }
 
         public static class Games
@@ -946,41 +967,45 @@ namespace TwitchLib
 
         public static class Subscriptions
         {
-            #region GetSubscribers
-            public async static Task<Models.API.v3.Subscriptions.SubscribersResponse> GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Ascending, string accessToken = null)
+            public static class v3
             {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
-                return await v3.Subscriptions.GetSubscribers(channel, limit, offset, direction, accessToken);
+                #region GetSubscribers
+                public async static Task<Models.API.v3.Subscriptions.SubscribersResponse> GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Ascending, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
+                    return await Internal.TwitchAPI.v3.Subscriptions.GetSubscribers(channel, limit, offset, direction, accessToken);
+                }
+                #endregion
+                #region GetAllSubscribers
+                public async static Task<List<Models.API.v3.Subscriptions.Subscriber>> GetAllSubscribers(string channel, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
+                    return await Internal.TwitchAPI.v3.Subscriptions.GetAllSubscribers(channel, accessToken);
+                }
+                #endregion
+                #region ChannelHasUserSubscribed
+                public async static Task<Models.API.v3.Subscriptions.Subscriber> ChannelHasUserSubscribed(string channel, string targetUser, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Check_Subscription, accessToken);
+                    return await Internal.TwitchAPI.v3.Subscriptions.ChannelHasUserSubscribed(channel, targetUser, accessToken);
+                }
+                #endregion
+                #region UserSubscribedToChannel
+                public async static Task<Models.API.v3.Subscriptions.ChannelSubscription> UserSubscribedToChannel(string user, string targetChannel, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, accessToken);
+                    return await Internal.TwitchAPI.v3.Subscriptions.UserSubscribedToChannel(user, targetChannel, accessToken);
+                }
+                #endregion
+                #region GetSubscriberCount
+                public async static Task<int> GetSubscriberCount(string channel, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
+                    return await Internal.TwitchAPI.v3.Subscriptions.GetSubscriberCount(channel, accessToken);
+                }
+                #endregion
             }
-            #endregion
-            #region GetAllSubscribers
-            public async static Task<List<Models.API.v3.Subscriptions.Subscriber>> GetAllSubscribers(string channel, string accessToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
-                return await v3.Subscriptions.GetAllSubscribers(channel, accessToken);
-            }
-            #endregion
-            #region ChannelHasUserSubscribed
-            public async static Task<Models.API.v3.Subscriptions.Subscriber> ChannelHasUserSubscribed(string channel, string targetUser, string accessToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Check_Subscription, accessToken);
-                return await v3.Subscriptions.ChannelHasUserSubscribed(channel, targetUser, accessToken);
-            }
-            #endregion
-            #region UserSubscribedToChannel
-            public async static Task<Models.API.v3.Subscriptions.ChannelSubscription> UserSubscribedToChannel(string user, string targetChannel, string accessToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, accessToken);
-                return await v3.Subscriptions.UserSubscribedToChannel(user, targetChannel, accessToken);
-            }
-            #endregion
-            #region GetSubscriberCount
-            public async static Task<int> GetSubscriberCount(string channel, string accessToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
-                return await v3.Subscriptions.GetSubscriberCount(channel, accessToken);
-            }
-            #endregion
+            
         }
 
         public static class Teams
@@ -1244,25 +1269,29 @@ namespace TwitchLib
 
         public static class Clips
         {
-            #region GetClip
-            public static async Task<Models.API.v5.Clips.Clip> GetClip(string slug)
+            public static class v5
             {
-                return await v5.GetClip(slug);
+                #region GetClip
+                public static async Task<Models.API.v5.Clips.Clip> GetClip(string slug)
+                {
+                    return await v5.GetClip(slug);
+                }
+                #endregion
+                #region GetTopClips
+                public static async Task<Models.API.v5.Clips.TopClipsResponse> GetTopClips(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v5.Clips.Period period = Models.API.v5.Clips.Period.Week, bool trending = false)
+                {
+                    return await v5.GetTopClips(channel, cursor, game, limit, period, trending);
+                }
+                #endregion
+                #region GetFollowedClips
+                public static async Task<Models.API.v5.Clips.FollowClipsResponse> GetFollowedClips(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
+                    return await v5.GetFollowedClips(limit, cursor, trending, authToken);
+                }
+                #endregion
             }
-            #endregion
-            #region GetTopClips
-            public static async Task<Models.API.v5.Clips.TopClipsResponse> GetTopClips(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v5.Clips.Period period = Models.API.v5.Clips.Period.Week, bool trending = false)
-            {
-                return await v5.GetTopClips(channel, cursor, game, limit, period, trending);
-            }
-            #endregion
-            #region GetFollowedClips
-            public static async Task<Models.API.v5.Clips.FollowClipsResponse> GetFollowedClips(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
-            {
-                Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
-                return await v5.GetFollowedClips(limit, cursor, trending, authToken);
-            }
-            #endregion
+            
         }
 
         /// <summary>These endpoints are pretty cool, but they may stop working at anytime due to changes Twitch makes.</summary>
