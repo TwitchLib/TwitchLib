@@ -20,6 +20,10 @@
         [JsonProperty(PropertyName = "broadcaster_language")]
         public string BroadcasterLanguage { get; protected set; }
         #endregion
+        #region BroadcasterType
+        [JsonProperty(PropertyName = "broadcaster_type")]
+        public string BroadcasterType { get; protected set; }
+        #endregion
         #region CreatedAt
         /// <summary>Property representing the date time of channel creation.</summary>
         [JsonProperty(PropertyName = "created_at")]
