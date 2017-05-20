@@ -82,9 +82,9 @@ private void onWhisperReceived(object sender, OnWhisperReceivedArgs e) {
 }
 private void onNewSubscriber(object sender, OnNewSubscriberArgs e) {
 	if(e.Subscriber.IsTwitchPrime)
-		client.SendMessage($"Welcome {} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
+		client.SendMessage($"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
     else
-    	client.SendMessage($"Welcome {} to the substers! You just earned 500 points!");
+    	client.SendMessage($"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
 }
 ```
 For a complete list of TwitchClient events and calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_client.html" target="_blank">here</a>
