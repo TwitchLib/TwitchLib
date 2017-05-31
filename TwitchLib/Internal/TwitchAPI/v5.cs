@@ -1102,7 +1102,7 @@
                         else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
                     }
                 }
-                return await Requests.GetGeneric<Models.API.v5.Users.UserFollows>($"https://api.twitch.tv/kraken/users/{userId}/follows/channels", null, Requests.API.v5);
+                return await Requests.GetGeneric<Models.API.v5.Users.UserFollows>($"https://api.twitch.tv/kraken/users/{userId}/follows/channels{optionalQuery}", null, Requests.API.v5);
             }
             #endregion
             #region CheckUserFollowsByChannel
