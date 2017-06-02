@@ -893,7 +893,7 @@
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid for fetching streams. It is not allowed to be null, empty or filled with whitespaces."); }
                 string optionalQuery = string.Empty;
-                if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all"))
+                if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
                 {
                     optionalQuery = $"?stream_type={streamType}";
                 }
@@ -910,7 +910,7 @@
                     queryParameters.Add(new KeyValuePair<string, string>("game", game));
                 if (!string.IsNullOrWhiteSpace(language))
                     queryParameters.Add(new KeyValuePair<string, string>("language", language));
-                if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all"))
+                if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
                     queryParameters.Add(new KeyValuePair<string, string>("stream_type", streamType));
                 if (limit != null)
                     queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
@@ -960,7 +960,7 @@
             public async static Task<Models.API.v5.Streams.FollowedStreams> GetFollowedStreams(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
             {
                 List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
-                if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all"))
+                if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
                     queryParameters.Add(new KeyValuePair<string, string>("stream_type", streamType));
                 if (limit != null)
                     queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
