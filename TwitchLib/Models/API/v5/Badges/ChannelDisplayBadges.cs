@@ -17,5 +17,10 @@
         [JsonProperty(PropertyName = "subscriber")]
         public Badge Subscriber { get; protected set; }
         #endregion
+
+        #region Custom Bit Badges
+        [JsonProperty(PropertyName = "bits")]
+        public Badge Bits { get; protected set; }
+        #endregion
     }
 }
