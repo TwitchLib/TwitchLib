@@ -6,10 +6,11 @@
     using System.Timers;
 
     using Newtonsoft.Json.Linq;
-    using WebSocketSharp;
+    using WebSocket4Net;
 
     using Events.PubSub;
     using Models.PubSub.Responses.Messages;
+    using SuperSocket.ClientEngine;
     #endregion
     /// <summary>Class represneting interactions with the Twitch PubSub</summary>
     public class TwitchPubSub
@@ -85,19 +86,19 @@
         private void OnError(object sender, ErrorEventArgs e)
         {
             if(logging)
-                Console.WriteLine($"[TwitchPubSub]OnError: {e.Message}");
-           OnPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = new Exception(e.Message) });
+                Console.WriteLine($"[TwitchPubSub]OnError: {e.Exception.Message}");
+           OnPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = e.Exception });
         }
 
-        private void OnMessage(object sender, MessageEventArgs e)
+        private void OnMessage(object sender, MessageReceivedEventArgs e)
         {
-            string msg = e.Data.ToString();
+            string msg = e.Message.ToString();
             if (logging)                
                 Console.WriteLine($"[TwitchPubSub] {msg}");
             parseMessage(msg);
         }
         
-        private void Socket_OnDisconnected(object sender, CloseEventArgs e)
+        private void Socket_OnDisconnected(object sender, EventArgs e)
         {
             if (logging)
                 Console.WriteLine($"[TwitchPubSub]OnClose");
@@ -322,11 +323,11 @@
         public void Connect()
         {
             socket = new WebSocket("wss://pubsub-edge.twitch.tv");
-            socket.OnOpen += Socket_OnConnected;
-            socket.OnError += OnError;
-            socket.OnMessage += OnMessage;
-            socket.OnClose += Socket_OnDisconnected;
-            socket.Connect();
+            socket.Opened += Socket_OnConnected;
+            socket.Error += OnError;
+            socket.MessageReceived += OnMessage;
+            socket.Closed += Socket_OnDisconnected;
+            socket.Open();
         }
         
         /// <summary>

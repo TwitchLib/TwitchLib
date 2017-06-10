@@ -82,7 +82,6 @@ namespace TwitchLib.Internal.TwitchAPI
             var resp = await Requests.GetGeneric<Models.API.Undocumented.Chatters.ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName}/chatters");
 
             List<Models.API.Undocumented.Chatters.ChatterFormatted> chatters = new List<Models.API.Undocumented.Chatters.ChatterFormatted>();
-            chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(channelName, Enums.UserType.Broadcaster));
             foreach (var chatter in resp.Chatters.Staff)
                 chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Staff));
             foreach (var chatter in resp.Chatters.Admins)

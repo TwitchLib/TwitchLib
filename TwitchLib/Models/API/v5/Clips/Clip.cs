@@ -24,8 +24,6 @@ namespace TwitchLib.Models.API.v5.Clips
         public string EmbedUrl { get; protected set; }
         [JsonProperty(PropertyName = "game")]
         public string Game { get; protected set; }
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; protected set; }
         [JsonProperty(PropertyName = "language")]
         public string Language { get; protected set; }
         [JsonProperty(PropertyName = "thumbnails")]
