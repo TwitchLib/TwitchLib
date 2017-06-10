@@ -28,7 +28,7 @@ namespace TwitchLib.Services
         /// <exception cref="BadQueryCountException">Throws BadQueryCountException if queryCount is larger than 100 or smaller than 1.</exception>
         public int QueryCount { get { return _queryCount; } set { if (value < 1 || value > 100) { throw new BadQueryCountException("Query count was smaller than 1 or exceeded 100"); } _queryCount = value; } }
         /// <summary>Property representing the cache where detected followers are stored and compared against.</summary>
-        public List<string> ActiveCache { get; set; }
+        public List<string> ActiveCache { get; set; } = new List<string>();
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _followerServiceTimer.Interval = value * 1000; } }
 
@@ -57,7 +57,7 @@ namespace TwitchLib.Services
 
             if(ChannelIdentifier == Enums.ChannelIdentifierType.Username)
             {
-                var response = await TwitchAPI.Follows.GetFollowers(ChannelData, QueryCount);
+                var response = await TwitchAPI.Follows.v3.GetFollowers(ChannelData, QueryCount);
                 foreach (var follower in response.Followers)
                     ActiveCache.Add(follower.User.Name);
             } else
@@ -104,7 +104,7 @@ namespace TwitchLib.Services
             {
                 if(ChannelIdentifier == Enums.ChannelIdentifierType.Username)
                 {
-                    var followers = await TwitchAPI.Follows.GetFollowers(ChannelData, QueryCount);
+                    var followers = await TwitchAPI.Follows.v3.GetFollowers(ChannelData, QueryCount);
                     foreach (var follower in followers.Followers)
                         mostRecentFollowers.Add(follower.User.Name);
                 } else

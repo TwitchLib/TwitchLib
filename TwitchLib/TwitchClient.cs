@@ -6,14 +6,14 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using WebSocketSharp;
+    using WebSocket4Net;
     using System.Reflection;
 
     using Events.Client;
     using Exceptions.Client;
     using Internal;
     using Models.Client;
-    using Models.API.v3.Subscriptions;
+    using SuperSocket.ClientEngine;
     #endregion
     /// <summary>Represents a client connected to a Twitch channel.</summary>
     public class TwitchClient
@@ -41,7 +41,7 @@
         /// <summary>The most recent whisper received.</summary>
         public WhisperMessage PreviousWhisper { get; protected set; }
         /// <summary>The current connection status of the client.</summary>
-        public bool IsConnected { get { return _client.IsAlive; } }
+        public bool IsConnected { get { return _client.State == WebSocketState.Open; } }
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on chat messages.</summary>
         public Services.MessageThrottler ChatThrottler;
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on whispers.</summary>
@@ -65,7 +65,7 @@
             get { return _credentials; }
             set
             {
-                if (_client.IsAlive)
+                if (IsConnected)
                     throw new IllegalAssignmentException("While the client is connected, you are unable to change the connection credentials. Please disconnect first and then change them.");
                 _credentials = value;
             }
@@ -267,10 +267,10 @@
             AutoReListenOnException = autoReListenOnExceptions;
 
             _client = new WebSocket($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}");
-            _client.OnOpen += _client_OnConnected;
-            _client.OnMessage += _client_OnMessage;
-            _client.OnClose += _client_OnDisconnected;
-            _client.OnError += _client_OnError;
+            _client.Opened += _client_OnConnected;
+            _client.MessageReceived += _client_OnMessage;
+            _client.Closed += _client_OnDisconnected;
+            _client.Error += _client_OnError;
         }
 
         /// <summary>
@@ -352,7 +352,7 @@
         {
             log("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
 
-            _client.Connect();
+            _client.Open();
 
             log("Should be connected!");
         }
@@ -379,13 +379,13 @@
         {
             log("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
 
-            if (_client.IsAlive)
+            if (IsConnected)
             {
                 _client.Close();
-                _client.Connect();
+                _client.Open();
             } else
             {
-                _client.Connect();
+                _client.Open();
             }
         }
         #endregion
@@ -526,29 +526,26 @@
         {
             Reconnect();
             System.Threading.Thread.Sleep(2000);
-            OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { Username = TwitchUsername, Error = new ErrorEvent { Exception = e.Exception, Message = e.Message } });
+            OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { Username = TwitchUsername, Error = new ErrorEvent { Exception = e.Exception, Message = e.Exception.Message } });
         }
 
-        private void _client_OnDisconnected(object sender, CloseEventArgs e)
+        private void _client_OnDisconnected(object sender, EventArgs e)
         {
             OnDisconnected?.Invoke(this, new OnDisconnectedArgs { Username = TwitchUsername });
             JoinedChannels.Clear();
         }
 
-        private void _client_OnMessage(object sender, MessageEventArgs e)
+        private void _client_OnMessage(object sender, MessageReceivedEventArgs e)
         {
             string[] stringSeparators = new string[] { "\r\n" };
-            string[] lines = e.Data.Split(stringSeparators, StringSplitOptions.None);
+            string[] lines = e.Message.Split(stringSeparators, StringSplitOptions.None);
             foreach(string line in lines)
             {
-                if(line.Length > 1)
+                if (line.Length > 1)
                 {
                     log($"Received: {line}");
-                    if (e.IsText)
-                    {
-                        OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = line });
-                        ParseIrcMessage(line);
-                    }
+                    OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = line });
+                    ParseIrcMessage(line);
                 }
             }
             
