@@ -35,6 +35,8 @@
         public bool IsSubscriber { get; protected set; }
         /// <summary>Number of months a person has been subbed.</summary>
         public int SubscribedMonthCount { get; protected set; }
+        /// <summary>Unique identifier of chat room.</summary>
+        public string RoomId { get; protected set; }
         /// <summary>Twitch site-wide turbo status.</summary>
         public bool IsTurbo { get; protected set; }
         /// <summary>Channel specific moderator status.</summary>
@@ -164,6 +166,10 @@
                 else if (part.Contains("mod="))
                 {
                     IsModerator = part.Split('=')[1] == "1";
+                }
+                else if(part.Contains("room-id="))
+                {
+                    RoomId = part.Split('=')[1];
                 }
                 else if(part.Contains("noisy="))
                 {
