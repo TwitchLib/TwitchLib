@@ -280,6 +280,41 @@
                 return await Requests.GetGeneric<Models.API.v5.Channels.ChannelFollowers>($"https://api.twitch.tv/kraken/channels/{channelId}/follows" + optionalQuery, null, Requests.API.v5);
             }
             #endregion
+            #region GetAllChannelFollowers
+            public async static Task<List<Models.API.v5.Channels.ChannelFollow>> GetChannelFollowers(string channelId)
+            {
+                // initial stuffs
+                List<Models.API.v5.Channels.ChannelFollow> followers = new List<Models.API.v5.Channels.ChannelFollow>();
+                int totalFollowers;
+                var firstBatch = await Channels.GetChannelFollowers(channelId, 100, 0, direction: "asc");
+                totalFollowers = firstBatch.Total;
+                followers.AddRange(firstBatch.Follows);
+
+                // math stuff
+                int amount = firstBatch.Follows.Length;
+                int leftOverFollowers = (totalFollowers - amount) % 100;
+                int requiredRequests = (totalFollowers - amount - leftOverFollowers) / 100;
+
+                // perform required requests
+                int currentOffset = amount;
+                System.Threading.Thread.Sleep(1000);
+                for(int i = 0; i < requiredRequests; i++)
+                {
+                    var requestedFollowers = await GetChannelFollowers(channelId, 100, currentOffset, "asc");
+                    followers.AddRange(requestedFollowers.Follows);
+                    currentOffset += requestedFollowers.Follows.Length;
+
+                    // we should wait a second before performing another request per Twitch requirements
+                    System.Threading.Thread.Sleep(1000);
+                }
+
+                // get leftover subs
+                var leftOverFollowersRequest = await GetChannelFollowers(channelId, leftOverFollowers, currentOffset, direction: "asc");
+                followers.AddRange(leftOverFollowersRequest.Follows);
+
+                return followers;
+            }
+            #endregion
             #region GetChannelTeams
             public async static Task<Models.API.v5.Channels.ChannelTeams> GetChannelTeams(string channelId)
             {

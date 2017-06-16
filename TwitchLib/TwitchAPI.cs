@@ -347,6 +347,17 @@ namespace TwitchLib
                     return await Internal.TwitchAPI.v5.Channels.GetChannelFollowers(channelId, limit, offset, cursor, direction);
                 }
                 #endregion
+                #region GetAllChannelFollowers
+                /// <summary>
+                /// [ASYNC] Gets all of the followers a channel has. THIS IS A VERY EXPENSIVE CALL AND CAN TAKE A LONG TIME IF THE CHANNEL HAS A LOT OF FOLLOWERS. NOT RECOMMENDED.
+                /// </summary>
+                /// <param name="channelId">THe specified channelId of the channel to get the information from.</param>
+                /// <returns></returns>
+                public async static Task<List<Models.API.v5.Channels.ChannelFollow>> GetAllFollowers(string channelId)
+                {
+                    return await Internal.TwitchAPI.v5.Channels.GetChannelFollowers(channelId);
+                }
+                #endregion
                 #region GetChannelTeams
                 /// <summary>
                 /// <para>[ASYNC] Gets a list of teams to which a specified channel belongs.</para>
