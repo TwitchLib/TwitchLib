@@ -87,6 +87,8 @@
         {
             _channels = usernames;
             _identifierType = StreamIdentifierType.Usernames;
+            OnStreamsSet?.Invoke(this,
+                new OnStreamsSetArgs { Channels = Channels, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
         }
         /// <summary> Sets the list of channels to monitor by username </summary>
         /// <param name="userids">List of channels to monitor as userids</param>
