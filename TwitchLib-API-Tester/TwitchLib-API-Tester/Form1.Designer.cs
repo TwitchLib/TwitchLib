@@ -343,16 +343,20 @@
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.groupBox68 = new System.Windows.Forms.GroupBox();
-            this.button68 = new System.Windows.Forms.Button();
-            this.textBox67 = new System.Windows.Forms.TextBox();
-            this.label70 = new System.Windows.Forms.Label();
-            this.button67 = new System.Windows.Forms.Button();
             this.groupBox70 = new System.Windows.Forms.GroupBox();
             this.button70 = new System.Windows.Forms.Button();
             this.textBox68 = new System.Windows.Forms.TextBox();
             this.label71 = new System.Windows.Forms.Label();
             this.button71 = new System.Windows.Forms.Button();
+            this.groupBox68 = new System.Windows.Forms.GroupBox();
+            this.button68 = new System.Windows.Forms.Button();
+            this.textBox67 = new System.Windows.Forms.TextBox();
+            this.label70 = new System.Windows.Forms.Label();
+            this.button67 = new System.Windows.Forms.Button();
+            this.groupBox71 = new System.Windows.Forms.GroupBox();
+            this.textBox69 = new System.Windows.Forms.TextBox();
+            this.label72 = new System.Windows.Forms.Label();
+            this.button72 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -420,6 +424,7 @@
             this.tabPage3.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.tabControl3.SuspendLayout();
+            this.tabPage25.SuspendLayout();
             this.tabPage32.SuspendLayout();
             this.groupBox65.SuspendLayout();
             this.tabPage34.SuspendLayout();
@@ -449,8 +454,9 @@
             this.groupBox5.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.groupBox68.SuspendLayout();
             this.groupBox70.SuspendLayout();
+            this.groupBox68.SuspendLayout();
+            this.groupBox71.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -2608,6 +2614,7 @@
             // 
             // tabPage25
             // 
+            this.tabPage25.Controls.Add(this.groupBox71);
             this.tabPage25.Location = new System.Drawing.Point(10, 48);
             this.tabPage25.Name = "tabPage25";
             this.tabPage25.Size = new System.Drawing.Size(1475, 940);
@@ -3547,6 +3554,55 @@
             this.tabPage4.Text = "Services";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // groupBox70
+            // 
+            this.groupBox70.Controls.Add(this.button70);
+            this.groupBox70.Controls.Add(this.textBox68);
+            this.groupBox70.Controls.Add(this.label71);
+            this.groupBox70.Controls.Add(this.button71);
+            this.groupBox70.Location = new System.Drawing.Point(19, 230);
+            this.groupBox70.Name = "groupBox70";
+            this.groupBox70.Size = new System.Drawing.Size(437, 198);
+            this.groupBox70.TabIndex = 5;
+            this.groupBox70.TabStop = false;
+            this.groupBox70.Text = "FollowerService";
+            // 
+            // button70
+            // 
+            this.button70.Location = new System.Drawing.Point(266, 98);
+            this.button70.Name = "button70";
+            this.button70.Size = new System.Drawing.Size(147, 82);
+            this.button70.TabIndex = 4;
+            this.button70.Text = "Stop";
+            this.button70.UseVisualStyleBackColor = true;
+            this.button70.Click += new System.EventHandler(this.button70_Click);
+            // 
+            // textBox68
+            // 
+            this.textBox68.Location = new System.Drawing.Point(174, 40);
+            this.textBox68.Name = "textBox68";
+            this.textBox68.Size = new System.Drawing.Size(239, 38);
+            this.textBox68.TabIndex = 3;
+            // 
+            // label71
+            // 
+            this.label71.AutoSize = true;
+            this.label71.Location = new System.Drawing.Point(15, 43);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(153, 32);
+            this.label71.TabIndex = 1;
+            this.label71.Text = "ChannelId:";
+            // 
+            // button71
+            // 
+            this.button71.Location = new System.Drawing.Point(6, 98);
+            this.button71.Name = "button71";
+            this.button71.Size = new System.Drawing.Size(147, 82);
+            this.button71.TabIndex = 0;
+            this.button71.Text = "Start";
+            this.button71.UseVisualStyleBackColor = true;
+            this.button71.Click += new System.EventHandler(this.button71_Click);
+            // 
             // groupBox68
             // 
             this.groupBox68.Controls.Add(this.button68);
@@ -3596,54 +3652,43 @@
             this.button67.UseVisualStyleBackColor = true;
             this.button67.Click += new System.EventHandler(this.button67_Click);
             // 
-            // groupBox70
+            // groupBox71
             // 
-            this.groupBox70.Controls.Add(this.button70);
-            this.groupBox70.Controls.Add(this.textBox68);
-            this.groupBox70.Controls.Add(this.label71);
-            this.groupBox70.Controls.Add(this.button71);
-            this.groupBox70.Location = new System.Drawing.Point(19, 230);
-            this.groupBox70.Name = "groupBox70";
-            this.groupBox70.Size = new System.Drawing.Size(437, 198);
-            this.groupBox70.TabIndex = 5;
-            this.groupBox70.TabStop = false;
-            this.groupBox70.Text = "FollowerService";
+            this.groupBox71.Controls.Add(this.textBox69);
+            this.groupBox71.Controls.Add(this.label72);
+            this.groupBox71.Controls.Add(this.button72);
+            this.groupBox71.Location = new System.Drawing.Point(14, 21);
+            this.groupBox71.Name = "groupBox71";
+            this.groupBox71.Size = new System.Drawing.Size(437, 198);
+            this.groupBox71.TabIndex = 4;
+            this.groupBox71.TabStop = false;
+            this.groupBox71.Text = "Get All Channel Followers";
             // 
-            // button70
+            // textBox69
             // 
-            this.button70.Location = new System.Drawing.Point(266, 98);
-            this.button70.Name = "button70";
-            this.button70.Size = new System.Drawing.Size(147, 82);
-            this.button70.TabIndex = 4;
-            this.button70.Text = "Stop";
-            this.button70.UseVisualStyleBackColor = true;
-            this.button70.Click += new System.EventHandler(this.button70_Click);
+            this.textBox69.Location = new System.Drawing.Point(179, 44);
+            this.textBox69.Name = "textBox69";
+            this.textBox69.Size = new System.Drawing.Size(243, 38);
+            this.textBox69.TabIndex = 2;
             // 
-            // textBox68
+            // label72
             // 
-            this.textBox68.Location = new System.Drawing.Point(174, 40);
-            this.textBox68.Name = "textBox68";
-            this.textBox68.Size = new System.Drawing.Size(239, 38);
-            this.textBox68.TabIndex = 3;
+            this.label72.AutoSize = true;
+            this.label72.Location = new System.Drawing.Point(6, 47);
+            this.label72.Name = "label72";
+            this.label72.Size = new System.Drawing.Size(160, 32);
+            this.label72.TabIndex = 1;
+            this.label72.Text = "Channel Id:";
             // 
-            // label71
+            // button72
             // 
-            this.label71.AutoSize = true;
-            this.label71.Location = new System.Drawing.Point(15, 43);
-            this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(153, 32);
-            this.label71.TabIndex = 1;
-            this.label71.Text = "ChannelId:";
-            // 
-            // button71
-            // 
-            this.button71.Location = new System.Drawing.Point(6, 98);
-            this.button71.Name = "button71";
-            this.button71.Size = new System.Drawing.Size(147, 82);
-            this.button71.TabIndex = 0;
-            this.button71.Text = "Start";
-            this.button71.UseVisualStyleBackColor = true;
-            this.button71.Click += new System.EventHandler(this.button71_Click);
+            this.button72.Location = new System.Drawing.Point(6, 100);
+            this.button72.Name = "button72";
+            this.button72.Size = new System.Drawing.Size(425, 82);
+            this.button72.TabIndex = 0;
+            this.button72.Text = "Send";
+            this.button72.UseVisualStyleBackColor = true;
+            this.button72.Click += new System.EventHandler(this.button72_Click);
             // 
             // Form1
             // 
@@ -3755,6 +3800,7 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
+            this.tabPage25.ResumeLayout(false);
             this.tabPage32.ResumeLayout(false);
             this.groupBox65.ResumeLayout(false);
             this.groupBox65.PerformLayout();
@@ -3798,10 +3844,12 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabPage4.ResumeLayout(false);
-            this.groupBox68.ResumeLayout(false);
-            this.groupBox68.PerformLayout();
             this.groupBox70.ResumeLayout(false);
             this.groupBox70.PerformLayout();
+            this.groupBox68.ResumeLayout(false);
+            this.groupBox68.PerformLayout();
+            this.groupBox71.ResumeLayout(false);
+            this.groupBox71.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -4131,6 +4179,10 @@
         private System.Windows.Forms.TextBox textBox68;
         private System.Windows.Forms.Label label71;
         private System.Windows.Forms.Button button71;
+        private System.Windows.Forms.GroupBox groupBox71;
+        private System.Windows.Forms.TextBox textBox69;
+        private System.Windows.Forms.Label label72;
+        private System.Windows.Forms.Button button72;
     }
 }
 

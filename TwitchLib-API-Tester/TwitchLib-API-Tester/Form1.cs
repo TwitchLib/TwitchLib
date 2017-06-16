@@ -64,6 +64,8 @@ namespace TwitchLib_API_Tester
         {
             TwitchLib.TwitchAPI.Settings.ClientId = ClientId;
             TwitchLib.TwitchAPI.Settings.AccessToken = AccessToken;
+
+            MessageBox.Show("scopes: " + string.Join(",", TwitchLib.TwitchAPI.Settings.Scopes));
         }
 
         public string Channel { get { return textBox1.Text; } set { textBox1.Text = value; } }
@@ -646,6 +648,14 @@ namespace TwitchLib_API_Tester
         private void button70_Click(object sender, EventArgs e)
         {
             followerService.StopService();
+        }
+
+        private async void button72_Click(object sender, EventArgs e)
+        {
+            var result = await TwitchLib.TwitchAPI.Channels.v5.GetAllFollowers(textBox69.Text);
+            MessageBox.Show("Total: " + result.Count());
+            foreach (var follow in result)
+                MessageBox.Show("Name: " + follow.User.DisplayName);
         }
     }
 }
