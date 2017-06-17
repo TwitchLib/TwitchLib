@@ -13,7 +13,7 @@
 </p>
 
 ## About
-TwitchLib is a powerful C# library that allows for interaction with various Twitch services like chat, whispers, API, and PubSub event system. Below are the descriptions of the core components that make up TwitchLib.
+TwitchLib is a powerful C# library that allows for interaction with various Twitch services like chat, whispers, API, and PubSub event system. There is a public [Discord server](https://discord.gg/8NXaEyV). Below are the descriptions of the core components that make up TwitchLib.
 
 * **TwitchClient**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch.
 * **TwitchAPI**: With complete v3 and v5 endpoints, TwitchAPI is a static asynchronous class that allows for modifying of virtually all Twitch account properties and fetching of Twitch data. The class also sports undocumented endpoints and thirdparty endpoints.
