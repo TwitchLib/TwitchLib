@@ -6,7 +6,7 @@
 <a href="https://travis-ci.org/swiftyspiffy/TwitchLib.svg"><img src="https://api.travis-ci.org/swiftyspiffy/TwitchLib.svg?branch=master" style="max-height: 300px;"></a>
 <a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/.NET%20Framework-4.5-orange.svg" style="max-height: 300px;"></a>
 <img src="https://img.shields.io/badge/Platform-.NET-lightgrey.svg" style="max-height: 300px;" alt="Platform: iOS">
-<a href="https://discord.gg/0gHwecaLRAzrRYWi"><img src="https://img.shields.io/badge/Discord-Twitch-red.svg" style="max-height: 300px;"></a>
+<a href="https://discord.gg/8NXaEyV"><img src="https://img.shields.io/badge/Discord-TwitchAPI-red.svg" style="max-height: 300px;"></a>
 <a href="http://twitter.com/swiftyspiffy"><img src="https://img.shields.io/badge/Twitter-@swiftyspiffy-blue.svg?style=flat" style="max-height: 300px;"></a>
 <a href="https://gitter.im/TwitchLib/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link"><img src="https://img.shields.io/badge/GITTER-COME CHAT-green.svg" style="max-height: 300px;"></a>
 
