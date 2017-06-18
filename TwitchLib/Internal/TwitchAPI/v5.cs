@@ -300,7 +300,7 @@
                 System.Threading.Thread.Sleep(1000);
                 for(int i = 0; i < requiredRequests; i++)
                 {
-                    var requestedFollowers = await GetChannelFollowers(channelId, 100, currentOffset, "asc");
+                    var requestedFollowers = await GetChannelFollowers(channelId, 100, currentOffset, direction: "asc");
                     followers.AddRange(requestedFollowers.Follows);
                     currentOffset += requestedFollowers.Follows.Length;
 
