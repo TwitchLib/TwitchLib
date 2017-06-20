@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId />
-    <Version>1.5.1.1</Version>
+    <Version>1.5.2.1</Version>
     <Description />
   </PropertyGroup>
 
@@ -11,10 +11,6 @@
     <PackageReference Include="CoreCompat.System.Drawing.v2" Version="5.2.0-preview1-r131" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="WebSocket4Net" Version="0.15.0-beta9" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

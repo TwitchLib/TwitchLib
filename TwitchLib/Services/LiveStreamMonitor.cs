@@ -85,13 +85,17 @@
         /// <param name="usernames">List of channels to monitor as usernames</param>
         public void SetStreamsByUsername(List<string> usernames)
         {
+            _statuses = new Dictionary<string, bool>();
             _channels = usernames;
             _identifierType = StreamIdentifierType.Usernames;
+            OnStreamsSet?.Invoke(this,
+                new OnStreamsSetArgs { Channels = Channels, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
         }
         /// <summary> Sets the list of channels to monitor by username </summary>
         /// <param name="userids">List of channels to monitor as userids</param>
         public void SetStreamsByUserId(List<string> userids)
         {
+            _statuses = new Dictionary<string, bool>();
             _channels = userids;
             _identifierType = StreamIdentifierType.UserIds;
             OnStreamsSet?.Invoke(this,
