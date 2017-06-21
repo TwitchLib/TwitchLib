@@ -64,6 +64,8 @@ namespace TwitchLib_API_Tester
         {
             TwitchLib.TwitchAPI.Settings.ClientId = ClientId;
             TwitchLib.TwitchAPI.Settings.AccessToken = AccessToken;
+
+            MessageBox.Show("scopes: " + string.Join(",", TwitchLib.TwitchAPI.Settings.Scopes));
         }
 
         public string Channel { get { return textBox1.Text; } set { textBox1.Text = value; } }
@@ -73,20 +75,20 @@ namespace TwitchLib_API_Tester
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            var blockResp = await TwitchLib.TwitchAPI.Blocks.GetBlocks(Channel);
+            var blockResp = await TwitchLib.TwitchAPI.Blocks.v3.GetBlocks(Channel);
             foreach (var block in blockResp.Blocks)
                 MessageBox.Show(block.User.DisplayName); 
         }
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Blocks.CreateBlock(Channel, textBox4.Text);
+            var resp = await TwitchLib.TwitchAPI.Blocks.v3.CreateBlock(Channel, textBox4.Text);
             MessageBox.Show(resp.User.DisplayName);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            TwitchLib.TwitchAPI.Blocks.RemoveBlock(Channel, textBox5.Text);
+            TwitchLib.TwitchAPI.Blocks.v3.RemoveBlock(Channel, textBox5.Text);
         }
 
         private async void button4_Click(object sender, EventArgs e)
@@ -251,28 +253,28 @@ namespace TwitchLib_API_Tester
 
         private async void button20_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Clips.GetClip(textBox25.Text);
+            var resp = await TwitchLib.TwitchAPI.Clips.v5.GetClip(textBox25.Text);
 
             MessageBox.Show($"Title: {resp.Title}\nGame: {resp.Game}\nCurator name: {resp.Curator.Name}\nBroadcaster name: {resp.Broadcaster.Name}");
         }
 
         private async void button21_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Clips.GetTopClips();
+            var resp = await TwitchLib.TwitchAPI.Clips.v5.GetTopClips();
             foreach (var clip in resp.Clips)
                 MessageBox.Show($"Title: {clip.Title}\nGame: {clip.Game}\nBroacaster: {clip.Broadcaster.Name}\nViews: {clip.Views}");
         }
 
         private async void button22_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Clips.GetFollowedClips();
+            var resp = await TwitchLib.TwitchAPI.Clips.v5.GetFollowedClips();
             foreach (var clip in resp.Clips)
                 MessageBox.Show($"Title: {clip.Title}\nGame: {clip.Game}\nBroacaster: {clip.Broadcaster.Name}\nViews: {clip.Views}");
         }
 
         private async void button23_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Follows.GetFollowers(textBox26.Text);
+            var resp = await TwitchLib.TwitchAPI.Follows.v3.GetFollowers(textBox26.Text);
             MessageBox.Show($"Total: {resp.Total}");
             foreach (var follower in resp.Followers)
                 MessageBox.Show($"Name: {follower.User.DisplayName}\nCreated at: {follower.CreatedAt.ToLongDateString()}");
@@ -280,7 +282,7 @@ namespace TwitchLib_API_Tester
 
         private async void button24_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Follows.GetFollows(textBox27.Text);
+            var resp = await TwitchLib.TwitchAPI.Follows.v3.GetFollows(textBox27.Text);
             MessageBox.Show($"Total: {resp.Total}");
             foreach (var follower in resp.Follows)
                 MessageBox.Show($"Name: {follower.Channel.DisplayName}\nCreated at: {follower.CreatedAt.ToLongDateString()}");
@@ -290,7 +292,7 @@ namespace TwitchLib_API_Tester
         {
             try
             {
-                var resp = await TwitchLib.TwitchAPI.Follows.GetFollowsStatus(textBox29.Text, textBox28.Text);
+                var resp = await TwitchLib.TwitchAPI.Follows.v3.GetFollowsStatus(textBox29.Text, textBox28.Text);
                 MessageBox.Show($"Following! Since: {resp.CreatedAt.ToLongDateString()}");
             } catch(TwitchLib.Exceptions.API.BadResourceException)
             {
@@ -300,13 +302,13 @@ namespace TwitchLib_API_Tester
 
         private async void button26_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Follows.CreateFollow(textBox30.Text, textBox31.Text);
+            var resp = await TwitchLib.TwitchAPI.Follows.v3.CreateFollow(textBox30.Text, textBox31.Text);
             MessageBox.Show($"Follow created! Created date: {resp.CreatedAt.ToLongDateString()}");
         }
 
         private async void button27_Click(object sender, EventArgs e)
         {
-            await TwitchLib.TwitchAPI.Follows.RemoveFollow(textBox32.Text, textBox33.Text);
+            await TwitchLib.TwitchAPI.Follows.v3.RemoveFollow(textBox32.Text, textBox33.Text);
             MessageBox.Show("Follow removed!");
         }
 
@@ -386,7 +388,7 @@ namespace TwitchLib_API_Tester
 
         private async void button38_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Subscriptions.GetSubscribers(textBox39.Text);
+            var resp = await TwitchLib.TwitchAPI.Subscriptions.v3.GetSubscribers(textBox39.Text);
             MessageBox.Show($"Total: {resp.Total}");
             foreach (var sub in resp.Subscribers)
                 MessageBox.Show($"Sub name: {sub.User.Name}\nCreated at: {sub.CreatedAt.ToLongDateString()}");
@@ -394,13 +396,13 @@ namespace TwitchLib_API_Tester
 
         private async void button39_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Subscriptions.GetAllSubscribers(textBox40.Text);
+            var resp = await TwitchLib.TwitchAPI.Subscriptions.v3.GetAllSubscribers(textBox40.Text);
             MessageBox.Show($"Total: {resp.Count()}");
         }
 
         private async void button40_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Subscriptions.ChannelHasUserSubscribed(textBox41.Text, textBox42.Text);
+            var resp = await TwitchLib.TwitchAPI.Subscriptions.v3.ChannelHasUserSubscribed(textBox41.Text, textBox42.Text);
             if (resp != null)
                 MessageBox.Show($"{resp.User.Name} is subscribed to the channel! Created: {resp.CreatedAt.ToLongDateString()}");
             else
@@ -409,13 +411,13 @@ namespace TwitchLib_API_Tester
 
         private async void button41_Click(object sender, EventArgs e)
         {
-            int subCount = await TwitchLib.TwitchAPI.Subscriptions.GetSubscriberCount(textBox43.Text);
+            int subCount = await TwitchLib.TwitchAPI.Subscriptions.v3.GetSubscriberCount(textBox43.Text);
             MessageBox.Show($"Sub count: {subCount}");
         }
 
         private async void button42_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.Subscriptions.UserSubscribedToChannel(textBox44.Text, textBox45.Text);
+            var resp = await TwitchLib.TwitchAPI.Subscriptions.v3.UserSubscribedToChannel(textBox44.Text, textBox45.Text);
             if (resp != null)
                 MessageBox.Show($"User is subscribed to {resp.Channel.Name} and was created on: {resp.CreatedAt.ToLongDateString()}");
             else
@@ -627,6 +629,33 @@ namespace TwitchLib_API_Tester
             MessageBox.Show($"Total: {resp.Total}");
             foreach (var csstream in resp.Streams)
                 MessageBox.Show($"Streamer: {csstream.User.DisplayName}\nPlaying on map: {csstream.MapName}\nWith {csstream.Viewers} viewers watching.");
+        }
+
+        private static void onFollowersDetected(object sender, TwitchLib.Events.Services.FollowerService.OnNewFollowersDetectedArgs e)
+        {
+            MessageBox.Show($"New followers detected! Followers: {String.Join(",", e.NewFollowers)}");
+        }
+
+        private TwitchLib.Services.FollowerService followerService;
+        private void button71_Click(object sender, EventArgs e)
+        {
+            followerService = new TwitchLib.Services.FollowerService();
+            followerService.SetChannelByChannelId(textBox68.Text);
+            followerService.OnNewFollowersDetected += onFollowersDetected;
+            followerService.StartService();
+        }
+
+        private void button70_Click(object sender, EventArgs e)
+        {
+            followerService.StopService();
+        }
+
+        private async void button72_Click(object sender, EventArgs e)
+        {
+            var result = await TwitchLib.TwitchAPI.Channels.v5.GetAllFollowers(textBox69.Text);
+            MessageBox.Show("Total: " + result.Count());
+            foreach (var follow in result)
+                MessageBox.Show("Name: " + follow.User.DisplayName);
         }
     }
 }

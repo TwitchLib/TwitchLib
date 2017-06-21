@@ -6,8 +6,9 @@
 <a href="https://travis-ci.org/swiftyspiffy/TwitchLib.svg"><img src="https://api.travis-ci.org/swiftyspiffy/TwitchLib.svg?branch=master" style="max-height: 300px;"></a>
 <a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/.NET%20Framework-4.5-orange.svg" style="max-height: 300px;"></a>
 <img src="https://img.shields.io/badge/Platform-.NET-lightgrey.svg" style="max-height: 300px;" alt="Platform: iOS">
-<a href="https://discord.gg/0gHwecaLRAzrRYWi"><img src="https://img.shields.io/badge/Discord-Twitch-red.svg" style="max-height: 300px;"></a>
+<a href="https://discord.gg/8NXaEyV"><img src="https://img.shields.io/badge/Discord-TwitchAPI-red.svg" style="max-height: 300px;"></a>
 <a href="http://twitter.com/swiftyspiffy"><img src="https://img.shields.io/badge/Twitter-@swiftyspiffy-blue.svg?style=flat" style="max-height: 300px;"></a>
+<a href="https://gitter.im/TwitchLib/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link"><img src="https://img.shields.io/badge/GITTER-COME CHAT-green.svg" style="max-height: 300px;"></a>
 
 </p>
 
@@ -74,7 +75,7 @@ private void onMessageReceived(object sender, OnMessageReceivedArgs e) {
 }
 private void onCommandReceived(object sender, OnWhisperCommandReceivedArgs e) {
 	if(e.Command == "help")
-    	client.SendMessage($"Hi there {e.ChatMessage.Username}! You can view all commands using !command");
+    	client.SendMessage($"Hi there {e.WhisperMessage.Username}! You can view all commands using !command");
 }
 private void onWhisperReceived(object sender, OnWhisperReceivedArgs e) {
 	if(e.WhisperMessage.Username == "my_friend")
@@ -82,9 +83,9 @@ private void onWhisperReceived(object sender, OnWhisperReceivedArgs e) {
 }
 private void onNewSubscriber(object sender, OnNewSubscriberArgs e) {
 	if(e.Subscriber.IsTwitchPrime)
-		client.SendMessage($"Welcome {} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
+		client.SendMessage($"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
     else
-    	client.SendMessage($"Welcome {} to the substers! You just earned 500 points!");
+    	client.SendMessage($"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
 }
 ```
 For a complete list of TwitchClient events and calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_client.html" target="_blank">here</a>
@@ -148,6 +149,7 @@ For a complete list of TwitchPubSub functionality, click <a href="http://swiftys
 - PFCKrutonium's [TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot) - This project implements the bot using VisualBasic.
 - Moerty's Avia Bot, a fully featured bot that is a good example of a built out bot: [https://github.com/Moerty/AivaBot](https://github.com/Moerty/AivaBot)
 - [HardlyDifficult](https://www.twitch.tv/hardlydifficult)'s Chat Bot Creation VODs: [#1](https://www.twitch.tv/videos/141096702) [#2](https://www.twitch.tv/videos/141154684) [#3](https://www.twitch.tv/videos/141210422) [#4](https://www.twitch.tv/videos/141535267)
+- Prom3theu5's TwitchBotBase - [github.com/prom3theu5/TwitchBotBase](https://github.com/prom3theu5/TwitchBotBase)
 
 ## Installation
 
