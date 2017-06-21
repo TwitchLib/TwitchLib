@@ -45,8 +45,6 @@
         public bool IsMe { get; protected set; }
         /// <summary>Chat message from broadcaster identifier flag</summary>
         public bool IsBroadcaster { get; protected set; }
-        /// <summary>Chat message is from a partnered streamer.</summary>
-        public bool IsPartnered { get; protected set; }
         /// <summary>Experimental property noisy determination by Twitch.</summary>
         public Enums.Noisy Noisy { get; protected set; } = Enums.Noisy.NotSet;
         /// <summary>Raw IRC-style text received from Twitch.</summary>
@@ -123,8 +121,6 @@
                     {
                         if (badge.Key == "bits")
                             CheerBadge = new CheerBadge(int.Parse(badge.Value));
-                        if (badge.Key == "partner")
-                            IsPartnered = true;
                         if (badge.Key == "subscriber")
                             SubscribedMonthCount = int.Parse(badge.Value);
                     }
