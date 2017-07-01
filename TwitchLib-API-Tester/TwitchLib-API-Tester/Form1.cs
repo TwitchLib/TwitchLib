@@ -657,5 +657,11 @@ namespace TwitchLib_API_Tester
             foreach (var follow in result)
                 MessageBox.Show("Name: " + follow.User.DisplayName);
         }
+
+        private async void button73_Click(object sender, EventArgs e)
+        {
+            var result = await TwitchLib.TwitchAPI.Channels.v5.GetChannelByID(textBox70.Text);
+            MessageBox.Show("Broadcaster type: " + result.BroadcasterType);
+        }
     }
 }
