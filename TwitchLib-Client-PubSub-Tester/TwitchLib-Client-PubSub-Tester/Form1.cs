@@ -377,7 +377,7 @@ namespace TwitchLibExample
         private void pubsubOnConnected(object sender, object e)
         {
             // MODERATOR ACCOUNT ID, CHANNEL ACCOUNT ID, MODERATOR OAUTH
-            pubsub.ListenToChatModeratorActions(40876073, 44338537, "6q1tg02dtt3b24k6ndfwjoxsd6solz");
+            pubsub.ListenToChatModeratorActions(, , "");
             // MY ACCOUNT ID, MY OAUTH
             //pubsub.ListenToWhispers(0, "oauth_token");
         }
