@@ -23,10 +23,10 @@
         public static class Bits
         {
             #region GetCheermotes
-            public async static Task<Models.API.v5.Bits.Action[]> GetCheermotes(string channelId = null)
+            public async static Task<Models.API.v5.Bits.Cheermotes> GetCheermotes(string channelId = null)
             {
                 string optionalQuery = (channelId != null) ? $"?channel_id={channelId}" : string.Empty;
-                return await Requests.GetGeneric<Models.API.v5.Bits.Action[]>($"https://api.twitch.tv/kraken/bits/actions{optionalQuery}");
+                return await Requests.GetGeneric<Models.API.v5.Bits.Cheermotes>($"https://api.twitch.tv/kraken/bits/actions{optionalQuery}");
             }
             #endregion
         }

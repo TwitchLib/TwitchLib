@@ -270,6 +270,8 @@
     <Compile Include="Models\API\v3\Videos\Channel.cs" />
     <Compile Include="Models\API\v3\Videos\TopVideosResponse.cs" />
     <Compile Include="Models\API\v3\Videos\Video.cs" />
+    <Compile Include="Models\API\v5\Bits\Cheermotes.cs" />
+    <Compile Include="Models\API\v5\Bits\Scales.cs" />
     <Compile Include="Models\API\v5\Clips\Broadcaster.cs" />
     <Compile Include="Models\API\v5\Clips\Clip.cs" />
     <Compile Include="Models\API\v5\Clips\Curator.cs" />
@@ -291,7 +293,7 @@
     <Compile Include="Models\API\v5\UploadVideo\UploadedVideo.cs" />
     <Compile Include="Models\API\v5\UploadVideo\UploadVideoListing.cs" />
     <Compile Include="Models\API\v5\Bits\Action.cs" />
-    <Compile Include="Models\API\v5\Bits\Image.cs" />
+    <Compile Include="Models\API\v5\Bits\Images.cs" />
     <Compile Include="Models\API\v5\Bits\ImageLinks.cs" />
     <Compile Include="Models\API\v5\Bits\DarkImage.cs" />
     <Compile Include="Models\API\v5\Bits\LightImage.cs" />
