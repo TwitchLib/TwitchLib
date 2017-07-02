@@ -361,6 +361,10 @@
             this.textBox70 = new System.Windows.Forms.TextBox();
             this.label73 = new System.Windows.Forms.Label();
             this.button73 = new System.Windows.Forms.Button();
+            this.groupBox73 = new System.Windows.Forms.GroupBox();
+            this.textBox71 = new System.Windows.Forms.TextBox();
+            this.label74 = new System.Windows.Forms.Label();
+            this.button74 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -428,6 +432,7 @@
             this.tabPage3.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.tabControl3.SuspendLayout();
+            this.tabPage23.SuspendLayout();
             this.tabPage25.SuspendLayout();
             this.groupBox71.SuspendLayout();
             this.tabPage32.SuspendLayout();
@@ -462,6 +467,7 @@
             this.groupBox70.SuspendLayout();
             this.groupBox68.SuspendLayout();
             this.groupBox72.SuspendLayout();
+            this.groupBox73.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -2600,6 +2606,7 @@
             // 
             // tabPage23
             // 
+            this.tabPage23.Controls.Add(this.groupBox73);
             this.tabPage23.Location = new System.Drawing.Point(10, 48);
             this.tabPage23.Name = "tabPage23";
             this.tabPage23.Padding = new System.Windows.Forms.Padding(3);
@@ -3734,6 +3741,44 @@
             this.button73.UseVisualStyleBackColor = true;
             this.button73.Click += new System.EventHandler(this.button73_Click);
             // 
+            // groupBox73
+            // 
+            this.groupBox73.Controls.Add(this.textBox71);
+            this.groupBox73.Controls.Add(this.label74);
+            this.groupBox73.Controls.Add(this.button74);
+            this.groupBox73.Location = new System.Drawing.Point(19, 19);
+            this.groupBox73.Name = "groupBox73";
+            this.groupBox73.Size = new System.Drawing.Size(437, 198);
+            this.groupBox73.TabIndex = 6;
+            this.groupBox73.TabStop = false;
+            this.groupBox73.Text = "GetCheermotes";
+            // 
+            // textBox71
+            // 
+            this.textBox71.Location = new System.Drawing.Point(179, 44);
+            this.textBox71.Name = "textBox71";
+            this.textBox71.Size = new System.Drawing.Size(243, 38);
+            this.textBox71.TabIndex = 2;
+            // 
+            // label74
+            // 
+            this.label74.AutoSize = true;
+            this.label74.Location = new System.Drawing.Point(6, 47);
+            this.label74.Name = "label74";
+            this.label74.Size = new System.Drawing.Size(160, 32);
+            this.label74.TabIndex = 1;
+            this.label74.Text = "Channel Id:";
+            // 
+            // button74
+            // 
+            this.button74.Location = new System.Drawing.Point(6, 100);
+            this.button74.Name = "button74";
+            this.button74.Size = new System.Drawing.Size(425, 82);
+            this.button74.TabIndex = 0;
+            this.button74.Text = "Send";
+            this.button74.UseVisualStyleBackColor = true;
+            this.button74.Click += new System.EventHandler(this.button74_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -3844,6 +3889,7 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
+            this.tabPage23.ResumeLayout(false);
             this.tabPage25.ResumeLayout(false);
             this.groupBox71.ResumeLayout(false);
             this.groupBox71.PerformLayout();
@@ -3896,6 +3942,8 @@
             this.groupBox68.PerformLayout();
             this.groupBox72.ResumeLayout(false);
             this.groupBox72.PerformLayout();
+            this.groupBox73.ResumeLayout(false);
+            this.groupBox73.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -4233,6 +4281,10 @@
         private System.Windows.Forms.TextBox textBox70;
         private System.Windows.Forms.Label label73;
         private System.Windows.Forms.Button button73;
+        private System.Windows.Forms.GroupBox groupBox73;
+        private System.Windows.Forms.TextBox textBox71;
+        private System.Windows.Forms.Label label74;
+        private System.Windows.Forms.Button button74;
     }
 }
 
