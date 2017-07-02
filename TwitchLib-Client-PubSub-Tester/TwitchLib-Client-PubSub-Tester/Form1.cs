@@ -256,7 +256,7 @@ namespace TwitchLibExample
             CheckForIllegalCrossThreadCalls = false;
 
             richTextBox1.BackColor = e.ChatMessage.Color;
-            richTextBox1.Text = String.Format("#{0} {1}[isSub: {2}, isPartner: {3}, subbedFor: {4}]: {3}", e.ChatMessage.Channel, e.ChatMessage.DisplayName, e.ChatMessage.IsSubscriber, e.ChatMessage.IsPartnered, e.ChatMessage.SubscribedMonthCount, e.ChatMessage.Message) + 
+            richTextBox1.Text = String.Format("#{0} {1}[isSub: {2}, isPartner: {3}, subbedFor: {4}]: {3}", e.ChatMessage.Channel, e.ChatMessage.DisplayName, e.ChatMessage.IsSubscriber, "", e.ChatMessage.SubscribedMonthCount, e.ChatMessage.Message) + 
                 "\n" + richTextBox1.Text;
         }
 
