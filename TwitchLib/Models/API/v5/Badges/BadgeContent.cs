@@ -14,7 +14,7 @@
         public string Image_Url_2x { get; protected set; }
         #endregion
         #region Image_Url_4x
-        [JsonProperty(PropertyName = "image_url_3x")]
+        [JsonProperty(PropertyName = "image_url_4x")]
         public string Image_Url_4x { get; protected set; }
         #endregion
         #region Description
