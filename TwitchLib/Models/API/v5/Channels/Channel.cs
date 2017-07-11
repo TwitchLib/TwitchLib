@@ -32,6 +32,11 @@
         [JsonProperty(PropertyName = "followers")]
         public int Followers { get; internal set; }
         #endregion
+        #region BroadcasterType
+        /// <summary>Property representing broadcaster type. Can be partner, affiliate or ''</summary>
+        [JsonProperty(PropertyName = "broadcaster_type")]
+        public string BroadcasterType { get; internal set; }
+        #endregion
         #region Game
         /// <summary>Property representing the currently played game.</summary>
         [JsonProperty(PropertyName = "game")]

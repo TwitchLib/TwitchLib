@@ -794,8 +794,11 @@
             response = Internal.Parsing.Chat.detectedBeingHosted(ircMessage, JoinedChannels);
             if(response.Successful)
             {
-                OnBeingHosted?.Invoke(this, new OnBeingHostedArgs { Channel = response.Channel, BotUsername = TwitchUsername, HostedByChannel = ircMessage.Split(':')[2].Split(' ')[0],
-                    Viewers = ((ircMessage.Contains("hosting you for") && ircMessage.Split(' ').Count() >= 9) ? int.Parse(ircMessage.Split(' ')[8]) : -1) });
+                var hostedBy = ircMessage.Split(':')[2].Split(' ')[0];
+                var viewers = ((ircMessage.Contains("hosting you for") && ircMessage.Split(' ').Count() >= 9) ? int.Parse(ircMessage.Split(' ')[8]) : -1);
+                var isAuto = ircMessage.Contains("now autohosting");
+                OnBeingHosted?.Invoke(this, new OnBeingHostedArgs { Channel = response.Channel, BotUsername = TwitchUsername, HostedByChannel = hostedBy,
+                    Viewers = viewers, IsAutoHosted = isAuto });
                 return;
             }
             #endregion
