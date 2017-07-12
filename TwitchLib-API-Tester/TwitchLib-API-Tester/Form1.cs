@@ -657,5 +657,18 @@ namespace TwitchLib_API_Tester
             foreach (var follow in result)
                 MessageBox.Show("Name: " + follow.User.DisplayName);
         }
+
+        private async void button73_Click(object sender, EventArgs e)
+        {
+            var result = await TwitchLib.TwitchAPI.Channels.v5.GetChannelByID(textBox70.Text);
+            MessageBox.Show("Broadcaster type: " + result.BroadcasterType);
+        }
+
+        private async void button74_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Bits.v5.GetCheermotes(textBox71.Text);
+            foreach (var cheermote in resp.Actions)
+                MessageBox.Show($"Prefix: {cheermote.Prefix}\nType: {cheermote.Type}\nUpdated at: {cheermote.UpdatedAt}\n Dark animated 1.5 tier 0 image: {cheermote.Tiers[0].Images.Dark.Animated.OnePointFive}");
+        }
     }
 }

@@ -14,5 +14,7 @@
         public int Viewers;
         /// <summary>Property representing the channel received state from.</summary>
         public string Channel;
+        /// <summary>Property representing whether or not host was auto or not.</summary>
+        public bool IsAutoHosted;
     }
 }

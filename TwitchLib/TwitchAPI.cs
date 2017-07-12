@@ -59,7 +59,7 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetCheermotes
-                public static async Task<Models.API.v5.Bits.Action[]> GetCheermotes(string channelId = null)
+                public static async Task<Models.API.v5.Bits.Cheermotes> GetCheermotes(string channelId = null)
                 {
                     return await Internal.TwitchAPI.v5.Bits.GetCheermotes(channelId);
                 }
