@@ -24,7 +24,7 @@
                 case "chat_moderator_actions":
                     messageData = new ChatModeratorActions(encodedJsonMessage);
                     break;
-                case "channel-bitsevents":
+                case "channel-bits-events-v1":
                     messageData = new ChannelBitsEvents(encodedJsonMessage);
                     break;
                 case "video-playback":
