@@ -19,6 +19,8 @@
         private bool logging;
         private Timer pingTimer = new Timer();
 
+        private System.Collections.Generic.List<String> topicList = new System.Collections.Generic.List<string>();
+
         /*
         NON-IMPLEMENTED AVAILABLE TOPICS (i'm aware of):
         whispers.account_name - Requires OAUTH
@@ -127,7 +129,7 @@
         {
             string type = JObject.Parse(message).SelectToken("type")?.ToString();
 
-            switch(type.ToLower())
+            switch (type.ToLower())
             {
                 case "response":
                     Models.PubSub.Responses.Response resp = new Models.PubSub.Responses.Response(message);
@@ -138,8 +140,8 @@
                     }
                     break;
                 case "message":
-                    Models.PubSub. Responses.Message msg = new Models.PubSub.Responses.Message(message);
-                    switch(msg.Topic.Split('.')[0])
+                    Models.PubSub.Responses.Message msg = new Models.PubSub.Responses.Message(message);
+                    switch (msg.Topic.Split('.')[0])
                     {
                         case "channel-subscribe-events-v1":
                             ChannelSubscription subscription = (ChannelSubscription)msg.messageData;
@@ -198,7 +200,7 @@
 
                             }
                             break;
-                        case "channel-bitsevents":
+                        case "channel-bits-events-v1":
                             ChannelBitsEvents cBE = (ChannelBitsEvents)msg.messageData;
                             OnBitsReceived?.Invoke(this, new OnBitsReceivedArgs { BitsUsed = cBE.BitsUsed, ChannelId = cBE.ChannelId, ChannelName = cBE.ChannelName,
                                 ChatMessage = cBE.ChatMessage, Context = cBE.Context, Time = cBE.Time, TotalBitsUsed = cBE.TotalBitsUsed, UserId = cBE.UserId, Username = cBE.Username});
@@ -232,27 +234,40 @@
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        private void listenToTopic(string topic, string oauth = null, bool unlisten = false)
+        private void listenToTopic (string topic)
         {
-            if (oauth.Contains("oauth:"))
+            topicList.Add(topic);
+        }
+
+        public void sendTopics (string oauth = null, bool unlisten = false)
+        {
+            if (oauth != null && oauth.Contains ("oauth:"))
+            {
                 oauth = oauth.Replace("oauth:", "");
+            }
+
             string nonce = generateNonce();
-            previousRequest = new Models.PubSub.PreviousRequest(nonce, Enums.PubSubRequestType.ListenToTopic, topic);
+
+            JArray topics = new JArray();
+            foreach (String val in topicList)
+            {
+                topics.Add(new JValue(val));
+            }
+
+
             JObject jsonData = new JObject(
                 new JProperty("type", !unlisten ? "LISTEN" : "UNLISTEN"),
                 new JProperty("nonce", nonce),
                 new JProperty("data",
                     new JObject(
-                        new JProperty("topics",
-                            new JArray(
-                                new JValue(topic)
-                            )
+                        new JProperty("topics", topics)
                         )
                     )
-                )
-            );
+                );
             if (oauth != null)
+            {
                 ((JObject)jsonData.SelectToken("data")).Add(new JProperty("auth_token", oauth));
+            }
 
             socket.Send(jsonData.ToString());
         }
@@ -273,24 +288,23 @@
         /// <param name="moderatorOAuth">Moderator OAuth key (can be OAuth key with any scope)</param>
         public void ListenToChatModeratorActions(int myTwitchId, int channelTwitchId, string moderatorOAuth)
         {
-            listenToTopic($"chat_moderator_actions.{myTwitchId}.{channelTwitchId}", moderatorOAuth);
+            listenToTopic($"chat_moderator_actions.{myTwitchId}.{channelTwitchId}");
         }
 
         /// <summary>
         /// Sends request to listenOn bits events in specific channel
         /// </summary>
-        /// <param name="channelTwitchId">Channel Id of channel to listen to bitsOn (can be fetched from TwitchApi)</param>
-        /// <param name="channelOAuth">OAuth token linked to the channel.</param>
-        public void ListenToBitsEvents(int channelTwitchId, string channelOAuth)
+        /// <param name="channelTwitchId">Channel Id of channel to listen to bits on (can be fetched from TwitchApi)</param>
+        public void ListenToBitsEvents(string channelTwitchId)
         {
-            listenToTopic($"channel-bitsevents.{channelTwitchId}", channelOAuth);
+            listenToTopic($"channel-bits-events-v1.{channelTwitchId}");
         }
 
         /// <summary>
         /// Sends request to listenOn video playback events in specific channel
         /// </summary>
         /// <param name="channelTwitchId">Channel Id of channel to listen to playback events in.</param>
-        public void ListenToVideoPlayback(int channelTwitchId)
+        public void ListenToVideoPlayback(string channelTwitchId)
         {
             listenToTopic($"video-playback.{channelTwitchId}");
         }
@@ -299,20 +313,18 @@
         /// Sends request to listen to whispers from specific channel.
         /// </summary>
         /// <param name="channelTwitchId">Channel to listen to whispers on.</param>
-        /// <param name="channelOAuth">OAuth token to verify identity.</param>
-        public void ListenToWhispers(int channelTwitchId, string channelOAuth)
+        public void ListenToWhispers(string channelTwitchId)
         {
-            listenToTopic($"whispers.{channelTwitchId}", channelOAuth);
+            listenToTopic($"whispers.{channelTwitchId}");
         }
 
         /// <summary>
         /// Sends request to listen to channel subscriptions.
         /// </summary>
         /// <param name="channelId">Id of the channel to listen to.</param>
-        /// <param name="channelOAuth">OAuth with channel_subscriptions scope.</param>
-        public void ListenToSubscriptions(string channelId, string channelOAuth)
+        public void ListenToSubscriptions(string channelId)
         {
-            listenToTopic($"channel-subscribe-events-v1.{channelId}", channelOAuth);
+            listenToTopic($"channel-subscribe-events-v1.{channelId}");
         }
         #endregion
 
