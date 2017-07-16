@@ -653,7 +653,10 @@ namespace TwitchLib.Logging
 
 		protected void ChangeName(string newName)
 		{
-            name = newName ?? throw new ArgumentNullException("newName");
+            if (newName != null)
+                name = newName;
+            else
+                throw new ArgumentNullException("newName");
 		}
 
 		private void Log(LoggerLevel loggerLevel, string message, Exception exception)
