@@ -268,11 +268,7 @@
             if (whisperCommandIdentifier != '\0')
                 _whisperCommandIdentifiers.Add(whisperCommandIdentifier);
             Logging = logging;
-            if (Logging)
-            {
-                if (logger == null) Logger = new NullLogFactory().Create("TwitchLibNullLogger");
-                Logger = logger;
-            }
+            Logger = logger ?? new NullLogFactory().Create("TwitchLibNullLogger");
             AutoReListenOnException = autoReListenOnExceptions;
 
             _client = new WebSocket($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}");
