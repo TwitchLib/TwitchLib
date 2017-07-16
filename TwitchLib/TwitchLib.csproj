@@ -49,7 +49,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\Logging.cs" />
     <Compile Include="Enums\ChanneldentifierTypeEnum.cs" />
     <Compile Include="Enums\NoisyEnum.cs" />
     <Compile Include="Enums\AuthScopesEnum.cs" />
@@ -175,6 +174,26 @@
     <Compile Include="Extensions\Client\UnbanUserExt.cs" />
     <Compile Include="Internal\Parsing\Chat.cs" />
     <Compile Include="Internal\Requests.cs" />
+    <Compile Include="Logging\AbstractExtendedLoggerFactory.cs" />
+    <Compile Include="Logging\AbstractLoggerFactory.cs" />
+    <Compile Include="Logging\ConsoleFactory.cs" />
+    <Compile Include="Logging\ConsoleLogger.cs" />
+    <Compile Include="Logging\IContextProperties.cs" />
+    <Compile Include="Logging\IContextStack.cs" />
+    <Compile Include="Logging\IContextStacks.cs" />
+    <Compile Include="Logging\IExtendedLogger.cs" />
+    <Compile Include="Logging\IExtendedLoggerFactory.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\ILoggerFactory.cs" />
+    <Compile Include="Logging\LevelFilteredLogger.cs" />
+    <Compile Include="Logging\LoggerException.cs" />
+    <Compile Include="Logging\LoggerLevel.cs" />
+    <Compile Include="Logging\NullLogFactory.cs" />
+    <Compile Include="Logging\NullLogger.cs" />
+    <Compile Include="Logging\StreamLogger.cs" />
+    <Compile Include="Logging\StreamLoggerFactory.cs" />
+    <Compile Include="Logging\TraceLogger.cs" />
+    <Compile Include="Logging\TraceLoggerFactory.cs" />
     <Compile Include="Models\API\RequestModel.cs" />
     <Compile Include="Models\API\ThirdParty\UsernameChangeListing.cs" />
     <Compile Include="Models\API\ThirdParty\UsernameChangeResponse.cs" />
