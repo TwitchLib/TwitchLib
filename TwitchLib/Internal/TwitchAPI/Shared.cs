@@ -13,8 +13,8 @@
         private static string accessTokenInternal;
         #endregion
         #region Public static property fields
-        public static string ClientId { get { return clientIdInternal; } set { setClientId(value); } }
-        public static string AccessToken { get { return accessTokenInternal; } set { setAccessToken(value); } }
+        public static string ClientId { get { return clientIdInternal; } set { setClientId(value).RunSynchronously(); } }
+        public static string AccessToken { get { return accessTokenInternal; } set { setAccessToken(value).RunSynchronously(); } }
 
         public static List<Enums.AuthScopes> Scopes { get; set; } = new List<Enums.AuthScopes>() { Enums.AuthScopes.None };
         #endregion
