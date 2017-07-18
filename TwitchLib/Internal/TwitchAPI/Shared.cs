@@ -60,7 +60,7 @@
         {
             try
             {
-                await v5.Root.GetRoot(null, clientId);
+                await v5.Root.GetRootAsync(null, clientId);
                 return true;
             }
             catch(BadRequestException)
@@ -75,7 +75,7 @@
         {
             try
             {
-                var resp = await v5.Root.GetRoot(accessToken);
+                var resp = await v5.Root.GetRootAsync(accessToken);
                 if (resp.Token != null)
                 {
                     Scopes = buildScopesList(resp.Token);

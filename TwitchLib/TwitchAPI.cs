@@ -40,15 +40,15 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetSubscriberBadgesForChannel
-                public static async Task<Models.API.v5.Badges.ChannelDisplayBadges> GetSubscriberBadgesForChannel(string channelId)
+                public static async Task<Models.API.v5.Badges.ChannelDisplayBadges> GetSubscriberBadgesForChannelAsync(string channelId)
                 {
-                    return await Internal.TwitchAPI.v5.Badges.GetSubscriberBadgesForChannel(channelId);
+                    return await Internal.TwitchAPI.v5.Badges.GetSubscriberBadgesForChannelAsync(channelId);
                 }
                 #endregion
                 #region GetGlobalBadges
-                public static async Task<Models.API.v5.Badges.GlobalBadgesResponse> GetGlobalBadges()
+                public static async Task<Models.API.v5.Badges.GlobalBadgesResponse> GetGlobalBadgesAsync()
                 {
-                    return await Internal.TwitchAPI.v5.Badges.GetGlobalBadges();
+                    return await Internal.TwitchAPI.v5.Badges.GetGlobalBadgesAsync();
                 }
                 #endregion
             }
@@ -59,9 +59,9 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetCheermotes
-                public static async Task<Models.API.v5.Bits.Cheermotes> GetCheermotes(string channelId = null)
+                public static async Task<Models.API.v5.Bits.Cheermotes> GetCheermotesAsync(string channelId = null)
                 {
-                    return await Internal.TwitchAPI.v5.Bits.GetCheermotes(channelId);
+                    return await Internal.TwitchAPI.v5.Bits.GetCheermotesAsync(channelId);
                 }
                 #endregion
             }
@@ -72,24 +72,24 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetBlocks
-                public static async Task<Models.API.v3.Blocks.GetBlocksResponse> GetBlocks(string channel, int limit = 25, int offset = 0, string accessToken = null)
+                public static async Task<Models.API.v3.Blocks.GetBlocksResponse> GetBlocksAsync(string channel, int limit = 25, int offset = 0, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Read, accessToken);
-                    return await Internal.TwitchAPI.v3.Blocks.GetBlocks(channel, limit, offset, accessToken);
+                    return await Internal.TwitchAPI.v3.Blocks.GetBlocksAsync(channel, limit, offset, accessToken);
                 }
                 #endregion
                 #region CreateBlock
-                public static async Task<Models.API.v3.Blocks.Block> CreateBlock(string channel, string target, string accessToken = null)
+                public static async Task<Models.API.v3.Blocks.Block> CreateBlockAsync(string channel, string target, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
-                    return await Internal.TwitchAPI.v3.Blocks.CreateBlock(channel, target, accessToken);
+                    return await Internal.TwitchAPI.v3.Blocks.CreateBlockAsync(channel, target, accessToken);
                 }
                 #endregion
                 #region RemoveBlock
-                public static async Task RemoveBlock(string channel, string target, string accessToken = null)
+                public static async Task RemoveBlockAsync(string channel, string target, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, accessToken);
-                    await Internal.TwitchAPI.v3.Blocks.RemoveBlock(channel, target, accessToken);
+                    await Internal.TwitchAPI.v3.Blocks.RemoveBlockAsync(channel, target, accessToken);
                 }
                 #endregion
             }
@@ -101,45 +101,45 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetChannelFeedPosts
-                public async static Task<Models.API.v3.ChannelFeeds.ChannelFeedResponse> GetChannelFeedPosts(string channel, int limit = 25, string cursor = null, string accessToken = null)
+                public async static Task<Models.API.v3.ChannelFeeds.ChannelFeedResponse> GetChannelFeedPostsAsync(string channel, int limit = 25, string cursor = null, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, accessToken);
-                    return await Internal.TwitchAPI.v3.ChannelFeed.GetChannelFeedPosts(channel, limit, cursor);
+                    return await Internal.TwitchAPI.v3.ChannelFeed.GetChannelFeedPostsAsync(channel, limit, cursor);
                 }
                 #endregion
                 #region CreatePost
-                public static async Task<Models.API.v3.ChannelFeeds.PostResponse> CreatePost(string channel, string content, bool share = false, string accessToken = null)
+                public static async Task<Models.API.v3.ChannelFeeds.PostResponse> CreatePostAsync(string channel, string content, bool share = false, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
-                    return await Internal.TwitchAPI.v3.ChannelFeed.CreatePost(channel, content, share, accessToken);
+                    return await Internal.TwitchAPI.v3.ChannelFeed.CreatePostAsync(channel, content, share, accessToken);
                 }
                 #endregion
                 #region GetPostById
-                public static async Task<Models.API.v3.ChannelFeeds.Post> GetPostById(string channel, string postId, string accessToken = null)
+                public static async Task<Models.API.v3.ChannelFeeds.Post> GetPostByIdAsync(string channel, string postId, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, accessToken);
-                    return await Internal.TwitchAPI.v3.ChannelFeed.GetPost(channel, postId);
+                    return await Internal.TwitchAPI.v3.ChannelFeed.GetPostAsync(channel, postId);
                 }
                 #endregion
                 #region RemovePost
-                public static async Task RemovePost(string channel, string postId, string accessToken = null)
+                public static async Task RemovePostAsync(string channel, string postId, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
-                    await Internal.TwitchAPI.v3.ChannelFeed.DeletePost(channel, postId, accessToken);
+                    await Internal.TwitchAPI.v3.ChannelFeed.DeletePostAsync(channel, postId, accessToken);
                 }
                 #endregion
                 #region CreateReaction
-                public static async Task CreateReaction(string channel, string postId, string emoteId, string accessToken = null)
+                public static async Task CreateReactionAsync(string channel, string postId, string emoteId, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
-                    await Internal.TwitchAPI.v3.ChannelFeed.CreateReaction(channel, postId, emoteId, accessToken);
+                    await Internal.TwitchAPI.v3.ChannelFeed.CreateReactionAsync(channel, postId, emoteId, accessToken);
                 }
                 #endregion
                 #region RemoveReaction
-                public static async Task RemoveReaction(string channel, string postId, string emoteId, string accessToken = null)
+                public static async Task RemoveReactionAsync(string channel, string postId, string emoteId, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, accessToken);
-                    await Internal.TwitchAPI.v3.ChannelFeed.RemoveReaction(channel, postId, emoteId, accessToken);
+                    await Internal.TwitchAPI.v3.ChannelFeed.RemoveReactionAsync(channel, postId, emoteId, accessToken);
                 }
                 #endregion
             }
@@ -147,79 +147,79 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetMultipleFeedPosts
-                public async static Task<Models.API.v5.ChannelFeed.MultipleFeedPosts> GetMultipleFeedPosts(string channelId, long? limit = null, string cursor = null, long? comments = null, string authToken = null)
+                public async static Task<Models.API.v5.ChannelFeed.MultipleFeedPosts> GetMultipleFeedPostsAsync(string channelId, long? limit = null, string cursor = null, long? comments = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, authToken);
-                    return await Internal.TwitchAPI.v5.ChannelFeed.GetMultipleFeedPosts(channelId, limit, cursor, comments, authToken);
+                    return await Internal.TwitchAPI.v5.ChannelFeed.GetMultipleFeedPostsAsync(channelId, limit, cursor, comments, authToken);
                 }
                 #endregion
                 #region GetFeedPosts
-                public async static Task<Models.API.v5.ChannelFeed.FeedPost> GetFeedPost(string channelId, string postId, long? comments = null, string authToken = null)
+                public async static Task<Models.API.v5.ChannelFeed.FeedPost> GetFeedPostAsync(string channelId, string postId, long? comments = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, authToken);
-                    return await Internal.TwitchAPI.v5.ChannelFeed.GetFeedPost(channelId, postId, comments, authToken);
+                    return await Internal.TwitchAPI.v5.ChannelFeed.GetFeedPostAsync(channelId, postId, comments, authToken);
                 }
                 #endregion
                 #region CreateFeedPost
-                public async static Task<Models.API.v5.ChannelFeed.FeedPostCreation> CreateFeedPost(string channelId, string content, bool? share = null, string authToken = null)
+                public async static Task<Models.API.v5.ChannelFeed.FeedPostCreation> CreateFeedPostAsync(string channelId, string content, bool? share = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
-                    return await Internal.TwitchAPI.v5.ChannelFeed.CreateFeedPost(channelId, content, share, authToken);
+                    return await Internal.TwitchAPI.v5.ChannelFeed.CreateFeedPostAsync(channelId, content, share, authToken);
                 }
                 #endregion
                 #region DeleteFeedPost
-                public async static Task<Models.API.v5.ChannelFeed.FeedPost> DeleteFeedPost(string channelId, string postId, string authToken = null)
+                public async static Task<Models.API.v5.ChannelFeed.FeedPost> DeleteFeedPostAsync(string channelId, string postId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
-                    return await Internal.TwitchAPI.v5.ChannelFeed.DeleteFeedPost(channelId, postId, authToken);
+                    return await Internal.TwitchAPI.v5.ChannelFeed.DeleteFeedPostAsync(channelId, postId, authToken);
                 }
                 #endregion
                 #region CreateReactionToFeedPost
-                public async static Task<Models.API.v5.ChannelFeed.FeedPostReactionPost> CreateReactionToFeedPost(string channelId, string postId, string emoteId, string authToken = null)
+                public async static Task<Models.API.v5.ChannelFeed.FeedPostReactionPost> CreateReactionToFeedPostAsync(string channelId, string postId, string emoteId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
-                    return await Internal.TwitchAPI.v5.ChannelFeed.CreateReactionToFeedPost(channelId, postId, emoteId, authToken);
+                    return await Internal.TwitchAPI.v5.ChannelFeed.CreateReactionToFeedPostAsync(channelId, postId, emoteId, authToken);
                 }
                 #endregion
                 #region DeleteReactionToFeedPost
-                public static Task DeleteReactionToFeedPost(string channelId, string postId, string emoteId, string authToken = null)
+                public static Task DeleteReactionToFeedPostAsync(string channelId, string postId, string emoteId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
-                    return Internal.TwitchAPI.v5.ChannelFeed.DeleteReactionToFeedPost(channelId, postId, emoteId, authToken);
+                    return Internal.TwitchAPI.v5.ChannelFeed.DeleteReactionToFeedPostAsync(channelId, postId, emoteId, authToken);
                 }
                 #endregion
                 #region GetFeedComments
-                public async static Task<Models.API.v5.ChannelFeed.FeedPostComments> GetFeedComments(string channelId, string postId, long? limit = null, string cursor = null, string authToken = null)
+                public async static Task<Models.API.v5.ChannelFeed.FeedPostComments> GetFeedCommentsAsync(string channelId, string postId, long? limit = null, string cursor = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Read, authToken);
-                    return await Internal.TwitchAPI.v5.ChannelFeed.GetFeedComments(channelId, postId, limit, cursor, authToken);
+                    return await Internal.TwitchAPI.v5.ChannelFeed.GetFeedCommentsAsync(channelId, postId, limit, cursor, authToken);
                 }
                 #endregion
                 #region CreateFeedComment
-                public async static Task<Models.API.v5.ChannelFeed.FeedPostComment> CreateFeedComment(string channelId, string postId, string content, string authToken = null)
+                public async static Task<Models.API.v5.ChannelFeed.FeedPostComment> CreateFeedCommentAsync(string channelId, string postId, string content, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
-                    return await Internal.TwitchAPI.v5.ChannelFeed.CreateFeedComment(channelId, postId, content, authToken);
+                    return await Internal.TwitchAPI.v5.ChannelFeed.CreateFeedCommentAsync(channelId, postId, content, authToken);
                 }
                 #endregion
                 #region DeleteFeedComment
-                public async static Task<Models.API.v5.ChannelFeed.FeedPostComment> DeleteFeedComment(string channelId, string postId, string commentId, string authToken = null)
+                public async static Task<Models.API.v5.ChannelFeed.FeedPostComment> DeleteFeedCommentAsync(string channelId, string postId, string commentId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
-                    return await Internal.TwitchAPI.v5.ChannelFeed.DeleteFeedComment(channelId, postId, commentId, authToken);
+                    return await Internal.TwitchAPI.v5.ChannelFeed.DeleteFeedCommentAsync(channelId, postId, commentId, authToken);
                 }
                 #endregion
                 #region CreateReactionToFeedComments
-                public async static Task<Models.API.v5.ChannelFeed.FeedPostReactionPost> CreateReactionToFeedComment(string channelId, string postId, string commentId, string emoteId, string authToken = null)
+                public async static Task<Models.API.v5.ChannelFeed.FeedPostReactionPost> CreateReactionToFeedCommentAsync(string channelId, string postId, string commentId, string emoteId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Feed_Edit, authToken);
-                    return await Internal.TwitchAPI.v5.ChannelFeed.CreateReactionToFeedComment(channelId, postId, commentId, emoteId, authToken);
+                    return await Internal.TwitchAPI.v5.ChannelFeed.CreateReactionToFeedCommentAsync(channelId, postId, commentId, emoteId, authToken);
                 }
                 #endregion
                 #region DeleteReactionToFeedComments
-                public async static Task DeleteReactionToFeedComment(string channelId, string postId, string commentId, string emoteId, string authToken = null)
+                public async static Task DeleteReactionToFeedCommentAsync(string channelId, string postId, string commentId, string emoteId, string authToken = null)
                 {
-                    await Internal.TwitchAPI.v5.ChannelFeed.DeleteReactionToFeedComment(channelId, postId, commentId, emoteId, authToken);
+                    await Internal.TwitchAPI.v5.ChannelFeed.DeleteReactionToFeedCommentAsync(channelId, postId, commentId, emoteId, authToken);
                 }
                 #endregion
             }
@@ -230,49 +230,49 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetChannelByName
-                public static async Task<Models.API.v3.Channels.Channel> GetChannelByName(string channel)
+                public static async Task<Models.API.v3.Channels.Channel> GetChannelByNameAsync(string channel)
                 {
-                    return await Internal.TwitchAPI.v3.Channels.GetChannelByName(channel);
+                    return await Internal.TwitchAPI.v3.Channels.GetChannelByNameAsync(channel);
                 }
                 #endregion
                 #region GetChannel
-                public static async Task<Models.API.v3.Channels.Channel> GetChannel(string accessToken = null)
+                public static async Task<Models.API.v3.Channels.Channel> GetChannelAsync(string accessToken = null)
                 {
-                    return await Internal.TwitchAPI.v3.Channels.GetChannel(accessToken);
+                    return await Internal.TwitchAPI.v3.Channels.GetChannelAsync(accessToken);
                 }
                 #endregion
                 #region GetChannelEditors
-                public static async Task<Models.API.v3.Channels.GetEditorsResponse> GetChannelEditors(string channel, string accessToken = null)
+                public static async Task<Models.API.v3.Channels.GetEditorsResponse> GetChannelEditorsAsync(string channel, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, accessToken);
-                    return await Internal.TwitchAPI.v3.Channels.GetChannelEditors(channel, accessToken);
+                    return await Internal.TwitchAPI.v3.Channels.GetChannelEditorsAsync(channel, accessToken);
                 }
                 #endregion
                 #region UpdateChannel
-                public static async Task<Models.API.v3.Channels.Channel> UpdateChannel(string channel, string status = null, string game = null, string delay = null, bool? channelFeed = null, string accessToken = null)
+                public static async Task<Models.API.v3.Channels.Channel> UpdateChannelAsync(string channel, string status = null, string game = null, string delay = null, bool? channelFeed = null, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, accessToken);
-                    return await Internal.TwitchAPI.v3.Channels.UpdateChannel(channel, status, game, delay, channelFeed, accessToken);
+                    return await Internal.TwitchAPI.v3.Channels.UpdateChannelAsync(channel, status, game, delay, channelFeed, accessToken);
                 }
                 #endregion
                 #region ResetStreamKey
-                public static async Task<Models.API.v3.Channels.ResetStreamKeyResponse> ResetStreamKey(string channel, string accessToken = null)
+                public static async Task<Models.API.v3.Channels.ResetStreamKeyResponse> ResetStreamKeyAsync(string channel, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Stream, accessToken);
-                    return await Internal.TwitchAPI.v3.Channels.ResetStreamKey(channel, accessToken);
+                    return await Internal.TwitchAPI.v3.Channels.ResetStreamKeyAsync(channel, accessToken);
                 }
                 #endregion
                 #region RunCommercial
-                public static async Task RunCommercial(string channel, Enums.CommercialLength length, string accessToken = null)
+                public static async Task RunCommercialAsync(string channel, Enums.CommercialLength length, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Commercial, accessToken);
-                    await Internal.TwitchAPI.v3.Channels.RunCommercial(channel, length, accessToken);
+                    await Internal.TwitchAPI.v3.Channels.RunCommercialAsync(channel, length, accessToken);
                 }
                 #endregion
                 #region GetTeams
-                public static async Task<Models.API.v3.Channels.GetTeamsResponse> GetTeams(string channel)
+                public static async Task<Models.API.v3.Channels.GetTeamsResponse> GetTeamsAsync(string channel)
                 {
-                    return await Internal.TwitchAPI.v3.Channels.GetTeams(channel);
+                    return await Internal.TwitchAPI.v3.Channels.GetTeamsAsync(channel);
                 }
                 #endregion
             }
@@ -285,9 +285,9 @@ namespace TwitchLib
                 /// <para>Required Authentication Scope: channel_read</para>
                 /// </summary>
                 /// <returns>A ChannelPrivileged object including all Channel object info plus email and streamkey.</returns>
-                public async static Task<Models.API.v5.Channels.ChannelAuthed> GetChannel(string authToken = null)
+                public async static Task<Models.API.v5.Channels.ChannelAuthed> GetChannelAsync(string authToken = null)
                 {
-                    return await Internal.TwitchAPI.v5.Channels.GetChannel(authToken);
+                    return await Internal.TwitchAPI.v5.Channels.GetChannelAsync(authToken);
                 }
                 #endregion
                 #region GetChannelById
@@ -296,9 +296,9 @@ namespace TwitchLib
                 /// </summary>
                 /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
                 /// <returns>A Channel object from the response of the Twitch API.</returns>
-                public async static Task<Models.API.v5.Channels.Channel> GetChannelByID(string channelId)
+                public async static Task<Models.API.v5.Channels.Channel> GetChannelByIDAsync(string channelId)
                 {
-                    return await Internal.TwitchAPI.v5.Channels.GetChannelByID(channelId);
+                    return await Internal.TwitchAPI.v5.Channels.GetChannelByIDAsync(channelId);
                 }
                 #endregion
                 #region UpdateChannel
@@ -313,10 +313,10 @@ namespace TwitchLib
                 /// <param name="delay">Channel delay, in seconds. This inserts a delay in the live feed. Requires the channel owner’s OAuth token.</param>
                 /// <param name="channelFeedEnabled">If true, the channel’s feed is turned on. Requires the channel owner’s OAuth token. Default: false.</param>
                 /// <returns>A Channel object with the newly changed properties.</returns>
-                public async static Task<Models.API.v5.Channels.Channel> UpdateChannel(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
+                public async static Task<Models.API.v5.Channels.Channel> UpdateChannelAsync(string channelId, string status = null, string game = null, string delay = null, bool? channelFeedEnabled = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
-                    return await Internal.TwitchAPI.v5.Channels.UpdateChannel(channelId, status, game, delay, channelFeedEnabled, authToken);
+                    return await Internal.TwitchAPI.v5.Channels.UpdateChannelAsync(channelId, status, game, delay, channelFeedEnabled, authToken);
                 }
                 #endregion
                 #region GetChannelEditors
@@ -326,10 +326,10 @@ namespace TwitchLib
                 /// </summary>
                 /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
                 /// <returns>A ChannelEditors object that contains an array of the Users which are Editor of the channel.</returns>
-                public async static Task<Models.API.v5.Channels.ChannelEditors> GetChannelEditors(string channelId, string authToken = null)
+                public async static Task<Models.API.v5.Channels.ChannelEditors> GetChannelEditorsAsync(string channelId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, authToken);
-                    return await Internal.TwitchAPI.v5.Channels.GetChannelEditors(channelId, authToken);
+                    return await Internal.TwitchAPI.v5.Channels.GetChannelEditorsAsync(channelId, authToken);
                 }
                 #endregion
                 #region GetChannelFollowers
@@ -342,9 +342,9 @@ namespace TwitchLib
                 /// <param name="cursor">Tells the server where to start fetching the next set of results, in a multi-page response.</param>
                 /// <param name="direction">Sorting direction. Valid values: "asc", "desc" (newest first). Default: "desc".</param>
                 /// <returns>A ChannelFollowers object that represents the response from the Twitch API.</returns>
-                public async static Task<Models.API.v5.Channels.ChannelFollowers> GetChannelFollowers(string channelId, int? limit = null, int? offset = null, string cursor = null, string direction = null)
+                public async static Task<Models.API.v5.Channels.ChannelFollowers> GetChannelFollowersAsync(string channelId, int? limit = null, int? offset = null, string cursor = null, string direction = null)
                 {
-                    return await Internal.TwitchAPI.v5.Channels.GetChannelFollowers(channelId, limit, offset, cursor, direction);
+                    return await Internal.TwitchAPI.v5.Channels.GetChannelFollowersAsync(channelId, limit, offset, cursor, direction);
                 }
                 #endregion
                 #region GetAllChannelFollowers
@@ -353,9 +353,9 @@ namespace TwitchLib
                 /// </summary>
                 /// <param name="channelId">THe specified channelId of the channel to get the information from.</param>
                 /// <returns></returns>
-                public async static Task<List<Models.API.v5.Channels.ChannelFollow>> GetAllFollowers(string channelId)
+                public async static Task<List<Models.API.v5.Channels.ChannelFollow>> GetAllFollowersAsync(string channelId)
                 {
-                    return await Internal.TwitchAPI.v5.Channels.GetChannelFollowers(channelId);
+                    return await Internal.TwitchAPI.v5.Channels.GetChannelFollowersAsync(channelId);
                 }
                 #endregion
                 #region GetChannelTeams
@@ -364,9 +364,9 @@ namespace TwitchLib
                 /// </summary>
                 /// <param name="channelId">The specified channelId of the channel to get the information from.</param>
                 /// <returns>An Array of the Teams the Channel belongs to.</returns>
-                public async static Task<Models.API.v5.Channels.ChannelTeams> GetChannelTeams(string channelId)
+                public async static Task<Models.API.v5.Channels.ChannelTeams> GetChannelTeamsAsync(string channelId)
                 {
-                    return await Internal.TwitchAPI.v5.Channels.GetChannelTeams(channelId);
+                    return await Internal.TwitchAPI.v5.Channels.GetChannelTeamsAsync(channelId);
                 }
                 #endregion
                 #region GetChannelSubscribers
@@ -380,10 +380,10 @@ namespace TwitchLib
                 /// <param name="direction">Sorting direction. Valid values: "asc", "desc" (newest first). Default: "desc".</param>
                 /// <param name="authToken">The associated auth token for this request.</param>
                 /// <returns></returns>
-                public async static Task<Models.API.v5.Channels.ChannelSubscribers> GetChannelSubscribers(string channelId, int? limit = null, int? offset = null, string direction = null, string authToken = null)
+                public async static Task<Models.API.v5.Channels.ChannelSubscribers> GetChannelSubscribersAsync(string channelId, int? limit = null, int? offset = null, string direction = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, authToken);
-                    return await Internal.TwitchAPI.v5.Channels.GetChannelSubscribers(channelId, limit, offset, direction, authToken);
+                    return await Internal.TwitchAPI.v5.Channels.GetChannelSubscribersAsync(channelId, limit, offset, direction, authToken);
                 }
                 #endregion
                 #region GetAllSubscribers
@@ -393,10 +393,10 @@ namespace TwitchLib
                 /// <param name="channelId">ChannelId indicating channel to get subs from.</param>
                 /// <param name="accessToken">The associated auth token for this request.</param>
                 /// <returns></returns>
-                public async static Task<List<Models.API.v5.Subscriptions.Subscription>> GetAllSubscribers(string channelId, string accessToken = null)
+                public async static Task<List<Models.API.v5.Subscriptions.Subscription>> GetAllSubscribersAsync(string channelId, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
-                    return await Internal.TwitchAPI.v5.Channels.GetAllSubscribers(channelId, accessToken);
+                    return await Internal.TwitchAPI.v5.Channels.GetAllSubscribersAsync(channelId, accessToken);
                 }
                 #endregion
                 #region CheckChannelSubscriptionByUser
@@ -408,23 +408,23 @@ namespace TwitchLib
                 /// <param name="channelId">The specified channel to check the subscription on.</param>
                 /// <param name="userId">The specified user to check for.</param>
                 /// <returns>Returns a subscription object or null if not subscribed.</returns>
-                public async static Task<Models.API.v5.Subscriptions.Subscription> CheckChannelSubscriptionByUser(string channelId, string userId, string authToken = null)
+                public async static Task<Models.API.v5.Subscriptions.Subscription> CheckChannelSubscriptionByUserAsync(string channelId, string userId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Check_Subscription, authToken);
-                    return await Internal.TwitchAPI.v5.Channels.CheckChannelSubscriptionByUser(channelId, userId, authToken);
+                    return await Internal.TwitchAPI.v5.Channels.CheckChannelSubscriptionByUserAsync(channelId, userId, authToken);
                 }
                 #endregion
                 #region GetChannelVideos
-                public async static Task<Models.API.v5.Channels.ChannelVideos> GetChannelVideos(string channelId, int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
+                public async static Task<Models.API.v5.Channels.ChannelVideos> GetChannelVideosAsync(string channelId, int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
                 {
-                    return await Internal.TwitchAPI.v5.Channels.GetChannelVideos(channelId, limit, offset, broadcastType, language, sort);
+                    return await Internal.TwitchAPI.v5.Channels.GetChannelVideosAsync(channelId, limit, offset, broadcastType, language, sort);
                 }
                 #endregion
                 #region StartChannelCommercial
-                public async static Task<Models.API.v5.Channels.ChannelCommercial> StartChannelCommercial(string channelId, Enums.CommercialLength duration, string authToken = null)
+                public async static Task<Models.API.v5.Channels.ChannelCommercial> StartChannelCommercialAsync(string channelId, Enums.CommercialLength duration, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Commercial, authToken);
-                    return await Internal.TwitchAPI.v5.Channels.StartChannelCommercial(channelId, duration, authToken);
+                    return await Internal.TwitchAPI.v5.Channels.StartChannelCommercialAsync(channelId, duration, authToken);
                 }
                 #endregion
                 #region ResetChannelStreamKey
@@ -435,10 +435,10 @@ namespace TwitchLib
                 /// </summary>
                 /// <param name="channelId">The specified channel to reset the StreamKey on.</param>
                 /// <returns>A ChannelPrivileged object that also contains the email and stream key of the channel aside from the normal channel values.</returns>
-                public async static Task<Models.API.v5.Channels.ChannelAuthed> ResetChannelStreamKey(string channelId, string authToken = null)
+                public async static Task<Models.API.v5.Channels.ChannelAuthed> ResetChannelStreamKeyAsync(string channelId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Stream, authToken);
-                    return await Internal.TwitchAPI.v5.Channels.ResetChannelStreamKey(channelId, authToken);
+                    return await Internal.TwitchAPI.v5.Channels.ResetChannelStreamKeyAsync(channelId, authToken);
                 }
                 #endregion
                 #region Communities
@@ -449,10 +449,10 @@ namespace TwitchLib
                 /// </summary>
                 /// <param name="channelId">The specified channel ID to get the community from.</param>
                 /// <returns>A Community object that represents the community the channel is in.</returns>
-                public async static Task<Models.API.v5.Communities.Community> GetChannelCommunity(string channelId, string authToken)
+                public async static Task<Models.API.v5.Communities.Community> GetChannelCommunityAsync(string channelId, string authToken)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
-                    return await Internal.TwitchAPI.v5.Channels.GetChannelCommunity(channelId, authToken);
+                    return await Internal.TwitchAPI.v5.Channels.GetChannelCommunityAsync(channelId, authToken);
                 }
                 #endregion
                 #region SetChannelCommunity
@@ -462,10 +462,10 @@ namespace TwitchLib
                 /// </summary>
                 /// <param name="channelId">The specified channel to set the community for.</param>
                 /// <param name="communityId">The specified community to set the channel to be a part of.</param>
-                public async static Task SetChannelCommunity(string channelId, string communityId, string authToken = null)
+                public async static Task SetChannelCommunityAsync(string channelId, string communityId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
-                    await Internal.TwitchAPI.v5.Channels.SetChannelCommunity(channelId, communityId, authToken);
+                    await Internal.TwitchAPI.v5.Channels.SetChannelCommunityAsync(channelId, communityId, authToken);
                 }
                 #endregion
                 #region DeleteChannelFromCommunity
@@ -473,10 +473,10 @@ namespace TwitchLib
                 /// [ASYNC] Deletes a specified channel from its community.
                 /// </summary>
                 /// <param name="channelId">The specified channel to be removed.</param>
-                public async static Task DeleteChannelFromCommunity(string channelId, string authToken = null)
+                public async static Task DeleteChannelFromCommunityAsync(string channelId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
-                    await Internal.TwitchAPI.v5.Channels.DeleteChannelFromCommunity(channelId, authToken);
+                    await Internal.TwitchAPI.v5.Channels.DeleteChannelFromCommunityAsync(channelId, authToken);
                 }
                 #endregion
                 #endregion
@@ -488,21 +488,21 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetBadges
-                public static async Task<Models.API.v3.Chat.BadgesResponse> GetBadges(string channel)
+                public static async Task<Models.API.v3.Chat.BadgesResponse> GetBadgesAsync(string channel)
                 {
-                    return await Internal.TwitchAPI.v3.Chat.GetBadges(channel);
+                    return await Internal.TwitchAPI.v3.Chat.GetBadgesAsync(channel);
                 }
                 #endregion
                 #region GetAllEmoticons
-                public static async Task<Models.API.v3.Chat.AllEmoticonsResponse> GetAllEmoticons()
+                public static async Task<Models.API.v3.Chat.AllEmoticonsResponse> GetAllEmoticonsAsync()
                 {
-                    return await Internal.TwitchAPI.v3.Chat.GetAllEmoticons();
+                    return await Internal.TwitchAPI.v3.Chat.GetAllEmoticonsAsync();
                 }
                 #endregion
                 #region GetEmoticonsBySets
-                public static async Task<Models.API.v3.Chat.EmoticonSetsResponse> GetEmoticonsBySets(List<int> emotesets)
+                public static async Task<Models.API.v3.Chat.EmoticonSetsResponse> GetEmoticonsBySetsAsync(List<int> emotesets)
                 {
-                    return await Internal.TwitchAPI.v3.Chat.GetEmoticonsBySets(emotesets);
+                    return await Internal.TwitchAPI.v3.Chat.GetEmoticonsBySetsAsync(emotesets);
                 }
                 #endregion
             }
@@ -510,21 +510,21 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetChatBadgesByChannel
-                public async static Task<Models.API.v5.Chat.ChannelBadges> GetChatBadgesByChannel(string channelId)
+                public async static Task<Models.API.v5.Chat.ChannelBadges> GetChatBadgesByChannelAsync(string channelId)
                 {
-                    return await Internal.TwitchAPI.v5.Chat.GetChatBadgesByChannel(channelId);
+                    return await Internal.TwitchAPI.v5.Chat.GetChatBadgesByChannelAsync(channelId);
                 }
                 #endregion
                 #region GetChatEmoticonsBySet
-                public async static Task<Models.API.v5.Chat.EmoteSet> GetChatEmoticonsBySet(List<int> emotesets = null)
+                public async static Task<Models.API.v5.Chat.EmoteSet> GetChatEmoticonsBySetAsync(List<int> emotesets = null)
                 {
-                    return await Internal.TwitchAPI.v5.Chat.GetChatEmoticonsBySet(emotesets);
+                    return await Internal.TwitchAPI.v5.Chat.GetChatEmoticonsBySetAsync(emotesets);
                 }
                 #endregion
                 #region GetAllChatEmoticons
-                public async static Task<Models.API.v5.Chat.AllChatEmotes> GetAllChatEmoticons()
+                public async static Task<Models.API.v5.Chat.AllChatEmotes> GetAllChatEmoticonsAsync()
                 {
-                    return await Internal.TwitchAPI.v5.Chat.GetAllChatEmoticons();
+                    return await Internal.TwitchAPI.v5.Chat.GetAllChatEmoticonsAsync();
                 }
                 #endregion
             }
@@ -535,70 +535,70 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetCollectionMetadata
-                public async static Task<Models.API.v5.Collections.CollectionMetadata> GetCollectionMetadata(string collectionId)
+                public async static Task<Models.API.v5.Collections.CollectionMetadata> GetCollectionMetadataAsync(string collectionId)
                 {
-                    return await Internal.TwitchAPI.v5.Collections.GetCollectionMetadata(collectionId);
+                    return await Internal.TwitchAPI.v5.Collections.GetCollectionMetadataAsync(collectionId);
                 }
                 #endregion
                 #region GetCollection
-                public async static Task<Models.API.v5.Collections.Collection> GetCollection(string collectionId, bool? includeAllItems = null)
+                public async static Task<Models.API.v5.Collections.Collection> GetCollectionAsync(string collectionId, bool? includeAllItems = null)
                 {
-                    return await Internal.TwitchAPI.v5.Collections.GetCollection(collectionId, includeAllItems);
+                    return await Internal.TwitchAPI.v5.Collections.GetCollectionAsync(collectionId, includeAllItems);
                 }
                 #endregion
                 #region GetCollectionsByChannel
-                public async static Task<Models.API.v5.Collections.CollectionsByChannel> GetCollectionsByChannel(string channelId, long? limit = null, string cursor = null, string containingItem = null)
+                public async static Task<Models.API.v5.Collections.CollectionsByChannel> GetCollectionsByChannelAsync(string channelId, long? limit = null, string cursor = null, string containingItem = null)
                 {
-                    return await Internal.TwitchAPI.v5.Collections.GetCollectionsByChannel(channelId, limit, cursor, containingItem);
+                    return await Internal.TwitchAPI.v5.Collections.GetCollectionsByChannelAsync(channelId, limit, cursor, containingItem);
                 }
                 #endregion
                 #region CreateCollection
-                public async static Task<Models.API.v5.Collections.CollectionMetadata> CreateCollection(string channelId, string collectionTitle, string authToken = null)
+                public async static Task<Models.API.v5.Collections.CollectionMetadata> CreateCollectionAsync(string channelId, string collectionTitle, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                    return await Internal.TwitchAPI.v5.Collections.CreateCollection(channelId, collectionTitle, authToken);
+                    return await Internal.TwitchAPI.v5.Collections.CreateCollectionAsync(channelId, collectionTitle, authToken);
                 }
                 #endregion
                 #region UpdateCollection
-                public async static Task UpdateCollection(string collectionId, string newCollectionTitle, string authToken = null)
+                public async static Task UpdateCollectionAsync(string collectionId, string newCollectionTitle, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Collections.UpdateCollection(collectionId, newCollectionTitle, authToken);
+                    await Internal.TwitchAPI.v5.Collections.UpdateCollectionAsync(collectionId, newCollectionTitle, authToken);
                 }
                 #endregion
                 #region CreateCollectionThumbnail
-                public async static Task CreateCollectionThumbnail(string collectionId, string itemId, string authToken = null)
+                public async static Task CreateCollectionThumbnailAsync(string collectionId, string itemId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Collections.CreateCollectionThumbnail(collectionId, itemId, authToken);
+                    await Internal.TwitchAPI.v5.Collections.CreateCollectionThumbnailAsync(collectionId, itemId, authToken);
                 }
                 #endregion
                 #region DeleteCollection
-                public async static Task DeleteCollection(string collectionId, string authToken = null)
+                public async static Task DeleteCollectionAsync(string collectionId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Collections.DeleteCollection(collectionId, authToken);
+                    await Internal.TwitchAPI.v5.Collections.DeleteCollectionAsync(collectionId, authToken);
                 }
                 #endregion
                 #region AddItemToCollection
-                public async static Task<Models.API.v5.Collections.CollectionItem> AddItemToCollection(string collectionId, string itemId, string itemType, string authToken = null)
+                public async static Task<Models.API.v5.Collections.CollectionItem> AddItemToCollectionAsync(string collectionId, string itemId, string itemType, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                    return await Internal.TwitchAPI.v5.Collections.AddItemToCollection(collectionId, itemId, itemType, authToken);
+                    return await Internal.TwitchAPI.v5.Collections.AddItemToCollectionAsync(collectionId, itemId, itemType, authToken);
                 }
                 #endregion
                 #region DeleteItemFromCollection
-                public async static Task DeleteItemFromCollection(string collectionId, string itemId, string authToken = null)
+                public async static Task DeleteItemFromCollectionAsync(string collectionId, string itemId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Collections.DeleteItemFromCollection(collectionId, itemId, authToken);
+                    await Internal.TwitchAPI.v5.Collections.DeleteItemFromCollectionAsync(collectionId, itemId, authToken);
                 }
                 #endregion
                 #region MoveItemWithinCollection
-                public async static Task MoveItemWithinCollection(string collectionId, string itemId, int position, string authToken = null)
+                public async static Task MoveItemWithinCollectionAsync(string collectionId, string itemId, int position, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Collections_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Collections.MoveItemWithinCollection(collectionId, itemId, position, authToken);
+                    await Internal.TwitchAPI.v5.Collections.MoveItemWithinCollectionAsync(collectionId, itemId, position, authToken);
                 }
                 #endregion
             }
@@ -610,132 +610,132 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetCommunityByName
-                public async static Task<Models.API.v5.Communities.Community> GetCommunityByName(string communityName)
+                public async static Task<Models.API.v5.Communities.Community> GetCommunityByNameAsync(string communityName)
                 {
-                    return await Internal.TwitchAPI.v5.Communities.GetCommunityByName(communityName);
+                    return await Internal.TwitchAPI.v5.Communities.GetCommunityByNameAsync(communityName);
                 }
                 #endregion
                 #region GetCommunityByID
-                public async static Task<Models.API.v5.Communities.Community> GetCommunityByID(string communityId)
+                public async static Task<Models.API.v5.Communities.Community> GetCommunityByIDAsync(string communityId)
                 {
-                    return await Internal.TwitchAPI.v5.Communities.GetCommunityByID(communityId);
+                    return await Internal.TwitchAPI.v5.Communities.GetCommunityByIDAsync(communityId);
                 }
                 #endregion
                 #region UpdateCommunity
-                public async static Task UpdateCommunity(string communityId, string summary = null, string description = null, string rules = null, string email = null, string authToken = null)
+                public async static Task UpdateCommunityAsync(string communityId, string summary = null, string description = null, string rules = null, string email = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Communities.UpdateCommunity(communityId, summary, description, rules, email, authToken);
+                    await Internal.TwitchAPI.v5.Communities.UpdateCommunityAsync(communityId, summary, description, rules, email, authToken);
                 }
                 #endregion
                 #region GetTopCommunities
-                public async static Task<Models.API.v5.Communities.TopCommunities> GetTopCommunities(long? limit = null, string cursor = null)
+                public async static Task<Models.API.v5.Communities.TopCommunities> GetTopCommunitiesAsync(long? limit = null, string cursor = null)
                 {
-                    return await Internal.TwitchAPI.v5.Communities.GetTopCommunities(limit, cursor);
+                    return await Internal.TwitchAPI.v5.Communities.GetTopCommunitiesAsync(limit, cursor);
                 }
                 #endregion
                 #region GetCommunityBannedUsers
-                public async static Task<Models.API.v5.Communities.BannedUsers> GetCommunityBannedUsers(string communityId, long? limit = null, string cursor = null, string authToken = null)
+                public async static Task<Models.API.v5.Communities.BannedUsers> GetCommunityBannedUsersAsync(string communityId, long? limit = null, string cursor = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
-                    return await Internal.TwitchAPI.v5.Communities.GetCommunityBannedUsers(communityId, limit, cursor, authToken);
+                    return await Internal.TwitchAPI.v5.Communities.GetCommunityBannedUsersAsync(communityId, limit, cursor, authToken);
                 }
                 #endregion
                 #region BanCommunityUser
-                public async static Task BanCommunityUser(string communityId, string userId, string authToken = null)
+                public async static Task BanCommunityUserAsync(string communityId, string userId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
-                    await Internal.TwitchAPI.v5.Communities.BanCommunityUser(communityId, userId, authToken);
+                    await Internal.TwitchAPI.v5.Communities.BanCommunityUserAsync(communityId, userId, authToken);
                 }
                 #endregion
                 #region UnBanCommunityUser
-                public async static Task UnBanCommunityUser(string communityId, string userId, string authToken = null)
+                public async static Task UnBanCommunityUserAsync(string communityId, string userId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
-                    await Internal.TwitchAPI.v5.Communities.UnBanCommunityUser(communityId, userId, authToken);
+                    await Internal.TwitchAPI.v5.Communities.UnBanCommunityUserAsync(communityId, userId, authToken);
                 }
                 #endregion
                 #region CreateCommunityAvatarImage
-                public async static Task CreateCommunityAvatarImage(string communityId, string avatarImage, string authToken = null)
+                public async static Task CreateCommunityAvatarImageAsync(string communityId, string avatarImage, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Communities.CreateCommunityAvatarImage(communityId, avatarImage, authToken);
+                    await Internal.TwitchAPI.v5.Communities.CreateCommunityAvatarImageAsync(communityId, avatarImage, authToken);
                 }
                 #endregion
                 #region DeleteCommunityAvatarImage
-                public async static Task DeleteCommunityAvatarImage(string communityId, string authToken = null)
+                public async static Task DeleteCommunityAvatarImageAsync(string communityId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Communities.DeleteCommunityAvatarImage(communityId, authToken);
+                    await Internal.TwitchAPI.v5.Communities.DeleteCommunityAvatarImageAsync(communityId, authToken);
                 }
                 #endregion
                 #region CreateCommunityCoverImage
-                public async static Task CreateCommunityCoverImage(string communityId, string coverImage, string authToken = null)
+                public async static Task CreateCommunityCoverImageAsync(string communityId, string coverImage, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Communities.CreateCommunityCoverImage(communityId, coverImage, authToken);
+                    await Internal.TwitchAPI.v5.Communities.CreateCommunityCoverImageAsync(communityId, coverImage, authToken);
                 }
                 #endregion
                 #region DeleteCommunityCoverImage
-                public async static Task DeleteCommunityCoverImage(string communityId, string authToken = null)
+                public async static Task DeleteCommunityCoverImageAsync(string communityId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Communities.DeleteCommunityCoverImage(communityId, authToken);
+                    await Internal.TwitchAPI.v5.Communities.DeleteCommunityCoverImageAsync(communityId, authToken);
                 }
                 #endregion
                 #region GetCommunityModerators
-                public async static Task<Models.API.v5.Communities.Moderators> GetCommunityModerators(string communityId, string authToken)
+                public async static Task<Models.API.v5.Communities.Moderators> GetCommunityModeratorsAsync(string communityId, string authToken)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                    return await Internal.TwitchAPI.v5.Communities.GetCommunityModerators(communityId, authToken);
+                    return await Internal.TwitchAPI.v5.Communities.GetCommunityModeratorsAsync(communityId, authToken);
                 }
                 #endregion
                 #region AddCommunityModerator
-                public async static Task AddCommunityModerator(string communityId, string userId, string authToken = null)
+                public async static Task AddCommunityModeratorAsync(string communityId, string userId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Communities.AddCommunityModerator(communityId, userId, authToken);
+                    await Internal.TwitchAPI.v5.Communities.AddCommunityModeratorAsync(communityId, userId, authToken);
                 }
                 #endregion
                 #region DeleteCommunityModerator
-                public async static Task DeleteCommunityModerator(string communityId, string userId, string authToken = null)
+                public async static Task DeleteCommunityModeratorAsync(string communityId, string userId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Communities.DeleteCommunityModerator(communityId, userId, authToken);
+                    await Internal.TwitchAPI.v5.Communities.DeleteCommunityModeratorAsync(communityId, userId, authToken);
                 }
                 #endregion
                 #region GetCommunityPermissions
-                public async static Task<Dictionary<string, bool>> GetCommunityPermissions(string communityId, string authToken = null)
+                public async static Task<Dictionary<string, bool>> GetCommunityPermissionsAsync(string communityId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Any, authToken);
-                    return await Internal.TwitchAPI.v5.Communities.GetCommunityPermissions(communityId, authToken);
+                    return await Internal.TwitchAPI.v5.Communities.GetCommunityPermissionsAsync(communityId, authToken);
                 }
                 #endregion
                 #region ReportCommunityViolation
-                public async static Task ReportCommunityViolation(string communityId, string channelId)
+                public async static Task ReportCommunityViolationAsync(string communityId, string channelId)
                 {
-                    await Internal.TwitchAPI.v5.Communities.ReportCommunityViolation(communityId, channelId);
+                    await Internal.TwitchAPI.v5.Communities.ReportCommunityViolationAsync(communityId, channelId);
                 }
                 #endregion
                 #region GetCommunityTimedOutUsers
-                public async static Task<Models.API.v5.Communities.TimedOutUsers> GetCommunityTimedOutUsers(string communityId, long? limit = null, string cursor = null, string authToken = null)
+                public async static Task<Models.API.v5.Communities.TimedOutUsers> GetCommunityTimedOutUsersAsync(string communityId, long? limit = null, string cursor = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
-                    return await Internal.TwitchAPI.v5.Communities.GetCommunityTimedOutUsers(communityId, limit, cursor, authToken);
+                    return await Internal.TwitchAPI.v5.Communities.GetCommunityTimedOutUsersAsync(communityId, limit, cursor, authToken);
                 }
                 #endregion
                 #region AddCommunityTimedOutUser
-                public async static Task AddCommunityTimedOutUser(string communityId, string userId, int duration, string reason = null, string authToken = null)
+                public async static Task AddCommunityTimedOutUserAsync(string communityId, string userId, int duration, string reason = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
-                    await Internal.TwitchAPI.v5.Communities.AddCommunityTimedOutUser(communityId, userId, duration, reason, authToken);
+                    await Internal.TwitchAPI.v5.Communities.AddCommunityTimedOutUserAsync(communityId, userId, duration, reason, authToken);
                 }
                 #endregion
                 #region DeleteCommunityTimedOutUser
-                public async static Task DeleteCommunityTimedOutUser(string communityId, string userId, string authToken = null)
+                public async static Task DeleteCommunityTimedOutUserAsync(string communityId, string userId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
-                    await Internal.TwitchAPI.v5.Communities.DeleteCommunityTimedOutUser(communityId, userId, authToken);
+                    await Internal.TwitchAPI.v5.Communities.DeleteCommunityTimedOutUserAsync(communityId, userId, authToken);
                 }
                 #endregion
             }
@@ -746,35 +746,35 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetFollowers
-                public static async Task<Models.API.v3.Follows.FollowersResponse> GetFollowers(string channel, int limit = 25, int offset = 0, string cursor = null, Enums.Direction direction = Enums.Direction.Descending)
+                public static async Task<Models.API.v3.Follows.FollowersResponse> GetFollowersAsync(string channel, int limit = 25, int offset = 0, string cursor = null, Enums.Direction direction = Enums.Direction.Descending)
                 {
-                    return await Internal.TwitchAPI.v3.Follows.GetFollowers(channel, limit, offset, cursor, direction);
+                    return await Internal.TwitchAPI.v3.Follows.GetFollowersAsync(channel, limit, offset, cursor, direction);
                 }
                 #endregion
                 #region GetFollows
-                public static async Task<Models.API.v3.Follows.FollowsResponse> GetFollows(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Descending, Enums.SortBy sortBy = Enums.SortBy.CreatedAt)
+                public static async Task<Models.API.v3.Follows.FollowsResponse> GetFollowsAsync(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Descending, Enums.SortBy sortBy = Enums.SortBy.CreatedAt)
                 {
-                    return await Internal.TwitchAPI.v3.Follows.GetFollows(channel, limit, offset, direction, sortBy);
+                    return await Internal.TwitchAPI.v3.Follows.GetFollowsAsync(channel, limit, offset, direction, sortBy);
                 }
                 #endregion
                 #region GetFollowStatus
-                public static async Task<Models.API.v3.Follows.Follows> GetFollowsStatus(string user, string targetChannel)
+                public static async Task<Models.API.v3.Follows.Follows> GetFollowsStatusAsync(string user, string targetChannel)
                 {
-                    return await Internal.TwitchAPI.v3.Follows.GetFollowsStatus(user, targetChannel);
+                    return await Internal.TwitchAPI.v3.Follows.GetFollowsStatusAsync(user, targetChannel);
                 }
                 #endregion
                 #region CreateFollow
-                public static async Task<Models.API.v3.Follows.Follows> CreateFollow(string user, string targetChannel, bool notifications = false, string accessToken = null)
+                public static async Task<Models.API.v3.Follows.Follows> CreateFollowAsync(string user, string targetChannel, bool notifications = false, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, accessToken);
-                    return await Internal.TwitchAPI.v3.Follows.CreateFollow(user, targetChannel, notifications, accessToken);
+                    return await Internal.TwitchAPI.v3.Follows.CreateFollowAsync(user, targetChannel, notifications, accessToken);
                 }
                 #endregion
                 #region RemoveFollow
-                public static async Task RemoveFollow(string user, string target, string accessToken = null)
+                public static async Task RemoveFollowAsync(string user, string target, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, accessToken);
-                    await Internal.TwitchAPI.v3.Follows.RemoveFollow(user, target, accessToken);
+                    await Internal.TwitchAPI.v3.Follows.RemoveFollowAsync(user, target, accessToken);
                 }
                 #endregion
             }
@@ -786,9 +786,9 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetTopGames
-                public async static Task<Models.API.v3.Games.TopGamesResponse> GetTopGames(int limit = 10, int offset = 0)
+                public async static Task<Models.API.v3.Games.TopGamesResponse> GetTopGamesAsync(int limit = 10, int offset = 0)
                 {
-                    return await Internal.TwitchAPI.v3.Games.GetTopGames(limit, offset);
+                    return await Internal.TwitchAPI.v3.Games.GetTopGamesAsync(limit, offset);
                 }
                 #endregion
             }
@@ -796,9 +796,9 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetTopGames
-                public async static Task<Models.API.v5.Games.TopGames> GetTopGames(int? limit = null, int? offset = null)
+                public async static Task<Models.API.v5.Games.TopGames> GetTopGamesAsync(int? limit = null, int? offset = null)
                 {
-                    return await Internal.TwitchAPI.v5.Games.GetTopGames(limit, offset);
+                    return await Internal.TwitchAPI.v5.Games.GetTopGamesAsync(limit, offset);
                 }
                 #endregion
             }
@@ -809,9 +809,9 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetIngests
-                public async static Task<Models.API.v3.Ingests.IngestsResponse> GetIngests()
+                public async static Task<Models.API.v3.Ingests.IngestsResponse> GetIngestsAsync()
                 {
-                    return await Internal.TwitchAPI.v3.Ingests.GetIngests();
+                    return await Internal.TwitchAPI.v3.Ingests.GetIngestsAsync();
                 }
                 #endregion
             }
@@ -819,9 +819,9 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetIngestServerList
-                public static async Task<Models.API.v5.Ingests.Ingests> GetIngestServerList()
+                public static async Task<Models.API.v5.Ingests.Ingests> GetIngestServerListAsync()
                 {
-                    return await Internal.TwitchAPI.v5.Ingests.GetIngestServerList();
+                    return await Internal.TwitchAPI.v5.Ingests.GetIngestServerListAsync();
                 }
                 #endregion
             }
@@ -832,9 +832,9 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetRoot
-                public async static Task<Models.API.v3.Root.RootResponse> GetRoot(string accessToken = null)
+                public async static Task<Models.API.v3.Root.RootResponse> GetRootAsync(string accessToken = null)
                 {
-                    return await Internal.TwitchAPI.v3.Root.GetRoot(accessToken);
+                    return await Internal.TwitchAPI.v3.Root.GetRootAsync(accessToken);
                 }
                 #endregion
             }
@@ -842,9 +842,9 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetRoot
-                public async static Task<Models.API.v5.Root.Root> GetRoot(string accessToken = null)
+                public async static Task<Models.API.v5.Root.Root> GetRootAsync(string accessToken = null)
                 {
-                    return await Internal.TwitchAPI.v5.Root.GetRoot(accessToken);
+                    return await Internal.TwitchAPI.v5.Root.GetRootAsync(accessToken);
                 }
                 #endregion
             }
@@ -856,21 +856,21 @@ namespace TwitchLib
             public static class v3
             {
                 #region SearchChannels
-                public async static Task<Models.API.v3.Search.SearchChannelsResponse> SearchChannels(string query, int limit = 25, int offset = 0)
+                public async static Task<Models.API.v3.Search.SearchChannelsResponse> SearchChannelsAsync(string query, int limit = 25, int offset = 0)
                 {
-                    return await Internal.TwitchAPI.v3.Search.SearchChannels(query, limit, offset);
+                    return await Internal.TwitchAPI.v3.Search.SearchChannelsAsync(query, limit, offset);
                 }
                 #endregion
                 #region SearchStreams
-                public async static Task<Models.API.v3.Search.SearchStreamsResponse> SearchStreams(string query, int limit = 25, int offset = 0, bool? hls = null)
+                public async static Task<Models.API.v3.Search.SearchStreamsResponse> SearchStreamsAsync(string query, int limit = 25, int offset = 0, bool? hls = null)
                 {
-                    return await Internal.TwitchAPI.v3.Search.SearchStreams(query, limit, offset, hls);
+                    return await Internal.TwitchAPI.v3.Search.SearchStreamsAsync(query, limit, offset, hls);
                 }
                 #endregion
                 #region SearchGames
-                public async static Task<Models.API.v3.Search.SearchGamesResponse> SearchGames(string query, Enums.GameSearchType type = Enums.GameSearchType.Suggest, bool live = false)
+                public async static Task<Models.API.v3.Search.SearchGamesResponse> SearchGamesAsync(string query, Enums.GameSearchType type = Enums.GameSearchType.Suggest, bool live = false)
                 {
-                    return await Internal.TwitchAPI.v3.Search.SearchGames(query, type, live);
+                    return await Internal.TwitchAPI.v3.Search.SearchGamesAsync(query, type, live);
                 }
                 #endregion
             }
@@ -878,21 +878,21 @@ namespace TwitchLib
             public static class v5
             {
                 #region SearchChannels
-                public async static Task<Models.API.v5.Search.SearchChannels> SearchChannels(string encodedSearchQuery, int? limit = null, int? offset = null)
+                public async static Task<Models.API.v5.Search.SearchChannels> SearchChannelsAsync(string encodedSearchQuery, int? limit = null, int? offset = null)
                 {
-                    return await Internal.TwitchAPI.v5.Search.SearchChannels(encodedSearchQuery, limit, offset);
+                    return await Internal.TwitchAPI.v5.Search.SearchChannelsAsync(encodedSearchQuery, limit, offset);
                 }
                 #endregion
                 #region SearchGames
-                public async static Task<Models.API.v5.Search.SearchGames> SearchGames(string encodedSearchQuery, bool? live = null)
+                public async static Task<Models.API.v5.Search.SearchGames> SearchGamesAsync(string encodedSearchQuery, bool? live = null)
                 {
-                    return await Internal.TwitchAPI.v5.Search.SearchGames(encodedSearchQuery, live);
+                    return await Internal.TwitchAPI.v5.Search.SearchGamesAsync(encodedSearchQuery, live);
                 }
                 #endregion
                 #region SearchStreams
-                public async static Task<Models.API.v5.Search.SearchStreams> SearchStreams(string encodedSearchQuery, int? limit = null, int? offset = null, bool? hls = null)
+                public async static Task<Models.API.v5.Search.SearchStreams> SearchStreamsAsync(string encodedSearchQuery, int? limit = null, int? offset = null, bool? hls = null)
                 {
-                    return await Internal.TwitchAPI.v5.Search.SearchStreams(encodedSearchQuery, limit, offset, hls);
+                    return await Internal.TwitchAPI.v5.Search.SearchStreamsAsync(encodedSearchQuery, limit, offset, hls);
                 }
                 #endregion
             }
@@ -903,27 +903,27 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetStream
-                public async static Task<Models.API.v3.Streams.StreamResponse> GetStream(string channel)
+                public async static Task<Models.API.v3.Streams.StreamResponse> GetStreamAsync(string channel)
                 {
-                    return await Internal.TwitchAPI.v3.Streams.GetStream(channel);
+                    return await Internal.TwitchAPI.v3.Streams.GetStreamAsync(channel);
                 }
                 #endregion
                 #region GetStreams
-                public async static Task<Models.API.v3.Streams.StreamsResponse> GetStreams(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Enums.StreamType streamType = Enums.StreamType.All, string language = "en")
+                public async static Task<Models.API.v3.Streams.StreamsResponse> GetStreamsAsync(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Enums.StreamType streamType = Enums.StreamType.All, string language = "en")
                 {
-                    return await Internal.TwitchAPI.v3.Streams.GetStreams(game, channel, limit, offset, clientId, streamType, language);
+                    return await Internal.TwitchAPI.v3.Streams.GetStreamsAsync(game, channel, limit, offset, clientId, streamType, language);
                 }
                 #endregion
                 #region GetFeaturedStreams
-                public async static Task<Models.API.v3.Streams.FeaturedStreamsResponse> GetFeaturedStreams(int limit = 25, int offset = 0)
+                public async static Task<Models.API.v3.Streams.FeaturedStreamsResponse> GetFeaturedStreamsAsync(int limit = 25, int offset = 0)
                 {
-                    return await Internal.TwitchAPI.v3.Streams.GetFeaturedStreams(limit, offset);
+                    return await Internal.TwitchAPI.v3.Streams.GetFeaturedStreamsAsync(limit, offset);
                 }
                 #endregion
                 #region GetStreamsSummary
-                public async static Task<Models.API.v3.Streams.Summary> GetStreamsSummary()
+                public async static Task<Models.API.v3.Streams.Summary> GetStreamsSummaryAsync()
                 {
-                    return await Internal.TwitchAPI.v3.Streams.GetStreamsSummary();
+                    return await Internal.TwitchAPI.v3.Streams.GetStreamsSummaryAsync();
                 }
                 #endregion
             }
@@ -931,46 +931,46 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetStreamByUser
-                public async static Task<Models.API.v5.Streams.StreamByUser> GetStreamByUser(string channelId, string streamType = null)
+                public async static Task<Models.API.v5.Streams.StreamByUser> GetStreamByUserAsync(string channelId, string streamType = null)
                 {
-                    return await Internal.TwitchAPI.v5.Streams.GetStreamByUser(channelId, streamType);
+                    return await Internal.TwitchAPI.v5.Streams.GetStreamByUserAsync(channelId, streamType);
                 }
                 #endregion
                 #region GetLiveStreams
-                public async static Task<Models.API.v5.Streams.LiveStreams> GetLiveStreams(List<string> channelList = null, string game = null, string language = null, string streamType = null, int? limit = null, int? offset = null)
+                public async static Task<Models.API.v5.Streams.LiveStreams> GetLiveStreamsAsync(List<string> channelList = null, string game = null, string language = null, string streamType = null, int? limit = null, int? offset = null)
                 {
-                    return await Internal.TwitchAPI.v5.Streams.GetLiveStreams(channelList, game, language, streamType, limit, offset);
+                    return await Internal.TwitchAPI.v5.Streams.GetLiveStreamsAsync(channelList, game, language, streamType, limit, offset);
                 }
                 #endregion
                 #region GetStreamsSummary
-                public async static Task<Models.API.v5.Streams.StreamsSummary> GetStreamsSummary(string game = null)
+                public async static Task<Models.API.v5.Streams.StreamsSummary> GetStreamsSummaryAsync(string game = null)
                 {
-                    return await Internal.TwitchAPI.v5.Streams.GetStreamsSummary(game);
+                    return await Internal.TwitchAPI.v5.Streams.GetStreamsSummaryAsync(game);
                 }
                 #endregion
                 #region GetFeaturedStreams
-                public async static Task<Models.API.v5.Streams.FeaturedStreams> GetFeaturedStream(int? limit = null, int? offset = null)
+                public async static Task<Models.API.v5.Streams.FeaturedStreams> GetFeaturedStreamAsync(int? limit = null, int? offset = null)
                 {
-                    return await Internal.TwitchAPI.v5.Streams.GetFeaturedStreams(limit, offset);
+                    return await Internal.TwitchAPI.v5.Streams.GetFeaturedStreamsAsync(limit, offset);
                 }
                 #endregion
                 #region GetFollowedStreams
-                public async static Task<Models.API.v5.Streams.FollowedStreams> GetFollowedStreams(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
+                public async static Task<Models.API.v5.Streams.FollowedStreams> GetFollowedStreamsAsync(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
-                    return await Internal.TwitchAPI.v5.Streams.GetFollowedStreams(streamType, limit, offset, authToken);
+                    return await Internal.TwitchAPI.v5.Streams.GetFollowedStreamsAsync(streamType, limit, offset, authToken);
                 }
                 #endregion
                 #region GetUptime
-                public async static Task<TimeSpan?> GetUptime(string channelId)
+                public async static Task<TimeSpan?> GetUptimeAsync(string channelId)
                 {
-                    return await Internal.TwitchAPI.v5.Streams.GetUptime(channelId);
+                    return await Internal.TwitchAPI.v5.Streams.GetUptimeAsync(channelId);
                 }
                 #endregion
                 #region BroadcasterOnline
-                public async static Task<bool> BroadcasterOnline(string channelId)
+                public async static Task<bool> BroadcasterOnlineAsync(string channelId)
                 {
-                    return await Internal.TwitchAPI.v5.Streams.BroadcasterOnline(channelId);
+                    return await Internal.TwitchAPI.v5.Streams.BroadcasterOnlineAsync(channelId);
                 }
                 #endregion
             }
@@ -981,38 +981,38 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetSubscribers
-                public async static Task<Models.API.v3.Subscriptions.SubscribersResponse> GetSubscribers(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Ascending, string accessToken = null)
+                public async static Task<Models.API.v3.Subscriptions.SubscribersResponse> GetSubscribersAsync(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Ascending, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
-                    return await Internal.TwitchAPI.v3.Subscriptions.GetSubscribers(channel, limit, offset, direction, accessToken);
+                    return await Internal.TwitchAPI.v3.Subscriptions.GetSubscribersAsync(channel, limit, offset, direction, accessToken);
                 }
                 #endregion
                 #region GetAllSubscribers
-                public async static Task<List<Models.API.v3.Subscriptions.Subscriber>> GetAllSubscribers(string channel, string accessToken = null)
+                public async static Task<List<Models.API.v3.Subscriptions.Subscriber>> GetAllSubscribersAsync(string channel, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
-                    return await Internal.TwitchAPI.v3.Subscriptions.GetAllSubscribers(channel, accessToken);
+                    return await Internal.TwitchAPI.v3.Subscriptions.GetAllSubscribersAsync(channel, accessToken);
                 }
                 #endregion
                 #region ChannelHasUserSubscribed
-                public async static Task<Models.API.v3.Subscriptions.Subscriber> ChannelHasUserSubscribed(string channel, string targetUser, string accessToken = null)
+                public async static Task<Models.API.v3.Subscriptions.Subscriber> ChannelHasUserSubscribedAsync(string channel, string targetUser, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Check_Subscription, accessToken);
-                    return await Internal.TwitchAPI.v3.Subscriptions.ChannelHasUserSubscribed(channel, targetUser, accessToken);
+                    return await Internal.TwitchAPI.v3.Subscriptions.ChannelHasUserSubscribedAsync(channel, targetUser, accessToken);
                 }
                 #endregion
                 #region UserSubscribedToChannel
-                public async static Task<Models.API.v3.Subscriptions.ChannelSubscription> UserSubscribedToChannel(string user, string targetChannel, string accessToken = null)
+                public async static Task<Models.API.v3.Subscriptions.ChannelSubscription> UserSubscribedToChannelAsync(string user, string targetChannel, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, accessToken);
-                    return await Internal.TwitchAPI.v3.Subscriptions.UserSubscribedToChannel(user, targetChannel, accessToken);
+                    return await Internal.TwitchAPI.v3.Subscriptions.UserSubscribedToChannelAsync(user, targetChannel, accessToken);
                 }
                 #endregion
                 #region GetSubscriberCount
-                public async static Task<int> GetSubscriberCount(string channel, string accessToken = null)
+                public async static Task<int> GetSubscriberCountAsync(string channel, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
-                    return await Internal.TwitchAPI.v3.Subscriptions.GetSubscriberCount(channel, accessToken);
+                    return await Internal.TwitchAPI.v3.Subscriptions.GetSubscriberCountAsync(channel, accessToken);
                 }
                 #endregion
             }
@@ -1024,15 +1024,15 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetTeams
-                public async static Task<Models.API.v3.Teams.GetTeamsResponse> GetTeams(int limit = 25, int offset = 0)
+                public async static Task<Models.API.v3.Teams.GetTeamsResponse> GetTeamsAsync(int limit = 25, int offset = 0)
                 {
-                    return await Internal.TwitchAPI.v3.Teams.GetTeams(limit, offset);
+                    return await Internal.TwitchAPI.v3.Teams.GetTeamsAsync(limit, offset);
                 }
                 #endregion
                 #region GetTeam
-                public async static Task<Models.API.v3.Teams.Team> GetTeam(string teamName)
+                public async static Task<Models.API.v3.Teams.Team> GetTeamAsync(string teamName)
                 {
-                    return await Internal.TwitchAPI.v3.Teams.GetTeam(teamName);
+                    return await Internal.TwitchAPI.v3.Teams.GetTeamAsync(teamName);
                 }
                 #endregion
             }
@@ -1040,15 +1040,15 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetAllTeams
-                public async static Task<Models.API.v5.Teams.AllTeams> GetAllTeams(int? limit = null, int? offset = null)
+                public async static Task<Models.API.v5.Teams.AllTeams> GetAllTeamsAsync(int? limit = null, int? offset = null)
                 {
-                    return await Internal.TwitchAPI.v5.Teams.GetAllTeams(limit, offset);
+                    return await Internal.TwitchAPI.v5.Teams.GetAllTeamsAsync(limit, offset);
                 }
                 #endregion
                 #region GetTeam
-                public async static Task<Models.API.v5.Teams.Team> GetTeam(string teamName)
+                public async static Task<Models.API.v5.Teams.Team> GetTeamAsync(string teamName)
                 {
-                    return await Internal.TwitchAPI.v5.Teams.GetTeam(teamName);
+                    return await Internal.TwitchAPI.v5.Teams.GetTeamAsync(teamName);
                 }
                 #endregion
             }
@@ -1059,37 +1059,37 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetUserFromUsername
-                public async static Task<Models.API.v3.Users.User> GetUserFromUsername(string username)
+                public async static Task<Models.API.v3.Users.User> GetUserFromUsernameAsync(string username)
                 {
-                    return await Internal.TwitchAPI.v3.User.GetUserFromUsername(username);
+                    return await Internal.TwitchAPI.v3.User.GetUserFromUsernameAsync(username);
                 }
                 #endregion
                 #region GetEmotes
-                public async static Task<Models.API.v3.Users.UserEmotesResponse> GetEmotes(string username, string accessToken = null)
+                public async static Task<Models.API.v3.Users.UserEmotesResponse> GetEmotesAsync(string username, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, accessToken);
-                    return await Internal.TwitchAPI.v3.User.GetEmotes(username, accessToken);
+                    return await Internal.TwitchAPI.v3.User.GetEmotesAsync(username, accessToken);
                 }
                 #endregion
                 #region GetUserFromToken
-                public async static Task<Models.API.v3.Users.FullUser> GetUserFromToken(string accessToken = null)
+                public async static Task<Models.API.v3.Users.FullUser> GetUserFromTokenAsync(string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, accessToken);
-                    return await Internal.TwitchAPI.v3.User.GetUserFromToken(accessToken);
+                    return await Internal.TwitchAPI.v3.User.GetUserFromTokenAsync(accessToken);
                 }
                 #endregion
                 #region GetFollowedStreams
-                public async static Task<Models.API.v3.Users.FollowedStreamsResponse> GetFollowedStreams(int limit = 25, int offset = 0, Enums.StreamType type = Enums.StreamType.All, string accessToken = null)
+                public async static Task<Models.API.v3.Users.FollowedStreamsResponse> GetFollowedStreamsAsync(int limit = 25, int offset = 0, Enums.StreamType type = Enums.StreamType.All, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, accessToken);
-                    return await Internal.TwitchAPI.v3.User.GetFollowedStreams(limit, offset, type, accessToken);
+                    return await Internal.TwitchAPI.v3.User.GetFollowedStreamsAsync(limit, offset, type, accessToken);
                 }
                 #endregion
                 #region GetFollowedVideos
-                public async static Task<Models.API.v3.Users.FollowedVideosResponse> GetFollowedVideos(int limit = 25, int offset = 0, Enums.BroadcastType broadcastType = Enums.BroadcastType.All, string accessToken = null)
+                public async static Task<Models.API.v3.Users.FollowedVideosResponse> GetFollowedVideosAsync(int limit = 25, int offset = 0, Enums.BroadcastType broadcastType = Enums.BroadcastType.All, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, accessToken);
-                    return await Internal.TwitchAPI.v3.User.GetFollowedVideos(limit, offset, broadcastType, accessToken);
+                    return await Internal.TwitchAPI.v3.User.GetFollowedVideosAsync(limit, offset, broadcastType, accessToken);
                 }
                 #endregion
             }
@@ -1097,118 +1097,118 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetUsersByName
-                public async static Task<Models.API.v5.Users.Users> GetUsersByName(List<string> usernames)
+                public async static Task<Models.API.v5.Users.Users> GetUsersByNameAsync(List<string> usernames)
                 {
-                    return await Internal.TwitchAPI.v5.Users.GetUsersByName(usernames);
+                    return await Internal.TwitchAPI.v5.Users.GetUsersByNameAsync(usernames);
                 }
                 #endregion
                 #region GetUser
-                public async static Task<Models.API.v5.Users.UserAuthed> GetUser(string authToken = null)
+                public async static Task<Models.API.v5.Users.UserAuthed> GetUserAsync(string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
-                    return await Internal.TwitchAPI.v5.Users.GetUser(authToken);
+                    return await Internal.TwitchAPI.v5.Users.GetUserAsync(authToken);
                 }
                 #endregion
                 #region GetUserByID
-                public async static Task<Models.API.v5.Users.User> GetUserByID(string userId)
+                public async static Task<Models.API.v5.Users.User> GetUserByIDAsync(string userId)
                 {
-                    return await Internal.TwitchAPI.v5.Users.GetUserByID(userId);
+                    return await Internal.TwitchAPI.v5.Users.GetUserByIDAsync(userId);
                 }
                 #endregion
                 #region GetUserByName
-                public async static Task<Models.API.v5.Users.Users> GetUserByName(string username)
+                public async static Task<Models.API.v5.Users.Users> GetUserByNameAsync(string username)
                 {
-                    return await Internal.TwitchAPI.v5.Users.GetUserByName(username);
+                    return await Internal.TwitchAPI.v5.Users.GetUserByNameAsync(username);
                 }
                 #endregion
                 #region GetUserEmotes
-                public async static Task<Models.API.v5.Users.UserEmotes> GetUserEmotes(string userId, string authToken = null)
+                public async static Task<Models.API.v5.Users.UserEmotes> GetUserEmotesAsync(string userId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, authToken);
-                    return await Internal.TwitchAPI.v5.Users.GetUserEmotes(userId, authToken);
+                    return await Internal.TwitchAPI.v5.Users.GetUserEmotesAsync(userId, authToken);
                 }
                 #endregion
                 #region CheckUserSubscriptionByChannel
-                public async static Task<Models.API.v5.Subscriptions.Subscription> CheckUserSubscriptionByChannel(string userId, string channelId, string authToken = null)
+                public async static Task<Models.API.v5.Subscriptions.Subscription> CheckUserSubscriptionByChannelAsync(string userId, string channelId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, authToken);
-                    return await Internal.TwitchAPI.v5.Users.CheckUserSubscriptionByChannel(userId, channelId, authToken);
+                    return await Internal.TwitchAPI.v5.Users.CheckUserSubscriptionByChannelAsync(userId, channelId, authToken);
                 }
                 #endregion
                 #region GetUserFollows
-                public async static Task<Models.API.v5.Users.UserFollows> GetUserFollows(string userId, int? limit = null, int? offset = null, string direction = null, string sortby = null)
+                public async static Task<Models.API.v5.Users.UserFollows> GetUserFollowsAsync(string userId, int? limit = null, int? offset = null, string direction = null, string sortby = null)
                 {
-                    return await Internal.TwitchAPI.v5.Users.GetUserFollows(userId, limit, offset, direction, sortby);
+                    return await Internal.TwitchAPI.v5.Users.GetUserFollowsAsync(userId, limit, offset, direction, sortby);
                 }
                 #endregion
                 #region CheckUserFollowsByChannel
-                public async static Task<Models.API.v5.Users.UserFollow> CheckUserFollowsByChannel(string userId, string channelId)
+                public async static Task<Models.API.v5.Users.UserFollow> CheckUserFollowsByChannelAsync(string userId, string channelId)
                 {
-                    return await Internal.TwitchAPI.v5.Users.CheckUserFollowsByChannel(userId, channelId);
+                    return await Internal.TwitchAPI.v5.Users.CheckUserFollowsByChannelAsync(userId, channelId);
                 }
                 #endregion
                 #region UserFollowsChannel
-                public async static Task<bool> UserFollowsChannel(string userId, string channelId)
+                public async static Task<bool> UserFollowsChannelAsync(string userId, string channelId)
                 {
-                    return await Internal.TwitchAPI.v5.Users.UserFollowsChannel(userId, channelId);
+                    return await Internal.TwitchAPI.v5.Users.UserFollowsChannelAsync(userId, channelId);
                 }
                 #endregion
                 #region FollowChannel
-                public async static Task<Models.API.v5.Users.UserFollow> FollowChannel(string userId, string channelId, bool? notifications = null, string authToken = null)
+                public async static Task<Models.API.v5.Users.UserFollow> FollowChannelAsync(string userId, string channelId, bool? notifications = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, authToken);
-                    return await Internal.TwitchAPI.v5.Users.FollowChannel(userId, channelId, notifications, authToken);
+                    return await Internal.TwitchAPI.v5.Users.FollowChannelAsync(userId, channelId, notifications, authToken);
                 }
                 #endregion
                 #region UnfollowChannel
-                public async static Task UnfollowChannel(string userId, string channelId, string authToken = null)
+                public async static Task UnfollowChannelAsync(string userId, string channelId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Follows_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Users.UnfollowChannel(userId, channelId, authToken);
+                    await Internal.TwitchAPI.v5.Users.UnfollowChannelAsync(userId, channelId, authToken);
                 }
                 #endregion
                 #region GetUserBlockList
-                public async static Task<Models.API.v5.Users.UserBlocks> GetUserBlockList(string userId, int? limit = null, int? offset = null, string authToken = null)
+                public async static Task<Models.API.v5.Users.UserBlocks> GetUserBlockListAsync(string userId, int? limit = null, int? offset = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Read, authToken);
-                    return await Internal.TwitchAPI.v5.Users.GetUserBlockList(userId, limit, offset, authToken);
+                    return await Internal.TwitchAPI.v5.Users.GetUserBlockListAsync(userId, limit, offset, authToken);
                 }
                 #endregion
                 #region BlockUser
-                public async static Task<Models.API.v5.Users.UserBlock> BlockUser(string sourceUserId, string targetUserId, string authToken = null)
+                public async static Task<Models.API.v5.Users.UserBlock> BlockUserAsync(string sourceUserId, string targetUserId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, authToken);
-                    return await Internal.TwitchAPI.v5.Users.BlockUser(sourceUserId, targetUserId, authToken);
+                    return await Internal.TwitchAPI.v5.Users.BlockUserAsync(sourceUserId, targetUserId, authToken);
                 }
                 #endregion
                 #region UnblockUser
-                public async static Task UnblockUser(string sourceUserId, string targetUserId, string authToken = null)
+                public async static Task UnblockUserAsync(string sourceUserId, string targetUserId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Edit, authToken);
-                    await Internal.TwitchAPI.v5.Users.UnblockUser(sourceUserId, targetUserId, authToken);
+                    await Internal.TwitchAPI.v5.Users.UnblockUserAsync(sourceUserId, targetUserId, authToken);
                 }
                 #endregion
                 #region ViewerHeartbeatService
                 #region CreateUserConnectionToViewerHeartbeatService
-                public async static Task CreateUserConnectionToViewerHeartbeatService(string identifier, string authToken = null)
+                public async static Task CreateUserConnectionToViewerHeartbeatServiceAsync(string identifier, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Viewing_Activity_Read, authToken);
-                    await Internal.TwitchAPI.v5.Users.CreateUserConnectionToViewerHeartbeatService(identifier, authToken);
+                    await Internal.TwitchAPI.v5.Users.CreateUserConnectionToViewerHeartbeatServiceAsync(identifier, authToken);
                 }
                 #endregion
                 #region CheckUserConnectionToViewerHeartbeatService
-                public async static Task<Models.API.v5.ViewerHeartbeatService.VHSConnectionCheck> CheckUserConnectionToViewerHeartbeatService(string authToken = null)
+                public async static Task<Models.API.v5.ViewerHeartbeatService.VHSConnectionCheck> CheckUserConnectionToViewerHeartbeatServiceAsync(string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
-                    return await Internal.TwitchAPI.v5.Users.CheckUserConnectionToViewerHeartbeatService(authToken);
+                    return await Internal.TwitchAPI.v5.Users.CheckUserConnectionToViewerHeartbeatServiceAsync(authToken);
                 }
                 #endregion
                 #region DeleteUserConnectionToViewerHeartbeatService
 
-                public async static Task DeleteUserConnectionToViewerHeartbeatServicechStreams(string authToken = null)
+                public async static Task DeleteUserConnectionToViewerHeartbeatServicechStreamsAsync(string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Viewing_Activity_Read, authToken);
-                    await Internal.TwitchAPI.v5.Users.DeleteUserConnectionToViewerHeartbeatServicechStreams(authToken);
+                    await Internal.TwitchAPI.v5.Users.DeleteUserConnectionToViewerHeartbeatServicechStreamsAsync(authToken);
                 }
                 #endregion
                 #endregion
@@ -1220,15 +1220,15 @@ namespace TwitchLib
             public static class v3
             {
                 #region GetVideo
-                public async static Task<Models.API.v3.Videos.Video> GetVideo(string id)
+                public async static Task<Models.API.v3.Videos.Video> GetVideoAsync(string id)
                 {
-                    return await Internal.TwitchAPI.v3.Videos.GetVideo(id);
+                    return await Internal.TwitchAPI.v3.Videos.GetVideoAsync(id);
                 }
                 #endregion
                 #region GetTopVideos
-                public async static Task<Models.API.v3.Videos.TopVideosResponse> GetTopVideos(int limit = 25, int offset = 0, string game = null, Enums.Period period = Enums.Period.Week)
+                public async static Task<Models.API.v3.Videos.TopVideosResponse> GetTopVideosAsync(int limit = 25, int offset = 0, string game = null, Enums.Period period = Enums.Period.Week)
                 {
-                    return await Internal.TwitchAPI.v3.Videos.GetTopVideos(limit, offset, game, period);
+                    return await Internal.TwitchAPI.v3.Videos.GetTopVideosAsync(limit, offset, game, period);
                 }
                 #endregion
             }
@@ -1236,43 +1236,43 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetVideo
-                public async static Task<Models.API.v5.Videos.Video> GetVideo(string videoId)
+                public async static Task<Models.API.v5.Videos.Video> GetVideoAsync(string videoId)
                 {
-                    return await Internal.TwitchAPI.v5.Videos.GetVideo(videoId);
+                    return await Internal.TwitchAPI.v5.Videos.GetVideoAsync(videoId);
                 }
                 #endregion
                 #region GetTopVideos
-                public async static Task<Models.API.v5.Videos.TopVideos> GetTopVideos(int? limit = null, int? offset = null, string game = null, string period = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
+                public async static Task<Models.API.v5.Videos.TopVideos> GetTopVideosAsync(int? limit = null, int? offset = null, string game = null, string period = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
                 {
-                    return await Internal.TwitchAPI.v5.Videos.GetTopVideos(limit, offset, game, period, broadcastType, language, sort);
+                    return await Internal.TwitchAPI.v5.Videos.GetTopVideosAsync(limit, offset, game, period, broadcastType, language, sort);
                 }
                 #endregion
                 #region GetFollowedVideos
-                public async static Task<Models.API.v5.Videos.FollowedVideos> GetFollowedVideos(int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null, string authToken = null)
+                public async static Task<Models.API.v5.Videos.FollowedVideos> GetFollowedVideosAsync(int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
-                    return await Internal.TwitchAPI.v5.Videos.GetFollowedVideos(limit, offset, broadcastType, language, sort, authToken);
+                    return await Internal.TwitchAPI.v5.Videos.GetFollowedVideosAsync(limit, offset, broadcastType, language, sort, authToken);
                 }
                 #endregion
                 #region UploadVideo
-                public async static Task<Models.API.v5.UploadVideo.UploadedVideo> UploadVideo(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
+                public async static Task<Models.API.v5.UploadVideo.UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, accessToken);
-                    return await Internal.TwitchAPI.v5.Videos.UploadVideo(channelId, videoPath, title, description, game, language, tagList, viewable, viewableAt, accessToken);
+                    return await Internal.TwitchAPI.v5.Videos.UploadVideoAsync(channelId, videoPath, title, description, game, language, tagList, viewable, viewableAt, accessToken);
                 }
                 #endregion
                 #region UpdateVideo
-                public async static Task<Models.API.v5.Videos.Video> UpdateVideo(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
+                public async static Task<Models.API.v5.Videos.Video> UpdateVideoAsync(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
-                    return await Internal.TwitchAPI.v5.Videos.UpdateVideo(videoId, description, game, language, tagList, title, authToken);
+                    return await Internal.TwitchAPI.v5.Videos.UpdateVideoAsync(videoId, description, game, language, tagList, title, authToken);
                 }
                 #endregion
                 #region DeleteVideo
-                public async static Task DeleteVideo(string videoId, string authToken = null)
+                public async static Task DeleteVideoAsync(string videoId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
-                    await Internal.TwitchAPI.v5.Videos.DeleteVideo(videoId, authToken);
+                    await Internal.TwitchAPI.v5.Videos.DeleteVideoAsync(videoId, authToken);
                 }
                 #endregion
             }
@@ -1283,22 +1283,22 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetClip
-                public static async Task<Models.API.v5.Clips.Clip> GetClip(string slug)
+                public static async Task<Models.API.v5.Clips.Clip> GetClipAsync(string slug)
                 {
-                    return await Internal.TwitchAPI.v5.GetClip(slug);
+                    return await Internal.TwitchAPI.v5.GetClipAsync(slug);
                 }
                 #endregion
                 #region GetTopClips
-                public static async Task<Models.API.v5.Clips.TopClipsResponse> GetTopClips(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v5.Clips.Period period = Models.API.v5.Clips.Period.Week, bool trending = false)
+                public static async Task<Models.API.v5.Clips.TopClipsResponse> GetTopClipsAsync(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v5.Clips.Period period = Models.API.v5.Clips.Period.Week, bool trending = false)
                 {
-                    return await Internal.TwitchAPI.v5.GetTopClips(channel, cursor, game, limit, period, trending);
+                    return await Internal.TwitchAPI.v5.GetTopClipsAsync(channel, cursor, game, limit, period, trending);
                 }
                 #endregion
                 #region GetFollowedClips
-                public static async Task<Models.API.v5.Clips.FollowClipsResponse> GetFollowedClips(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
+                public static async Task<Models.API.v5.Clips.FollowClipsResponse> GetFollowedClipsAsync(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
-                    return await Internal.TwitchAPI.v5.GetFollowedClips(limit, cursor, trending, authToken);
+                    return await Internal.TwitchAPI.v5.GetFollowedClipsAsync(limit, cursor, trending, authToken);
                 }
                 #endregion
             }
@@ -1309,63 +1309,63 @@ namespace TwitchLib
         public static class Undocumented
         {
             #region GetClipChat
-            public static async Task<Models.API.Undocumented.ClipChat.GetClipChatResponse> GetClipChat(string slug)
+            public static async Task<Models.API.Undocumented.ClipChat.GetClipChatResponse> GetClipChatAsync(string slug)
             {
-                return await Internal.TwitchAPI.Undocumented.GetClipChat(slug);
+                return await Internal.TwitchAPI.Undocumented.GetClipChatAsync(slug);
             }
             #endregion
             #region GetTwitchPrimeOffers
-            public static async Task<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers> GetTwitchPrimeOffers()
+            public static async Task<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers> GetTwitchPrimeOffersAsync()
             {
-                return await Internal.TwitchAPI.Undocumented.GetTwitchPrimeOffers();
+                return await Internal.TwitchAPI.Undocumented.GetTwitchPrimeOffersAsync();
             }
             #endregion
             #region GetChannelHosts
-            public static async Task<Models.API.Undocumented.Hosting.ChannelHostsResponse> GetChannelHosts(string channelId)
+            public static async Task<Models.API.Undocumented.Hosting.ChannelHostsResponse> GetChannelHostsAsync(string channelId)
             {
-                return await Internal.TwitchAPI.Undocumented.GetChannelHosts(channelId);
+                return await Internal.TwitchAPI.Undocumented.GetChannelHostsAsync(channelId);
             }
             #endregion
             #region GetChatProperties
-            public static async Task<Models.API.Undocumented.ChatProperties.ChatProperties> GetChatProperties(string channelName)
+            public static async Task<Models.API.Undocumented.ChatProperties.ChatProperties> GetChatPropertiesAsync(string channelName)
             {
-                return await Internal.TwitchAPI.Undocumented.GetChatProperties(channelName);
+                return await Internal.TwitchAPI.Undocumented.GetChatPropertiesAsync(channelName);
             }
             #endregion
             #region GetChannelPanels
-            public static async Task<Models.API.Undocumented.ChannelPanels.Panel[]> GetChannelPanels(string channelName)
+            public static async Task<Models.API.Undocumented.ChannelPanels.Panel[]> GetChannelPanelsAsync(string channelName)
             {
-                return await Internal.TwitchAPI.Undocumented.GetChannelPanels(channelName);
+                return await Internal.TwitchAPI.Undocumented.GetChannelPanelsAsync(channelName);
             }
             #endregion
             #region GetCSMaps
-            public static async Task<Models.API.Undocumented.CSMaps.CSMapsResponse> GetCSMaps()
+            public static async Task<Models.API.Undocumented.CSMaps.CSMapsResponse> GetCSMapsAsync()
             {
-                return await Internal.TwitchAPI.Undocumented.GetCSMaps();
+                return await Internal.TwitchAPI.Undocumented.GetCSMapsAsync();
             }
             #endregion
             #region GetCSStreams
-            public static async Task<Models.API.Undocumented.CSStreams.CSStreams> GetCSStreams(int limit = 25, int offset = 0)
+            public static async Task<Models.API.Undocumented.CSStreams.CSStreams> GetCSStreamsAsync(int limit = 25, int offset = 0)
             {
-                return await Internal.TwitchAPI.Undocumented.GetCSStreams(limit, offset);
+                return await Internal.TwitchAPI.Undocumented.GetCSStreamsAsync(limit, offset);
             }
             #endregion
             #region GetRecentMessages
-            public static async Task<Models.API.Undocumented.RecentMessages.RecentMessagesResponse> GetRecentMessages(string channelId)
+            public static async Task<Models.API.Undocumented.RecentMessages.RecentMessagesResponse> GetRecentMessagesAsync(string channelId)
             {
-                return await Internal.TwitchAPI.Undocumented.GetRecentMessages(channelId);
+                return await Internal.TwitchAPI.Undocumented.GetRecentMessagesAsync(channelId);
             }
             #endregion
             #region GetChatters
-            public static async Task<List<Models.API.Undocumented.Chatters.ChatterFormatted>> GetChatters(string channelName)
+            public static async Task<List<Models.API.Undocumented.Chatters.ChatterFormatted>> GetChattersAsync(string channelName)
             {
-                return await Internal.TwitchAPI.Undocumented.GetChatters(channelName);
+                return await Internal.TwitchAPI.Undocumented.GetChattersAsync(channelName);
             }
             #endregion
             #region GetRecentChannelEvents
-            public async static Task<Models.API.Undocumented.RecentEvents.RecentEvents> GetRecentChannelEvents(string channelId)
+            public async static Task<Models.API.Undocumented.RecentEvents.RecentEvents> GetRecentChannelEventsAsync(string channelId)
             {
-                return await Internal.TwitchAPI.Undocumented.GetRecentChannelEvents(channelId);
+                return await Internal.TwitchAPI.Undocumented.GetRecentChannelEventsAsync(channelId);
             }
             #endregion
         }
@@ -1374,9 +1374,9 @@ namespace TwitchLib
         public static class ThirdParty
         {
             #region GetUsernameChanges
-            public async static Task<List<Models.API.ThirdParty.UsernameChangeListing>> GetUsernameChanges(string username)
+            public async static Task<List<Models.API.ThirdParty.UsernameChangeListing>> GetUsernameChangesAsync(string username)
             {
-                return await Internal.TwitchAPI.ThirdParty.GetUsernameChanges(username);
+                return await Internal.TwitchAPI.ThirdParty.GetUsernameChangesAsync(username);
             }
             #endregion
         }
