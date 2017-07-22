@@ -449,10 +449,15 @@ namespace TwitchLib
                 /// </summary>
                 /// <param name="channelId">The specified channel ID to get the community from.</param>
                 /// <returns>A Community object that represents the community the channel is in.</returns>
-                public async static Task<Models.API.v5.Communities.Community> GetChannelCommunityAsync(string channelId, string authToken)
+                public async static Task<Models.API.v5.Communities.Community> GetChannelCommunityAsync(string channelId, string authToken = null)
                 {
-                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
                     return await Internal.TwitchAPI.v5.Channels.GetChannelCommunityAsync(channelId, authToken);
+                }
+                #endregion
+                #region GetChannelCommunities
+                public async static Task<Models.API.v5.Communities.CommunitiesResponse> GetChannelCommuntiesAsync(string channelId, string authToken = null)
+                {
+                    return await Internal.TwitchAPI.v5.Channels.GetChannelCommuntiesAsync(channelId, authToken);
                 }
                 #endregion
                 #region SetChannelCommunity
@@ -842,9 +847,9 @@ namespace TwitchLib
             public static class v5
             {
                 #region GetRoot
-                public async static Task<Models.API.v5.Root.Root> GetRootAsync(string accessToken = null)
+                public static Models.API.v5.Root.Root GetRoot(string accessToken = null)
                 {
-                    return await Internal.TwitchAPI.v5.Root.GetRootAsync(accessToken);
+                    return Internal.TwitchAPI.v5.Root.GetRoot(accessToken);
                 }
                 #endregion
             }

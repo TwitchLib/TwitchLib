@@ -12,9 +12,9 @@
         public static class Root
         {
             #region GetRoot
-            public async static Task<Models.API.v5.Root.Root> GetRootAsync(string authToken = null, string clientId = null)
+            public static Models.API.v5.Root.Root GetRoot(string authToken = null, string clientId = null)
             {
-                return await Requests.GetGenericAsync<Models.API.v5.Root.Root>("https://api.twitch.tv/kraken", authToken, Requests.API.v5, clientId);
+                return Requests.GetGenericAsync<Models.API.v5.Root.Root>("https://api.twitch.tv/kraken", authToken, Requests.API.v5, clientId).Result;
             }
             #endregion
         }
@@ -447,6 +447,13 @@
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return await Requests.GetGenericAsync<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/channels/{channelId}/community", authToken, Requests.API.v5);
+            }
+            #endregion
+            #region GetChannelCommunities
+            public async static Task<Models.API.v5.Communities.CommunitiesResponse> GetChannelCommuntiesAsync(string channelId, string authToken = null)
+            {
+                if (string.IsNullOrEmpty(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is now allowed to be null, empty or filled with whitespaces."); }
+                return await Requests.GetGenericAsync<Models.API.v5.Communities.CommunitiesResponse>($"https://api.twitch.tv/kraken/channels/{channelId}/communities");
             }
             #endregion
             #region SetChannelCommunity
@@ -1331,7 +1338,7 @@
             public async static Task<Models.API.v5.UploadVideo.UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
             {
                 var listing = await createVideoAsync(channelId, title, description, game, language, tagList, viewable, viewableAt);
-                await uploadVideoPartsAsync(videoPath, listing.Upload);
+                uploadVideoParts(videoPath, listing.Upload);
                 await completeVideoUpload(listing.Upload, accessToken);
                 return listing.Video;
             }
@@ -1358,7 +1365,7 @@
             }
 
             private static long MAX_VIDEO_SIZE = 10737418240;
-            private async static Task uploadVideoPartsAsync(string videoPath, Models.API.v5.UploadVideo.Upload upload)
+            private static void uploadVideoParts(string videoPath, Models.API.v5.UploadVideo.Upload upload)
             {
                 if (!File.Exists(videoPath))
                     throw new Exceptions.API.BadParameterException($"The provided path for a video upload does not appear to be value: {videoPath}");
@@ -1386,13 +1393,13 @@
                             chunk = new byte[size24mb];
                             Array.Copy(file, (currentPart - 1) * size24mb, chunk, 0, size24mb);
                         }
-                        await Requests.PutBytesAsync($"{upload.Url}?part={currentPart}&upload_token={upload.Token}", chunk);
+                        Requests.PutBytes($"{upload.Url}?part={currentPart}&upload_token={upload.Token}", chunk);
                         System.Threading.Thread.Sleep(1000);
                     }
                 }
                 else
                 {
-                    await Requests.PutBytesAsync($"{upload.Url}?part=1&upload_token={upload.Token}", file);
+                    Requests.PutBytes($"{upload.Url}?part=1&upload_token={upload.Token}", file);
                 }
             }
 
