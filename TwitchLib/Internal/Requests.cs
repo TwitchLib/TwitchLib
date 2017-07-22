@@ -92,7 +92,7 @@ namespace TwitchLib.Internal
         }
         #endregion
         #region PutBytesAsync
-        public async static Task PutBytesAsync(string url, byte[] payload)
+        public static void PutBytes(string url, byte[] payload)
         {
             try
             {

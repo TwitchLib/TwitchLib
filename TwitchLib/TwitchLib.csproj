@@ -24,6 +24,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\TwitchLib.XML</DocumentationFile>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -307,6 +309,7 @@
     <Compile Include="Models\API\v5\Badges\BadgeContent.cs" />
     <Compile Include="Models\API\v5\Badges\ChannelDisplayBadges.cs" />
     <Compile Include="Models\API\v5\Badges\GlobalBadgesResponse.cs" />
+    <Compile Include="Models\API\v5\Communities\CommunitiesResponse.cs" />
     <Compile Include="Models\API\v5\UploadVideo\Preview.cs" />
     <Compile Include="Models\API\v5\UploadVideo\Upload.cs" />
     <Compile Include="Models\API\v5\UploadVideo\UploadedVideo.cs" />
