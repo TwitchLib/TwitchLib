@@ -637,12 +637,12 @@ namespace TwitchLib_API_Tester
         }
 
         private TwitchLib.Services.FollowerService followerService;
-        private void button71_Click(object sender, EventArgs e)
+        private async void button71_Click(object sender, EventArgs e)
         {
             followerService = new TwitchLib.Services.FollowerService();
             followerService.SetChannelByChannelId(textBox68.Text);
             followerService.OnNewFollowersDetected += onFollowersDetected;
-            followerService.StartService();
+            await followerService.StartService();
         }
 
         private void button70_Click(object sender, EventArgs e)
@@ -669,6 +669,14 @@ namespace TwitchLib_API_Tester
             var resp = await TwitchLib.TwitchAPI.Bits.v5.GetCheermotesAsync(textBox71.Text);
             foreach (var cheermote in resp.Actions)
                 MessageBox.Show($"Prefix: {cheermote.Prefix}\nType: {cheermote.Type}\nUpdated at: {cheermote.UpdatedAt}\n Dark animated 1.5 tier 0 image: {cheermote.Tiers[0].Images.Dark.Animated.OnePointFive}");
+        }
+
+        private async void button75_Click(object sender, EventArgs e)
+        {
+            //72
+            var resp = await TwitchLib.TwitchAPI.Channels.v5.GetChannelCommuntiesAsync(textBox72.Text);
+            foreach (var community in resp.Communities)
+                MessageBox.Show(community.Name);
         }
     }
 }
