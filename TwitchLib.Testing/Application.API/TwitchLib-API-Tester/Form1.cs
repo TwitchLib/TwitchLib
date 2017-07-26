@@ -653,6 +653,7 @@ namespace TwitchLib_API_Tester
         private async void button72_Click(object sender, EventArgs e)
         {
             var result = await TwitchLib.TwitchAPI.Channels.v5.GetAllFollowersAsync(textBox69.Text);
+            
             MessageBox.Show("Total: " + result.Count());
             foreach (var follow in result)
                 MessageBox.Show("Name: " + follow.User.DisplayName);

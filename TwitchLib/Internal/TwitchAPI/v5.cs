@@ -281,13 +281,14 @@
             }
             #endregion
             #region GetAllChannelFollowers
-            public async static Task<List<Models.API.v5.Channels.ChannelFollow>> GetChannelFollowersAsync(string channelId)
+            public async static Task<List<Models.API.v5.Channels.ChannelFollow>> GetAllChannelFollowersAsync(string channelId)
             {
-                // initial stuffs
-                List<Models.API.v5.Channels.ChannelFollow> followers = new List<Models.API.v5.Channels.ChannelFollow>();
+                List<TwitchLib.Models.API.v5.Channels.ChannelFollow> followers = new
+                List<TwitchLib.Models.API.v5.Channels.ChannelFollow>();
                 int totalFollowers;
-                var firstBatch = await Channels.GetChannelFollowersAsync(channelId, 100, 0, direction: "asc");
+                var firstBatch = await TwitchLib.TwitchAPI.Channels.v5.GetChannelFollowersAsync(channelId, 100);
                 totalFollowers = firstBatch.Total;
+                string cursor = firstBatch.Cursor;
                 followers.AddRange(firstBatch.Follows);
 
                 // math stuff
@@ -295,21 +296,19 @@
                 int leftOverFollowers = (totalFollowers - amount) % 100;
                 int requiredRequests = (totalFollowers - amount - leftOverFollowers) / 100;
 
-                // perform required requests
-                int currentOffset = amount;
                 System.Threading.Thread.Sleep(1000);
-                for(int i = 0; i < requiredRequests; i++)
+                for (int i = 0; i < requiredRequests; i++)
                 {
-                    var requestedFollowers = await GetChannelFollowersAsync(channelId, 100, currentOffset, direction: "asc");
+                    var requestedFollowers = await TwitchLib.TwitchAPI.Channels.v5.GetChannelFollowersAsync(channelId, 100, cursor: cursor);
+                    cursor = requestedFollowers.Cursor;
                     followers.AddRange(requestedFollowers.Follows);
-                    currentOffset += requestedFollowers.Follows.Length;
 
                     // we should wait a second before performing another request per Twitch requirements
                     System.Threading.Thread.Sleep(1000);
                 }
 
                 // get leftover subs
-                var leftOverFollowersRequest = await GetChannelFollowersAsync(channelId, leftOverFollowers, currentOffset, direction: "asc");
+                var leftOverFollowersRequest = await TwitchLib.TwitchAPI.Channels.v5.GetChannelFollowersAsync(channelId, limit: leftOverFollowers, cursor: cursor);
                 followers.AddRange(leftOverFollowersRequest.Follows);
 
                 return followers;

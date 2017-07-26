@@ -355,7 +355,7 @@ namespace TwitchLib
                 /// <returns></returns>
                 public async static Task<List<Models.API.v5.Channels.ChannelFollow>> GetAllFollowersAsync(string channelId)
                 {
-                    return await Internal.TwitchAPI.v5.Channels.GetChannelFollowersAsync(channelId);
+                    return await Internal.TwitchAPI.v5.Channels.GetAllChannelFollowersAsync(channelId);
                 }
                 #endregion
                 #region GetChannelTeams
@@ -783,7 +783,6 @@ namespace TwitchLib
                 }
                 #endregion
             }
-
         }
 
         public static class Games
