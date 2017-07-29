@@ -107,9 +107,10 @@ namespace TwitchLib.Internal
         #region generalRequestAsync
         private async static Task<string> generalRequestAsync(string url, string method, object payload = null, string accessToken = null, API api = API.v5, string clientId = null)
         {
-            if (clientId == null)
-                checkForCredentials();
-            url = appendClientId(url, clientId);
+            if (string.IsNullOrEmpty(clientId))
+                checkForCredentials(accessToken);
+            if(!string.IsNullOrEmpty(clientId) || !string.IsNullOrEmpty(TwitchAPI.Shared.ClientId))
+                url = appendClientId(url, clientId);
 
             var request = WebRequest.CreateHttp(url);
             request.Method = method;
@@ -132,7 +133,7 @@ namespace TwitchLib.Internal
                 var response = request.GetResponse();
                 using (var reader = new StreamReader(response.GetResponseStream()))
                 {
-                    string data = await reader.ReadToEndAsync();
+                    string data = reader.ReadToEnd();
                     return data;
                 }
             }
@@ -182,9 +183,9 @@ namespace TwitchLib.Internal
         }
         #endregion
         #region checkForCredentials
-        private static void checkForCredentials()
+        private static void checkForCredentials(string passedAccessToken)
         {
-            if (string.IsNullOrEmpty(TwitchAPI.Shared.ClientId) && string.IsNullOrWhiteSpace(TwitchAPI.Shared.AccessToken))
+            if (string.IsNullOrEmpty(TwitchAPI.Shared.ClientId) && string.IsNullOrWhiteSpace(TwitchAPI.Shared.AccessToken) && string.IsNullOrEmpty(passedAccessToken))
                 throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId(\"client_id_here\")");
         }
         #endregion

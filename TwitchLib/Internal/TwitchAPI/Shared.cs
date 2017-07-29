@@ -34,9 +34,9 @@
         {
             if (!TwitchLib.TwitchAPI.Settings.Validators.SkipClientIdValidation)
             {
-                if (string.IsNullOrEmpty(clientId))
-                    throw new InvalidCredentialException("Client Id cannot be empty or null. Set it using TwitchLib.TwitchAPI.Settings.ClientId = {clientid}");
-                if (!(validClientId(clientId)))
+                //if (string.IsNullOrEmpty(clientId))
+                //    throw new InvalidCredentialException("Client Id cannot be empty or null. Set it using TwitchLib.TwitchAPI.Settings.ClientId = {clientid}");
+                if ((!string.IsNullOrWhiteSpace(clientId) || !string.IsNullOrWhiteSpace(Shared.AccessToken)) && !(validClientId(clientId)))
                     throw new InvalidCredentialException("The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new");
             }
             clientIdInternal = clientId;
