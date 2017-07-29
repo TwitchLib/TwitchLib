@@ -62,8 +62,12 @@ namespace TwitchLib_API_Tester
 
         private void setCredentials()
         {
-            TwitchLib.TwitchAPI.Settings.ClientId = ClientId;
-            TwitchLib.TwitchAPI.Settings.AccessToken = AccessToken;
+            if (!string.IsNullOrWhiteSpace(ClientId))
+                TwitchLib.TwitchAPI.Settings.ClientId = ClientId;
+            else
+                TwitchLib.TwitchAPI.Settings.ClientId = null;
+            if(!string.IsNullOrWhiteSpace(AccessToken))
+                TwitchLib.TwitchAPI.Settings.AccessToken = AccessToken;
 
             MessageBox.Show("scopes: " + string.Join(",", TwitchLib.TwitchAPI.Settings.Scopes));
         }
