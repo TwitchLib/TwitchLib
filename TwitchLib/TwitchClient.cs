@@ -69,6 +69,7 @@
                 if (_client.IsAlive)
                     throw new IllegalAssignmentException("While the client is connected, you are unable to change the connection credentials. Please disconnect first and then change them.");
                 _credentials = value;
+                TwitchUsername = value.TwitchUsername;
             }
         }
         /// <summary>Provides access to logging on off boolean.</summary>
@@ -591,6 +592,13 @@
             // On Connected
             if (Internal.Parsing.Chat.detectConnected(ircMessage))
             {
+                string oAuthUsername = ircMessage.Split(' ')[2];
+                if(oAuthUsername.ToLower() != TwitchUsername.ToLower())
+                {
+                    Disconnect();
+                    OnIncorrectLogin?.Invoke(this, new OnIncorrectLoginArgs { Exception = new ErrorLoggingInException($"TwitchOAuth username \"{oAuthUsername}\" doesn't match TwitchUsername \"{TwitchUsername}\".", TwitchUsername) });
+                    return;
+                }
                 OnConnected?.Invoke(this, new OnConnectedArgs { AutoJoinChannel = _autoJoinChannel != null ? _autoJoinChannel : "", Username = TwitchUsername });
                 return;
             }
