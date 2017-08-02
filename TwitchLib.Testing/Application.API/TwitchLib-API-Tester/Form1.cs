@@ -683,5 +683,11 @@ namespace TwitchLib_API_Tester
             foreach (var community in resp.Communities)
                 MessageBox.Show(community.Name);
         }
+
+        private async void button76_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Streams.v5.GetStreamByUserAsync(textBox73.Text);
+            MessageBox.Show($"Viewer count for '{textBox73.Text}': {resp.Stream.Viewers}");
+        }
     }
 }
