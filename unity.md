@@ -13,7 +13,7 @@
 *See extensive guide to see how to compile DLL and avoid TLS problems.*
 
 
-##Using TwitchLib with Unity (extensive versio)
+## Using TwitchLib with Unity (extensive version)
 
 **Prerequisites:**
 - Unity 2017.1+
