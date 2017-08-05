@@ -15,6 +15,7 @@
     using Models.Client;
     using Models.API.v3.Subscriptions;
     using TwitchLib.Logging;
+    using System.Text.RegularExpressions;
     #endregion
     /// <summary>Represents a client connected to a Twitch channel.</summary>
     public class TwitchClient
@@ -806,13 +807,18 @@
                 return;
             }
 
-            // On another channel hosts this broadcaster's channel
+            // On another channel hosts this broadcaster's channel [UNTESTED]
+            // BurkeBlack is now hosting you for up to 206 viewers.
             response = Internal.Parsing.Chat.detectedBeingHosted(ircMessage, JoinedChannels);
             if(response.Successful)
             {
                 var hostedBy = ircMessage.Split(':')[2].Split(' ')[0];
-                var viewers = ((ircMessage.Contains("hosting you for") && ircMessage.Split(' ').Count() >= 9) ? int.Parse(ircMessage.Split(' ')[8]) : -1);
-                var isAuto = ircMessage.Contains("now autohosting");
+                string[] parts = ircMessage.Split(' ');
+                int viewers = -1;
+                foreach (var part in parts)
+                    if (Regex.IsMatch(part, @"^\d+$"))
+                        viewers = int.Parse(part);
+                var isAuto = ircMessage.Contains(" autohost");
                 OnBeingHosted?.Invoke(this, new OnBeingHostedArgs { Channel = response.Channel, BotUsername = TwitchUsername, HostedByChannel = hostedBy,
                     Viewers = viewers, IsAutoHosted = isAuto });
                 return;
