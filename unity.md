@@ -1,4 +1,4 @@
-##Using TwitchLib with Unity (short version)
+## Using TwitchLib with Unity (short version)
 
 **Prerequisites:**
 - Unity 2017.1+
