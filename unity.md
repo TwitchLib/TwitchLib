@@ -20,13 +20,13 @@
 - SourceTree
 - Visual Studio
 
-####Step 1 - Clone TwitchLib repository
+#### Step 1 - Clone TwitchLib repository
 *Example with SourceTree*
 
 - Get Repository URL by clicking the Clone or Download button. <a href="http://i.imgur.com/a9tqa8y.gifv" target="_blank">See GIF</a>
 - Clone in SourceTree <a href="http://i.imgur.com/Xm5VYDs.gif)
 
-####Step 2 - Open and build project into DLLs
+#### Step 2 - Open and build project into DLLs
 
 *Example using Visual Studio*
 
@@ -39,7 +39,7 @@
 	- **websocket-sharp.dll**
 
 
-####Step 3 - Create Unity Project
+#### Step 3 - Create Unity Project
 
 - Create new Unity project <a href="http://i.imgur.com/yyMb9xj.gifv" target="_blank">See GIF</a>
 - In Unity select: Edit > Project Settings > Player
@@ -47,7 +47,7 @@
 - Import TwitchLib DLLs <a href="http://i.imgur.com/k39e2It.gifv" target="_blank">See GIF</a>
 
 
-####Step 4 - Setup Twitch App
+#### Step 4 - Setup Twitch App
 
 *Create a twitch account for your bot*
 
@@ -55,7 +55,7 @@
 - Create a new Client Secret and copy to notepad for later <a href="http://i.imgur.com/rpdSoFh.gifv" target="_blank">See GIF</a>
 - Create new OAuth token with https://twitchtokengenerator.com and copy to notepad for later <a href="http://i.imgur.com/56OCEFU.gifv" target="_blank">See GIF</a>
 
-####Step 5 - Setup Unity integration
+#### Step 5 - Setup Unity integration
 
 - Create new script <a href="http://i.imgur.com/49AFzhR.gifv" target="_blank">See GIF</a>
 - Gather relevant data [See gif (part 1)](http://i.imgur.com/gRF9VrW.gifv" target="_blank">See GIF</a> [See gif (part 2)](http://i.imgur.com/eoPWS73.gifv" target="_blank">See GIF</a>
