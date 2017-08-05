@@ -58,7 +58,7 @@
 #### Step 5 - Setup Unity integration
 
 - Create new script <a href="http://i.imgur.com/49AFzhR.gifv" target="_blank">See GIF</a>
-- Gather relevant data [See gif (part 1)](http://i.imgur.com/gRF9VrW.gifv" target="_blank">See GIF</a> [See gif (part 2)](http://i.imgur.com/eoPWS73.gifv" target="_blank">See GIF</a>
+- Gather relevant data <a href="http://i.imgur.com/gRF9VrW.gifv" target="_blank">See GIF (part 1)</a>, <a href="http://i.imgur.com/eoPWS73.gifv" target="_blank">See GIF (part 2)</a>
 - Try to make connection <a href="http://i.imgur.com/ccRAbLz.gifv" target="_blank">See GIF</a>
 - Attempt to run code <a href="http://i.imgur.com/jG1Z24a.gifv" target="_blank">See GIF</a>
 - Fix Mono TLS Exception <a href="http://i.imgur.com/qNUqJMH.gifv" target="_blank">See GIF</a>
