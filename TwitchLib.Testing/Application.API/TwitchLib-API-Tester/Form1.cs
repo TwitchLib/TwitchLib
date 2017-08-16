@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TwitchLib.Events.Services.FollowerService;
+using TwitchLib.Events.Services.LiveStreamMonitor;
+using TwitchLib.Services;
 
 namespace TwitchLib_API_Tester
 {
@@ -25,12 +28,12 @@ namespace TwitchLib_API_Tester
             monitor.OnStreamOffline += onStreamOfffline;
         }
 
-        private void onStreamOnline(object sender, TwitchLib.Events.Services.LiveStreamMonitor.OnStreamOnlineArgs e)
+        private void onStreamOnline(object sender, OnStreamOnlineArgs e)
         {
             MessageBox.Show($"Stream up! Stream: {e.Channel}");
         }
 
-        private void onStreamOfffline(object sender, TwitchLib.Events.Services.LiveStreamMonitor.OnStreamOfflineArgs e)
+        private void onStreamOfffline(object sender, OnStreamOfflineArgs e)
         {
             MessageBox.Show($"Stream down! Stream: {e.Channel}");
         }
@@ -615,7 +618,7 @@ namespace TwitchLib_API_Tester
                 MessageBox.Show("User doesn't follow channel!");
         }
 
-        private static TwitchLib.Services.LiveStreamMonitor monitor = new TwitchLib.Services.LiveStreamMonitor(30);
+        private static TwitchLib.Services.LiveStreamMonitor monitor = new LiveStreamMonitor(30);
         private void button67_Click(object sender, EventArgs e)
         {
             monitor.SetStreamsByUserId(new List<string>() { textBox67.Text });
@@ -635,12 +638,12 @@ namespace TwitchLib_API_Tester
                 MessageBox.Show($"Streamer: {csstream.User.DisplayName}\nPlaying on map: {csstream.MapName}\nWith {csstream.Viewers} viewers watching.");
         }
 
-        private static void onFollowersDetected(object sender, TwitchLib.Events.Services.FollowerService.OnNewFollowersDetectedArgs e)
+        private static void onFollowersDetected(object sender, OnNewFollowersDetectedArgs e)
         {
             MessageBox.Show($"New followers detected! Followers: {String.Join(",", e.NewFollowers)}");
         }
 
-        private TwitchLib.Services.FollowerService followerService;
+        private FollowerService followerService;
         private async void button71_Click(object sender, EventArgs e)
         {
             followerService = new TwitchLib.Services.FollowerService();
