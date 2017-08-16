@@ -286,7 +286,7 @@
         /// <param name="myTwitchId">A moderator's twitch acount's ID (can be fetched from TwitchApi)</param>
         /// <param name="channelTwitchId">Channel ID who has previous parameter's moderator (can be fetched from TwitchApi)</param>
         /// <param name="moderatorOAuth">Moderator OAuth key (can be OAuth key with any scope)</param>
-        public void ListenToChatModeratorActions(int myTwitchId, int channelTwitchId, string moderatorOAuth)
+        public void ListenToChatModeratorActions(string myTwitchId, string channelTwitchId, string moderatorOAuth)
         {
             listenToTopic($"chat_moderator_actions.{myTwitchId}.{channelTwitchId}");
         }
