@@ -94,7 +94,7 @@ namespace TwitchLib.Models.Client
                         break;
 
                     case "user-id":
-                        UserId = long.Parse(value);
+                        UserId = value;
                         break;
 
                     case "user-type":
