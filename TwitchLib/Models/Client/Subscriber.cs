@@ -126,7 +126,7 @@ namespace TwitchLib.Models.Client
                             SubscriptionPlanName = value.Replace("\\s", " ");
                             break;
                         case "room-id":
-                            RoomId = int.Parse(value);
+                            RoomId = value;
                             break;
                         case "subscriber":
                             IsSubscriber = value == "1";
@@ -142,7 +142,7 @@ namespace TwitchLib.Models.Client
                             IsTurbo = value == "1";
                             break;
                         case "user-id":
-                            UserId = int.Parse(value);
+                            UserId = value;
                             break;
                     }
                 }
