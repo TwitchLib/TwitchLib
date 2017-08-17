@@ -59,9 +59,9 @@ namespace TwitchLibExample
             ConnectionCredentials credentials = new ConnectionCredentials(textBox4.Text, textBox5.Text);
             TwitchClient newClient;
             if (!string.IsNullOrEmpty(textBox8.Text))
-                newClient = new TwitchClient(credentials, textBox8.Text, '!', '!', true, false);
+                newClient = new TwitchClient(credentials, textBox8.Text, '!', '!');
             else
-                newClient = new TwitchClient(credentials, null, '!', '!', true, false);
+                newClient = new TwitchClient(credentials, null, '!', '!');
 
             newClient.OnMessageReceived += new EventHandler<OnMessageReceivedArgs>(globalChatMessageReceived);
             newClient.OnChatCommandReceived += new EventHandler<OnChatCommandReceivedArgs>(chatCommandReceived);
@@ -377,7 +377,7 @@ namespace TwitchLibExample
         private void pubsubOnConnected(object sender, object e)
         {
             // MODERATOR ACCOUNT ID, CHANNEL ACCOUNT ID, MODERATOR OAUTH
-            pubsub.ListenToChatModeratorActions(, , "");
+            pubsub.ListenToChatModeratorActions(99999999, 99999999, "");
             // MY ACCOUNT ID, MY OAUTH
             //pubsub.ListenToWhispers(0, "oauth_token");
         }
