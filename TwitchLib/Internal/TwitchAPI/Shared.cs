@@ -30,52 +30,51 @@
         #endregion
         #region Private static methods
         #region setClientId
-        private async static Task setClientId(string clientId)
+        private static void setClientId(string clientId)
         {
             if (!TwitchLib.TwitchAPI.Settings.Validators.SkipClientIdValidation)
             {
-                if (string.IsNullOrEmpty(clientId))
-                    throw new InvalidCredentialException("Client Id cannot be empty or null. Set it using TwitchLib.TwitchAPI.Settings.ClientId = {clientid}");
-                if (!(await validClientId(clientId)))
+                //if (string.IsNullOrEmpty(clientId))
+                //    throw new InvalidCredentialException("Client Id cannot be empty or null. Set it using TwitchLib.TwitchAPI.Settings.ClientId = {clientid}");
+                if ((!string.IsNullOrWhiteSpace(clientId) || !string.IsNullOrWhiteSpace(Shared.AccessToken)) && !(validClientId(clientId)))
                     throw new InvalidCredentialException("The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new");
             }
             clientIdInternal = clientId;
         }
         #endregion
         #region setAccessToken
-        private async static Task setAccessToken(string accessToken)
+        private  static void setAccessToken(string accessToken)
         {
             if (!TwitchLib.TwitchAPI.Settings.Validators.SkipAccessTokenValidation)
             {
                 if (string.IsNullOrEmpty(accessToken))
                     throw new InvalidCredentialException("Access Token cannot be empty or null. Set it using: TwitchLib.TwitchAPI.Settings.AccessToken = {access_token}");
-                if (!(await validAccessToken(accessToken)))
+                if (!(validAccessToken(accessToken)))
                     throw new InvalidCredentialException("The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/");
             }
             accessTokenInternal = accessToken;
         }
         #endregion
         #region validClientId
-        private async static Task<bool> validClientId(string clientId)
+        private static bool validClientId(string clientId)
         {
             try
             {
-                await v5.Root.GetRoot(null, clientId);
+                v5.Root.GetRoot(null, clientId);
                 return true;
             }
             catch(BadRequestException)
             {
                 return false;
             }
-
         }
         #endregion
         #region validAccessToken
-        private async static Task<bool> validAccessToken(string accessToken)
+        private static bool validAccessToken(string accessToken)
         {
             try
             {
-                var resp = await v5.Root.GetRoot(accessToken);
+                var resp = v5.Root.GetRoot(accessToken);
                 if (resp.Token != null)
                 {
                     Scopes = buildScopesList(resp.Token);

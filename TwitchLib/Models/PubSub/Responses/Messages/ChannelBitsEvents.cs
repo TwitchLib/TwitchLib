@@ -28,16 +28,18 @@
         /// <summary>ChannelBitsEvent model constructor.</summary>
         public ChannelBitsEvents(string jsonStr)
         {
+            string _local = jsonStr;
+
             JToken json = JObject.Parse(jsonStr);
-            Username = json.SelectToken("user_name")?.ToString();
-            ChannelName = json.SelectToken("channel_name")?.ToString();
-            UserId = json.SelectToken("user_id")?.ToString();
-            ChannelId = json.SelectToken("channel_id")?.ToString();
-            Time = json.SelectToken("time")?.ToString();
-            ChatMessage = json.SelectToken("chat_message")?.ToString();
-            BitsUsed = int.Parse(json.SelectToken("bits_used").ToString());
-            TotalBitsUsed = int.Parse(json.SelectToken("total_bits_used").ToString());
-            Context = json.SelectToken("context")?.ToString();
+            Username = json.SelectToken("data").SelectToken("user_name")?.ToString();
+            ChannelName = json.SelectToken("data").SelectToken("channel_name")?.ToString();
+            UserId = json.SelectToken("data").SelectToken("user_id")?.ToString();
+            ChannelId = json.SelectToken("data").SelectToken("channel_id")?.ToString();
+            Time = json.SelectToken("data").SelectToken("time")?.ToString();
+            ChatMessage = json.SelectToken("data").SelectToken("chat_message")?.ToString();
+            BitsUsed = int.Parse(json.SelectToken("data").SelectToken("bits_used").ToString());
+            TotalBitsUsed = int.Parse(json.SelectToken("data").SelectToken("total_bits_used").ToString());
+            Context = json.SelectToken("data").SelectToken("context")?.ToString();
         }
     }
 }

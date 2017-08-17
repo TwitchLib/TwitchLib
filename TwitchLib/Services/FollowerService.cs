@@ -57,12 +57,12 @@ namespace TwitchLib.Services
 
             if(ChannelIdentifier == Enums.ChannelIdentifierType.Username)
             {
-                var response = await TwitchAPI.Follows.v3.GetFollowers(ChannelData, QueryCount);
+                var response = await TwitchAPI.Follows.v3.GetFollowersAsync(ChannelData, QueryCount);
                 foreach (var follower in response.Followers)
                     ActiveCache.Add(follower.User.Name);
             } else
             {
-                var response = await TwitchAPI.Channels.v5.GetChannelFollowers(ChannelData, QueryCount);
+                var response = await TwitchAPI.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
                 foreach (var follower in response.Follows)
                     ActiveCache.Add(follower.User.Name);
             }
@@ -104,12 +104,12 @@ namespace TwitchLib.Services
             {
                 if(ChannelIdentifier == Enums.ChannelIdentifierType.Username)
                 {
-                    var followers = await TwitchAPI.Follows.v3.GetFollowers(ChannelData, QueryCount);
+                    var followers = await TwitchAPI.Follows.v3.GetFollowersAsync(ChannelData, QueryCount);
                     foreach (var follower in followers.Followers)
                         mostRecentFollowers.Add(follower.User.Name);
                 } else
                 {
-                    var followers = await TwitchAPI.Channels.v5.GetChannelFollowers(ChannelData, QueryCount);
+                    var followers = await TwitchAPI.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
                     foreach (var follower in followers.Follows)
                         mostRecentFollowers.Add(follower.User.Name);
                 }

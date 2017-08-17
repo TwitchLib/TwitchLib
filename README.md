@@ -138,6 +138,10 @@ private void onPubSubBitsReceived() {
 ```
 For a complete list of TwitchPubSub functionality, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_pub_sub.html" target="_blank">here</a>
 
+## Using TwitchLib with Unity Guide
+
+Björn has kindly created a guide for using TwitchLib with Unity. To view the guide, click <a href="https://github.com/swiftyspiffy/TwitchLib/blob/master/unity.md" target="_blank">here</a>..
+
 ## Examples, Applications, and Community Work
 
 - TwitchLib-API-Tester: Repo testing application for TwitchAPI and Services: [Link](https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib-API-Tester)
@@ -190,3 +194,5 @@ You are also more than welcome to clone/fork this repo and build the library you
 ## License
 
 This project is available under the MIT license. See the LICENSE file for more info.
+
+:)

@@ -37,9 +37,9 @@ namespace TwitchLib.Models.Client
         /// <summary>Property representing number of months of being subscribed.</summary>
         public int Months { get; protected set; }
         /// <summary>Property representing the room id.</summary>
-        public int RoomId { get; protected set; }
+        public string RoomId { get; protected set; }
         /// <summary>Property representing the user's id.</summary>
-        public int UserId { get; protected set; }
+        public string UserId { get; protected set; }
         /// <summary>Property representing whether or not the resubscriber is a moderator.</summary>
         public bool IsModerator { get; protected set; }
         /// <summary>Property representing whether or not the resubscriber is a turbo member.</summary>
@@ -127,7 +127,7 @@ namespace TwitchLib.Models.Client
                             SubscriptionPlanName = value.Replace("\\s", " ");
                             break;
                         case "room-id":
-                            RoomId = int.Parse(value);
+                            RoomId = value;
                             break;
                         case "subscriber":
                             IsSubscriber = value == "1";
@@ -143,7 +143,7 @@ namespace TwitchLib.Models.Client
                             IsTurbo = value == "1";
                             break;
                         case "user-id":
-                            UserId = int.Parse(value);
+                            UserId = value;
                             break;
                     }
                 }
