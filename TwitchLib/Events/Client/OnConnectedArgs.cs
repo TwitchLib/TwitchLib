@@ -7,7 +7,7 @@
     public class OnConnectedArgs : EventArgs
     {
         /// <summary>Property representing bot username.</summary>
-        public string Username;
+        public string BotUsername;
         /// <summary>Property representing connected channel.</summary>
         public string AutoJoinChannel;
     }
