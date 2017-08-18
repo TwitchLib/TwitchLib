@@ -145,7 +145,7 @@ namespace TwitchLib.Services
                 if (ActiveCache.Count > CacheSize)
                     ActiveCache = ActiveCache.GetRange(ActiveCache.Count - (CacheSize + 1), CacheSize);
 
-                // Invoke new followers event with list of names (original)
+                // Invoke followers event with list of follows - IFollow
                 OnNewFollowersDetected?.Invoke(this,
                     new OnNewFollowersDetectedArgs
                     {
@@ -153,19 +153,10 @@ namespace TwitchLib.Services
                         ChannelData = ChannelData,
                         CheckIntervalSeconds = CheckIntervalSeconds,
                         QueryCount = QueryCount,
-                        NewFollowers = newFollowers.Select(x => x.User.Name).ToList()
-                    });
-
-                // Invoke new followers event with list of IFollow
-                OnNewFollowersDetectedFull?.Invoke(this,
-                    new OnNewFollowersDetectedFullArgs
-                    {
-                        ChannelIdentifier = ChannelIdentifier,
-                        ChannelData = ChannelData,
-                        CheckIntervalSeconds = CheckIntervalSeconds,
-                        QueryCount = QueryCount,
                         NewFollowers = newFollowers
                     });
+
+               
             }
         }
 
@@ -177,8 +168,7 @@ namespace TwitchLib.Services
         public event EventHandler<OnServiceStoppedArgs> OnServiceStopped;
         /// <summary>Event fires when new followers are detected.</summary>
         public event EventHandler<OnNewFollowersDetectedArgs> OnNewFollowersDetected;
-        /// <summary>Event fires when new followers are detected.</summary>
-        public event EventHandler<OnNewFollowersDetectedFullArgs> OnNewFollowersDetectedFull;
+       
         #endregion
     }
 }

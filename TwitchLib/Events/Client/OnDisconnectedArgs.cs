@@ -7,6 +7,6 @@
     public class OnDisconnectedArgs : EventArgs
     {
         /// <summary>Username of the bot that was disconnected.</summary>
-        public string Username;
+        public string BotUsername;
     }
 }

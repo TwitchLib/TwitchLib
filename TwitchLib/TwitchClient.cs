@@ -533,12 +533,12 @@
         {
             Reconnect();
             System.Threading.Thread.Sleep(2000);
-            OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { Username = TwitchUsername, Error = new ErrorEvent { Exception = e.Exception, Message = e.Message } });
+            OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { BotUsername = TwitchUsername, Error = new ErrorEvent { Exception = e.Exception, Message = e.Message } });
         }
 
         private void _client_OnDisconnected(object sender, CloseEventArgs e)
         {
-            OnDisconnected?.Invoke(this, new OnDisconnectedArgs { Username = TwitchUsername });
+            OnDisconnected?.Invoke(this, new OnDisconnectedArgs { BotUsername = TwitchUsername });
             JoinedChannels.Clear();
         }
 
@@ -600,7 +600,7 @@
                     OnIncorrectLogin?.Invoke(this, new OnIncorrectLoginArgs { Exception = new ErrorLoggingInException($"TwitchOAuth username \"{oAuthUsername}\" doesn't match TwitchUsername \"{TwitchUsername}\".", TwitchUsername) });
                     return;
                 }
-                OnConnected?.Invoke(this, new OnConnectedArgs { AutoJoinChannel = _autoJoinChannel != null ? _autoJoinChannel : "", Username = TwitchUsername });
+                OnConnected?.Invoke(this, new OnConnectedArgs { AutoJoinChannel = _autoJoinChannel != null ? _autoJoinChannel : "", BotUsername = TwitchUsername });
                 return;
             }
 
@@ -643,7 +643,7 @@
             {
                 if (TwitchUsername.ToLower() == ircMessage.Split('!')[1].Split('@')[0].ToLower())
                 {
-                    OnJoinedChannel?.Invoke(this, new OnJoinedChannelArgs { Channel = response.Channel, Username = ircMessage.Split('!')[1].Split('@')[0] });
+                    OnJoinedChannel?.Invoke(this, new OnJoinedChannelArgs { Channel = response.Channel, BotUsername = ircMessage.Split('!')[1].Split('@')[0] });
                     if (OnBeingHosted != null)
                         if (response.Channel.ToLower() != TwitchUsername && !OverrideBeingHostedCheck)
                             throw new BadListenException("BeingHosted", "You cannot listen to OnBeingHosted unless you are connected to the broadcaster's channel as the broadcaster. You may override this by setting the TwitchClient property OverrideBeingHostedCheck to true.");
