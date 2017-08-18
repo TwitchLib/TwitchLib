@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.Models.API.v3.Follows
 {
-    public class User
+    public class User : Interfaces.IUser
     {
         [JsonProperty(PropertyName = "type")]
         public string Type { get; protected set; }

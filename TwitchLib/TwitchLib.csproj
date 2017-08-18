@@ -74,6 +74,9 @@
     <Compile Include="Exceptions\Services\UnitializedChannelListException.cs" />
     <Compile Include="Extensions\API\v5\ChannelAuthedExt.cs" />
     <Compile Include="Extensions\API\v5\UserAuthedExt.cs" />
+    <Compile Include="Interfaces\IFollow.cs" />
+    <Compile Include="Interfaces\IFollows.cs" />
+    <Compile Include="Interfaces\IUser.cs" />
     <Compile Include="Internal\Rfc2812.cs" />
     <Compile Include="Internal\TwitchAPI\Shared.cs" />
     <Compile Include="Internal\TwitchAPI\ThirdParty.cs" />
