@@ -61,6 +61,7 @@
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
     <Compile Include="Events\Client\OnLogArgs.cs" />
     <Compile Include="Events\PubSub\OnChannelSubscriptionArgs.cs" />
+    <Compile Include="Events\Services\FollowerService\OnNewFollowersDetectedFullArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamsSetArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorEndedArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorStartedArgs.cs" />
@@ -74,6 +75,9 @@
     <Compile Include="Exceptions\Services\UnitializedChannelListException.cs" />
     <Compile Include="Extensions\API\v5\ChannelAuthedExt.cs" />
     <Compile Include="Extensions\API\v5\UserAuthedExt.cs" />
+    <Compile Include="Interfaces\IFollow.cs" />
+    <Compile Include="Interfaces\IFollows.cs" />
+    <Compile Include="Interfaces\IUser.cs" />
     <Compile Include="Internal\Rfc2812.cs" />
     <Compile Include="Internal\TwitchAPI\Shared.cs" />
     <Compile Include="Internal\TwitchAPI\ThirdParty.cs" />
