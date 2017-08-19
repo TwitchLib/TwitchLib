@@ -102,6 +102,14 @@ namespace TwitchLib.Internal.TwitchAPI
             return await Requests.GetGenericAsync<Models.API.Undocumented.RecentEvents.RecentEvents>($"https://api.twitch.tv/bits/channels/{channelId}/events/recent");
         }
         #endregion
-
+        #region GetChatUser
+        public async static Task<Models.API.Undocumented.ChatUser.ChatUserResponse> GetChatUser(string userId, string channelId = null)
+        {
+            if (channelId != null)
+                return await Requests.GetGenericAsync<Models.API.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}");
+            else
+                return await Requests.GetGenericAsync<Models.API.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/");
+        }
+        #endregion
     }
 }
