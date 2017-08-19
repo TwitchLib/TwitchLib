@@ -692,5 +692,11 @@ namespace TwitchLib_API_Tester
             var resp = await TwitchLib.TwitchAPI.Streams.v5.GetStreamByUserAsync(textBox73.Text);
             MessageBox.Show($"Viewer count for '{textBox73.Text}': {resp.Stream.Viewers}");
         }
+
+        private async void button77_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Undocumented.GetChatUser(textBox74.Text, textBox75.Text);
+            MessageBox.Show($"Login: {resp.Login}\nColor: {resp.Color}\nIs Verified Bot: {resp.IsVerifiedBot}\nBadges: {resp.Badges.Count()}");
+        }
     }
 }
