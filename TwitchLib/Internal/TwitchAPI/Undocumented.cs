@@ -79,7 +79,7 @@ namespace TwitchLib.Internal.TwitchAPI
         #region GetChatters
         public async static Task<List<Models.API.Undocumented.Chatters.ChatterFormatted>> GetChattersAsync(string channelName)
         {
-            var resp = await Requests.GetGenericAsync<Models.API.Undocumented.Chatters.ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName}/chatters");
+            var resp = await Requests.GetGenericAsync<Models.API.Undocumented.Chatters.ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName.ToLower()}/chatters");
 
             List<Models.API.Undocumented.Chatters.ChatterFormatted> chatters = new List<Models.API.Undocumented.Chatters.ChatterFormatted>();
             foreach (var chatter in resp.Chatters.Staff)
