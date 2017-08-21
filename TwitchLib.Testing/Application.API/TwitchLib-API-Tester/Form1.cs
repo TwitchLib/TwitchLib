@@ -698,5 +698,14 @@ namespace TwitchLib_API_Tester
             var resp = await TwitchLib.TwitchAPI.Undocumented.GetChatUser(textBox74.Text, textBox75.Text);
             MessageBox.Show($"Login: {resp.Login}\nColor: {resp.Color}\nIs Verified Bot: {resp.IsVerifiedBot}\nBadges: {resp.Badges.Count()}");
         }
+
+        private void button78_Click(object sender, EventArgs e)
+        {
+            var resp = TwitchLib.TwitchAPI.Undocumented.IsUsernameAvailable(textBox76.Text);
+            if (resp)
+                MessageBox.Show($"Username '{textBox76.Text}' is available.");
+            else
+                MessageBox.Show($"Username '{textBox76.Text}' is not available.");
+        }
     }
 }

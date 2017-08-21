@@ -379,6 +379,10 @@
             this.button77 = new System.Windows.Forms.Button();
             this.label78 = new System.Windows.Forms.Label();
             this.textBox75 = new System.Windows.Forms.TextBox();
+            this.groupBox77 = new System.Windows.Forms.GroupBox();
+            this.textBox76 = new System.Windows.Forms.TextBox();
+            this.label79 = new System.Windows.Forms.Label();
+            this.button78 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -485,6 +489,7 @@
             this.groupBox70.SuspendLayout();
             this.groupBox68.SuspendLayout();
             this.groupBox76.SuspendLayout();
+            this.groupBox77.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -3697,6 +3702,7 @@
             // 
             // tabPage21
             // 
+            this.tabPage21.Controls.Add(this.groupBox77);
             this.tabPage21.Controls.Add(this.groupBox76);
             this.tabPage21.Controls.Add(this.groupBox69);
             this.tabPage21.Controls.Add(this.groupBox64);
@@ -4357,11 +4363,54 @@
             this.textBox75.Size = new System.Drawing.Size(70, 20);
             this.textBox75.TabIndex = 5;
             // 
+            // groupBox77
+            // 
+            this.groupBox77.Controls.Add(this.textBox76);
+            this.groupBox77.Controls.Add(this.label79);
+            this.groupBox77.Controls.Add(this.button78);
+            this.groupBox77.Location = new System.Drawing.Point(351, 185);
+            this.groupBox77.Margin = new System.Windows.Forms.Padding(1);
+            this.groupBox77.Name = "groupBox77";
+            this.groupBox77.Padding = new System.Windows.Forms.Padding(1);
+            this.groupBox77.Size = new System.Drawing.Size(164, 83);
+            this.groupBox77.TabIndex = 11;
+            this.groupBox77.TabStop = false;
+            this.groupBox77.Text = "Check if Username available";
+            // 
+            // textBox76
+            // 
+            this.textBox76.Location = new System.Drawing.Point(87, 17);
+            this.textBox76.Margin = new System.Windows.Forms.Padding(1);
+            this.textBox76.Name = "textBox76";
+            this.textBox76.Size = new System.Drawing.Size(70, 20);
+            this.textBox76.TabIndex = 3;
+            // 
+            // label79
+            // 
+            this.label79.AutoSize = true;
+            this.label79.Location = new System.Drawing.Point(6, 18);
+            this.label79.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.label79.Name = "label79";
+            this.label79.Size = new System.Drawing.Size(58, 13);
+            this.label79.TabIndex = 1;
+            this.label79.Text = "Username:";
+            // 
+            // button78
+            // 
+            this.button78.Location = new System.Drawing.Point(2, 41);
+            this.button78.Margin = new System.Windows.Forms.Padding(1);
+            this.button78.Name = "button78";
+            this.button78.Size = new System.Drawing.Size(159, 34);
+            this.button78.TabIndex = 0;
+            this.button78.Text = "Fetch";
+            this.button78.UseVisualStyleBackColor = true;
+            this.button78.Click += new System.EventHandler(this.button78_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(598, 442);
+            this.ClientSize = new System.Drawing.Size(598, 477);
             this.Controls.Add(this.tabControl2);
             this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.Name = "Form1";
@@ -4529,6 +4578,8 @@
             this.groupBox68.PerformLayout();
             this.groupBox76.ResumeLayout(false);
             this.groupBox76.PerformLayout();
+            this.groupBox77.ResumeLayout(false);
+            this.groupBox77.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -4884,6 +4935,10 @@
         private System.Windows.Forms.TextBox textBox74;
         private System.Windows.Forms.Label label77;
         private System.Windows.Forms.Button button77;
+        private System.Windows.Forms.GroupBox groupBox77;
+        private System.Windows.Forms.TextBox textBox76;
+        private System.Windows.Forms.Label label79;
+        private System.Windows.Forms.Button button78;
     }
 }
 
