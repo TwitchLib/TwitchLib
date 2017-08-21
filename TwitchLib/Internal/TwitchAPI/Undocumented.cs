@@ -111,5 +111,19 @@ namespace TwitchLib.Internal.TwitchAPI
                 return await Requests.GetGenericAsync<Models.API.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/");
         }
         #endregion
+        #region IsUsernameAvailable
+        public static bool IsUsernameAvailable(string username)
+        {
+            //
+            var resp = Requests.RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}?users_service=true", "HEAD");
+            if (resp == 200)
+                return false;
+            else if (resp == 204)
+                return true;
+            else
+                throw new Exceptions.API.BadResourceException("Unexpected response from resource. Expecting response code 200 or 204, received: " + resp);
+
+        }
+        #endregion
     }
 }

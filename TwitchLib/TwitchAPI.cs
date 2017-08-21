@@ -1378,6 +1378,12 @@ namespace TwitchLib
                 return await Internal.TwitchAPI.Undocumented.GetChatUser(userId, channelId);
             }
             #endregion
+            #region IsUsernameAvailable
+            public static bool IsUsernameAvailable(string username)
+            {
+                return Internal.TwitchAPI.Undocumented.IsUsernameAvailable(username);
+            }
+            #endregion
         }
 
         /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>
