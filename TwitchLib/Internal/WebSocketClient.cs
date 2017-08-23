@@ -12,28 +12,36 @@ namespace TwitchLib.Internal
     {
         private const int ReceiveChunkSize = 1024;
         private const int SendChunkSize = 1024;
+        
 
-        public readonly ClientWebSocket Client;
+        public ClientWebSocket Client;
         private readonly Uri _uri;
-        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        private readonly CancellationToken _cancellationToken;
+        private readonly bool _shouldReconnect;
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private CancellationToken _cancellationToken;
 
         public event EventHandler<OnConnectedArgs> OnConnected;
         public event EventHandler<OnMessageReceivedArgs> OnMessage;
         public event EventHandler<OnDisconnectedArgs> OnDisconnected;
         public event EventHandler<OnErrorArgs> OnError;
 
-        protected WebSocketClient(Uri uri)
+        protected WebSocketClient(Uri uri, bool reconnect)
+        {
+            _uri = uri;
+            _shouldReconnect = reconnect;
+            SetupClient();
+        }
+
+        private void SetupClient()
         {
             Client = new ClientWebSocket();
-            Client.Options.KeepAliveInterval = TimeSpan.FromSeconds(20);
-            _uri = uri;
+            Client.Options.KeepAliveInterval = TimeSpan.FromSeconds(60);
             _cancellationToken = _cancellationTokenSource.Token;
         }
 
-        public static WebSocketClient Create(string uri)
+        public static WebSocketClient Create(string uri, bool reconnect)
         {
-            return new WebSocketClient(new Uri(uri));
+            return new WebSocketClient(new Uri(uri), reconnect);
         }
 
         public WebSocketClient Connect()
@@ -45,6 +53,12 @@ namespace TwitchLib.Internal
         public void Disconnect()
         {
             Client.CloseAsync(WebSocketCloseStatus.NormalClosure, "Normal", CancellationToken.None);
+        }
+
+        public void Reconnect()
+        {
+            SetupClient();
+            ConnectAsync();
         }
 
         public void SendMessage(string message)
@@ -132,6 +146,8 @@ namespace TwitchLib.Internal
             finally
             {
                 Client.Dispose();
+                if (_shouldReconnect)
+                    Reconnect();
             }
         }
 

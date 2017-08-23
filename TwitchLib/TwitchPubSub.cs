@@ -330,7 +330,7 @@
         /// </summary>
         public void Connect()
         {
-            socket = WebSocketClient.Create("wss://pubsub-edge.twitch.tv");
+            socket = WebSocketClient.Create("wss://pubsub-edge.twitch.tv", true);
             socket.OnConnected += Socket_OnConnected;
             socket.OnError += OnError;
             socket.OnMessage += OnMessage;

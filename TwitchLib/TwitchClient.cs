@@ -270,7 +270,7 @@
             Logger = logger ?? new NullLogFactory().Create("TwitchLibNullLogger");
             AutoReListenOnException = autoReListenOnExceptions;
 
-            _client = WebSocketClient.Create($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}");
+            _client = WebSocketClient.Create($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}", true);
 
             _client.OnConnected += _client_OnConnected;
             _client.OnMessage += _client_OnMessage;
@@ -375,23 +375,6 @@
             // Clear instance data
             JoinedChannels.Clear();
             PreviousWhisper = null;
-        }
-
-        /// <summary>
-        /// Reconnects to Twitch channel given existing login credentials
-        /// </summary>
-        public void Reconnect()
-        {
-            log("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
-
-            if (IsConnected)
-            {
-                _client.Disconnect();
-                _client.Connect();
-            } else
-            {
-                _client.Connect();
-            }
         }
         #endregion
 
@@ -529,8 +512,6 @@
         #region Client Events
         private void _client_OnError(object sender, Events.WebSockets.OnErrorArgs e)
         {
-            Reconnect();
-            System.Threading.Thread.Sleep(2000);
             OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { BotUsername = TwitchUsername, Error = new ErrorEvent { Exception = e.Exception, Message = e.Exception.Message } });
         }
 
