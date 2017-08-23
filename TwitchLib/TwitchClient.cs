@@ -531,7 +531,7 @@
         {
             Reconnect();
             System.Threading.Thread.Sleep(2000);
-            OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { BotUsername = TwitchUsername, Error = new ErrorEvent { Exception = e.Exception, Message = e.Message } });
+            OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { BotUsername = TwitchUsername, Error = new ErrorEvent { Exception = e.Exception, Message = e.Exception.Message } });
         }
 
         private void _client_OnDisconnected(object sender, Events.WebSockets.OnDisconnectedArgs e)

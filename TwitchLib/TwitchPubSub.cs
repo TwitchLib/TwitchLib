@@ -265,7 +265,7 @@
                 ((JObject)jsonData.SelectToken("data")).Add(new JProperty("auth_token", oauth));
             }
 
-            socket.Send(jsonData.ToString());
+            socket.SendMessage(jsonData.ToString());
 
             topicList.Clear();
         }
