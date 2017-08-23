@@ -10,6 +10,6 @@
         /// <summary></summary>
         public ErrorEvent Error;
         /// <summary>Username of the bot that suffered connection error.</summary>
-        public string Username;
+        public string BotUsername;
     }
 }

@@ -79,7 +79,7 @@ namespace TwitchLib.Internal.TwitchAPI
         #region GetChatters
         public async static Task<List<Models.API.Undocumented.Chatters.ChatterFormatted>> GetChattersAsync(string channelName)
         {
-            var resp = await Requests.GetGenericAsync<Models.API.Undocumented.Chatters.ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName}/chatters");
+            var resp = await Requests.GetGenericAsync<Models.API.Undocumented.Chatters.ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName.ToLower()}/chatters");
 
             List<Models.API.Undocumented.Chatters.ChatterFormatted> chatters = new List<Models.API.Undocumented.Chatters.ChatterFormatted>();
             foreach (var chatter in resp.Chatters.Staff)
@@ -102,6 +102,28 @@ namespace TwitchLib.Internal.TwitchAPI
             return await Requests.GetGenericAsync<Models.API.Undocumented.RecentEvents.RecentEvents>($"https://api.twitch.tv/bits/channels/{channelId}/events/recent");
         }
         #endregion
+        #region GetChatUser
+        public async static Task<Models.API.Undocumented.ChatUser.ChatUserResponse> GetChatUser(string userId, string channelId = null)
+        {
+            if (channelId != null)
+                return await Requests.GetGenericAsync<Models.API.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}");
+            else
+                return await Requests.GetGenericAsync<Models.API.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/");
+        }
+        #endregion
+        #region IsUsernameAvailable
+        public static bool IsUsernameAvailable(string username)
+        {
+            //
+            var resp = Requests.RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}?users_service=true", "HEAD");
+            if (resp == 200)
+                return false;
+            else if (resp == 204)
+                return true;
+            else
+                throw new Exceptions.API.BadResourceException("Unexpected response from resource. Expecting response code 200 or 204, received: " + resp);
 
+        }
+        #endregion
     }
 }

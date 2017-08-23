@@ -236,7 +236,7 @@
             topicList.Add(topic);
         }
 
-        public void sendTopics (string oauth = null, bool unlisten = false)
+        public void SendTopics (string oauth = null, bool unlisten = false)
         {
             if (oauth != null && oauth.Contains ("oauth:"))
             {
@@ -250,7 +250,6 @@
             {
                 topics.Add(new JValue(val));
             }
-
 
             JObject jsonData = new JObject(
                 new JProperty("type", !unlisten ? "LISTEN" : "UNLISTEN"),
@@ -267,6 +266,8 @@
             }
 
             socket.SendMessage(jsonData.ToString());
+
+            topicList.Clear();
         }
 
         private void unaccountedFor(string message)
@@ -282,8 +283,7 @@
         /// </summary>
         /// <param name="myTwitchId">A moderator's twitch acount's ID (can be fetched from TwitchApi)</param>
         /// <param name="channelTwitchId">Channel ID who has previous parameter's moderator (can be fetched from TwitchApi)</param>
-        /// <param name="moderatorOAuth">Moderator OAuth key (can be OAuth key with any scope)</param>
-        public void ListenToChatModeratorActions(string myTwitchId, string channelTwitchId, string moderatorOAuth)
+        public void ListenToChatModeratorActions(string myTwitchId, string channelTwitchId)
         {
             listenToTopic($"chat_moderator_actions.{myTwitchId}.{channelTwitchId}");
         }

@@ -6,6 +6,7 @@ using TwitchLib.Exceptions.Services;
 using TwitchLib.Exceptions.API;
 using TwitchLib.Events.Services.FollowerService;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace TwitchLib.Services
 {
@@ -28,7 +29,7 @@ namespace TwitchLib.Services
         /// <exception cref="BadQueryCountException">Throws BadQueryCountException if queryCount is larger than 100 or smaller than 1.</exception>
         public int QueryCount { get { return _queryCount; } set { if (value < 1 || value > 100) { throw new BadQueryCountException("Query count was smaller than 1 or exceeded 100"); } _queryCount = value; } }
         /// <summary>Property representing the cache where detected followers are stored and compared against.</summary>
-        public List<string> ActiveCache { get; set; } = new List<string>();
+        public List<Interfaces.IFollow> ActiveCache { get; set; } = new List<Interfaces.IFollow>();
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _followerServiceTimer.Interval = value * 1000; } }
 
@@ -55,20 +56,21 @@ namespace TwitchLib.Services
                 throw new UninitializedChannelDataException("ChannelData must be set before starting the FollowerService. Use SetChannelByName() or SetChannelById()");
             }
 
-            if(ChannelIdentifier == Enums.ChannelIdentifierType.Username)
+            if (ChannelIdentifier == Enums.ChannelIdentifierType.Username)
             {
                 var response = await TwitchAPI.Follows.v3.GetFollowersAsync(ChannelData, QueryCount);
                 foreach (var follower in response.Followers)
-                    ActiveCache.Add(follower.User.Name);
-            } else
+                    ActiveCache.Add(follower);
+            }
+            else
             {
                 var response = await TwitchAPI.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
                 foreach (var follower in response.Follows)
-                    ActiveCache.Add(follower.User.Name);
+                    ActiveCache.Add(follower);
             }
-            
+
             _followerServiceTimer.Start();
-            OnServiceStarted?.Invoke(this, 
+            OnServiceStarted?.Invoke(this,
                 new OnServiceStartedArgs { ChannelIdentifier = ChannelIdentifier, ChannelData = ChannelData, CheckIntervalSeconds = CheckIntervalSeconds, QueryCount = QueryCount });
         }
 
@@ -99,33 +101,34 @@ namespace TwitchLib.Services
 
         private async void _followerServiceTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            List<string> mostRecentFollowers = new List<string>();
+            List<Interfaces.IFollow> mostRecentFollowers = new List<Interfaces.IFollow>();
             try
             {
-                if(ChannelIdentifier == Enums.ChannelIdentifierType.Username)
+                if (ChannelIdentifier == Enums.ChannelIdentifierType.Username)
                 {
                     var followers = await TwitchAPI.Follows.v3.GetFollowersAsync(ChannelData, QueryCount);
                     foreach (var follower in followers.Followers)
-                        mostRecentFollowers.Add(follower.User.Name);
-                } else
+                        mostRecentFollowers.Add(follower);
+                }
+                else
                 {
                     var followers = await TwitchAPI.Channels.v5.GetChannelFollowersAsync(ChannelData, QueryCount);
                     foreach (var follower in followers.Follows)
-                        mostRecentFollowers.Add(follower.User.Name);
+                        mostRecentFollowers.Add(follower);
                 }
             }
             catch (WebException)
             {
                 return;
             }
-            List<string> newFollowers = new List<string>();
+            List<Interfaces.IFollow> newFollowers = new List<Interfaces.IFollow>();
 
             foreach (var recentFollower in mostRecentFollowers)
             {
                 bool found = false;
                 foreach (var cachedFollower in ActiveCache)
                 {
-                    if (recentFollower == cachedFollower)
+                    if (recentFollower.User.Id == cachedFollower.User.Id)
                         found = true;
                 }
                 if (!found)
@@ -142,7 +145,7 @@ namespace TwitchLib.Services
                 if (ActiveCache.Count > CacheSize)
                     ActiveCache = ActiveCache.GetRange(ActiveCache.Count - (CacheSize + 1), CacheSize);
 
-                // Invoke new followers event
+                // Invoke followers event with list of follows - IFollow
                 OnNewFollowersDetected?.Invoke(this,
                     new OnNewFollowersDetectedArgs
                     {
@@ -152,6 +155,8 @@ namespace TwitchLib.Services
                         QueryCount = QueryCount,
                         NewFollowers = newFollowers
                     });
+
+               
             }
         }
 
@@ -163,6 +168,7 @@ namespace TwitchLib.Services
         public event EventHandler<OnServiceStoppedArgs> OnServiceStopped;
         /// <summary>Event fires when new followers are detected.</summary>
         public event EventHandler<OnNewFollowersDetectedArgs> OnNewFollowersDetected;
+       
         #endregion
     }
 }
