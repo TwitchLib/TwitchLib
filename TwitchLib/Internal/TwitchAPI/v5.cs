@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     #endregion
     internal static class v5
@@ -289,7 +290,7 @@
                 var firstBatch = await TwitchLib.TwitchAPI.Channels.v5.GetChannelFollowersAsync(channelId, 100);
                 totalFollowers = firstBatch.Total;
                 string cursor = firstBatch.Cursor;
-                followers.AddRange(firstBatch.Follows);
+                followers.AddRange(firstBatch.Follows.OfType<TwitchLib.Models.API.v5.Channels.ChannelFollow>().ToList());
 
                 // math stuff
                 int amount = firstBatch.Follows.Length;
@@ -301,7 +302,7 @@
                 {
                     var requestedFollowers = await TwitchLib.TwitchAPI.Channels.v5.GetChannelFollowersAsync(channelId, 100, cursor: cursor);
                     cursor = requestedFollowers.Cursor;
-                    followers.AddRange(requestedFollowers.Follows);
+                    followers.AddRange(requestedFollowers.Follows.OfType<TwitchLib.Models.API.v5.Channels.ChannelFollow>().ToList());
 
                     // we should wait a second before performing another request per Twitch requirements
                     System.Threading.Thread.Sleep(1000);
@@ -309,7 +310,7 @@
 
                 // get leftover subs
                 var leftOverFollowersRequest = await TwitchLib.TwitchAPI.Channels.v5.GetChannelFollowersAsync(channelId, limit: leftOverFollowers, cursor: cursor);
-                followers.AddRange(leftOverFollowersRequest.Follows);
+                followers.AddRange(leftOverFollowersRequest.Follows.OfType<TwitchLib.Models.API.v5.Channels.ChannelFollow>().ToList());
 
                 return followers;
             }

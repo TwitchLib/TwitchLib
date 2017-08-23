@@ -16,6 +16,6 @@
         /// <summary>Event property representing seconds between queries to Twitch Api.</summary>
         public int CheckIntervalSeconds;
         /// <summary>Event property representing all new followers detected.</summary>
-        public List<string> NewFollowers;
+        public List<Interfaces.IFollow> NewFollowers;
     }
 }

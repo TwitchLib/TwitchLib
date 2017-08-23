@@ -1,4 +1,4 @@
-<p align="center">
+<p align="center"> 
 <img src="http://swiftyspiffy.com/img/twitchlib.png" style="max-height: 300px;">
 </p>
 
