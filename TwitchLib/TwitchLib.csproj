@@ -200,8 +200,14 @@
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Logging\TraceLoggerFactory.cs" />
     <Compile Include="Models\API\RequestModel.cs" />
-    <Compile Include="Models\API\ThirdParty\UsernameChangeListing.cs" />
-    <Compile Include="Models\API\ThirdParty\UsernameChangeResponse.cs" />
+    <Compile Include="Models\API\ThirdParty\ModLookup\ModLookupListing.cs" />
+    <Compile Include="Models\API\ThirdParty\ModLookup\ModLookupResponse.cs" />
+    <Compile Include="Models\API\ThirdParty\ModLookup\Stats.cs" />
+    <Compile Include="Models\API\ThirdParty\ModLookup\StatsResponse.cs" />
+    <Compile Include="Models\API\ThirdParty\ModLookup\Top.cs" />
+    <Compile Include="Models\API\ThirdParty\ModLookup\TopResponse.cs" />
+    <Compile Include="Models\API\ThirdParty\UsernameChange\UsernameChangeListing.cs" />
+    <Compile Include="Models\API\ThirdParty\UsernameChange\UsernameChangeResponse.cs" />
     <Compile Include="Models\API\Undocumented\ChannelPanels\Data.cs" />
     <Compile Include="Models\API\Undocumented\ChannelPanels\Panel.cs" />
     <Compile Include="Models\API\Undocumented\ChatProperties\ChatProperties.cs" />

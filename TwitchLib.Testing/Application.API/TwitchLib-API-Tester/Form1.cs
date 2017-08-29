@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -493,7 +494,7 @@ namespace TwitchLib_API_Tester
 
         private async void button52_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.ThirdParty.GetUsernameChangesAsync(textBox50.Text);
+            var resp = await TwitchLib.TwitchAPI.ThirdParty.UsernameChange.GetUsernameChangesAsync(textBox50.Text);
             foreach (var change in resp)
                 MessageBox.Show($"User ID: {change.UserId}\nOld name: {change.UsernameOld}\nNew name: {change.UsernameNew}");
         }
@@ -706,6 +707,15 @@ namespace TwitchLib_API_Tester
                 MessageBox.Show($"Username '{textBox76.Text}' is available.");
             else
                 MessageBox.Show($"Username '{textBox76.Text}' is not available.");
+        }
+
+        private async void button79_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.ThirdParty.ModLookup.GetChannelsModdedForByName(textBox77.Text);
+            foreach(var channel in resp.Channels)
+            {
+                MessageBox.Show($"{channel.Name}");
+            }
         }
     }
 }

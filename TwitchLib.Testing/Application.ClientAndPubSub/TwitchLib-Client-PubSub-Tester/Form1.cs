@@ -59,9 +59,9 @@ namespace TwitchLibExample
             ConnectionCredentials credentials = new ConnectionCredentials(textBox4.Text, textBox5.Text);
             TwitchClient newClient;
             if (!string.IsNullOrEmpty(textBox8.Text))
-                newClient = new TwitchClient(credentials, textBox8.Text, '!', '!');
+                newClient = new TwitchClient(credentials, textBox8.Text, '!', '!', true);
             else
-                newClient = new TwitchClient(credentials, null, '!', '!');
+                newClient = new TwitchClient(credentials, null, '!', '!', true);
 
             newClient.OnMessageReceived += new EventHandler<OnMessageReceivedArgs>(globalChatMessageReceived);
             newClient.OnChatCommandReceived += new EventHandler<OnChatCommandReceivedArgs>(chatCommandReceived);
@@ -185,7 +185,7 @@ namespace TwitchLibExample
 
         private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
-            MessageBox.Show($"Joined channel: {e.Channel}\nAs username: {e.Username}");
+            MessageBox.Show($"Joined channel: {e.Channel}\nAs username: {e.BotUsername}");
         }
 
         private void onLeftChannel(object sender, OnLeftChannelArgs e)
@@ -220,7 +220,7 @@ namespace TwitchLibExample
 
         public void onConnected(object sender, OnConnectedArgs e)
         {
-            MessageBox.Show("Connected under username: " + e.Username);
+            MessageBox.Show("Connected under username: " + e.BotUsername);
         }
 
         public void incorrectLogin(object sender, OnIncorrectLoginArgs e)
@@ -377,7 +377,7 @@ namespace TwitchLibExample
         private void pubsubOnConnected(object sender, object e)
         {
             // MODERATOR ACCOUNT ID, CHANNEL ACCOUNT ID, MODERATOR OAUTH
-            pubsub.ListenToChatModeratorActions(99999999, 99999999, "");
+            pubsub.ListenToChatModeratorActions("99999999", "99999999", "");
             // MY ACCOUNT ID, MY OAUTH
             //pubsub.ListenToWhispers(0, "oauth_token");
         }
