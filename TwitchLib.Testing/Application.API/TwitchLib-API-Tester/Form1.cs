@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -493,7 +494,7 @@ namespace TwitchLib_API_Tester
 
         private async void button52_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.ThirdParty.GetUsernameChangesAsync(textBox50.Text);
+            var resp = await TwitchLib.TwitchAPI.ThirdParty.UsernameChange.GetUsernameChangesAsync(textBox50.Text);
             foreach (var change in resp)
                 MessageBox.Show($"User ID: {change.UserId}\nOld name: {change.UsernameOld}\nNew name: {change.UsernameNew}");
         }
@@ -691,6 +692,30 @@ namespace TwitchLib_API_Tester
         {
             var resp = await TwitchLib.TwitchAPI.Streams.v5.GetStreamByUserAsync(textBox73.Text);
             MessageBox.Show($"Viewer count for '{textBox73.Text}': {resp.Stream.Viewers}");
+        }
+
+        private async void button77_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Undocumented.GetChatUser(textBox74.Text, textBox75.Text);
+            MessageBox.Show($"Login: {resp.Login}\nColor: {resp.Color}\nIs Verified Bot: {resp.IsVerifiedBot}\nBadges: {resp.Badges.Count()}");
+        }
+
+        private void button78_Click(object sender, EventArgs e)
+        {
+            var resp = TwitchLib.TwitchAPI.Undocumented.IsUsernameAvailable(textBox76.Text);
+            if (resp)
+                MessageBox.Show($"Username '{textBox76.Text}' is available.");
+            else
+                MessageBox.Show($"Username '{textBox76.Text}' is not available.");
+        }
+
+        private async void button79_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.ThirdParty.ModLookup.GetChannelsModdedForByName(textBox77.Text);
+            foreach(var channel in resp.Channels)
+            {
+                MessageBox.Show($"{channel.Name}");
+            }
         }
     }
 }

@@ -16,6 +16,7 @@
     using Models.API.v3.Subscriptions;
     using TwitchLib.Logging;
     using System.Text.RegularExpressions;
+    using System.Diagnostics;
     #endregion
     /// <summary>Represents a client connected to a Twitch channel.</summary>
     public class TwitchClient
@@ -940,6 +941,7 @@
 
         private void log(string message, bool includeDate = false, bool includeTime = false)
         {
+            Console.WriteLine(message);
             if(Logging)
             {
                 string dateTimeStr = "";

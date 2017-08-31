@@ -239,7 +239,7 @@
             topicList.Add(topic);
         }
 
-        public void sendTopics (string oauth = null, bool unlisten = false)
+        public void SendTopics (string oauth = null, bool unlisten = false)
         {
             if (oauth != null && oauth.Contains ("oauth:"))
             {
@@ -253,7 +253,6 @@
             {
                 topics.Add(new JValue(val));
             }
-
 
             JObject jsonData = new JObject(
                 new JProperty("type", !unlisten ? "LISTEN" : "UNLISTEN"),
@@ -270,6 +269,8 @@
             }
 
             socket.Send(jsonData.ToString());
+
+            topicList.Clear();
         }
 
         private void unaccountedFor(string message)

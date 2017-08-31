@@ -168,6 +168,15 @@ namespace TwitchLib.Internal
             return await tcs.Task;
         }
         #endregion
+        #region requestReturnResponseCode
+        public static int RequestReturnResponseCode(string url, string requestType)
+        {
+            var req = (HttpWebRequest)HttpWebRequest.Create(url);
+            req.Method = requestType;
+            var response = (HttpWebResponse)req.GetResponse();
+            return (int)response.StatusCode;
+        }
+        #endregion
 
         #region appendClientId
         private static string appendClientId(string url, string clientId = null)
