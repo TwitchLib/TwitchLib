@@ -10,6 +10,10 @@ namespace TwitchLib.Models.API.v3.Follows
 {
     public class Follow : Interfaces.IFollow
     {
+        public Follow(Users.User user)
+        {
+            User = user;
+        }
         [JsonProperty(PropertyName = "created_at")]
         public DateTime CreatedAt { get; protected set; }
         [JsonProperty(PropertyName = "notifications")]
