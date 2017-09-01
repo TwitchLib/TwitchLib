@@ -7,6 +7,10 @@
     /// <summary>Class representing a follow object from Twitch API.</summary>
     public class ChannelFollow : Interfaces.IFollow
     {
+        public ChannelFollow(Users.User user)
+        {
+            User = user;
+        }
         #region CreatedAt
         /// <summary>Property representing the date time of follow creation.</summary>
         [JsonProperty(PropertyName = "created_at")]

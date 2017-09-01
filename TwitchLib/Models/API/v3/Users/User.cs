@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.Models.API.v3.Users
 {
-    public class User
+    public class User :Interfaces.IUser
     {
         [JsonProperty(PropertyName = "updated_at")]
         public DateTime UpdatedAt { get; protected set; }
