@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
@@ -8,78 +9,85 @@ using TwitchLib.Events.WebSockets;
 
 namespace TwitchLib.Internal
 {
-    public class WebSocketClient : IDisposable
+    public class WebSocketClient
     {
-        private const int ReceiveChunkSize = 1024;
-        private const int SendChunkSize = 1024;
-        
-
-        public ClientWebSocket Client;
-        private readonly Uri _uri;
-        private readonly bool _shouldReconnect;
-        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        private CancellationToken _cancellationToken;
+        public ClientWebSocket ClientWebSocket { get; set; }
 
         public event EventHandler<OnConnectedArgs> OnConnected;
         public event EventHandler<OnMessageReceivedArgs> OnMessage;
         public event EventHandler<OnDisconnectedArgs> OnDisconnected;
         public event EventHandler<OnErrorArgs> OnError;
 
-        protected WebSocketClient(Uri uri, bool reconnect)
+        public WebSocketClient()
+        { }
+
+        public async Task StartConnectionAsync(string uri)
         {
-            _uri = uri;
-            _shouldReconnect = reconnect;
-            SetupClient();
+            ClientWebSocket = new ClientWebSocket();
+            ClientWebSocket.Options.KeepAliveInterval = TimeSpan.FromSeconds(60);
+            await ClientWebSocket.ConnectAsync(new Uri(uri), CancellationToken.None).ConfigureAwait(false);
+            Receive();
+            CallOnConnected(uri);
         }
 
-        private void SetupClient()
+        public async Task StopConnectionAsync()
         {
-            Client = new ClientWebSocket();
-            Client.Options.KeepAliveInterval = TimeSpan.FromSeconds(60);
-            _cancellationToken = _cancellationTokenSource.Token;
+            await ClientWebSocket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", CancellationToken.None).ConfigureAwait(false);
         }
 
-        public static WebSocketClient Create(string uri, bool reconnect)
+        private async void Receive()
         {
-            return new WebSocketClient(new Uri(uri), reconnect);
+            try
+            {
+                while (ClientWebSocket.State == WebSocketState.Open)
+                {
+                    ArraySegment<Byte> buffer = new ArraySegment<byte>(new Byte[1024 * 4]);
+                    WebSocketReceiveResult result = null;
+                    using (var ms = new MemoryStream())
+                    {
+                        do
+                        {
+                            result = await ClientWebSocket.ReceiveAsync(buffer, CancellationToken.None).ConfigureAwait(false);
+                            ms.Write(buffer.Array, buffer.Offset, result.Count);
+                        }
+                        while (!result.EndOfMessage);
+
+                        ms.Seek(0, SeekOrigin.Begin);
+
+                        using (var reader = new StreamReader(ms, Encoding.UTF8))
+                        {
+                            var messages = await reader.ReadToEndAsync().ConfigureAwait(false);
+                            foreach (var message in messages
+                                .Split(new string[] { "\r", "\n" }, StringSplitOptions.None)
+                                .Where(msg => !string.IsNullOrWhiteSpace(msg)))
+                            {
+                                CallOnMessage(message);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                CallOnDisconnected();
+                CallOnError(exception);
+            }
         }
 
-        public WebSocketClient Connect()
+        public async Task SendMessageAsync(string message)
         {
-            ConnectAsync();
-            return this;
-        }
-
-        public void Disconnect()
-        {
-            Client.CloseAsync(WebSocketCloseStatus.NormalClosure, "Normal", CancellationToken.None);
-        }
-
-        public void Reconnect()
-        {
-            SetupClient();
-            ConnectAsync();
-        }
-
-        public void SendMessage(string message)
-        {
-            SendMessageAsync(message);
-        }
-
-        private async void SendMessageAsync(string message)
-        {
-            if (Client.State != WebSocketState.Open)
+            if (ClientWebSocket.State != WebSocketState.Open)
             {
                 throw new Exception("Connection is not open.");
             }
 
             var messageBuffer = Encoding.UTF8.GetBytes(message);
-            var messagesCount = (int)Math.Ceiling((double)messageBuffer.Length / SendChunkSize);
+            var messagesCount = (int)Math.Ceiling((double)messageBuffer.Length / 1024);
 
             for (var i = 0; i < messagesCount; i++)
             {
-                var offset = (SendChunkSize * i);
-                var count = SendChunkSize;
+                var offset = (1024 * i);
+                var count = 1024;
                 var lastMessage = ((i + 1) == messagesCount);
 
                 if ((count * (i + 1)) > messageBuffer.Length)
@@ -87,100 +95,28 @@ namespace TwitchLib.Internal
                     count = messageBuffer.Length - offset;
                 }
 
-                await Client.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count), WebSocketMessageType.Text, lastMessage, _cancellationToken);
-            }
-        }
-
-        private async void ConnectAsync()
-        {
-            await Client.ConnectAsync(_uri, _cancellationToken);
-            CallOnConnected();
-            StartListen();
-        }
-
-        private async void StartListen()
-        {
-            var buffer = new byte[ReceiveChunkSize];
-
-            try
-            {
-                while (Client.State == WebSocketState.Open)
-                {
-                    var stringResult = new StringBuilder();
-
-
-                    WebSocketReceiveResult result;
-                    do
-                    {
-                        result = await Client.ReceiveAsync(new ArraySegment<byte>(buffer), _cancellationToken);
-
-                        if (result.MessageType == WebSocketMessageType.Close)
-                        {
-                            await Client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
-                            CallOnDisconnected();
-                        }
-                        else
-                        {
-                            var str = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                            stringResult.Append(str);
-                        }
-
-                    } while (!result.EndOfMessage);
-                    var messages = stringResult
-                  .ToString()
-                  .Split(new string[] { "\r", "\n" }, StringSplitOptions.None)
-                  .Where(c => !string.IsNullOrWhiteSpace(c))
-                  .ToList();
-
-                    foreach (var msg in messages)
-                    {
-                        CallOnMessage(msg);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                CallOnDisconnected();
-                CallOnError(e);
-            }
-            finally
-            {
-                Client.Dispose();
-                if (_shouldReconnect)
-                    Reconnect();
+                await ClientWebSocket.SendAsync(new ArraySegment<byte>(messageBuffer, offset, count), WebSocketMessageType.Text, lastMessage, CancellationToken.None).ConfigureAwait(false);
             }
         }
 
         private void CallOnMessage(string message)
         {
-            RunInTask(() => OnMessage?.Invoke(this, new OnMessageReceivedArgs { Message = message }));
+            Task.Factory.StartNew(() => OnMessage?.Invoke(this, new OnMessageReceivedArgs { Message = message }));
         }
 
         private void CallOnDisconnected()
         {
-            RunInTask(() => OnDisconnected?.Invoke(this, new OnDisconnectedArgs { Reason = "Disconnection Called" }));
+            Task.Factory.StartNew(() => OnDisconnected?.Invoke(this, new OnDisconnectedArgs { Reason = "Disconnection Called" }));
         }
-        private void CallOnConnected()
+
+        private void CallOnConnected(string uri)
         {
-            RunInTask(() => OnConnected?.Invoke(this, new OnConnectedArgs { Url = _uri.ToString() }));
+            Task.Factory.StartNew(() => OnConnected?.Invoke(this, new OnConnectedArgs { Url = uri }));
         }
 
         private void CallOnError(Exception e)
         {
-            RunInTask(() => OnError?.Invoke(this, new OnErrorArgs { Exception = e }));
-        }
-
-        private static void RunInTask(Action action)
-        {
-            Task.Factory.StartNew(action);
-        }
-
-        public void Dispose()
-        {
-            if (Client != null)
-            {
-                Client.Dispose();
-            }
+            Task.Factory.StartNew(() => OnError?.Invoke(this, new OnErrorArgs { Exception = e }));
         }
     }
 }
