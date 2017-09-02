@@ -15,6 +15,10 @@
         public List<string> Args { get; protected set; } = new List<string>();
         /// <summary>Moderator that performed action.</summary>
         public string CreatedBy { get; protected set; }
+        /// <summary>User Id of the user that performed the unban.</summary>
+        public string CreatedByUserId { get; protected set; }
+        /// <summary>User Id of user that received unban.</summary>
+        public string TargetUserId { get; protected set; }
 
         /// <summary>ChatModeratorActions model constructor.</summary>
         public ChatModeratorActions(string jsonStr)
@@ -22,9 +26,12 @@
             JToken json = JObject.Parse(jsonStr).SelectToken("data");
             Type = json.SelectToken("type")?.ToString();
             ModerationAction = json.SelectToken("moderation_action")?.ToString();
-            foreach (JToken arg in json.SelectToken("args"))
-                Args.Add(arg.ToString());
+            if(json.SelectToken("args") != null)
+                foreach (JToken arg in json.SelectToken("args"))
+                    Args.Add(arg.ToString());
             CreatedBy = json.SelectToken("created_by").ToString();
+            CreatedByUserId = json.SelectToken("created_by_user_id").ToString();
+            TargetUserId = json.SelectToken("target_user_id").ToString();
         }
     }
 }
