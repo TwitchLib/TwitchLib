@@ -2,7 +2,12 @@ language: csharp
 mono: none
 dotnet: 2.0.0
 dist: trusty
-solution: TwitchLib.sln
+script:
+ - dotnet restore
+ - dotnet build TwitchLib.Logging\Provider.Log4Net\Provider.Log4Net.csproj
+ - dotnet build TwitchLib.Logging\Providers.NLog\Provider.NLog.csproj
+ - dotnet build TwitchLib.Logging\Providers.SeriLog\Provider.SeriLog.csproj
+ - dotnet build TwitchLib\TwitchLib.csproj
 
 addons:
   apt:
