@@ -1,7 +1,2 @@
 language: csharp
-script:
- - dotnet restore
- - dotnet build /home/travis/build/swiftyspiffy/TwitchLib/TwitchLib.Logging/Provider.Log4Net/Provider.Log4Net.csproj
- - dotnet build /home/travis/build/swiftyspiffy/TwitchLib/TwitchLib.Logging/Providers.NLog/Provider.NLog.csproj
- - dotnet build /home/travis/build/swiftyspiffy/TwitchLib/TwitchLib.Logging/Providers.SeriLog/Provider.SeriLog.csproj
- - dotnet build /home/travis/build/swiftyspiffy/TwitchLib/TwitchLib/TwitchLib.csproj
+solution: TwitchLib.sln
