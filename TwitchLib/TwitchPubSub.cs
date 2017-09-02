@@ -8,6 +8,8 @@
     using Events.PubSub;
     using Models.PubSub.Responses.Messages;
     using TwitchLib.Internal;
+    using WebSocket4Net;
+    using SuperSocket.ClientEngine;
     #endregion
     /// <summary>Class represneting interactions with the Twitch PubSub</summary>
     public class TwitchPubSub
@@ -15,7 +17,7 @@
         private Models.PubSub.PreviousRequest previousRequest = null;
         private bool logging;
         private Timer pingTimer = new Timer();
-        private WebSocketClient socket;
+        private WebSocket socket;
         private System.Collections.Generic.List<String> topicList = new System.Collections.Generic.List<string>();
 
         /*
@@ -81,22 +83,22 @@
         }
         
 
-        private void OnError(object sender, Events.WebSockets.OnErrorArgs e)
+        private void OnError(object sender, ErrorEventArgs e)
         {
             if(logging)
                 Console.WriteLine($"[TwitchPubSub]OnError: {e.Exception.Message}");
            OnPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = e.Exception });
         }
 
-        private void OnMessage(object sender, Events.WebSockets.OnMessageReceivedArgs e)
+        private void OnMessage(object sender, MessageReceivedEventArgs e)
         {
             string msg = e.Message.ToString();
             if (logging)                
                 Console.WriteLine($"[TwitchPubSub] {msg}");
-            parseMessage(msg);
+            ParseMessage(msg);
         }
         
-        private void Socket_OnDisconnected(object sender, Events.WebSockets.OnDisconnectedArgs e)
+        private void Socket_OnDisconnected(object sender, EventArgs e)
         {
             if (logging)
                 Console.WriteLine($"[TwitchPubSub]OnClose");
@@ -104,25 +106,25 @@
             OnPubSubServiceClosed?.Invoke(this, null);
         }
 
-        private void Socket_OnConnected(object sender, Events.WebSockets.OnConnectedArgs e)
+        private void Socket_OnConnected(object sender, EventArgs e)
         {
             if (logging)
                 Console.WriteLine($"[TwitchPubSub]OnOpen!");
             pingTimer.Interval = 180000;
-            pingTimer.Elapsed += pingTimerTick;
+            pingTimer.Elapsed += PingTimerTick;
             pingTimer.Start();
             OnPubSubServiceConnected?.Invoke(this, null);
         }
 
-        private void pingTimerTick(object sender, System.Timers.ElapsedEventArgs e)
+        private void PingTimerTick(object sender, System.Timers.ElapsedEventArgs e)
         {
             JObject data = new JObject(
                 new JProperty("type", "PING")
             );
-            socket.SendMessage(data.ToString());
+            socket.Send(data.ToString());
         }
 
-        private void parseMessage(string message)
+        private void ParseMessage(string message)
         {
             string type = JObject.Parse(message).SelectToken("type")?.ToString();
 
@@ -221,17 +223,17 @@
                     break;
             }
             if (logging)
-                unaccountedFor(message);
+                UnaccountedFor(message);
         }
 
         private static Random random = new Random();
-        private string generateNonce()
+        private string GenerateNonce()
         {
             return new string(Enumerable.Repeat("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 8)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        private void listenToTopic (string topic)
+        private void ListenToTopic (string topic)
         {
             topicList.Add(topic);
         }
@@ -243,7 +245,7 @@
                 oauth = oauth.Replace("oauth:", "");
             }
 
-            string nonce = generateNonce();
+            string nonce = GenerateNonce();
 
             JArray topics = new JArray();
             foreach (String val in topicList)
@@ -265,12 +267,12 @@
                 ((JObject)jsonData.SelectToken("data")).Add(new JProperty("auth_token", oauth));
             }
 
-            socket.SendMessage(jsonData.ToString());
+            socket.Send(jsonData.ToString());
 
             topicList.Clear();
         }
 
-        private void unaccountedFor(string message)
+        private void UnaccountedFor(string message)
         {
             if (logging)
                 Console.WriteLine($"[TwitchPubSub] {message}");
@@ -285,7 +287,7 @@
         /// <param name="channelTwitchId">Channel ID who has previous parameter's moderator (can be fetched from TwitchApi)</param>
         public void ListenToChatModeratorActions(string myTwitchId, string channelTwitchId)
         {
-            listenToTopic($"chat_moderator_actions.{myTwitchId}.{channelTwitchId}");
+            ListenToTopic($"chat_moderator_actions.{myTwitchId}.{channelTwitchId}");
         }
 
         /// <summary>
@@ -294,7 +296,7 @@
         /// <param name="channelTwitchId">Channel Id of channel to listen to bits on (can be fetched from TwitchApi)</param>
         public void ListenToBitsEvents(string channelTwitchId)
         {
-            listenToTopic($"channel-bits-events-v1.{channelTwitchId}");
+            ListenToTopic($"channel-bits-events-v1.{channelTwitchId}");
         }
 
         /// <summary>
@@ -303,7 +305,7 @@
         /// <param name="channelTwitchId">Channel Id of channel to listen to playback events in.</param>
         public void ListenToVideoPlayback(string channelTwitchId)
         {
-            listenToTopic($"video-playback.{channelTwitchId}");
+            ListenToTopic($"video-playback.{channelTwitchId}");
         }
 
         /// <summary>
@@ -312,7 +314,7 @@
         /// <param name="channelTwitchId">Channel to listen to whispers on.</param>
         public void ListenToWhispers(string channelTwitchId)
         {
-            listenToTopic($"whispers.{channelTwitchId}");
+            ListenToTopic($"whispers.{channelTwitchId}");
         }
 
         /// <summary>
@@ -321,7 +323,7 @@
         /// <param name="channelId">Id of the channel to listen to.</param>
         public void ListenToSubscriptions(string channelId)
         {
-            listenToTopic($"channel-subscribe-events-v1.{channelId}");
+            ListenToTopic($"channel-subscribe-events-v1.{channelId}");
         }
         #endregion
 
@@ -330,12 +332,12 @@
         /// </summary>
         public void Connect()
         {
-            socket = WebSocketClient.Create("wss://pubsub-edge.twitch.tv");
-            socket.OnConnected += Socket_OnConnected;
-            socket.OnError += OnError;
-            socket.OnMessage += OnMessage;
-            socket.OnDisconnected += Socket_OnDisconnected;
-            socket.Connect();
+            socket = new WebSocket("wss://pubsub-edge.twitch.tv");
+            socket.Opened += Socket_OnConnected;
+            socket.Error += OnError;
+            socket.MessageReceived += OnMessage;
+            socket.Closed += Socket_OnDisconnected;
+            socket.Open();
         }
         
         /// <summary>
@@ -343,7 +345,7 @@
         /// </summary>
         public void Disconnect()
         {
-            socket.Disconnect();
+            socket.Close();
         }
 
         /// <summary>
@@ -352,7 +354,7 @@
         /// <param name="testJsonString"></param>
         public void TestMessageParser(string testJsonString)
         {
-            parseMessage(testJsonString);
+            ParseMessage(testJsonString);
         }
     }
 }
