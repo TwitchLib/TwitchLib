@@ -467,10 +467,25 @@ namespace TwitchLib
                 /// </summary>
                 /// <param name="channelId">The specified channel to set the community for.</param>
                 /// <param name="communityId">The specified community to set the channel to be a part of.</param>
+            [ObsoleteAttribute("This method is obsolete. Call SetChannelCommunitiesAsync instead.", true)] 
                 public async static Task SetChannelCommunityAsync(string channelId, string communityId, string authToken = null)
                 {
                     Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
                     await Internal.TwitchAPI.v5.Channels.SetChannelCommunityAsync(channelId, communityId, authToken);
+                }
+                #endregion
+                  #region SetChannelCommunities
+                /// <summary>
+                /// <para>[ASYNC]Sets a specified channel to be in a specified communities.</para>
+                /// <para>Required Authentication Scope: channel_editor</para>
+                /// </summary>
+                /// <param name="channelId">The specified channel to set the community for.</param>
+                /// <param name="communityIds">The specified communities to set the channel to be a part of.</param>
+                /// <param name="authToken"></param>
+                public async static Task SetChannelCommunitiesAsync(string channelId, List<string> communityIds, string authToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
+                    await Internal.TwitchAPI.v5.Channels.SetChannelCommunitiesAsync(channelId, communityIds, authToken);
                 }
                 #endregion
                 #region DeleteChannelFromCommunity
