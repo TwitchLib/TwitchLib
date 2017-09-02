@@ -24,7 +24,7 @@
 *Example with SourceTree*
 
 - Get Repository URL by clicking the Clone or Download button. <a href="http://i.imgur.com/a9tqa8y.gifv" target="_blank">See GIF</a>
-- Clone in SourceTree <a href="http://i.imgur.com/Xm5VYDs.gif)
+- Clone in SourceTree <a href="http://i.imgur.com/Xm5VYDs.gifv" target="_blank">See GIF</a>
 
 #### Step 2 - Open and build project into DLLs
 

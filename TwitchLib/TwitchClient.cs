@@ -13,7 +13,6 @@
     using System.Text.RegularExpressions;
     using WebSocket4Net;
     using SuperSocket.ClientEngine;
-
     #endregion
     /// <summary>Represents a client connected to a Twitch channel.</summary>
     public class TwitchClient
@@ -268,7 +267,7 @@
             if (whisperCommandIdentifier != '\0')
                 _whisperCommandIdentifiers.Add(whisperCommandIdentifier);
             Logging = logging;
-            Logger = logger ?? new NullLogFactory().Create("TwitchLibNullLogger");
+            Logger = logger ?? new ConsoleFactory().Create("ConsoleLog");
             AutoReListenOnException = autoReListenOnExceptions;
 
             _client = new WebSocket($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}");

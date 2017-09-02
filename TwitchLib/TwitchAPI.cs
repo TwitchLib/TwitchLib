@@ -1389,12 +1389,58 @@ namespace TwitchLib
         /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>
         public static class ThirdParty
         {
-            #region GetUsernameChanges
-            public async static Task<List<Models.API.ThirdParty.UsernameChangeListing>> GetUsernameChangesAsync(string username)
+            public static class UsernameChange
             {
-                return await Internal.TwitchAPI.ThirdParty.GetUsernameChangesAsync(username);
+                #region GetUsernameChanges
+                public async static Task<List<Models.API.ThirdParty.UsernameChange.UsernameChangeListing>> GetUsernameChangesAsync(string username)
+                {
+                    return await Internal.TwitchAPI.ThirdParty.UsernameChanges.GetUsernameChangesAsync(username);
+                }
+                #endregion
             }
-            #endregion
+
+            public static class ModLookup
+            {
+                #region GetChannelsModdedForName
+                /// <summary>
+                /// This function calls 3vent's mod lookup tool. For documentation on this tool, please go here: https://twitchstuff.3v.fi/modlookup/docs
+                /// </summary>
+                /// <param name="username"></param>
+                /// <param name="offset"></param>
+                /// <param name="limit"></param>
+                /// <returns></returns>
+                public async static Task<Models.API.ThirdParty.ModLookup.ModLookupResponse> GetChannelsModdedForByName(string username, int offset = 0, int limit = 100)
+                {
+                    return await Internal.TwitchAPI.ThirdParty.ModLookup.GetChannelsModdedForByNameAsync(username, offset, limit);
+                }
+                #endregion
+                #region GetChannelsModdedForByTop
+                /// <summary>
+                /// This function calls 3vent's mod lookup tool. For documentation on this tool, please go here: https://twitchstuff.3v.fi/modlookup/docs
+                /// </summary>
+                /// <param name="username"></param>
+                /// <param name="offset"></param>
+                /// <param name="limit"></param>
+                /// <returns></returns>
+                public async static Task<Models.API.ThirdParty.ModLookup.TopResponse> GetChannelsModdedForByTop()
+                {
+                    return await Internal.TwitchAPI.ThirdParty.ModLookup.GetChannelsModdedForByTopAsync();
+                }
+                #endregion
+                #region GetChannelsModdedForStats
+                /// <summary>
+                /// This function calls 3vent's mod lookup tool. For documentation on this tool, please go here: https://twitchstuff.3v.fi/modlookup/docs
+                /// </summary>
+                /// <param name="username"></param>
+                /// <param name="offset"></param>
+                /// <param name="limit"></param>
+                /// <returns></returns>
+                public async static Task<Models.API.ThirdParty.ModLookup.StatsResponse> GetChannelsModdedForStats()
+                {
+                    return await Internal.TwitchAPI.ThirdParty.ModLookup.GetChannelsModdedForStatsAsync();
+                }
+                #endregion
+            }
         }
 
         /// <summary>These methods are intended to aid in developing the library.</summary>
