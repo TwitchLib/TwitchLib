@@ -4,8 +4,9 @@ namespace TwitchLib.Logging.Providers.Log4Net
 	using System.IO;
 	using log4net;
 	using log4net.Config;
+    using System.Reflection;
 
-	public class ExtendedLog4netFactory : AbstractExtendedLoggerFactory
+    public class ExtendedLog4netFactory : AbstractExtendedLoggerFactory
 	{
 		public ExtendedLog4netFactory()
 			: this(Log4netFactory.defaultConfigFileName)
@@ -24,13 +25,15 @@ namespace TwitchLib.Logging.Providers.Log4Net
 			}
 
 			var file = GetConfigFile(Log4netFactory.defaultConfigFileName);
-			XmlConfigurator.ConfigureAndWatch(file);
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.ConfigureAndWatch(logRepository, file);
 		}
 
 		public ExtendedLog4netFactory(String configFile)
 		{
 			var file = GetConfigFile(configFile);
-			XmlConfigurator.ConfigureAndWatch(file);
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.ConfigureAndWatch(logRepository, file);
 		}
 
 		/// <summary>
@@ -39,7 +42,8 @@ namespace TwitchLib.Logging.Providers.Log4Net
 		/// <param name="config"> </param>
 		public ExtendedLog4netFactory(Stream config)
 		{
-			XmlConfigurator.Configure(config);
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, config);
 		}
 
 		/// <summary>
@@ -47,7 +51,7 @@ namespace TwitchLib.Logging.Providers.Log4Net
 		/// </summary>
 		public override IExtendedLogger Create(string name)
 		{
-			var log = LogManager.GetLogger(name);
+			var log = LogManager.GetLogger(typeof(Log4netLogger));
 			return new ExtendedLog4netLogger(log, this);
 		}
 

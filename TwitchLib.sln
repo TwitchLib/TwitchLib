@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib", "TwitchLib\TwitchLib.csproj", "{5D5746FD-63B3-4DB0-9389-7FEDA1A05A09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.Log4Net", "TwitchLib.Logging\Provider.Log4Net\Provider.Log4Net.csproj", "{8C9B5038-DBD8-4696-8242-EE8CAE076278}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.Log4Net", "TwitchLib.Logging\Provider.Log4Net\Provider.Log4Net.csproj", "{8C9B5038-DBD8-4696-8242-EE8CAE076278}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.NLog", "TwitchLib.Logging\Providers.NLog\Provider.NLog.csproj", "{FF0918B9-3AE7-48E3-AF14-4365142276E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.NLog", "TwitchLib.Logging\Providers.NLog\Provider.NLog.csproj", "{FF0918B9-3AE7-48E3-AF14-4365142276E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.SeriLog", "TwitchLib.Logging\Providers.SeriLog\Provider.SeriLog.csproj", "{5798A9F5-D6EB-46CD-AFF8-5A81C2BD0BC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.SeriLog", "TwitchLib.Logging\Providers.SeriLog\Provider.SeriLog.csproj", "{5798A9F5-D6EB-46CD-AFF8-5A81C2BD0BC6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TwitchLib.Logging", "TwitchLib.Logging", "{7FFF330A-C7A1-41EC-8FAB-4331063641CE}"
 EndProject
@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.API", "TwitchLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ClientAndPubSub", "TwitchLib.Testing\Application.ClientAndPubSub\TwitchLib-Client-PubSub-Tester\Application.ClientAndPubSub.csproj", "{3CEB6EEB-6330-4154-B81D-03ACB797072A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCore.Client", "TwitchLib.Testing\NetCore.Client\NetCore.Client.csproj", "{BC292E8F-D1A5-4820-8480-53BCB0C3724F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCore.Client", "TwitchLib.Testing\NetCore.Client\NetCore.Client.csproj", "{BC292E8F-D1A5-4820-8480-53BCB0C3724F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

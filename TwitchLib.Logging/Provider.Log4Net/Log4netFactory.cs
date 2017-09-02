@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using log4net;
 using log4net.Config;
-
+using System.Reflection;
 
 namespace TwitchLib.Logging.Providers.Log4Net
 {
@@ -17,7 +17,8 @@ namespace TwitchLib.Logging.Providers.Log4Net
 		public Log4netFactory(String configFile)
 		{
 			var file = GetConfigFile(configFile);
-			XmlConfigurator.ConfigureAndWatch(file);
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.ConfigureAndWatch(logRepository, file);
 		}
 
 		/// <summary>
@@ -32,7 +33,8 @@ namespace TwitchLib.Logging.Providers.Log4Net
 			}
 
 			var file = GetConfigFile(defaultConfigFileName);
-			XmlConfigurator.ConfigureAndWatch(file);
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.ConfigureAndWatch(logRepository, file);
 		}
 
 		/// <summary>
@@ -41,12 +43,13 @@ namespace TwitchLib.Logging.Providers.Log4Net
 		/// <param name="config"> </param>
 		public Log4netFactory(Stream config)
 		{
-			XmlConfigurator.Configure(config);
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, config);
 		}
 
 		public override ILogger Create(String name)
 		{
-			var log = LogManager.GetLogger(name);
+			var log = LogManager.GetLogger(typeof(Log4netLogger));
 			return new Log4netLogger(log, this);
 		}
 
