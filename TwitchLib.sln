@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.API", "TwitchLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ClientAndPubSub", "TwitchLib.Testing\Application.ClientAndPubSub\TwitchLib-Client-PubSub-Tester\Application.ClientAndPubSub.csproj", "{3CEB6EEB-6330-4154-B81D-03ACB797072A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.AuthFlowExample", "Application.AuthFlowExample\Application.AuthFlowExample.csproj", "{55F2DC3A-071C-447D-BD7D-30038FAC7F03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.AuthFlowExample", "TwitchLib.Testing\Application.AuthFlowExample\Application.AuthFlowExample.csproj", "{55F2DC3A-071C-447D-BD7D-30038FAC7F03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
