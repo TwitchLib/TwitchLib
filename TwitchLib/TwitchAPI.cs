@@ -1456,6 +1456,39 @@ namespace TwitchLib
                 }
                 #endregion
             }
+
+            public static class AuthorizationFlow
+            {
+                public static event EventHandler<Events.API.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetectedArgs> OnUserAuthorizationDetected;
+                public static event EventHandler<Events.API.ThirdParty.AuthorizationFlow.OnErrorArgs> OnError;
+
+                public static Models.API.ThirdParty.AuthorizationFlow.CreatedFlow CreateFlow(string applicationTitle, List<Enums.AuthScopes> scopes)
+                {
+                    return TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.CreateFlow(applicationTitle, scopes);
+                }
+
+                public async static void BeginPingingStatus(string id, int intervalMs = 5000)
+                {
+                    TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetected += onUserAuthorizationDetected;
+                    TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.OnError += onError;
+                    TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.BeginPingingStatus(id, intervalMs);
+                }
+
+                public static Models.API.ThirdParty.AuthorizationFlow.PingResponse PingStatus(string id = null)
+                {
+                    return TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.PingStatus(id);
+                }
+
+                private async static void onUserAuthorizationDetected(object sender, Events.API.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetectedArgs e)
+                {
+                    OnUserAuthorizationDetected?.Invoke(null, e);
+                }
+
+                private async static void onError(object sender, Events.API.ThirdParty.AuthorizationFlow.OnErrorArgs e)
+                {
+                    OnError?.Invoke(null, e);
+                }
+            }
         }
 
         /// <summary>These methods are intended to aid in developing the library.</summary>

@@ -58,6 +58,8 @@
     <Compile Include="Enums\SubscriptionPlanEnum.cs" />
     <Compile Include="Enums\VideoPlayback.cs" />
     <Compile Include="Enums\ViewableEnum.cs" />
+    <Compile Include="Events\API\ThirdParty\AuthorizationFlow\OnErrorArgs.cs" />
+    <Compile Include="Events\API\ThirdParty\AuthorizationFlow\OnUserAuthorizationDetectedArgs.cs" />
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
     <Compile Include="Events\Client\OnLogArgs.cs" />
     <Compile Include="Events\PubSub\OnChannelSubscriptionArgs.cs" />
@@ -200,6 +202,8 @@
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Logging\TraceLoggerFactory.cs" />
     <Compile Include="Models\API\RequestModel.cs" />
+    <Compile Include="Models\API\ThirdParty\AuthorizationFlow\CreatedFlow.cs" />
+    <Compile Include="Models\API\ThirdParty\AuthorizationFlow\PingResponse.cs" />
     <Compile Include="Models\API\ThirdParty\ModLookup\ModLookupListing.cs" />
     <Compile Include="Models\API\ThirdParty\ModLookup\ModLookupResponse.cs" />
     <Compile Include="Models\API\ThirdParty\ModLookup\Stats.cs" />
