@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ClientAndPubSub
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCore.Client", "TwitchLib.Testing\NetCore.Client\NetCore.Client.csproj", "{BC292E8F-D1A5-4820-8480-53BCB0C3724F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.AuthFlowExample", "TwitchLib.Testing\Application.AuthFlowExample\Application.AuthFlowExample.csproj", "{55F2DC3A-071C-447D-BD7D-30038FAC7F03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
