@@ -159,7 +159,7 @@
                                 case "timeout":
                                     if (cMA.Args.Count > 2)
                                         reason = cMA.Args[2];
-                                   OnTimeout?.Invoke(this, new OnTimeoutArgs { TimedoutBy = cMA.CreatedBy, TimedoutUser = cMA.Args[0],
+                                   OnTimeout?.Invoke(this, new OnTimeoutArgs { TimedoutBy = cMA.CreatedBy, TimedoutById = cMA.CreatedByUserId, TimedoutUserId = cMA.TargetUserId,
                                         TimeoutDuration = TimeSpan.FromSeconds(int.Parse(cMA.Args[1])), TimeoutReason = reason });
                                     return;
                                 case "ban":
