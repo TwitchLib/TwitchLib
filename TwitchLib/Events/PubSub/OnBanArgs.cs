@@ -4,7 +4,7 @@
     public class OnBanArgs
     {
         /// <summary>Property representing banned user</summary>
-        public string BannedUser;
+        public string BannedUserId;
         /// <summary>Property representing ban reason.</summary>
         public string BanReason;
         /// <summary>Property representing the moderator who banned user.</summary>
