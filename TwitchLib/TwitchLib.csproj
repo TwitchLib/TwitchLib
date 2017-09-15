@@ -80,6 +80,7 @@
     <Compile Include="Interfaces\IFollows.cs" />
     <Compile Include="Interfaces\IUser.cs" />
     <Compile Include="Internal\Rfc2812.cs" />
+    <Compile Include="Internal\TwitchAPI\Helix.cs" />
     <Compile Include="Internal\TwitchAPI\Shared.cs" />
     <Compile Include="Internal\TwitchAPI\ThirdParty.cs" />
     <Compile Include="Internal\TwitchAPI\Undocumented.cs" />
@@ -201,6 +202,11 @@
     <Compile Include="Logging\StreamLoggerFactory.cs" />
     <Compile Include="Logging\TraceLogger.cs" />
     <Compile Include="Logging\TraceLoggerFactory.cs" />
+    <Compile Include="Models\API\Helix\Users\GetUsersFollows\Follow.cs" />
+    <Compile Include="Models\API\Helix\Users\GetUsersFollows\GetUsersFollowsResponse.cs" />
+    <Compile Include="Models\API\Helix\Users\GetUsersFollows\Pagination.cs" />
+    <Compile Include="Models\API\Helix\Users\GetUsers\GetUsersResponse.cs" />
+    <Compile Include="Models\API\Helix\Users\GetUsers\User.cs" />
     <Compile Include="Models\API\RequestModel.cs" />
     <Compile Include="Models\API\ThirdParty\AuthorizationFlow\CreatedFlow.cs" />
     <Compile Include="Models\API\ThirdParty\AuthorizationFlow\PingResponse.cs" />

@@ -15,6 +15,7 @@ namespace TwitchLib.Internal
         {
             v3 = 3,
             v5 = 5,
+            Helix = 6,
             Void = 0
         }
 
@@ -116,7 +117,9 @@ namespace TwitchLib.Internal
             request.Method = method;
             request.ContentType = "application/json";
 
-            if (api != API.Void)
+            if(api == API.Helix)
+                request.Accept = "application/json";
+            else  if (api != API.Void)
                 request.Accept = $"application/vnd.twitchtv.v{(int)api}+json";
 
             if (!string.IsNullOrEmpty(accessToken))
