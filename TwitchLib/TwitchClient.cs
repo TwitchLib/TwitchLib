@@ -941,7 +941,6 @@
 
         private void log(string message, bool includeDate = false, bool includeTime = false)
         {
-            Console.WriteLine(message);
             if(Logging)
             {
                 string dateTimeStr = "";
