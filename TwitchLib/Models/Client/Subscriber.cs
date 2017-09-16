@@ -75,7 +75,8 @@ namespace TwitchLib.Models.Client
                         case "@badges":
                             Badges = new List<KeyValuePair<string, string>>();
                             foreach (string badgeValue in value.Split(','))
-                                Badges.Add(new KeyValuePair<string, string>(badgeValue.Split('/')[0], badgeValue.Split('/')[1]));
+                                if (badgeValue.Contains('/'))
+                                    Badges.Add(new KeyValuePair<string, string>(badgeValue.Split('/')[0], badgeValue.Split('/')[1]));
                             // iterate through badges for special circumstances
                             foreach(var badge in Badges)
                             {

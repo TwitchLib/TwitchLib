@@ -1232,6 +1232,22 @@ namespace TwitchLib
                 #endregion
                 #endregion
             }
+
+            public static class Helix
+            {
+                #region GetUsers
+                public async static Task<Models.API.Helix.Users.GetUsers.GetUsersResponse> GetUsers(List<string> ids = null, List<string> logins = null)
+                {
+                    return await Internal.TwitchAPI.Helix.Users.GetUsersAsync(ids, logins);
+                }
+                #endregion
+                #region GetUsersFollows
+                public async static Task<Models.API.Helix.Users.GetUsersFollows.GetUsersFollowsResponse> GetUsersFollows(string after = null, string before = null, int first = 20, string fromId = null, string toId = null)
+                {
+                    return await Internal.TwitchAPI.Helix.Users.GetUsersFollows(after, before, first, fromId, toId);
+                }
+                #endregion
+            }
         }
 
         public static class Videos
