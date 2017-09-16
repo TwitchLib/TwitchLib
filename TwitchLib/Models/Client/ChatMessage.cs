@@ -181,10 +181,10 @@
                 //This setup clears all of that leaving just the action's text.
                 //If you want to clear just the nonstandard bytes, use:
                 //_message = _message.Substring(1, text.Length-2);
-                if (Message.Length > 1)
+                if (Message.Contains("ACTION"))
                 {
-                    Message = Message.Substring(8, Message.Length - 9);
-                    IsMe = true;
+                 	Message = Message.Substring(8, Message.Length - 9);
+                        IsMe = true;
                 }
             }
 
