@@ -1467,11 +1467,11 @@ namespace TwitchLib
                     return TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.CreateFlow(applicationTitle, scopes);
                 }
 
-                public async static void BeginPingingStatus(string id, int intervalMs = 5000)
+                public static void BeginPingingStatus(string id, int intervalMs = 5000)
                 {
-                    TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetected += onUserAuthorizationDetected;
-                    TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.OnError += onError;
-                    TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.BeginPingingStatus(id, intervalMs);
+                    Internal.TwitchAPI.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetected += onUserAuthorizationDetected;
+                    Internal.TwitchAPI.ThirdParty.AuthorizationFlow.OnError += onError;
+                    Internal.TwitchAPI.ThirdParty.AuthorizationFlow.BeginPingingStatus(id, intervalMs);
                 }
 
                 public static Models.API.ThirdParty.AuthorizationFlow.PingResponse PingStatus(string id = null)
@@ -1479,12 +1479,12 @@ namespace TwitchLib
                     return TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.PingStatus(id);
                 }
 
-                private async static void onUserAuthorizationDetected(object sender, Events.API.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetectedArgs e)
+                private static void onUserAuthorizationDetected(object sender, Events.API.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetectedArgs e)
                 {
                     OnUserAuthorizationDetected?.Invoke(null, e);
                 }
 
-                private async static void onError(object sender, Events.API.ThirdParty.AuthorizationFlow.OnErrorArgs e)
+                private static void onError(object sender, Events.API.ThirdParty.AuthorizationFlow.OnErrorArgs e)
                 {
                     OnError?.Invoke(null, e);
                 }

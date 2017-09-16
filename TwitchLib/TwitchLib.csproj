@@ -2,9 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId />
-    <Version>1.5.5</Version>
-    <Description />
+    <PackageId>TwitchLib.NET_Standard_2.0</PackageId>
+    <Version>1.5.6</Version>
+    <Description>Twitch C# library for accessing Twitch chat and whispers with events, Twitch API with both authenticated and unauthenticated calls, and PubSub with events.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Prom3theu5</Authors>
+    <Company>swiftyspiffy (cole)</Company>
+    <PackageIconUrl>https://colejelinek.com/dev/twitchlib.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/swiftyspiffy/TwitchLib</PackageProjectUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <Copyright>Copyright 2017</Copyright>
+    <PackageReleaseNotes>Initial release of library compatible with .NET Standard 2.0. Thanks again to Prom3theu5 for the work on this.</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
