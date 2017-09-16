@@ -181,8 +181,11 @@
                 //This setup clears all of that leaving just the action's text.
                 //If you want to clear just the nonstandard bytes, use:
                 //_message = _message.Substring(1, text.Length-2);
-                Message = Message.Substring(8, Message.Length - 9);
-                IsMe = true;
+                if (Message.Length > 1)
+                {
+                    Message = Message.Substring(8, Message.Length - 9);
+                    IsMe = true;
+                }
             }
 
             //Parse the emoteSet
