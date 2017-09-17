@@ -1250,7 +1250,7 @@ namespace TwitchLib
                 #region Put Users
                 public async static Task PutUsers(string description, string accessToken = null)
                 {
-                    //Shared.DynamicScopeValidation(Enums.AuthScopes.User, accessToken);
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Helix_User_Edit, accessToken);
                     await Internal.TwitchAPI.Helix.Users.PutUsers(description, accessToken);
                 }
                 #endregion
