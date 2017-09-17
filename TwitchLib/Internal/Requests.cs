@@ -81,7 +81,7 @@ namespace TwitchLib.Internal
         #endregion
         #region PUT
         #region PutGeneric
-        public async static Task<T> PutGeneric<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        public async static Task<T> PutGenericAsync<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
         {
             return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "PUT", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }

@@ -43,6 +43,11 @@ namespace TwitchLib.Internal.TwitchAPI
 
                 return await Requests.GetGenericAsync<Models.API.Helix.Users.GetUsersFollows.GetUsersFollowsResponse>($"https://api.twitch.tv/helix/users/follows{getParams}", api: Requests.API.Helix);
             }
+
+            public async static Task PutUsers(string description, string accessToken = null)
+            {
+                await Requests.PutAsync($"https://api.twitch.tv/helix/users?description={description}", null, accessToken);
+            }
         }
     }
 }

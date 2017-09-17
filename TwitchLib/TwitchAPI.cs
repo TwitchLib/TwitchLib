@@ -1247,6 +1247,13 @@ namespace TwitchLib
                     return await Internal.TwitchAPI.Helix.Users.GetUsersFollows(after, before, first, fromId, toId);
                 }
                 #endregion
+                #region Put Users
+                public async static Task PutUsers(string description, string accessToken = null)
+                {
+                    //Shared.DynamicScopeValidation(Enums.AuthScopes.User, accessToken);
+                    await Internal.TwitchAPI.Helix.Users.PutUsers(description, accessToken);
+                }
+                #endregion
             }
         }
 
