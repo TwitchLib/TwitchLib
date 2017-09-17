@@ -29,49 +29,49 @@
 
         #region Events
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler OnPubSubServiceConnected;
+        public event EventHandler OnPubSubServiceConnected;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnPubSubServiceErrorArgs> OnPubSubServiceError;
+        public event EventHandler<OnPubSubServiceErrorArgs> OnPubSubServiceError;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler OnPubSubServiceClosed;
+        public event EventHandler OnPubSubServiceClosed;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnListenResponseArgs> OnListenResponse;
+        public event EventHandler<OnListenResponseArgs> OnListenResponse;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnTimeoutArgs> OnTimeout;
+        public event EventHandler<OnTimeoutArgs> OnTimeout;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnBanArgs> OnBan;
+        public event EventHandler<OnBanArgs> OnBan;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnUnbanArgs> OnUnban;
+        public event EventHandler<OnUnbanArgs> OnUnban;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnUntimeoutArgs> OnUntimeout;
+        public event EventHandler<OnUntimeoutArgs> OnUntimeout;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnHostArgs> OnHost;
+        public event EventHandler<OnHostArgs> OnHost;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnSubscribersOnlyArgs> OnSubscribersOnly;
+        public event EventHandler<OnSubscribersOnlyArgs> OnSubscribersOnly;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnSubscribersOnlyOffArgs> OnSubscribersOnlyOff;
+        public event EventHandler<OnSubscribersOnlyOffArgs> OnSubscribersOnlyOff;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnClearArgs> OnClear;
+        public event EventHandler<OnClearArgs> OnClear;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnEmoteOnlyArgs> OnEmoteOnly;
+        public event EventHandler<OnEmoteOnlyArgs> OnEmoteOnly;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnEmoteOnlyOffArgs> OnEmoteOnlyOff;
+        public event EventHandler<OnEmoteOnlyOffArgs> OnEmoteOnlyOff;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnR9kBetaArgs> OnR9kBeta;
+        public event EventHandler<OnR9kBetaArgs> OnR9kBeta;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnR9kBetaOffArgs> OnR9kBetaOff;
+        public event EventHandler<OnR9kBetaOffArgs> OnR9kBetaOff;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnBitsReceivedArgs> OnBitsReceived;
+        public event EventHandler<OnBitsReceivedArgs> OnBitsReceived;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnStreamUpArgs> OnStreamUp;
+        public event EventHandler<OnStreamUpArgs> OnStreamUp;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnStreamDownArgs> OnStreamDown;
+        public event EventHandler<OnStreamDownArgs> OnStreamDown;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnViewCountArgs> OnViewCount;
+        public event EventHandler<OnViewCountArgs> OnViewCount;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnWhisperArgs> OnWhisper;
+        public event EventHandler<OnWhisperArgs> OnWhisper;
         /// <summary>EventHandler for channel subscriptions.</summary>
-        public EventHandler<OnChannelSubscriptionArgs> OnChannelSubscription;
+        public event EventHandler<OnChannelSubscriptionArgs> OnChannelSubscription;
         #endregion
 
         /// <summary>
@@ -160,12 +160,12 @@
                                     if (cMA.Args.Count > 2)
                                         reason = cMA.Args[2];
                                    OnTimeout?.Invoke(this, new OnTimeoutArgs { TimedoutBy = cMA.CreatedBy, TimedoutById = cMA.CreatedByUserId, TimedoutUserId = cMA.TargetUserId,
-                                        TimeoutDuration = TimeSpan.FromSeconds(int.Parse(cMA.Args[1])), TimeoutReason = reason });
+                                        TimeoutDuration = TimeSpan.FromSeconds(int.Parse(cMA.Args[1])), TimeoutReason = reason, TimedoutUser = cMA.Args[0] });
                                     return;
                                 case "ban":
                                     if (cMA.Args.Count > 1)
                                         reason = cMA.Args[1];
-                                   OnBan?.Invoke(this, new OnBanArgs { BannedBy = cMA.CreatedBy, BannedByUserId = cMA.CreatedByUserId, BannedUserId = cMA.TargetUserId, BanReason = reason });
+                                    OnBan?.Invoke(this, new OnBanArgs { BannedBy = cMA.CreatedBy, BannedByUserId = cMA.CreatedByUserId, BannedUserId = cMA.TargetUserId, BanReason = reason, BannedUser = cMA.Args[0] });
                                     return;
                                 case "unban":
                                    OnUnban?.Invoke(this, new OnUnbanArgs { UnbannedBy = cMA.CreatedBy, UnbannedByUserId = cMA.CreatedByUserId, UnbannedUserId = cMA.TargetUserId });
