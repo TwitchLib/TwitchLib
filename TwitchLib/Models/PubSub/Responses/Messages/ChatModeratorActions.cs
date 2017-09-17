@@ -15,9 +15,9 @@
         public List<string> Args { get; protected set; } = new List<string>();
         /// <summary>Moderator that performed action.</summary>
         public string CreatedBy { get; protected set; }
-        /// <summary>User Id of the user that performed the unban.</summary>
+        /// <summary>User Id of the user that performed the Action.</summary>
         public string CreatedByUserId { get; protected set; }
-        /// <summary>User Id of user that received unban.</summary>
+        /// <summary>User Id of user that received Action.</summary>
         public string TargetUserId { get; protected set; }
 
         /// <summary>ChatModeratorActions model constructor.</summary>
