@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.Models.Client
 {
-    public class Subscriber : SubscriberBase
+    class ReSubscriber
     {
-        public Subscriber(string ircString) : base(ircString) { }
     }
 }
