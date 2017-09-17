@@ -132,6 +132,12 @@
                     return "user_subscriptions";
                 case Enums.AuthScopes.Viewing_Activity_Read:
                     return "viewing_activity_read";
+                case Enums.AuthScopes.OpenId:
+                    return "openid";
+                case Enums.AuthScopes.Helix_User_Edit:
+                    return "user:edit";
+                case Enums.AuthScopes.Helix_User_Read_Email:
+                    return "user:read:email";
                 default:
                     return "";
             }
