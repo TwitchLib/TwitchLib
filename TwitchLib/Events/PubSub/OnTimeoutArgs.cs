@@ -6,8 +6,10 @@
     /// <summary>Class representing timeout event.</summary>
     public class OnTimeoutArgs
     {
-        /// <summary>Property representing the timedout user.</summary>
+        /// <summary>Property representing the timedout user id.</summary>
         public string TimedoutUserId;
+        /// <summary>Property representing the timedout username.</summary>
+        public string TimedoutUser;
         /// <summary>Property representing the tumeout duration.</summary>
         public TimeSpan TimeoutDuration;
         /// <summary>Property representing the timeout reaosn.</summary>
