@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Models.API.Helix.Common;
 
-namespace TwitchLib.Models.API.Helix.Users.GetUsersFollows
+namespace TwitchLib.Models.API.Helix.StreamsMetadata
 {
-    public class GetUsersFollowsResponse
+    public class GetStreamsMetadataResponse
     {
         [JsonProperty(PropertyName = "data")]
-        public Follow[] Follows { get; protected set; }
+        public StreamMetadata[] StreamsMetadatas { get; protected set; }
         [JsonProperty(PropertyName = "pagination")]
         public Pagination Pagination { get; protected set; }
     }

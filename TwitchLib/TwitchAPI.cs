@@ -1254,6 +1254,18 @@ namespace TwitchLib
                     await Internal.TwitchAPI.Helix.Users.PutUsers(description, accessToken);
                 }
                 #endregion
+                #region GetStreams
+                public async static Task<Models.API.Helix.Streams.GetStreams.GetStreamsResponse> GetStreams(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
+                {
+                    return await Internal.TwitchAPI.Helix.Streams.GetStreams(after, communityIds, first, gameIds, languages, type, userIds, userLogins);
+                }
+                #endregion
+                #region GetStreamsMetadata
+                public async static Task<Models.API.Helix.StreamsMetadata.GetStreamsMetadataResponse> GetStreamsMetadata(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
+                {
+                    return await Internal.TwitchAPI.Helix.Streams.GetStreamsMetadata(after, communityIds, first, gameIds, languages, type, userIds, userLogins);
+                }
+                #endregion
             }
         }
 
