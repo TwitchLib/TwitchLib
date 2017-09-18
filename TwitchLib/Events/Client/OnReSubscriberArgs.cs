@@ -8,6 +8,6 @@
     public class OnReSubscriberArgs : EventArgs
     {
         /// <summary>Property representing resubscriber object.</summary>
-        public Subscriber ReSubscriber;
+        public ReSubscriber ReSubscriber;
     }
 }

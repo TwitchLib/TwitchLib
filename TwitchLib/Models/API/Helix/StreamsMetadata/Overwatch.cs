@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.Models.API.Helix.StreamsMetadata
 {
-    class Overwatch
+    public class Overwatch
     {
+        public PlayerHearthstone Broadcaster { get; protected set; }
     }
 }

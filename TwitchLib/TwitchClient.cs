@@ -745,7 +745,7 @@
             response = Internal.Parsing.Chat.detectedReSubscriber(ircMessage, JoinedChannels);
             if (response.Successful)
             {
-                var resub = new Models.Client.Subscriber(ircMessage);
+                var resub = new Models.Client.ReSubscriber(ircMessage);
                 OnReSubscriber?.Invoke(this, new OnReSubscriberArgs { ReSubscriber = resub });
                 return;
             }

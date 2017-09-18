@@ -75,6 +75,30 @@ namespace TwitchLib.Internal.TwitchAPI
 
                 return await Requests.GetGenericAsync<Models.API.Helix.Streams.GetStreams.GetStreamsResponse>($"https://api.twitch.tv/helix/streams{getParams}", api: Requests.API.Helix);
             }
+
+            public async static Task<Models.API.Helix.StreamsMetadata.GetStreamsMetadataResponse> GetStreamsMetadata(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
+            {
+                string getParams = $"?first={first}&type={type}";
+                if (after != null)
+                    getParams += $"&after={after}";
+                if (communityIds != null && communityIds.Count > 0)
+                    foreach (var communityId in communityIds)
+                        getParams += $"&community_id={communityId}";
+                if (gameIds != null && gameIds.Count > 0)
+                    foreach (var gameId in gameIds)
+                        getParams += $"&game_id={gameId}";
+                if (languages != null && languages.Count > 0)
+                    foreach (var language in languages)
+                        getParams += $"&language={language}";
+                if (userIds != null && userIds.Count > 0)
+                    foreach (var userId in userIds)
+                        getParams += $"&user_id={userId}";
+                if (userLogins != null && userLogins.Count > 0)
+                    foreach (var userLogin in userLogins)
+                        getParams += $"&user_login={userLogin}";
+
+                return await Requests.GetGenericAsync<Models.API.Helix.StreamsMetadata.GetStreamsMetadataResponse>($"https://api.twitch.tv/helix/streams/metadata{getParams}", api: Requests.API.Helix);
+            }
         }
     }
 }

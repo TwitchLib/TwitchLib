@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace TwitchLib.Models.Client
 {
-    class ReSubscriber
+    public class ReSubscriber : SubscriberBase
     {
+        public int Months { get; protected set; }
+
+        public ReSubscriber(string ircString) : base(ircString) {
+            Months = base.months;
+        }
     }
 }
