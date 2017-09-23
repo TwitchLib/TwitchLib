@@ -748,5 +748,19 @@ namespace TwitchLib_API_Tester
         {
             MessageBox.Show($"Error encountered!\nMessage: {e.Message}");
         }
+
+        private async void button82_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Users.Helix.GetUsers(new List<string>() { textBox80.Text });
+            foreach (var user in resp.Users)
+                MessageBox.Show($"Display name: {user.DisplayName}\nView count: {user.ViewCount}\nUser type: {user.Type}");
+        }
+
+        private async void button83_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Users.Helix.GetUsers(logins: new List<string>() { textBox81.Text });
+            foreach (var user in resp.Users)
+                MessageBox.Show($"Display name: {user.DisplayName}\nView count: {user.ViewCount}\nUser type: {user.Type}");
+        }
     }
 }
