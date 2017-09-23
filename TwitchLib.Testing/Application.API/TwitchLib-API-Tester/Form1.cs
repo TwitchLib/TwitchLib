@@ -769,5 +769,11 @@ namespace TwitchLib_API_Tester
             foreach (var user in resp.Follows)
                 MessageBox.Show($"From: {user.FromUserId} -> to: {user.ToUserId}, followed at: {user.FollowedAt.ToString()}");
         }
+
+        private async void button85_Click(object sender, EventArgs e)
+        {
+            await TwitchLib.TwitchAPI.Users.Helix.PutUsers(richTextBox4.Text);
+            MessageBox.Show("updated!");
+        }
     }
 }

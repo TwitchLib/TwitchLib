@@ -409,6 +409,9 @@
             this.label84 = new System.Windows.Forms.Label();
             this.textBox83 = new System.Windows.Forms.TextBox();
             this.button84 = new System.Windows.Forms.Button();
+            this.groupBox82 = new System.Windows.Forms.GroupBox();
+            this.richTextBox4 = new System.Windows.Forms.RichTextBox();
+            this.button85 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -523,6 +526,7 @@
             this.tabPage38.SuspendLayout();
             this.groupBox80.SuspendLayout();
             this.groupBox81.SuspendLayout();
+            this.groupBox82.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -4562,6 +4566,7 @@
             // 
             // tabPage38
             // 
+            this.tabPage38.Controls.Add(this.groupBox82);
             this.tabPage38.Controls.Add(this.groupBox81);
             this.tabPage38.Controls.Add(this.groupBox80);
             this.tabPage38.Location = new System.Drawing.Point(4, 22);
@@ -4704,6 +4709,35 @@
             this.button84.Text = "Check";
             this.button84.UseVisualStyleBackColor = true;
             this.button84.Click += new System.EventHandler(this.button84_Click);
+            // 
+            // groupBox82
+            // 
+            this.groupBox82.Controls.Add(this.button85);
+            this.groupBox82.Controls.Add(this.richTextBox4);
+            this.groupBox82.Location = new System.Drawing.Point(390, 6);
+            this.groupBox82.Name = "groupBox82";
+            this.groupBox82.Size = new System.Drawing.Size(162, 114);
+            this.groupBox82.TabIndex = 2;
+            this.groupBox82.TabStop = false;
+            this.groupBox82.Text = "Put Users";
+            // 
+            // richTextBox4
+            // 
+            this.richTextBox4.Location = new System.Drawing.Point(6, 16);
+            this.richTextBox4.Name = "richTextBox4";
+            this.richTextBox4.Size = new System.Drawing.Size(150, 65);
+            this.richTextBox4.TabIndex = 0;
+            this.richTextBox4.Text = "";
+            // 
+            // button85
+            // 
+            this.button85.Location = new System.Drawing.Point(6, 83);
+            this.button85.Name = "button85";
+            this.button85.Size = new System.Drawing.Size(150, 23);
+            this.button85.TabIndex = 9;
+            this.button85.Text = "Update Description";
+            this.button85.UseVisualStyleBackColor = true;
+            this.button85.Click += new System.EventHandler(this.button85_Click);
             // 
             // Form1
             // 
@@ -4890,6 +4924,7 @@
             this.groupBox80.PerformLayout();
             this.groupBox81.ResumeLayout(false);
             this.groupBox81.PerformLayout();
+            this.groupBox82.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -5275,6 +5310,9 @@
         private System.Windows.Forms.Label label84;
         private System.Windows.Forms.TextBox textBox82;
         private System.Windows.Forms.Label label83;
+        private System.Windows.Forms.GroupBox groupBox82;
+        private System.Windows.Forms.Button button85;
+        private System.Windows.Forms.RichTextBox richTextBox4;
     }
 }
 
