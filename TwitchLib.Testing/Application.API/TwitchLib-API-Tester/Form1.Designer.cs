@@ -403,6 +403,12 @@
             this.textBox81 = new System.Windows.Forms.TextBox();
             this.button82 = new System.Windows.Forms.Button();
             this.button83 = new System.Windows.Forms.Button();
+            this.groupBox81 = new System.Windows.Forms.GroupBox();
+            this.label83 = new System.Windows.Forms.Label();
+            this.textBox82 = new System.Windows.Forms.TextBox();
+            this.label84 = new System.Windows.Forms.Label();
+            this.textBox83 = new System.Windows.Forms.TextBox();
+            this.button84 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -516,6 +522,7 @@
             this.tabControl4.SuspendLayout();
             this.tabPage38.SuspendLayout();
             this.groupBox80.SuspendLayout();
+            this.groupBox81.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -4555,6 +4562,7 @@
             // 
             // tabPage38
             // 
+            this.tabPage38.Controls.Add(this.groupBox81);
             this.tabPage38.Controls.Add(this.groupBox80);
             this.tabPage38.Location = new System.Drawing.Point(4, 22);
             this.tabPage38.Name = "tabPage38";
@@ -4640,6 +4648,62 @@
             this.button83.Text = "Get User";
             this.button83.UseVisualStyleBackColor = true;
             this.button83.Click += new System.EventHandler(this.button83_Click);
+            // 
+            // groupBox81
+            // 
+            this.groupBox81.Controls.Add(this.button84);
+            this.groupBox81.Controls.Add(this.textBox83);
+            this.groupBox81.Controls.Add(this.label84);
+            this.groupBox81.Controls.Add(this.textBox82);
+            this.groupBox81.Controls.Add(this.label83);
+            this.groupBox81.Location = new System.Drawing.Point(212, 6);
+            this.groupBox81.Name = "groupBox81";
+            this.groupBox81.Size = new System.Drawing.Size(172, 114);
+            this.groupBox81.TabIndex = 1;
+            this.groupBox81.TabStop = false;
+            this.groupBox81.Text = "Get Users Follows";
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Location = new System.Drawing.Point(6, 25);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(57, 13);
+            this.label83.TabIndex = 0;
+            this.label83.Text = "user #1 id:";
+            // 
+            // textBox82
+            // 
+            this.textBox82.Location = new System.Drawing.Point(69, 22);
+            this.textBox82.Name = "textBox82";
+            this.textBox82.Size = new System.Drawing.Size(60, 20);
+            this.textBox82.TabIndex = 6;
+            // 
+            // label84
+            // 
+            this.label84.AutoSize = true;
+            this.label84.Location = new System.Drawing.Point(6, 58);
+            this.label84.Name = "label84";
+            this.label84.Size = new System.Drawing.Size(92, 13);
+            this.label84.TabIndex = 7;
+            this.label84.Text = "follows user #2 id:";
+            // 
+            // textBox83
+            // 
+            this.textBox83.Location = new System.Drawing.Point(104, 55);
+            this.textBox83.Name = "textBox83";
+            this.textBox83.Size = new System.Drawing.Size(60, 20);
+            this.textBox83.TabIndex = 8;
+            // 
+            // button84
+            // 
+            this.button84.Location = new System.Drawing.Point(9, 83);
+            this.button84.Name = "button84";
+            this.button84.Size = new System.Drawing.Size(155, 23);
+            this.button84.TabIndex = 6;
+            this.button84.Text = "Check";
+            this.button84.UseVisualStyleBackColor = true;
+            this.button84.Click += new System.EventHandler(this.button84_Click);
             // 
             // Form1
             // 
@@ -4824,6 +4888,8 @@
             this.tabPage38.ResumeLayout(false);
             this.groupBox80.ResumeLayout(false);
             this.groupBox80.PerformLayout();
+            this.groupBox81.ResumeLayout(false);
+            this.groupBox81.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -5203,6 +5269,12 @@
         private System.Windows.Forms.TextBox textBox80;
         private System.Windows.Forms.Label label82;
         private System.Windows.Forms.Label label81;
+        private System.Windows.Forms.GroupBox groupBox81;
+        private System.Windows.Forms.Button button84;
+        private System.Windows.Forms.TextBox textBox83;
+        private System.Windows.Forms.Label label84;
+        private System.Windows.Forms.TextBox textBox82;
+        private System.Windows.Forms.Label label83;
     }
 }
 

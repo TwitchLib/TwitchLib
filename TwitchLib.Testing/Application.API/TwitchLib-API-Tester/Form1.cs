@@ -762,5 +762,12 @@ namespace TwitchLib_API_Tester
             foreach (var user in resp.Users)
                 MessageBox.Show($"Display name: {user.DisplayName}\nView count: {user.ViewCount}\nUser type: {user.Type}");
         }
+
+        private async void button84_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Users.Helix.GetUsersFollows(fromId: textBox82.Text, toId: textBox83.Text);
+            foreach (var user in resp.Follows)
+                MessageBox.Show($"From: {user.FromUserId} -> to: {user.ToUserId}, followed at: {user.FollowedAt.ToString()}");
+        }
     }
 }
