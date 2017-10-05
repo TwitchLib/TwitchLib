@@ -108,12 +108,17 @@ namespace TwitchLib.Internal
         #region generalRequestAsync
         private async static Task<string> generalRequestAsync(string url, string method, object payload = null, string accessToken = null, API api = API.v5, string clientId = null)
         {
+            var request = WebRequest.CreateHttp(url);
             if (string.IsNullOrEmpty(clientId))
                 checkForCredentials(accessToken);
             if(!string.IsNullOrEmpty(clientId) || !string.IsNullOrEmpty(TwitchAPI.Shared.ClientId))
-                url = appendClientId(url, clientId);
+            {
+                if (!string.IsNullOrEmpty(clientId))
+                    request.Headers["Client-ID"] = clientId;
+                else
+                    request.Headers["Client-ID"] = TwitchAPI.Shared.ClientId;
+            }
 
-            var request = WebRequest.CreateHttp(url);
             request.Method = method;
             request.ContentType = "application/json";
 

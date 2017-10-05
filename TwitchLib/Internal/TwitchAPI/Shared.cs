@@ -150,8 +150,17 @@
                     case "user_subscriptions":
                         scopes.Add(Enums.AuthScopes.User_Subscriptions);
                         break;
+                    case "openid":
+                        scopes.Add(Enums.AuthScopes.OpenId);
+                        break;
                     case "viewing_activity_read":
                         scopes.Add(Enums.AuthScopes.Viewing_Activity_Read);
+                        break;
+                    case "user:edit":
+                        scopes.Add(Enums.AuthScopes.Helix_User_Edit);
+                        break;
+                    case "user:read:email":
+                        scopes.Add(Enums.AuthScopes.Helix_User_Read_Email);
                         break;
                 }
             }

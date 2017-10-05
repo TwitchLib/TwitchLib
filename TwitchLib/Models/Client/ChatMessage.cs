@@ -175,7 +175,7 @@
             }
             Message = ircString.Split(new[] { $" PRIVMSG #{Channel} :" }, StringSplitOptions.None)[1];
             EmoteSet = new EmoteSet(emoteSetStorage, Message);
-            if ((byte)Message[0] == 1 && (byte)Message[Message.Length - 1] == 1)
+            if (Message.Length > 0 && (byte)Message[0] == 1 && (byte)Message[Message.Length - 1] == 1)
             {
                 //Actions (/me {action}) are wrapped by byte=1 and prepended with "ACTION "
                 //This setup clears all of that leaving just the action's text.
