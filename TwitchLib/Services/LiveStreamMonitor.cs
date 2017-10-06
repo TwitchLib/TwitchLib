@@ -27,7 +27,8 @@
 
         #region Public Variables
         /// <summary>Property representing Twitch channels service is monitoring.</summary>
-        public List<long> Channels {
+        public List<long> Channels
+        {
             get
             {
                 return _channels.ToList();
@@ -40,7 +41,7 @@
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
         public string ClientId { get { return _clientId; } set { _clientId = value; TwitchAPI.Settings.ClientId = value; } }
         /// <summary> </summary>
-        public List< Models.API.v5.Streams.Stream> CurrentLiveStreams { get { return _statuses.Where(x=>x.Value != null).Select(x=> x.Value).ToList(); } }
+        public List<Models.API.v5.Streams.Stream> CurrentLiveStreams { get { return _statuses.Where(x => x.Value != null).Select(x => x.Value).ToList(); } }
         /// <summary> </summary>
         public List<long> CurrentOfflineStreams { get { return _statuses.Where(x => x.Value == null).Select(x => x.Key).ToList(); } }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
@@ -91,8 +92,8 @@
             OnStreamMonitorEnded?.Invoke(this,
                new OnStreamMonitorEndedArgs { Channels = Channels, CheckIntervalSeconds = CheckIntervalSeconds });
         }
- 
-      
+
+
         /// <summary> Sets the list of channels to monitor by username </summary>
         /// <param name="userids">List of channels to monitor as userids</param>
         public void SetStreamsByUserId(List<long> userids)
@@ -124,43 +125,43 @@
 
         private async void _streamMonitorTimerElapsed(object sender, ElapsedEventArgs e)
         {
-           await _checkOnlineStreams();
+            _checkOnlineStreams();
         }
 
-        private async Task _checkOnlineStreams()
+        private void _checkOnlineStreams()
         {
-            var liveStreamers = await _getLiveStreamers();
+            var liveStreamers = _getLiveStreamers().Result;
 
-            foreach (var channel in _statuses)
+            foreach (var channel in _statuses.Keys)
             {
-                var currentStream = liveStreamers.Where(x => x.Channel.Id == channel.Key).FirstOrDefault();
+                var currentStream = liveStreamers.Where(x => x.Channel.Id == channel).FirstOrDefault();
                 if (currentStream == null)
                 {
                     //offline
-                    if (channel.Value != null)
+                    if (_statuses[channel] != null)
                     {
                         //have gone offline
-                        _statuses[channel.Key] = null;
+                        _statuses[channel] = null;
                         OnStreamOffline?.Invoke(this,
-                       new OnStreamOfflineArgs { Channel = channel.Key, CheckIntervalSeconds = CheckIntervalSeconds });
+                       new OnStreamOfflineArgs { Channel = channel, CheckIntervalSeconds = CheckIntervalSeconds });
                     }
                 }
                 else
                 {
-                    _statuses[channel.Key] = currentStream;
                     //online
-                    if (channel.Value == null)
+                    if (_statuses[channel] == null)
                     {
                         //have gone online
                         OnStreamOnline?.Invoke(this,
-                       new OnStreamOnlineArgs { Channel = channel.Key, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
+                       new OnStreamOnlineArgs { Channel = channel, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
                     }
                     else
                     {
                         //stream object refreshed, not sure if we should do event for this
                         OnStreamUpdate?.Invoke(this,
-                       new OnStreamUpdateArgs { Channel = channel.Key, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
+                       new OnStreamUpdateArgs { Channel = channel, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
                     }
+                    _statuses[channel] = currentStream;
                 }
             }
 
