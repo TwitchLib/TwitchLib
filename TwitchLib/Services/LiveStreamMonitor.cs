@@ -20,7 +20,7 @@
         private int _checkIntervalSeconds;
         private List<long> _channels;
 
-        private Dictionary<long, Models.API.v5.Streams.Stream> _statuses = new Dictionary<long, Models.API.v5.Streams.Stream>();
+        private Dictionary<long, Models.API.v5.Streams.Stream> _statuses;
         private readonly Timer _streamMonitorTimer = new Timer();
 
         #endregion
@@ -123,7 +123,7 @@
         }
         #endregion
 
-        private async void _streamMonitorTimerElapsed(object sender, ElapsedEventArgs e)
+        private void _streamMonitorTimerElapsed(object sender, ElapsedEventArgs e)
         {
             _checkOnlineStreams();
         }
@@ -132,7 +132,7 @@
         {
             var liveStreamers = _getLiveStreamers().Result;
 
-            foreach (var channel in _statuses.Keys)
+            foreach (var channel in _channels)
             {
                 var currentStream = liveStreamers.Where(x => x.Channel.Id == channel).FirstOrDefault();
                 if (currentStream == null)
