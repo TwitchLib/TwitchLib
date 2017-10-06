@@ -717,5 +717,63 @@ namespace TwitchLib_API_Tester
                 MessageBox.Show($"{channel.Name}");
             }
         }
+
+        private async void button22_Click_1(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Clips.v5.GetFollowedClipsAsync();
+            foreach (var clip in resp.Clips)
+                Console.WriteLine($"Clip name: {clip.Title}, game: {clip.Game}, streamer: {clip.Broadcaster.Name}, views: {clip.Views}, clipped by: {clip.Curator.Name}");
+        }
+
+        private void button80_Click(object sender, EventArgs e)
+        {
+            var resp = TwitchLib.TwitchAPI.ThirdParty.AuthorizationFlow.CreateFlow("Test Application", new List<TwitchLib.Enums.AuthScopes>() { TwitchLib.Enums.AuthScopes.Chat_Login });
+            textBox78.Text = resp.Url;
+            textBox79.Text = resp.Id;
+        }
+
+        private async void button81_Click(object sender, EventArgs e)
+        {
+            TwitchLib.TwitchAPI.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetected += onAuthorizationDetected;
+            TwitchLib.TwitchAPI.ThirdParty.AuthorizationFlow.OnError += onError;
+            TwitchLib.TwitchAPI.ThirdParty.AuthorizationFlow.BeginPingingStatus(textBox79.Text);
+        }
+
+        private void onAuthorizationDetected(object sender, TwitchLib.Events.API.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetectedArgs e)
+        {
+            MessageBox.Show($"Authorization detected!\nUsername: {e.Username}\nToken: {e.Token}");
+        }
+
+        private void onError(object sender, TwitchLib.Events.API.ThirdParty.AuthorizationFlow.OnErrorArgs e)
+        {
+            MessageBox.Show($"Error encountered!\nMessage: {e.Message}");
+        }
+
+        private async void button82_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Users.Helix.GetUsers(new List<string>() { textBox80.Text });
+            foreach (var user in resp.Users)
+                MessageBox.Show($"Display name: {user.DisplayName}\nView count: {user.ViewCount}\nUser type: {user.Type}");
+        }
+
+        private async void button83_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Users.Helix.GetUsers(logins: new List<string>() { textBox81.Text });
+            foreach (var user in resp.Users)
+                MessageBox.Show($"Display name: {user.DisplayName}\nView count: {user.ViewCount}\nUser type: {user.Type}");
+        }
+
+        private async void button84_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Users.Helix.GetUsersFollows(fromId: textBox82.Text, toId: textBox83.Text);
+            foreach (var user in resp.Follows)
+                MessageBox.Show($"From: {user.FromUserId} -> to: {user.ToUserId}, followed at: {user.FollowedAt.ToString()}");
+        }
+
+        private async void button85_Click(object sender, EventArgs e)
+        {
+            await TwitchLib.TwitchAPI.Users.Helix.PutUsers(richTextBox4.Text);
+            MessageBox.Show("updated!");
+        }
     }
 }

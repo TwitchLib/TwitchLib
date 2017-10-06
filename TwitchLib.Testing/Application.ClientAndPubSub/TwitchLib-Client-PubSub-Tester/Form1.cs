@@ -398,17 +398,17 @@ namespace TwitchLibExample
         private void pubsubOnTimeout(object sender, OnTimeoutArgs e)
         {
             Console.WriteLine("Test");
-            MessageBox.Show($"New timeout event! Details below:\nTimedout user: {e.TimedoutUser}\nTimeout duration: {e.TimeoutDuration} seconds\nTimeout reason: {e.TimeoutReason}\nTimeout by: {e.TimedoutBy}");
+            MessageBox.Show($"New timeout event! Details below:\nTimedout user: {e.TimedoutUserId}\nTimeout duration: {e.TimeoutDuration} seconds\nTimeout reason: {e.TimeoutReason}\nTimeout by: {e.TimedoutBy}");
         }
 
         private void pubsubOnBan(object sender, OnBanArgs e)
         {
-            MessageBox.Show($"New ban event! Details below:\nBanned user: {e.BannedUser}\nBan reason: {e.BanReason}\nBanned by: {e.BannedBy}");
+            MessageBox.Show($"New ban event! Details below:\nBanned user: {e.BannedUserId}\nBan reason: {e.BanReason}\nBanned by: {e.BannedBy}");
         }
 
         private void pubsubOnUnban(object sender, OnUnbanArgs e)
         {
-            MessageBox.Show($"New unban event! Details below:\nUnbanned user:{e.UnbannedUser}\nUnbanned by: {e.UnbannedBy}");
+            MessageBox.Show($"New unban event! Details below:\nUnbanned user:{e.UnbannedUserId}\nUnbanned by: {e.UnbannedBy}");
         }
 
         private static void onWhisper(object sender, OnWhisperArgs e)

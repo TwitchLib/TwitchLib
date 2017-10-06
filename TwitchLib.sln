@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchLib", "TwitchLib\TwitchLib.csproj", "{5D5746FD-63B3-4DB0-9389-7FEDA1A05A09}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.API", "TwitchLib.Testing\Application.API\TwitchLib-API-Tester\Application.API.csproj", "{9DC15B3A-DF0E-409D-B82B-CAA8B4413BEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.ClientAndPubSub", "TwitchLib.Testing\Application.ClientAndPubSub\TwitchLib-Client-PubSub-Tester\Application.ClientAndPubSub.csproj", "{3CEB6EEB-6330-4154-B81D-03ACB797072A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.AuthFlowExample", "TwitchLib.Testing\Application.AuthFlowExample\Application.AuthFlowExample.csproj", "{55F2DC3A-071C-447D-BD7D-30038FAC7F03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{3CEB6EEB-6330-4154-B81D-03ACB797072A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CEB6EEB-6330-4154-B81D-03ACB797072A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CEB6EEB-6330-4154-B81D-03ACB797072A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55F2DC3A-071C-447D-BD7D-30038FAC7F03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55F2DC3A-071C-447D-BD7D-30038FAC7F03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55F2DC3A-071C-447D-BD7D-30038FAC7F03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55F2DC3A-071C-447D-BD7D-30038FAC7F03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,5 +65,6 @@ Global
 		{5798A9F5-D6EB-46CD-AFF8-5A81C2BD0BC6} = {7FFF330A-C7A1-41EC-8FAB-4331063641CE}
 		{9DC15B3A-DF0E-409D-B82B-CAA8B4413BEF} = {7CE938D6-AA4F-4B40-84D3-AC3F54518DFB}
 		{3CEB6EEB-6330-4154-B81D-03ACB797072A} = {7CE938D6-AA4F-4B40-84D3-AC3F54518DFB}
+		{55F2DC3A-071C-447D-BD7D-30038FAC7F03} = {7CE938D6-AA4F-4B40-84D3-AC3F54518DFB}
 	EndGlobalSection
 EndGlobal

@@ -10,7 +10,7 @@
         /// <summary>Property representing the chat message that the command came in.</summary>
         public ChatMessage ChatMessage { get; protected set; }
         /// <summary>Property representing the actual command (without the command prefix).</summary>
-        public string Command { get; protected set; }
+        public string CommandText { get; protected set; }
         /// <summary>Property representing all arguments received in a List form.</summary>
         public List<string> ArgumentsAsList { get; protected set; }
         /// <summary>Property representing all arguments received in a string form.</summary>
@@ -24,10 +24,10 @@
         public ChatCommand(string ircString, ChatMessage chatMessage)
         {
             ChatMessage = chatMessage;
-            Command = chatMessage.Message.Split(' ')?[0].Substring(1, chatMessage.Message.Split(' ')[0].Length - 1) ?? chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
+            CommandText = chatMessage.Message.Split(' ')?[0].Substring(1, chatMessage.Message.Split(' ')[0].Length - 1) ?? chatMessage.Message.Substring(1, chatMessage.Message.Length - 1);
             ArgumentsAsString = chatMessage.Message.Contains(" ") ? chatMessage.Message.Replace(chatMessage.Message.Split(' ')?[0] + " ", "") ?? "" : "";
             if (!chatMessage.Message.Contains("\"") || chatMessage.Message.Count(x => x == '"') % 2 == 1)
-                ArgumentsAsList = chatMessage.Message.Split(' ')?.Where(arg => arg != chatMessage.Message[0] + Command).ToList<string>() ?? new List<string>();
+                ArgumentsAsList = chatMessage.Message.Split(' ')?.Where(arg => arg != chatMessage.Message[0] + CommandText).ToList<string>() ?? new List<string>();
             else
                 ArgumentsAsList = Common.Helpers.ParseQuotesAndNonQuotes(ArgumentsAsString);
             CommandIdentifier = chatMessage.Message[0];

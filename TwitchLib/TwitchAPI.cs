@@ -993,6 +993,22 @@ namespace TwitchLib
                 }
                 #endregion
             }
+
+            public static class Helix
+            {
+                #region GetStreams
+                public async static Task<Models.API.Helix.Streams.GetStreams.GetStreamsResponse> GetStreams(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
+                {
+                    return await Internal.TwitchAPI.Helix.Streams.GetStreams(after, communityIds, first, gameIds, languages, type, userIds, userLogins);
+                }
+                #endregion
+                #region GetStreamsMetadata
+                public async static Task<Models.API.Helix.StreamsMetadata.GetStreamsMetadataResponse> GetStreamsMetadata(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
+                {
+                    return await Internal.TwitchAPI.Helix.Streams.GetStreamsMetadata(after, communityIds, first, gameIds, languages, type, userIds, userLogins);
+                }
+                #endregion
+            }
         }
 
         public static class Subscriptions
@@ -1232,6 +1248,29 @@ namespace TwitchLib
                 #endregion
                 #endregion
             }
+
+            public static class Helix
+            {
+                #region GetUsers
+                public async static Task<Models.API.Helix.Users.GetUsers.GetUsersResponse> GetUsers(List<string> ids = null, List<string> logins = null)
+                {
+                    return await Internal.TwitchAPI.Helix.Users.GetUsersAsync(ids, logins);
+                }
+                #endregion
+                #region GetUsersFollows
+                public async static Task<Models.API.Helix.Users.GetUsersFollows.GetUsersFollowsResponse> GetUsersFollows(string after = null, string before = null, int first = 20, string fromId = null, string toId = null)
+                {
+                    return await Internal.TwitchAPI.Helix.Users.GetUsersFollows(after, before, first, fromId, toId);
+                }
+                #endregion
+                #region Put Users
+                public async static Task PutUsers(string description, string accessToken = null)
+                {
+                    Shared.DynamicScopeValidation(Enums.AuthScopes.Helix_User_Edit, accessToken);
+                    await Internal.TwitchAPI.Helix.Users.PutUsers(description, accessToken);
+                }
+                #endregion
+            }
         }
 
         public static class Videos
@@ -1455,6 +1494,39 @@ namespace TwitchLib
                     return await Internal.TwitchAPI.ThirdParty.ModLookup.GetChannelsModdedForStatsAsync();
                 }
                 #endregion
+            }
+
+            public static class AuthorizationFlow
+            {
+                public static event EventHandler<Events.API.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetectedArgs> OnUserAuthorizationDetected;
+                public static event EventHandler<Events.API.ThirdParty.AuthorizationFlow.OnErrorArgs> OnError;
+
+                public static Models.API.ThirdParty.AuthorizationFlow.CreatedFlow CreateFlow(string applicationTitle, List<Enums.AuthScopes> scopes)
+                {
+                    return TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.CreateFlow(applicationTitle, scopes);
+                }
+
+                public static void BeginPingingStatus(string id, int intervalMs = 5000)
+                {
+                    TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetected += onUserAuthorizationDetected;
+                    TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.OnError += onError;
+                    TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.BeginPingingStatus(id, intervalMs);
+                }
+
+                public static Models.API.ThirdParty.AuthorizationFlow.PingResponse PingStatus(string id = null)
+                {
+                    return TwitchLib.Internal.TwitchAPI.ThirdParty.AuthorizationFlow.PingStatus(id);
+                }
+
+                private static void onUserAuthorizationDetected(object sender, Events.API.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetectedArgs e)
+                {
+                    OnUserAuthorizationDetected?.Invoke(null, e);
+                }
+
+                private static void onError(object sender, Events.API.ThirdParty.AuthorizationFlow.OnErrorArgs e)
+                {
+                    OnError?.Invoke(null, e);
+                }
             }
         }
 

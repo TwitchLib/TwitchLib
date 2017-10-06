@@ -745,7 +745,7 @@
             response = Internal.Parsing.Chat.detectedReSubscriber(ircMessage, JoinedChannels);
             if (response.Successful)
             {
-                var resub = new Models.Client.Subscriber(ircMessage);
+                var resub = new Models.Client.ReSubscriber(ircMessage);
                 OnReSubscriber?.Invoke(this, new OnReSubscriberArgs { ReSubscriber = resub });
                 return;
             }
@@ -941,7 +941,6 @@
 
         private void log(string message, bool includeDate = false, bool includeTime = false)
         {
-            Console.WriteLine(message);
             if(Logging)
             {
                 string dateTimeStr = "";
