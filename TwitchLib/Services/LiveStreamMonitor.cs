@@ -10,6 +10,7 @@
     using Events.Services.LiveStreamMonitor;
     using Exceptions.API;
     using Exceptions.Services;
+    using System.Linq;
     #endregion
     /// <summary>Service that allows customizability and subscribing to detection of channels going online/offline.</summary>
     public class LiveStreamMonitor
@@ -17,26 +18,42 @@
         #region Private Variables
         private string _clientId;
         private int _checkIntervalSeconds;
-        private List<string> _channels;
-        private Dictionary<string, bool> _statuses = new Dictionary<string, bool>();
+        private List<long> _channels;
+
+        private Dictionary<long, Models.API.v5.Streams.Stream> _statuses = new Dictionary<long, Models.API.v5.Streams.Stream>();
         private readonly Timer _streamMonitorTimer = new Timer();
-        private StreamIdentifierType _identifierType;
+
         #endregion
+
         #region Public Variables
         /// <summary>Property representing Twitch channels service is monitoring.</summary>
-        public List<string> Channels { get { return _channels; } protected set { _channels = value; } }
+        public List<long> Channels {
+            get
+            {
+                return _channels.ToList();
+            }
+            protected set
+            {
+                _channels = value;
+            }
+        }
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
         public string ClientId { get { return _clientId; } set { _clientId = value; TwitchAPI.Settings.ClientId = value; } }
+        /// <summary> </summary>
+        public List< Models.API.v5.Streams.Stream> CurrentLiveStreams { get { return _statuses.Where(x=>x.Value != null).Select(x=> x.Value).ToList(); } }
+        /// <summary> </summary>
+        public List<long> CurrentOfflineStreams { get { return _statuses.Where(x => x.Value == null).Select(x => x.Key).ToList(); } }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _streamMonitorTimer.Interval = value * 1000; } }
-        /// <summary>Property representing whether streams are represented by usernames or userids</summary>
-        public StreamIdentifierType IdentifierType { get { return _identifierType; } protected set { _identifierType = value; } }
         #endregion
+
         #region EVENTS
         /// <summary>Event fires when Stream goes online</summary>
         public event EventHandler<OnStreamOnlineArgs> OnStreamOnline;
         /// <summary>Event fires when Stream goes online</summary>
         public event EventHandler<OnStreamOfflineArgs> OnStreamOffline;
+        /// <summary>Event fires when Stream goes online</summary>
+        public event EventHandler<OnStreamUpdateArgs> OnStreamUpdate;
         /// <summary>Event fires when service stops.</summary>
         public event EventHandler<OnStreamMonitorStartedArgs> OnStreamMonitorStarted;
         /// <summary>Event fires when service starts.</summary>
@@ -50,6 +67,8 @@
         /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
         public LiveStreamMonitor(int checkIntervalSeconds = 60, string clientId = "")
         {
+            _channels = new List<long>();
+            _statuses = new Dictionary<long, Models.API.v5.Streams.Stream>();
             CheckIntervalSeconds = checkIntervalSeconds;
             _streamMonitorTimer.Elapsed += _streamMonitorTimerElapsed;
             if (clientId != "")
@@ -57,21 +76,12 @@
         }
 
         #region CONTROLS
-        /// <summary>Starts service, updates status of all channels, fires OnStreamMonitorStarted event.</summary>
-        public async void StartService()
+        /// <summary>Starts service, updates status of all channels, fires OnStreamMonitorStarted event. </summary>
+        public void StartService()
         {
-            if (Channels == null)
-            {
-                throw new UnintializedChannelListException("Channel list must be initialized prior to service starting");
-            }
-            foreach (string channel in Channels)
-            {
-                var initialStatus = await _checkStreamOnline(channel);
-                _statuses.Add(channel, initialStatus);
-            }
             _streamMonitorTimer.Start();
             OnStreamMonitorStarted?.Invoke(this,
-                new OnStreamMonitorStartedArgs { Channels = Channels, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
+                new OnStreamMonitorStartedArgs { Channels = Channels, CheckIntervalSeconds = CheckIntervalSeconds });
         }
 
         /// <summary>Stops service and fires OnStreamMonitorStopped event.</summary>
@@ -79,83 +89,101 @@
         {
             _streamMonitorTimer.Stop();
             OnStreamMonitorEnded?.Invoke(this,
-               new OnStreamMonitorEndedArgs { Channels = Channels, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
+               new OnStreamMonitorEndedArgs { Channels = Channels, CheckIntervalSeconds = CheckIntervalSeconds });
         }
-        /// <summary> Sets the list of channels to monitor by username </summary>
-        /// <param name="usernames">List of channels to monitor as usernames</param>
-        public void SetStreamsByUsername(List<string> usernames)
-        {
-            _statuses = new Dictionary<string, bool>();
-            _channels = usernames;
-            _identifierType = StreamIdentifierType.Usernames;
-            OnStreamsSet?.Invoke(this,
-                new OnStreamsSetArgs { Channels = Channels, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
-        }
+ 
+      
         /// <summary> Sets the list of channels to monitor by username </summary>
         /// <param name="userids">List of channels to monitor as userids</param>
-        public void SetStreamsByUserId(List<string> userids)
+        public void SetStreamsByUserId(List<long> userids)
         {
-            _statuses = new Dictionary<string, bool>();
             _channels = userids;
-            _identifierType = StreamIdentifierType.UserIds;
+            _channels.ForEach(x => {
+                if (!_statuses.ContainsKey(x))
+                {
+                    _statuses.Add(x, null);
+                }
+            });
+
+            var toRemove = new List<long>();
+            _statuses.Keys.ToList().ForEach(x => {
+                if (!_channels.Contains(x))
+                {
+
+                    toRemove.Add(x);
+                }
+            });
+            toRemove.ForEach(x =>
+            {
+                _statuses.Remove(x);
+            });
             OnStreamsSet?.Invoke(this,
-                new OnStreamsSetArgs { Channels = Channels, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
+                new OnStreamsSetArgs { Channels = Channels, CheckIntervalSeconds = CheckIntervalSeconds });
         }
         #endregion
 
         private async void _streamMonitorTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            foreach (string channel in Channels)
-            {
-                bool current = await _checkStreamOnline(channel);
-                if (current && !_statuses[channel])
-                {
-                    OnStreamOnline?.Invoke(this,
-                        new OnStreamOnlineArgs { Channel = channel, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
-                    _statuses[channel] = true;
-                }
-                else if (!current && _statuses[channel])
-                {
-                    OnStreamOffline?.Invoke(this,
-                        new OnStreamOfflineArgs { Channel = channel, IdentifierType = IdentifierType, CheckIntervalSeconds = CheckIntervalSeconds });
-                    _statuses[channel] = false;
-                }
-            }
+           await _checkOnlineStreams();
         }
-        private async Task<bool> _checkStreamOnline(string channel)
+
+        private async Task _checkOnlineStreams()
         {
-            switch (_identifierType)
+            var liveStreamers = await _getLiveStreamers();
+
+            foreach (var channel in _statuses)
             {
-                case StreamIdentifierType.Usernames:
-                    try
+                var currentStream = liveStreamers.Where(x => x.Channel.Id == channel.Key).FirstOrDefault();
+                if (currentStream == null)
+                {
+                    //offline
+                    if (channel.Value != null)
                     {
-                        var resp = await TwitchAPI.Streams.v3.GetStreamAsync(channel);
-                        if (resp == null || resp.Stream == null)
-                            return false;
-                        else
-                            return true;
+                        //have gone offline
+                        _statuses[channel.Key] = null;
+                        OnStreamOffline?.Invoke(this,
+                       new OnStreamOfflineArgs { Channel = channel.Key, CheckIntervalSeconds = CheckIntervalSeconds });
                     }
-                    catch (Exception)
+                }
+                else
+                {
+                    _statuses[channel.Key] = currentStream;
+                    //online
+                    if (channel.Value == null)
                     {
-                        return false;
+                        //have gone online
+                        OnStreamOnline?.Invoke(this,
+                       new OnStreamOnlineArgs { Channel = channel.Key, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
                     }
-                case StreamIdentifierType.UserIds:
-                    try
+                    else
                     {
-                        var resp = await TwitchAPI.Streams.v5.GetStreamByUserAsync(channel);
-                        if (resp == null || resp.Stream == null)
-                            return false;
-                        else
-                            return true;
+                        //stream object refreshed, not sure if we should do event for this
+                        OnStreamUpdate?.Invoke(this,
+                       new OnStreamUpdateArgs { Channel = channel.Key, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
                     }
-                    catch (Exception)
-                    {
-                        return false;
-                    }
-                default:
-                    throw new UnintializedChannelListException("Channel list must be initialized prior to service starting");
+                }
             }
+
         }
+
+        private async Task<List<Models.API.v5.Streams.Stream>> _getLiveStreamers()
+        {
+            var livestreamers = new List<Models.API.v5.Streams.Stream>();
+
+            var resultset = await TwitchAPI.Streams.v5.GetLiveStreamsAsync(_channels.Select(x => x.ToString()).ToList(), limit: 100);
+
+            livestreamers.AddRange(resultset.Streams.ToList());
+
+            var pages = (int)Math.Ceiling((double)resultset.Total / 100);
+            for (var i = 1; i < pages; i++)
+            {
+                resultset = await TwitchAPI.Streams.v5.GetLiveStreamsAsync(_channels.Select(x => x.ToString()).ToList(), limit: 100, offset: i * 100);
+                livestreamers.AddRange(resultset.Streams.ToList());
+            }
+
+            return livestreamers;
+        }
+
 
     }
 }

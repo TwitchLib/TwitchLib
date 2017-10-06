@@ -9,9 +9,8 @@
     public class OnStreamOfflineArgs : EventArgs
     {
         /// <summary>Event property representing channel that has gone offline.</summary>
-        public string Channel;
-        /// <summary>Event property representing how channels IDs are represented.</summary>
-        public StreamIdentifierType IdentifierType;
+        public long Channel;
+ 
         /// <summary>Event property representing seconds between queries to Twitch Api.</summary>
         public int CheckIntervalSeconds;
     }

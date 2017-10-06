@@ -6,7 +6,7 @@
     using Enums;
     #endregion
     /// <summary>Class representing event args for OnChannelOnline event.</summary>
-    public class OnStreamOnlineArgs : EventArgs
+    public class OnStreamUpdateArgs : EventArgs
     {
         /// <summary>Event property representing channel that has gone online.</summary>
         public long Channel;
