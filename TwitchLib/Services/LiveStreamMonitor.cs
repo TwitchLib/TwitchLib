@@ -21,12 +21,13 @@
         private Dictionary<string, bool> _statuses = new Dictionary<string, bool>();
         private readonly Timer _streamMonitorTimer = new Timer();
         private StreamIdentifierType _identifierType;
+        private ITwitchAPI _api;
         #endregion
         #region Public Variables
         /// <summary>Property representing Twitch channels service is monitoring.</summary>
         public List<string> Channels { get { return _channels; } protected set { _channels = value; } }
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
-        public string ClientId { get { return _clientId; } set { _clientId = value; TwitchAPI.Settings.ClientId = value; } }
+        public string ClientId { get { return _clientId; } set { _clientId = value; _api.Settings.ClientId = value; } }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _streamMonitorTimer.Interval = value * 1000; } }
         /// <summary>Property representing whether streams are represented by usernames or userids</summary>
@@ -48,8 +49,9 @@
         /// <exception cref="BadResourceException">If channel is invalid, an InvalidChannelException will be thrown.</exception>
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
         /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
-        public LiveStreamMonitor(int checkIntervalSeconds = 60, string clientId = "")
+        public LiveStreamMonitor(ITwitchAPI api, int checkIntervalSeconds = 60, string clientId = "")
         {
+            _api = api;
             CheckIntervalSeconds = checkIntervalSeconds;
             _streamMonitorTimer.Elapsed += _streamMonitorTimerElapsed;
             if (clientId != "")
@@ -129,7 +131,7 @@
                 case StreamIdentifierType.Usernames:
                     try
                     {
-                        var resp = await TwitchAPI.Streams.v3.GetStreamAsync(channel);
+                        var resp = await _api.Streams.v3.GetStreamAsync(channel);
                         if (resp == null || resp.Stream == null)
                             return false;
                         else
@@ -142,7 +144,7 @@
                 case StreamIdentifierType.UserIds:
                     try
                     {
-                        var resp = await TwitchAPI.Streams.v5.GetStreamByUserAsync(channel);
+                        var resp = await _api.Streams.v5.GetStreamByUserAsync(channel);
                         if (resp == null || resp.Stream == null)
                             return false;
                         else

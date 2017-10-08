@@ -12,7 +12,7 @@
     using SuperSocket.ClientEngine;
     #endregion
     /// <summary>Class represneting interactions with the Twitch PubSub</summary>
-    public class TwitchPubSub
+    public class TwitchPubSub : ITwitchPubSub
     {
         private Models.PubSub.PreviousRequest previousRequest = null;
         private bool logging;

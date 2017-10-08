@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using TwitchLib;
 using TwitchLib.Models.Client;
-using TwitchLib.Models.API.v5.Users;
 using TwitchLib.Services;
 using System.Linq;
 using Serilog;
@@ -18,6 +17,7 @@ namespace NetCore.Client
         private const string _secret = "";
         private static string _channel = "";
         private static LiveStreamMonitor _streamMonitor;
+        private static ITwitchAPI _api;
 
         private static TwitchClient _client;
 
@@ -28,10 +28,11 @@ namespace NetCore.Client
 
         private static async Task SetupAndConnectABot()
         {
-            TwitchAPI.Settings.Validators.SkipAccessTokenValidation = true;
-            TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = true;
-            TwitchAPI.Settings.ClientId = _clientId;
-            TwitchAPI.Settings.AccessToken = _secret;
+            _api = new TwitchAPI();
+            _api.Settings.Validators.SkipAccessTokenValidation = true;
+            _api.Settings.Validators.SkipDynamicScopeValidation = true;
+            _api.Settings.ClientId = _clientId;
+            _api.Settings.AccessToken = _secret;
 
             await Task.Run(() =>
             {
@@ -41,7 +42,7 @@ namespace NetCore.Client
 
                 var credentials = new ConnectionCredentials(_username, _oauth);
                 var logFactory = new TwitchLib.Logging.Providers.SeriLog.SerilogFactory();
-                _streamMonitor = new LiveStreamMonitor(60);
+                _streamMonitor = new LiveStreamMonitor(_api, 60);
                 _streamMonitor.SetStreamsByUsername(new System.Collections.Generic.List<string> { _channel });
                 _streamMonitor.OnStreamOffline += _streamMonitor_OnStreamOffline;
                 _client = new TwitchClient(credentials, channel: _channel, logging: true, logger: new TwitchLib.Logging.Providers.SeriLog.SerilogLogger(Log.Logger, logFactory));
@@ -120,7 +121,7 @@ namespace NetCore.Client
             {
                 _streamMonitor.StopService();
                 _client.LeaveChannel(_channel);
-                var topStreams = await TwitchAPI.Streams.v5.GetLiveStreamsAsync();
+                var topStreams = await _api.Streams.v5.GetLiveStreamsAsync();
                 var topStream = topStreams.Streams.OrderBy(c => c.Viewers).FirstOrDefault();
                 _channel = topStream != null ? topStream.Channel.DisplayName.ToLower() : "prom3theu5";
                 _streamMonitor.SetStreamsByUsername(new System.Collections.Generic.List<string> { _channel });
@@ -157,8 +158,8 @@ namespace NetCore.Client
 
         private static async Task SendUserId()
         {
-            var user = await TwitchAPI.Users.v5.GetUserByNameAsync(_username);
-            if (user is Users)
+            var user = await _api.Users.v5.GetUserByNameAsync(_username);
+            if (user is TwitchLib.Models.API.v5.Users.Users)
             {
                 _client.SendMessage($"Current Bot User is: {user.Matches[0].Id} - {user.Matches[0].DisplayName}: {user.Matches[0].Bio}");
                 return;

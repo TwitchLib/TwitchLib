@@ -1,80 +1,100 @@
-﻿namespace TwitchLib.Internal.TwitchAPI
+﻿namespace TwitchLib
 {
     #region using directives
     using System.Collections.Generic;
-
-    using Exceptions.API;
     using System.Threading.Tasks;
+    using TwitchLib.Exceptions.API;
     #endregion
-    internal static class Shared
-    {
-        #region Private static variables
-        private static string clientIdInternal;
-        private static string accessTokenInternal;
-        #endregion
-        #region Public static property fields
-        public static string ClientId { get { return clientIdInternal; } set { setClientId(value); } }
-        public static string AccessToken { get { return accessTokenInternal; } set { setAccessToken(value); } }
 
-        public static List<Enums.AuthScopes> Scopes { get; set; } = new List<Enums.AuthScopes>() { Enums.AuthScopes.None };
-        #endregion
-        #region Public static methods
-        #region DynamicScopeValidation
-        public static void DynamicScopeValidation(Enums.AuthScopes requiredScope, string accessToken = null)
+    public class ApiSettings : IApiSettings
+    {
+        public string ClientId
         {
-            if (!TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation && accessToken == null)
+            get { return clientIdInternal; }
+            set { setClientId(value); }
+        }
+
+        public string AccessToken
+        {
+            get { return accessTokenInternal; }
+            set { setAccessToken(value); }
+        }
+
+        private string clientIdInternal;
+        private string accessTokenInternal;
+        private readonly TwitchAPI _api;
+
+        public ApiSettings(TwitchAPI api)
+        {
+            Validators = new CredentialValidators();
+            _api = api;
+        }
+
+        public void ValidateScope(Enums.AuthScopes requiredScope, string accessToken = null)
+        {
+            if (accessToken != null)
+                return;
+            if (Scopes.Contains(requiredScope))
+                throw new Exceptions.API.InvalidCredentialException($"The call you attempted was blocked because you are missing required scope: {requiredScope.ToString().ToLower()}. You can ignore this protection by using TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = false . You can also generate a new token with the required scope here: https://twitchtokengenerator.com");
+        }
+
+        public CredentialValidators Validators { get; private set; }
+        
+        #region DynamicScopeValidation
+        public void DynamicScopeValidation(Enums.AuthScopes requiredScope, string accessToken = null)
+        {
+            if (!Validators.SkipDynamicScopeValidation && accessToken == null)
                 if (!Scopes.Contains(requiredScope) || (requiredScope == Enums.AuthScopes.Any && Scopes.Count == 0))
                     throw new InvalidCredentialException($"The current access token does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
         }
         #endregion
-        #endregion
-        #region Private static methods
+
         #region setClientId
-        private static void setClientId(string clientId)
+        private void setClientId(string clientId)
         {
-            if (!TwitchLib.TwitchAPI.Settings.Validators.SkipClientIdValidation)
+            if (!Validators.SkipClientIdValidation)
             {
-                //if (string.IsNullOrEmpty(clientId))
-                //    throw new InvalidCredentialException("Client Id cannot be empty or null. Set it using TwitchLib.TwitchAPI.Settings.ClientId = {clientid}");
-                if ((!string.IsNullOrWhiteSpace(clientId) || !string.IsNullOrWhiteSpace(Shared.AccessToken)) && !(validClientId(clientId)))
+                if ((!string.IsNullOrWhiteSpace(clientId) || !string.IsNullOrWhiteSpace(AccessToken)) && !(validClientId(clientId).Result))
                     throw new InvalidCredentialException("The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new");
             }
             clientIdInternal = clientId;
         }
         #endregion
+
         #region setAccessToken
-        private  static void setAccessToken(string accessToken)
+        private void setAccessToken(string accessToken)
         {
-            if (!TwitchLib.TwitchAPI.Settings.Validators.SkipAccessTokenValidation)
+            if (!Validators.SkipAccessTokenValidation)
             {
                 if (string.IsNullOrEmpty(accessToken))
                     throw new InvalidCredentialException("Access Token cannot be empty or null. Set it using: TwitchLib.TwitchAPI.Settings.AccessToken = {access_token}");
-                if (!(validAccessToken(accessToken)))
+                if (!(validAccessToken(accessToken).Result))
                     throw new InvalidCredentialException("The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/");
             }
             accessTokenInternal = accessToken;
         }
         #endregion
+
         #region validClientId
-        private static bool validClientId(string clientId)
+        private async Task<bool> validClientId(string clientId)
         {
             try
             {
-                v5.Root.GetRoot(null, clientId);
-                return true;
+                var result = await _api.Root.v5.GetRoot(null, clientId);
+                return result.Token != null;
             }
-            catch(BadRequestException)
+            catch (BadRequestException)
             {
                 return false;
             }
         }
         #endregion
         #region validAccessToken
-        private static bool validAccessToken(string accessToken)
+        private async Task<bool> validAccessToken(string accessToken)
         {
             try
             {
-                var resp = v5.Root.GetRoot(accessToken);
+                var resp = await _api.Root.v5.GetRoot(accessToken);
                 if (resp.Token != null)
                 {
                     Scopes = buildScopesList(resp.Token);
@@ -91,6 +111,7 @@
             }
         }
         #endregion
+
         #region buildScopesList
         private static List<Enums.AuthScopes> buildScopesList(Models.API.v5.Root.RootToken token)
         {
@@ -169,6 +190,22 @@
                 scopes.Add(Enums.AuthScopes.None);
             return scopes;
         }
+
+        public class CredentialValidators
+        {
+            #region ClientIdValidation
+            public bool SkipClientIdValidation { get; set; } = false;
+            #endregion
+            #region AccessTokenValidation
+            public bool SkipAccessTokenValidation { get; set; } = false;
+            #endregion
+            #region DynamicScopeValidation
+            public bool SkipDynamicScopeValidation { get; set; } = false;
+            #endregion
+        }
+
+        #region Scopes
+        public List<Enums.AuthScopes> Scopes { get; private set; }
         #endregion
         #endregion
     }

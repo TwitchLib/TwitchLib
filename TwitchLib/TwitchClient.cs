@@ -15,7 +15,7 @@
     using SuperSocket.ClientEngine;
     #endregion
     /// <summary>Represents a client connected to a Twitch channel.</summary>
-    public class TwitchClient
+    public class TwitchClient : ITwitchClient
     {
         #region Private Variables
         private WebSocket _client;
