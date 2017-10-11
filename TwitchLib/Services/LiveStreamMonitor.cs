@@ -20,9 +20,11 @@
         private int _checkIntervalSeconds;
         private List<long> _channelIds;
         private Dictionary<string,long> _channelToId;
-
         private Dictionary<long, Models.API.v5.Streams.Stream> _statuses;
         private readonly Timer _streamMonitorTimer = new Timer();
+        private readonly bool _checkStatusOnStart;
+        private  bool _isStartup=false;
+        private readonly bool _invokeEventsOnStart;
 
         #endregion
 
@@ -52,9 +54,9 @@
         #region EVENTS
         /// <summary>Event fires when Stream goes online</summary>
         public event EventHandler<OnStreamOnlineArgs> OnStreamOnline;
-        /// <summary>Event fires when Stream goes online</summary>
+        /// <summary>Event fires when Stream goes offline</summary>
         public event EventHandler<OnStreamOfflineArgs> OnStreamOffline;
-        /// <summary>Event fires when Stream goes online</summary>
+        /// <summary>Event fires when Stream gets updated</summary>
         public event EventHandler<OnStreamUpdateArgs> OnStreamUpdate;
         /// <summary>Event fires when service stops.</summary>
         public event EventHandler<OnStreamMonitorStartedArgs> OnStreamMonitorStarted;
@@ -67,11 +69,15 @@
         /// <exception cref="BadResourceException">If channel is invalid, an InvalidChannelException will be thrown.</exception>
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
         /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
-        public LiveStreamMonitor(int checkIntervalSeconds = 60, string clientId = "")
+        /// <param name="checkStatusOnStart">Checks the channel statuses on starting the service</param>
+        /// <param name="invokeEventsOnStart">If checking the status on service start, optionally fire the OnStream Events (OnStreamOnline, OnStreamOffline, OnStreamUpdate)</param>
+        public LiveStreamMonitor(int checkIntervalSeconds = 60, string clientId = "", bool checkStatusOnStart = true, bool invokeEventsOnStart = false)
         {
             _channelIds = new List<long>();
             _statuses = new Dictionary<long, Models.API.v5.Streams.Stream>();
             _channelToId = new Dictionary<string, long>();
+            _checkStatusOnStart = checkStatusOnStart;
+            _invokeEventsOnStart = invokeEventsOnStart;
             CheckIntervalSeconds = checkIntervalSeconds;
             _streamMonitorTimer.Elapsed += _streamMonitorTimerElapsed;
             if (clientId != "")
@@ -82,6 +88,12 @@
         /// <summary>Starts service, updates status of all channels, fires OnStreamMonitorStarted event. </summary>
         public void StartService()
         {
+            if(_checkStatusOnStart)
+            {
+                _isStartup = true;
+                _checkOnlineStreams();
+                _isStartup = false;
+            }
             _streamMonitorTimer.Start();
             OnStreamMonitorStarted?.Invoke(this,
                 new OnStreamMonitorStartedArgs { ChannelIds = ChannelIds, Channels = _channelToId, CheckIntervalSeconds = CheckIntervalSeconds });
@@ -177,8 +189,12 @@
                         var channelName = _statuses[channel].Channel.Name;
                         //have gone offline
                         _statuses[channel] = null;
-                        OnStreamOffline?.Invoke(this,
-                       new OnStreamOfflineArgs { ChannelId = channel, Channel = channelName, CheckIntervalSeconds = CheckIntervalSeconds });
+
+                        if (!_isStartup || (_isStartup && _invokeEventsOnStart))
+                        {
+                            OnStreamOffline?.Invoke(this,
+                                new OnStreamOfflineArgs { ChannelId = channel, Channel = channelName, CheckIntervalSeconds = CheckIntervalSeconds });
+                        }
                     }
                 }
                 else
@@ -188,19 +204,24 @@
                     if (_statuses[channel] == null)
                     {
                         //have gone online
-                        OnStreamOnline?.Invoke(this,
-                       new OnStreamOnlineArgs { ChannelId = channel, Channel = channelName, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
+                        if (!_isStartup || (_isStartup && _invokeEventsOnStart))
+                        {
+                            OnStreamOnline?.Invoke(this,
+                                new OnStreamOnlineArgs { ChannelId = channel, Channel = channelName, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
+                        }
                     }
                     else
                     {
                         //stream updated
-                        OnStreamUpdate?.Invoke(this,
-                       new OnStreamUpdateArgs { ChannelId = channel, Channel = channelName, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
+                        if (!_isStartup || (_isStartup && _invokeEventsOnStart))
+                        {
+                            OnStreamUpdate?.Invoke(this,
+                                new OnStreamUpdateArgs { ChannelId = channel, Channel = channelName, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
+                        }
                     }
                     _statuses[channel] = currentStream;
                 }
             }
-
         }
 
         private async Task<List<Models.API.v5.Streams.Stream>> _getLiveStreamers()
