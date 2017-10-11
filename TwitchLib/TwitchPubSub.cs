@@ -17,7 +17,7 @@
     /// <summary>Class represneting interactions with the Twitch PubSub</summary>
     public class TwitchPubSub
     {
-        private WebSocket _socket;
+        private readonly WebSocket _socket;
         private readonly List<PreviousRequest> _previousRequests = new List<PreviousRequest>();
         private readonly bool _logging;
         private readonly Timer _pingTimer = new Timer();
@@ -84,24 +84,29 @@
         public TwitchPubSub(bool logging = false)
         {
             _logging = logging;
+            _socket = new WebSocket("wss://pubsub-edge.twitch.tv");
+            _socket.OnOpen += Socket_OnConnected;
+            _socket.OnError += OnError;
+            _socket.OnMessage += OnMessage;
+            _socket.OnClose += Socket_OnDisconnected;
         }
-        
+
 
         private void OnError(object sender, ErrorEventArgs e)
         {
-            if(_logging)
+            if (_logging)
                 Console.WriteLine($"[TwitchPubSub]OnError: {e.Message}");
-           OnPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = new Exception(e.Message) });
+            OnPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = new Exception(e.Message) });
         }
 
         private void OnMessage(object sender, MessageEventArgs e)
         {
             var msg = e.Data;
-            if (_logging)                
+            if (_logging)
                 Console.WriteLine($"[TwitchPubSub] {msg}");
             ParseMessage(msg);
         }
-        
+
         private void Socket_OnDisconnected(object sender, CloseEventArgs e)
         {
             if (_logging)
@@ -140,7 +145,7 @@
                     {
                         foreach (var request in _previousRequests)
                         {
-                            if(string.Equals(request.Nonce, resp.Nonce, StringComparison.CurrentCultureIgnoreCase))
+                            if (string.Equals(request.Nonce, resp.Nonce, StringComparison.CurrentCultureIgnoreCase))
                                 OnListenResponse?.Invoke(this, new OnListenResponseArgs { Response = resp, Topic = request.Topic, Successful = resp.Successful });
                         }
                         return;
@@ -166,8 +171,15 @@
                                 case "timeout":
                                     if (cMA.Args.Count > 2)
                                         reason = cMA.Args[2];
-                                   OnTimeout?.Invoke(this, new OnTimeoutArgs { TimedoutBy = cMA.CreatedBy, TimedoutById = cMA.CreatedByUserId, TimedoutUserId = cMA.TargetUserId,
-                                        TimeoutDuration = TimeSpan.FromSeconds(int.Parse(cMA.Args[1])), TimeoutReason = reason, TimedoutUser = cMA.Args[0] });
+                                    OnTimeout?.Invoke(this, new OnTimeoutArgs
+                                    {
+                                        TimedoutBy = cMA.CreatedBy,
+                                        TimedoutById = cMA.CreatedByUserId,
+                                        TimedoutUserId = cMA.TargetUserId,
+                                        TimeoutDuration = TimeSpan.FromSeconds(int.Parse(cMA.Args[1])),
+                                        TimeoutReason = reason,
+                                        TimedoutUser = cMA.Args[0]
+                                    });
                                     return;
                                 case "ban":
                                     if (cMA.Args.Count > 1)
@@ -175,34 +187,34 @@
                                     OnBan?.Invoke(this, new OnBanArgs { BannedBy = cMA.CreatedBy, BannedByUserId = cMA.CreatedByUserId, BannedUserId = cMA.TargetUserId, BanReason = reason, BannedUser = cMA.Args[0] });
                                     return;
                                 case "unban":
-                                   OnUnban?.Invoke(this, new OnUnbanArgs { UnbannedBy = cMA.CreatedBy, UnbannedByUserId = cMA.CreatedByUserId, UnbannedUserId = cMA.TargetUserId });
+                                    OnUnban?.Invoke(this, new OnUnbanArgs { UnbannedBy = cMA.CreatedBy, UnbannedByUserId = cMA.CreatedByUserId, UnbannedUserId = cMA.TargetUserId });
                                     return;
                                 case "untimeout":
-                                   OnUntimeout?.Invoke(this, new OnUntimeoutArgs { UntimeoutedBy = cMA.CreatedBy, UntimeoutedByUserId = cMA.CreatedByUserId, UntimeoutedUserId = cMA.TargetUserId });
+                                    OnUntimeout?.Invoke(this, new OnUntimeoutArgs { UntimeoutedBy = cMA.CreatedBy, UntimeoutedByUserId = cMA.CreatedByUserId, UntimeoutedUserId = cMA.TargetUserId });
                                     return;
                                 case "host":
-                                   OnHost?.Invoke(this, new OnHostArgs { HostedChannel = cMA.Args[0], Moderator = cMA.CreatedBy });
+                                    OnHost?.Invoke(this, new OnHostArgs { HostedChannel = cMA.Args[0], Moderator = cMA.CreatedBy });
                                     return;
                                 case "subscribers":
-                                   OnSubscribersOnly?.Invoke(this, new OnSubscribersOnlyArgs { Moderator = cMA.CreatedBy });
+                                    OnSubscribersOnly?.Invoke(this, new OnSubscribersOnlyArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "subscribersoff":
-                                   OnSubscribersOnlyOff?.Invoke(this, new OnSubscribersOnlyOffArgs { Moderator = cMA.CreatedBy });
+                                    OnSubscribersOnlyOff?.Invoke(this, new OnSubscribersOnlyOffArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "clear":
-                                   OnClear?.Invoke(this, new OnClearArgs { Moderator = cMA.CreatedBy });
+                                    OnClear?.Invoke(this, new OnClearArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "emoteonly":
-                                   OnEmoteOnly?.Invoke(this, new OnEmoteOnlyArgs { Moderator = cMA.CreatedBy });
+                                    OnEmoteOnly?.Invoke(this, new OnEmoteOnlyArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "emoteonlyoff":
-                                   OnEmoteOnlyOff?.Invoke(this, new OnEmoteOnlyOffArgs { Moderator = cMA.CreatedBy });
+                                    OnEmoteOnlyOff?.Invoke(this, new OnEmoteOnlyOffArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "r9kbeta":
-                                   OnR9kBeta?.Invoke(this, new OnR9kBetaArgs { Moderator = cMA.CreatedBy });
+                                    OnR9kBeta?.Invoke(this, new OnR9kBetaArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "r9kbetaoff":
-                                   OnR9kBetaOff?.Invoke(this, new OnR9kBetaOffArgs { Moderator = cMA.CreatedBy });
+                                    OnR9kBetaOff?.Invoke(this, new OnR9kBetaOffArgs { Moderator = cMA.CreatedBy });
                                     return;
 
                             }
@@ -225,16 +237,16 @@
                             return;
                         case "video-playback":
                             var vP = msg.messageData as VideoPlayback;
-                            switch(vP?.Type)
+                            switch (vP?.Type)
                             {
                                 case VideoPlaybackType.StreamDown:
-                                   OnStreamDown?.Invoke(this, new OnStreamDownArgs { ServerTime = vP.ServerTime });
+                                    OnStreamDown?.Invoke(this, new OnStreamDownArgs { ServerTime = vP.ServerTime });
                                     return;
                                 case VideoPlaybackType.StreamUp:
-                                   OnStreamUp?.Invoke(this, new OnStreamUpArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
+                                    OnStreamUp?.Invoke(this, new OnStreamUpArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
                                     return;
                                 case VideoPlaybackType.ViewCount:
-                                   OnViewCount?.Invoke(this, new OnViewCountArgs { ServerTime = vP.ServerTime, Viewers = vP.Viewers });
+                                    OnViewCount?.Invoke(this, new OnViewCountArgs { ServerTime = vP.ServerTime, Viewers = vP.Viewers });
                                     return;
                             }
                             break;
@@ -252,14 +264,14 @@
                 .Select(s => s[Random.Next(s.Length)]).ToArray());
         }
 
-        private void ListenToTopic (string topic)
+        private void ListenToTopic(string topic)
         {
             _topicList.Add(topic);
         }
 
-        public void SendTopics (string oauth = null, bool unlisten = false)
+        public void SendTopics(string oauth = null, bool unlisten = false)
         {
-            if (oauth != null && oauth.Contains ("oauth:"))
+            if (oauth != null && oauth.Contains("oauth:"))
             {
                 oauth = oauth.Replace("oauth:", "");
             }
@@ -353,14 +365,9 @@
         /// </summary>
         public void Connect()
         {
-            _socket = new WebSocket("wss://pubsub-edge.twitch.tv");
-            _socket.OnOpen += Socket_OnConnected;
-            _socket.OnError += OnError;
-            _socket.OnMessage += OnMessage;
-            _socket.OnClose += Socket_OnDisconnected;
             _socket.Connect();
         }
-        
+
         /// <summary>
         /// What do you think it does? :)
         /// </summary>
