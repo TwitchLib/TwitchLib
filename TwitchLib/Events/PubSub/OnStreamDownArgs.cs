@@ -5,7 +5,5 @@
     {
         /// <summary>Property representing the server time of event.</summary>
         public string ServerTime;
-        /// <summary>Property representing the play delay.</summary>
-        public int PlayDelay;
     }
 }
