@@ -18,18 +18,18 @@
         #region Private Variables
         private string _clientId;
         private int _checkIntervalSeconds;
+        private bool _isStartup = false;
         private List<long> _channelIds;
         private Dictionary<string,long> _channelToId;
         private Dictionary<long, Models.API.v5.Streams.Stream> _statuses;
         private readonly Timer _streamMonitorTimer = new Timer();
         private readonly bool _checkStatusOnStart;
-        private  bool _isStartup=false;
         private readonly bool _invokeEventsOnStart;
 
         #endregion
 
         #region Public Variables
-        /// <summary>Property representing Twitch channels service is monitoring.</summary>
+        /// <summary>Property representing Twitch channelIds service is monitoring.</summary>
         public List<long> ChannelIds
         {
             get
@@ -39,6 +39,14 @@
             protected set
             {
                 _channelIds = value;
+            }
+        }
+        /// <summary> Property representing Twitch channels service is monitoring. </summary>
+        public List<string> Channels
+        {
+            get
+            {
+                return _channelToId.Keys.ToList();
             }
         }
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
@@ -65,6 +73,7 @@
         /// <summary>Event fires when channels to monitor are intitialized.</summary>
         public event EventHandler<OnStreamsSetArgs> OnStreamsSet;
         #endregion
+
         /// <summary>Service constructor.</summary>
         /// <exception cref="BadResourceException">If channel is invalid, an InvalidChannelException will be thrown.</exception>
         /// <param name="checkIntervalSeconds">Param representing number of seconds between calls to Twitch Api.</param>
@@ -94,6 +103,7 @@
                 _checkOnlineStreams();
                 _isStartup = false;
             }
+            //Timer not started until initial check complete
             _streamMonitorTimer.Start();
             OnStreamMonitorStarted?.Invoke(this,
                 new OnStreamMonitorStartedArgs { ChannelIds = ChannelIds, Channels = _channelToId, CheckIntervalSeconds = CheckIntervalSeconds });
