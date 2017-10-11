@@ -8,8 +8,10 @@
     /// <summary>Class representing event args for OnChannelOnline event.</summary>
     public class OnStreamUpdateArgs : EventArgs
     {
+        /// <summary>Event property representing channel Id that has gone online.</summary>
+        public long ChannelId;
         /// <summary>Event property representing channel that has gone online.</summary>
-        public long Channel;
+        public string Channel;
         /// <summary>Event property representing live stream information.</summary>
         public Models.API.v5.Streams.Stream Stream;
         /// <summary>Event property representing seconds between queries to Twitch Api.</summary>

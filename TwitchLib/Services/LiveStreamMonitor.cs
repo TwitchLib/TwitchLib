@@ -18,7 +18,8 @@
         #region Private Variables
         private string _clientId;
         private int _checkIntervalSeconds;
-        private List<long> _channels;
+        private List<long> _channelIds;
+        private Dictionary<string,long> _channelToId;
 
         private Dictionary<long, Models.API.v5.Streams.Stream> _statuses;
         private readonly Timer _streamMonitorTimer = new Timer();
@@ -27,15 +28,15 @@
 
         #region Public Variables
         /// <summary>Property representing Twitch channels service is monitoring.</summary>
-        public List<long> Channels
+        public List<long> ChannelIds
         {
             get
             {
-                return _channels.ToList();
+                return _channelIds.ToList();
             }
             protected set
             {
-                _channels = value;
+                _channelIds = value;
             }
         }
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
@@ -68,8 +69,9 @@
         /// <param name="clientId">Optional param representing Twitch Api-required application client id, not required if already set.</param>
         public LiveStreamMonitor(int checkIntervalSeconds = 60, string clientId = "")
         {
-            _channels = new List<long>();
+            _channelIds = new List<long>();
             _statuses = new Dictionary<long, Models.API.v5.Streams.Stream>();
+            _channelToId = new Dictionary<string, long>();
             CheckIntervalSeconds = checkIntervalSeconds;
             _streamMonitorTimer.Elapsed += _streamMonitorTimerElapsed;
             if (clientId != "")
@@ -82,7 +84,7 @@
         {
             _streamMonitorTimer.Start();
             OnStreamMonitorStarted?.Invoke(this,
-                new OnStreamMonitorStartedArgs { Channels = Channels, CheckIntervalSeconds = CheckIntervalSeconds });
+                new OnStreamMonitorStartedArgs { ChannelIds = ChannelIds, Channels = _channelToId, CheckIntervalSeconds = CheckIntervalSeconds });
         }
 
         /// <summary>Stops service and fires OnStreamMonitorStopped event.</summary>
@@ -90,25 +92,57 @@
         {
             _streamMonitorTimer.Stop();
             OnStreamMonitorEnded?.Invoke(this,
-               new OnStreamMonitorEndedArgs { Channels = Channels, CheckIntervalSeconds = CheckIntervalSeconds });
+               new OnStreamMonitorEndedArgs { ChannelIds = ChannelIds, Channels = _channelToId, CheckIntervalSeconds = CheckIntervalSeconds });
+        }
+        /// <summary>
+        /// Sets the list of channels to monitor by username
+        /// </summary>
+        /// <param name="usernames">List of channels to monitor as usernames</param>
+        public void SetStreamsByUsername(List<string> usernames)
+        {
+            //this gets the userId if it doesn't already exist in _channelToId
+            _getUserIds(usernames);
+
+            //The following is done in this way due to IEnumerables not allowing
+            //for items being removed while doing iteration
+
+            //get the items that exist in _channelToId but not in usernames
+            var toRemove = new List<string>();
+            _channelToId.Keys.ToList().ForEach(x =>
+            {
+                if (!usernames.Contains(x))
+                {
+                    toRemove.Add(x);
+                }
+            });
+            //remove the items from _channelToId that should be removed
+            toRemove.ForEach(x =>
+            {
+                _channelToId.Remove(x);
+            });
+
+            SetStreamsByUserId(_channelToId.Values.ToList());
         }
 
-
-        /// <summary> Sets the list of channels to monitor by username </summary>
+        /// <summary> Sets the list of channels to monitor by userid </summary>
         /// <param name="userids">List of channels to monitor as userids</param>
         public void SetStreamsByUserId(List<long> userids)
         {
-            _channels = userids;
-            _channels.ForEach(x => {
+            _channelIds = userids;
+            _channelIds.ForEach(x =>
+            {
                 if (!_statuses.ContainsKey(x))
                 {
                     _statuses.Add(x, null);
                 }
             });
 
+            //The following is done in this way due to IEnumerables not allowing
+            //for items being removed while doing iteration
             var toRemove = new List<long>();
-            _statuses.Keys.ToList().ForEach(x => {
-                if (!_channels.Contains(x))
+            _statuses.Keys.ToList().ForEach(x =>
+            {
+                if (!_channelIds.Contains(x))
                 {
 
                     toRemove.Add(x);
@@ -119,7 +153,7 @@
                 _statuses.Remove(x);
             });
             OnStreamsSet?.Invoke(this,
-                new OnStreamsSetArgs { Channels = Channels, CheckIntervalSeconds = CheckIntervalSeconds });
+                new OnStreamsSetArgs { ChannelIds = ChannelIds, Channels = _channelToId, CheckIntervalSeconds = CheckIntervalSeconds });
         }
         #endregion
 
@@ -132,7 +166,7 @@
         {
             var liveStreamers = _getLiveStreamers().Result;
 
-            foreach (var channel in _channels)
+            foreach (var channel in _channelIds)
             {
                 var currentStream = liveStreamers.Where(x => x.Channel.Id == channel).FirstOrDefault();
                 if (currentStream == null)
@@ -140,26 +174,28 @@
                     //offline
                     if (_statuses[channel] != null)
                     {
+                        var channelName = _statuses[channel].Channel.Name;
                         //have gone offline
                         _statuses[channel] = null;
                         OnStreamOffline?.Invoke(this,
-                       new OnStreamOfflineArgs { Channel = channel, CheckIntervalSeconds = CheckIntervalSeconds });
+                       new OnStreamOfflineArgs { ChannelId = channel, Channel = channelName, CheckIntervalSeconds = CheckIntervalSeconds });
                     }
                 }
                 else
                 {
+                    var channelName = currentStream.Channel.Name;
                     //online
                     if (_statuses[channel] == null)
                     {
                         //have gone online
                         OnStreamOnline?.Invoke(this,
-                       new OnStreamOnlineArgs { Channel = channel, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
+                       new OnStreamOnlineArgs { ChannelId = channel, Channel = channelName, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
                     }
                     else
                     {
-                        //stream object refreshed, not sure if we should do event for this
+                        //stream updated
                         OnStreamUpdate?.Invoke(this,
-                       new OnStreamUpdateArgs { Channel = channel, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
+                       new OnStreamUpdateArgs { ChannelId = channel, Channel = channelName, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
                     }
                     _statuses[channel] = currentStream;
                 }
@@ -171,20 +207,44 @@
         {
             var livestreamers = new List<Models.API.v5.Streams.Stream>();
 
-            var resultset = await TwitchAPI.Streams.v5.GetLiveStreamsAsync(_channels.Select(x => x.ToString()).ToList(), limit: 100);
+            var resultset = await TwitchAPI.Streams.v5.GetLiveStreamsAsync(_channelIds.Select(x => x.ToString()).ToList(), limit: 100);
 
             livestreamers.AddRange(resultset.Streams.ToList());
 
             var pages = (int)Math.Ceiling((double)resultset.Total / 100);
             for (var i = 1; i < pages; i++)
             {
-                resultset = await TwitchAPI.Streams.v5.GetLiveStreamsAsync(_channels.Select(x => x.ToString()).ToList(), limit: 100, offset: i * 100);
+                resultset = await TwitchAPI.Streams.v5.GetLiveStreamsAsync(_channelIds.Select(x => x.ToString()).ToList(), limit: 100, offset: i * 100);
                 livestreamers.AddRange(resultset.Streams.ToList());
             }
 
             return livestreamers;
         }
 
+        private async void _getUserIds(List<string> usernames)
+        {
+            var usernamesToGet = new List<string>();
 
+            usernames.ForEach(username => {
+                if(!_channelToId.ContainsKey(username))
+                {
+                    usernamesToGet.Add(username);
+                }
+
+            });
+            var pages = (int)Math.Ceiling((double)usernamesToGet.Count / 100);
+            
+            for (var i = 0; i < pages; i++)
+            {
+
+                var selectedSet = usernamesToGet.Skip(i * 100).Take(100).ToList();
+                var users = await TwitchAPI.Users.v5.GetUsersByNameAsync(selectedSet);
+
+                foreach (var user in users.Matches)
+                {
+                    _channelToId.Add(user.Name, long.Parse(user.Id));
+                }
+            }
+        }
     }
 }
