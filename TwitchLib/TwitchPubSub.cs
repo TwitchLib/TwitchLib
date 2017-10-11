@@ -228,7 +228,7 @@
                             switch(vP?.Type)
                             {
                                 case VideoPlaybackType.StreamDown:
-                                   OnStreamDown?.Invoke(this, new OnStreamDownArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
+                                   OnStreamDown?.Invoke(this, new OnStreamDownArgs { ServerTime = vP.ServerTime });
                                     return;
                                 case VideoPlaybackType.StreamUp:
                                    OnStreamUp?.Invoke(this, new OnStreamUpArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
@@ -323,10 +323,10 @@
         /// <summary>
         /// Sends request to listenOn video playback events in specific channel
         /// </summary>
-        /// <param name="channelTwitchId">Channel Id of channel to listen to playback events in.</param>
-        public void ListenToVideoPlayback(string channelTwitchId)
+        /// <param name="channelName">Name of channel to listen to playback events in.</param>
+        public void ListenToVideoPlayback(string channelName)
         {
-            ListenToTopic($"video-playback.{channelTwitchId}");
+            ListenToTopic($"video-playback.{channelName}");
         }
 
         /// <summary>
