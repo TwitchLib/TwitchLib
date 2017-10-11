@@ -622,7 +622,7 @@ namespace TwitchLib_API_Tester
         private static TwitchLib.Services.LiveStreamMonitor monitor = new LiveStreamMonitor(30);
         private void button67_Click(object sender, EventArgs e)
         {
-            monitor.SetStreamsByUserId(new List<long>() { long.Parse(textBox67.Text) });
+            monitor.SetStreamsByUserId(new List<string>() {textBox67.Text });
             monitor.StartService();
         }
 

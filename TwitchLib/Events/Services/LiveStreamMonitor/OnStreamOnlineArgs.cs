@@ -9,7 +9,7 @@
     public class OnStreamOnlineArgs : EventArgs
     {
         /// <summary>Event property representing channel Id that has gone online.</summary>
-        public long ChannelId;
+        public string ChannelId;
         /// <summary>Event property representing channel that has gone online.</summary>
         public string Channel;
         /// <summary>Event property representing live stream information.</summary>

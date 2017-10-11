@@ -10,9 +10,9 @@
     public class OnStreamsSetArgs : EventArgs
     {
         /// <summary>Event property representing channels the service is currently monitoring.</summary>
-        public List<long> ChannelIds;
+        public List<string> ChannelIds;
         /// <summary>Event property representing channels the service is currently monitoring.</summary>
-        public Dictionary<string, long> Channels;
+        public Dictionary<string, string> Channels;
         /// <summary>Event property representing seconds between queries to Twitch Api.</summary>
         public int CheckIntervalSeconds;
     }

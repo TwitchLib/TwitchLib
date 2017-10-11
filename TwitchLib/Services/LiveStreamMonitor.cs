@@ -19,9 +19,9 @@
         private string _clientId;
         private int _checkIntervalSeconds;
         private bool _isStartup = false;
-        private List<long> _channelIds;
-        private Dictionary<string,long> _channelToId;
-        private Dictionary<long, Models.API.v5.Streams.Stream> _statuses;
+        private List<string> _channelIds;
+        private Dictionary<string, string> _channelToId;
+        private Dictionary<string, Models.API.v5.Streams.Stream> _statuses;
         private readonly Timer _streamMonitorTimer = new Timer();
         private readonly bool _checkStatusOnStart;
         private readonly bool _invokeEventsOnStart;
@@ -30,7 +30,7 @@
 
         #region Public Variables
         /// <summary>Property representing Twitch channelIds service is monitoring.</summary>
-        public List<long> ChannelIds
+        public List<string> ChannelIds
         {
             get
             {
@@ -54,7 +54,7 @@
         /// <summary> </summary>
         public List<Models.API.v5.Streams.Stream> CurrentLiveStreams { get { return _statuses.Where(x => x.Value != null).Select(x => x.Value).ToList(); } }
         /// <summary> </summary>
-        public List<long> CurrentOfflineStreams { get { return _statuses.Where(x => x.Value == null).Select(x => x.Key).ToList(); } }
+        public List<string> CurrentOfflineStreams { get { return _statuses.Where(x => x.Value == null).Select(x => x.Key).ToList(); } }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
         public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _streamMonitorTimer.Interval = value * 1000; } }
         #endregion
@@ -82,9 +82,9 @@
         /// <param name="invokeEventsOnStart">If checking the status on service start, optionally fire the OnStream Events (OnStreamOnline, OnStreamOffline, OnStreamUpdate)</param>
         public LiveStreamMonitor(int checkIntervalSeconds = 60, string clientId = "", bool checkStatusOnStart = true, bool invokeEventsOnStart = false)
         {
-            _channelIds = new List<long>();
-            _statuses = new Dictionary<long, Models.API.v5.Streams.Stream>();
-            _channelToId = new Dictionary<string, long>();
+            _channelIds = new List<string>();
+            _statuses = new Dictionary<string, Models.API.v5.Streams.Stream>();
+            _channelToId = new Dictionary<string, string>();
             _checkStatusOnStart = checkStatusOnStart;
             _invokeEventsOnStart = invokeEventsOnStart;
             CheckIntervalSeconds = checkIntervalSeconds;
@@ -148,7 +148,7 @@
 
         /// <summary> Sets the list of channels to monitor by userid </summary>
         /// <param name="userids">List of channels to monitor as userids</param>
-        public void SetStreamsByUserId(List<long> userids)
+        public void SetStreamsByUserId(List<string> userids)
         {
             _channelIds = userids;
             _channelIds.ForEach(x =>
@@ -161,7 +161,7 @@
 
             //The following is done in this way due to IEnumerables not allowing
             //for items being removed while doing iteration
-            var toRemove = new List<long>();
+            var toRemove = new List<string>();
             _statuses.Keys.ToList().ForEach(x =>
             {
                 if (!_channelIds.Contains(x))
@@ -273,7 +273,7 @@
 
                 foreach (var user in users.Matches)
                 {
-                    _channelToId.Add(user.Name, long.Parse(user.Id));
+                    _channelToId.Add(user.Name, user.Id);
                 }
             }
         }
