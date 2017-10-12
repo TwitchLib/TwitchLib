@@ -63,6 +63,7 @@
     <Compile Include="Events\Client\OnBeingHostedArgs.cs" />
     <Compile Include="Events\Client\OnLogArgs.cs" />
     <Compile Include="Events\PubSub\OnChannelSubscriptionArgs.cs" />
+    <Compile Include="Events\Services\LiveStreamMonitor\OnStreamUpdateArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamsSetArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorEndedArgs.cs" />
     <Compile Include="Events\Services\LiveStreamMonitor\OnStreamMonitorStartedArgs.cs" />
