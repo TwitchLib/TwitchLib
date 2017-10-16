@@ -10,6 +10,28 @@ namespace TwitchLib
     /// <summary>Fully featured Twitch API wrapper.</summary>
     public static class TwitchAPI
     {
+        public static class Authorization
+        {
+            public static class v5
+            {
+                public static class OAuth
+                {
+                    public static async Task<Models.API.v5.Authorization.Token> GetUserAccessTokenAsync(string clientSecret, string code, string redirectUri)
+                    {
+                        return await Internal.TwitchAPI.v5.Authorization.OAuth.GetAccessTokenAsync(Settings.ClientId, clientSecret,Enums.AuthGrantType.authorization_code,code,redirectUri);
+                    }
+                    public static async Task<Models.API.v5.Authorization.Token> GetAppAccessTokenAsync(string clientSecret, string scopes)
+                    {
+                        return await Internal.TwitchAPI.v5.Authorization.OAuth.GetAccessTokenAsync(Settings.ClientId, clientSecret, Enums.AuthGrantType.client_credentials,scopes:scopes);
+                    }
+                    public static async Task<Models.API.v5.Authorization.Token> GetRefreshAccessTokenAsync(string clientSecret, string refreshToken)
+                    {
+                        return await Internal.TwitchAPI.v5.Authorization.OAuth.GetAccessTokenAsync(Settings.ClientId, clientSecret, Enums.AuthGrantType.refresh_token, refreshToken);
+                    }
+                }
+            }
+        }
+
         public static class Settings
         {
             #region ClientId

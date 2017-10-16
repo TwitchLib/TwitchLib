@@ -20,6 +20,28 @@
             #endregion
         }
         #endregion
+        #region Authorization
+        public static class Authorization
+        {
+            public static class OAuth
+            {
+                public async static Task<Models.API.v5.Authorization.Token> GetAccessTokenAsync(string clientId, string clientSecret, Enums.AuthGrantType authGrantType, string value = null, string redirectUri = null, string scopes = null)
+                {
+                    var grant_type_value = "";
+                    if (authGrantType == Enums.AuthGrantType.refresh_token)
+                    {
+                        grant_type_value = Enums.AuthGrantType.refresh_token.ToString();
+                    }
+                    if (authGrantType == Enums.AuthGrantType.authorization_code)
+                    {
+                        grant_type_value = "code";
+                    }
+                    string query = $"client_id={clientId}&client_secret={clientSecret}&{grant_type_value}={value}&grant_type={authGrantType.ToString()}" + ((value != null) ? $"&{grant_type_value}={value}" : string.Empty) + ((redirectUri != null) ? $"&redirect_uri={redirectUri}" : string.Empty) + ((scopes != null) ? $"&scope={scopes}" : string.Empty);
+                    return await Requests.PostGenericAsync<Models.API.v5.Authorization.Token>("https://api.twitch.tv/kraken/oauth2/token", query);
+                }
+            }
+        }
+        #endregion
         #region Bits
         public static class Bits
         {
