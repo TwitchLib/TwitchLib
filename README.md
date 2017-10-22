@@ -37,7 +37,7 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 	* Update stream title/current game
 	* Reset stream key, set stream delay
 	* Follow/unfollow channels
-	* (Partnerd streams only) Retrieve subscriber count/list
+	* (Partnered streams only) Retrieve subscriber count/list
 	* (Partnered streams) Run commercials
 	* Create/moderate/update/search for communities
 * **TwitchPubSub**:
