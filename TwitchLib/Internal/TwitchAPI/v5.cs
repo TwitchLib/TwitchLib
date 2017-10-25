@@ -472,7 +472,7 @@
                 if (communityIds == null || communityIds.Count == 0) { throw new Exceptions.API.BadParameterException("The no community ids where specified"); }
                 if (communityIds != null && communityIds.Count > 3) { throw new Exceptions.API.BadParameterException("You can only set up to 3 communities"); }
                 if (communityIds.Any(communityId => string.IsNullOrWhiteSpace(communityId)) ) { throw new Exceptions.API.BadParameterException("One or more of the community ids is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Requests.PutAsync($"https://api.twitch.tv/kraken/channels/{channelId}/communities", string.Format("{\"community_ids\":[{0}]}", string.Join(",", communityIds)), authToken, Requests.API.v5);
+                await Requests.PutAsync($"https://api.twitch.tv/kraken/channels/{channelId}/communities", string.Format("{{\"community_ids\":[{0}]}}", string.Join(",", communityIds)), authToken, Requests.API.v5);
             }
 
             #endregion
