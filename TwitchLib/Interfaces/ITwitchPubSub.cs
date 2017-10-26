@@ -33,7 +33,7 @@ namespace TwitchLib
         void ListenToBitsEvents(string channelTwitchId);
         void ListenToChatModeratorActions(string myTwitchId, string channelTwitchId);
         void ListenToSubscriptions(string channelId);
-        void ListenToVideoPlayback(string channelTwitchId);
+        void ListenToVideoPlayback(string channelName);
         void ListenToWhispers(string channelTwitchId);
         void SendTopics(string oauth = null, bool unlisten = false);
         void TestMessageParser(string testJsonString);
