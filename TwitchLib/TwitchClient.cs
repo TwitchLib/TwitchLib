@@ -4,22 +4,18 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
-
-    using WebSocketSharp;
     using System.Reflection;
-
     using Events.Client;
     using Exceptions.Client;
     using Internal;
     using Models.Client;
-    using Models.API.v3.Subscriptions;
     using TwitchLib.Logging;
     using System.Text.RegularExpressions;
-    using System.Diagnostics;
+    using WebSocket4Net;
+    using SuperSocket.ClientEngine;
     #endregion
     /// <summary>Represents a client connected to a Twitch channel.</summary>
-    public class TwitchClient
+    public class TwitchClient : ITwitchClient
     {
         #region Private Variables
         private WebSocket _client;
@@ -44,7 +40,7 @@
         /// <summary>The most recent whisper received.</summary>
         public WhisperMessage PreviousWhisper { get; protected set; }
         /// <summary>The current connection status of the client.</summary>
-        public bool IsConnected { get { return _client.IsAlive; } }
+        public bool IsConnected => _client.State == WebSocketState.Open;
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on chat messages.</summary>
         public Services.MessageThrottler ChatThrottler;
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on whispers.</summary>
@@ -68,7 +64,7 @@
             get { return _credentials; }
             set
             {
-                if (_client.IsAlive)
+                if (IsConnected)
                     throw new IllegalAssignmentException("While the client is connected, you are unable to change the connection credentials. Please disconnect first and then change them.");
                 _credentials = value;
                 TwitchUsername = value.TwitchUsername;
@@ -262,7 +258,7 @@
         public TwitchClient(ConnectionCredentials credentials, string channel = null, char chatCommandIdentifier = '!', char whisperCommandIdentifier = '!',
             bool logging = false, ILogger logger = null, bool autoReListenOnExceptions = true)
         {
-            log($"TwitchLib-TwitchClient initialized, assembly version: {Assembly.GetExecutingAssembly().GetName().Version}");
+            Log($"TwitchLib-TwitchClient initialized, assembly version: {Assembly.GetExecutingAssembly().GetName().Version}");
             _credentials = credentials;
             TwitchUsername = _credentials.TwitchUsername;
             _autoJoinChannel = channel?.ToLower();
@@ -271,14 +267,14 @@
             if (whisperCommandIdentifier != '\0')
                 _whisperCommandIdentifiers.Add(whisperCommandIdentifier);
             Logging = logging;
-            Logger = logger ?? new NullLogFactory().Create("TwitchLibNullLogger");
+            Logger = logger ?? new ConsoleFactory().Create("ConsoleLog");
             AutoReListenOnException = autoReListenOnExceptions;
 
             _client = new WebSocket($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}");
-            _client.OnOpen += _client_OnConnected;
-            _client.OnMessage += _client_OnMessage;
-            _client.OnClose += _client_OnDisconnected;
-            _client.OnError += _client_OnError;
+            _client.Opened += _client_OnConnected;
+            _client.MessageReceived += _client_OnMessage;
+            _client.Closed += _client_OnDisconnected;
+            _client.Error += _client_OnError;
         }
 
         /// <summary>
@@ -289,9 +285,9 @@
         {
             ConsoleColor prevColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            log($"Writing: {message}");
+            Log($"Writing: {message}");
             if(ChatThrottler == null || !ChatThrottler.ApplyThrottlingToRawMessages || ChatThrottler.MessagePermitted(message))
-                _client.Send(message);
+               _client.Send(message);
             OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Sent, Data = message });
             Console.ForegroundColor = prevColor;
         }
@@ -358,11 +354,11 @@
         /// </summary>
         public void Connect()
         {
-            log("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
+            Log("Connecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
 
-            _client.Connect();
+            _client.Open();
 
-            log("Should be connected!");
+            Log("Should be connected!");
         }
 
         /// <summary>
@@ -370,31 +366,13 @@
         /// </summary>
         public void Disconnect()
         {
-            log("Disconnect Twitch Chat Client...");
-            
-            // Not sure if this is the proper way to handle this. It is UI blocking, so in order to presrve UI functionality, I delegated it to a task.
-            Task.Factory.StartNew(() => { _client.Close(); });
+            Log("Disconnect Twitch Chat Client...");
+
+            _client.Close();
 
             // Clear instance data
             JoinedChannels.Clear();
             PreviousWhisper = null;
-        }
-
-        /// <summary>
-        /// Reconnects to Twitch channel given existing login credentials
-        /// </summary>
-        public void Reconnect()
-        {
-            log("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
-
-            if (_client.IsAlive)
-            {
-                _client.Close();
-                _client.Connect();
-            } else
-            {
-                _client.Connect();
-            }
         }
         #endregion
 
@@ -451,7 +429,7 @@
                 return;
             joinChannelQueue.Enqueue(new JoinedChannel(channel));
             if (!currentlyJoiningChannels)
-                queueingJoinCheck();
+                QueueingJoinCheck();
         }
 
         /// <summary>
@@ -472,7 +450,7 @@
         {
             // Channel MUST be lower case
             channel = channel.ToLower();
-            log($"Leaving channel: {channel}");
+            Log($"Leaving channel: {channel}");
             JoinedChannel joinedChannel = JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
             if (joinedChannel != null)
                 _client.Send(Rfc2812.Part($"#{channel}"));
@@ -532,34 +510,49 @@
         #region Client Events
         private void _client_OnError(object sender, ErrorEventArgs e)
         {
+            OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { BotUsername = TwitchUsername, Error = new ErrorEvent { Exception = e.Exception, Message = e.Exception.Message } });
             Reconnect();
-            System.Threading.Thread.Sleep(2000);
-            OnConnectionError?.Invoke(_client, new OnConnectionErrorArgs { BotUsername = TwitchUsername, Error = new ErrorEvent { Exception = e.Exception, Message = e.Message } });
         }
 
-        private void _client_OnDisconnected(object sender, CloseEventArgs e)
+        private void _client_OnDisconnected(object sender, EventArgs e)
         {
             OnDisconnected?.Invoke(this, new OnDisconnectedArgs { BotUsername = TwitchUsername });
             JoinedChannels.Clear();
         }
 
-        private void _client_OnMessage(object sender, MessageEventArgs e)
+        private void _client_OnMessage(object sender, MessageReceivedEventArgs e)
         {
             string[] stringSeparators = new string[] { "\r\n" };
-            string[] lines = e.Data.Split(stringSeparators, StringSplitOptions.None);
+            string[] lines = e.Message.Split(stringSeparators, StringSplitOptions.None);
             foreach(string line in lines)
             {
-                if(line.Length > 1)
+                if (line.Length > 1)
                 {
-                    log($"Received: {line}");
-                    if (e.IsText)
-                    {
-                        OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = line });
-                        ParseIrcMessage(line);
-                    }
+                    Log($"Received: {line}");
+                    OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Received, Data = line });
+                    ParseIrcMessage(line);
                 }
             }
             
+        }
+
+        public void Reconnect()
+        {
+            Log("Reconnecting to: " + _credentials.TwitchHost + ":" + _credentials.TwitchPort);
+
+            if (IsConnected)
+            {
+                _client.Dispose();
+            }
+
+            JoinedChannels.Clear();
+
+            _client = new WebSocket($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}");
+            _client.Opened += _client_OnConnected;
+            _client.MessageReceived += _client_OnMessage;
+            _client.Closed += _client_OnDisconnected;
+            _client.Error += _client_OnError;
+            _client.Open();
         }
 
         private void _client_OnConnected(object sender, object e)
@@ -601,7 +594,7 @@
                     OnIncorrectLogin?.Invoke(this, new OnIncorrectLoginArgs { Exception = new ErrorLoggingInException($"TwitchOAuth username \"{oAuthUsername}\" doesn't match TwitchUsername \"{TwitchUsername}\".", TwitchUsername) });
                     return;
                 }
-                OnConnected?.Invoke(this, new OnConnectedArgs { AutoJoinChannel = _autoJoinChannel != null ? _autoJoinChannel : "", BotUsername = TwitchUsername });
+                OnConnected?.Invoke(this, new OnConnectedArgs { AutoJoinChannel = _autoJoinChannel ?? "", BotUsername = TwitchUsername });
                 return;
             }
 
@@ -766,8 +759,7 @@
             // On Hosting Stopped
             if(Internal.Parsing.Chat.detectedHostingStopped(ircMessage))
             {
-                int viewers;
-                int.TryParse(ircMessage.Split(' ')[4], out viewers);
+                int.TryParse(ircMessage.Split(' ')[4], out int viewers);
                 OnHostingStopped?.Invoke(this, new OnHostingStoppedArgs() { Viewers = viewers, HostingChannel = ircMessage.Split(' ')[2].Remove(0, 1) });
                 return;
             }
@@ -775,8 +767,7 @@
             // On Hosting Started
             if(Internal.Parsing.Chat.detectedHostingStarted(ircMessage))
             {
-                int viewers;
-                int.TryParse(ircMessage.Split(' ')[4], out viewers);
+                int.TryParse(ircMessage.Split(' ')[4], out int viewers);
                 OnHostingStarted?.Invoke(this, new OnHostingStartedArgs() { Viewers = viewers, HostingChannel = ircMessage.Split(' ')[2].Remove(0, 1), TargetChannel = ircMessage.Split(' ')[3].Remove(0, 1) });
                 return;
             }
@@ -804,7 +795,7 @@
             if(response.Successful)
             {
                 currentlyJoiningChannels = false;
-                queueingJoinCheck();
+                QueueingJoinCheck();
                 return;
             }
 
@@ -920,26 +911,26 @@
             #endregion  
 
             // Any other messages here
-            log($"Unaccounted for: {ircMessage}");            
+            Log($"Unaccounted for: {ircMessage}");            
         }
 
 
-        private void queueingJoinCheck()
+        private void QueueingJoinCheck()
         {
             if(joinChannelQueue.Count > 0)
             {
                 currentlyJoiningChannels = true;
                 JoinedChannel channelToJoin = joinChannelQueue.Dequeue();
-                log($"Joining channel: {channelToJoin.Channel}");
+                Log($"Joining channel: {channelToJoin.Channel}");
                 _client.Send(Rfc2812.Join($"#{channelToJoin.Channel}"));
                 JoinedChannels.Add(new JoinedChannel(channelToJoin.Channel));
             } else
             {
-                log("Finished channel joining queue.");
+                Log("Finished channel joining queue.");
             }
         }
 
-        private void log(string message, bool includeDate = false, bool includeTime = false)
+        private void Log(string message, bool includeDate = false, bool includeTime = false)
         {
             if(Logging)
             {

@@ -1,48 +1,103 @@
-namespace TwitchLib.Internal
+namespace TwitchLib
 {
-    #region using directives
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
+
+    #region using directives
+    using System;
     using System.IO;
     using System.Net;
-    using Exceptions.API;
-    using Newtonsoft.Json.Serialization;
     using System.Threading.Tasks;
-    using System;
+    using TwitchLib.Enums;
+    using TwitchLib.Exceptions.API;
     #endregion
-    internal class Requests
+
+    public class TwitchAPI : ITwitchAPI
     {
-        public enum API
+        private readonly TwitchLibJsonSerializer jsonSerializer;
+        public IApiSettings Settings { get; }
+        public Blocks Blocks { get; }
+        public Badges Badges { get; }
+        public Bits Bits { get; }
+        public ChannelFeeds ChannelFeeds { get; }
+        public Channels Channels { get; }
+        public Chat Chat { get; }
+        public Clips Clips { get; }
+        public Collections Collections { get; }
+        public Communities Communities { get; }
+        public Follows Follows { get; }
+        public Games Games { get; }
+        public Ingests Ingests { get; }
+        public Root Root { get; }
+        public Search Search { get; }
+        public Streams Streams { get; }
+        public Subscriptions Subscriptions { get; }
+        public Teams Teams { get; }
+        public Debugging Debugging { get; }
+        public Videos Videos { get; }
+        public Users Users { get; }
+        public Undocumented Undocumented { get; }
+        public ThirdParty ThirdParty { get; }
+
+        public TwitchAPI(string clientId = null, string accessToken = null)
         {
-            v3 = 3,
-            v5 = 5,
-            Helix = 6,
-            Void = 0
+            Blocks = new Blocks(this);
+            Badges = new Badges(this);
+            Bits = new Bits(this);
+            ChannelFeeds = new ChannelFeeds(this);
+            Channels = new Channels(this);
+            Chat = new Chat(this);
+            Clips = new Clips(this);
+            Collections = new Collections(this);
+            Communities = new Communities(this);
+            Follows = new Follows(this);
+            Games = new Games(this);
+            Ingests = new Ingests(this);
+            Root = new Root(this);
+            Search = new Search(this);
+            Streams = new Streams(this);
+            Subscriptions = new Subscriptions(this);
+            Teams = new Teams(this);
+            ThirdParty = new ThirdParty(this);
+            Undocumented = new Undocumented(this);
+            Users = new Users(this);
+            Videos = new Videos(this);
+            Debugging = new Debugging();
+            Settings = new ApiSettings(this);
+            jsonSerializer = new TwitchLibJsonSerializer();
+
+            if (!string.IsNullOrWhiteSpace(clientId))
+                Settings.ClientId = clientId;
+            if (!string.IsNullOrWhiteSpace(accessToken))
+                Settings.AccessToken = accessToken;
         }
+
+        #region Requests
 
         #region POST
         #region PostGenericModel
-        public async static Task<T> PostGenericModelAsync<T>(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
+        public async Task<T> PostGenericModelAsync<T>(string url, Models.API.RequestModel model, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
             if (model != null)
-                return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId), TwitchLibJsonDeserializer);
+                return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "POST", jsonSerializer.SerializeObject(model), accessToken, api, clientId), TwitchLibJsonDeserializer);
             else
                 return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "POST", "", accessToken, api), TwitchLibJsonDeserializer);
         }
         #endregion
         #region PostGeneric
-        public async static Task<T> PostGenericAsync<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        public async Task<T> PostGenericAsync<T>(string url, string payload, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
             return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "POST", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
         #endregion
         #region PostModel
-        public async static Task PostModelAsync(string url, Models.API.RequestModel model, string accessToken = null, API api = API.v5, string clientId = null)
+        public async Task PostModelAsync(string url, Models.API.RequestModel model, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
-            await generalRequestAsync(url, "POST", TwitchLibJsonSerializer.SerializeObject(model), accessToken, api, clientId);
+            await generalRequestAsync(url, "POST", jsonSerializer.SerializeObject(model), accessToken, api, clientId);
         }
         #endregion
         #region Post
-        public async static Task PostAsync(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        public async Task PostAsync(string url, string payload, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
             await generalRequestAsync(url, "POST", payload, accessToken, api, clientId);
         }
@@ -50,13 +105,13 @@ namespace TwitchLib.Internal
         #endregion
         #region GET
         #region GetGenericAsync
-        public async static Task<T> GetGenericAsync<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
+        public async Task<T> GetGenericAsync<T>(string url, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
             return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "GET", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
         #endregion
         #region GetSimpleGenericAsync
-        public async static Task<T> GetSimpleGenericAsync<T>(string url)
+        public async Task<T> GetSimpleGenericAsync<T>(string url)
         {
             return JsonConvert.DeserializeObject<T>(await simpleRequestAsync(url), TwitchLibJsonDeserializer);
         }
@@ -64,13 +119,13 @@ namespace TwitchLib.Internal
         #endregion
         #region DELETE
         #region Delete
-        public async static Task<string> DeleteAsync(string url, string accessToken = null, API api = API.v5, string clientId = null)
+        public async Task<string> DeleteAsync(string url, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
             return await generalRequestAsync(url, "DELETE", null, accessToken, api, clientId);
         }
         #endregion
         #region DeleteGenericAsync
-        public async static Task<T> DeleteGenericAsync<T>(string url, string accessToken = null, API api = API.v5, string clientId = null)
+        public async Task<T> DeleteGenericAsync<T>(string url, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
             return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "DELETE", null, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
@@ -81,19 +136,19 @@ namespace TwitchLib.Internal
         #endregion
         #region PUT
         #region PutGeneric
-        public async static Task<T> PutGenericAsync<T>(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        public async Task<T> PutGenericAsync<T>(string url, string payload, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
             return JsonConvert.DeserializeObject<T>(await generalRequestAsync(url, "PUT", payload, accessToken, api, clientId), TwitchLibJsonDeserializer);
         }
         #endregion
         #region Put
-        public async static Task<string> PutAsync(string url, string payload, string accessToken = null, API api = API.v5, string clientId = null)
+        public async Task<string> PutAsync(string url, string payload, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
             return await generalRequestAsync(url, "PUT", payload, accessToken, api, clientId);
         }
         #endregion
         #region PutBytesAsync
-        public static void PutBytes(string url, byte[] payload)
+        public void PutBytes(string url, byte[] payload)
         {
             try
             {
@@ -106,31 +161,31 @@ namespace TwitchLib.Internal
         #endregion
 
         #region generalRequestAsync
-        private async static Task<string> generalRequestAsync(string url, string method, object payload = null, string accessToken = null, API api = API.v5, string clientId = null)
+        private async Task<string> generalRequestAsync(string url, string method, object payload = null, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
             var request = WebRequest.CreateHttp(url);
             if (string.IsNullOrEmpty(clientId))
                 checkForCredentials(accessToken);
-            if(!string.IsNullOrEmpty(clientId) || !string.IsNullOrEmpty(TwitchAPI.Shared.ClientId))
+            if (!string.IsNullOrEmpty(clientId) || !string.IsNullOrEmpty(Settings.ClientId))
             {
                 if (!string.IsNullOrEmpty(clientId))
                     request.Headers["Client-ID"] = clientId;
                 else
-                    request.Headers["Client-ID"] = TwitchAPI.Shared.ClientId;
+                    request.Headers["Client-ID"] = Settings.ClientId;
             }
 
             request.Method = method;
             request.ContentType = "application/json";
 
-            if(api == API.Helix)
+            if (api == ApiVersion.Helix)
                 request.Accept = "application/json";
-            else  if (api != API.Void)
+            else if (api != ApiVersion.Void)
                 request.Accept = $"application/vnd.twitchtv.v{(int)api}+json";
 
             if (!string.IsNullOrEmpty(accessToken))
                 request.Headers["Authorization"] = $"OAuth {Common.Helpers.FormatOAuth(accessToken)}";
-            else if (!string.IsNullOrEmpty(TwitchAPI.Shared.AccessToken))
-                request.Headers["Authorization"] = $"OAuth {TwitchAPI.Shared.AccessToken}";
+            else if (!string.IsNullOrEmpty(Settings.AccessToken))
+                request.Headers["Authorization"] = $"OAuth {Settings.AccessToken}";
 
             if (payload != null)
                 using (var writer = new StreamWriter(await request.GetRequestStreamAsync()))
@@ -152,7 +207,7 @@ namespace TwitchLib.Internal
         #endregion
         #region simpleRequestAsync
         // credit: https://stackoverflow.com/questions/14290988/populate-and-return-entities-from-downloadstringcompleted-handler-in-windows-pho
-        public async static Task<string> simpleRequestAsync(string url)
+        public async Task<string> simpleRequestAsync(string url)
         {
             var tcs = new TaskCompletionSource<string>();
             var client = new WebClient();
@@ -177,7 +232,7 @@ namespace TwitchLib.Internal
         }
         #endregion
         #region requestReturnResponseCode
-        public static int RequestReturnResponseCode(string url, string requestType)
+        public int RequestReturnResponseCode(string url, string requestType)
         {
             var req = (HttpWebRequest)HttpWebRequest.Create(url);
             req.Method = requestType;
@@ -187,12 +242,12 @@ namespace TwitchLib.Internal
         #endregion
 
         #region appendClientId
-        private static string appendClientId(string url, string clientId = null)
+        private string appendClientId(string url, string clientId = null)
         {
             if (clientId == null)
                 return url.Contains("?")
-                    ? $"{url}&client_id={TwitchAPI.Shared.ClientId}"
-                    : $"{url}?client_id={TwitchAPI.Shared.ClientId}";
+                    ? $"{url}&client_id={Settings.ClientId}"
+                    : $"{url}?client_id={Settings.ClientId}";
             else
                 return url.Contains("?")
                     ? $"{url}&client_id={clientId}"
@@ -200,15 +255,15 @@ namespace TwitchLib.Internal
         }
         #endregion
         #region checkForCredentials
-        private static void checkForCredentials(string passedAccessToken)
+        private void checkForCredentials(string passedAccessToken)
         {
-            if (string.IsNullOrEmpty(TwitchAPI.Shared.ClientId) && string.IsNullOrWhiteSpace(TwitchAPI.Shared.AccessToken) && string.IsNullOrEmpty(passedAccessToken))
+            if (string.IsNullOrEmpty(Settings.ClientId) && string.IsNullOrWhiteSpace(Settings.AccessToken) && string.IsNullOrEmpty(passedAccessToken))
                 throw new InvalidCredentialException("All API calls require Client-Id or OAuth token. Set Client-Id by using SetClientId(\"client_id_here\")");
         }
         #endregion
 
         #region handleWebException
-        private static void handleWebException(WebException e)
+        private void handleWebException(WebException e)
         {
             HttpWebResponse errorResp = e.Response as HttpWebResponse;
             if (errorResp == null)
@@ -230,17 +285,17 @@ namespace TwitchLib.Internal
         #endregion
 
         #region SerialiazationSettings
-        public static JsonSerializerSettings TwitchLibJsonDeserializer = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore };
+        public JsonSerializerSettings TwitchLibJsonDeserializer = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore };
 
         public class TwitchLibJsonSerializer
         {
-            private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+            private readonly JsonSerializerSettings Settings = new JsonSerializerSettings
             {
                 ContractResolver = new LowercaseContractResolver(),
                 NullValueHandling = NullValueHandling.Ignore
             };
 
-            public static string SerializeObject(object o)
+            public string SerializeObject(object o)
             {
                 return JsonConvert.SerializeObject(o, Formatting.Indented, Settings);
             }
@@ -252,7 +307,10 @@ namespace TwitchLib.Internal
                     return propertyName.ToLower();
                 }
             }
+            #endregion
+
+            #endregion
+
         }
-        #endregion
     }
 }

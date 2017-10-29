@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
+    using TwitchLib.NetCore.Extensions.NetCore;
     #endregion
     /// <summary>Class represents ChatMessage in a Twitch channel.</summary>
     public class ChatMessage
@@ -180,8 +181,11 @@
                 //This setup clears all of that leaving just the action's text.
                 //If you want to clear just the nonstandard bytes, use:
                 //_message = _message.Substring(1, text.Length-2);
-                Message = Message.Substring(8, Message.Length - 9);
-                IsMe = true;
+                if (Message.Contains("ACTION"))
+                {
+                 	Message = Message.Substring(8, Message.Length - 9);
+                        IsMe = true;
+                }
             }
 
             //Parse the emoteSet

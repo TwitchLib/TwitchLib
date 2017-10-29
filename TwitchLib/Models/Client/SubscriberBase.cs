@@ -5,6 +5,7 @@ namespace TwitchLib.Models.Client
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
+    using TwitchLib.NetCore.Extensions.NetCore;
     #endregion
     /// <summary>Class representing a resubscriber.</summary>
     public class SubscriberBase

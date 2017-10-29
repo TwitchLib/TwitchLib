@@ -1,23 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TwitchLib;
 using System.IO;
-using System.Net;
-using TwitchLib.Models.API;
 using TwitchLib.Models.Client;
 using TwitchLib.Events.Client;
-using TwitchLib.Exceptions.API;
 using TwitchLib.Events.PubSub;
-using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Events.Services.MessageThrottler;
-using TwitchLib.Enums;
 using TwitchLib.Extensions.Client;
 
 namespace TwitchLibExample
@@ -377,7 +366,7 @@ namespace TwitchLibExample
         private void pubsubOnConnected(object sender, object e)
         {
             // MODERATOR ACCOUNT ID, CHANNEL ACCOUNT ID, MODERATOR OAUTH
-            pubsub.ListenToChatModeratorActions("99999999", "99999999", "");
+            pubsub.ListenToChatModeratorActions("99999999", "99999999");
             // MY ACCOUNT ID, MY OAUTH
             //pubsub.ListenToWhispers(0, "oauth_token");
         }

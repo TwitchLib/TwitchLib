@@ -5,6 +5,7 @@
     using System.Collections.Generic;
 
     using Enums;
+    using System.Collections.Concurrent;
     #endregion
     /// <summary>Class representing event args for OnChannelMonitorStarted event.</summary>
     public class OnStreamMonitorStartedArgs : EventArgs
@@ -12,7 +13,7 @@
         /// <summary>Event property representing channels the service is currently monitoring.</summary>
         public List<string> ChannelIds;
         /// <summary>Event property representing channels the service is currently monitoring.</summary>
-        public Dictionary<string, string> Channels;
+        public ConcurrentDictionary<string, string> Channels;
         /// <summary>Event property representing seconds between queries to Twitch Api.</summary>
         public int CheckIntervalSeconds;
     }

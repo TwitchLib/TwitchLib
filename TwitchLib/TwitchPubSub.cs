@@ -5,17 +5,17 @@
     using System.Linq;
     using System.Timers;
     using System.Collections.Generic;
-
     using Newtonsoft.Json.Linq;
-    using WebSocketSharp;
-
+    using WebSocket4Net;
+    using SuperSocket.ClientEngine;
     using Events.PubSub;
     using Models.PubSub.Responses.Messages;
     using Enums;
     using Models.PubSub;
+    
     #endregion
     /// <summary>Class represneting interactions with the Twitch PubSub</summary>
-    public class TwitchPubSub
+    public class TwitchPubSub : ITwitchPubSub
     {
         private readonly WebSocket _socket;
         private readonly List<PreviousRequest> _previousRequests = new List<PreviousRequest>();
@@ -85,32 +85,30 @@
         {
             _logging = logging;
             _socket = new WebSocket("wss://pubsub-edge.twitch.tv");
-            _socket.OnOpen += Socket_OnConnected;
-            _socket.OnError += OnError;
-            _socket.OnMessage += OnMessage;
-            _socket.OnClose += Socket_OnDisconnected;
+            _socket.Opened += Socket_OnConnected;
+            _socket.Error += OnError;
+            _socket.MessageReceived += OnMessage;
+            _socket.Closed += Socket_OnDisconnected;
         }
-
 
         private void OnError(object sender, ErrorEventArgs e)
         {
             if (_logging)
-                Console.WriteLine($"[TwitchPubSub]OnError: {e.Message}");
-            OnPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = new Exception(e.Message) });
+                Console.WriteLine($"[TwitchPubSub]OnError: {e.Exception.Message}");
+            OnPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = e.Exception });
         }
 
-        private void OnMessage(object sender, MessageEventArgs e)
+        private void OnMessage(object sender, MessageReceivedEventArgs e)
         {
-            var msg = e.Data;
             if (_logging)
-                Console.WriteLine($"[TwitchPubSub] {msg}");
-            ParseMessage(msg);
+                Console.WriteLine($"[TwitchPubSub] {e.Message}");
+            ParseMessage(e.Message);
         }
 
-        private void Socket_OnDisconnected(object sender, CloseEventArgs e)
+        private void Socket_OnDisconnected(object sender, EventArgs e)
         {
             if (_logging)
-                Console.WriteLine($"[TwitchPubSub]OnClose Reason: {e.Reason}");
+                Console.WriteLine($"[TwitchPubSub]OnClose");
             _pingTimer.Stop();
             OnPubSubServiceClosed?.Invoke(this, null);
         }
@@ -317,8 +315,7 @@
         /// </summary>
         /// <param name="myTwitchId">A moderator's twitch acount's ID (can be fetched from TwitchApi)</param>
         /// <param name="channelTwitchId">Channel ID who has previous parameter's moderator (can be fetched from TwitchApi)</param>
-        /// <param name="moderatorOAuth">Moderator OAuth key (can be OAuth key with any scope)</param>
-        public void ListenToChatModeratorActions(string myTwitchId, string channelTwitchId, string moderatorOAuth)
+        public void ListenToChatModeratorActions(string myTwitchId, string channelTwitchId)
         {
             ListenToTopic($"chat_moderator_actions.{myTwitchId}.{channelTwitchId}");
         }
@@ -365,7 +362,7 @@
         /// </summary>
         public void Connect()
         {
-            _socket.Connect();
+            _socket.Open();
         }
 
         /// <summary>
@@ -386,4 +383,3 @@
         }
     }
 }
-
