@@ -158,7 +158,7 @@
                         //have gone offline
                         _statuses[channel] = null;
 
-                        if (!_isStartup || (_isStartup && _invokeEventsOnStart))
+                        if (!_isStartup || _invokeEventsOnStart)
                         {
                             OnStreamOffline?.Invoke(this,
                                 new OnStreamOfflineArgs { ChannelId = channel, Channel = channelName, CheckIntervalSeconds = CheckIntervalSeconds });
@@ -172,7 +172,7 @@
                     if (_statuses[channel] == null)
                     {
                         //have gone online
-                        if (!_isStartup || (_isStartup && _invokeEventsOnStart))
+                        if (!_isStartup || _invokeEventsOnStart)
                         {
                             OnStreamOnline?.Invoke(this,
                                 new OnStreamOnlineArgs { ChannelId = channel, Channel = channelName, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
@@ -181,7 +181,7 @@
                     else
                     {
                         //stream updated
-                        if (!_isStartup || (_isStartup && _invokeEventsOnStart))
+                        if (!_isStartup || _invokeEventsOnStart)
                         {
                             OnStreamUpdate?.Invoke(this,
                                 new OnStreamUpdateArgs { ChannelId = channel, Channel = channelName, Stream = currentStream, CheckIntervalSeconds = CheckIntervalSeconds });
