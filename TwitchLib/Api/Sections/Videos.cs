@@ -38,6 +38,9 @@
                     paramsStr += $"&game={game}";
                 switch (period)
                 {
+                    case Enums.Period.Day:
+                        paramsStr += "&period=day";
+                        break;
                     case Enums.Period.Week:
                         paramsStr += "&period=week";
                         break;
