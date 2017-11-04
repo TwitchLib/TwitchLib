@@ -97,7 +97,7 @@
             {
                 string refreshUrl = $"{baseUrl}/refresh/{refreshToken}";
 
-                var resp = new System.Net.WebClient().DownloadString(refreshToken);
+                var resp = new System.Net.WebClient().DownloadString(refreshUrl);
                 return JsonConvert.DeserializeObject<Models.API.ThirdParty.AuthorizationFlow.RefreshTokenResponse>(resp);
             }
 
