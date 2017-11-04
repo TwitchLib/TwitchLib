@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <PackageId>TwitchLib.NET_Standard_2.0</PackageId>
-    <Version>1.5.7</Version>
+    <Version>1.5.8</Version>
     <Description>Twitch C# library for accessing Twitch chat and whispers with events, Twitch API with both authenticated and unauthenticated calls, and PubSub with events.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Prom3theu5</Authors>
@@ -23,4 +23,11 @@
     <PackageReference Include="WebSocket4Net" Version="0.15.0" />
   </ItemGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452'">
+    <DefineConstants>NET452</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>NETSTANDARD</DefineConstants>
+  </PropertyGroup>
 </Project>

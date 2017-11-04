@@ -3,9 +3,13 @@
     #region using directives
     using System;
     using System.Collections.Generic;
-    using System.Drawing;
     using System.Linq;
+#if NETSTANDARD
     using TwitchLib.NetCore.Extensions.NetCore;
+#endif
+#if NET452
+    using System.Drawing;
+#endif
     #endregion
     /// <summary>Class represents ChatMessage in a Twitch channel.</summary>
     public class ChatMessage
@@ -23,7 +27,7 @@
         /// <summary>Hex representation of username color in chat (THIS CAN BE NULL IF VIEWER HASN'T SET COLOR).</summary>
         public string ColorHex { get; protected set; }
         /// <summary>Property representing HEX color as a System.Drawing.Color object.</summary>
-        public Color Color { get; protected set; }
+        public System.Drawing.Color Color { get; protected set; }
         /// <summary>Emote Ids that exist in message.</summary>
         public EmoteSet EmoteSet { get; protected set; }
         /// <summary>Twitch chat message contents.</summary>
