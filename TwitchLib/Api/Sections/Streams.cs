@@ -13,12 +13,12 @@
         {
             v3 = new V3(api);
             v5 = new V5(api);
-            Helix = new helix(api);
+            helix = new Helix(api);
         }
 
         public V3 v3 { get; }
         public V5 v5 { get; }
-        public helix Helix { get; }
+        public Helix helix { get; }
 
         public class V3 : ApiSection
         {
@@ -190,9 +190,9 @@
             #endregion
         }
 
-        public class helix : ApiSection
+        public class Helix : ApiSection
         {
-            public helix(TwitchAPI api) : base(api)
+            public Helix(TwitchAPI api) : base(api)
             {
             }
             public async Task<Models.API.Helix.Streams.GetStreams.GetStreamsResponse> GetStreams(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
