@@ -9,6 +9,8 @@ namespace Application.AuthFlowExample
 {
     class Program
     {
+        private static TwitchLib.TwitchAPI api;
+
         [STAThread]
         static void Main(string[] args)
         {
@@ -16,20 +18,21 @@ namespace Application.AuthFlowExample
             Console.WriteLine();
 
             // These events fire when authorization status changes
-            TwitchLib.TwitchAPI.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetected += onAuthorizationDetected;
-            TwitchLib.TwitchAPI.ThirdParty.AuthorizationFlow.OnError += onError;
+            api = new TwitchLib.TwitchAPI();
+            api.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetected += onAuthorizationDetected;
+            api.ThirdParty.AuthorizationFlow.OnError += onError;
 
             // auth link is created with a single call that includes the requested scopes
             Console.WriteLine("Getting auth link...");
             List<TwitchLib.Enums.AuthScopes> scopes = new List<TwitchLib.Enums.AuthScopes>() { TwitchLib.Enums.AuthScopes.Chat_Login, TwitchLib.Enums.AuthScopes.User_Read };
-            var createdFlow = TwitchLib.TwitchAPI.ThirdParty.AuthorizationFlow.CreateFlow("AuthFlowExample Test Application", scopes);
+            var createdFlow = api.ThirdParty.AuthorizationFlow.CreateFlow("AuthFlowExample Test Application", scopes);
             Clipboard.SetText(createdFlow.Url);
             Console.WriteLine($"Go here to authorize account (copied to clipboard): {createdFlow.Url}");
 
             // every 5 seconds, the library will check if the user has completed authorization
             Console.WriteLine();
             Console.WriteLine("Awaiting authorization...");
-            TwitchLib.TwitchAPI.ThirdParty.AuthorizationFlow.BeginPingingStatus(createdFlow.Id, 5000);
+            api.ThirdParty.AuthorizationFlow.BeginPingingStatus(createdFlow.Id, 5000);
 
             // from here, we just wait for the events to fire
             Console.ReadLine();
@@ -42,7 +45,14 @@ namespace Application.AuthFlowExample
             Console.WriteLine($"Flow Id: {e.Id}");
             Console.WriteLine($"Username: {e.Username}");
             Console.WriteLine($"Token: {e.Token}");
+            Console.WriteLine($"Refresh: {e.Refresh}");
             Console.WriteLine($"Scopes: {String.Join(", ", e.Scopes)}");
+
+            Console.WriteLine();
+            Console.WriteLine("Verifying refresh functionality...");
+            var resp = api.ThirdParty.AuthorizationFlow.RefreshToken(e.Refresh);
+            Console.WriteLine($"Refreshed token: {resp.Token}");
+            Console.WriteLine($"Refreshed refresh token: {resp.Refresh}");
         }
 
         // Fires when twitchtokengenerator.com says an error has happened
