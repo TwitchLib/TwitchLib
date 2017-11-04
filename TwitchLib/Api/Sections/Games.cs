@@ -68,7 +68,7 @@
             {
             }
             #region GetGames
-            public async Task<Models.API.v5.Games.TopGames> GetTopGamesAsync(List<string> gameIds = null, List<string> gameNames = null)
+            public async Task<Models.API.Helix.Games.GetGames.GetGamesResponse> GetGames(List<string> gameIds = null, List<string> gameNames = null)
             {
                 if ((gameIds == null && gameNames == null) ||
                     (gameIds != null && gameIds.Count == 0 && gameNames == null) ||
@@ -96,7 +96,7 @@
                         else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
                     }
                 }
-                return await Api.GetGenericAsync<Models.API.v5.Games.TopGames>($"https://api.twitch.tv/helix/games{optionalQuery}", null, ApiVersion.Helix).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.Helix.Games.GetGames.GetGamesResponse>($"https://api.twitch.tv/helix/games{optionalQuery}", null, ApiVersion.Helix).ConfigureAwait(false);
             }
             #endregion
         }
