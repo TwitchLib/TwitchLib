@@ -12,10 +12,12 @@
         {
             v3 = new V3(api);
             v5 = new V5(api);
+            helix = new Helix(api);
         }
 
         public V3 v3 { get; }
         public V5 v5 { get; }
+        public Helix helix { get; }
 
         public class V3 : ApiSection
         {
