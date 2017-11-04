@@ -71,9 +71,10 @@ namespace TwitchLib_API_Tester
             if (!string.IsNullOrWhiteSpace(ClientId))
                 api.Settings.ClientId = ClientId;
             if(!string.IsNullOrWhiteSpace(AccessToken))
+            {
                 api.Settings.AccessToken = AccessToken;
-
-            MessageBox.Show("scopes: " + string.Join(",", api.Settings.Scopes));
+                MessageBox.Show("scopes: " + string.Join(",", api.Settings.Scopes));
+            }
         }
 
         public string Channel { get { return textBox1.Text; } set { textBox1.Text = value; } }
@@ -774,6 +775,13 @@ namespace TwitchLib_API_Tester
         {
             await api.Users.helix.PutUsers(richTextBox4.Text);
             MessageBox.Show("updated!");
+        }
+
+        private async void button86_Click(object sender, EventArgs e)
+        {
+            var resp = await api.Games.helix.GetGames(null, new List<string>() { textBox84.Text });
+            foreach (var game in resp.Games)
+                MessageBox.Show($"game: {game.Name}\nid: {game.Id}\nbox art: {game.BoxArtUrl}");
         }
     }
 }
