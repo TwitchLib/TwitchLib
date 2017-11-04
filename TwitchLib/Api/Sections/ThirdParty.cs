@@ -93,6 +93,14 @@
                 return JsonConvert.DeserializeObject<Models.API.ThirdParty.AuthorizationFlow.CreatedFlow>(resp);
             }
 
+            public Models.API.ThirdParty.AuthorizationFlow.RefreshTokenResponse RefreshToken(string refreshToken)
+            {
+                string refreshUrl = $"{baseUrl}/refresh/{refreshToken}";
+
+                var resp = new System.Net.WebClient().DownloadString(refreshToken);
+                return JsonConvert.DeserializeObject<Models.API.ThirdParty.AuthorizationFlow.RefreshTokenResponse>(resp);
+            }
+
             public void BeginPingingStatus(string id, int intervalMs = 5000)
             {
                 apiId = id;

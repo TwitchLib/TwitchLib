@@ -17,6 +17,7 @@ namespace TwitchLib.Models.API.ThirdParty.AuthorizationFlow
 
         public List<Enums.AuthScopes> Scopes { get; protected set; }
         public string Token { get; protected set; }
+        public string Refresh { get; protected set; }
         public string Username { get; protected set; }
 
         public PingResponse(string jsonStr)
@@ -33,6 +34,7 @@ namespace TwitchLib.Models.API.ThirdParty.AuthorizationFlow
                 foreach (var scope in json.SelectToken("scopes"))
                     Scopes.Add(Common.Helpers.StringToScope(scope.ToString()));
                 Token = json.SelectToken("token").ToString();
+                Refresh = json.SelectToken("refresh").ToString();
                 Username = json.SelectToken("username").ToString();
             }
         }
