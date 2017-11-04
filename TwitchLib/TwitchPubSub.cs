@@ -15,7 +15,7 @@
     public class TwitchPubSub
     {
         private WebSocket socket;
-        private Models.PubSub.PreviousRequest previousRequest;
+        private Models.PubSub.PreviousRequest previousRequest = null;
         private bool logging;
         private Timer pingTimer = new Timer();
 

@@ -41,6 +41,11 @@
         [JsonProperty(PropertyName = "is_playlist")]
         public bool IsPlaylist { get; protected set; }
         #endregion
+        #region StreamType
+        /// <summary>Property representing the type of stream (live, watch_party, etc)</summary>
+        [JsonProperty(PropertyName = "stream_type")]
+        public string StreamType { get; protected set; }
+        #endregion
         #region Preview
         /// <summary>Property representing wether the Stream is a Playlist or not.</summary>
         [JsonProperty(PropertyName = "preview")]

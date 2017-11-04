@@ -129,7 +129,7 @@
                 case StreamIdentifierType.Usernames:
                     try
                     {
-                        var resp = await TwitchAPI.Streams.v3.GetStream(channel);
+                        var resp = await TwitchAPI.Streams.v3.GetStreamAsync(channel);
                         if (resp == null || resp.Stream == null)
                             return false;
                         else
@@ -142,7 +142,7 @@
                 case StreamIdentifierType.UserIds:
                     try
                     {
-                        var resp = await TwitchAPI.Streams.v5.GetStreamByUser(channel);
+                        var resp = await TwitchAPI.Streams.v5.GetStreamByUserAsync(channel);
                         if (resp == null || resp.Stream == null)
                             return false;
                         else

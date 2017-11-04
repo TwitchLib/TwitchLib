@@ -190,3 +190,5 @@ You are also more than welcome to clone/fork this repo and build the library you
 ## License
 
 This project is available under the MIT license. See the LICENSE file for more info.
+
+:)

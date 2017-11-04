@@ -45,7 +45,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="TwitchLib">
-      <HintPath>..\..\TwitchLib\bin\Debug\TwitchLib.dll</HintPath>
+      <HintPath>..\..\..\TwitchLib\bin\Debug\TwitchLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
