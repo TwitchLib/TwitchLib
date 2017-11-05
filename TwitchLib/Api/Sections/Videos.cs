@@ -14,10 +14,12 @@
         {
             v3 = new V3(api);
             v5 = new V5(api);
+            helix = new Helix(api);
         }
 
         public V3 v3 { get; }
         public V5 v5 { get; }
+        public Helix helix { get; }
 
         public class V3 : ApiSection
         {
@@ -253,6 +255,95 @@
             private async Task completeVideoUpload(Models.API.v5.UploadVideo.Upload upload, string accessToken)
             {
                 await Api.PostAsync($"{upload.Url}/complete?upload_token={upload.Token}", null, accessToken);
+            }
+        }
+
+        public class Helix :ApiSection
+        {
+            public Helix(TwitchAPI api) : base(api)
+            {
+            }
+            public async Task<Models.API.Helix.Videos.GetVideos.GetVideosResponse> GetVideoAsync(List<string> videoIds = null, string userId = null, string gameId = null, string after = null, string before = null, int first = 20, string language = null, Period period = Period.All, VideoSort sort = VideoSort.Time, VideoType type = VideoType.All)
+            {
+                if ((videoIds == null || videoIds.Count == 0) && userId == null && gameId == null)
+                    throw new Exceptions.API.BadParameterException("VideoIds, userId, and gameId cannot all be null/empty.");
+                if (((videoIds != null && videoIds.Count > 0) && userId != null) ||
+                    ((videoIds != null && videoIds.Count > 0) && gameId != null) ||
+                    (userId != null && gameId != null))
+                    throw new Exceptions.API.BadParameterException("If videoIds are present, you may not use userid or gameid. If gameid is present, you may not use videoIds or userid. If userid is present, you may not use videoids or gameids.");
+
+                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                if (videoIds != null && videoIds.Count > 0)
+                    foreach (var videoId in videoIds)
+                        queryParameters.Add(new KeyValuePair<string, string>("id", videoId));
+                if (userId != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("user_id", userId));
+                if (gameId != null)
+                    queryParameters.Add(new KeyValuePair<string, string>("game_id", gameId));
+
+                if(videoIds.Count == 0)
+                {
+                    if (after != null)
+                        queryParameters.Add(new KeyValuePair<string, string>("after", after));
+                    if (before != null)
+                        queryParameters.Add(new KeyValuePair<string, string>("before", before));
+                    queryParameters.Add(new KeyValuePair<string, string>("first", first.ToString()));
+                    if (language != null)
+                        queryParameters.Add(new KeyValuePair<string, string>("language", language));
+                    switch(period)
+                    {
+                        case Period.All:
+                            queryParameters.Add(new KeyValuePair<string, string>("period", "all"));
+                            break;
+                        case Period.Day:
+                            queryParameters.Add(new KeyValuePair<string, string>("period", "day"));
+                            break;
+                        case Period.Month:
+                            queryParameters.Add(new KeyValuePair<string, string>("period", "month"));
+                            break;
+                        case Period.Week:
+                            queryParameters.Add(new KeyValuePair<string, string>("period", "week"));
+                            break;
+                    }
+                    switch (sort)
+                    {
+                        case VideoSort.Time:
+                            queryParameters.Add(new KeyValuePair<string, string>("sort", "time"));
+                            break;
+                        case VideoSort.Trending:
+                            queryParameters.Add(new KeyValuePair<string, string>("sort", "trending"));
+                            break;
+                        case VideoSort.Views:
+                            queryParameters.Add(new KeyValuePair<string, string>("sort", "views"));
+                            break;
+                    }
+                    switch (type)
+                    {
+                        case VideoType.All:
+                            queryParameters.Add(new KeyValuePair<string, string>("type", "all"));
+                            break;
+                        case VideoType.Highlight:
+                            queryParameters.Add(new KeyValuePair<string, string>("type", "highlight"));
+                            break;
+                        case VideoType.Archive:
+                            queryParameters.Add(new KeyValuePair<string, string>("type", "archive"));
+                            break;
+                        case VideoType.Upload:
+                            queryParameters.Add(new KeyValuePair<string, string>("type", "upload"));
+                            break;
+                    }
+                }
+
+                string optionalQuery = string.Empty;
+                if (queryParameters.Count > 0)
+                {
+                    for (int i = 0; i < queryParameters.Count; i++)
+                    {
+                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
+                    }
+                }
+                return await Api.GetGenericAsync<Models.API.Helix.Videos.GetVideos.GetVideosResponse>($"https://api.twitch.tv/helix/videos{optionalQuery}", null, ApiVersion.Helix).ConfigureAwait(false);
             }
         }
     }
