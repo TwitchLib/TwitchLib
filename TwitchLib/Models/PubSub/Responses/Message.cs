@@ -19,7 +19,7 @@
             JToken json = JObject.Parse(jsonStr).SelectToken("data");
             Topic = json.SelectToken("topic")?.ToString();
             var encodedJsonMessage = json.SelectToken("message").ToString();
-            switch (Topic.Split('.')[0])
+            switch (Topic?.Split('.')[0])
             {
                 case "chat_moderator_actions":
                     messageData = new ChatModeratorActions(encodedJsonMessage);
