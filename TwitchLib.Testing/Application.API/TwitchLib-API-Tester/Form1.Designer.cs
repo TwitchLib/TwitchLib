@@ -417,6 +417,11 @@
             this.button86 = new System.Windows.Forms.Button();
             this.textBox84 = new System.Windows.Forms.TextBox();
             this.label85 = new System.Windows.Forms.Label();
+            this.tabPage41 = new System.Windows.Forms.TabPage();
+            this.groupBox84 = new System.Windows.Forms.GroupBox();
+            this.button87 = new System.Windows.Forms.Button();
+            this.textBox85 = new System.Windows.Forms.TextBox();
+            this.label86 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -534,6 +539,8 @@
             this.groupBox68.SuspendLayout();
             this.tabPage40.SuspendLayout();
             this.groupBox83.SuspendLayout();
+            this.tabPage41.SuspendLayout();
+            this.groupBox84.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -3642,6 +3649,7 @@
             this.tabControl4.Controls.Add(this.tabPage38);
             this.tabControl4.Controls.Add(this.tabPage39);
             this.tabControl4.Controls.Add(this.tabPage40);
+            this.tabControl4.Controls.Add(this.tabPage41);
             this.tabControl4.Location = new System.Drawing.Point(16, 14);
             this.tabControl4.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.tabControl4.Name = "tabControl4";
@@ -4743,6 +4751,60 @@
             this.label85.TabIndex = 1;
             this.label85.Text = "Name:";
             // 
+            // tabPage41
+            // 
+            this.tabPage41.Controls.Add(this.groupBox84);
+            this.tabPage41.Location = new System.Drawing.Point(10, 48);
+            this.tabPage41.Name = "tabPage41";
+            this.tabPage41.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage41.Size = new System.Drawing.Size(1489, 963);
+            this.tabPage41.TabIndex = 3;
+            this.tabPage41.Text = "Videos";
+            this.tabPage41.UseVisualStyleBackColor = true;
+            // 
+            // groupBox84
+            // 
+            this.groupBox84.Controls.Add(this.button87);
+            this.groupBox84.Controls.Add(this.textBox85);
+            this.groupBox84.Controls.Add(this.label86);
+            this.groupBox84.Location = new System.Drawing.Point(11, 10);
+            this.groupBox84.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.groupBox84.Name = "groupBox84";
+            this.groupBox84.Padding = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.groupBox84.Size = new System.Drawing.Size(272, 210);
+            this.groupBox84.TabIndex = 2;
+            this.groupBox84.TabStop = false;
+            this.groupBox84.Text = "Get Videos";
+            // 
+            // button87
+            // 
+            this.button87.Location = new System.Drawing.Point(33, 141);
+            this.button87.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.button87.Name = "button87";
+            this.button87.Size = new System.Drawing.Size(213, 55);
+            this.button87.TabIndex = 5;
+            this.button87.Text = "Get Videos";
+            this.button87.UseVisualStyleBackColor = true;
+            this.button87.Click += new System.EventHandler(this.button87_Click);
+            // 
+            // textBox85
+            // 
+            this.textBox85.Location = new System.Drawing.Point(33, 79);
+            this.textBox85.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.textBox85.Name = "textBox85";
+            this.textBox85.Size = new System.Drawing.Size(207, 38);
+            this.textBox85.TabIndex = 3;
+            // 
+            // label86
+            // 
+            this.label86.AutoSize = true;
+            this.label86.Location = new System.Drawing.Point(25, 41);
+            this.label86.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            this.label86.Name = "label86";
+            this.label86.Size = new System.Drawing.Size(127, 32);
+            this.label86.TabIndex = 1;
+            this.label86.Text = "Video id:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -4932,6 +4994,9 @@
             this.tabPage40.ResumeLayout(false);
             this.groupBox83.ResumeLayout(false);
             this.groupBox83.PerformLayout();
+            this.tabPage41.ResumeLayout(false);
+            this.groupBox84.ResumeLayout(false);
+            this.groupBox84.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -5325,6 +5390,11 @@
         private System.Windows.Forms.Button button86;
         private System.Windows.Forms.TextBox textBox84;
         private System.Windows.Forms.Label label85;
+        private System.Windows.Forms.TabPage tabPage41;
+        private System.Windows.Forms.GroupBox groupBox84;
+        private System.Windows.Forms.Button button87;
+        private System.Windows.Forms.TextBox textBox85;
+        private System.Windows.Forms.Label label86;
     }
 }
 

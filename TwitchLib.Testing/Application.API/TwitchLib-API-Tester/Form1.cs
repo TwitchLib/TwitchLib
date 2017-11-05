@@ -783,5 +783,12 @@ namespace TwitchLib_API_Tester
             foreach (var game in resp.Games)
                 MessageBox.Show($"game: {game.Name}\nid: {game.Id}\nbox art: {game.BoxArtUrl}");
         }
+
+        private async void button87_Click(object sender, EventArgs e)
+        {
+            var resp = await api.Videos.helix.GetVideoAsync(new List<string>() { textBox85.Text });
+            foreach (var video in resp.Videos)
+                MessageBox.Show($"Video title: {video.Title}\nowner: {video.UserId}\ndescription: {video.Description}\nview count: {video.ViewCount}");
+        }
     }
 }
