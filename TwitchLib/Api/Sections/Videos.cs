@@ -252,6 +252,7 @@
                 else
                 {
                     // Upload entire file at once if small enough
+                    byte[] file = File.ReadAllBytes(videoPath);
                     Api.PutBytes($"{upload.Url}?part=1&upload_token={upload.Token}", file);
                 }
             }
