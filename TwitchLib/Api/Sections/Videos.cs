@@ -228,7 +228,7 @@
                 if (fileSize > size24mb)
                 {
                     long finalChunkSize = fileSize % size24mb;
-                    long parts = (fileSize - finalChunkSize) / size24mb;
+                    long parts = ((fileSize - finalChunkSize) / size24mb) + 1;
                     for (int currentPart = 1; currentPart <= parts; currentPart++)
                     {
                         byte[] chunk;
