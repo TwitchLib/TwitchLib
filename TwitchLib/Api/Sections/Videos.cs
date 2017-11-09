@@ -222,32 +222,36 @@
                 if (videoInfo.Length >= MAX_VIDEO_SIZE)
                     throw new Exceptions.API.BadParameterException($"The provided file was too large (larger than 10gb). File size: {videoInfo.Length}");
 
-                byte[] file = File.ReadAllBytes(videoPath);
                 long size24mb = 25165824;
                 long fileSize = videoInfo.Length;
                 if (fileSize > size24mb)
                 {
-                    long finalChunkSize = fileSize % size24mb;
-                    long parts = ((fileSize - finalChunkSize) / size24mb) + 1;
-                    for (int currentPart = 1; currentPart <= parts; currentPart++)
+                    // Split file into fragments if file size exceeds maximum fragment size
+                    using (FileStream fs = new FileStream(videoPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        byte[] chunk;
-                        if (currentPart == parts)
+                        long finalChunkSize = fileSize % size24mb;
+                        long parts = ((fileSize - finalChunkSize) / size24mb) + 1;
+                        for (int currentPart = 1; currentPart <= parts; currentPart++)
                         {
-                            chunk = new byte[finalChunkSize];
-                            Array.Copy(file, (currentPart - 1) * size24mb, chunk, 0, finalChunkSize);
+                            byte[] chunk;
+                            if (currentPart == parts)
+                            {
+                                chunk = new byte[finalChunkSize];
+                                fs.Read(chunk, 0, (int)finalChunkSize);
+                            }
+                            else
+                            {
+                                chunk = new byte[size24mb];
+                                fs.Read(chunk, 0, (int)size24mb);
+                            }
+                            Api.PutBytes($"{upload.Url}?part={currentPart}&upload_token={upload.Token}", chunk);
+                            System.Threading.Thread.Sleep(1000);
                         }
-                        else
-                        {
-                            chunk = new byte[size24mb];
-                            Array.Copy(file, (currentPart - 1) * size24mb, chunk, 0, size24mb);
-                        }
-                        Api.PutBytes($"{upload.Url}?part={currentPart}&upload_token={upload.Token}", chunk);
-                        System.Threading.Thread.Sleep(1000);
                     }
                 }
                 else
                 {
+                    // Upload entire file at once if small enough
                     Api.PutBytes($"{upload.Url}?part=1&upload_token={upload.Token}", file);
                 }
             }
