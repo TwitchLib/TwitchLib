@@ -177,7 +177,10 @@
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 List<KeyValuePair<string, string>> datas = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrEmpty(status))
+                {
+                    status = status.Replace("\\", "\\\\");
                     datas.Add(new KeyValuePair<string, string>("status", "\"" + status + "\""));
+                }
                 if (!string.IsNullOrEmpty(game))
                     datas.Add(new KeyValuePair<string, string>("game", "\"" + game + "\""));
                 if (!string.IsNullOrEmpty(delay))
