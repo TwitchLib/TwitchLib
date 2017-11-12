@@ -24,7 +24,7 @@
             #region GetIngests
             public async Task<Models.API.v3.Ingests.IngestsResponse> GetIngestsAsync()
             {
-                return await Api.GetGenericAsync<Models.API.v3.Ingests.IngestsResponse>("https://api.twitch.tv/kraken/ingests", null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v3.Ingests.IngestsResponse>("https://api.twitch.tv/kraken/ingests", null, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
         }
@@ -37,7 +37,7 @@
             #region GetIngestServerList
             public async Task<Models.API.v5.Ingests.Ingests> GetIngestServerListAsync()
             {
-                return await Api.GetGenericAsync<Models.API.v5.Ingests.Ingests>("https://api.twitch.tv/kraken/ingests", null, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Ingests.Ingests>("https://api.twitch.tv/kraken/ingests", null, null, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
         }

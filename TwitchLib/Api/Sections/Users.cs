@@ -238,7 +238,7 @@
             {
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Viewing_Activity_Read, authToken);
                 if (string.IsNullOrWhiteSpace(identifier)) { throw new Exceptions.API.BadParameterException("The identifier is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.PutAsync("https://api.twitch.tv/kraken/user/vhs", "{\"identifier\": \"" + identifier + "\"}", authToken, ApiVersion.v5).ConfigureAwait(false);
+                await Api.PutAsync("https://api.twitch.tv/kraken/user/vhs", "{\"identifier\": \"" + identifier + "\"}", null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region CheckUserConnectionToViewerHeartbeatService

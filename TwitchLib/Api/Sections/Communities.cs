@@ -72,7 +72,7 @@
 
                 payload = "{" + payload + "}";
 
-                await Api.PutAsync($"https://api.twitch.tv/kraken/communities/{communityId}", payload, authToken, ApiVersion.v5).ConfigureAwait(false);
+                await Api.PutAsync($"https://api.twitch.tv/kraken/communities/{communityId}", payload, null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetTopCommunities
@@ -107,7 +107,7 @@
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Communities_Moderate, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.PutAsync($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", null, authToken, ApiVersion.v5).ConfigureAwait(false);
+                await Api.PutAsync($"https://api.twitch.tv/kraken/communities/{communityId}/bans/{userId}", null, null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region UnBanCommunityUser
@@ -167,7 +167,7 @@
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Communities_Edit, authToken);
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.PutAsync($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", null, authToken, ApiVersion.v5).ConfigureAwait(false);
+                await Api.PutAsync($"https://api.twitch.tv/kraken/communities/{communityId}/moderators/{userId}", null, null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region DeleteCommunityModerator
@@ -216,7 +216,7 @@
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 string payload = "{\"duration\": \"" + duration + "\"" + ((!string.IsNullOrWhiteSpace(reason)) ? ", \"reason\": \"" + reason + "\"}" : "}");
-                await Api.PutAsync($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", payload, authToken, ApiVersion.v5).ConfigureAwait(false);
+                await Api.PutAsync($"https://api.twitch.tv/kraken/communities/{communityId}/timeouts/{userId}", payload, null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region DeleteCommunityTimedOutUser
