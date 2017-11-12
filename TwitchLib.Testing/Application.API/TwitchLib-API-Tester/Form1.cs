@@ -29,6 +29,7 @@ namespace TwitchLib_API_Tester
             readCredentails();
             monitor.OnStreamOnline += onStreamOnline;
             monitor.OnStreamOffline += onStreamOfffline;
+            
         }
 
         private void onStreamOnline(object sender, OnStreamOnlineArgs e)
