@@ -13,6 +13,7 @@
     using System.Text.RegularExpressions;
     using WebSocket4Net;
     using SuperSocket.ClientEngine;
+    using SuperSocket.ClientEngine.Proxy;
     #endregion
     /// <summary>Represents a client connected to a Twitch channel.</summary>
     public class TwitchClient : ITwitchClient
@@ -280,6 +281,9 @@
             _client.MessageReceived += _client_OnMessage;
             _client.Closed += _client_OnDisconnected;
             _client.Error += _client_OnError;
+
+            if(credentials.Proxy != null)
+                _client.Proxy = new HttpConnectProxy(credentials.Proxy);
         }
 
         /// <summary>
