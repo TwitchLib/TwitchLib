@@ -243,6 +243,11 @@
         /// Fires when the library detects another channel has started hosting the broadcaster's stream. MUST BE CONNECTED AS BROADCASTER.
         /// </summary>
         public event EventHandler<OnBeingHostedArgs> OnBeingHosted;
+
+        /// <summary>
+        /// Fires when a raid notification is detected in chat
+        /// </summary>
+        public event EventHandler<OnRaidNotificationArgs> OnRaidNotification;
         #endregion  
 
         /// <summary>
@@ -813,6 +818,15 @@
                 var isAuto = ircMessage.Contains(" autohost");
                 OnBeingHosted?.Invoke(this, new OnBeingHostedArgs { Channel = response.Channel, BotUsername = TwitchUsername, HostedByChannel = hostedBy,
                     Viewers = viewers, IsAutoHosted = isAuto });
+                return;
+            }
+
+            // On raid notice detected in chat
+            response = Internal.Parsing.Chat.detectedRaidNotification(ircMessage, JoinedChannels);
+            if(response.Successful)
+            {
+                var raidNotification = new RaidNotification(ircMessage);
+                OnRaidNotification?.Invoke(this, new OnRaidNotificationArgs { RaidNotificaiton = raidNotification });
                 return;
             }
             #endregion
