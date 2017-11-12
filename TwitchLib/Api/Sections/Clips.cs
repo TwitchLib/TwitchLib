@@ -1,5 +1,6 @@
 ﻿namespace TwitchLib
 {
+    using System.Collections.Generic;
     #region using directives
     using System.Threading.Tasks;
     using TwitchLib.Api;
@@ -27,49 +28,50 @@
             #region GetTopClips
             public async Task<Models.API.v5.Clips.TopClipsResponse> GetTopClipsAsync(string channel = null, string cursor = null, string game = null, long limit = 10, Models.API.v5.Clips.Period period = Models.API.v5.Clips.Period.Week, bool trending = false)
             {
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("limit", limit.ToString()) };
                 string paramsStr = $"?limit={limit}";
                 if (channel != null)
-                    paramsStr += $"&channel={channel}";
+                    getParams.Add(new KeyValuePair<string, string>("channel", channel));
                 if (cursor != null)
-                    paramsStr += $"&cursor={cursor}";
+                    getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
                 if (game != null)
-                    paramsStr += $"&game={game}";
+                    getParams.Add(new KeyValuePair<string, string>("game", game));
                 if (trending)
-                    paramsStr += "&trending=true";
+                    getParams.Add(new KeyValuePair<string, string>("trending", "true"));
                 else
-                    paramsStr += "&trending=false";
+                    getParams.Add(new KeyValuePair<string, string>("trending", "false"));
                 switch (period)
                 {
                     case Models.API.v5.Clips.Period.All:
-                        paramsStr += "&period=all";
+                        getParams.Add(new KeyValuePair<string, string>("period", "all"));
                         break;
                     case Models.API.v5.Clips.Period.Month:
-                        paramsStr += "&period=month";
+                        getParams.Add(new KeyValuePair<string, string>("period", "month"));
                         break;
                     case Models.API.v5.Clips.Period.Week:
-                        paramsStr += "&period=week";
+                        getParams.Add(new KeyValuePair<string, string>("period", "week"));
                         break;
                     case Models.API.v5.Clips.Period.Day:
-                        paramsStr += "&period=day";
+                        getParams.Add(new KeyValuePair<string, string>("period", "day"));
                         break;
                 }
 
-                return await Api.GetGenericAsync<Models.API.v5.Clips.TopClipsResponse>($"https://api.twitch.tv/kraken/clips/top{paramsStr}", null).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Clips.TopClipsResponse>($"https://api.twitch.tv/kraken/clips/top", getParams, null).ConfigureAwait(false);
             }
             #endregion
             #region GetFollowedClips
             public async Task<Models.API.v5.Clips.FollowClipsResponse> GetFollowedClipsAsync(long limit = 10, string cursor = null, bool trending = false, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
-                string paramsStr = $"?limit={limit}";
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("limit", limit.ToString()) };
                 if (cursor != null)
-                    paramsStr += $"&cursor={cursor}";
+                    getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
                 if (trending)
-                    paramsStr += "&trending=true";
+                    getParams.Add(new KeyValuePair<string, string>("trending", "true"));
                 else
-                    paramsStr += "&trending=false";
+                    getParams.Add(new KeyValuePair<string, string>("trending", "false"));
 
-                return await Api.GetGenericAsync<Models.API.v5.Clips.FollowClipsResponse>($"https://api.twitch.tv/kraken/clips/followed{paramsStr}", authToken).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Clips.FollowClipsResponse>($"https://api.twitch.tv/kraken/clips/followed", getParams, authToken).ConfigureAwait(false);
             }
             #endregion
         }

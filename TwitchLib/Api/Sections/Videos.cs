@@ -29,29 +29,29 @@
             #region GetVideo
             public async Task<Models.API.v3.Videos.Video> GetVideoAsync(string id)
             {
-                return await Api.GetGenericAsync<Models.API.v3.Videos.Video>($"https://api.twitch.tv/kraken/videos/{id}", null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v3.Videos.Video>($"https://api.twitch.tv/kraken/videos/{id}", null, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetTopVideos
             public async Task<Models.API.v3.Videos.TopVideosResponse> GetTopVideosAsync(int limit = 25, int offset = 0, string game = null, Enums.Period period = Enums.Period.Week)
             {
-                string paramsStr = $"?limit={limit}&offset={offset}";
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("limit", limit.ToString()), new KeyValuePair<string, string>("offset", offset.ToString()) };
                 if (game != null)
-                    paramsStr += $"&game={game}";
+                    getParams.Add(new KeyValuePair<string, string>("game", game));
                 switch (period)
                 {
                     case Enums.Period.Week:
-                        paramsStr += "&period=week";
+                        getParams.Add(new KeyValuePair<string, string>("period", "week"));
                         break;
                     case Enums.Period.Month:
-                        paramsStr += "&period=month";
+                        getParams.Add(new KeyValuePair<string, string>("period", "month"));
                         break;
                     case Enums.Period.All:
-                        paramsStr += "&period=all";
+                        getParams.Add(new KeyValuePair<string, string>("period", "all"));
                         break;
                 }
 
-                return await Api.GetGenericAsync<Models.API.v3.Videos.TopVideosResponse>($"https://api.twitch.tv/kraken/videos/top{paramsStr}", null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v3.Videos.TopVideosResponse>($"https://api.twitch.tv/kraken/videos/top", getParams, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
         }
@@ -65,21 +65,21 @@
             public async Task<Models.API.v5.Videos.Video> GetVideoAsync(string videoId)
             {
                 if (string.IsNullOrWhiteSpace(videoId)) { throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.GetGenericAsync<Models.API.v5.Videos.Video>($"https://api.twitch.tv/kraken/videos/{videoId}", null, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Videos.Video>($"https://api.twitch.tv/kraken/videos/{videoId}", null, null, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetTopVideos
             public async Task<Models.API.v5.Videos.TopVideos> GetTopVideosAsync(int? limit = null, int? offset = null, string game = null, string period = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
             {
-                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
                 if (limit != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
                 if (offset != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
                 if (!string.IsNullOrWhiteSpace(game))
-                    queryParameters.Add(new KeyValuePair<string, string>("game", game));
+                    getParams.Add(new KeyValuePair<string, string>("game", game));
                 if (!string.IsNullOrWhiteSpace(period) && (period == "week" || period == "month" || period == "all"))
-                    queryParameters.Add(new KeyValuePair<string, string>("period", period));
+                    getParams.Add(new KeyValuePair<string, string>("period", period));
                 if (broadcastType != null && broadcastType.Count > 0)
                 {
                     bool isCorrect = false;
@@ -89,34 +89,25 @@
                         else { isCorrect = false; break; }
                     }
                     if (isCorrect)
-                        queryParameters.Add(new KeyValuePair<string, string>("broadcast_type", string.Join(",", broadcastType)));
+                        getParams.Add(new KeyValuePair<string, string>("broadcast_type", string.Join(",", broadcastType)));
                 }
                 if (language != null && language.Count > 0)
-                    queryParameters.Add(new KeyValuePair<string, string>("language", string.Join(",", language)));
+                    getParams.Add(new KeyValuePair<string, string>("language", string.Join(",", language)));
                 if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
-                    queryParameters.Add(new KeyValuePair<string, string>("sort", sort));
+                    getParams.Add(new KeyValuePair<string, string>("sort", sort));
 
-                string optionalQuery = string.Empty;
-                if (queryParameters.Count > 0)
-                {
-                    for (int i = 0; i < queryParameters.Count; i++)
-                    {
-                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                    }
-                }
-                return await Api.GetGenericAsync<Models.API.v5.Videos.TopVideos>($"https://api.twitch.tv/kraken/videos/top{optionalQuery}", null, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Videos.TopVideos>($"https://api.twitch.tv/kraken/videos/top", getParams, null, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetFollowedVideos
             public async Task<Models.API.v5.Videos.FollowedVideos> GetFollowedVideosAsync(int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
-                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
                 if (limit != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
                 if (offset != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
                 if (broadcastType != null && broadcastType.Count > 0)
                 {
                     bool isCorrect = false;
@@ -126,23 +117,14 @@
                         else { isCorrect = false; break; }
                     }
                     if (isCorrect)
-                        queryParameters.Add(new KeyValuePair<string, string>("broadcast_type", string.Join(",", broadcastType)));
+                        getParams.Add(new KeyValuePair<string, string>("broadcast_type", string.Join(",", broadcastType)));
                 }
                 if (language != null && language.Count > 0)
-                    queryParameters.Add(new KeyValuePair<string, string>("language", string.Join(",", language)));
+                    getParams.Add(new KeyValuePair<string, string>("language", string.Join(",", language)));
                 if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
-                    queryParameters.Add(new KeyValuePair<string, string>("sort", sort));
+                    getParams.Add(new KeyValuePair<string, string>("sort", sort));
 
-                string optionalQuery = string.Empty;
-                if (queryParameters.Count > 0)
-                {
-                    for (int i = 0; i < queryParameters.Count; i++)
-                    {
-                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                    }
-                }
-                return await Api.GetGenericAsync<Models.API.v5.Videos.FollowedVideos>($"https://api.twitch.tv/kraken/videos/followed{optionalQuery}", authToken, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Videos.FollowedVideos>($"https://api.twitch.tv/kraken/videos/followed", getParams, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region UploadVideo
@@ -160,28 +142,19 @@
             {
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
                 if (string.IsNullOrWhiteSpace(videoId)) { throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrWhiteSpace(description))
-                    queryParameters.Add(new KeyValuePair<string, string>("description", description));
+                    getParams.Add(new KeyValuePair<string, string>("description", description));
                 if (!string.IsNullOrWhiteSpace(game))
-                    queryParameters.Add(new KeyValuePair<string, string>("game", game));
+                    getParams.Add(new KeyValuePair<string, string>("game", game));
                 if (!string.IsNullOrWhiteSpace(language))
-                    queryParameters.Add(new KeyValuePair<string, string>("language", language));
+                    getParams.Add(new KeyValuePair<string, string>("language", language));
                 if (!string.IsNullOrWhiteSpace(tagList))
-                    queryParameters.Add(new KeyValuePair<string, string>("tagList", tagList));
+                    getParams.Add(new KeyValuePair<string, string>("tagList", tagList));
                 if (!string.IsNullOrWhiteSpace(title))
-                    queryParameters.Add(new KeyValuePair<string, string>("title", title));
+                    getParams.Add(new KeyValuePair<string, string>("title", title));
 
-                string optionalQuery = string.Empty;
-                if (queryParameters.Count > 0)
-                {
-                    for (int i = 0; i < queryParameters.Count; i++)
-                    {
-                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                    }
-                }
-                return await Api.PutGenericAsync<Models.API.v5.Videos.Video>($"https://api.twitch.tv/kraken/videos/{videoId}{optionalQuery}", null, authToken, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.PutGenericAsync<Models.API.v5.Videos.Video>($"https://api.twitch.tv/kraken/videos/{videoId}", null, getParams, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region DeleteVideo
@@ -189,28 +162,28 @@
             {
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
                 if (string.IsNullOrWhiteSpace(videoId)) { throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/videos/{videoId}", authToken, ApiVersion.v5).ConfigureAwait(false);
+                await Api.DeleteAsync($"https://api.twitch.tv/kraken/videos/{videoId}", null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
 
 
             private async Task<Models.API.v5.UploadVideo.UploadVideoListing> createVideoAsync(string channelId, string title, string description = null, string game = null, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
             {
-                string paramsStr = $"?channel_id={channelId}&title={title}";
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("channel_id", channelId), new KeyValuePair<string, string>("title", title) };
                 if (description != null)
-                    paramsStr += $"&description={description}";
+                    getParams.Add(new KeyValuePair<string, string>("description", description));
                 if (game != null)
-                    paramsStr += $"&game={game}";
+                    getParams.Add(new KeyValuePair<string, string>("game", game));
                 if (language != null)
-                    paramsStr += $"&language={language}";
+                    getParams.Add(new KeyValuePair<string, string>("language", language));
                 if (tagList != null)
-                    paramsStr += $"&tag_list={tagList}";
+                    getParams.Add(new KeyValuePair<string, string>("tag_list", tagList));
                 if (viewable == Enums.Viewable.Public)
-                    paramsStr += $"&viewable=public";
+                    getParams.Add(new KeyValuePair<string, string>("viewable", "public"));
                 else
-                    paramsStr += $"&viewable=private";
+                    getParams.Add(new KeyValuePair<string, string>("viewable", "private"));
                 //TODO: Create RFC3339 date out of viewableAt
-                return await Api.PostGenericAsync<Models.API.v5.UploadVideo.UploadVideoListing>($"https://api.twitch.tv/kraken/videos{paramsStr}", null, accessToken);
+                return await Api.PostGenericAsync<Models.API.v5.UploadVideo.UploadVideoListing>($"https://api.twitch.tv/kraken/videos", null, getParams, accessToken);
             }
 
             private long MAX_VIDEO_SIZE = 10737418240;
@@ -277,78 +250,69 @@
                     (userId != null && gameId != null))
                     throw new Exceptions.API.BadParameterException("If videoIds are present, you may not use userid or gameid. If gameid is present, you may not use videoIds or userid. If userid is present, you may not use videoids or gameids.");
 
-                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
                 if (videoIds != null && videoIds.Count > 0)
                     foreach (var videoId in videoIds)
-                        queryParameters.Add(new KeyValuePair<string, string>("id", videoId));
+                        getParams.Add(new KeyValuePair<string, string>("id", videoId));
                 if (userId != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("user_id", userId));
+                    getParams.Add(new KeyValuePair<string, string>("user_id", userId));
                 if (gameId != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("game_id", gameId));
+                    getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
 
                 if(videoIds.Count == 0)
                 {
                     if (after != null)
-                        queryParameters.Add(new KeyValuePair<string, string>("after", after));
+                        getParams.Add(new KeyValuePair<string, string>("after", after));
                     if (before != null)
-                        queryParameters.Add(new KeyValuePair<string, string>("before", before));
-                    queryParameters.Add(new KeyValuePair<string, string>("first", first.ToString()));
+                        getParams.Add(new KeyValuePair<string, string>("before", before));
+                    getParams.Add(new KeyValuePair<string, string>("first", first.ToString()));
                     if (language != null)
-                        queryParameters.Add(new KeyValuePair<string, string>("language", language));
+                        getParams.Add(new KeyValuePair<string, string>("language", language));
                     switch(period)
                     {
                         case Period.All:
-                            queryParameters.Add(new KeyValuePair<string, string>("period", "all"));
+                            getParams.Add(new KeyValuePair<string, string>("period", "all"));
                             break;
                         case Period.Day:
-                            queryParameters.Add(new KeyValuePair<string, string>("period", "day"));
+                            getParams.Add(new KeyValuePair<string, string>("period", "day"));
                             break;
                         case Period.Month:
-                            queryParameters.Add(new KeyValuePair<string, string>("period", "month"));
+                            getParams.Add(new KeyValuePair<string, string>("period", "month"));
                             break;
                         case Period.Week:
-                            queryParameters.Add(new KeyValuePair<string, string>("period", "week"));
+                            getParams.Add(new KeyValuePair<string, string>("period", "week"));
                             break;
                     }
                     switch (sort)
                     {
                         case VideoSort.Time:
-                            queryParameters.Add(new KeyValuePair<string, string>("sort", "time"));
+                            getParams.Add(new KeyValuePair<string, string>("sort", "time"));
                             break;
                         case VideoSort.Trending:
-                            queryParameters.Add(new KeyValuePair<string, string>("sort", "trending"));
+                            getParams.Add(new KeyValuePair<string, string>("sort", "trending"));
                             break;
                         case VideoSort.Views:
-                            queryParameters.Add(new KeyValuePair<string, string>("sort", "views"));
+                            getParams.Add(new KeyValuePair<string, string>("sort", "views"));
                             break;
                     }
                     switch (type)
                     {
                         case VideoType.All:
-                            queryParameters.Add(new KeyValuePair<string, string>("type", "all"));
+                            getParams.Add(new KeyValuePair<string, string>("type", "all"));
                             break;
                         case VideoType.Highlight:
-                            queryParameters.Add(new KeyValuePair<string, string>("type", "highlight"));
+                            getParams.Add(new KeyValuePair<string, string>("type", "highlight"));
                             break;
                         case VideoType.Archive:
-                            queryParameters.Add(new KeyValuePair<string, string>("type", "archive"));
+                            getParams.Add(new KeyValuePair<string, string>("type", "archive"));
                             break;
                         case VideoType.Upload:
-                            queryParameters.Add(new KeyValuePair<string, string>("type", "upload"));
+                            getParams.Add(new KeyValuePair<string, string>("type", "upload"));
                             break;
                     }
                 }
 
-                string optionalQuery = string.Empty;
-                if (queryParameters.Count > 0)
-                {
-                    for (int i = 0; i < queryParameters.Count; i++)
-                    {
-                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                    }
-                }
-                return await Api.GetGenericAsync<Models.API.Helix.Videos.GetVideos.GetVideosResponse>($"https://api.twitch.tv/helix/videos{optionalQuery}", null, ApiVersion.Helix).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.Helix.Videos.GetVideos.GetVideosResponse>($"https://api.twitch.tv/helix/videos", getParams, null, ApiVersion.Helix).ConfigureAwait(false);
             }
         }
     }

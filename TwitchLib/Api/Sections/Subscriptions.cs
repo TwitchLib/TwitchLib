@@ -24,18 +24,18 @@
             public async Task<Models.API.v3.Subscriptions.SubscribersResponse> GetSubscribersAsync(string channel, int limit = 25, int offset = 0, Enums.Direction direction = Enums.Direction.Ascending, string accessToken = null)
             {
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, accessToken);
-                string paramsStr = $"?limit={limit}&offset={offset}";
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("limit", limit.ToString()), new KeyValuePair<string, string>("offset", offset.ToString()) };
                 switch (direction)
                 {
                     case Enums.Direction.Ascending:
-                        paramsStr += "&direction=asc";
+                        getParams.Add(new KeyValuePair<string, string>("direction", "asc"));
                         break;
                     case Enums.Direction.Descending:
-                        paramsStr += "&direction=desc";
+                        getParams.Add(new KeyValuePair<string, string>("direction", "desc"));
                         break;
                 }
 
-                return await Api.GetGenericAsync<Models.API.v3.Subscriptions.SubscribersResponse>($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions{paramsStr}", accessToken, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v3.Subscriptions.SubscribersResponse>($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions", getParams, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetAllSubscribers
@@ -80,7 +80,7 @@
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Channel_Check_Subscription, accessToken);
                 try
                 {
-                    return await Api.GetGenericAsync<Models.API.v3.Subscriptions.Subscriber>($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions/{targetUser}", accessToken, ApiVersion.v3).ConfigureAwait(false);
+                    return await Api.GetGenericAsync<Models.API.v3.Subscriptions.Subscriber>($"https://api.twitch.tv/kraken/channels/{channel}/subscriptions/{targetUser}", null, accessToken, ApiVersion.v3).ConfigureAwait(false);
                 }
                 catch
                 {
@@ -94,7 +94,7 @@
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.User_Subscriptions, accessToken);
                 try
                 {
-                    return await Api.GetGenericAsync<Models.API.v3.Subscriptions.ChannelSubscription>($"https://api.twitch.tv/kraken/users/{user}/subscriptions/{targetChannel}", accessToken, ApiVersion.v3).ConfigureAwait(false);
+                    return await Api.GetGenericAsync<Models.API.v3.Subscriptions.ChannelSubscription>($"https://api.twitch.tv/kraken/users/{user}/subscriptions/{targetChannel}", null, accessToken, ApiVersion.v3).ConfigureAwait(false);
                 }
                 catch
                 {

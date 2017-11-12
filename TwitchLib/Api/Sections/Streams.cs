@@ -28,45 +28,49 @@
             #region GetStream
             public async Task<Models.API.v3.Streams.StreamResponse> GetStreamAsync(string channel)
             {
-                return await Api.GetGenericAsync<Models.API.v3.Streams.StreamResponse>($"https://api.twitch.tv/kraken/streams/{channel}", null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v3.Streams.StreamResponse>($"https://api.twitch.tv/kraken/streams/{channel}", null, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetStreams
             public async Task<Models.API.v3.Streams.StreamsResponse> GetStreamsAsync(string game = null, string channel = null, int limit = 25, int offset = 0, string clientId = null, Enums.StreamType streamType = Enums.StreamType.All, string language = "en")
             {
-                string paramsStr = $"?limit={limit}&offset={offset}";
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("limit", limit.ToString()), new KeyValuePair<string, string>("offset", offset.ToString()) };
                 if (game != null)
-                    paramsStr += $"&game={game}";
+                    getParams.Add(new KeyValuePair<string, string>("game", game));
                 if (channel != null)
-                    paramsStr += $"&channel={channel}";
+                    getParams.Add(new KeyValuePair<string, string>("channel", channel));
                 if (clientId != null)
-                    paramsStr += $"&client_id={clientId}";
+                    getParams.Add(new KeyValuePair<string, string>("client_id", clientId));
                 if (language != null)
-                    paramsStr += $"&language={language}";
+                    getParams.Add(new KeyValuePair<string, string>("language", language));
                 switch (streamType)
                 {
                     case Enums.StreamType.All:
+                        getParams.Add(new KeyValuePair<string, string>("stream_type", "all"));
                         break;
                     case Enums.StreamType.Live:
+                        getParams.Add(new KeyValuePair<string, string>("stream_type", "live"));
                         break;
                     case Enums.StreamType.Playlist:
+                        getParams.Add(new KeyValuePair<string, string>("stream_type", "playlist"));
                         break;
                 }
 
-                return await Api.GetGenericAsync<Models.API.v3.Streams.StreamsResponse>($"https://api.twitch.tv/kraken/streams{paramsStr}", null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v3.Streams.StreamsResponse>($"https://api.twitch.tv/kraken/streams", getParams, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetFeaturedStreams
             public async Task<Models.API.v3.Streams.FeaturedStreamsResponse> GetFeaturedStreamsAsync(int limit = 25, int offset = 0)
             {
                 string paramsStr = $"?limit={limit}&offset={offset}";
-                return await Api.GetGenericAsync<Models.API.v3.Streams.FeaturedStreamsResponse>($"https://api.twitch.tv/kraken/streams/featured{paramsStr}", null, ApiVersion.v3).ConfigureAwait(false);
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("limit", limit.ToString()), new KeyValuePair<string, string>("offset", offset.ToString()) };
+                return await Api.GetGenericAsync<Models.API.v3.Streams.FeaturedStreamsResponse>($"https://api.twitch.tv/kraken/streams/featured", getParams, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetStreamsSummary
             public async Task<Models.API.v3.Streams.Summary> GetStreamsSummaryAsync()
             {
-                return await Api.GetGenericAsync<Models.API.v3.Streams.Summary>("https://api.twitch.tv/kraken/streams/summary", null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v3.Streams.Summary>("https://api.twitch.tv/kraken/streams/summary", null, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
         }
@@ -80,91 +84,68 @@
             public async Task<Models.API.v5.Streams.StreamByUser> GetStreamByUserAsync(string channelId, string streamType = null)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid for fetching streams. It is not allowed to be null, empty or filled with whitespaces."); }
-                string optionalQuery = string.Empty;
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
                 {
-                    optionalQuery = $"?stream_type={streamType}";
+                    getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));
                 }
-                return await Api.GetGenericAsync<Models.API.v5.Streams.StreamByUser>($"https://api.twitch.tv/kraken/streams/{channelId}{optionalQuery}", null, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Streams.StreamByUser>($"https://api.twitch.tv/kraken/streams/{channelId}", getParams, null, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetLiveStreams
             public async Task<Models.API.v5.Streams.LiveStreams> GetLiveStreamsAsync(List<string> channelList = null, string game = null, string language = null, string streamType = null, int? limit = null, int? offset = null)
             {
-                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
                 if (channelList != null && channelList.Count > 0)
-                    queryParameters.Add(new KeyValuePair<string, string>("channel", string.Join(",", channelList)));
+                    getParams.Add(new KeyValuePair<string, string>("channel", string.Join(",", channelList)));
                 if (!string.IsNullOrWhiteSpace(game))
-                    queryParameters.Add(new KeyValuePair<string, string>("game", game));
+                    getParams.Add(new KeyValuePair<string, string>("game", game));
                 if (!string.IsNullOrWhiteSpace(language))
-                    queryParameters.Add(new KeyValuePair<string, string>("language", language));
+                    getParams.Add(new KeyValuePair<string, string>("language", language));
                 if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
-                    queryParameters.Add(new KeyValuePair<string, string>("stream_type", streamType));
+                    getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));
                 if (limit != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
                 if (offset != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
 
-                string optionalQuery = string.Empty;
-                if (queryParameters.Count > 0)
-                {
-                    for (int i = 0; i < queryParameters.Count; i++)
-                    {
-                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                    }
-                }
-                return await Api.GetGenericAsync<Models.API.v5.Streams.LiveStreams>($"https://api.twitch.tv/kraken/streams/{optionalQuery}", null, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Streams.LiveStreams>($"https://api.twitch.tv/kraken/streams/", getParams, null, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetStreamsSummary
             public async Task<Models.API.v5.Streams.StreamsSummary> GetStreamsSummaryAsync(string game = null)
             {
-                string optionalQuery = (!string.IsNullOrWhiteSpace(game)) ? $"?game={game}" : string.Empty;
-                return await Api.GetGenericAsync<Models.API.v5.Streams.StreamsSummary>($"https://api.twitch.tv/kraken/streams/summary{optionalQuery}", null, ApiVersion.v5).ConfigureAwait(false);
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
+                if (game != null)
+                    getParams.Add(new KeyValuePair<string, string>("game", game));
+                return await Api.GetGenericAsync<Models.API.v5.Streams.StreamsSummary>($"https://api.twitch.tv/kraken/streams/summary", getParams, null, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetFeaturedStreams
             public async Task<Models.API.v5.Streams.FeaturedStreams> GetFeaturedStreamAsync(int? limit = null, int? offset = null)
             {
-                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
                 if (limit != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
                 if (offset != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
-                string optionalQuery = string.Empty;
-                if (queryParameters.Count > 0)
-                {
-                    for (int i = 0; i < queryParameters.Count; i++)
-                    {
-                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                    }
-                }
-                return await Api.GetGenericAsync<Models.API.v5.Streams.FeaturedStreams>($"https://api.twitch.tv/kraken/streams/featured{optionalQuery}", null, ApiVersion.v5).ConfigureAwait(false);
+                    getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
+
+                return await Api.GetGenericAsync<Models.API.v5.Streams.FeaturedStreams>($"https://api.twitch.tv/kraken/streams/featured", getParams, null, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetFollowedStreams
             public async Task<Models.API.v5.Streams.FollowedStreams> GetFollowedStreamsAsync(string streamType = null, int? limit = null, int? offset = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.User_Read, authToken);
-                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
-                    queryParameters.Add(new KeyValuePair<string, string>("stream_type", streamType));
+                    getParams.Add(new KeyValuePair<string, string>("stream_type", streamType));
                 if (limit != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
                 if (offset != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
-                string optionalQuery = string.Empty;
-                if (queryParameters.Count > 0)
-                {
-                    for (int i = 0; i < queryParameters.Count; i++)
-                    {
-                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                    }
-                }
-                return await Api.GetGenericAsync<Models.API.v5.Streams.FollowedStreams>($"https://api.twitch.tv/kraken/streams/followed{optionalQuery}", authToken, ApiVersion.v5).ConfigureAwait(false);
+                    getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
+
+                return await Api.GetGenericAsync<Models.API.v5.Streams.FollowedStreams>($"https://api.twitch.tv/kraken/streams/followed", getParams, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetUptime
@@ -197,50 +178,50 @@
             }
             public async Task<Models.API.Helix.Streams.GetStreams.GetStreamsResponse> GetStreams(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
             {
-                string getParams = $"?first={first}&type={type}";
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("first", first.ToString()), new KeyValuePair<string, string>("type", type) };
                 if (after != null)
-                    getParams += $"&after={after}";
+                    getParams.Add(new KeyValuePair<string, string>("after", after));
                 if (communityIds != null && communityIds.Count > 0)
                     foreach (var communityId in communityIds)
-                        getParams += $"&community_id={communityId}";
+                        getParams.Add(new KeyValuePair<string, string>("community_id", communityId));
                 if (gameIds != null && gameIds.Count > 0)
                     foreach (var gameId in gameIds)
-                        getParams += $"&game_id={gameId}";
+                        getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
                 if (languages != null && languages.Count > 0)
                     foreach (var language in languages)
-                        getParams += $"&language={language}";
+                        getParams.Add(new KeyValuePair<string, string>("language", language));
                 if (userIds != null && userIds.Count > 0)
                     foreach (var userId in userIds)
-                        getParams += $"&user_id={userId}";
+                        getParams.Add(new KeyValuePair<string, string>("user_id", userId));
                 if (userLogins != null && userLogins.Count > 0)
                     foreach (var userLogin in userLogins)
-                        getParams += $"&user_login={userLogin}";
+                        getParams.Add(new KeyValuePair<string, string>("user_login", userLogin));
 
-                return await Api.GetGenericAsync<Models.API.Helix.Streams.GetStreams.GetStreamsResponse>($"https://api.twitch.tv/helix/streams{getParams}", api: ApiVersion.Helix).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.Helix.Streams.GetStreams.GetStreamsResponse>($"https://api.twitch.tv/helix/streams", getParams, api: ApiVersion.Helix).ConfigureAwait(false);
             }
 
             public async Task<Models.API.Helix.StreamsMetadata.GetStreamsMetadataResponse> GetStreamsMetadata(string after = null, List<string> communityIds = null, int first = 20, List<string> gameIds = null, List<string> languages = null, string type = "all", List<string> userIds = null, List<string> userLogins = null)
             {
-                string getParams = $"?first={first}&type={type}";
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("first", first.ToString()), new KeyValuePair<string, string>("type", type) };
                 if (after != null)
-                    getParams += $"&after={after}";
+                    getParams.Add(new KeyValuePair<string, string>("after", after));
                 if (communityIds != null && communityIds.Count > 0)
                     foreach (var communityId in communityIds)
-                        getParams += $"&community_id={communityId}";
+                        getParams.Add(new KeyValuePair<string, string>("community_id", communityId));
                 if (gameIds != null && gameIds.Count > 0)
                     foreach (var gameId in gameIds)
-                        getParams += $"&game_id={gameId}";
+                        getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
                 if (languages != null && languages.Count > 0)
                     foreach (var language in languages)
-                        getParams += $"&language={language}";
+                        getParams.Add(new KeyValuePair<string, string>("language", language));
                 if (userIds != null && userIds.Count > 0)
                     foreach (var userId in userIds)
-                        getParams += $"&user_id={userId}";
+                        getParams.Add(new KeyValuePair<string, string>("user_id", userId));
                 if (userLogins != null && userLogins.Count > 0)
                     foreach (var userLogin in userLogins)
-                        getParams += $"&user_login={userLogin}";
+                        getParams.Add(new KeyValuePair<string, string>("user_login", userLogin));
 
-                return await Api.GetGenericAsync<Models.API.Helix.StreamsMetadata.GetStreamsMetadataResponse>($"https://api.twitch.tv/helix/streams/metadata{getParams}", api: ApiVersion.Helix).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.Helix.StreamsMetadata.GetStreamsMetadataResponse>($"https://api.twitch.tv/helix/streams/metadata", getParams, api: ApiVersion.Helix).ConfigureAwait(false);
             }
         }
     }
