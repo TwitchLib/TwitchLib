@@ -224,7 +224,7 @@ You are also more than welcome to clone/fork this repo and build the library you
  * igor523 ([igor523](https://github.com/igor523))
  * jxlarrea ([jxlarrea](https://github.com/jxlarrea))
  * GlitchHound ([GlitchHound](https://github.com/GlitchHound))
- * PFCKrutonium ([PFCKrutonium](https://github.com/PFCKrutonium))
+ * Krutonium ([Krutonium](https://github.com/Krutonium))
  * toffaste1337([toffaste1337](https://github.com/toffaste1337))
  * Mr_Examed ([Mr_Examed](https://www.twitch.tv/mr_examed))
  * XuluniX ([XuluniX](https://github.com/XuluniX))
