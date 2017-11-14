@@ -121,7 +121,10 @@ namespace TwitchLib.Internal.Parsing
             if (readType != null && readType == "PRIVMSG")
             {
                 var chatMessage = new ChatMessage(botUsername, message, ref _channelEmotes, WillReplaceEmotes);
-                return new DetectionReturn((_commandIdentifiers.Count != 0 && chatMessage.Message.Length > 0 ? _commandIdentifiers.Contains(chatMessage.Message[0]) : false), channelRet);
+                if(_commandIdentifiers != null && _commandIdentifiers.Count != 0 && chatMessage.Message != null && chatMessage.Message.Length > 0)
+                    return new DetectionReturn( _commandIdentifiers.Contains(chatMessage.Message[0]), channelRet);
+                else
+                    return new DetectionReturn(false, channelRet);
             }
             return new DetectionReturn(false);
         }
