@@ -165,8 +165,11 @@ namespace TwitchLibExample
 
         private void onModeratorsReceived(object sender, OnModeratorsReceivedArgs e)
         {
-            foreach (var mod in e.Moderators)
-                MessageBox.Show($"Moderator name: {mod}\nIn channel: {e.Channel}");
+            if (e.Moderators.Count > 0)
+                foreach (var mod in e.Moderators)
+                    MessageBox.Show($"Moderator name: {mod}\nIn channel: {e.Channel}");
+            else
+                MessageBox.Show("No moderators!");
         }
 
         private void onChannelStateChanged(object sender, OnChannelStateChangedArgs e)
