@@ -889,11 +889,21 @@
             response = Internal.Parsing.Chat.detectedModeratorsReceived(ircMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnModeratorsReceived?.Invoke(this, new OnModeratorsReceivedArgs
+                if(ircMessage.Contains("There are no moderators of this room."))
                 {
-                    Channel = ircMessage.Split('#')[1].Split(' ')[0],
-                    Moderators = ircMessage.Replace(" ", "").Split(':')[3].Split(',').ToList<string>()
-                });
+                    OnModeratorsReceived?.Invoke(this, new OnModeratorsReceivedArgs
+                    {
+                        Channel = ircMessage.Split('#')[1].Split(' ')[0],
+                        Moderators = new List<string>()
+                    });
+                } else
+                {
+                    OnModeratorsReceived?.Invoke(this, new OnModeratorsReceivedArgs
+                    {
+                        Channel = ircMessage.Split('#')[1].Split(' ')[0],
+                        Moderators = ircMessage.Replace(" ", "").Split(':')[3].Split(',').ToList<string>()
+                    });
+                }
                 return;
             }
             #endregion
