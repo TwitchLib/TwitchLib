@@ -249,6 +249,11 @@
         /// Fires when a raid notification is detected in chat
         /// </summary>
         public event EventHandler<OnRaidNotificationArgs> OnRaidNotification;
+
+        /// <summary>
+        /// Fires when a subscription is gifted and announced in chat
+        /// </summary>
+        public event EventHandler<OnGiftedSubscriptionArgs> OnGiftedSubscription;
         #endregion  
 
         /// <summary>
@@ -831,6 +836,15 @@
             {
                 var raidNotification = new RaidNotification(ircMessage);
                 OnRaidNotification?.Invoke(this, new OnRaidNotificationArgs { RaidNotificaiton = raidNotification });
+                return;
+            }
+
+            // On gifted subscription detected in chat
+            response = Internal.Parsing.Chat.detectedGiftedSubscription(ircMessage, JoinedChannels);
+            if (response.Successful)
+            {
+                var giftedSubscription = new GiftedSubscription(ircMessage);
+                OnGiftedSubscription?.Invoke(this, new OnGiftedSubscriptionArgs { GiftedSubscription = giftedSubscription });
                 return;
             }
             #endregion

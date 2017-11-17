@@ -553,5 +553,25 @@ namespace TwitchLib.Internal.Parsing
                 return new DetectionReturn(message.Split(';')[7].Contains("=") && message.Split(';')[7].Split('=')[1] == "raid", channelRet);
             return new DetectionReturn(false, null);
         }
+
+        public static DetectionReturn detectedGiftedSubscription(string message, List<JoinedChannel> channels)
+        {
+            //@badges=;color=;display-name=gekkebelg1803;emotes=;id=ad77ae72-83fd-4b46-947b-27b6aae5db41;login=gekkebelg1803;mod=0;msg-id=subgift;msg-param-months=1;msg-param-recipient-display-name=Chewwy94;msg-param-recipient-id=44452165;msg-param-recipient-user-name=chewwy94;msg-param-sub-plan-name=Channel\sSubscription\s(LIRIK);msg-param-sub-plan=1000;room-id=23161357;subscriber=0;system-msg=gekkebelg1803\sgifted\sa\s$4.99\ssub\sto\sChewwy94!;tmi-sent-ts=1510781070702;turbo=0;user-id=127964463;user-type= :tmi.twitch.tv USERNOTICE #lirik
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
+            if (readType != null && readType == "USERNOTICE")
+                return new DetectionReturn(message.Split(';')[7].Contains("=") && message.Split(';')[7].Split('=')[1] == "subgift", channelRet);
+            return new DetectionReturn(false, null);
+        }
     }
 }
