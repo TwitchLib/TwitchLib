@@ -75,6 +75,8 @@ namespace TwitchLibExample
             newClient.OnUserJoined += onUserJoined;
             newClient.OnHostingStarted += new EventHandler<OnHostingStartedArgs>(onHostingStarted);
             newClient.OnHostingStopped += new EventHandler<OnHostingStoppedArgs>(onHostingStopped);
+            newClient.OnRaidNotification += new EventHandler<OnRaidNotificationArgs>(onRaidNotification);
+            newClient.OnGiftedSubscription += new EventHandler<OnGiftedSubscriptionArgs>(onGiftedSubscription);
             // newClient.OnBeingHosted += new EventHandler<OnBeingHostedArgs>(onBeingHosted); ONLY USE IF YOU ARE JOING BROADCASTER's CHANNEL AS THE BROADCASTER (exception will be thrown if not)
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
@@ -98,9 +100,19 @@ namespace TwitchLibExample
                 comboBox6.Items.Add(textBox4.Text);
         }
 
+        private void onGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
+        {
+            MessageBox.Show($"Gifted subscription detected!\n\nDonated by: {e.GiftedSubscription.Login}\nRecipient: {e.GiftedSubscription.MsgParamRecipientUserName}");
+        }
+
         private void onUserJoined(object sender, OnUserJoinedArgs e)
         {
             listBox5.Items.Add(e.Username);
+        }
+
+        private void onRaidNotification(object sender, OnRaidNotificationArgs e)
+        {
+            MessageBox.Show($"Raid detected from: {e.RaidNotificaiton.MsgParamLogin}, with {e.RaidNotificaiton.MsgParamViewerCount} viewers.");
         }
 
         private void onBeingHosted(object sender, OnBeingHostedArgs e)
