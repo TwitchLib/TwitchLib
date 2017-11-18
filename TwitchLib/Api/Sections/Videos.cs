@@ -232,7 +232,7 @@
 
             private async Task completeVideoUpload(Models.API.v5.UploadVideo.Upload upload, string accessToken)
             {
-                await Api.PostAsync($"{upload.Url}/complete?upload_token={upload.Token}", null, accessToken);
+                await Api.PostAsync($"{upload.Url}/complete?upload_token={upload.Token}", null, null,  accessToken);
             }
         }
 
