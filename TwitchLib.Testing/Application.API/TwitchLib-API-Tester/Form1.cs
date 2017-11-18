@@ -791,5 +791,14 @@ namespace TwitchLib_API_Tester
             foreach (var video in resp.Videos)
                 MessageBox.Show($"Video title: {video.Title}\nowner: {video.UserId}\ndescription: {video.Description}\nview count: {video.ViewCount}");
         }
+
+        private async void button88_Click(object sender, EventArgs e)
+        {
+            var resp = await api.Webhooks.helix.UserFollowsSomeoneAsync(textBox87.Text, TwitchLib.Enums.WebhookCallMode.Subscribe, textBox86.Text);
+            if (resp)
+                MessageBox.Show("Webhook created successfully!");
+            else
+                MessageBox.Show("Webhook was denied!");
+        }
     }
 }
