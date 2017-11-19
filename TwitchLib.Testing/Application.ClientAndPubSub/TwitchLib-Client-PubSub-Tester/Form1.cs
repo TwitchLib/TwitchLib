@@ -77,6 +77,10 @@ namespace TwitchLibExample
             newClient.OnHostingStopped += new EventHandler<OnHostingStoppedArgs>(onHostingStopped);
             newClient.OnRaidNotification += new EventHandler<OnRaidNotificationArgs>(onRaidNotification);
             newClient.OnGiftedSubscription += new EventHandler<OnGiftedSubscriptionArgs>(onGiftedSubscription);
+            newClient.OnSelfRaidError += onSelfRaidError;
+            newClient.OnNoPermissionError += onNoPermissionError;
+            newClient.OnRaidedChannelIsMatureAudience += onRaidedChannelIsMatureAudience;
+            
             // newClient.OnBeingHosted += new EventHandler<OnBeingHostedArgs>(onBeingHosted); ONLY USE IF YOU ARE JOING BROADCASTER's CHANNEL AS THE BROADCASTER (exception will be thrown if not)
             //Add message throttler
             newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
@@ -98,6 +102,21 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onSelfRaidError(object sender, EventArgs e)
+        {
+            MessageBox.Show("You can't raid a channel you're already in...");
+        }
+
+        private void onNoPermissionError(object sender, EventArgs e)
+        {
+            MessageBox.Show("You don't have permisson to do that action...");
+        }
+
+        private void onRaidedChannelIsMatureAudience(object sender, EventArgs e)
+        {
+            MessageBox.Show("The channel you just raided is for mature audience only.");
         }
 
         private void onGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
@@ -474,6 +493,26 @@ namespace TwitchLibExample
             pubsub.OnWhisper += new EventHandler<OnWhisperArgs>(onWhisper);
             pubsub.OnChannelSubscription += new EventHandler<OnChannelSubscriptionArgs>(onChannelSubscription);
             pubsub.Connect();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (clients.Count == 0)
+            {
+                MessageBox.Show("You must have at least one connected client.");
+                return;
+            }
+            clients[0].Raid(clients[0].JoinedChannels[0], "burkeblack");
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (clients.Count == 0)
+            {
+                MessageBox.Show("You must have at least one connected client.");
+                return;
+            }
+            clients[0].Raid(clients[0].JoinedChannels[0], "swiftyspiffy");
         }
     }
 }
