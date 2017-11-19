@@ -93,7 +93,7 @@ namespace TwitchLib.Services
         public void StartService()
         {
             if(! _channelIds.Any())
-                throw new UnintializedChannelListException("You must atleast add 1 channel to monitor before starting the Service");
+                throw new UnintializedChannelListException("You must atleast add 1 channel to monitor before starting the Service. Use SetStreamsByUsername() or SetStreamsById()");
 
             if(_checkStatusOnStart)
             {
