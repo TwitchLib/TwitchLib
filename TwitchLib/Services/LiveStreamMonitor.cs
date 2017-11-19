@@ -1,13 +1,18 @@
-﻿namespace TwitchLib.Services
+﻿
+
+namespace TwitchLib.Services
 {
     #region using directives
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Threading.Tasks;
     using System.Timers;
     using Events.Services.LiveStreamMonitor;
     using System.Linq;
     using System.Collections.Concurrent;
+    using Exceptions.API;
+    using Exceptions.Services;
     #endregion
     /// <summary>Service that allows customizability and subscribing to detection of channels going online/offline.</summary>
     public class LiveStreamMonitor
@@ -15,10 +20,10 @@
         #region Private Variables
         private string _clientId;
         private int _checkIntervalSeconds;
-        private bool _isStartup = false;
+        private bool _isStartup;
         private List<string> _channelIds;
-        private ConcurrentDictionary<string, string> _channelToId;
-        private ConcurrentDictionary<string, Models.API.v5.Streams.Stream> _statuses;
+        private readonly ConcurrentDictionary<string, string> _channelToId;
+        private readonly ConcurrentDictionary<string, Models.API.v5.Streams.Stream> _statuses;
         private readonly Timer _streamMonitorTimer = new Timer();
         private readonly bool _checkStatusOnStart;
         private readonly bool _invokeEventsOnStart;
@@ -31,22 +36,19 @@
         public List<string> ChannelIds
         {
             get => _channelIds.ToList();
-            protected set
-            {
-                _channelIds = value;
-            }
+            protected set => _channelIds = value;
         }
         /// <summary> Property representing Twitch channels service is monitoring. </summary>
-        public List<string> Channels =>  _channelToId.Keys.ToList();
+        public ReadOnlyCollection<string> Channels => _channelToId.Keys.ToList().AsReadOnly();
 
         /// <summary>Property representing application client Id, also updates it in TwitchApi.</summary>
-        public string ClientId { get { return _clientId; } set { _clientId = value; _api.Settings.ClientId = value; } }
+        public string ClientId { get => _clientId; set { _clientId = value; _api.Settings.ClientId = value; } }
         /// <summary> </summary>
         public List<Models.API.v5.Streams.Stream> CurrentLiveStreams { get { return _statuses.Where(x => x.Value != null).Select(x => x.Value).ToList(); } }
         /// <summary> </summary>
         public List<string> CurrentOfflineStreams { get { return _statuses.Where(x => x.Value == null).Select(x => x.Key).ToList(); } }
         /// <summary>Property representing interval between Twitch Api calls, in seconds. Recommended: 60</summary>
-        public int CheckIntervalSeconds { get { return _checkIntervalSeconds; } set { _checkIntervalSeconds = value; _streamMonitorTimer.Interval = value * 1000; } }
+        public int CheckIntervalSeconds { get => _checkIntervalSeconds; set { _checkIntervalSeconds = value; _streamMonitorTimer.Interval = value * 1000; } }
         #endregion
 
         #region EVENTS
@@ -87,8 +89,12 @@
 
         #region CONTROLS
         /// <summary>Starts service, updates status of all channels, fires OnStreamMonitorStarted event. </summary>
+        /// <exception cref="UnintializedChannelListException">If no channels to monitor were provided an UnintializedChannelListException will be thrown.</exception>
         public void StartService()
         {
+            if(! _channelIds.Any())
+                throw new UnintializedChannelListException("You must atleast add 1 channel to monitor before starting the Service. Use SetStreamsByUsername() or SetStreamsById()");
+
             if(_checkStatusOnStart)
             {
                 _isStartup = true;
@@ -117,11 +123,11 @@
             _getUserIds(usernames);
 
             foreach (var item in _channelToId.Keys.Where(x => !usernames.Any(channelToId => channelToId.Equals(x))).ToList())
-                _channelToId.TryRemove(item, out string value);
+                _channelToId.TryRemove(item, out string _);
 
             SetStreamsByUserId(_channelToId.Values.ToList());
         }
-
+        
         /// <summary> Sets the list of channels to monitor by userid </summary>
         /// <param name="userids">List of channels to monitor as userids</param>
         public void SetStreamsByUserId(List<string> userids)
@@ -130,7 +136,7 @@
             _channelIds.ForEach(x => _statuses.TryAdd(x, null));
 
             foreach (var item in _statuses.Keys.Where(x => !_channelIds.Any(channelId => channelId.Equals(x))).ToList())
-                _statuses.TryRemove(item, out Models.API.v5.Streams.Stream value);
+                _statuses.TryRemove(item, out Models.API.v5.Streams.Stream _);
 
             OnStreamsSet?.Invoke(this,
                 new OnStreamsSetArgs { ChannelIds = ChannelIds, Channels = _channelToId, CheckIntervalSeconds = CheckIntervalSeconds });
@@ -144,11 +150,12 @@
 
         private void _checkOnlineStreams()
         {
+
             var liveStreamers = _getLiveStreamers().Result;
 
             foreach (var channel in _channelIds)
             {
-                var currentStream = liveStreamers.Where(x => x.Channel.Id == channel).FirstOrDefault();
+                var currentStream = liveStreamers.FirstOrDefault(x => x.Channel.Id == channel);
                 if (currentStream == null)
                 {
                     //offline
@@ -212,8 +219,8 @@
 
         private async void _getUserIds(List<string> usernames)
         {
-            var usernamesToGet = usernames.Where(u => !_channelToId.Any(c => c.Equals(u))).ToList();
-            int pages = (usernamesToGet.Count + 100 - 1) / 100;
+            var usernamesToGet = usernames.Where(u => !_channelToId.Any(c => c.Key.Equals(u))).ToList();
+            var pages = (usernamesToGet.Count + 100 - 1) / 100;
 
             for (var i = 0; i < pages; i++)
             {
