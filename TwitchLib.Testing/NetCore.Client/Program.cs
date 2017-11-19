@@ -87,7 +87,6 @@ namespace NetCore.Client
         {
             _streamMonitor.StopService();
             _client.Reconnect();
-            _streamMonitor.Channels.Clear();
             _streamMonitor.StartService();
         }
 
