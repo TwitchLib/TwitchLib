@@ -574,5 +574,65 @@ namespace TwitchLib.Internal.Parsing
                 return new DetectionReturn(message.Split(';')[7].Contains("=") && message.Split(';')[7].Split('=')[1] == "subgift", channelRet);
             return new DetectionReturn(false, null);
         }
+
+        public static DetectionReturn detectedSelfRaidError(string message, List<JoinedChannel> channels)
+        {
+            // @msg-id=raid_error_self :tmi.twitch.tv NOTICE #swiftyspiffy :A channel cannot raid itself.
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
+            if (readType != null && readType == "NOTICE")
+                return new DetectionReturn(message.Contains(" ") && message.Split(' ')[0].Contains("=") && message.Split(' ')[0].Split('=')[1] == "raid_error_self", channelRet);
+            return new DetectionReturn(false, null);
+        }
+
+        public static DetectionReturn detectedNoPermissionError(string message, List<JoinedChannel> channels)
+        {
+            // @msg-id=no_permission :tmi.twitch.tv NOTICE #swiftyspiffy :You don't have permission to perform that action.
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
+            if (readType != null && readType == "NOTICE")
+                return new DetectionReturn(message.Contains(" ") && message.Split(' ')[0].Contains("=") && message.Split(' ')[0].Split('=')[1] == "no_permission", channelRet);
+            return new DetectionReturn(false, null);
+        }
+
+        public static DetectionReturn detectedRaidedChannelIsMatureAudience(string message, List<JoinedChannel> channels)
+        {
+            // @msg-id=raid_notice_mature :tmi.twitch.tv NOTICE #swiftyspiffy :This channel is intended for mature audiences.
+            string readType = null;
+            string channelRet = null;
+            foreach (JoinedChannel channel in channels)
+            {
+                readType = getReadType(message, channel.Channel);
+                if (readType != null)
+                {
+                    channelRet = channel.Channel;
+                    break;
+                }
+            }
+
+            if (readType != null && readType == "NOTICE")
+                return new DetectionReturn(message.Contains(" ") && message.Split(' ')[0].Contains("=") && message.Split(' ')[0].Split('=')[1] == "raid_notice_mature", channelRet);
+            return new DetectionReturn(false, null);
+        }
     }
 }

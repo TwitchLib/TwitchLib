@@ -254,6 +254,15 @@
         /// Fires when a subscription is gifted and announced in chat
         /// </summary>
         public event EventHandler<OnGiftedSubscriptionArgs> OnGiftedSubscription;
+
+        /// <summary>Fires when TwitchClient attempts to host a channel it is in.</summary>
+        public EventHandler OnSelfRaidError;
+
+        /// <summary>Fires when TwitchClient receives generic no permission error from Twitch.</summary>
+        public EventHandler OnNoPermissionError;
+
+        /// <summary>Fires when newly raided channel is mature audience only.</summary>
+        public EventHandler OnRaidedChannelIsMatureAudience;
         #endregion  
 
         /// <summary>
@@ -845,6 +854,30 @@
             {
                 var giftedSubscription = new GiftedSubscription(ircMessage);
                 OnGiftedSubscription?.Invoke(this, new OnGiftedSubscriptionArgs { GiftedSubscription = giftedSubscription });
+                return;
+            }
+
+            // On TwitchClient tried to raid channel it is currently in
+            response = Internal.Parsing.Chat.detectedSelfRaidError(ircMessage, JoinedChannels);
+            if(response.Successful)
+            {
+                OnSelfRaidError?.Invoke(this, null);
+                return;
+            }
+
+            // On generic no permission error is detected in chat
+            response = Internal.Parsing.Chat.detectedNoPermissionError(ircMessage, JoinedChannels);
+            if(response.Successful)
+            {
+                OnNoPermissionError?.Invoke(this, null);
+                return;
+            }
+
+            // On raided channel is detected as being mature audience only
+            response = Internal.Parsing.Chat.detectedRaidedChannelIsMatureAudience(ircMessage, JoinedChannels);
+            if(response.Successful)
+            {
+                OnRaidedChannelIsMatureAudience?.Invoke(this, null);
                 return;
             }
             #endregion
