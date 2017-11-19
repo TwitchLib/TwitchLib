@@ -20,6 +20,8 @@
         public string Channel { get; protected set; }
         /// <summary>Property representing how long needed to be following to talk </summary>
         public TimeSpan FollowersOnly { get; protected set; }
+        /// <summary>Property representing mercury value. Not sure what it's for.</summary>
+        public bool Mercury { get; protected set; }
         /// <summary>Twitch assignedc room id</summary>
         public string RoomId { get; protected set; }
 
@@ -56,6 +58,9 @@
                         break;
                     case "room-id":
                         RoomId = part.Split('=')[1];
+                        break;
+                    case "mercury":
+                        Mercury = (part.Split('=')[1] == "1");
                         break;
                     default:
                         Console.WriteLine("[TwitchLib][ChannelState] Unaccounted for: " + part);
