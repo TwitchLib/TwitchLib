@@ -41,7 +41,7 @@
                 {
                     new KeyValuePair<string, string> ("grant_type", "refresh_token"),
                     new KeyValuePair<string, string> ("refresh_token", refreshToken),
-                    new KeyValuePair<string, string> ("client_id", clientId),
+                    new KeyValuePair<string, string> ("client_id", internalClientId),
                     new KeyValuePair<string, string> ("client_secret", clientSecret)
                 };
 
