@@ -1,10 +1,10 @@
 ﻿namespace TwitchLib
 {
-    using System.Collections.Generic;
+
     #region using directives
     using System.Threading.Tasks;
-    using TwitchLib.Api;
-    using TwitchLib.Enums;
+    using Api;
+    using System.Collections.Generic;
     #endregion
 
     public class Auth
@@ -25,8 +25,12 @@
             #region GetFreshToken
             public async Task<Models.API.v5.Auth.RefreshResponse> RefreshAuthToken(string refreshToken, string clientSecret, string clientId = null)
             {
+                var internalClientId = clientId ?? Api.Settings.ClientId;
+
                 if (string.IsNullOrWhiteSpace(refreshToken)) { throw new Exceptions.API.BadParameterException("The refresh token is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(clientSecret)) { throw new Exceptions.API.BadParameterException("The clientSecret is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(clientSecret)) { throw new Exceptions.API.BadParameterException("The client secret is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(internalClientId)) { throw new Exceptions.API.BadParameterException("The clientId is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+
                 var getParams = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string> ("grant_type", "refresh_token"),
