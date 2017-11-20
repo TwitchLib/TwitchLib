@@ -20,6 +20,7 @@ namespace TwitchLib
     {
         private readonly TwitchLibJsonSerializer jsonSerializer;
         public IApiSettings Settings { get; }
+        public Auth Auth { get; }
         public Blocks Blocks { get; }
         public Badges Badges { get; }
         public Bits Bits { get; }
@@ -46,6 +47,7 @@ namespace TwitchLib
 
         public TwitchAPI(string clientId = null, string accessToken = null)
         {
+            Auth = new Auth(this);
             Blocks = new Blocks(this);
             Badges = new Badges(this);
             Bits = new Bits(this);
@@ -361,7 +363,7 @@ namespace TwitchLib
             switch (errorResp.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
-                    throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set.\n 2. You requested a username when the server was expecting a user ID.");
+                    throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set. \n 2. Your refresh token was invalid. \n 3. You requested a username when the server was expecting a user ID.");
                 case HttpStatusCode.Unauthorized:
                     var authenticateHeader = errorResp.Headers.GetValue("WWW-Authenticate");
                     if(string.IsNullOrEmpty(authenticateHeader))
