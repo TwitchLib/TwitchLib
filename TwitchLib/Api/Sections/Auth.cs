@@ -23,7 +23,7 @@
             }
 
             #region GetFreshToken
-            public async Task<Models.API.v5.Auth.RefreshResponse> RefreshAuthToken(string refreshToken, string clientSecret, string clientId = null)
+            public async Task<Models.API.v5.Auth.RefreshResponse> RefreshAuthTokenAsync(string refreshToken, string clientSecret, string clientId = null)
             {
                 var internalClientId = clientId ?? Api.Settings.ClientId;
 
