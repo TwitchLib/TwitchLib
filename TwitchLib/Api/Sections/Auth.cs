@@ -23,6 +23,12 @@
             }
 
             #region GetFreshToken
+            /// <summary>
+            /// <para>[ASYNC] Refreshes an expired auth token</para>
+            /// <para>ATTENTION: Client Secret required. Never expose it to consumers!</para>
+            /// <para>Throws a BadRequest Exception if the request fails due to a bad refresh token</para>
+            /// </summary>
+            /// <returns>A RefreshResponse object that holds your new auth and refresh token and the list of scopes for that token</returns>
             public async Task<Models.API.v5.Auth.RefreshResponse> RefreshAuthTokenAsync(string refreshToken, string clientSecret, string clientId = null)
             {
                 var internalClientId = clientId ?? Api.Settings.ClientId;
