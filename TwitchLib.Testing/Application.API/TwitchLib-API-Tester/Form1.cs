@@ -800,5 +800,12 @@ namespace TwitchLib_API_Tester
             else
                 MessageBox.Show("Webhook was denied!");
         }
+
+        private async void button89_Click(object sender, EventArgs e)
+        {
+            var resp = await api.Streams.helix.GetStreams();
+            foreach (var stream in resp.Streams)
+                MessageBox.Show($"Stream: {stream.Title}\nChannel ID: {stream.Id}\nGame ID: {stream.GameId}\nViewers: {stream.ViewerCount}");
+        }
     }
 }
