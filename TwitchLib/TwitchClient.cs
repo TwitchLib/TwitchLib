@@ -14,6 +14,7 @@
     using WebSocket4Net;
     using SuperSocket.ClientEngine;
     using SuperSocket.ClientEngine.Proxy;
+    using TwitchLib.Services;
     #endregion
     /// <summary>Represents a client connected to a Twitch channel.</summary>
     public class TwitchClient : ITwitchClient
@@ -43,9 +44,9 @@
         /// <summary>The current connection status of the client.</summary>
         public bool IsConnected => _client.State == WebSocketState.Open;
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on chat messages.</summary>
-        public Services.MessageThrottler ChatThrottler;
+        public MessageThrottler ChatThrottler { get; set; }
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on whispers.</summary>
-        public Services.MessageThrottler WhisperThrottler;
+        public MessageThrottler WhisperThrottler { get; set; }
         /// <summary>The emotes this channel replaces.</summary>
         /// <remarks>
         ///     Twitch-handled emotes are automatically added to this collection (which also accounts for
@@ -289,7 +290,7 @@
             Logging = logging;
             Logger = logger ?? new ConsoleFactory().Create("ConsoleLog");
             AutoReListenOnException = autoReListenOnExceptions;
-
+            
             _client = new WebSocket($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}");
             _client.Opened += _client_OnConnected;
             _client.MessageReceived += _client_OnMessage;
@@ -309,7 +310,7 @@
             ConsoleColor prevColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Log($"Writing: {message}");
-            if(ChatThrottler == null || !ChatThrottler.ApplyThrottlingToRawMessages || ChatThrottler.MessagePermitted(message))
+            if(ChatThrottler == null || !ChatThrottler.ApplyThrottlingToRawMessages)
                _client.Send(message);
             OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Sent, Data = message });
             Console.ForegroundColor = prevColor;
@@ -325,12 +326,14 @@
         public void SendMessage(JoinedChannel channel, string message, bool dryRun = false)
         {
             if (channel == null || message == null || dryRun) return;
-            if (ChatThrottler != null && !ChatThrottler.MessagePermitted(message)) return;
             string twitchMessage = $":{_credentials.TwitchUsername}!{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" +
                 $".tmi.twitch.tv PRIVMSG #{channel.Channel} :{message}";
             _lastMessageSent = message;
-            // This is a makeshift hack to encode it with accomodations for at least cyrillic characters, and possibly others
-            _client.Send(twitchMessage);
+
+            if (ChatThrottler != null)
+                ChatThrottler.QueueSend(twitchMessage);
+            else
+                _client.Send(twitchMessage);
         }
 
         /// <summary>
@@ -361,12 +364,14 @@
         public void SendWhisper(string receiver, string message, bool dryRun = false)
         {
             if (dryRun) return;
-            if (WhisperThrottler != null && !WhisperThrottler.MessagePermitted(message)) return;
+            
             string twitchMessage = $":{_credentials.TwitchUsername}~{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" +
-                $".tmi.twitch.tv PRIVMSG #jtv :/w {receiver} {message}";
-            // This is a makeshift hack to encode it with accomodations for at least cyrillic, and possibly others
-            // Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage))
-            _client.Send(twitchMessage);
+                    $".tmi.twitch.tv PRIVMSG #jtv :/w {receiver} {message}";
+            if (WhisperThrottler != null)
+                WhisperThrottler.QueueSend(twitchMessage);
+            else
+                _client.Send(twitchMessage);
+
             OnWhisperSent?.Invoke(this, new OnWhisperSentArgs { Receiver = receiver, Message = message });
         }
         #endregion
@@ -1005,7 +1010,7 @@
             }
         }
 
-        private void Log(string message, bool includeDate = false, bool includeTime = false)
+        public void Log(string message, bool includeDate = false, bool includeTime = false)
         {
             if(Logging)
             {
@@ -1024,6 +1029,11 @@
 
                 OnLog?.Invoke(this, new OnLogArgs() { BotUsername = ConnectionCredentials.TwitchUsername, Data = message, DateTime = DateTime.UtcNow });
             }
+        }
+
+        public void SendQueuedItem(string message)
+        {
+            _client.Send(message);
         }
     }
 }
