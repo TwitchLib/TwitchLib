@@ -44,9 +44,9 @@
         /// <summary>The current connection status of the client.</summary>
         public bool IsConnected => _client.State == WebSocketState.Open;
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on chat messages.</summary>
-        public MessageThrottler ChatThrottler;
+        public MessageThrottler ChatThrottler { get; set; }
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on whispers.</summary>
-        public MessageThrottler WhisperThrottler;
+        public MessageThrottler WhisperThrottler { get; set; }
         /// <summary>The emotes this channel replaces.</summary>
         /// <remarks>
         ///     Twitch-handled emotes are automatically added to this collection (which also accounts for

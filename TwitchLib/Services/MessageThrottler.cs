@@ -19,13 +19,12 @@ namespace TwitchLib.Services
         private readonly Random _nonceRand;
         private readonly ConcurrentQueue<OutgoingMessage> _pendingSends;
         private readonly ConcurrentDictionary<int, string> _pendingSendsByNonce;
-        private int _count;
+        private int _sentCount;
         private int _messageLimit;
-        private int _messageLimitCounter;
         #endregion
 
         #region Public Properties
-        public int Count => _count;
+        public int Count => _sentCount;
         public int PendingSendCount => _pendingSends.Count;
         /// <summary>Property representing number of messages allowed before throttling in a period.</summary>
         public int MessagesAllowedInPeriod { get; set; }
@@ -35,7 +34,7 @@ namespace TwitchLib.Services
         public int MaximumMessageLengthAllowed { get; set; }
         /// <summary>Property representing whether throttling should be applied to raw messages.</summary>
         public bool ApplyThrottlingToRawMessages { get; set; }
-        public TwitchClient Client { get; }
+        public ITwitchClient Client { get; }
         public CancellationTokenSource CancellationTokenSource { get; set; }
         public CancellationToken CancellationToken { get; set; }
         #endregion
@@ -47,7 +46,7 @@ namespace TwitchLib.Services
 
         #region Constructor
         /// <summary>MessageThrottler constructor.</summary>
-        public MessageThrottler(TwitchClient client, int messagesAllowedInPeriod, TimeSpan periodDuration, bool applyThrottlingToRawMessages = false, int minimumMessageLengthAllowed = -1, int maximumMessageLengthAllowed = -1)
+        public MessageThrottler(ITwitchClient client, int messagesAllowedInPeriod, TimeSpan periodDuration, bool applyThrottlingToRawMessages = false, int minimumMessageLengthAllowed = -1, int maximumMessageLengthAllowed = -1)
         {
             Client = client;
             MessagesAllowedInPeriod = messagesAllowedInPeriod;
@@ -58,6 +57,7 @@ namespace TwitchLib.Services
             _nonceRand = new Random();
             _pendingSends = new ConcurrentQueue<OutgoingMessage>();
             _pendingSendsByNonce = new ConcurrentDictionary<int, string>();
+            _sentCount = 0;
         }
         #endregion
 
@@ -67,8 +67,11 @@ namespace TwitchLib.Services
             CancellationTokenSource = new CancellationTokenSource();
             CancellationToken = CancellationTokenSource.Token;
 
-            StartResetTask(CancellationToken);
-            RunQueue(CancellationToken);
+            Task.WaitAll(new[]
+            {
+                StartResetTask(CancellationToken),
+                RunQueue(CancellationToken)
+            });
         }
 
         public void StopQueue()
@@ -97,7 +100,6 @@ namespace TwitchLib.Services
             if (_pendingSendsByNonce.TryAdd(msg.Nonce, msg.Message))
             {
                 msg.State = MessageState.Queued;
-                IncrementCount();
                 _pendingSends.Enqueue(msg);
             }
             else
@@ -108,7 +110,8 @@ namespace TwitchLib.Services
         public void Clear()
         {
             while (_pendingSends.TryDequeue(out OutgoingMessage msg))
-                DecrementCount();
+            { }
+
             _pendingSendsByNonce.Clear();
         }
         #endregion
@@ -123,10 +126,11 @@ namespace TwitchLib.Services
                     while (!cancelToken.IsCancellationRequested)
                     {
                         await Task.Delay(250).ConfigureAwait(false);
-                        if (_messageLimitCounter == _messageLimit) continue;
+                        if (_sentCount == _messageLimit) continue;
+
                         while (_pendingSends.TryDequeue(out OutgoingMessage msg))
                         {
-                            DecrementCount();
+                            IncrementCount();
                             if (_pendingSendsByNonce.TryRemove(msg.Nonce, out string message))
                             {
                                 try
@@ -153,7 +157,7 @@ namespace TwitchLib.Services
                 while (!_token.IsCancellationRequested)
                 {
                     await Task.Delay(_periodDuration);
-                    _count = 0;
+                    Interlocked.Exchange(ref _sentCount, 0);
                 }
             });
         }
@@ -165,22 +169,9 @@ namespace TwitchLib.Services
         
         private void IncrementCount()
         {
-            int count = System.Threading.Interlocked.Increment(ref _count);
-            if (count >= _messageLimitCounter)
-            {
-                _messageLimitCounter <<= 1;
-                count = _pendingSends.Count;
-                Client.Log($"Queue is backed up, currently at ({count} sends.");
-            }
-            else if (count < _messageLimit)
-                _messageLimitCounter = _messageLimit;
+            Interlocked.Increment(ref _sentCount);
         }
-        private void DecrementCount()
-        {
-            int count = System.Threading.Interlocked.Decrement(ref _count);
-            if (count < (_messageLimit / 2))
-                _messageLimitCounter = _messageLimit;
-        }
+
         private bool MessagePermitted(string message)
         {
             if (message.Length > MaximumMessageLengthAllowed && MaximumMessageLengthAllowed != -1)
