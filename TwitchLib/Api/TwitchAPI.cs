@@ -1,23 +1,26 @@
+
+
 namespace TwitchLib
 {
+    #region using directives
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
-
-    #region using directives
+    using SuperSocket.ClientEngine;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Threading.Tasks;
-    using TwitchLib.Api.Sections;
-    using TwitchLib.Enums;
-    using TwitchLib.Exceptions.API;
+    using Api.Sections;
+    using Enums;
+    using Exceptions.API;
     #endregion
 
     public class TwitchAPI : ITwitchAPI
     {
         private readonly TwitchLibJsonSerializer jsonSerializer;
         public IApiSettings Settings { get; }
+        public Auth Auth { get; }
         public Blocks Blocks { get; }
         public Badges Badges { get; }
         public Bits Bits { get; }
@@ -44,6 +47,7 @@ namespace TwitchLib
 
         public TwitchAPI(string clientId = null, string accessToken = null)
         {
+            Auth = new Auth(this);
             Blocks = new Blocks(this);
             Badges = new Badges(this);
             Bits = new Bits(this);
@@ -322,7 +326,7 @@ namespace TwitchLib
                 }
             }
 
-            var req = (HttpWebRequest)HttpWebRequest.Create(url);
+            var req = (HttpWebRequest)WebRequest.Create(url);
             req.Method = requestType;
             var response = (HttpWebResponse)req.GetResponse();
             return (int)response.StatusCode;
@@ -353,15 +357,22 @@ namespace TwitchLib
         #region handleWebException
         private void handleWebException(WebException e)
         {
-            HttpWebResponse errorResp = e.Response as HttpWebResponse;
-            if (errorResp == null)
+            if (!(e.Response is HttpWebResponse errorResp))
                 throw e;
+
             switch (errorResp.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
-                    throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set.\n 2. You requested a username when the server was expecting a user ID.");
+                    throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set. \n 2. Your refresh token was invalid. \n 3. You requested a username when the server was expecting a user ID.");
                 case HttpStatusCode.Unauthorized:
-                    throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
+                    var authenticateHeader = errorResp.Headers.GetValue("WWW-Authenticate");
+                    if(string.IsNullOrEmpty(authenticateHeader))
+                        throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
+
+                    var invalidTokenFound = authenticateHeader.Contains("error='invalid_token'");
+                    if(invalidTokenFound)
+                        throw new TokenExpiredException("Your request was blocked du to an expired Token. Please refresh your token and update your API instance settings.");
+                    break;
                 case HttpStatusCode.NotFound:
                     throw new BadResourceException("The resource you tried to access was not valid.");
                 case (HttpStatusCode)422:
