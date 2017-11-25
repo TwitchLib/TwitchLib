@@ -12,11 +12,13 @@ namespace TwitchLib
     using TwitchLib.Api.Sections;
     using TwitchLib.Enums;
     using TwitchLib.Exceptions.API;
+    using TwitchLib.RateLimiter;
     #endregion
 
     public class TwitchAPI : ITwitchAPI
     {
         private readonly TwitchLibJsonSerializer jsonSerializer;
+        private readonly TimeLimiter _rateLimiter;
         public IApiSettings Settings { get; }
         public Blocks Blocks { get; }
         public Badges Badges { get; }
@@ -44,6 +46,7 @@ namespace TwitchLib
 
         public TwitchAPI(string clientId = null, string accessToken = null)
         {
+            _rateLimiter = TimeLimiter.GetFromMaxCountByInterval(2, TimeSpan.FromSeconds(1));
             Blocks = new Blocks(this);
             Badges = new Badges(this);
             Bits = new Bits(this);
@@ -82,10 +85,13 @@ namespace TwitchLib
         #region PostGenericModel
         internal async Task<T> PostGenericModelAsync<T>(string url, Models.API.RequestModel model, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
-            if (model != null)
-                return JsonConvert.DeserializeObject<T>((await generalRequestAsync(url, "POST", jsonSerializer.SerializeObject(model), accessToken, api, clientId)).Value, TwitchLibJsonDeserializer);
-            else
-                return JsonConvert.DeserializeObject<T>((await generalRequestAsync(url, "POST", "", accessToken, api)).Value, TwitchLibJsonDeserializer);
+            return await _rateLimiter.Perform(async () =>
+            {
+                if (model != null)
+                    return JsonConvert.DeserializeObject<T>((await generalRequestAsync(url, "POST", jsonSerializer.SerializeObject(model), accessToken, api, clientId)).Value, TwitchLibJsonDeserializer);
+                else
+                    return JsonConvert.DeserializeObject<T>((await generalRequestAsync(url, "POST", "", accessToken, api)).Value, TwitchLibJsonDeserializer);
+            });
         }
         #endregion
         #region PostGeneric
@@ -101,13 +107,19 @@ namespace TwitchLib
                         url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
                 }
             }
-            return JsonConvert.DeserializeObject<T>((await generalRequestAsync(url, "POST", payload, accessToken, api, clientId)).Value, TwitchLibJsonDeserializer);
+            return await _rateLimiter.Perform(async () =>
+            {
+                return JsonConvert.DeserializeObject<T>((await generalRequestAsync(url, "POST", payload, accessToken, api, clientId)).Value, TwitchLibJsonDeserializer);
+            });
         }
         #endregion
         #region PostModel
         internal async Task PostModelAsync(string url, Models.API.RequestModel model, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
-            await generalRequestAsync(url, "POST", jsonSerializer.SerializeObject(model), accessToken, api, clientId);
+            await _rateLimiter.Perform(async () =>
+            {
+                await generalRequestAsync(url, "POST", jsonSerializer.SerializeObject(model), accessToken, api, clientId);
+            });
         }
         #endregion
         #region Post
@@ -123,7 +135,10 @@ namespace TwitchLib
                         url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
                 }
             }
-            return await generalRequestAsync(url, "POST", payload, accessToken, api, clientId);
+            return await _rateLimiter.Perform(async () =>
+            {
+                return await generalRequestAsync(url, "POST", payload, accessToken, api, clientId);
+            });
         }
         #endregion
         #endregion
@@ -141,13 +156,15 @@ namespace TwitchLib
                         url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
                 }
             }
-            
-            return JsonConvert.DeserializeObject<T>((await generalRequestAsync(url, "GET", null, accessToken, api, clientId)).Value, TwitchLibJsonDeserializer);
+            return await _rateLimiter.Perform(async () => { 
+                return JsonConvert.DeserializeObject<T>((await generalRequestAsync(url, "GET", null, accessToken, api, clientId)).Value, TwitchLibJsonDeserializer);
+            });
         }
         #endregion
         #region GetSimpleGenericAsync
         internal async Task<T> GetSimpleGenericAsync<T>(string url, List<KeyValuePair<string, string>> getParams = null)
         {
+
             if (getParams != null)
             {
                 for (int i = 0; i < getParams.Count; i++)
@@ -158,7 +175,9 @@ namespace TwitchLib
                         url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
                 }
             }
-            return JsonConvert.DeserializeObject<T>(await simpleRequestAsync(url), TwitchLibJsonDeserializer);
+            return await _rateLimiter.Perform(async () => { 
+                return JsonConvert.DeserializeObject<T>(await simpleRequestAsync(url), TwitchLibJsonDeserializer);
+            });
         }
         #endregion
         #endregion
@@ -166,24 +185,29 @@ namespace TwitchLib
         #region Delete
         internal async Task<string> DeleteAsync(string url, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
-            if (getParams != null)
+            return await _rateLimiter.Perform(async () =>
             {
-                for (int i = 0; i < getParams.Count; i++)
+                if (getParams != null)
                 {
-                    if (i == 0)
-                        url += $"?{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
-                    else
-                        url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                    for (int i = 0; i < getParams.Count; i++)
+                    {
+                        if (i == 0)
+                            url += $"?{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                        else
+                            url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                    }
                 }
-            }
 
-            return (await generalRequestAsync(url, "DELETE", null, accessToken, api, clientId)).Value;
+                return (await generalRequestAsync(url, "DELETE", null, accessToken, api, clientId)).Value;
+            });
         }
         #endregion
         #region DeleteGenericAsync
         internal async Task<T> DeleteGenericAsync<T>(string url, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
-            return JsonConvert.DeserializeObject<T>((await generalRequestAsync(url, "DELETE", null, accessToken, api, clientId)).Value, TwitchLibJsonDeserializer);
+            return await _rateLimiter.Perform(async () => { 
+                return JsonConvert.DeserializeObject<T>((await generalRequestAsync(url, "DELETE", null, accessToken, api, clientId)).Value, TwitchLibJsonDeserializer);
+            });
         }
         #endregion
 
@@ -194,33 +218,39 @@ namespace TwitchLib
         #region PutGeneric
         internal async Task<T> PutGenericAsync<T>(string url, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
-            if (getParams != null)
+            return await _rateLimiter.Perform(async () =>
             {
-                for (int i = 0; i < getParams.Count; i++)
+                if (getParams != null)
                 {
-                    if (i == 0)
-                        url += $"?{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
-                    else
-                        url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                    for (int i = 0; i < getParams.Count; i++)
+                    {
+                        if (i == 0)
+                            url += $"?{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                        else
+                            url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                    }
                 }
-            }
-            return JsonConvert.DeserializeObject<T>((await generalRequestAsync(url, "PUT", payload, accessToken, api, clientId)).Value, TwitchLibJsonDeserializer);
+                return JsonConvert.DeserializeObject<T>((await generalRequestAsync(url, "PUT", payload, accessToken, api, clientId)).Value, TwitchLibJsonDeserializer);
+            });
         }
         #endregion
         #region Put
         internal async Task<string> PutAsync(string url, string payload, List<KeyValuePair<string, string>> getParams = null, string accessToken = null, ApiVersion api = ApiVersion.v5, string clientId = null)
         {
-            if (getParams != null)
+            return await _rateLimiter.Perform(async () =>
             {
-                for (int i = 0; i < getParams.Count; i++)
+                if (getParams != null)
                 {
-                    if (i == 0)
-                        url += $"?{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
-                    else
-                        url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                    for (int i = 0; i < getParams.Count; i++)
+                    {
+                        if (i == 0)
+                            url += $"?{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                        else
+                            url += $"&{getParams[i].Key}={Uri.EscapeDataString(getParams[i].Value)}";
+                    }
                 }
-            }
-            return (await generalRequestAsync(url, "PUT", payload, accessToken, api, clientId)).Value;
+                return (await generalRequestAsync(url, "PUT", payload, accessToken, api, clientId)).Value;
+            });
         }
         #endregion
         #region PutBytesAsync
