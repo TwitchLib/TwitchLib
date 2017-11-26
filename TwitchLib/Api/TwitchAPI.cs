@@ -1,9 +1,11 @@
+
 namespace TwitchLib
 {
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Serialization;
 
     #region using directives
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
+    using SuperSocket.ClientEngine;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -383,15 +385,21 @@ namespace TwitchLib
         #region handleWebException
         private void handleWebException(WebException e)
         {
-            HttpWebResponse errorResp = e.Response as HttpWebResponse;
-            if (errorResp == null)
+            if (!(e.Response is HttpWebResponse errorResp))
                 throw e;
             switch (errorResp.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
                     throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set.\n 2. You requested a username when the server was expecting a user ID.");
                 case HttpStatusCode.Unauthorized:
-                    throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
+                    var authenticateHeader = errorResp.Headers.GetValue("WWW-Authenticate");
+                    if (string.IsNullOrEmpty(authenticateHeader))
+                        throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
+
+                    var invalidTokenFound = authenticateHeader.Contains("error='invalid_token'");
+                    if (invalidTokenFound)
+                        throw new TokenExpiredException("Your request was blocked du to an expired Token. Please refresh your token and update your API instance settings.");
+                    break;
                 case HttpStatusCode.NotFound:
                     throw new BadResourceException("The resource you tried to access was not valid.");
                 case (HttpStatusCode)422:
