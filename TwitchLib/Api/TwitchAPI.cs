@@ -22,6 +22,7 @@ namespace TwitchLib
         private readonly TwitchLibJsonSerializer jsonSerializer;
         private readonly TimeLimiter _rateLimiter;
         public IApiSettings Settings { get; }
+        public Auth Auth { get; }
         public Blocks Blocks { get; }
         public Badges Badges { get; }
         public Bits Bits { get; }
@@ -49,6 +50,7 @@ namespace TwitchLib
         public TwitchAPI(string clientId = null, string accessToken = null)
         {
             _rateLimiter = TimeLimiter.GetFromMaxCountByInterval(2, TimeSpan.FromSeconds(1));
+            Auth = new Auth(this);
             Blocks = new Blocks(this);
             Badges = new Badges(this);
             Bits = new Bits(this);
