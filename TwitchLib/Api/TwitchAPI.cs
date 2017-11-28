@@ -20,7 +20,7 @@ namespace TwitchLib
     public class TwitchAPI : ITwitchAPI
     {
         private readonly TwitchLibJsonSerializer jsonSerializer;
-        private readonly TimeLimiter _rateLimiter;
+        private readonly IRateLimiter _rateLimiter;
         public IApiSettings Settings { get; }
         public Auth Auth { get; }
         public Blocks Blocks { get; }
@@ -47,9 +47,21 @@ namespace TwitchLib
         public ThirdParty ThirdParty { get; }
         public Webhooks Webhooks { get; }
 
-        public TwitchAPI(string clientId = null, string accessToken = null)
+        /// <summary>
+        /// Creates an Instance of the TwitchAPI Class.
+        /// </summary>
+        /// <param name="clientId">Twitch Client Id.</param>
+        /// <param name="accessToken">Twitch Access Token.</param>
+        /// <param name="rateLimit">Should RateLimit Requests?</param>
+        /// <param name="rateLimiter">Instance Of RateLimiter. Useful if using multiple API instances on one connection and you wish to share the requests ratelimiter.</param>
+        /// <param name="callsPerPeriod">Number of Requests per Period to rate limit to</param>
+        /// <param name="ratePeriodSeconds">Period for Rate Limit (In Seconds)</param>
+        public TwitchAPI(string clientId = null, string accessToken = null, bool rateLimit = true, IRateLimiter rateLimiter = null, int callsPerPeriod = 1, int ratePeriod = 1)
         {
-            _rateLimiter = TimeLimiter.GetFromMaxCountByInterval(2, TimeSpan.FromSeconds(1));
+            _rateLimiter = rateLimit ? 
+                (rateLimiter ?? TimeLimiter.GetFromMaxCountByInterval(callsPerPeriod, TimeSpan.FromSeconds(callsPerPeriod)))
+                : BypassLimiter.CreateLimiterBypassInstance();
+
             Auth = new Auth(this);
             Blocks = new Blocks(this);
             Badges = new Badges(this);
