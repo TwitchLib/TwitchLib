@@ -2,6 +2,7 @@
 {
     public interface ITwitchAPI
     {
+        Auth Auth { get; }
         Badges Badges { get; }
         Bits Bits { get; }
         Blocks Blocks { get; }
