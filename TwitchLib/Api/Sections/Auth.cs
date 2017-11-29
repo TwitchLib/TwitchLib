@@ -45,7 +45,7 @@
                     new KeyValuePair<string, string> ("client_secret", clientSecret)
                 };
 
-                return await Api.PostGenericAsync<Models.API.v5.Auth.RefreshResponse>("https://api.twitch.tv/kraken/oauth2/token", null, getParams);
+                return await Api.PostGenericAsync<Models.API.v5.Auth.RefreshResponse>("https://api.twitch.tv/kraken/oauth2/token", null, getParams).ConfigureAwait(false);
             }
             #endregion
         }
