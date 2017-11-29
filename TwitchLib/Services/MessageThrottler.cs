@@ -62,16 +62,14 @@ namespace TwitchLib.Services
         #endregion
 
         #region Public Methods
-        public void StartQueue()
+        public Task StartQueue()
         {
             CancellationTokenSource = new CancellationTokenSource();
             CancellationToken = CancellationTokenSource.Token;
-
-            Task.WaitAll(new[]
-            {
-                StartResetTask(CancellationToken),
-                RunQueue(CancellationToken)
-            });
+            return Task.Run(() => { 
+                StartResetTask(CancellationToken);
+                RunQueue(CancellationToken);
+            }, CancellationToken);
         }
 
         public void StopQueue()
