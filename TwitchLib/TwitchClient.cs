@@ -351,6 +351,8 @@
         {
             if (JoinedChannels.Count > 0)
                 SendMessage(JoinedChannels[0], message, dryRun);
+            else
+                throw new BadStateException("Must be connected to at least one channel to use SendMessage.");
         }
         #endregion
 
@@ -466,6 +468,8 @@
         /// <param name="channel">String channel to search for.</param>
         public JoinedChannel GetJoinedChannel(string channel)
         {
+            if (JoinedChannels.Count == 0)
+                throw new BadStateException("Must be connected to at least one channel.");
             return JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
         }
 
