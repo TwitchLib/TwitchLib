@@ -259,7 +259,7 @@
                 if (gameId != null)
                     getParams.Add(new KeyValuePair<string, string>("game_id", gameId));
 
-                if(videoIds.Count == 0)
+                if(videoIds != null && videoIds.Count == 0)
                 {
                     if (after != null)
                         getParams.Add(new KeyValuePair<string, string>("after", after));
