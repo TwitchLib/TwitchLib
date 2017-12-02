@@ -102,6 +102,10 @@
             foreach (var chatter in resp.Chatters.Viewers)
                 chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Viewer));
 
+            foreach (var chatter in chatters)
+                if (chatter.Username.ToLower() == channelName.ToLower())
+                    chatter.UserType = Enums.UserType.Broadcaster;
+
             return chatters;
         }
         #endregion
