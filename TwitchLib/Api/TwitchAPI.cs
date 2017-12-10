@@ -1,9 +1,11 @@
+
 namespace TwitchLib
 {
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Serialization;
 
     #region using directives
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
+    using SuperSocket.ClientEngine;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -18,8 +20,9 @@ namespace TwitchLib
     public class TwitchAPI : ITwitchAPI
     {
         private readonly TwitchLibJsonSerializer jsonSerializer;
-        private readonly TimeLimiter _rateLimiter;
+        private readonly IRateLimiter _rateLimiter;
         public IApiSettings Settings { get; }
+        public Auth Auth { get; }
         public Blocks Blocks { get; }
         public Badges Badges { get; }
         public Bits Bits { get; }
@@ -44,9 +47,22 @@ namespace TwitchLib
         public ThirdParty ThirdParty { get; }
         public Webhooks Webhooks { get; }
 
-        public TwitchAPI(string clientId = null, string accessToken = null)
+        /// <summary>
+        /// Creates an Instance of the TwitchAPI Class.
+        /// </summary>
+        /// <param name="clientId">Twitch Client Id.</param>
+        /// <param name="accessToken">Twitch Access Token.</param>
+        /// <param name="rateLimit">Should RateLimit Requests?</param>
+        /// <param name="rateLimiter">Instance Of RateLimiter. Useful if using multiple API instances on one connection and you wish to share the requests ratelimiter.</param>
+        /// <param name="callsPerPeriod">Number of Requests per Period to rate limit to</param>
+        /// <param name="ratePeriodSeconds">Period for Rate Limit (In Seconds)</param>
+        public TwitchAPI(string clientId = null, string accessToken = null, bool rateLimit = true, IRateLimiter rateLimiter = null, int callsPerPeriod = 1, int ratePeriod = 1)
         {
-            _rateLimiter = TimeLimiter.GetFromMaxCountByInterval(2, TimeSpan.FromSeconds(1));
+            _rateLimiter = rateLimit ? 
+                (rateLimiter ?? TimeLimiter.GetFromMaxCountByInterval(callsPerPeriod, TimeSpan.FromSeconds(callsPerPeriod)))
+                : BypassLimiter.CreateLimiterBypassInstance();
+
+            Auth = new Auth(this);
             Blocks = new Blocks(this);
             Badges = new Badges(this);
             Bits = new Bits(this);
@@ -383,15 +399,21 @@ namespace TwitchLib
         #region handleWebException
         private void handleWebException(WebException e)
         {
-            HttpWebResponse errorResp = e.Response as HttpWebResponse;
-            if (errorResp == null)
+            if (!(e.Response is HttpWebResponse errorResp))
                 throw e;
             switch (errorResp.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
-                    throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set.\n 2. You requested a username when the server was expecting a user ID.");
+                    throw new BadRequestException("Your request failed because either: \n 1. Your ClientID was invalid/not set. \n 2. Your refresh token was invalid. \n 3. You requested a username when the server was expecting a user ID.");
                 case HttpStatusCode.Unauthorized:
-                    throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
+                    var authenticateHeader = errorResp.Headers.GetValue("WWW-Authenticate");
+                    if (string.IsNullOrEmpty(authenticateHeader))
+                        throw new BadScopeException("Your request was blocked due to bad credentials (do you have the right scope for your access token?).");
+
+                    var invalidTokenFound = authenticateHeader.Contains("error='invalid_token'");
+                    if (invalidTokenFound)
+                        throw new TokenExpiredException("Your request was blocked du to an expired Token. Please refresh your token and update your API instance settings.");
+                    break;
                 case HttpStatusCode.NotFound:
                     throw new BadResourceException("The resource you tried to access was not valid.");
                 case (HttpStatusCode)422:
