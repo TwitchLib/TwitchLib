@@ -44,9 +44,9 @@
             {
                 List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
                 if (limit != null)
-                    getParams.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("limit", limit.Value.ToString()));
                 if (offset != null)
-                    getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("offset", offset.Value.ToString()));
                 
                 return await Api.GetGenericAsync<Models.API.v5.Games.TopGames>($"https://api.twitch.tv/kraken/games/top", getParams, null, ApiVersion.v5).ConfigureAwait(false);
             }
