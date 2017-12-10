@@ -8,6 +8,8 @@
     {
         /// <summary>Property representing whether R9K is being applied to chat or not. WILL BE NULL IF VALUE NOT PRESENT.</summary>
         public bool? R9K { get; protected set; }
+        /// <summary>Property representing whether Rituals is enabled or not. WILL BE NULL IF VALUE NOT PRESENT.</summary>
+        public bool? Rituals { get; protected set; }
         /// <summary>Property representing whether Sub Mode is being applied to chat or not. WILL BE NULL IF VALUE NOT PRESENT.</summary>
         public bool? SubOnly { get; protected set; }
         /// <summary>Property representing whether Slow mode is being applied to chat or not. WILL BE NULL IF VALUE NOT PRESENT.</summary>
@@ -42,6 +44,9 @@
                         break;
                     case "r9k":
                         R9K = ConvertToBool(part.Split('=')[1]);
+                        break;
+                    case "rituals":
+                        Rituals = ConvertToBool(part.Split('=')[1]);
                         break;
                     case "slow":
                         SlowMode = ConvertToBool(part.Split('=')[1]);
