@@ -5,9 +5,13 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TwitchLib.Events.Services.FollowerService;
+using TwitchLib.Events.Services.LiveStreamMonitor;
+using TwitchLib.Services;
 
 namespace TwitchLib_API_Tester
 {
@@ -25,12 +29,12 @@ namespace TwitchLib_API_Tester
             monitor.OnStreamOffline += onStreamOfffline;
         }
 
-        private void onStreamOnline(object sender, TwitchLib.Events.Services.LiveStreamMonitor.OnStreamOnlineArgs e)
+        private void onStreamOnline(object sender, OnStreamOnlineArgs e)
         {
             MessageBox.Show($"Stream up! Stream: {e.Channel}");
         }
 
-        private void onStreamOfffline(object sender, TwitchLib.Events.Services.LiveStreamMonitor.OnStreamOfflineArgs e)
+        private void onStreamOfffline(object sender, OnStreamOfflineArgs e)
         {
             MessageBox.Show($"Stream down! Stream: {e.Channel}");
         }
@@ -490,7 +494,7 @@ namespace TwitchLib_API_Tester
 
         private async void button52_Click(object sender, EventArgs e)
         {
-            var resp = await TwitchLib.TwitchAPI.ThirdParty.GetUsernameChangesAsync(textBox50.Text);
+            var resp = await TwitchLib.TwitchAPI.ThirdParty.UsernameChange.GetUsernameChangesAsync(textBox50.Text);
             foreach (var change in resp)
                 MessageBox.Show($"User ID: {change.UserId}\nOld name: {change.UsernameOld}\nNew name: {change.UsernameNew}");
         }
@@ -615,10 +619,10 @@ namespace TwitchLib_API_Tester
                 MessageBox.Show("User doesn't follow channel!");
         }
 
-        private static TwitchLib.Services.LiveStreamMonitor monitor = new TwitchLib.Services.LiveStreamMonitor(30);
+        private static TwitchLib.Services.LiveStreamMonitor monitor = new LiveStreamMonitor(30);
         private void button67_Click(object sender, EventArgs e)
         {
-            monitor.SetStreamsByUserId(new List<string>() { textBox67.Text });
+            monitor.SetStreamsByUserId(new List<string>() {textBox67.Text });
             monitor.StartService();
         }
 
@@ -635,12 +639,12 @@ namespace TwitchLib_API_Tester
                 MessageBox.Show($"Streamer: {csstream.User.DisplayName}\nPlaying on map: {csstream.MapName}\nWith {csstream.Viewers} viewers watching.");
         }
 
-        private static void onFollowersDetected(object sender, TwitchLib.Events.Services.FollowerService.OnNewFollowersDetectedArgs e)
+        private static void onFollowersDetected(object sender, OnNewFollowersDetectedArgs e)
         {
             MessageBox.Show($"New followers detected! Followers: {String.Join(",", e.NewFollowers)}");
         }
 
-        private TwitchLib.Services.FollowerService followerService;
+        private FollowerService followerService;
         private async void button71_Click(object sender, EventArgs e)
         {
             followerService = new TwitchLib.Services.FollowerService();
@@ -682,6 +686,94 @@ namespace TwitchLib_API_Tester
             var resp = await TwitchLib.TwitchAPI.Channels.v5.GetChannelCommuntiesAsync(textBox72.Text);
             foreach (var community in resp.Communities)
                 MessageBox.Show(community.Name);
+        }
+
+        private async void button76_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Streams.v5.GetStreamByUserAsync(textBox73.Text);
+            MessageBox.Show($"Viewer count for '{textBox73.Text}': {resp.Stream.Viewers}");
+        }
+
+        private async void button77_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Undocumented.GetChatUser(textBox74.Text, textBox75.Text);
+            MessageBox.Show($"Login: {resp.Login}\nColor: {resp.Color}\nIs Verified Bot: {resp.IsVerifiedBot}\nBadges: {resp.Badges.Count()}");
+        }
+
+        private void button78_Click(object sender, EventArgs e)
+        {
+            var resp = TwitchLib.TwitchAPI.Undocumented.IsUsernameAvailable(textBox76.Text);
+            if (resp)
+                MessageBox.Show($"Username '{textBox76.Text}' is available.");
+            else
+                MessageBox.Show($"Username '{textBox76.Text}' is not available.");
+        }
+
+        private async void button79_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.ThirdParty.ModLookup.GetChannelsModdedForByName(textBox77.Text);
+            foreach(var channel in resp.Channels)
+            {
+                MessageBox.Show($"{channel.Name}");
+            }
+        }
+
+        private async void button22_Click_1(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Clips.v5.GetFollowedClipsAsync();
+            foreach (var clip in resp.Clips)
+                Console.WriteLine($"Clip name: {clip.Title}, game: {clip.Game}, streamer: {clip.Broadcaster.Name}, views: {clip.Views}, clipped by: {clip.Curator.Name}");
+        }
+
+        private void button80_Click(object sender, EventArgs e)
+        {
+            var resp = TwitchLib.TwitchAPI.ThirdParty.AuthorizationFlow.CreateFlow("Test Application", new List<TwitchLib.Enums.AuthScopes>() { TwitchLib.Enums.AuthScopes.Chat_Login });
+            textBox78.Text = resp.Url;
+            textBox79.Text = resp.Id;
+        }
+
+        private async void button81_Click(object sender, EventArgs e)
+        {
+            TwitchLib.TwitchAPI.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetected += onAuthorizationDetected;
+            TwitchLib.TwitchAPI.ThirdParty.AuthorizationFlow.OnError += onError;
+            TwitchLib.TwitchAPI.ThirdParty.AuthorizationFlow.BeginPingingStatus(textBox79.Text);
+        }
+
+        private void onAuthorizationDetected(object sender, TwitchLib.Events.API.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetectedArgs e)
+        {
+            MessageBox.Show($"Authorization detected!\nUsername: {e.Username}\nToken: {e.Token}");
+        }
+
+        private void onError(object sender, TwitchLib.Events.API.ThirdParty.AuthorizationFlow.OnErrorArgs e)
+        {
+            MessageBox.Show($"Error encountered!\nMessage: {e.Message}");
+        }
+
+        private async void button82_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Users.Helix.GetUsers(new List<string>() { textBox80.Text });
+            foreach (var user in resp.Users)
+                MessageBox.Show($"Display name: {user.DisplayName}\nView count: {user.ViewCount}\nUser type: {user.Type}");
+        }
+
+        private async void button83_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Users.Helix.GetUsers(logins: new List<string>() { textBox81.Text });
+            foreach (var user in resp.Users)
+                MessageBox.Show($"Display name: {user.DisplayName}\nView count: {user.ViewCount}\nUser type: {user.Type}");
+        }
+
+        private async void button84_Click(object sender, EventArgs e)
+        {
+            var resp = await TwitchLib.TwitchAPI.Users.Helix.GetUsersFollows(fromId: textBox82.Text, toId: textBox83.Text);
+            foreach (var user in resp.Follows)
+                MessageBox.Show($"From: {user.FromUserId} -> to: {user.ToUserId}, followed at: {user.FollowedAt.ToString()}");
+        }
+
+        private async void button85_Click(object sender, EventArgs e)
+        {
+            await TwitchLib.TwitchAPI.Users.Helix.PutUsers(richTextBox4.Text);
+            MessageBox.Show("updated!");
         }
     }
 }

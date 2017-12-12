@@ -10,7 +10,7 @@
         #region Id
         /// <summary>Property representing the channel ID.</summary>
         [JsonProperty(PropertyName = "_id")]
-        public long Id { get; internal set; }
+        public string Id { get; internal set; }
         #endregion
         #region BroadcasterLanguage
         /// <summary>Property representing the broadcasters language.</summary>

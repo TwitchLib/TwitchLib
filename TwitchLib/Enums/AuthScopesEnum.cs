@@ -21,6 +21,9 @@
         User_Read,
         User_Subscriptions,
         Viewing_Activity_Read,
+        OpenId,
+        Helix_User_Edit,
+        Helix_User_Read_Email,
         None
     }
 }

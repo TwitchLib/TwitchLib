@@ -5,14 +5,15 @@
     using System.Collections.Generic;
 
     using Enums;
+    using System.Collections.Concurrent;
     #endregion
     /// <summary>Class representing event args for OnChannelMonitorEnded event.</summary>
     public class OnStreamMonitorEndedArgs : EventArgs
     {
-        /// <summary>Event property representing channel the service is currently monitoring.</summary>
-        public List<string> Channels;
-        /// <summary>Event property representing how channels IDs are represented.</summary>
-        public StreamIdentifierType IdentifierType;
+        /// <summary>Event property representing channels the service is currently monitoring.</summary>
+        public List<string> ChannelIds;
+        /// <summary>Event property representing channels the service is currently monitoring.</summary>
+        public ConcurrentDictionary<string, string> Channels;
         /// <summary>Event property representing seconds between queries to Twitch Api.</summary>
         public int CheckIntervalSeconds;
     }

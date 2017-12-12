@@ -34,10 +34,15 @@
                     break;
             }
             ServerTime = json.SelectToken("server_time")?.ToString();
-            if (Type != VideoPlaybackType.ViewCount)
-                PlayDelay = int.Parse(json.SelectToken("play_delay").ToString());
-            else
-                Viewers = int.Parse(json.SelectToken("viewers").ToString());
+            switch (Type)
+            {
+                case VideoPlaybackType.StreamUp:
+                    PlayDelay = int.Parse(json.SelectToken("play_delay").ToString());
+                    break;
+                case VideoPlaybackType.ViewCount:
+                    Viewers = int.Parse(json.SelectToken("viewers").ToString());
+                    break;
+            }
         }
     }
 }

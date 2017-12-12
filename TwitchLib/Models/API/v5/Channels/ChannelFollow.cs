@@ -5,8 +5,12 @@
     using Newtonsoft.Json;
     #endregion
     /// <summary>Class representing a follow object from Twitch API.</summary>
-    public class ChannelFollow
+    public class ChannelFollow : Interfaces.IFollow
     {
+        public ChannelFollow(Users.User user)
+        {
+            User = user;
+        }
         #region CreatedAt
         /// <summary>Property representing the date time of follow creation.</summary>
         [JsonProperty(PropertyName = "created_at")]
@@ -20,7 +24,7 @@
         #region User
         /// <summary>Property representing the User that follows.</summary>
         [JsonProperty(PropertyName = "user")]
-        public Users.User User { get; protected set; }
+        public Interfaces.IUser User { get; protected set; }
         #endregion
     }
 }

@@ -27,7 +27,7 @@
         public class DataObj
         {
             /// <summary>DataObject identifier</summary>
-            public int Id { get; protected set; }
+            public string Id { get; protected set; }
             /// <summary>Twitch assigned thread id</summary>
             public string ThreadId { get; protected set; }
             /// <summary>Body of data received from Twitch</summary>
@@ -46,7 +46,7 @@
             /// <summary>DataObj constructor.</summary>
             public DataObj(JToken json)
             {
-                Id = int.Parse(json.SelectToken("id").ToString());
+                Id = json.SelectToken("id").ToString();
                 ThreadId = json.SelectToken("thread_id")?.ToString();
                 Body = json.SelectToken("body")?.ToString();
                 SentTs = long.Parse(json.SelectToken("sent_ts").ToString());

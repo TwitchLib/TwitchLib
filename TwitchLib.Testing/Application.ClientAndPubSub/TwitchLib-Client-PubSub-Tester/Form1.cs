@@ -1,23 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TwitchLib;
 using System.IO;
-using System.Net;
-using TwitchLib.Models.API;
 using TwitchLib.Models.Client;
 using TwitchLib.Events.Client;
-using TwitchLib.Exceptions.API;
 using TwitchLib.Events.PubSub;
-using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Events.Services.MessageThrottler;
-using TwitchLib.Enums;
 using TwitchLib.Extensions.Client;
 
 namespace TwitchLibExample
@@ -59,9 +48,9 @@ namespace TwitchLibExample
             ConnectionCredentials credentials = new ConnectionCredentials(textBox4.Text, textBox5.Text);
             TwitchClient newClient;
             if (!string.IsNullOrEmpty(textBox8.Text))
-                newClient = new TwitchClient(credentials, textBox8.Text, '!', '!');
+                newClient = new TwitchClient(credentials, textBox8.Text, '!', '!', true);
             else
-                newClient = new TwitchClient(credentials, null, '!', '!');
+                newClient = new TwitchClient(credentials, null, '!', '!', true);
 
             newClient.OnMessageReceived += new EventHandler<OnMessageReceivedArgs>(globalChatMessageReceived);
             newClient.OnChatCommandReceived += new EventHandler<OnChatCommandReceivedArgs>(chatCommandReceived);
@@ -185,7 +174,7 @@ namespace TwitchLibExample
 
         private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
-            MessageBox.Show($"Joined channel: {e.Channel}\nAs username: {e.Username}");
+            MessageBox.Show($"Joined channel: {e.Channel}\nAs username: {e.BotUsername}");
         }
 
         private void onLeftChannel(object sender, OnLeftChannelArgs e)
@@ -220,7 +209,7 @@ namespace TwitchLibExample
 
         public void onConnected(object sender, OnConnectedArgs e)
         {
-            MessageBox.Show("Connected under username: " + e.Username);
+            MessageBox.Show("Connected under username: " + e.BotUsername);
         }
 
         public void incorrectLogin(object sender, OnIncorrectLoginArgs e)
@@ -377,7 +366,7 @@ namespace TwitchLibExample
         private void pubsubOnConnected(object sender, object e)
         {
             // MODERATOR ACCOUNT ID, CHANNEL ACCOUNT ID, MODERATOR OAUTH
-            pubsub.ListenToChatModeratorActions(99999999, 99999999, "");
+            pubsub.ListenToChatModeratorActions("99999999", "99999999");
             // MY ACCOUNT ID, MY OAUTH
             //pubsub.ListenToWhispers(0, "oauth_token");
         }
@@ -398,17 +387,17 @@ namespace TwitchLibExample
         private void pubsubOnTimeout(object sender, OnTimeoutArgs e)
         {
             Console.WriteLine("Test");
-            MessageBox.Show($"New timeout event! Details below:\nTimedout user: {e.TimedoutUser}\nTimeout duration: {e.TimeoutDuration} seconds\nTimeout reason: {e.TimeoutReason}\nTimeout by: {e.TimedoutBy}");
+            MessageBox.Show($"New timeout event! Details below:\nTimedout user: {e.TimedoutUserId}\nTimeout duration: {e.TimeoutDuration} seconds\nTimeout reason: {e.TimeoutReason}\nTimeout by: {e.TimedoutBy}");
         }
 
         private void pubsubOnBan(object sender, OnBanArgs e)
         {
-            MessageBox.Show($"New ban event! Details below:\nBanned user: {e.BannedUser}\nBan reason: {e.BanReason}\nBanned by: {e.BannedBy}");
+            MessageBox.Show($"New ban event! Details below:\nBanned user: {e.BannedUserId}\nBan reason: {e.BanReason}\nBanned by: {e.BannedBy}");
         }
 
         private void pubsubOnUnban(object sender, OnUnbanArgs e)
         {
-            MessageBox.Show($"New unban event! Details below:\nUnbanned user:{e.UnbannedUser}\nUnbanned by: {e.UnbannedBy}");
+            MessageBox.Show($"New unban event! Details below:\nUnbanned user:{e.UnbannedUserId}\nUnbanned by: {e.UnbannedBy}");
         }
 
         private static void onWhisper(object sender, OnWhisperArgs e)

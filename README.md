@@ -1,4 +1,4 @@
-<p align="center">
+<p align="center"> 
 <img src="http://swiftyspiffy.com/img/twitchlib.png" style="max-height: 300px;">
 </p>
 
@@ -37,7 +37,7 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 	* Update stream title/current game
 	* Reset stream key, set stream delay
 	* Follow/unfollow channels
-	* (Partnerd streams only) Retrieve subscriber count/list
+	* (Partnered streams only) Retrieve subscriber count/list
 	* (Partnered streams) Run commercials
 	* Create/moderate/update/search for communities
 * **TwitchPubSub**:
@@ -137,6 +137,10 @@ private void onPubSubBitsReceived() {
 }
 ```
 For a complete list of TwitchPubSub functionality, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_pub_sub.html" target="_blank">here</a>
+
+## Using TwitchLib with Unity Guide
+
+Björn has kindly created a guide for using TwitchLib with Unity. To view the guide, click <a href="https://github.com/swiftyspiffy/TwitchLib/blob/master/unity.md" target="_blank">here</a>..
 
 ## Examples, Applications, and Community Work
 

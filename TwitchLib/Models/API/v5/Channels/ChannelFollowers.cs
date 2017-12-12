@@ -4,8 +4,13 @@
     using Newtonsoft.Json;
     #endregion
     /// <summary>Class representing the Channel Followers response from Twitch API.</summary>
-    public class ChannelFollowers
+    public class ChannelFollowers : Interfaces.IFollows
     {
+
+        public ChannelFollowers(ChannelFollow[] follows)
+        {
+            Follows = follows;
+        }
         #region Cursor
         /// <summary>Property representing the cursor.</summary>
         [JsonProperty(PropertyName = "_cursor")]
@@ -19,7 +24,7 @@
         #region Follows
         /// <summary>Property representing the Follow collection.</summary>
         [JsonProperty(PropertyName = "follows")]
-        public ChannelFollow[] Follows { get; protected set; }
+        public Interfaces.IFollow[] Follows { get; protected set; }
         #endregion
     }
 }

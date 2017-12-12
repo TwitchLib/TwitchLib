@@ -15,29 +15,14 @@ namespace TwitchLib.Internal.Parsing
         /// <returns>Message type (ie NOTICE, PRIVMSG, JOIN, etc)</returns>
         public static string getReadType(string message, string channel)
         {
-            if (message.Contains(" "))
-            {
-                bool found = false;
-                foreach (string word in message.Split(' '))
-                {
-                    if (word[0] == '#')
-                    {
-                        if (word == $"#{channel}")
-                            found = true;
-                    }
-                }
-                if (found)
-                {
-                    var splitter = Regex.Split(message, $" #{channel}");
-                    var readType = splitter[0].Split(' ')[splitter[0].Split(' ').Length - 1];
-                    return readType;
-                }
-                else
-                {
-                    if (message.Split(' ').Count() > 1 && message.Split(' ')[1] == "NOTICE")
-                        return "NOTICE";
-                }
-            }
+            string[] splitByChannel = message.Split(new string[] { $" #{channel}" }, System.StringSplitOptions.None);
+            if (splitByChannel.Length > 1) // If the message contains $" #{channel}"
+                return splitByChannel[0].Split(' ').Last();
+
+            string[] splitBySpace = message.Split(' ');
+            if (splitBySpace.Length > 1 && splitBySpace[1] == "NOTICE")
+                return "NOTICE";
+
             return null;
         }
 
@@ -136,7 +121,7 @@ namespace TwitchLib.Internal.Parsing
             if (readType != null && readType == "PRIVMSG")
             {
                 var chatMessage = new ChatMessage(botUsername, message, ref _channelEmotes, WillReplaceEmotes);
-                return new DetectionReturn((_commandIdentifiers.Count != 0 && _commandIdentifiers.Contains(chatMessage.Message[0])), channelRet);
+                return new DetectionReturn((_commandIdentifiers.Count != 0 && chatMessage.Message.Length > 0 ? _commandIdentifiers.Contains(chatMessage.Message[0]) : false), channelRet);
             }
             return new DetectionReturn(false);
         }

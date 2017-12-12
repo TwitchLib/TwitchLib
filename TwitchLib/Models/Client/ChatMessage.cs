@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
+    using TwitchLib.NetCore.Extensions.NetCore;
     #endregion
     /// <summary>Class represents ChatMessage in a Twitch channel.</summary>
     public class ChatMessage
@@ -174,14 +175,17 @@
             }
             Message = ircString.Split(new[] { $" PRIVMSG #{Channel} :" }, StringSplitOptions.None)[1];
             EmoteSet = new EmoteSet(emoteSetStorage, Message);
-            if ((byte)Message[0] == 1 && (byte)Message[Message.Length - 1] == 1)
+            if (Message.Length > 0 && (byte)Message[0] == 1 && (byte)Message[Message.Length - 1] == 1)
             {
                 //Actions (/me {action}) are wrapped by byte=1 and prepended with "ACTION "
                 //This setup clears all of that leaving just the action's text.
                 //If you want to clear just the nonstandard bytes, use:
                 //_message = _message.Substring(1, text.Length-2);
-                Message = Message.Substring(8, Message.Length - 9);
-                IsMe = true;
+                if (Message.Contains("ACTION"))
+                {
+                 	Message = Message.Substring(8, Message.Length - 9);
+                        IsMe = true;
+                }
             }
 
             //Parse the emoteSet

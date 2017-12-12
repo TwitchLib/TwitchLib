@@ -4,22 +4,25 @@
     using System;
     using System.Linq;
     using System.Timers;
-
+    using System.Collections.Generic;
     using Newtonsoft.Json.Linq;
-    using WebSocketSharp;
-
+    using WebSocket4Net;
+    using SuperSocket.ClientEngine;
     using Events.PubSub;
     using Models.PubSub.Responses.Messages;
+    using Enums;
+    using Models.PubSub;
+    
     #endregion
     /// <summary>Class represneting interactions with the Twitch PubSub</summary>
-    public class TwitchPubSub
+    public class TwitchPubSub : ITwitchPubSub
     {
-        private WebSocket socket;
-        private Models.PubSub.PreviousRequest previousRequest = null;
-        private bool logging;
-        private Timer pingTimer = new Timer();
+        private readonly WebSocket _socket;
+        private readonly List<PreviousRequest> _previousRequests = new List<PreviousRequest>();
+        private readonly bool _logging;
+        private readonly Timer _pingTimer = new Timer();
 
-        private System.Collections.Generic.List<String> topicList = new System.Collections.Generic.List<string>();
+        private readonly List<string> _topicList = new List<string>();
 
         /*
         NON-IMPLEMENTED AVAILABLE TOPICS (i'm aware of):
@@ -29,233 +32,258 @@
 
         #region Events
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler OnPubSubServiceConnected;
+        public event EventHandler OnPubSubServiceConnected;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnPubSubServiceErrorArgs> OnPubSubServiceError;
+        public event EventHandler<OnPubSubServiceErrorArgs> OnPubSubServiceError;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler OnPubSubServiceClosed;
+        public event EventHandler OnPubSubServiceClosed;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnListenResponseArgs> OnListenResponse;
+        public event EventHandler<OnListenResponseArgs> OnListenResponse;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnTimeoutArgs> OnTimeout;
+        public event EventHandler<OnTimeoutArgs> OnTimeout;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnBanArgs> OnBan;
+        public event EventHandler<OnBanArgs> OnBan;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnUnbanArgs> OnUnban;
+        public event EventHandler<OnUnbanArgs> OnUnban;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnUntimeoutArgs> OnUntimeout;
+        public event EventHandler<OnUntimeoutArgs> OnUntimeout;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnHostArgs> OnHost;
+        public event EventHandler<OnHostArgs> OnHost;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnSubscribersOnlyArgs> OnSubscribersOnly;
+        public event EventHandler<OnSubscribersOnlyArgs> OnSubscribersOnly;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnSubscribersOnlyOffArgs> OnSubscribersOnlyOff;
+        public event EventHandler<OnSubscribersOnlyOffArgs> OnSubscribersOnlyOff;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnClearArgs> OnClear;
+        public event EventHandler<OnClearArgs> OnClear;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnEmoteOnlyArgs> OnEmoteOnly;
+        public event EventHandler<OnEmoteOnlyArgs> OnEmoteOnly;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnEmoteOnlyOffArgs> OnEmoteOnlyOff;
+        public event EventHandler<OnEmoteOnlyOffArgs> OnEmoteOnlyOff;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnR9kBetaArgs> OnR9kBeta;
+        public event EventHandler<OnR9kBetaArgs> OnR9kBeta;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnR9kBetaOffArgs> OnR9kBetaOff;
+        public event EventHandler<OnR9kBetaOffArgs> OnR9kBetaOff;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnBitsReceivedArgs> OnBitsReceived;
+        public event EventHandler<OnBitsReceivedArgs> OnBitsReceived;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnStreamUpArgs> OnStreamUp;
+        public event EventHandler<OnStreamUpArgs> OnStreamUp;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnStreamDownArgs> OnStreamDown;
+        public event EventHandler<OnStreamDownArgs> OnStreamDown;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnViewCountArgs> OnViewCount;
+        public event EventHandler<OnViewCountArgs> OnViewCount;
         /// <summary>EventHandler for named event.</summary>
-        public EventHandler<OnWhisperArgs> OnWhisper;
+        public event EventHandler<OnWhisperArgs> OnWhisper;
         /// <summary>EventHandler for channel subscriptions.</summary>
-        public EventHandler<OnChannelSubscriptionArgs> OnChannelSubscription;
+        public event EventHandler<OnChannelSubscriptionArgs> OnChannelSubscription;
         #endregion
 
         /// <summary>
         /// Constructor for a client that interface's with Twitch's new PubSub system.
         /// </summary>
-        /// <param name="_logging">Set this true to have raw messages from PubSub system printed to console.</param>
-        public TwitchPubSub(bool _logging = false)
+        /// <param name="logging">Set this true to have raw messages from PubSub system printed to console.</param>
+        public TwitchPubSub(bool logging = false)
         {
-            logging = _logging;
+            _logging = logging;
+            _socket = new WebSocket("wss://pubsub-edge.twitch.tv");
+            _socket.Opened += Socket_OnConnected;
+            _socket.Error += OnError;
+            _socket.MessageReceived += OnMessage;
+            _socket.Closed += Socket_OnDisconnected;
         }
-        
 
         private void OnError(object sender, ErrorEventArgs e)
         {
-            if(logging)
-                Console.WriteLine($"[TwitchPubSub]OnError: {e.Message}");
-           OnPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = new Exception(e.Message) });
+            if (_logging)
+                Console.WriteLine($"[TwitchPubSub]OnError: {e.Exception.Message}");
+            OnPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = e.Exception });
         }
 
-        private void OnMessage(object sender, MessageEventArgs e)
+        private void OnMessage(object sender, MessageReceivedEventArgs e)
         {
-            string msg = e.Data.ToString();
-            if (logging)                
-                Console.WriteLine($"[TwitchPubSub] {msg}");
-            parseMessage(msg);
+            if (_logging)
+                Console.WriteLine($"[TwitchPubSub] {e.Message}");
+            ParseMessage(e.Message);
         }
-        
-        private void Socket_OnDisconnected(object sender, CloseEventArgs e)
+
+        private void Socket_OnDisconnected(object sender, EventArgs e)
         {
-            if (logging)
+            if (_logging)
                 Console.WriteLine($"[TwitchPubSub]OnClose");
-            pingTimer.Stop();
+            _pingTimer.Stop();
             OnPubSubServiceClosed?.Invoke(this, null);
         }
 
         private void Socket_OnConnected(object sender, EventArgs e)
         {
-            if (logging)
-                Console.WriteLine($"[TwitchPubSub]OnOpen!");
-            pingTimer.Interval = 180000;
-            pingTimer.Elapsed += pingTimerTick;
-            pingTimer.Start();
+            if (_logging)
+                Console.WriteLine("[TwitchPubSub]OnOpen!");
+            _pingTimer.Interval = 180000;
+            _pingTimer.Elapsed += PingTimerTick;
+            _pingTimer.Start();
             OnPubSubServiceConnected?.Invoke(this, null);
         }
 
-        private void pingTimerTick(object sender, System.Timers.ElapsedEventArgs e)
+        private void PingTimerTick(object sender, ElapsedEventArgs e)
         {
-            JObject data = new JObject(
+            var data = new JObject(
                 new JProperty("type", "PING")
             );
-            socket.Send(data.ToString());
+            _socket.Send(data.ToString());
         }
 
-        private void parseMessage(string message)
+        private void ParseMessage(string message)
         {
-            string type = JObject.Parse(message).SelectToken("type")?.ToString();
+            var type = JObject.Parse(message).SelectToken("type")?.ToString();
 
-            switch (type.ToLower())
+            switch (type?.ToLower())
             {
                 case "response":
-                    Models.PubSub.Responses.Response resp = new Models.PubSub.Responses.Response(message);
-                    if (previousRequest != null && previousRequest.Nonce.ToLower() == resp.Nonce.ToLower())
+                    var resp = new Models.PubSub.Responses.Response(message);
+                    if (_previousRequests.Count != 0)
                     {
-                       OnListenResponse?.Invoke(this, new OnListenResponseArgs { Response = resp, Topic = previousRequest.Topic, Successful = resp.Successful });
+                        foreach (var request in _previousRequests)
+                        {
+                            if (string.Equals(request.Nonce, resp.Nonce, StringComparison.CurrentCultureIgnoreCase))
+                                OnListenResponse?.Invoke(this, new OnListenResponseArgs { Response = resp, Topic = request.Topic, Successful = resp.Successful });
+                        }
                         return;
                     }
                     break;
                 case "message":
-                    Models.PubSub.Responses.Message msg = new Models.PubSub.Responses.Message(message);
+                    var msg = new Models.PubSub.Responses.Message(message);
                     switch (msg.Topic.Split('.')[0])
                     {
                         case "channel-subscribe-events-v1":
-                            ChannelSubscription subscription = (ChannelSubscription)msg.messageData;
+                            var subscription = msg.messageData as ChannelSubscription;
                             OnChannelSubscription?.Invoke(this, new OnChannelSubscriptionArgs { Subscription = subscription });
                             return;
                         case "whispers":
-                            Whisper whisper = (Whisper)msg.messageData;
+                            var whisper = (Whisper)msg.messageData;
                             OnWhisper?.Invoke(this, new OnWhisperArgs { Whisper = whisper });
                             return;
                         case "chat_moderator_actions":
-                            ChatModeratorActions cMA = (ChatModeratorActions)msg.messageData;
-                            string reason = "";
-                            switch (cMA.ModerationAction.ToLower())
+                            var cMA = msg.messageData as ChatModeratorActions;
+                            var reason = "";
+                            switch (cMA?.ModerationAction.ToLower())
                             {
                                 case "timeout":
                                     if (cMA.Args.Count > 2)
                                         reason = cMA.Args[2];
-                                   OnTimeout?.Invoke(this, new OnTimeoutArgs { TimedoutBy = cMA.CreatedBy, TimedoutUser = cMA.Args[0],
-                                        TimeoutDuration = TimeSpan.FromSeconds(int.Parse(cMA.Args[1])), TimeoutReason = reason });
+                                    OnTimeout?.Invoke(this, new OnTimeoutArgs
+                                    {
+                                        TimedoutBy = cMA.CreatedBy,
+                                        TimedoutById = cMA.CreatedByUserId,
+                                        TimedoutUserId = cMA.TargetUserId,
+                                        TimeoutDuration = TimeSpan.FromSeconds(int.Parse(cMA.Args[1])),
+                                        TimeoutReason = reason,
+                                        TimedoutUser = cMA.Args[0]
+                                    });
                                     return;
                                 case "ban":
                                     if (cMA.Args.Count > 1)
                                         reason = cMA.Args[1];
-                                   OnBan?.Invoke(this, new OnBanArgs { BannedBy = cMA.CreatedBy, BannedUser = cMA.Args[0], BanReason = reason });
+                                    OnBan?.Invoke(this, new OnBanArgs { BannedBy = cMA.CreatedBy, BannedByUserId = cMA.CreatedByUserId, BannedUserId = cMA.TargetUserId, BanReason = reason, BannedUser = cMA.Args[0] });
                                     return;
                                 case "unban":
-                                   OnUnban?.Invoke(this, new OnUnbanArgs { UnbannedBy = cMA.CreatedBy, UnbannedUser = cMA.Args[0] });
+                                    OnUnban?.Invoke(this, new OnUnbanArgs { UnbannedBy = cMA.CreatedBy, UnbannedByUserId = cMA.CreatedByUserId, UnbannedUserId = cMA.TargetUserId });
                                     return;
                                 case "untimeout":
-                                   OnUntimeout?.Invoke(this, new OnUntimeoutArgs { UntimeoutedBy = cMA.CreatedBy, UntimeoutedUser = cMA.Args[0] });
+                                    OnUntimeout?.Invoke(this, new OnUntimeoutArgs { UntimeoutedBy = cMA.CreatedBy, UntimeoutedByUserId = cMA.CreatedByUserId, UntimeoutedUserId = cMA.TargetUserId });
                                     return;
                                 case "host":
-                                   OnHost?.Invoke(this, new OnHostArgs { HostedChannel = cMA.Args[0], Moderator = cMA.CreatedBy });
+                                    OnHost?.Invoke(this, new OnHostArgs { HostedChannel = cMA.Args[0], Moderator = cMA.CreatedBy });
                                     return;
                                 case "subscribers":
-                                   OnSubscribersOnly?.Invoke(this, new OnSubscribersOnlyArgs { Moderator = cMA.CreatedBy });
+                                    OnSubscribersOnly?.Invoke(this, new OnSubscribersOnlyArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "subscribersoff":
-                                   OnSubscribersOnlyOff?.Invoke(this, new OnSubscribersOnlyOffArgs { Moderator = cMA.CreatedBy });
+                                    OnSubscribersOnlyOff?.Invoke(this, new OnSubscribersOnlyOffArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "clear":
-                                   OnClear?.Invoke(this, new OnClearArgs { Moderator = cMA.CreatedBy });
+                                    OnClear?.Invoke(this, new OnClearArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "emoteonly":
-                                   OnEmoteOnly?.Invoke(this, new OnEmoteOnlyArgs { Moderator = cMA.CreatedBy });
+                                    OnEmoteOnly?.Invoke(this, new OnEmoteOnlyArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "emoteonlyoff":
-                                   OnEmoteOnlyOff?.Invoke(this, new OnEmoteOnlyOffArgs { Moderator = cMA.CreatedBy });
+                                    OnEmoteOnlyOff?.Invoke(this, new OnEmoteOnlyOffArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "r9kbeta":
-                                   OnR9kBeta?.Invoke(this, new OnR9kBetaArgs { Moderator = cMA.CreatedBy });
+                                    OnR9kBeta?.Invoke(this, new OnR9kBetaArgs { Moderator = cMA.CreatedBy });
                                     return;
                                 case "r9kbetaoff":
-                                   OnR9kBetaOff?.Invoke(this, new OnR9kBetaOffArgs { Moderator = cMA.CreatedBy });
+                                    OnR9kBetaOff?.Invoke(this, new OnR9kBetaOffArgs { Moderator = cMA.CreatedBy });
                                     return;
 
                             }
                             break;
                         case "channel-bits-events-v1":
-                            ChannelBitsEvents cBE = (ChannelBitsEvents)msg.messageData;
-                            OnBitsReceived?.Invoke(this, new OnBitsReceivedArgs { BitsUsed = cBE.BitsUsed, ChannelId = cBE.ChannelId, ChannelName = cBE.ChannelName,
-                                ChatMessage = cBE.ChatMessage, Context = cBE.Context, Time = cBE.Time, TotalBitsUsed = cBE.TotalBitsUsed, UserId = cBE.UserId, Username = cBE.Username});
+                            var cBE = msg.messageData as ChannelBitsEvents;
+                            if (cBE != null)
+                                OnBitsReceived?.Invoke(this, new OnBitsReceivedArgs
+                                {
+                                    BitsUsed = cBE.BitsUsed,
+                                    ChannelId = cBE.ChannelId,
+                                    ChannelName = cBE.ChannelName,
+                                    ChatMessage = cBE.ChatMessage,
+                                    Context = cBE.Context,
+                                    Time = cBE.Time,
+                                    TotalBitsUsed = cBE.TotalBitsUsed,
+                                    UserId = cBE.UserId,
+                                    Username = cBE.Username
+                                });
                             return;
                         case "video-playback":
-                            VideoPlayback vP = (VideoPlayback)msg.messageData;
-                            switch(vP.Type)
+                            var vP = msg.messageData as VideoPlayback;
+                            switch (vP?.Type)
                             {
-                                case Enums.VideoPlaybackType.StreamDown:
-                                   OnStreamDown?.Invoke(this, new OnStreamDownArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
+                                case VideoPlaybackType.StreamDown:
+                                    OnStreamDown?.Invoke(this, new OnStreamDownArgs { ServerTime = vP.ServerTime });
                                     return;
-                                case Enums.VideoPlaybackType.StreamUp:
-                                   OnStreamUp?.Invoke(this, new OnStreamUpArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
+                                case VideoPlaybackType.StreamUp:
+                                    OnStreamUp?.Invoke(this, new OnStreamUpArgs { PlayDelay = vP.PlayDelay, ServerTime = vP.ServerTime });
                                     return;
-                                case Enums.VideoPlaybackType.ViewCount:
-                                   OnViewCount?.Invoke(this, new OnViewCountArgs { ServerTime = vP.ServerTime, Viewers = vP.Viewers });
+                                case VideoPlaybackType.ViewCount:
+                                    OnViewCount?.Invoke(this, new OnViewCountArgs { ServerTime = vP.ServerTime, Viewers = vP.Viewers });
                                     return;
                             }
                             break;
                     }
                     break;
             }
-            if (logging)
-                unaccountedFor(message);
+            if (_logging)
+                UnaccountedFor(message);
         }
 
-        private static Random random = new Random();
+        private static readonly Random Random = new Random();
         private string generateNonce()
         {
             return new string(Enumerable.Repeat("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 8)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
+                .Select(s => s[Random.Next(s.Length)]).ToArray());
         }
 
-        private void listenToTopic (string topic)
+        private void ListenToTopic(string topic)
         {
-            topicList.Add(topic);
+            _topicList.Add(topic);
         }
 
-        public void sendTopics (string oauth = null, bool unlisten = false)
+        public void SendTopics(string oauth = null, bool unlisten = false)
         {
-            if (oauth != null && oauth.Contains ("oauth:"))
+            if (oauth != null && oauth.Contains("oauth:"))
             {
                 oauth = oauth.Replace("oauth:", "");
             }
 
-            string nonce = generateNonce();
+            var nonce = generateNonce();
 
-            JArray topics = new JArray();
-            foreach (String val in topicList)
+            var topics = new JArray();
+            foreach (var val in _topicList)
             {
+                _previousRequests.Add(new PreviousRequest(nonce, PubSubRequestType.ListenToTopic, val));
                 topics.Add(new JValue(val));
             }
 
-
-            JObject jsonData = new JObject(
+            var jsonData = new JObject(
                 new JProperty("type", !unlisten ? "LISTEN" : "UNLISTEN"),
                 new JProperty("nonce", nonce),
                 new JProperty("data",
@@ -269,12 +297,14 @@
                 ((JObject)jsonData.SelectToken("data")).Add(new JProperty("auth_token", oauth));
             }
 
-            socket.Send(jsonData.ToString());
+            _socket.Send(jsonData.ToString());
+
+            _topicList.Clear();
         }
 
-        private void unaccountedFor(string message)
+        private void UnaccountedFor(string message)
         {
-            if (logging)
+            if (_logging)
                 Console.WriteLine($"[TwitchPubSub] {message}");
         }
 
@@ -285,10 +315,9 @@
         /// </summary>
         /// <param name="myTwitchId">A moderator's twitch acount's ID (can be fetched from TwitchApi)</param>
         /// <param name="channelTwitchId">Channel ID who has previous parameter's moderator (can be fetched from TwitchApi)</param>
-        /// <param name="moderatorOAuth">Moderator OAuth key (can be OAuth key with any scope)</param>
-        public void ListenToChatModeratorActions(int myTwitchId, int channelTwitchId, string moderatorOAuth)
+        public void ListenToChatModeratorActions(string myTwitchId, string channelTwitchId)
         {
-            listenToTopic($"chat_moderator_actions.{myTwitchId}.{channelTwitchId}");
+            ListenToTopic($"chat_moderator_actions.{myTwitchId}.{channelTwitchId}");
         }
 
         /// <summary>
@@ -297,16 +326,16 @@
         /// <param name="channelTwitchId">Channel Id of channel to listen to bits on (can be fetched from TwitchApi)</param>
         public void ListenToBitsEvents(string channelTwitchId)
         {
-            listenToTopic($"channel-bits-events-v1.{channelTwitchId}");
+            ListenToTopic($"channel-bits-events-v1.{channelTwitchId}");
         }
 
         /// <summary>
         /// Sends request to listenOn video playback events in specific channel
         /// </summary>
-        /// <param name="channelTwitchId">Channel Id of channel to listen to playback events in.</param>
-        public void ListenToVideoPlayback(string channelTwitchId)
+        /// <param name="channelName">Name of channel to listen to playback events in.</param>
+        public void ListenToVideoPlayback(string channelName)
         {
-            listenToTopic($"video-playback.{channelTwitchId}");
+            ListenToTopic($"video-playback.{channelName}");
         }
 
         /// <summary>
@@ -315,7 +344,7 @@
         /// <param name="channelTwitchId">Channel to listen to whispers on.</param>
         public void ListenToWhispers(string channelTwitchId)
         {
-            listenToTopic($"whispers.{channelTwitchId}");
+            ListenToTopic($"whispers.{channelTwitchId}");
         }
 
         /// <summary>
@@ -324,7 +353,7 @@
         /// <param name="channelId">Id of the channel to listen to.</param>
         public void ListenToSubscriptions(string channelId)
         {
-            listenToTopic($"channel-subscribe-events-v1.{channelId}");
+            ListenToTopic($"channel-subscribe-events-v1.{channelId}");
         }
         #endregion
 
@@ -333,20 +362,15 @@
         /// </summary>
         public void Connect()
         {
-            socket = new WebSocket("wss://pubsub-edge.twitch.tv");
-            socket.OnOpen += Socket_OnConnected;
-            socket.OnError += OnError;
-            socket.OnMessage += OnMessage;
-            socket.OnClose += Socket_OnDisconnected;
-            socket.Connect();
+            _socket.Open();
         }
-        
+
         /// <summary>
         /// What do you think it does? :)
         /// </summary>
         public void Disconnect()
         {
-            socket.Close();
+            _socket.Close();
         }
 
         /// <summary>
@@ -355,8 +379,7 @@
         /// <param name="testJsonString"></param>
         public void TestMessageParser(string testJsonString)
         {
-            parseMessage(testJsonString);
+            ParseMessage(testJsonString);
         }
     }
 }
-

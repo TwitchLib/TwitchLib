@@ -4,6 +4,7 @@ namespace TwitchLib.Models.Client
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
+    using TwitchLib.NetCore.Extensions.NetCore;
     #endregion
     /// <summary>Class representing a received whisper from TwitchWhisperClient</summary>
     public class WhisperMessage
@@ -25,7 +26,7 @@ namespace TwitchLib.Models.Client
         /// <summary>Property representing message identifier.</summary>
         public long MessageId { get; protected set; }
         /// <summary>Property representing sender identifier.</summary>
-        public long UserId { get; protected set; }
+        public string UserId { get; protected set; }
         /// <summary>Property representing whether or not sender has Turbo.</summary>
         public bool Turbo { get; protected set; }
         /// <summary>Property representing bot's username.</summary>
@@ -94,7 +95,7 @@ namespace TwitchLib.Models.Client
                         break;
 
                     case "user-id":
-                        UserId = long.Parse(value);
+                        UserId = value;
                         break;
 
                     case "user-type":

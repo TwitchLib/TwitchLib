@@ -5,7 +5,7 @@
     using Newtonsoft.Json;
     #endregion
     /// <summary>Class representing a User object from Twitch API.</summary>
-    public class User
+    public class User : Interfaces.IUser
     {
         #region Id
         /// <summary>Property representing the user ID.</summary>
