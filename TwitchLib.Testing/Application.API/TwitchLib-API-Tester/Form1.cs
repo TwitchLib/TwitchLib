@@ -822,5 +822,14 @@ namespace TwitchLib_API_Tester
             var createdClip = resp.CreatedClips[0];
             Process.Start(createdClip.EditUrl);
         }
+
+        private async void button92_Click(object sender, EventArgs e)
+        {
+            var resp = await api.Webhooks.helix.StreamUpDown(textBox90.Text, TwitchLib.Enums.WebhookCallMode.Subscribe, textBox91.Text);
+            if (resp)
+                MessageBox.Show("Webhook created successfully!");
+            else
+                MessageBox.Show("Webhook was denied!");
+        }
     }
 }

@@ -440,6 +440,12 @@
             this.button91 = new System.Windows.Forms.Button();
             this.textBox89 = new System.Windows.Forms.TextBox();
             this.label90 = new System.Windows.Forms.Label();
+            this.groupBox89 = new System.Windows.Forms.GroupBox();
+            this.button92 = new System.Windows.Forms.Button();
+            this.textBox90 = new System.Windows.Forms.TextBox();
+            this.textBox91 = new System.Windows.Forms.TextBox();
+            this.label91 = new System.Windows.Forms.Label();
+            this.label92 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -566,6 +572,7 @@
             this.tabPage43.SuspendLayout();
             this.groupBox87.SuspendLayout();
             this.groupBox88.SuspendLayout();
+            this.groupBox89.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -4014,6 +4021,7 @@
             // 
             // tabPage42
             // 
+            this.tabPage42.Controls.Add(this.groupBox89);
             this.tabPage42.Controls.Add(this.groupBox85);
             this.tabPage42.Location = new System.Drawing.Point(10, 48);
             this.tabPage42.Name = "tabPage42";
@@ -5021,6 +5029,62 @@
             this.label90.TabIndex = 1;
             this.label90.Text = "Broadcaster ID:";
             // 
+            // groupBox89
+            // 
+            this.groupBox89.Controls.Add(this.button92);
+            this.groupBox89.Controls.Add(this.textBox90);
+            this.groupBox89.Controls.Add(this.textBox91);
+            this.groupBox89.Controls.Add(this.label91);
+            this.groupBox89.Controls.Add(this.label92);
+            this.groupBox89.Location = new System.Drawing.Point(500, 6);
+            this.groupBox89.Name = "groupBox89";
+            this.groupBox89.Size = new System.Drawing.Size(473, 228);
+            this.groupBox89.TabIndex = 5;
+            this.groupBox89.TabStop = false;
+            this.groupBox89.Text = "Stream Up or Down";
+            // 
+            // button92
+            // 
+            this.button92.Location = new System.Drawing.Point(100, 152);
+            this.button92.Name = "button92";
+            this.button92.Size = new System.Drawing.Size(353, 58);
+            this.button92.TabIndex = 4;
+            this.button92.Text = "Create Webhook";
+            this.button92.UseVisualStyleBackColor = true;
+            this.button92.Click += new System.EventHandler(this.button92_Click);
+            // 
+            // textBox90
+            // 
+            this.textBox90.Location = new System.Drawing.Point(164, 96);
+            this.textBox90.Name = "textBox90";
+            this.textBox90.Size = new System.Drawing.Size(289, 38);
+            this.textBox90.TabIndex = 3;
+            // 
+            // textBox91
+            // 
+            this.textBox91.Location = new System.Drawing.Point(164, 47);
+            this.textBox91.Name = "textBox91";
+            this.textBox91.Size = new System.Drawing.Size(289, 38);
+            this.textBox91.TabIndex = 2;
+            // 
+            // label91
+            // 
+            this.label91.AutoSize = true;
+            this.label91.Location = new System.Drawing.Point(15, 102);
+            this.label91.Name = "label91";
+            this.label91.Size = new System.Drawing.Size(133, 32);
+            this.label91.TabIndex = 1;
+            this.label91.Text = "Callback:";
+            // 
+            // label92
+            // 
+            this.label92.AutoSize = true;
+            this.label92.Location = new System.Drawing.Point(15, 50);
+            this.label92.Name = "label92";
+            this.label92.Size = new System.Drawing.Size(112, 32);
+            this.label92.TabIndex = 0;
+            this.label92.Text = "User id:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -5223,6 +5287,8 @@
             this.groupBox87.PerformLayout();
             this.groupBox88.ResumeLayout(false);
             this.groupBox88.PerformLayout();
+            this.groupBox89.ResumeLayout(false);
+            this.groupBox89.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -5639,6 +5705,12 @@
         private System.Windows.Forms.Button button91;
         private System.Windows.Forms.TextBox textBox89;
         private System.Windows.Forms.Label label90;
+        private System.Windows.Forms.GroupBox groupBox89;
+        private System.Windows.Forms.Button button92;
+        private System.Windows.Forms.TextBox textBox90;
+        private System.Windows.Forms.TextBox textBox91;
+        private System.Windows.Forms.Label label91;
+        private System.Windows.Forms.Label label92;
     }
 }
 
