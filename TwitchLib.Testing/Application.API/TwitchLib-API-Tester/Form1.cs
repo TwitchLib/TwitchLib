@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -734,7 +735,7 @@ namespace TwitchLib_API_Tester
             textBox79.Text = resp.Id;
         }
 
-        private async void button81_Click(object sender, EventArgs e)
+        private void button81_Click(object sender, EventArgs e)
         {
             api.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetected += onAuthorizationDetected;
             api.ThirdParty.AuthorizationFlow.OnError += onError;
@@ -806,6 +807,20 @@ namespace TwitchLib_API_Tester
             var resp = await api.Streams.helix.GetStreams();
             foreach (var stream in resp.Streams)
                 MessageBox.Show($"Stream: {stream.Title}\nChannel ID: {stream.Id}\nGame ID: {stream.GameId}\nViewers: {stream.ViewerCount}");
+        }
+
+        private async void button90_Click(object sender, EventArgs e)
+        {
+            var resp = await api.Clips.helix.GetClipAsync(textBox88.Text);
+            var clip = resp.Clips[0];
+            MessageBox.Show($"Title: {clip.Title}\nGame: {clip.GameId}\nViews: {clip.ViewCount}\nBroadcaster: {clip.BroadcasterId}\nCreator: {clip.CreatorId}");
+        }
+
+        private async void button91_Click(object sender, EventArgs e)
+        {
+            var resp = await api.Clips.helix.CreateClipAsync(textBox89.Text);
+            var createdClip = resp.CreatedClips[0];
+            Process.Start(createdClip.EditUrl);
         }
     }
 }
