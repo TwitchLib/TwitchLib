@@ -19,7 +19,7 @@ namespace TwitchLib.Models.API.Helix.Clips.GetClip
         public string CreatorId { get; protected set; }
         [JsonProperty(PropertyName = "video_id")]
         public string VideoId { get; protected set; }
-        [JsonProperty(PropertyName = "gane_id")]
+        [JsonProperty(PropertyName = "game_id")]
         public string GameId { get; protected set; }
         [JsonProperty(PropertyName = "language")]
         public string Language { get; protected set; }

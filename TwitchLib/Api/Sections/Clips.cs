@@ -95,9 +95,9 @@
             }
             #endregion
             #region CreateClip
-            public async Task<Models.API.Helix.Clips.CreateClip.CreatedClipResponse> CreateClip(string broadcasterId, string authToken = null)
+            public async Task<Models.API.Helix.Clips.CreateClip.CreatedClipResponse> CreateClipAsync(string broadcasterId, string authToken = null)
             {
-                Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Helix_Clips_Edit, authToken);
+                Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Helix_Clips_Edit);
                 List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>()
                 {
                     new KeyValuePair<string, string>("broadcaster_id", broadcasterId)

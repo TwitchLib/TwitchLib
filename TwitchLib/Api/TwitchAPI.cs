@@ -299,15 +299,19 @@ namespace TwitchLib
             request.Method = method;
             request.ContentType = "application/json";
 
+            string authPrefix = "OAuth";
             if (api == ApiVersion.Helix)
+            {
                 request.Accept = "application/json";
-            else if (api != ApiVersion.Void)
+                authPrefix = "Bearer";
+            } else if (api != ApiVersion.Void)
+            {
                 request.Accept = $"application/vnd.twitchtv.v{(int)api}+json";
-
+            }
             if (!string.IsNullOrEmpty(accessToken))
-                request.Headers["Authorization"] = $"OAuth {Common.Helpers.FormatOAuth(accessToken)}";
+                request.Headers["Authorization"] = $"{authPrefix} {Common.Helpers.FormatOAuth(accessToken)}";
             else if (!string.IsNullOrEmpty(Settings.AccessToken))
-                request.Headers["Authorization"] = $"OAuth {Settings.AccessToken}";
+                request.Headers["Authorization"] = $"{authPrefix} {Settings.AccessToken}";
 
             if (payload != null)
                 using (var writer = new StreamWriter(await request.GetRequestStreamAsync()))
