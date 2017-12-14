@@ -10,9 +10,12 @@
         public Clips(TwitchAPI api)
         {
             v5 = new V5(api);
+            helix = new Helix(api);
         }
 
         public V5 v5 { get; }
+        public Helix helix { get; }
+        
 
         public class V5 : ApiSection
         {
@@ -76,5 +79,32 @@
             #endregion
         }
 
+        public class Helix : ApiSection
+        {
+            public Helix(TwitchAPI api) : base(api)
+            {
+            }
+
+            #region GetClip
+            public async Task<Models.API.Helix.Clips.GetClip.GetClipResponse> GetClipAsync(string id)
+            {
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() {
+                    new KeyValuePair<string, string>("id", id)
+                };
+                return await Api.GetGenericAsync<Models.API.Helix.Clips.GetClip.GetClipResponse>($"https://api.twitch.tv/helix/clips", getParams, null, Enums.ApiVersion.Helix).ConfigureAwait(false);
+            }
+            #endregion
+            #region CreateClip
+            public async Task<Models.API.Helix.Clips.CreateClip.CreatedClipResponse> CreateClip(string broadcasterId, string authToken = null)
+            {
+                Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Helix_Clips_Edit, authToken);
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("broadcaster_id", broadcasterId)
+                };
+                return await Api.PostGenericAsync<Models.API.Helix.Clips.CreateClip.CreatedClipResponse>("https://api.twitch.tv/helix/clips", null, getParams, authToken, Enums.ApiVersion.Helix);
+            }
+            #endregion
+        }
     }
 }
