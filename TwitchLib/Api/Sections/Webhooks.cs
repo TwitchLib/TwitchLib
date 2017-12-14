@@ -40,6 +40,13 @@ namespace TwitchLib.Api.Sections
                 return await performWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?to_id={userReceiverId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
+            #region StreamUpDown
+            public async Task<bool> StreamUpDown(string callbackUrl, Enums.WebhookCallMode mode, string userId, TimeSpan? duration = null, string signingSecret = null)
+            {
+                int leaseSeconds = (int)validateTimespan(duration).TotalSeconds;
+                return await performWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/streams?user_id={userId}", callbackUrl, leaseSeconds, signingSecret);
+            }
+            #endregion
 
             private TimeSpan validateTimespan(TimeSpan? duration)
             {
