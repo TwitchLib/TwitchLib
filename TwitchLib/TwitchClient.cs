@@ -264,6 +264,8 @@
 
         /// <summary>Fires when newly raided channel is mature audience only.</summary>
         public EventHandler OnRaidedChannelIsMatureAudience;
+
+        public EventHandler<OnUnaccountedForArgs> OnUnaccountedFor;
         #endregion  
 
         /// <summary>
@@ -995,7 +997,9 @@
             #endregion  
 
             // Any other messages here
-            Log($"Unaccounted for: {ircMessage}");            
+            OnUnaccountedFor?.Invoke(this, new OnUnaccountedForArgs() { BotUsername = TwitchUsername, Channel = null, Location = "ParseIrcMessage", RawIRC = ircMessage });
+            Log($"Unaccounted for: {ircMessage}");  
+            
         }
 
 
