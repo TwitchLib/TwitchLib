@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using TwitchLib;
 using TwitchLib.Models.Client;
-using TwitchLib.Services;
-using System.Linq;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 
@@ -16,10 +14,8 @@ namespace NetCore.Client
         private const string _clientId = "";
         private const string _secret = "";
         private static string _channel = "";
-        private static LiveStreamMonitor _streamMonitor;
         private static ITwitchAPI _api;
-
-        private static TwitchClient _client;
+        private static ITwitchClient _client;
 
         static void Main(string[] args)
         {
@@ -42,14 +38,24 @@ namespace NetCore.Client
 
                 var credentials = new ConnectionCredentials(_username, _oauth);
                 var logFactory = new TwitchLib.Logging.Providers.SeriLog.SerilogFactory();
-                _streamMonitor = new LiveStreamMonitor(_api, 60);
-                _streamMonitor.SetStreamsByUsername(new System.Collections.Generic.List<string> { _channel });
-                _streamMonitor.OnStreamOffline += _streamMonitor_OnStreamOffline;
                 _client = new TwitchClient(credentials, channel: _channel, logging: true, logger: new TwitchLib.Logging.Providers.SeriLog.SerilogLogger(Log.Logger, logFactory));
                 _client.OnMessageReceived += Client_OnMessageReceived;
                 _client.OnConnectionError += _client_OnConnectionError;
+
+                _client.ChatThrottler = new TwitchLib.Services.MessageThrottler(_client, 60, TimeSpan.FromSeconds(60));
+                _client.WhisperThrottler = new TwitchLib.Services.MessageThrottler(_client, 30, TimeSpan.FromSeconds(30));
+
+                _client.OnConnected += (s, e) => {
+                    _client.ChatThrottler.StartQueue();
+                    _client.WhisperThrottler.StartQueue();
+                };
+
+                _client.OnDisconnected += (s, e) => {
+                    _client.ChatThrottler.StopQueue();
+                    _client.WhisperThrottler.StopQueue();
+                };
+
                 _client.Connect();
-                _streamMonitor.StartService();
 
                 bool running = true;
                 while (running)
@@ -60,14 +66,11 @@ namespace NetCore.Client
                         case "!exit":
                             running = false;
                             break;
-                        case "!skip":
-                            _streamMonitor_OnStreamOffline(null, null);
-                            break;
                         case "!me":
                             JoinMyChannel();
                             break;
-                        case "!reconnect":
-                            TestReconnect();
+                        case "!testmessages":
+                            TestSending();
                             break;
                         default:
                             if (line.StartsWith("!join"))
@@ -83,12 +86,10 @@ namespace NetCore.Client
             });
         }
 
-        private static void TestReconnect()
+        private static void TestSending()
         {
-            _streamMonitor.StopService();
-            _client.Reconnect();
-            _streamMonitor.Channels.Clear();
-            _streamMonitor.StartService();
+            for (int i = 0; i < 150; i++)
+                _client.SendMessage($"Test Message {i}");
         }
 
         private static void _client_OnConnectionError(object sender, TwitchLib.Events.Client.OnConnectionErrorArgs e)
@@ -100,40 +101,16 @@ namespace NetCore.Client
         {
             _client.LeaveChannel(_channel);
             _channel = v;
-            _streamMonitor.SetStreamsByUsername(new System.Collections.Generic.List<string> { _channel });
-            _streamMonitor.StartService();
             _client.JoinChannel(_channel);
         }
 
         private static void JoinMyChannel()
         {
-            _streamMonitor.StopService();
             _client.LeaveChannel(_channel);
             _channel = "prom3theu5";
-            _streamMonitor.SetStreamsByUsername(new System.Collections.Generic.List<string> { _channel });
-            _streamMonitor.StartService();
             _client.JoinChannel(_channel);
         }
         
-        private static async void _streamMonitor_OnStreamOffline(object sender, TwitchLib.Events.Services.LiveStreamMonitor.OnStreamOfflineArgs e)
-        {
-            try
-            {
-                _streamMonitor.StopService();
-                _client.LeaveChannel(_channel);
-                var topStreams = await _api.Streams.v5.GetLiveStreamsAsync();
-                var topStream = topStreams.Streams.OrderBy(c => c.Viewers).FirstOrDefault();
-                _channel = topStream != null ? topStream.Channel.DisplayName.ToLower() : "prom3theu5";
-                _streamMonitor.SetStreamsByUsername(new System.Collections.Generic.List<string> { _channel });
-                _streamMonitor.StartService();
-                _client.JoinChannel(_channel);
-            }
-            catch (System.Exception)
-            {
-                _streamMonitor_OnStreamOffline(sender, e);
-            }
-        }
-
         private static async void Client_OnMessageReceived(object sender, TwitchLib.Events.Client.OnMessageReceivedArgs e)
         {
             var message = e.ChatMessage.Message.Split(' ');

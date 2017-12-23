@@ -4,44 +4,82 @@
 
 <p align="center">
 <a href="https://travis-ci.org/swiftyspiffy/TwitchLib.svg"><img src="https://api.travis-ci.org/swiftyspiffy/TwitchLib.svg?branch=master" style="max-height: 300px;"></a>
-<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/.NET%20Framework-4.5-orange.svg" style="max-height: 300px;"></a>
+<a href="https://www.microsoft.com/net"><img src="https://img.shields.io/badge/.NET%20Framework-4.6.2-orange.svg" style="max-height: 300px;"></a>
 <img src="https://img.shields.io/badge/Platform-.NET-lightgrey.svg" style="max-height: 300px;" alt="Platform: iOS">
 <a href="https://discord.gg/8NXaEyV"><img src="https://img.shields.io/badge/Discord-TwitchAPI-red.svg" style="max-height: 300px;"></a>
 <a href="http://twitter.com/swiftyspiffy"><img src="https://img.shields.io/badge/Twitter-@swiftyspiffy-blue.svg?style=flat" style="max-height: 300px;"></a>
-<a href="https://gitter.im/TwitchLib/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link"><img src="https://img.shields.io/badge/GITTER-COME CHAT-green.svg" style="max-height: 300px;"></a>
+<img src="https://img.shields.io/badge/.NETCore-2.0-ff69b4.svg" style="max-height: 300px;">
 
 </p>
 
 ## About
-TwitchLib is a powerful C# library that allows for interaction with various Twitch services like chat, whispers, API, and PubSub event system. Below are the descriptions of the core components that make up TwitchLib.
+TwitchLib is a powerful C# library that allows for interaction with various Twitch services. Currently supported services are: chat and whisper, API's (v3, v5, helix, undocumented, and third party), and PubSub event system. Below are the descriptions of the core components that make up TwitchLib.
 
-* **TwitchClient**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch.
-* **TwitchAPI**: With complete v3 and v5 endpoints, TwitchAPI is a static asynchronous class that allows for modifying of virtually all Twitch account properties and fetching of Twitch data. The class also sports undocumented endpoints and thirdparty endpoints.
-* **TwitchPubSub**: Covers the relatively new Twitch PubSub event system. Currently both topics Twitch supports are supported via this static class.
+* **TwitchClient**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Helper methods also exist for replying to whispers or fetching moderator lists.
+* **TwitchAPI**: Complete coverage of v3, v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publically accessable data as well as modify Twitch services like profiles and streams.
+* **TwitchPubSub**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
 
 ## Features
 * **TwitchClient**:
-	* Handles chat interactions and functionality.
-	* Events for channel being hosted, chat being cleared, moderators/users entering/leaving chat, etc.
-	* Reply to/send chat messages and whispers.
-	* Native support for commands and customizable command identifiers (default is "!")
-	* Ability to timeout/ban/unban users, change username color, clear chat, play commercials (for partnered streams), turn on emote/follower/sub only mode, and retrive list of moderators/followers.
-	* Message throttling handling.
+    * Send formatted or raw messages to Twitch
+    * Chat and Whisper command detection and parsing
+    * Helper methods
+        * Timeout, ban, unban users
+        * Change chat color and clear chat
+        * Invoke stream commercials and hosts
+        * Emote only, follower only, subscriber only, and slow mode
+        * Reply-to whisper support
+	* Handles chat and whisper events:
+	    * Connected and Joined channel
+	    * Channel and User state changed
+	    * Message received/sent
+	    * Whisper received/sent
+	    * User joined/left
+	    * Moderator joined/left
+	    * New subscriptions and resubscriptions
+	    * Hosting and raid detection
+	    * Chat clear, user timeouts, user bans
 * **Services**:
-	* **FollowerService**: Service for detection of new followers.
-	* **LiveStreamMonitor**: Service for detecting when a channel goes online/offline
+	* **FollowerService**: Service for detection of new followers in somewhat real time.
+	* **LiveStreamMonitor**: Service for detecting when a channel goes online/offline in somewhat real time.
+	* **MessageThrottler**: Service to throttle chat messages to abide by Twitch use requirements.
 * **TwitchAPI**:
-	* Retrieve uptime/current status of stream, posts in channel feed, etc.
-	* Retrieve followed channels/check is particular user is a follower or not
-	* Search games by viewcount, name, etc.
-	* Update stream title/current game
-	* Reset stream key, set stream delay
-	* Follow/unfollow channels
-	* (Partnered streams only) Retrieve subscriber count/list
-	* (Partnered streams) Run commercials
-	* Create/moderate/update/search for communities
+	* Supported Twitch API endpoitns:**v3**, **v5**, **Helix**
+	* Supported API sections:
+	    * Badges, Bits, Blocks
+	    * ChannelFeeds, Channels, Chat, Clips, Collections, Communities,
+	    * Follows
+	    * Games
+	    * Ingests
+	    * Root
+	    * Search, Streams, Subscriptions
+	    * Teams
+	    * ThirdParty
+	        * Username Changes courtesy of CommanderRoot's [twitch-tools.rootonline.de/](twitch-tools.rootonline.de/)
+	        * Moderator Lookup courtesy of 3v's [https://twitchstuff.3v.fi](https://twitchstuff.3v.fi)
+	        * Twitch Authenticaiton Flow courtesy of swiftyspiffy's [https://twitchtokengenerator.com/](https://twitchtokengenerator.com/)
+	    * Undocumented
+	        * ClipChat
+	        * TwitchPrimeOffers
+	        * ChannelHosts
+	        * ChatProperties
+	        * ChannelPanels
+	        * CSMaps
+	        * CSStreams
+	        * RecentMessages
+	        * Chatters
+	        * RecentChannelEvents
+	        * ChatUser
+	        * UsernameAvailable
+	    * User
+	    * Videos
 * **TwitchPubSub**:
-	* Chat interactions through Twitch's PubSub system  
+	* Supported topics:
+	    * ChatModeratorActions
+	    * BitsEvents
+	    * VideoPlayback
+	    * Whispers
+	    * Subscriptions
 
 ## Documentation
 #### Doxygen
@@ -90,25 +128,26 @@ private void onNewSubscriber(object sender, OnNewSubscriberArgs e) {
 ```
 For a complete list of TwitchClient events and calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_client.html" target="_blank">here</a>
 #### TwitchAPI
-Note: TwitchAPI is an asynchronous static class. Each subclass of TwitchAPI represents a part of the TwitchAPI. Each part of the TwitchAPI has a v3 and v5 static class. These classes represent Twitch's v3 and v5 API iterations. v5 ONLY uses UserID's, unless specified, and v3 ONLY uses Usernames, unless specified. If a part does not have v3 and v5, this indicates that the part only exists in one of the two versions. Look at the method arguments to determine if the method wants a userid or username.
+Note: TwitchAPI is now a singleton class that needs to be instantiated with optional clientid and auth token. Please know that failure to provide at least a client id, and sometimes an access token will result in exceptions. The v3 subclass operates almost entirely on Twitch usernames. v5 and Helix operate almost entirely on Twitch user id's. There are methods in all Twitch api versions to get corresponding usernames/userids.
+
 ```csharp
 using TwitchLib;
 using TwitchLib.Models.API;
 
-TwitchAPI.Settings.ClientId = "my-client-id";
-TwitchAPI.Settings.AccessToken = "my-oauth-token";
+private static TwitchLib.TwitchAPI api;
 
-bool isSubbed = await TwitchAPI.Channels.v5.CheckChannelSubscriptionByUser("channel-id", "user-id");
+api = new TwitchLib.TwitchAPI("client_id", "access_token");
 
-List<TwitchLib.Models.API.v5.Subscriptions.Subscription> allSubs = await TwitchAPI.Channels.v5.GetAllSubscribers("channel-id");
+var subscription = await api.Channels.v5.CheckChannelSubscriptionByUserAsync("channel_id", "user_id");
+var allSubscriptions = await api.Channels.v5.GetAllSubscribersAsync("channel_id");
 
-TwitchLib.Models.API.v5.Channels.ChannelFollowers followers = await TwitchAPI.Channels.v5.GetChannelFollowers("channel-id");
+var userFollows = await api.Users.v5.GetUserFollowsAsync("user_id");
+var channelFollowers = await api.Channels.v5.GetChannelFollowersAsync("channel_id");
+bool userFollowsChannel = await api.Users.v5.FollowChannelAsync("user_id", "channel_id");
 
-TwitchLib.Models.API.v5.Users.UserFollow follow = await TwitchAPI.Users.v5.FollowChannel("user-id", "channel-id");
+bool isStreaming = await api.Streams.v5.BroadcasterOnlineAsync("channel_id");]
 
-bool isStreaming = await TwitchAPI.Streams.v5.BroadcasterOnline("channel-id");
-
-TwitchLib.Models.API.v5.Channels.Channel channel = await TwitchAPI.Channels.v5.UpdateChannel("channel-id", "New status here", "Game here");
+await api.Channels.v5.UpdateChannelAsync("channel_id", "New stream title", "Stronghold Crusader");
 ```
 For a complete list of TwitchAPI calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_a_p_i.html" target="_blank">here</a>
 #### TwitchPubSub
@@ -117,7 +156,7 @@ using TwitchLib;
 
 TwitchPubSub pubsub = new TwitchPubSub();
 pubsub.OnPubSubServiceConnected += onPubSubConnected;
-pubsub.OnListResponse += onPubSubResponse;
+pubsub.OnListenResponse += onPubSubResponse;
 pubsub.OnBitsReceived += onPubSubBitsReceived;
 
 pubsub.Connect();
@@ -142,7 +181,7 @@ For a complete list of TwitchPubSub functionality, click <a href="http://swiftys
 
 Björn has kindly created a guide for using TwitchLib with Unity. To view the guide, click <a href="https://github.com/swiftyspiffy/TwitchLib/blob/master/unity.md" target="_blank">here</a>..
 
-## Examples, Applications, and Community Work
+## Examples, Applications, Community Work, and Projects
 
 - TwitchLib-API-Tester: Repo testing application for TwitchAPI and Services: [Link](https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib-API-Tester)
 - TwitchLib-Client-PubSub-Tester: Repo testing application for TwitchClient and TwitchPubSub: [Link](https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib-Client-PubSub-Tester)
@@ -154,6 +193,9 @@ Björn has kindly created a guide for using TwitchLib with Unity. To view the gu
 - Moerty's Avia Bot, a fully featured bot that is a good example of a built out bot: [https://github.com/Moerty/AivaBot](https://github.com/Moerty/AivaBot)
 - [HardlyDifficult](https://www.twitch.tv/hardlydifficult)'s Chat Bot Creation VODs: [#1](https://www.twitch.tv/videos/141096702) [#2](https://www.twitch.tv/videos/141154684) [#3](https://www.twitch.tv/videos/141210422) [#4](https://www.twitch.tv/videos/141535267)
 - Prom3theu5's TwitchBotBase - [github.com/prom3theu5/TwitchBotBase](https://github.com/prom3theu5/TwitchBotBase)
+- Trump Academi's ASP.NET TwitchLib Implementation - [trumpacademi.com/day-9-twitch-bot-and-mvc-asp-net-implementing-twitchlib/](http://www.trumpacademi.com/day-9-twitch-bot-and-mvc-asp-net-implementing-twitchlib/)
+- ubhkid's Zombie Twitch chat game/overlay - [reddit.com/r/Unity3D/comments/6ll10k/i_made_a_game_for_my_twitch_chat/](https://www.reddit.com/r/Unity3D/comments/6ll10k/i_made_a_game_for_my_twitch_chat/)
+- FPH SpedV: Virtual Freight Company Tool - [sped-v.de](https://www.sped-v.de/)
 
 ## Installation
 
@@ -182,7 +224,7 @@ You are also more than welcome to clone/fork this repo and build the library you
  * igor523 ([igor523](https://github.com/igor523))
  * jxlarrea ([jxlarrea](https://github.com/jxlarrea))
  * GlitchHound ([GlitchHound](https://github.com/GlitchHound))
- * PFCKrutonium ([PFCKrutonium](https://github.com/PFCKrutonium))
+ * Krutonium ([Krutonium](https://github.com/Krutonium))
  * toffaste1337([toffaste1337](https://github.com/toffaste1337))
  * Mr_Examed ([Mr_Examed](https://www.twitch.tv/mr_examed))
  * XuluniX ([XuluniX](https://github.com/XuluniX))
@@ -190,6 +232,7 @@ You are also more than welcome to clone/fork this repo and build the library you
  * Ethan Lu ([elu00](https://github.com/elu00))
  * BeerHawk ([BeerHawk](https://github.com/BeerHawk))
  * Tobias Teske ([Syzuna](https://github.com/Syzuna))
+ * LuckyNoS7evin ([luckynos7evin](https://twitch.tv/luckynos7evin))
 
 ## License
 

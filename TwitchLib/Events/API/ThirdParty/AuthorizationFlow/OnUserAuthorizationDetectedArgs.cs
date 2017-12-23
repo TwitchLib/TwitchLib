@@ -13,5 +13,6 @@ namespace TwitchLib.Events.API.ThirdParty.AuthorizationFlow
         public List<Enums.AuthScopes> Scopes { get; set; }
         public string Username { get; set; }
         public string Token { get; set; }
+        public string Refresh { get; set; }
     }
 }

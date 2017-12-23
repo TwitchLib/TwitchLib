@@ -12,7 +12,9 @@
     using Models.PubSub.Responses.Messages;
     using Enums;
     using Models.PubSub;
-    
+    using System.Net;
+    using SuperSocket.ClientEngine.Proxy;
+
     #endregion
     /// <summary>Class represneting interactions with the Twitch PubSub</summary>
     public class TwitchPubSub : ITwitchPubSub
@@ -81,7 +83,7 @@
         /// Constructor for a client that interface's with Twitch's new PubSub system.
         /// </summary>
         /// <param name="logging">Set this true to have raw messages from PubSub system printed to console.</param>
-        public TwitchPubSub(bool logging = false)
+        public TwitchPubSub(bool logging = false, IPEndPoint proxy = null)
         {
             _logging = logging;
             _socket = new WebSocket("wss://pubsub-edge.twitch.tv");
@@ -89,6 +91,9 @@
             _socket.Error += OnError;
             _socket.MessageReceived += OnMessage;
             _socket.Closed += Socket_OnDisconnected;
+
+            if(proxy != null)
+                _socket.Proxy = new HttpConnectProxy(proxy);
         }
 
         private void OnError(object sender, ErrorEventArgs e)

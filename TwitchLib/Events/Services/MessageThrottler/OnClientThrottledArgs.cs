@@ -10,7 +10,5 @@
         public Enums.ThrottleType ThrottleViolation;
         /// <summary>Event property representing message that failed to send due to throttling.</summary>
         public string Message;
-        /// <summary>Event property representing message that failed to send due to throttling.</summary>
-        public TimeSpan PeriodDuration;
     }
 }

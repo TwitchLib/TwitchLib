@@ -31,7 +31,8 @@
             #region GetUsernameChanges
             public async Task<List<Models.API.ThirdParty.UsernameChange.UsernameChangeListing>> GetUsernameChangesAsync(string username)
             {
-                return await Api.GetGenericAsync<List<Models.API.ThirdParty.UsernameChange.UsernameChangeListing>>($"https://twitch-tools.rootonline.de/username_changelogs_search.php?q={username}&format=json", null, ApiVersion.Void).ConfigureAwait(false);
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("q", username), new KeyValuePair<string, string>("format", "json") };
+                return await Api.GetGenericAsync<List<Models.API.ThirdParty.UsernameChange.UsernameChangeListing>>($"https://twitch-tools.rootonline.de/username_changelogs_search.php", getParams, null, ApiVersion.Void).ConfigureAwait(false);
             }
             #endregion
         }
@@ -45,7 +46,8 @@
             {
                 if (useTls12)
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                return await Api.GetGenericAsync<Models.API.ThirdParty.ModLookup.ModLookupResponse>($"https://twitchstuff.3v.fi/modlookup/api/user/{username}?offset={offset}&limit={limit}").ConfigureAwait(false);
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("offset", offset.ToString()), new KeyValuePair<string, string>("limit", limit.ToString()) };
+                return await Api.GetGenericAsync<Models.API.ThirdParty.ModLookup.ModLookupResponse>($"https://twitchstuff.3v.fi/modlookup/api/user/{username}").ConfigureAwait(false);
             }
 
             public async Task<Models.API.ThirdParty.ModLookup.TopResponse> GetChannelsModdedForByTopAsync(bool useTls12 = true)
@@ -93,6 +95,14 @@
                 return JsonConvert.DeserializeObject<Models.API.ThirdParty.AuthorizationFlow.CreatedFlow>(resp);
             }
 
+            public Models.API.ThirdParty.AuthorizationFlow.RefreshTokenResponse RefreshToken(string refreshToken)
+            {
+                string refreshUrl = $"{baseUrl}/refresh/{refreshToken}";
+
+                var resp = new System.Net.WebClient().DownloadString(refreshUrl);
+                return JsonConvert.DeserializeObject<Models.API.ThirdParty.AuthorizationFlow.RefreshTokenResponse>(resp);
+            }
+
             public void BeginPingingStatus(string id, int intervalMs = 5000)
             {
                 apiId = id;
@@ -118,7 +128,7 @@
                 if (ping.Success)
                 {
                     pingTimer.Stop();
-                    OnUserAuthorizationDetected?.Invoke(null, new Events.API.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetectedArgs { Id = ping.Id, Scopes = ping.Scopes, Token = ping.Token, Username = ping.Username });
+                    OnUserAuthorizationDetected?.Invoke(null, new Events.API.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetectedArgs { Id = ping.Id, Scopes = ping.Scopes, Token = ping.Token, Username = ping.Username, Refresh = ping.Refresh });
                 }
                 else
                 {

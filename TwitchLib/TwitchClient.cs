@@ -13,6 +13,8 @@
     using System.Text.RegularExpressions;
     using WebSocket4Net;
     using SuperSocket.ClientEngine;
+    using SuperSocket.ClientEngine.Proxy;
+    using TwitchLib.Services;
     #endregion
     /// <summary>Represents a client connected to a Twitch channel.</summary>
     public class TwitchClient : ITwitchClient
@@ -42,9 +44,9 @@
         /// <summary>The current connection status of the client.</summary>
         public bool IsConnected => _client.State == WebSocketState.Open;
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on chat messages.</summary>
-        public Services.MessageThrottler ChatThrottler;
+        public MessageThrottler ChatThrottler { get; set; }
         /// <summary>Assign this property a valid MessageThrottler to apply message throttling on whispers.</summary>
-        public Services.MessageThrottler WhisperThrottler;
+        public MessageThrottler WhisperThrottler { get; set; }
         /// <summary>The emotes this channel replaces.</summary>
         /// <remarks>
         ///     Twitch-handled emotes are automatically added to this collection (which also accounts for
@@ -243,6 +245,25 @@
         /// Fires when the library detects another channel has started hosting the broadcaster's stream. MUST BE CONNECTED AS BROADCASTER.
         /// </summary>
         public event EventHandler<OnBeingHostedArgs> OnBeingHosted;
+
+        /// <summary>
+        /// Fires when a raid notification is detected in chat
+        /// </summary>
+        public event EventHandler<OnRaidNotificationArgs> OnRaidNotification;
+
+        /// <summary>
+        /// Fires when a subscription is gifted and announced in chat
+        /// </summary>
+        public event EventHandler<OnGiftedSubscriptionArgs> OnGiftedSubscription;
+
+        /// <summary>Fires when TwitchClient attempts to host a channel it is in.</summary>
+        public EventHandler OnSelfRaidError;
+
+        /// <summary>Fires when TwitchClient receives generic no permission error from Twitch.</summary>
+        public EventHandler OnNoPermissionError;
+
+        /// <summary>Fires when newly raided channel is mature audience only.</summary>
+        public EventHandler OnRaidedChannelIsMatureAudience;
         #endregion  
 
         /// <summary>
@@ -269,12 +290,15 @@
             Logging = logging;
             Logger = logger ?? new ConsoleFactory().Create("ConsoleLog");
             AutoReListenOnException = autoReListenOnExceptions;
-
+            
             _client = new WebSocket($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}");
             _client.Opened += _client_OnConnected;
             _client.MessageReceived += _client_OnMessage;
             _client.Closed += _client_OnDisconnected;
             _client.Error += _client_OnError;
+
+            if(credentials.Proxy != null)
+                _client.Proxy = new HttpConnectProxy(credentials.Proxy);
         }
 
         /// <summary>
@@ -286,7 +310,7 @@
             ConsoleColor prevColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Log($"Writing: {message}");
-            if(ChatThrottler == null || !ChatThrottler.ApplyThrottlingToRawMessages || ChatThrottler.MessagePermitted(message))
+            if(ChatThrottler == null || !ChatThrottler.ApplyThrottlingToRawMessages)
                _client.Send(message);
             OnSendReceiveData?.Invoke(this, new OnSendReceiveDataArgs { Direction = Enums.SendReceiveDirection.Sent, Data = message });
             Console.ForegroundColor = prevColor;
@@ -302,12 +326,14 @@
         public void SendMessage(JoinedChannel channel, string message, bool dryRun = false)
         {
             if (channel == null || message == null || dryRun) return;
-            if (ChatThrottler != null && !ChatThrottler.MessagePermitted(message)) return;
             string twitchMessage = $":{_credentials.TwitchUsername}!{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" +
                 $".tmi.twitch.tv PRIVMSG #{channel.Channel} :{message}";
             _lastMessageSent = message;
-            // This is a makeshift hack to encode it with accomodations for at least cyrillic characters, and possibly others
-            _client.Send(twitchMessage);
+
+            if (ChatThrottler != null)
+                ChatThrottler.QueueSend(twitchMessage);
+            else
+                _client.Send(twitchMessage);
         }
 
         /// <summary>
@@ -325,6 +351,8 @@
         {
             if (JoinedChannels.Count > 0)
                 SendMessage(JoinedChannels[0], message, dryRun);
+            else
+                throw new BadStateException("Must be connected to at least one channel to use SendMessage.");
         }
         #endregion
 
@@ -338,12 +366,14 @@
         public void SendWhisper(string receiver, string message, bool dryRun = false)
         {
             if (dryRun) return;
-            if (WhisperThrottler != null && !WhisperThrottler.MessagePermitted(message)) return;
+            
             string twitchMessage = $":{_credentials.TwitchUsername}~{_credentials.TwitchUsername}@{_credentials.TwitchUsername}" +
-                $".tmi.twitch.tv PRIVMSG #jtv :/w {receiver} {message}";
-            // This is a makeshift hack to encode it with accomodations for at least cyrillic, and possibly others
-            // Encoding.Default.GetString(Encoding.UTF8.GetBytes(twitchMessage))
-            _client.Send(twitchMessage);
+                    $".tmi.twitch.tv PRIVMSG #jtv :/w {receiver} {message}";
+            if (WhisperThrottler != null)
+                WhisperThrottler.QueueSend(twitchMessage);
+            else
+                _client.Send(twitchMessage);
+
             OnWhisperSent?.Invoke(this, new OnWhisperSentArgs { Receiver = receiver, Message = message });
         }
         #endregion
@@ -438,6 +468,8 @@
         /// <param name="channel">String channel to search for.</param>
         public JoinedChannel GetJoinedChannel(string channel)
         {
+            if (JoinedChannels.Count == 0)
+                throw new BadStateException("Must be connected to at least one channel.");
             return JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
         }
 
@@ -815,6 +847,48 @@
                     Viewers = viewers, IsAutoHosted = isAuto });
                 return;
             }
+
+            // On raid notice detected in chat
+            response = Internal.Parsing.Chat.detectedRaidNotification(ircMessage, JoinedChannels);
+            if(response.Successful)
+            {
+                var raidNotification = new RaidNotification(ircMessage);
+                OnRaidNotification?.Invoke(this, new OnRaidNotificationArgs { RaidNotificaiton = raidNotification });
+                return;
+            }
+
+            // On gifted subscription detected in chat
+            response = Internal.Parsing.Chat.detectedGiftedSubscription(ircMessage, JoinedChannels);
+            if (response.Successful)
+            {
+                var giftedSubscription = new GiftedSubscription(ircMessage);
+                OnGiftedSubscription?.Invoke(this, new OnGiftedSubscriptionArgs { GiftedSubscription = giftedSubscription });
+                return;
+            }
+
+            // On TwitchClient tried to raid channel it is currently in
+            response = Internal.Parsing.Chat.detectedSelfRaidError(ircMessage, JoinedChannels);
+            if(response.Successful)
+            {
+                OnSelfRaidError?.Invoke(this, null);
+                return;
+            }
+
+            // On generic no permission error is detected in chat
+            response = Internal.Parsing.Chat.detectedNoPermissionError(ircMessage, JoinedChannels);
+            if(response.Successful)
+            {
+                OnNoPermissionError?.Invoke(this, null);
+                return;
+            }
+
+            // On raided channel is detected as being mature audience only
+            response = Internal.Parsing.Chat.detectedRaidedChannelIsMatureAudience(ircMessage, JoinedChannels);
+            if(response.Successful)
+            {
+                OnRaidedChannelIsMatureAudience?.Invoke(this, null);
+                return;
+            }
             #endregion
 
             #region Clear Chat, Timeouts, and Bans
@@ -857,11 +931,21 @@
             response = Internal.Parsing.Chat.detectedModeratorsReceived(ircMessage, JoinedChannels);
             if (response.Successful)
             {
-                OnModeratorsReceived?.Invoke(this, new OnModeratorsReceivedArgs
+                if(ircMessage.Contains("There are no moderators of this room."))
                 {
-                    Channel = ircMessage.Split('#')[1].Split(' ')[0],
-                    Moderators = ircMessage.Replace(" ", "").Split(':')[3].Split(',').ToList<string>()
-                });
+                    OnModeratorsReceived?.Invoke(this, new OnModeratorsReceivedArgs
+                    {
+                        Channel = ircMessage.Split('#')[1].Split(' ')[0],
+                        Moderators = new List<string>()
+                    });
+                } else
+                {
+                    OnModeratorsReceived?.Invoke(this, new OnModeratorsReceivedArgs
+                    {
+                        Channel = ircMessage.Split('#')[1].Split(' ')[0],
+                        Moderators = ircMessage.Replace(" ", "").Split(':')[3].Split(',').ToList<string>()
+                    });
+                }
                 return;
             }
             #endregion
@@ -930,7 +1014,7 @@
             }
         }
 
-        private void Log(string message, bool includeDate = false, bool includeTime = false)
+        public void Log(string message, bool includeDate = false, bool includeTime = false)
         {
             if(Logging)
             {
@@ -949,6 +1033,11 @@
 
                 OnLog?.Invoke(this, new OnLogArgs() { BotUsername = ConnectionCredentials.TwitchUsername, Data = message, DateTime = DateTime.UtcNow });
             }
+        }
+
+        public void SendQueuedItem(string message)
+        {
+            _client.Send(message);
         }
     }
 }

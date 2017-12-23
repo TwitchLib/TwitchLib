@@ -35,20 +35,23 @@
             if (offsetTime.Contains("s"))
                 offsetSeconds += int.Parse(offsetTime.Split('s')[0]);
 
-            var rechatResource = $"https://rechat.twitch.tv/rechat-messages?video_id={vodId}&offset_seconds={offsetSeconds}";
-            return await Api.GetGenericAsync<Models.API.Undocumented.ClipChat.GetClipChatResponse>(rechatResource).ConfigureAwait(false);
+            List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("video_id", vodId), new KeyValuePair<string, string>("offset_seconds", offsetSeconds.ToString()) };
+            var rechatResource = $"https://rechat.twitch.tv/rechat-messages";
+            return await Api.GetGenericAsync<Models.API.Undocumented.ClipChat.GetClipChatResponse>(rechatResource, getParams).ConfigureAwait(false);
         }
         #endregion
         #region GetTwitchPrimeOffers
         public async Task<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers> GetTwitchPrimeOffersAsync()
         {
-            return await Api.GetGenericAsync<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers>($"https://api.twitch.tv/api/premium/offers?on_site=1").ConfigureAwait(false);
+            List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("on_site", "1") };
+            return await Api.GetGenericAsync<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers>($"https://api.twitch.tv/api/premium/offers", getParams).ConfigureAwait(false);
         }
         #endregion
         #region GetChannelHosts
         public async Task<Models.API.Undocumented.Hosting.ChannelHostsResponse> GetChannelHostsAsync(string channelId)
         {
-            return await Api.GetSimpleGenericAsync<Models.API.Undocumented.Hosting.ChannelHostsResponse>($"https://tmi.twitch.tv/hosts?include_logins=1&target={channelId}");
+            List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("include_logins", "1"), new KeyValuePair<string, string>("target", channelId) };
+            return await Api.GetSimpleGenericAsync<Models.API.Undocumented.Hosting.ChannelHostsResponse>($"https://tmi.twitch.tv/hosts", getParams);
         }
         #endregion
         #region GetChatProperties
@@ -72,8 +75,8 @@
         #region GetCSStreams
         public async Task<Models.API.Undocumented.CSStreams.CSStreams> GetCSStreamsAsync(int limit = 25, int offset = 0)
         {
-            string paramsStr = $"?limit={limit}&offset={offset}";
-            return await Api.GetGenericAsync<Models.API.Undocumented.CSStreams.CSStreams>($"https://api.twitch.tv/api/cs{paramsStr}");
+            List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("limit", limit.ToString()), new KeyValuePair<string, string>("offset", offset.ToString()) };
+            return await Api.GetGenericAsync<Models.API.Undocumented.CSStreams.CSStreams>($"https://api.twitch.tv/api/cs", getParams);
         }
         #endregion
         #region GetRecentMessages
@@ -99,6 +102,10 @@
             foreach (var chatter in resp.Chatters.Viewers)
                 chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Viewer));
 
+            foreach (var chatter in chatters)
+                if (chatter.Username.ToLower() == channelName.ToLower())
+                    chatter.UserType = Enums.UserType.Broadcaster;
+
             return chatters;
         }
         #endregion
@@ -120,8 +127,8 @@
         #region IsUsernameAvailable
         public bool IsUsernameAvailable(string username)
         {
-            //
-            var resp = Api.RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}?users_service=true", "HEAD");
+            List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("users_service", "true") };
+            var resp = Api.RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}", "HEAD", getParams);
             if (resp == 200)
                 return false;
             else if (resp == 204)

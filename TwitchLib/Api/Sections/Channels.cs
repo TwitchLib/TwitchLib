@@ -27,20 +27,20 @@
             #region GetChannelByName
             public async Task<Models.API.v3.Channels.Channel> GetChannelByNameAsync(string channel)
             {
-                return await Api.GetGenericAsync<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", null, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetChannel
             public async Task<Models.API.v3.Channels.Channel> GetChannelAsync(string accessToken = null)
             {
-                return await Api.GetGenericAsync<Models.API.v3.Channels.Channel>("https://api.twitch.tv/kraken/channel", accessToken, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v3.Channels.Channel>("https://api.twitch.tv/kraken/channel", null, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region GetChannelEditors
             public async Task<Models.API.v3.Channels.GetEditorsResponse> GetChannelEditorsAsync(string channel, string accessToken = null)
             {
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, accessToken);
-                return await Api.GetGenericAsync<Models.API.v3.Channels.GetEditorsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/editors", accessToken, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v3.Channels.GetEditorsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/editors", null, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region UpdateChannel
@@ -78,7 +78,7 @@
 
                 payload = "{ \"channel\": {" + payload + "} }";
 
-                return await Api.PutGenericAsync<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", payload, accessToken, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.PutGenericAsync<Models.API.v3.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channel}", payload, null, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
             #region ResetStreamKey
@@ -126,7 +126,7 @@
             #region GetTeams
             public async Task<Models.API.v3.Channels.GetTeamsResponse> GetTeamsAsync(string channel)
             {
-                return await Api.GetGenericAsync<Models.API.v3.Channels.GetTeamsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/teams", null, ApiVersion.v3).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v3.Channels.GetTeamsResponse>($"https://api.twitch.tv/kraken/channels/{channel}/teams", null, null, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion
         }
@@ -144,7 +144,7 @@
             /// <returns>A ChannelPrivileged object including all Channel object info plus email and streamkey.</returns>
             public async Task<Models.API.v5.Channels.ChannelAuthed> GetChannelAsync(string authToken = null)
             {
-                return await Api.GetGenericAsync<Models.API.v5.Channels.ChannelAuthed>("https://api.twitch.tv/kraken/channel", authToken, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Channels.ChannelAuthed>("https://api.twitch.tv/kraken/channel", null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetChannelById
@@ -156,7 +156,7 @@
             public async Task<Models.API.v5.Channels.Channel> GetChannelByIDAsync(string channelId)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.GetGenericAsync<Models.API.v5.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channelId}", null, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channelId}", null, null, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region UpdateChannel
@@ -207,7 +207,7 @@
 
                 payload = "{ \"channel\": {" + payload + "} }";
 
-                return await Api.PutGenericAsync<Models.API.v5.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channelId}", payload, authToken, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.PutGenericAsync<Models.API.v5.Channels.Channel>($"https://api.twitch.tv/kraken/channels/{channelId}", payload, null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetChannelEditors
@@ -221,7 +221,7 @@
             {
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Channel_Read, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.GetGenericAsync<Models.API.v5.Channels.ChannelEditors>($"https://api.twitch.tv/kraken/channels/{channelId}/editors", authToken, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Channels.ChannelEditors>($"https://api.twitch.tv/kraken/channels/{channelId}/editors", null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetChannelFollowers
@@ -237,26 +237,17 @@
             public async Task<Models.API.v5.Channels.ChannelFollowers> GetChannelFollowersAsync(string channelId, int? limit = null, int? offset = null, string cursor = null, string direction = null)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
                 if (limit != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
                 if (offset != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
                 if (!string.IsNullOrEmpty(cursor))
-                    queryParameters.Add(new KeyValuePair<string, string>("cursor", cursor));
+                    getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
                 if (!string.IsNullOrEmpty(direction) && (direction == "asc" || direction == "desc"))
-                    queryParameters.Add(new KeyValuePair<string, string>("direction", direction));
+                    getParams.Add(new KeyValuePair<string, string>("direction", direction));
 
-                string optionalQuery = string.Empty;
-                if (queryParameters.Count > 0)
-                {
-                    for (int i = 0; i < queryParameters.Count; i++)
-                    {
-                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                    }
-                }
-                return await Api.GetGenericAsync<Models.API.v5.Channels.ChannelFollowers>($"https://api.twitch.tv/kraken/channels/{channelId}/follows" + optionalQuery, null, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Channels.ChannelFollowers>($"https://api.twitch.tv/kraken/channels/{channelId}/follows", getParams, null, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetAllChannelFollowers
@@ -307,7 +298,7 @@
             public async Task<Models.API.v5.Channels.ChannelTeams> GetChannelTeamsAsync(string channelId)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.GetGenericAsync<Models.API.v5.Channels.ChannelTeams>($"https://api.twitch.tv/kraken/channels/{channelId}/teams", null, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Channels.ChannelTeams>($"https://api.twitch.tv/kraken/channels/{channelId}/teams", null, null, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetChannelSubscribers
@@ -325,24 +316,15 @@
             {
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Channel_Subscriptions, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
                 if (limit != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
                 if (offset != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
                 if (!string.IsNullOrEmpty(direction) && (direction == "asc" || direction == "desc"))
-                    queryParameters.Add(new KeyValuePair<string, string>("direction", direction));
+                    getParams.Add(new KeyValuePair<string, string>("direction", direction));
 
-                string optionalQuery = string.Empty;
-                if (queryParameters.Count > 0)
-                {
-                    for (int i = 0; i < queryParameters.Count; i++)
-                    {
-                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                    }
-                }
-                return await Api.GetGenericAsync<Models.API.v5.Channels.ChannelSubscribers>($"https://api.twitch.tv/kraken/channels/{channelId}/subscriptions" + optionalQuery, authToken, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Channels.ChannelSubscribers>($"https://api.twitch.tv/kraken/channels/{channelId}/subscriptions", getParams, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetAllSubscribers
@@ -401,7 +383,7 @@
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Channel_Check_Subscription, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.GetGenericAsync<Models.API.v5.Subscriptions.Subscription>($"https://api.twitch.tv/kraken/channels/{channelId}/subscriptions/{userId}", authToken, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Subscriptions.Subscription>($"https://api.twitch.tv/kraken/channels/{channelId}/subscriptions/{userId}", null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
         
             #endregion
@@ -409,11 +391,11 @@
             public async Task<Models.API.v5.Channels.ChannelVideos> GetChannelVideosAsync(string channelId, int? limit = null, int? offset = null, List<string> broadcastType = null, List<string> language = null, string sort = null)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                List<KeyValuePair<string, string>> queryParameters = new List<KeyValuePair<string, string>>();
+                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
                 if (limit != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("limit", limit.ToString()));
                 if (offset != null)
-                    queryParameters.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
+                    getParams.Add(new KeyValuePair<string, string>("offset", offset.ToString()));
                 if (broadcastType != null && broadcastType.Count > 0)
                 {
                     bool isCorrect = false;
@@ -423,23 +405,14 @@
                         else { isCorrect = false; break; }
                     }
                     if (isCorrect)
-                        queryParameters.Add(new KeyValuePair<string, string>("broadcast_type", string.Join(",", broadcastType)));
+                        getParams.Add(new KeyValuePair<string, string>("broadcast_type", string.Join(",", broadcastType)));
                 }
                 if (language != null && language.Count > 0)
-                    queryParameters.Add(new KeyValuePair<string, string>("language", string.Join(",", language)));
+                    getParams.Add(new KeyValuePair<string, string>("language", string.Join(",", language)));
                 if (!string.IsNullOrWhiteSpace(sort) && (sort == "views" || sort == "time"))
-                    queryParameters.Add(new KeyValuePair<string, string>("sort", sort));
+                    getParams.Add(new KeyValuePair<string, string>("sort", sort));
 
-                string optionalQuery = string.Empty;
-                if (queryParameters.Count > 0)
-                {
-                    for (int i = 0; i < queryParameters.Count; i++)
-                    {
-                        if (i == 0) { optionalQuery = $"?{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                        else { optionalQuery += $"&{queryParameters[i].Key}={queryParameters[i].Value}"; }
-                    }
-                }
-                return await Api.GetGenericAsync<Models.API.v5.Channels.ChannelVideos>($"https://api.twitch.tv/kraken/channels/{channelId}/videos{optionalQuery}", null, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Channels.ChannelVideos>($"https://api.twitch.tv/kraken/channels/{channelId}/videos", getParams, null, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region StartChannelCommercial
@@ -447,7 +420,7 @@
             {
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Channel_Commercial, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.PostGenericAsync<Models.API.v5.Channels.ChannelCommercial>($"https://api.twitch.tv/kraken/channels/{channelId}/commercial", "{\"duration\": " + (int)duration + "}", authToken, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.PostGenericAsync<Models.API.v5.Channels.ChannelCommercial>($"https://api.twitch.tv/kraken/channels/{channelId}/commercial", "{\"duration\": " + (int)duration + "}", null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region ResetChannelStreamKey
@@ -477,7 +450,7 @@
             public async Task<Models.API.v5.Communities.Community> GetChannelCommunityAsync(string channelId, string authToken = null)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                return await Api.GetGenericAsync<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/channels/{channelId}/community", authToken, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Communities.Community>($"https://api.twitch.tv/kraken/channels/{channelId}/community", null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region GetChannelCommunities
@@ -500,7 +473,7 @@
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.Channel_Editor, authToken);
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 if (string.IsNullOrWhiteSpace(communityId)) { throw new Exceptions.API.BadParameterException("The community id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.PutAsync($"https://api.twitch.tv/kraken/channels/{channelId}/community/{communityId}", null, authToken, ApiVersion.v5).ConfigureAwait(false);
+                await Api.PutAsync($"https://api.twitch.tv/kraken/channels/{channelId}/community/{communityId}", null, null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region SetChannelCommunities
@@ -518,7 +491,7 @@
                 if (communityIds == null || communityIds.Count == 0) { throw new Exceptions.API.BadParameterException("The no community ids where specified"); }
                 if (communityIds != null && communityIds.Count > 3) { throw new Exceptions.API.BadParameterException("You can only set up to 3 communities"); }
                 if (communityIds.Any(communityId => string.IsNullOrWhiteSpace(communityId))) { throw new Exceptions.API.BadParameterException("One or more of the community ids is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.PutAsync($"https://api.twitch.tv/kraken/channels/{channelId}/communities", $"{{community_ids:[{string.Join(",", communityIds)}]}}", authToken, ApiVersion.v5).ConfigureAwait(false);
+                await Api.PutAsync($"https://api.twitch.tv/kraken/channels/{channelId}/communities", $"{{community_ids:[{string.Join(",", communityIds)}]}}", null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #region DeleteChannelFromCommunity
@@ -529,7 +502,7 @@
             public async Task DeleteChannelFromCommunityAsync(string channelId, string authToken = null)
             {
                 if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                await Api.DeleteAsync($"https://api.twitch.tv/kraken/channels/{channelId}/community", authToken, ApiVersion.v5).ConfigureAwait(false);
+                await Api.DeleteAsync($"https://api.twitch.tv/kraken/channels/{channelId}/community", null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
             #endregion

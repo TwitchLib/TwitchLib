@@ -1,5 +1,6 @@
 ﻿namespace TwitchLib
 {
+    using System.Collections.Generic;
     #region using directives
     using System.Threading.Tasks;
     using TwitchLib.Api;
@@ -23,8 +24,10 @@
             #region GetCheermotes
             public async Task<Models.API.v5.Bits.Cheermotes> GetCheermotesAsync(string channelId = null)
             {
-                string optionalQuery = (channelId != null) ? $"?channel_id={channelId}" : string.Empty;
-                return await Api.GetGenericAsync<Models.API.v5.Bits.Cheermotes>($"https://api.twitch.tv/kraken/bits/actions{optionalQuery}").ConfigureAwait(false);
+                List<KeyValuePair<string, string>> getParams = null;
+                if (channelId != null)
+                    getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("channel_id", channelId) };
+                return await Api.GetGenericAsync<Models.API.v5.Bits.Cheermotes>("https://api.twitch.tv/kraken/bits/actions", getParams).ConfigureAwait(false);
             }
             #endregion
         }
