@@ -120,7 +120,7 @@ namespace TwitchLib.Services
         /// <param name="usernames">List of channels to monitor as usernames</param>
         public void SetStreamsByUsername(List<string> usernames)
         {
-            _getUserIds(usernames);
+            _getUserIds(usernames).Wait();
 
             foreach (var item in _channelToId.Keys.Where(x => !usernames.Any(channelToId => channelToId.Equals(x))).ToList())
                 _channelToId.TryRemove(item, out string _);
@@ -217,7 +217,7 @@ namespace TwitchLib.Services
             return livestreamers;
         }
 
-        private async void _getUserIds(List<string> usernames)
+        private async Task _getUserIds(List<string> usernames)
         {
             var usernamesToGet = usernames.Where(u => !_channelToId.Any(c => c.Key.Equals(u))).ToList();
             var pages = (usernamesToGet.Count + 100 - 1) / 100;
