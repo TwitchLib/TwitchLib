@@ -183,6 +183,7 @@ Björn has kindly created a guide for using TwitchLib with Unity. To view the gu
 
 ## Examples, Applications, Community Work, and Projects
 
+- Recent commits in projects using TwitchLib: [Link](https://github.com/search?o=desc&q=twitchlib&s=indexed&type=Code)
 - TwitchLib-API-Tester: Repo testing application for TwitchAPI and Services: [Link](https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib-API-Tester)
 - TwitchLib-Client-PubSub-Tester: Repo testing application for TwitchClient and TwitchPubSub: [Link](https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib-Client-PubSub-Tester)
 - [Bacon_Donut](https://www.twitch.tv/bacon_donut)'s VOD on building a Twitch bot using TwitchLib: [twitch.tv/videos/115788601](https://www.twitch.tv/videos/115788601)
