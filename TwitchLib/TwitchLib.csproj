@@ -51,7 +51,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\AuthGrantType.cs" />
     <Compile Include="Enums\ChanneldentifierTypeEnum.cs" />
     <Compile Include="Enums\NoisyEnum.cs" />
     <Compile Include="Enums\AuthScopesEnum.cs" />
@@ -323,7 +322,6 @@
     <Compile Include="Models\API\v3\Videos\Channel.cs" />
     <Compile Include="Models\API\v3\Videos\TopVideosResponse.cs" />
     <Compile Include="Models\API\v3\Videos\Video.cs" />
-    <Compile Include="Models\API\v5\Authorization\Token.cs" />
     <Compile Include="Models\API\v5\Bits\Cheermotes.cs" />
     <Compile Include="Models\API\v5\Bits\Scales.cs" />
     <Compile Include="Models\API\v5\Clips\Broadcaster.cs" />
