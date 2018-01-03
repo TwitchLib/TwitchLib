@@ -2,8 +2,13 @@ namespace TwitchLib.Models.Client
 {
     #region using directives
     using System.Collections.Generic;
-    using System.Drawing;
     using System.Linq;
+#if NETSTANDARD
+    using TwitchLib.NetCore.Extensions.NetCore;
+#endif
+#if NET452
+    using System.Drawing;
+#endif
     #endregion
     /// <summary>Class representing a received whisper from TwitchWhisperClient</summary>
     public class WhisperMessage
@@ -13,7 +18,7 @@ namespace TwitchLib.Models.Client
         /// <summary>Property representing HEX representation of color of username.</summary>
         public string ColorHex { get; protected set; }
         /// <summary>Property representing HEX color as a System.Drawing.Color object.</summary>
-        public Color Color { get; protected set; }
+        public System.Drawing.Color Color { get; protected set; }
         /// <summary>Property representing sender Username.</summary>
         public string Username { get; protected set; }
         /// <summary>Property representing sender DisplayName (can be null/blank).</summary>

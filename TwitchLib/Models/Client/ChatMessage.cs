@@ -3,8 +3,13 @@
     #region using directives
     using System;
     using System.Collections.Generic;
-    using System.Drawing;
     using System.Linq;
+#if NETSTANDARD
+    using TwitchLib.NetCore.Extensions.NetCore;
+#endif
+#if NET452
+    using System.Drawing;
+#endif
     #endregion
     /// <summary>Class represents ChatMessage in a Twitch channel.</summary>
     public class ChatMessage
@@ -22,7 +27,7 @@
         /// <summary>Hex representation of username color in chat (THIS CAN BE NULL IF VIEWER HASN'T SET COLOR).</summary>
         public string ColorHex { get; protected set; }
         /// <summary>Property representing HEX color as a System.Drawing.Color object.</summary>
-        public Color Color { get; protected set; }
+        public System.Drawing.Color Color { get; protected set; }
         /// <summary>Emote Ids that exist in message.</summary>
         public EmoteSet EmoteSet { get; protected set; }
         /// <summary>Twitch chat message contents.</summary>
@@ -180,8 +185,11 @@
                 //This setup clears all of that leaving just the action's text.
                 //If you want to clear just the nonstandard bytes, use:
                 //_message = _message.Substring(1, text.Length-2);
-                Message = Message.Substring(8, Message.Length - 9);
-                IsMe = true;
+                if (Message.Contains("ACTION"))
+                {
+                 	Message = Message.Substring(8, Message.Length - 9);
+                        IsMe = true;
+                }
             }
 
             //Parse the emoteSet
@@ -263,21 +271,21 @@
             */
             if (bits < 1500)
             {
-                return (bits / 100) * 1.4;
+                return ((double)(bits) / 100) * 1.4;
             }
             if (bits < 5000)
             {
-                return (bits / 1500) * 19.95;
+                return ((double)(bits) / 1500) * 19.95;
             }
             if (bits < 10000)
             {
-                return (bits / 5000) * 64.40;
+                return ((double)(bits) / 5000) * 64.40;
             }
             if (bits < 25000)
             {
-                return (bits / 10000) * 126;
+                return ((double)(bits) / 10000) * 126;
             }
-            return (bits / 25000) * 308;
+            return ((double)(bits) / 25000) * 308;
         }
     }
 }

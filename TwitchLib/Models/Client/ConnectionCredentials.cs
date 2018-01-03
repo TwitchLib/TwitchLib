@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Net;
+using System.Text.RegularExpressions;
 
 namespace TwitchLib.Models.Client
 {
@@ -13,9 +14,11 @@ namespace TwitchLib.Models.Client
         public string TwitchHost { get; set; }
         /// <summary>Property representing Twitch's host port</summary>
         public int TwitchPort { get; set; }
+        /// <summary>Property IP/port of a proxy.</summary>
+        public IPEndPoint Proxy { get; set; }
 
         /// <summary>Constructor for ConnectionCredentials object.</summary>
-        public ConnectionCredentials(string twitchUsername, string twitchOAuth, string twitchHost = "irc-ws.chat.twitch.tv", int twitchPort = 80, bool disableUsernameCheck = false)
+        public ConnectionCredentials(string twitchUsername, string twitchOAuth, string twitchHost = "irc-ws.chat.twitch.tv", int twitchPort = 80, bool disableUsernameCheck = false, string proxyIP = null, int? proxyPort = null)
         {
             if (!disableUsernameCheck && !(new Regex("^([a-zA-Z0-9][a-zA-Z0-9_]{3,25})$").Match(twitchUsername).Success))
                 throw new Exceptions.Client.ErrorLoggingInException("Twitch username does not appear to be valid.", twitchUsername);
@@ -23,6 +26,9 @@ namespace TwitchLib.Models.Client
             TwitchOAuth = twitchOAuth;
             TwitchHost = twitchHost;
             TwitchPort = twitchPort;
+
+            if (proxyIP != null && proxyPort != null)
+                Proxy = new IPEndPoint(IPAddress.Parse(proxyIP), (int)proxyPort);
         }
     }
 }

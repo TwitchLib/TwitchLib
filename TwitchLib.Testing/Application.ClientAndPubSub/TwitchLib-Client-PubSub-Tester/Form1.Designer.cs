@@ -98,6 +98,8 @@
             this.button49 = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.button47 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -774,6 +776,8 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.button5);
+            this.tabPage5.Controls.Add(this.button3);
             this.tabPage5.Controls.Add(this.comboBox7);
             this.tabPage5.Controls.Add(this.button54);
             this.tabPage5.Controls.Add(this.button51);
@@ -862,6 +866,26 @@
             this.button47.Text = "Test PubSub";
             this.button47.UseVisualStyleBackColor = true;
             this.button47.Click += new System.EventHandler(this.button47_Click_1);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(1439, 346);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(161, 131);
+            this.button3.TabIndex = 36;
+            this.button3.Text = "Start Raid on burkeblack";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(1616, 346);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(161, 131);
+            this.button5.TabIndex = 37;
+            this.button5.Text = "Start Raid on swiftyspiffy";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // Form1
             // 
@@ -971,6 +995,8 @@
         private System.Windows.Forms.Label label78;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.Button button47;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button5;
     }
 }
 

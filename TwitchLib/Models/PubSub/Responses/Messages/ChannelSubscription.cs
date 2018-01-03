@@ -12,9 +12,12 @@ namespace TwitchLib.Models.PubSub.Responses.Messages
     {
         public string Username { get; protected set; }
         public string DisplayName { get; protected set; }
+        public string RecipientName { get; protected set; }
+        public string RecipientDisplayName { get; protected set; }
         public string ChannelName { get; protected set; }
         public string UserId { get; protected set; }
         public string ChannelId { get; protected set; }
+        public string RecipientId { get; protected set; }
         public DateTime Time { get; protected set; }
         public Enums.SubscriptionPlan SubscriptionPlan { get; protected set; }
         public string SubscriptionPlanName { get; protected set; }
@@ -28,8 +31,11 @@ namespace TwitchLib.Models.PubSub.Responses.Messages
             JToken message = JObject.Parse(jsonStr);
             Username = message.SelectToken("user_name")?.ToString();
             DisplayName = message.SelectToken("display_name")?.ToString();
+            RecipientName = message.SelectToken("recipient_user_name")?.ToString();
+            RecipientDisplayName = message.SelectToken("recipient_display_name")?.ToString();
             ChannelName = message.SelectToken("channel_name")?.ToString();
             UserId = message.SelectToken("user_id")?.ToString();
+            RecipientId = message.SelectToken("recipient_id")?.ToString();
             ChannelId = message.SelectToken("channel_id")?.ToString();
             Time = Common.Helpers.DateTimeStringToObject(message.SelectToken("time")?.ToString());
             switch(message.SelectToken("sub_plan").ToString().ToLower())
@@ -50,6 +56,7 @@ namespace TwitchLib.Models.PubSub.Responses.Messages
             SubscriptionPlanName = message.SelectToken("sub_plan_name")?.ToString();
             Months = int.Parse(message.SelectToken("months").ToString());
             SubMessage = new SubMessage(message.SelectToken("sub_message"));
+            Context = message.SelectToken("context")?.ToString();
         }
     }
 }

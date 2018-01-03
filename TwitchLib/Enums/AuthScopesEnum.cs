@@ -24,6 +24,7 @@
         OpenId,
         Helix_User_Edit,
         Helix_User_Read_Email,
+        Helix_Clips_Edit,
         None
     }
 }
