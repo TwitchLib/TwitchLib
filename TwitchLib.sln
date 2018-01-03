@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib", "TwitchLib\TwitchLib.csproj", "{5D5746FD-63B3-4DB0-9389-7FEDA1A05A09}"
 EndProject
@@ -22,6 +22,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCore.Client", "TwitchLib.Testing\NetCore.Client\NetCore.Client.csproj", "{BC292E8F-D1A5-4820-8480-53BCB0C3724F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.AuthFlowExample", "TwitchLib.Testing\Application.AuthFlowExample\Application.AuthFlowExample.csproj", "{55F2DC3A-071C-447D-BD7D-30038FAC7F03}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TwitchLib.Extensions", "TwitchLib.Extensions", "{F387384B-06C5-4823-8A32-A6CE7360E0D0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Extension", "TwitchLib.Extension\TwitchLib.Extension\TwitchLib.Extension.csproj", "{EA30F915-4990-4A4E-AC5E-0C034B98D09E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Extension.Core", "TwitchLib.Extension\TwitchLib.Extension.Core\TwitchLib.Extension.Core.csproj", "{893FC3E1-22D8-42E3-B115-D112E4B18239}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchLib.Extension.Owin", "TwitchLib.Extension\TwitchLib.Extension.Owin\TwitchLib.Extension.Owin.csproj", "{F5F50798-01AE-4DDD-AC92-73528AE957FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +69,18 @@ Global
 		{55F2DC3A-071C-447D-BD7D-30038FAC7F03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55F2DC3A-071C-447D-BD7D-30038FAC7F03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55F2DC3A-071C-447D-BD7D-30038FAC7F03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA30F915-4990-4A4E-AC5E-0C034B98D09E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA30F915-4990-4A4E-AC5E-0C034B98D09E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA30F915-4990-4A4E-AC5E-0C034B98D09E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA30F915-4990-4A4E-AC5E-0C034B98D09E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{893FC3E1-22D8-42E3-B115-D112E4B18239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{893FC3E1-22D8-42E3-B115-D112E4B18239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{893FC3E1-22D8-42E3-B115-D112E4B18239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{893FC3E1-22D8-42E3-B115-D112E4B18239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5F50798-01AE-4DDD-AC92-73528AE957FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5F50798-01AE-4DDD-AC92-73528AE957FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5F50798-01AE-4DDD-AC92-73528AE957FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5F50798-01AE-4DDD-AC92-73528AE957FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +92,9 @@ Global
 		{9DC15B3A-DF0E-409D-B82B-CAA8B4413BEF} = {7CE938D6-AA4F-4B40-84D3-AC3F54518DFB}
 		{3CEB6EEB-6330-4154-B81D-03ACB797072A} = {7CE938D6-AA4F-4B40-84D3-AC3F54518DFB}
 		{BC292E8F-D1A5-4820-8480-53BCB0C3724F} = {7CE938D6-AA4F-4B40-84D3-AC3F54518DFB}
+		{EA30F915-4990-4A4E-AC5E-0C034B98D09E} = {F387384B-06C5-4823-8A32-A6CE7360E0D0}
+		{893FC3E1-22D8-42E3-B115-D112E4B18239} = {F387384B-06C5-4823-8A32-A6CE7360E0D0}
+		{F5F50798-01AE-4DDD-AC92-73528AE957FE} = {F387384B-06C5-4823-8A32-A6CE7360E0D0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2625CCD-E29C-47B5-B7F3-984A4181835F}
