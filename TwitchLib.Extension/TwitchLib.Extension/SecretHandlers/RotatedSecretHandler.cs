@@ -5,15 +5,14 @@ using System.Text;
 
 namespace TwitchLib.Extension
 {
-    public class RotatedSecretManager : SecretManager
+    public class RotatedSecretHandler : SecretHandler
     {
-
         private readonly System.Timers.Timer _timer;
         private readonly API _extensionAPI;
         private string _extensionId;
         private string _extensionOwnerId;
 
-        public RotatedSecretManager(API extensionAPI, string extensionSecret = "", string extensionId = "", string extensionOwnerId = "", int rotationIntervalMinutes = 720)
+        public RotatedSecretHandler(API extensionAPI, string extensionSecret = "", string extensionId = "", string extensionOwnerId = "", int rotationIntervalMinutes = 720)
         {
             _extensionAPI = extensionAPI;
             _extensionId = extensionId;

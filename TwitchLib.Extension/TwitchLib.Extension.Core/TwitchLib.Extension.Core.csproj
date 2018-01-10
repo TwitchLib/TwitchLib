@@ -20,4 +20,8 @@
     <ProjectReference Include="..\TwitchLib.Extension\TwitchLib.Extension.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
+
 </Project>

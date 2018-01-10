@@ -1,24 +1,24 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using TwitchLib.Extension.Core.Events;
+using TwitchLib.Extension.Core.Authentication.Events;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using System;
 
-namespace TwitchLib.Extension.Core
+namespace TwitchLib.Extension.Core.Authentication
 {
     public class TwitchExtensionAuthHandler : AuthenticationHandler<TwitchExtensionAuthOptions>
     {
-        private readonly Func<string, ISecretManager> _secretManagerFactory;
+        private readonly ExtensionManager _extensionManager;
 
         public TwitchExtensionAuthHandler(IOptionsMonitor<TwitchExtensionAuthOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
             ISystemClock clock,
-            Func<string, ISecretManager> secretManagerFactory) : base(options, logger, encoder, clock)
+            ExtensionManager extensionManager) : base(options, logger, encoder, clock)
         {
-            _secretManagerFactory = secretManagerFactory;
+            _extensionManager = extensionManager;
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -29,7 +29,7 @@ namespace TwitchLib.Extension.Core
             {       
                 try
                 {
-                    var user = _secretManagerFactory(Scheme.Name).Verify(authorization, out var validTokenOverlay);
+                    var user = _extensionManager.Verify(authorization, out var validTokenOverlay);
 
                     if(user == null )
                         return AuthenticateResult.NoResult();

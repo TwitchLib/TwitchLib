@@ -9,13 +9,13 @@ using System.Linq;
 
 namespace TwitchLib.Extension
 {
-    public abstract class SecretManager : ISecretManager
+    public abstract class SecretHandler : ISecretHandler
     {
-        public SecretManager()
+        public SecretHandler()
         {
             Secrets = Enumerable.Empty<Models.Secret>();
         }
-        public string CurrentSecret { get => Secrets.ToList().OrderByDescending(x => x.Expires).First().Content; }
+        public string CurrentSecret { get => Secrets.ToList().OrderByDescending(x => x.Expires).First().Content;  }
 
         public IEnumerable<Models.Secret> Secrets { get; protected set; }
 
@@ -33,7 +33,8 @@ namespace TwitchLib.Extension
             }
             return user;
         }
-        
+
+     
         private ClaimsPrincipal VerifyWithSecret(string jwt, string secret, out SecurityToken validTokenOverlay)
         {
             var validationParameters = new TokenValidationParameters
@@ -57,7 +58,7 @@ namespace TwitchLib.Extension
                 return null;
             }
         }
-
+        
         private int GetEpoch()
         {
             TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);

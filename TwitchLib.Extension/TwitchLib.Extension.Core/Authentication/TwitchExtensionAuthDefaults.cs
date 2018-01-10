@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Extension.Core
+﻿namespace TwitchLib.Extension.Core.Authentication
 {
     public static class TwitchExtensionAuthDefaults
     {

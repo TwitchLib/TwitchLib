@@ -4,9 +4,9 @@ using System.Text;
 
 namespace TwitchLib.Extension
 {
-    public class DefaultSecretManager : SecretManager
+    public class StaticSecretHandler : SecretHandler
     {
-        public DefaultSecretManager(string secret)
+        public StaticSecretHandler(string secret)
         {
             Secrets = new List<Models.Secret> { new Models.Secret(secret, DateTime.Now, DateTime.Now.AddYears(100)) };
         }

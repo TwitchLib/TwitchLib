@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -39,7 +38,7 @@ namespace TwitchLib.Extension
         public async Task<Models.ExtensionSecrets> CreateExtensionSecretAsync(string extensionSecret, string extensionId, string extensionOwnerId, int activationDelaySeconds = 300)
         {
             if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-            if (string.IsNullOrWhiteSpace(extensionId)) throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+            if (string.IsNullOrWhiteSpace(extensionId))  throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             if (string.IsNullOrWhiteSpace(extensionOwnerId)) throw new BadParameterException("The extension owner id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             if (activationDelaySeconds < 300) throw new BadParameterException("The activation delay in seconds is not allowed to be less than 300");
 
@@ -61,7 +60,7 @@ namespace TwitchLib.Extension
             if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             if (string.IsNullOrWhiteSpace(extensionId)) throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             if (string.IsNullOrWhiteSpace(extensionOwnerId)) throw new BadParameterException("The extension owner id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-
+            
             var url = $"{extensionId}/auth/secret";
             return JsonConvert.DeserializeObject<Models.ExtensionSecrets>((await RequestAsync(extensionSecret, url, "GET", extensionOwnerId, extensionId).ConfigureAwait(false)).Value, TwitchLibJsonDeserializer);
         }
@@ -99,12 +98,12 @@ namespace TwitchLib.Extension
         /// <param name="extensionOwnerId">The Twitch User ID of the owner of the extension (typically you)</param>
         /// <param name="cursor"></param>
         /// <returns>List of channels that are live with the extension installed</returns>
-        public async Task<Models.LiveChannels> GetLiveChannelsWithExtensionActivatedAsync(string extensionSecret, string extensionId, string extensionOwnerId, string cursor = null)
+        public async Task<Models.LiveChannels> GetLiveChannelsWithExtensionActivatedAsync(string extensionSecret, string extensionId,string extensionOwnerId, string cursor = null)
         {
             if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             if (string.IsNullOrWhiteSpace(extensionId)) throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             if (string.IsNullOrWhiteSpace(extensionOwnerId)) throw new BadParameterException("The extension owner id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-
+            
             var url = $"{extensionId}/live_activated_channels";
 
             if (!string.IsNullOrWhiteSpace(cursor))
@@ -174,7 +173,7 @@ namespace TwitchLib.Extension
         /// <param name="message"></param>
         /// <param name="jwt">Optional JWT of user, this JWT should only be those passed by twitch in the x-extension-jwt header</param>
         /// <returns>true if PubSub message successfully sent</returns>
-        public async Task<bool> SendExtensionPubSubMessageAsync(string extensionSecret, string extensionId, string extensionOwnerId, string channelId, Models.ExtensionPubSubRequest message, string jwt = null)
+        public async Task<bool> SendExtensionPubSubMessageAsync(string extensionSecret, string extensionId, string extensionOwnerId, string channelId, Models.ExtensionPubSubRequest message, string jwt =null)
         {
             if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             if (string.IsNullOrWhiteSpace(extensionId)) throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
@@ -186,7 +185,7 @@ namespace TwitchLib.Extension
             return (await RequestAsync(extensionSecret, url, "POST", extensionOwnerId, extensionId, JsonConvert.SerializeObject(message), jwt).ConfigureAwait(false)).Key == 204;
         }
 
-        private async Task<KeyValuePair<int, string>> RequestAsync(string secret, string url, string method, string userId, string clientId, object payload = null, string jwt = null)
+        private async Task<KeyValuePair<int, string>> RequestAsync(string secret, string url, string method, string userId, string clientId, object payload=null, string jwt = null)
         {
             var request = WebRequest.CreateHttp(string.Format(_extensionUrl, url));
 
@@ -194,7 +193,7 @@ namespace TwitchLib.Extension
             request.Method = method;
             request.ContentType = "application/json";
             var token = jwt ?? Sign(secret, userId, 10);
-            request.Headers["Authorization"] = $"Bearer {token}";
+                request.Headers["Authorization"] = $"Bearer {token}";
 
 
             if (payload != null)
@@ -213,7 +212,7 @@ namespace TwitchLib.Extension
 
             return new KeyValuePair<int, string>(0, null);
         }
-
+        
         private void HandleWebException(WebException e)
         {
             HttpWebResponse errorResp = e.Response as HttpWebResponse;
@@ -300,7 +299,7 @@ namespace TwitchLib.Extension
 
             return handler.WriteToken(plainToken);
         }
-
+        
         private int GetEpoch()
         {
             TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
-namespace TwitchLib.Extension.Core.Events
+namespace TwitchLib.Extension.Core.Authentication.Events
 {
     public class TokenValidatedContext : ResultContext<TwitchExtensionAuthOptions>
     {
