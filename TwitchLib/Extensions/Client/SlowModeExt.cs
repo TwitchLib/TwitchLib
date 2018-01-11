@@ -53,7 +53,7 @@
         /// </summary>
         /// <param name="channel">JoinedChannel representation of which channel to send slowoff command to.</param>
         /// <param name="client">Client reference used to identify extension.</param>
-        public static void SlowModeoff(this TwitchClient client, JoinedChannel channel)
+        public static void SlowModeOff(this TwitchClient client, JoinedChannel channel)
         {
             client.SendMessage(channel, ".slowoff");
         }
