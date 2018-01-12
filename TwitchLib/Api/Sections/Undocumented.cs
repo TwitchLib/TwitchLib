@@ -138,11 +138,5 @@
 
         }
         #endregion
-        #region ExtensionLiveActivatedChannels
-        public async Task<Models.API.Undocumented.ExtensionLiveActivatedChannels.ExtensionLiveActivatedChannelsResponse> GetExtensionLiveActivatedChannelsAsync(string extensionId)
-        {
-            return await Api.GetGenericAsync<Models.API.Undocumented.ExtensionLiveActivatedChannels.ExtensionLiveActivatedChannelsResponse>($"https://api.twitch.tv/kraken/extensions/{extensionId}/live_activated_channels", api: Enums.ApiVersion.v5);
-        }
-        #endregion
     }
 }
