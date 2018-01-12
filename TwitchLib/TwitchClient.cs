@@ -265,6 +265,10 @@
         /// <summary>Fires when newly raided channel is mature audience only.</summary>
         public EventHandler OnRaidedChannelIsMatureAudience;
 
+        /// <summary>Fires when a ritual for a new chatter is received.</summary>
+        public EventHandler<OnRitualNewChatterArgs> OnRitualNewChatter;
+
+        /// <summary>Fires when data is received from Twitch that is not able to be parsed.</summary>
         public EventHandler<OnUnaccountedForArgs> OnUnaccountedFor;
         #endregion  
 
@@ -891,6 +895,15 @@
                 OnRaidedChannelIsMatureAudience?.Invoke(this, null);
                 return;
             }
+
+            // On ritual new chatter is detected in chat
+            response = Internal.Parsing.Chat.detectedRitualNewChatter(ircMessage, JoinedChannels);
+            if(response.Successful)
+            {
+                OnRitualNewChatter?.Invoke(this, new OnRitualNewChatterArgs() { RitualNewChatter = new RitualNewChatter(ircMessage) });
+                return;
+            }
+            Log(response.OptionalData ?? "none");
             #endregion
 
             #region Clear Chat, Timeouts, and Bans

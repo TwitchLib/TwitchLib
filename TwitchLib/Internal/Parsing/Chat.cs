@@ -634,5 +634,20 @@ namespace TwitchLib.Internal.Parsing
                 return new DetectionReturn(message.Contains(" ") && message.Split(' ')[0].Contains("=") && message.Split(' ')[0].Split('=')[1] == "raid_notice_mature", channelRet);
             return new DetectionReturn(false, null);
         }
+
+        // badges=subscriber/0;color=#0000FF;display-name=KittyJinxu;emotes=30259:0-6;id=1154b7c0-8923-464e-a66b-3ef55b1d4e50;
+        // login=kittyjinxu;mod=0;msg-id=ritual;msg-param-ritual-name=new_chatter;room-id=35740817;subscriber=1;
+        // system-msg=@KittyJinxu\sis\snew\shere.\sSay\shello!;tmi-sent-ts=1514387871555;turbo=0;user-id=187446639;
+        // user-type= USERNOTICE #thorlar kittyjinxu > #thorlar: HeyGuys
+        public static DetectionReturn detectedRitualNewChatter(string message, List<JoinedChannel> channels)
+        {
+            if (message.Split(';').Count() > 11
+                && message.Split(';')[8].Split('=')[1] == "new_chatter"
+                && message.Split(' ').Count() > 2
+                && message.Split(' ')[2] == "USERNOTICE")
+                return new DetectionReturn(true, message.Split(' ')[3].Substring(1));
+
+            return new DetectionReturn(false);
+        }
     }
 }
