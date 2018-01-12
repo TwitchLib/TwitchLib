@@ -831,12 +831,5 @@ namespace TwitchLib_API_Tester
             else
                 MessageBox.Show("Webhook was denied!");
         }
-
-        private async void button93_Click(object sender, EventArgs e)
-        {
-            var resp = await api.Undocumented.GetExtensionLiveActivatedChannelsAsync(textBox92.Text);
-            foreach (var channel in resp.Channels)
-                MessageBox.Show($"Id: {channel.Id}\nUsername: {channel.Username}\nGame: {channel.Game}\nTitle: {channel.Title}\nView count: {channel.ViewCount}");
-        }
     }
 }
