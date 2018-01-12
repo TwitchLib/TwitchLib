@@ -80,13 +80,11 @@ namespace TwitchLibExample
             newClient.OnSelfRaidError += onSelfRaidError;
             newClient.OnNoPermissionError += onNoPermissionError;
             newClient.OnRaidedChannelIsMatureAudience += onRaidedChannelIsMatureAudience;
+            newClient.OnRitualNewChatter += onRitualNewChatter;
+            newClient.OnBeingHosted += onBeingHosted;
             
             // newClient.OnBeingHosted += new EventHandler<OnBeingHostedArgs>(onBeingHosted); ONLY USE IF YOU ARE JOING BROADCASTER's CHANNEL AS THE BROADCASTER (exception will be thrown if not)
             //Add message throttler
-            newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
-            newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
-            newClient.ChatThrottler.OnThrottledPeriodReset += onThrottlePeriodReset;
-            newClient.WhisperThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.Connect();
             clients.Add(newClient);
             ListViewItem lvi = new ListViewItem();
@@ -102,6 +100,16 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onBeingHosted(object sender, OnBeingHostedArgs e)
+        {
+            MessageBox.Show($"Hosted by: {e.HostedByChannel}\nViewers: {e.Viewers}\nAutohost: {e.IsAutoHosted}");
+        }
+
+        private void onRitualNewChatter(object sender, OnRitualNewChatterArgs e)
+        {
+            MessageBox.Show($"New ritual detected!\nRitual name: {e.RitualNewChatter.MsgParamRitualName}\nDisplay name: {e.RitualNewChatter.DisplayName}\nMessage: {e.RitualNewChatter.Message}");
         }
 
         private void onSelfRaidError(object sender, EventArgs e)
@@ -132,18 +140,6 @@ namespace TwitchLibExample
         private void onRaidNotification(object sender, OnRaidNotificationArgs e)
         {
             MessageBox.Show($"Raid detected from: {e.RaidNotificaiton.MsgParamLogin}, with {e.RaidNotificaiton.MsgParamViewerCount} viewers.");
-        }
-
-        private void onBeingHosted(object sender, OnBeingHostedArgs e)
-        {
-            if(e.Viewers == -1)
-            {
-                MessageBox.Show($"I am now being hosted by {e.HostedByChannel}!");
-            } else
-            {
-                MessageBox.Show($"I am now being hosted by {e.HostedByChannel} for {e.Viewers} viewers");
-            }
-            
         }
 
         private void onHostingStarted(object sender, OnHostingStartedArgs e)
@@ -229,16 +225,6 @@ namespace TwitchLibExample
         public void onUserBanned(object sender, OnUserBannedArgs e)
         {
             MessageBox.Show($"Viewer {e.Username} in channel {e.Channel} was banned with reasoning: {e.BanReason}");
-        }
-
-        public void onClientThrottled(object sender, OnClientThrottledArgs e)
-        {
-            MessageBox.Show($"The message '{e.Message}' was blocked by a message throttler. Throttle period duration: {e.PeriodDuration.TotalSeconds}.\n\nMessage violation: {e.ThrottleViolation}");
-        }
-
-        public void onThrottlePeriodReset(object sender, OnThrottlePeriodResetArgs e)
-        {
-            MessageBox.Show($"The message throttle period was reset.");
         }
 
         public void onConnected(object sender, OnConnectedArgs e)
