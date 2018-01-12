@@ -839,16 +839,14 @@
 
             // On another channel hosts this broadcaster's channel [UNTESTED]
             // BurkeBlack is now hosting you for up to 206 viewers.
+            // :jtv!jtv@jtv.tmi.twitch.tv PRIVMSG annemunition :WhateverChannelNameHere is auto hosting you for up to 100 viewers.
             response = Internal.Parsing.Chat.detectedBeingHosted(ircMessage, JoinedChannels);
             if(response.Successful)
             {
-                var hostedBy = ircMessage.Split(':')[2].Split(' ')[0];
-                string[] parts = ircMessage.Split(' ');
-                int viewers = -1;
-                foreach (var part in parts)
-                    if (Regex.IsMatch(part, @"^\d+$"))
-                        viewers = int.Parse(part);
-                var isAuto = ircMessage.Contains(" autohost");
+                string payload = ircMessage.Split(':')[2];
+                string hostedBy = payload.Split(' ')[0];
+                bool isAuto = payload.Contains("auto hosting");
+                int viewers = int.Parse(payload.Split(' ')[payload.Split(' ').Count() - 2]);
                 OnBeingHosted?.Invoke(this, new OnBeingHostedArgs { Channel = response.Channel, BotUsername = TwitchUsername, HostedByChannel = hostedBy,
                     Viewers = viewers, IsAutoHosted = isAuto });
                 return;

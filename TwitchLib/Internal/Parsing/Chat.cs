@@ -530,7 +530,8 @@ namespace TwitchLib.Internal.Parsing
         {
             //:jtv!jtv@jtv.tmi.twitch.tv PRIVMSG (HOSTED):(HOSTER) is now hosting you for (VIEWERS_TOTAL) viewers.
             //:jtv!jtv@jtv.tmi.twitch.tv PRIVMSG swiftyspiffy :BurkeBlack is now hosting you.
-            if (message.Contains(" ") && message.Split(' ')[1] == "PRIVMSG" && message.Contains("jtv!jtv@jtv") && message.Contains("is now hosting you"))
+            //:jtv!jtv@jtv.tmi.twitch.tv PRIVMSG annemunition :WhateverChannelNameHere is auto hosting you for up to 100 viewers.
+            if (message.Contains(" ") && message.Split(' ')[1] == "PRIVMSG" && message.Substring(0, 26) == ":jtv!jtv@jtv.tmi.twitch.tv" && message.Contains("hosting you"))
                 return new DetectionReturn(true, message.Split(' ')[2]);
             return new DetectionReturn(false);
         }
