@@ -10,6 +10,9 @@
 
         [JsonProperty(PropertyName = "refresh_token")]
         public string RefreshToken { get; protected set; }
+        
+        [JsonProperty(PropertyName = "expires_in")]
+        public int ExpiresIn { get; protected set; }
 
         [JsonProperty(PropertyName = "scope")]
         public string[] Scopes { get; protected set; }
