@@ -127,6 +127,26 @@
                 return await Api.GetGenericAsync<Models.API.v5.Videos.FollowedVideos>($"https://api.twitch.tv/kraken/videos/followed", getParams, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
+
+            #region GetComments
+            public async Task<Models.API.v5.Comments.CommentsPage> GetCommentsPageAsync(string videoId, int? contentOffsetSeconds = null, string cursor = null)
+            {
+                var getParams = new List<KeyValuePair<string, string>>();
+                if (string.IsNullOrWhiteSpace(videoId))
+                {
+                    throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                }
+                if (contentOffsetSeconds != null)
+                {
+                    getParams.Add(new KeyValuePair<string, string>("content_offset_seconds", contentOffsetSeconds.ToString()));
+                }
+                if (cursor != null)
+                {
+                    getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
+                }
+                return await Api.GetGenericAsync<Models.API.v5.Comments.CommentsPage>($"https://api.twitch.tv/v5/videos/{videoId}/comments", getParams, null, ApiVersion.v5).ConfigureAwait(false);
+            }
+            #endregion
             #region UploadVideo
             public async Task<Models.API.v5.UploadVideo.UploadedVideo> UploadVideoAsync(string channelId, string videoPath, string title, string description, string game, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, System.DateTime? viewableAt = null, string accessToken = null)
             {
@@ -165,7 +185,6 @@
                 await Api.DeleteAsync($"https://api.twitch.tv/kraken/videos/{videoId}", null, authToken, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
-
 
             private async Task<Models.API.v5.UploadVideo.UploadVideoListing> createVideoAsync(string channelId, string title, string description = null, string game = null, string language = "en", string tagList = "", Enums.Viewable viewable = Enums.Viewable.Public, DateTime? viewableAt = null, string accessToken = null)
             {
