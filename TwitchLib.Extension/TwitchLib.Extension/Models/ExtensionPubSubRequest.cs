@@ -8,10 +8,10 @@ namespace TwitchLib.Extension.Models
     public class ExtensionPubSubRequest
     {
         [JsonProperty(PropertyName = "content_type")]
-        public string Content_Type { get; protected set; }
+        public string Content_Type { get;  set; }
         [JsonProperty(PropertyName = "message")]
-        public object Message { get; protected set; }
+        public object Message { get;  set; }
         [JsonProperty(PropertyName = "targets")]
-        public string[] Targets { get; protected set; }
+        public string[] Targets { get;  set; }
     }
 }

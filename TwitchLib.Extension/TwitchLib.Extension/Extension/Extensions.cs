@@ -4,6 +4,6 @@ namespace TwitchLib.Extension
 {
     public class Extensions
     {
-        public IDictionary<string, Extension> Extension { get; set; }
+        public IDictionary<string, ExtensionBase> Extension { get; set; }
     }
 }

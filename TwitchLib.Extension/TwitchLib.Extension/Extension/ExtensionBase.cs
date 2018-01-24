@@ -8,19 +8,28 @@ using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
-using TwitchLib.Exceptions.API;
+using TwitchLib.Extension.Exceptions;
+using System.Linq;
+using TwitchLib.Extension.Models;
 
 namespace TwitchLib.Extension
 {
-    public class API
+    public abstract class ExtensionBase
     {
-        private readonly TwitchLibJsonSerializer jsonSerializer;
         private const string _extensionUrl = "https://api.twitch.tv/extensions/{0}";
 
-        public API()
+        private readonly TwitchLibJsonSerializer _jsonSerializer;
+        private readonly ExtensionConfiguration _config;
+        protected IEnumerable<Secret> Secrets { get; set; }
+
+        public string CurrentSecret { get => Secrets.ToList().OrderByDescending(x => x.Expires).First().Content; }
+
+        public ExtensionBase(ExtensionConfiguration config)
         {
-            jsonSerializer = new TwitchLibJsonSerializer();
+            Secrets = new List<Secret> { new Secret(config.StartingSecret, DateTime.Now, DateTime.Now.AddYears(100)) };
+            _jsonSerializer = new TwitchLibJsonSerializer();
         }
+        
 
         /// <summary>
         /// Creates a new secret for a specified extension. Also rotates any current secrets out of service, with enough 
@@ -30,20 +39,15 @@ namespace TwitchLib.Extension
         /// 
         /// Use this function only when you are ready to install the new secret it returns.
         /// </summary>
-        /// <param name="extensionSecret">The currently active secret for your extension</param>
-        /// <param name="extensionId">The Client ID of the extension can be found in the Overview Tab of your Extension </param>
-        /// <param name="extensionOwnerId">The Twitch User ID of the owner of the extension (typically you)</param>
         /// <param name="activationDelaySeconds">How long Twitch should wait before using your new secret and rolling it out to users</param>
         /// <returns>List of current extension secrets that are valid and haven't expired</returns>
-        public async Task<Models.ExtensionSecrets> CreateExtensionSecretAsync(string extensionSecret, string extensionId, string extensionOwnerId, int activationDelaySeconds = 300)
+        public virtual async Task<ExtensionSecrets> CreateExtensionSecretAsync(int activationDelaySeconds = 300)
         {
-            if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-            if (string.IsNullOrWhiteSpace(extensionId))  throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-            if (string.IsNullOrWhiteSpace(extensionOwnerId)) throw new BadParameterException("The extension owner id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-            if (activationDelaySeconds < 300) throw new BadParameterException("The activation delay in seconds is not allowed to be less than 300");
-
-            var url = $"{extensionId}/auth/secret";
-            return JsonConvert.DeserializeObject<Models.ExtensionSecrets>((await RequestAsync(extensionSecret, url, "POST", extensionOwnerId, extensionId, JsonConvert.SerializeObject(new Models.CreateSecretRequest { Activation_Delay_Secs = activationDelaySeconds })).ConfigureAwait(false)).Value, TwitchLibJsonDeserializer);
+            return await CreateExtensionSecretAsync(
+                CurrentSecret,
+                _config.Id,
+                _config.OwnerId,
+                activationDelaySeconds);
         }
 
         /// <summary>
@@ -51,18 +55,13 @@ namespace TwitchLib.Extension
         /// Each secret object returned contains a base64-encoded secret, a UTC timestamp when the secret becomes active, 
         /// and a timestamp when the secret expires.
         /// </summary>
-        /// <param name="extensionSecret">The currently active secret for your extension</param>
-        /// <param name="extensionId">The Client ID of the extension can be found in the Overview Tab of your Extension </param>
-        /// <param name="extensionOwnerId">The Twitch User ID of the owner of the extension (typically you)</param>
         /// <returns>List of current extension secrets that are valid and haven't expired</returns>
-        public async Task<Models.ExtensionSecrets> GetExtensionSecretAsync(string extensionSecret, string extensionId, string extensionOwnerId)
+        public virtual async Task<ExtensionSecrets> GetExtensionSecretAsync()
         {
-            if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-            if (string.IsNullOrWhiteSpace(extensionId)) throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-            if (string.IsNullOrWhiteSpace(extensionOwnerId)) throw new BadParameterException("The extension owner id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-            
-            var url = $"{extensionId}/auth/secret";
-            return JsonConvert.DeserializeObject<Models.ExtensionSecrets>((await RequestAsync(extensionSecret, url, "GET", extensionOwnerId, extensionId).ConfigureAwait(false)).Value, TwitchLibJsonDeserializer);
+            return await GetExtensionSecretAsync(
+                CurrentSecret,
+                _config.Id,
+                _config.OwnerId);
         }
 
         /// <summary>
@@ -73,11 +72,112 @@ namespace TwitchLib.Extension
         /// 
         /// Use this only if a secret is compromised and must be removed immediately from circulation.
         /// </summary>
-        /// <param name="extensionSecret">The currently active secret for your extension</param>
-        /// <param name="extensionId">The Client ID of the extension can be found in the Overview Tab of your Extension </param>
-        /// <param name="extensionOwnerId">The Twitch User ID of the owner of the extension (typically you)</param>
         /// <returns>true if secrets were successfully revoked</returns>
-        public async Task<bool> RevokeExtensionSecretAsync(string extensionSecret, string extensionId, string extensionOwnerId)
+        public virtual async Task<bool> RevokeExtensionSecretAsync()
+        {
+            return await RevokeExtensionSecretAsync(
+                CurrentSecret,
+                _config.Id,
+                _config.OwnerId);
+        }
+
+        /// <summary>
+        /// Returns one page of live channels that have installed and activated a specified extension. 
+        /// 
+        /// A channel that just went live may take a few minutes to appear in this list, and a channel may continue to 
+        /// appear on this list for a few minutes after it stops broadcasting.
+        /// </summary>
+        /// <param name="cursor"></param>
+        /// <returns>List of channels that are live with the extension installed</returns>
+        public virtual async Task<Models.LiveChannels> GetLiveChannelsWithExtensionActivatedAsync(string cursor = null)
+        {
+            return await GetLiveChannelsWithExtensionActivatedAsync(
+               CurrentSecret,
+                _config.Id,
+                _config.OwnerId,
+                cursor);
+        }
+
+        /// <summary>
+        /// Enable activation of a specified extension, after any required broadcaster configuration is correct. 
+        /// This is for extensions that require broadcaster configuration before activation.
+        /// </summary>
+        /// <param name="channelId">The Twitch channel ID we are setting the specified value for</param>
+        /// <param name="requiredConfiguration"></param>
+        /// <returns>true if requiredConfiguration was set successfully</returns>
+        public virtual async Task<bool> SetExtensionRequiredConfigurationAsync(string channelId, string requiredConfiguration)
+        {
+            return await SetExtensionRequiredConfigurationAsync(
+                CurrentSecret,
+                _config.Id,
+                _config.VersionNumber,
+                _config.OwnerId,
+                channelId,
+                requiredConfiguration);
+        }
+
+        /// <summary>
+        /// Indicates whether the broadcaster allowed the permissions your extension requested, 
+        /// through a required permissions_received parameter. The endpoint URL includes the channel ID 
+        /// of the page where the extension is iframe embedded.
+        /// </summary>
+        /// <param name="channelId">The Twitch channel ID we are setting the specified value for</param>
+        /// <param name="permissionsReceived"></param>
+        /// <returns>true if permissionsReceived was set successfully</returns>
+        public virtual async Task<bool> SetExtensionBroadcasterOAuthReceiptAsync(string channelId, bool permissionsReceived)
+        {
+            return await SetExtensionBroadcasterOAuthReceiptAsync(
+                CurrentSecret,
+                _config.Id,
+                _config.VersionNumber,
+                _config.OwnerId,
+                channelId,
+                permissionsReceived);
+        }
+
+        /// <summary>
+        /// Twitch provides a publish-subscribe system for your EBS (Extension Back-end Service) to communicate 
+        /// with both the broadcaster and viewers. Calling this endpoint forwards your message using the same
+        /// mechanism as the send() function in the JavaScript helper API.
+        /// </summary>
+        /// <param name="channelId">The Twitch channel ID we are sending the message for</param>
+        /// <param name="message"></param>
+        /// <param name="jwt">Optional JWT of user, this JWT should only be those passed by twitch in the x-extension-jwt header</param>
+        /// <returns>true if PubSub message successfully sent</returns>
+        public virtual async Task<bool> SendExtensionPubSubMessageAsync(string channelId, Models.ExtensionPubSubRequest message, string jwt = null)
+        {
+            return await SendExtensionPubSubMessageAsync(
+                CurrentSecret,
+                _config.Id,
+                _config.OwnerId,
+                channelId,
+                message,
+                jwt);
+        }
+
+
+        protected async Task<Models.ExtensionSecrets> CreateExtensionSecretAsync(string extensionSecret, string extensionId, string extensionOwnerId, int activationDelaySeconds = 300)
+        {
+            if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+            if (string.IsNullOrWhiteSpace(extensionId))  throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+            if (string.IsNullOrWhiteSpace(extensionOwnerId)) throw new BadParameterException("The extension owner id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+            if (activationDelaySeconds < 300) throw new BadParameterException("The activation delay in seconds is not allowed to be less than 300");
+
+            var url = $"{extensionId}/auth/secret";
+            return JsonConvert.DeserializeObject<Models.ExtensionSecrets>((await RequestAsync(extensionSecret, url, "POST", extensionOwnerId, extensionId, JsonConvert.SerializeObject(new Models.CreateSecretRequest { Activation_Delay_Secs = activationDelaySeconds })).ConfigureAwait(false)).Value, TwitchLibJsonDeserializer);
+        }
+
+        protected async Task<Models.ExtensionSecrets> GetExtensionSecretAsync(string extensionSecret, string extensionId, string extensionOwnerId)
+        {
+            if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+            if (string.IsNullOrWhiteSpace(extensionId)) throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+            if (string.IsNullOrWhiteSpace(extensionOwnerId)) throw new BadParameterException("The extension owner id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+            
+            var url = $"{extensionId}/auth/secret";
+            return JsonConvert.DeserializeObject<Models.ExtensionSecrets>((await RequestAsync(extensionSecret, url, "GET", extensionOwnerId, extensionId).ConfigureAwait(false)).Value, TwitchLibJsonDeserializer);
+        }
+
+        protected async Task<bool> RevokeExtensionSecretAsync(string extensionSecret, string extensionId, string extensionOwnerId)
         {
             if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             if (string.IsNullOrWhiteSpace(extensionId)) throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
@@ -87,18 +187,7 @@ namespace TwitchLib.Extension
             return (await RequestAsync(extensionSecret, url, "DELETE", extensionOwnerId, extensionId).ConfigureAwait(false)).Key == 204;
         }
 
-        /// <summary>
-        /// Returns one page of live channels that have installed and activated a specified extension. 
-        /// 
-        /// A channel that just went live may take a few minutes to appear in this list, and a channel may continue to 
-        /// appear on this list for a few minutes after it stops broadcasting.
-        /// </summary>
-        /// <param name="extensionSecret">The currently active secret for your extension</param>
-        /// <param name="extensionId">The Client ID of the extension can be found in the Overview Tab of your Extension </param>
-        /// <param name="extensionOwnerId">The Twitch User ID of the owner of the extension (typically you)</param>
-        /// <param name="cursor"></param>
-        /// <returns>List of channels that are live with the extension installed</returns>
-        public async Task<Models.LiveChannels> GetLiveChannelsWithExtensionActivatedAsync(string extensionSecret, string extensionId,string extensionOwnerId, string cursor = null)
+        protected async Task<Models.LiveChannels> GetLiveChannelsWithExtensionActivatedAsync(string extensionSecret, string extensionId,string extensionOwnerId, string cursor = null)
         {
             if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             if (string.IsNullOrWhiteSpace(extensionId)) throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
@@ -113,18 +202,7 @@ namespace TwitchLib.Extension
             return JsonConvert.DeserializeObject<Models.LiveChannels>((await RequestAsync(extensionSecret, url, "GET", extensionOwnerId, extensionId).ConfigureAwait(false)).Value, TwitchLibJsonDeserializer);
         }
 
-        /// <summary>
-        /// Enable activation of a specified extension, after any required broadcaster configuration is correct. 
-        /// This is for extensions that require broadcaster configuration before activation.
-        /// </summary>
-        /// <param name="extensionSecret">The currently active secret for your extension</param>
-        /// <param name="extensionId">The Client ID of the extension can be found in the Overview Tab of your Extension </param>
-        /// <param name="extensionVersion"></param>
-        /// <param name="extensionOwnerId">The Twitch User ID of the owner of the extension (typically you)</param>
-        /// <param name="channelId">The Twitch channel ID we are setting the specified value for</param>
-        /// <param name="requiredConfiguration"></param>
-        /// <returns>true if requiredConfiguration was set successfully</returns>
-        public async Task<bool> SetExtensionRequiredConfigurationAsync(string extensionSecret, string extensionId, string extensionVersion, string extensionOwnerId, string channelId, string requiredConfiguration)
+        protected async Task<bool> SetExtensionRequiredConfigurationAsync(string extensionSecret, string extensionId, string extensionVersion, string extensionOwnerId, string channelId, string requiredConfiguration)
         {
             if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             if (string.IsNullOrWhiteSpace(extensionId)) throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
@@ -137,19 +215,7 @@ namespace TwitchLib.Extension
             return (await RequestAsync(extensionSecret, url, "PUT", extensionOwnerId, extensionId, JsonConvert.SerializeObject(new Models.SetExtensionRequiredConfigurationRequest { Required_Configuration = requiredConfiguration })).ConfigureAwait(false)).Key == 204;
         }
 
-        /// <summary>
-        /// Indicates whether the broadcaster allowed the permissions your extension requested, 
-        /// through a required permissions_received parameter. The endpoint URL includes the channel ID 
-        /// of the page where the extension is iframe embedded.
-        /// </summary>
-        /// <param name="extensionSecret">The currently active secret for your extension</param>
-        /// <param name="extensionId">The Client ID of the extension can be found in the Overview Tab of your Extension </param>
-        /// <param name="extensionVersion"></param>
-        /// <param name="extensionOwnerId">The Twitch User ID of the owner of the extension (typically you)</param>
-        /// <param name="channelId">The Twitch channel ID we are setting the specified value for</param>
-        /// <param name="permissionsReceived"></param>
-        /// <returns>true if permissionsReceived was set successfully</returns>
-        public async Task<bool> SetExtensionBroadcasterOAuthReceiptAsync(string extensionSecret, string extensionId, string extensionVersion, string extensionOwnerId, string channelId, bool permissionsReceived)
+        protected async Task<bool> SetExtensionBroadcasterOAuthReceiptAsync(string extensionSecret, string extensionId, string extensionVersion, string extensionOwnerId, string channelId, bool permissionsReceived)
         {
             if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             if (string.IsNullOrWhiteSpace(extensionId)) throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
@@ -161,19 +227,7 @@ namespace TwitchLib.Extension
             return (await RequestAsync(extensionSecret, url, "PUT", extensionOwnerId, extensionId, JsonConvert.SerializeObject(new Models.SetExtensionBroadcasterOAuthReceiptRequest { Permissions_Received = permissionsReceived })).ConfigureAwait(false)).Key == 204;
         }
 
-        /// <summary>
-        /// Twitch provides a publish-subscribe system for your EBS (Extension Back-end Service) to communicate 
-        /// with both the broadcaster and viewers. Calling this endpoint forwards your message using the same
-        /// mechanism as the send() function in the JavaScript helper API.
-        /// </summary>
-        /// <param name="extensionSecret">The currently active secret for your extension</param>
-        /// <param name="extensionId">The Client ID of the extension can be found in the Overview Tab of your Extension </param>
-        /// <param name="extensionOwnerId">The Twitch User ID of the owner of the extension (typically you)</param>
-        /// <param name="channelId">The Twitch channel ID we are sending the message for</param>
-        /// <param name="message"></param>
-        /// <param name="jwt">Optional JWT of user, this JWT should only be those passed by twitch in the x-extension-jwt header</param>
-        /// <returns>true if PubSub message successfully sent</returns>
-        public async Task<bool> SendExtensionPubSubMessageAsync(string extensionSecret, string extensionId, string extensionOwnerId, string channelId, Models.ExtensionPubSubRequest message, string jwt =null)
+        protected async Task<bool> SendExtensionPubSubMessageAsync(string extensionSecret, string extensionId, string extensionOwnerId, string channelId, Models.ExtensionPubSubRequest message, string jwt =null)
         {
             if (string.IsNullOrWhiteSpace(extensionSecret)) throw new BadParameterException("The extension secret is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             if (string.IsNullOrWhiteSpace(extensionId)) throw new BadParameterException("The extension id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
@@ -212,7 +266,8 @@ namespace TwitchLib.Extension
 
             return new KeyValuePair<int, string>(0, null);
         }
-        
+       
+      
         private void HandleWebException(WebException e)
         {
             HttpWebResponse errorResp = e.Response as HttpWebResponse;
@@ -258,7 +313,46 @@ namespace TwitchLib.Extension
         }
         #endregion
 
-        #region JWTTokenSigning
+        #region JWTSignAndVerify
+        public ClaimsPrincipal Verify(string jwt, out SecurityToken validTokenOverlay)
+        {
+            ClaimsPrincipal user = null;
+            validTokenOverlay = null;
+            foreach (var secret in Secrets.ToList().OrderByDescending(x => x.Expires).Where(x => x.Expires > DateTime.Now))
+            {
+                user = VerifyWithSecret(jwt, secret.Content, out validTokenOverlay);
+                if (user != null)
+                {
+                    ((ClaimsIdentity)user.Identity).AddClaim(new Claim("extension_id", _config.Id, ClaimValueTypes.String));
+                    break;
+                }
+            }
+            return user;
+        }
+
+        private ClaimsPrincipal VerifyWithSecret(string jwt, string secret, out SecurityToken validTokenOverlay)
+        {
+            var validationParameters = new TokenValidationParameters
+            {
+                IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(CurrentSecret)),
+                ValidateAudience = false,
+                ValidateLifetime = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true
+            };
+
+            var handler = new JwtSecurityTokenHandler();
+
+            try
+            {
+                return handler.ValidateToken(jwt, validationParameters, out validTokenOverlay);
+            }
+            catch
+            {
+                validTokenOverlay = null;
+                return null;
+            }
+        }
 
         private string Sign(string secret, string userId, int expirySeconds)
         {

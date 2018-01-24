@@ -33,7 +33,7 @@ namespace TwitchLib.Extension
             return user;
         }
 
-        public Extension GetExtension(string extensionId)
+        public ExtensionBase GetExtension(string extensionId)
         {
             return _extensions.Extension[extensionId];
         }

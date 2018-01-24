@@ -9,7 +9,7 @@ namespace TwitchLib.Extension
         public string Id { get; set; }
         public string OwnerId { get; set; }
         public string VersionNumber { get; set; }
-        public ISecretHandler SecretHandler { get; set; }
+        public string StartingSecret { get; set; }
 
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Exceptions.API
+﻿namespace TwitchLib.Extension.Exceptions
 {
     #region using directives
     using System;

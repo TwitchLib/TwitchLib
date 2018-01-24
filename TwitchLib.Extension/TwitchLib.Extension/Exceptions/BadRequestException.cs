@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwitchLib.Exceptions.API
+﻿namespace TwitchLib.Extension.Exceptions
 {
+    #region using directives
+    using System;
+    #endregion
     /// <summary>Exception representing a request that doesn't have a clientid attached.</summary>
     public class BadRequestException : Exception
     {
