@@ -63,9 +63,9 @@
         public async Task<List<Models.API.Undocumented.Comments.CommentsPage>> GetAllCommentsAsync(string videoId)
         {
             var pages = new List<Models.API.Undocumented.Comments.CommentsPage> { await GetCommentsPageAsync(videoId) };
-            while (pages.Last()._next != null)
+            while (pages.Last().Next != null)
             {
-                pages.Add(await GetCommentsPageAsync(videoId, null, pages.Last()._next));
+                pages.Add(await GetCommentsPageAsync(videoId, null, pages.Last().Next));
             }
             return pages;
         }

@@ -5,10 +5,10 @@ namespace TwitchLib.Models.API.Undocumented.Comments
     public class CommentsPage
     {
         [JsonProperty(PropertyName = "comments")]
-        public Comment[] comments { get; set; }
+        public Comment[] Comments { get; set; }
         [JsonProperty(PropertyName = "_prev")]
-        public string _prev { get; set; }
+        public string Prev { get; set; }
         [JsonProperty(PropertyName = "_next")]
-        public string _next { get; set; }
+        public string Next { get; set; }
     }
 }

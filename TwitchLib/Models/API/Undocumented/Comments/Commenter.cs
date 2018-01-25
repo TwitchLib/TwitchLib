@@ -6,20 +6,20 @@ namespace TwitchLib.Models.API.Undocumented.Comments
     public class Commenter
     {
         [JsonProperty(PropertyName = "display_name")]
-        public string display_name { get; set; }
+        public string DisplayName { get; set; }
         [JsonProperty(PropertyName = "_id")]
-        public string _id { get; set; }
+        public string Id { get; set; }
         [JsonProperty(PropertyName = "name")]
-        public string name { get; set; }
+        public string Name { get; set; }
         [JsonProperty(PropertyName = "type")]
-        public string type { get; set; }
+        public string Type { get; set; }
         [JsonProperty(PropertyName = "bio")]
-        public string bio { get; set; }
+        public string Bio { get; set; }
         [JsonProperty(PropertyName = "created_at")]
-        public DateTime created_at { get; set; }
+        public DateTime CreatedAt { get; set; }
         [JsonProperty(PropertyName = "updated_at")]
-        public DateTime updated_at { get; set; }
+        public DateTime UpdatedAt { get; set; }
         [JsonProperty(PropertyName = "logo")]
-        public string logo { get; set; }
+        public string Logo { get; set; }
     }
 }
