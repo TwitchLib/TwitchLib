@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace TwitchLib
+﻿namespace TwitchLib
 {
     using System;
     #region using directives
@@ -127,37 +125,6 @@ namespace TwitchLib
                     getParams.Add(new KeyValuePair<string, string>("sort", sort));
 
                 return await Api.GetGenericAsync<Models.API.v5.Videos.FollowedVideos>($"https://api.twitch.tv/kraken/videos/followed", getParams, authToken, ApiVersion.v5).ConfigureAwait(false);
-            }
-            #endregion
-
-            #region GetComments
-            public async Task<Models.API.v5.Comments.CommentsPage> GetCommentsPageAsync(string videoId, int? contentOffsetSeconds = null, string cursor = null)
-            {
-                var getParams = new List<KeyValuePair<string, string>>();
-                if (string.IsNullOrWhiteSpace(videoId))
-                {
-                    throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
-                }
-                if (contentOffsetSeconds != null)
-                {
-                    getParams.Add(new KeyValuePair<string, string>("content_offset_seconds", contentOffsetSeconds.ToString()));
-                }
-                if (cursor != null)
-                {
-                    getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
-                }
-                return await Api.GetGenericAsync<Models.API.v5.Comments.CommentsPage>($"https://api.twitch.tv/v5/videos/{videoId}/comments", getParams, null, ApiVersion.v5).ConfigureAwait(false);
-            }
-
-            public async Task<List<Models.API.v5.Comments.CommentsPage>> GetAllCommentsAsync(string videoId)
-            {
-                var pages = new List<Models.API.v5.Comments.CommentsPage> {await GetCommentsPageAsync(videoId)};
-                while (pages.Last()._next != null)
-                {
-                    pages.Add(await GetCommentsPageAsync(videoId, null, pages.Last()._next));
-                }
-
-                return pages;
             }
             #endregion
             #region UploadVideo

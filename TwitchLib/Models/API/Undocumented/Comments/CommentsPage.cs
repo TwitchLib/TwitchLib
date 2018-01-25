@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Text;
-
-namespace TwitchLib.Models.API.v5.Comments
+namespace TwitchLib.Models.API.Undocumented.Comments
 {
     public class CommentsPage
     {

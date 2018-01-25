@@ -1,4 +1,4 @@
-namespace TwitchLib.Models.API.v5.Comments
+namespace TwitchLib.Models.API.Undocumented.Comments
 {
     public class User_Badges
     {
