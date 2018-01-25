@@ -68,7 +68,6 @@ namespace TwitchLib
             {
                 pages.Add(await GetCommentsPageAsync(videoId, null, pages.Last()._next));
             }
-
             return pages;
         }
         #endregion
