@@ -58,7 +58,7 @@ namespace TwitchLib
             {
                 getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
             }
-            return await Api.GetGenericAsync<Models.API.Undocumented.Comments.CommentsPage>($"https://api.twitch.tv/v5/videos/{videoId}/comments", getParams, null, TwitchLib.Enums.ApiVersion.v5).ConfigureAwait(false);
+            return await Api.GetGenericAsync<Models.API.Undocumented.Comments.CommentsPage>($"https://api.twitch.tv/kraken/videos/{videoId}/comments", getParams, null, TwitchLib.Enums.ApiVersion.v5).ConfigureAwait(false);
         }
 
         public async Task<List<Models.API.Undocumented.Comments.CommentsPage>> GetAllCommentsAsync(string videoId)
