@@ -1,11 +1,10 @@
-﻿using System.Linq;
-
-namespace TwitchLib
+﻿namespace TwitchLib
 {
     #region using directives
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Api;
+    using TwitchLib.Api;
+    using System.Linq;
     #endregion
     /// <summary>These endpoints are pretty cool, but they may stop working at anytime due to changes Twitch makes.</summary>
     public class Undocumented : ApiSection
