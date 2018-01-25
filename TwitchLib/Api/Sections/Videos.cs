@@ -1,4 +1,6 @@
-﻿namespace TwitchLib
+﻿using System.Linq;
+
+namespace TwitchLib
 {
     using System;
     #region using directives
@@ -145,6 +147,17 @@
                     getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
                 }
                 return await Api.GetGenericAsync<Models.API.v5.Comments.CommentsPage>($"https://api.twitch.tv/v5/videos/{videoId}/comments", getParams, null, ApiVersion.v5).ConfigureAwait(false);
+            }
+
+            public async Task<List<Models.API.v5.Comments.CommentsPage>> GetAllCommentsAsync(string videoId)
+            {
+                var pages = new List<Models.API.v5.Comments.CommentsPage> {await GetCommentsPageAsync(videoId)};
+                while (pages.Last()._next != null)
+                {
+                    pages.Add(await GetCommentsPageAsync(videoId, null, pages.Last()._next));
+                }
+
+                return pages;
             }
             #endregion
             #region UploadVideo
