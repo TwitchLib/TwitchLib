@@ -82,10 +82,10 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 	    * Whispers
 	    * Subscriptions
 * **Extensions**:
-	    * Developed to be used as part of an EBS (extension back-end service) for a Twitch Extension.
-	    * Perform API calls related to Extensions (create secret, revoke, channles using extension, etc.)
-	    * Validation of requests to EBS using extension secret and JWT.
-	    * Interact with extension via PubSub.
+	* Developed to be used as part of an EBS (extension back-end service) for a Twitch Extension.
+	* Perform API calls related to Extensions (create secret, revoke, channles using extension, etc.)
+	* Validation of requests to EBS using extension secret and JWT.
+	* Interact with extension via PubSub.
 
 ## Documentation
 #### Doxygen
