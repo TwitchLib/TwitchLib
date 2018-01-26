@@ -80,8 +80,7 @@ namespace TwitchLibExample
             newClient.OnSelfRaidError += onSelfRaidError;
             newClient.OnNoPermissionError += onNoPermissionError;
             newClient.OnRaidedChannelIsMatureAudience += onRaidedChannelIsMatureAudience;
-            newClient.OnRitualNewChatter += onRitualNewChatter;
-            newClient.OnBeingHosted += onBeingHosted;
+            newClient.OnFailureToReceiveJoinConfirmation += onFailureToReceiveJoinConfirmation;
             
             // newClient.OnBeingHosted += new EventHandler<OnBeingHostedArgs>(onBeingHosted); ONLY USE IF YOU ARE JOING BROADCASTER's CHANNEL AS THE BROADCASTER (exception will be thrown if not)
             //Add message throttler
@@ -102,14 +101,9 @@ namespace TwitchLibExample
                 comboBox6.Items.Add(textBox4.Text);
         }
 
-        private void onBeingHosted(object sender, OnBeingHostedArgs e)
+        private void onFailureToReceiveJoinConfirmation(object sender, OnFailureToReceiveJoinConfirmationArgs e)
         {
-            MessageBox.Show($"Hosted by: {e.HostedByChannel}\nViewers: {e.Viewers}\nAutohost: {e.IsAutoHosted}");
-        }
-
-        private void onRitualNewChatter(object sender, OnRitualNewChatterArgs e)
-        {
-            MessageBox.Show($"New ritual detected!\nRitual name: {e.RitualNewChatter.MsgParamRitualName}\nDisplay name: {e.RitualNewChatter.DisplayName}\nMessage: {e.RitualNewChatter.Message}");
+            MessageBox.Show($"Failed to join channel '{e.Exception.Channel}'. Invalid channel?");
         }
 
         private void onSelfRaidError(object sender, EventArgs e)
@@ -140,6 +134,18 @@ namespace TwitchLibExample
         private void onRaidNotification(object sender, OnRaidNotificationArgs e)
         {
             MessageBox.Show($"Raid detected from: {e.RaidNotificaiton.MsgParamLogin}, with {e.RaidNotificaiton.MsgParamViewerCount} viewers.");
+        }
+
+        private void onBeingHosted(object sender, OnBeingHostedArgs e)
+        {
+            if(e.Viewers == -1)
+            {
+                MessageBox.Show($"I am now being hosted by {e.HostedByChannel}!");
+            } else
+            {
+                MessageBox.Show($"I am now being hosted by {e.HostedByChannel} for {e.Viewers} viewers");
+            }
+            
         }
 
         private void onHostingStarted(object sender, OnHostingStartedArgs e)
