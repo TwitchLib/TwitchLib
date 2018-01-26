@@ -80,13 +80,10 @@ namespace TwitchLibExample
             newClient.OnSelfRaidError += onSelfRaidError;
             newClient.OnNoPermissionError += onNoPermissionError;
             newClient.OnRaidedChannelIsMatureAudience += onRaidedChannelIsMatureAudience;
+            newClient.OnFailureToReceiveJoinConfirmation += onFailureToReceiveJoinConfirmation;
             
             // newClient.OnBeingHosted += new EventHandler<OnBeingHostedArgs>(onBeingHosted); ONLY USE IF YOU ARE JOING BROADCASTER's CHANNEL AS THE BROADCASTER (exception will be thrown if not)
             //Add message throttler
-            newClient.ChatThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
-            newClient.ChatThrottler.OnClientThrottled += onClientThrottled;
-            newClient.ChatThrottler.OnThrottledPeriodReset += onThrottlePeriodReset;
-            newClient.WhisperThrottler = new TwitchLib.Services.MessageThrottler(5, TimeSpan.FromSeconds(60));
             newClient.Connect();
             clients.Add(newClient);
             ListViewItem lvi = new ListViewItem();
@@ -102,6 +99,11 @@ namespace TwitchLibExample
                 comboBox4.Items.Add(textBox4.Text);
             if (!comboBox6.Items.Contains(textBox4.Text))
                 comboBox6.Items.Add(textBox4.Text);
+        }
+
+        private void onFailureToReceiveJoinConfirmation(object sender, OnFailureToReceiveJoinConfirmationArgs e)
+        {
+            MessageBox.Show($"Failed to join channel '{e.Exception.Channel}'. Invalid channel?");
         }
 
         private void onSelfRaidError(object sender, EventArgs e)
@@ -229,16 +231,6 @@ namespace TwitchLibExample
         public void onUserBanned(object sender, OnUserBannedArgs e)
         {
             MessageBox.Show($"Viewer {e.Username} in channel {e.Channel} was banned with reasoning: {e.BanReason}");
-        }
-
-        public void onClientThrottled(object sender, OnClientThrottledArgs e)
-        {
-            MessageBox.Show($"The message '{e.Message}' was blocked by a message throttler. Throttle period duration: {e.PeriodDuration.TotalSeconds}.\n\nMessage violation: {e.ThrottleViolation}");
-        }
-
-        public void onThrottlePeriodReset(object sender, OnThrottlePeriodResetArgs e)
-        {
-            MessageBox.Show($"The message throttle period was reset.");
         }
 
         public void onConnected(object sender, OnConnectedArgs e)

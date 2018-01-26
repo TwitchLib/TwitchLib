@@ -1,7 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TwitchLib.Models.API.Helix.Videos.GetVideos
 {
@@ -11,6 +8,8 @@ namespace TwitchLib.Models.API.Helix.Videos.GetVideos
         public string CreatedAt { get; protected set; }
         [JsonProperty(PropertyName = "description")]
         public string Description { get; protected set; }
+        [JsonProperty(PropertyName = "duration")]
+        public string Duration { get; protected set; }
         [JsonProperty(PropertyName = "id")]
         public string Id { get; protected set; }
         [JsonProperty(PropertyName = "language")]

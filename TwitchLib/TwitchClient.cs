@@ -28,6 +28,8 @@
         private HashSet<char> _whisperCommandIdentifiers = new HashSet<char>();
         private Queue<JoinedChannel> joinChannelQueue = new Queue<JoinedChannel>();
         private bool currentlyJoiningChannels = false;
+        private System.Timers.Timer joinTimer;
+        private List<KeyValuePair<string, DateTime>> awaitingJoins;
        
         // variables used for constructing OnMessageSent properties
         private List<string> _hasSeenJoinedChannels = new List<string>();
@@ -265,6 +267,12 @@
         /// <summary>Fires when newly raided channel is mature audience only.</summary>
         public EventHandler OnRaidedChannelIsMatureAudience;
 
+        /// <summary>Fires when a ritual for a new chatter is received.</summary>
+        public EventHandler<OnRitualNewChatterArgs> OnRitualNewChatter;
+
+        public EventHandler<OnFailureToReceiveJoinConfirmationArgs> OnFailureToReceiveJoinConfirmation;
+
+        /// <summary>Fires when data is received from Twitch that is not able to be parsed.</summary>
         public EventHandler<OnUnaccountedForArgs> OnUnaccountedFor;
         #endregion  
 
@@ -606,12 +614,42 @@
             _client.Send("CAP REQ twitch.tv/tags");
 
             if (_autoJoinChannel != null)
-            {
                 JoinChannel(_autoJoinChannel);
-            }
         }
        
         #endregion
+
+        private void startJoinedChannelTimer(string channel)
+        {
+            if(joinTimer == null)
+            {
+                joinTimer = new System.Timers.Timer(1000);
+                joinTimer.Elapsed += joinChannelTimeout;
+                awaitingJoins = new List<KeyValuePair<string, DateTime>>();
+            }
+            awaitingJoins.Add(new KeyValuePair<string, DateTime>(channel, DateTime.Now));
+            if (!joinTimer.Enabled)
+                joinTimer.Start();
+        }
+
+        private void joinChannelTimeout(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (awaitingJoins.Count() > 0)
+            {
+                var expiredChannels = awaitingJoins.Where(x => (DateTime.Now - x.Value).TotalSeconds > 5).ToList();
+                if (expiredChannels != null && expiredChannels.Count() > 0)
+                {
+                    awaitingJoins.RemoveAll(x => (DateTime.Now - x.Value).TotalSeconds > 5);
+                    foreach (var expiredChannel in expiredChannels)
+                    {
+                        JoinedChannels.Remove(JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == expiredChannel.Key.ToLower()));
+                        OnFailureToReceiveJoinConfirmation?.Invoke(this, new OnFailureToReceiveJoinConfirmationArgs() { Exception = new FailureToReceiveJoinConfirmationException(expiredChannel.Key) });
+                    }
+                }
+            }
+            if (awaitingJoins.Count() == 0)
+                joinTimer.Stop();
+        }
 
         private void ParseIrcMessage(string ircMessage)
         {
@@ -671,6 +709,9 @@
             {
                 if (TwitchUsername.ToLower() == ircMessage.Split('!')[1].Split('@')[0].ToLower())
                 {
+                    var chan = awaitingJoins.FirstOrDefault(x => x.Key == response.Channel);
+                    awaitingJoins.Remove(chan);
+                    JoinedChannels.Add(new JoinedChannel(chan.Key));
                     OnJoinedChannel?.Invoke(this, new OnJoinedChannelArgs { Channel = response.Channel, BotUsername = ircMessage.Split('!')[1].Split('@')[0] });
                     if (OnBeingHosted != null)
                         if (response.Channel.ToLower() != TwitchUsername && !OverrideBeingHostedCheck)
@@ -835,16 +876,14 @@
 
             // On another channel hosts this broadcaster's channel [UNTESTED]
             // BurkeBlack is now hosting you for up to 206 viewers.
+            // :jtv!jtv@jtv.tmi.twitch.tv PRIVMSG annemunition :WhateverChannelNameHere is auto hosting you for up to 100 viewers.
             response = Internal.Parsing.Chat.detectedBeingHosted(ircMessage, JoinedChannels);
             if(response.Successful)
             {
-                var hostedBy = ircMessage.Split(':')[2].Split(' ')[0];
-                string[] parts = ircMessage.Split(' ');
-                int viewers = -1;
-                foreach (var part in parts)
-                    if (Regex.IsMatch(part, @"^\d+$"))
-                        viewers = int.Parse(part);
-                var isAuto = ircMessage.Contains(" autohost");
+                string payload = ircMessage.Split(':')[2];
+                string hostedBy = payload.Split(' ')[0];
+                bool isAuto = payload.Contains("auto hosting");
+                int viewers = int.Parse(payload.Split(' ')[payload.Split(' ').Count() - 2]);
                 OnBeingHosted?.Invoke(this, new OnBeingHostedArgs { Channel = response.Channel, BotUsername = TwitchUsername, HostedByChannel = hostedBy,
                     Viewers = viewers, IsAutoHosted = isAuto });
                 return;
@@ -891,6 +930,15 @@
                 OnRaidedChannelIsMatureAudience?.Invoke(this, null);
                 return;
             }
+
+            // On ritual new chatter is detected in chat
+            response = Internal.Parsing.Chat.detectedRitualNewChatter(ircMessage, JoinedChannels);
+            if(response.Successful)
+            {
+                OnRitualNewChatter?.Invoke(this, new OnRitualNewChatterArgs() { RitualNewChatter = new RitualNewChatter(ircMessage) });
+                return;
+            }
+            Log(response.OptionalData ?? "none");
             #endregion
 
             #region Clear Chat, Timeouts, and Bans
@@ -1012,6 +1060,7 @@
                 Log($"Joining channel: {channelToJoin.Channel}");
                 _client.Send(Rfc2812.Join($"#{channelToJoin.Channel}"));
                 JoinedChannels.Add(new JoinedChannel(channelToJoin.Channel));
+                startJoinedChannelTimer(channelToJoin.Channel);
             } else
             {
                 Log("Finished channel joining queue.");

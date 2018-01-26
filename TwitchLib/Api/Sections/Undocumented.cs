@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using TwitchLib.Api;
+    using System.Linq;
     #endregion
     /// <summary>These endpoints are pretty cool, but they may stop working at anytime due to changes Twitch makes.</summary>
     public class Undocumented : ApiSection
@@ -38,6 +39,35 @@
             List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("video_id", vodId), new KeyValuePair<string, string>("offset_seconds", offsetSeconds.ToString()) };
             var rechatResource = $"https://rechat.twitch.tv/rechat-messages";
             return await Api.GetGenericAsync<Models.API.Undocumented.ClipChat.GetClipChatResponse>(rechatResource, getParams).ConfigureAwait(false);
+        }
+        #endregion
+        #region GetComments
+        public async Task<Models.API.Undocumented.Comments.CommentsPage> GetCommentsPageAsync(string videoId, int? contentOffsetSeconds = null, string cursor = null)
+        {
+            var getParams = new List<KeyValuePair<string, string>>();
+            if (string.IsNullOrWhiteSpace(videoId))
+            {
+                throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+            }
+            if (contentOffsetSeconds != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("content_offset_seconds", contentOffsetSeconds.ToString()));
+            }
+            if (cursor != null)
+            {
+                getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
+            }
+            return await Api.GetGenericAsync<Models.API.Undocumented.Comments.CommentsPage>($"https://api.twitch.tv/kraken/videos/{videoId}/comments", getParams, null, TwitchLib.Enums.ApiVersion.v5).ConfigureAwait(false);
+        }
+
+        public async Task<List<Models.API.Undocumented.Comments.CommentsPage>> GetAllCommentsAsync(string videoId)
+        {
+            var pages = new List<Models.API.Undocumented.Comments.CommentsPage> { await GetCommentsPageAsync(videoId) };
+            while (pages.Last().Next != null)
+            {
+                pages.Add(await GetCommentsPageAsync(videoId, null, pages.Last().Next));
+            }
+            return pages;
         }
         #endregion
         #region GetTwitchPrimeOffers

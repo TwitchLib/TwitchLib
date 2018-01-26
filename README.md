@@ -234,6 +234,7 @@ You are also more than welcome to clone/fork this repo and build the library you
  * BeerHawk ([BeerHawk](https://github.com/BeerHawk))
  * Tobias Teske ([Syzuna](https://github.com/Syzuna))
  * LuckyNoS7evin ([luckynos7evin](https://twitch.tv/luckynos7evin))
+ * Peter Richter ([DumpsterDoofus](DumpsterDoofus))
 
 ## License
 
