@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using TwitchLib.Models.API.Helix.Common;
 
 namespace TwitchLib.Models.API.Helix.Videos.GetVideos
 {
@@ -9,5 +7,7 @@ namespace TwitchLib.Models.API.Helix.Videos.GetVideos
     {
         [JsonProperty(PropertyName = "data")]
         public Video[] Videos { get; protected set; }
+        [JsonProperty(PropertyName = "pagination")]
+        public Pagination Pagination { get; protected set; }
     }
 }
