@@ -18,18 +18,33 @@ Below are basic examples of how to utilize TwitchLib.Extension. These are C# exa
 This is meant to be utilized as part of a web based frontend, with that in mind the following examples are based on new Web applications built in Full framework 4.5.2 and above or dotnet core 2.0 and above.
 
 
-#### Basics - full framework or dotnet core
+ **NOTE**: This documentation is currently not final, support for the Extension Library wil be done via the <a href="https://discord.gg/Cq2ar37">Twitch API - Discord server</a>
+
+### Basics - full framework or dotnet core
 ```csharp
 using TwitchLib.Extension;
 
+//There are currently two types of extension which Extend the abstract ExtensionBase class
+//StaticSecretExtension & RotatedSecretExtension. StaticSecretExtension does not rotate the serect
+//away from the intial secret you set. RotatedSecretExtension rotates the secret based on the time interval you set
+//Twitch recommends a secret is reotated every 12 hours. More Extension types will be created in the future
+StaticSecretExtension staticExtension = new StaticSecretExtension(new ExtensionConfiguration
+{
+    Id = "{{INSERT_YOUR_EXTENSION_CLIENTID}}",
+    OwnerId = "{{THE_TWITCH_ID_OF_EXTENSION_OWNER}}",
+    VersionNumber = "{{VERSION_NUMBER_YOU_ARE_USING}}",//e.g. 0.0.1
+    StartingSecret = "{{YOUR_EXTENSION_SECRET}}"
 
-Extension extension = new Extension(new ExtensionConfiguration {
-		Id = "{{INSERT_YOUR_EXTENSION_CLIENTID}}",
-		OwnerId= "{{THE_TWITCH_ID_OF_EXTENSION_OWNER}}",
-		VersionNumber ="{{VERSION_NUMBER_YOU_ARE_USING}}",//e.g. 0.0.1
-		SecretHandler = new StaticSecretHandler("{{YOUR_EXTENSION_SECRET}}") 
 });
 
+RotatedSecretExtension rotatedExtension = new RotatedSecretExtension(new ExtensionConfiguration
+{
+    Id = "{{INSERT_YOUR_EXTENSION_CLIENTID}}",
+    OwnerId = "{{THE_TWITCH_ID_OF_EXTENSION_OWNER}}",
+    VersionNumber = "{{VERSION_NUMBER_YOU_ARE_USING}}",//e.g. 0.0.1
+    StartingSecret = "{{YOUR_EXTENSION_SECRET}}"
+
+}, 720);
 
 //Verify a JWT
 string jwt = Request.Headers["x-extension-jwt"];
@@ -91,7 +106,7 @@ complete = await extension.SendExtensionPubSubMessageAsync(channelId, new Twitch
 
 
 
-#### .Net Core
+### .Net Core
 There is currently additional support for .Net core.
 
 #### Startup.cs
@@ -108,7 +123,17 @@ services.AddAuthentication(options =>
 			/*Options removed for space*/
 			})
 			.AddTwitchExtensionAuth();//<---- this is the bit you're after
-			
+
+services.AddAuthorization(options =>
+{
+    options.AddPolicy("{{CREATE_A_POLICY_NAME}}",
+        policy => policy.RequireClaim("extension_id",
+              "{{INSERT_YOUR_EXTENSION_CLIENTID}}",
+              "{{INSERT_YOUR_EXTENSION_CLIENTID2}}",
+            )
+        );
+});
+
 //Add the extension manager functionality
 services.AddTwitchExtensionManager();
 .....
@@ -119,24 +144,30 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env, IService
 {
 .....
 //This allows for multiple extensions.
-app.UseTwitchExtensionManager(serviceProvider, new ExtensionsConfiguration
+app.UseTwitchExtensionManager(serviceProvider, new Dictionary<string, ExtensionBase>
 {
-	Extensions = new List<ExtensionConfiguration>()
-	{
-		new ExtensionConfiguration{
+    {
+        "{{INSERT_YOUR_EXTENSION_CLIENTID}}",
+        new StaticSecretExtension( new ExtensionConfiguration {
                     Id = "{{INSERT_YOUR_EXTENSION_CLIENTID}}",
                     OwnerId= "{{THE_TWITCH_ID_OF_EXTENSION_OWNER}}",
                     VersionNumber ="{{VERSION_NUMBER_YOU_ARE_USING}}",//e.g. 0.0.1
                     SecretHandler = new StaticSecretHandler("{{YOUR_EXTENSION_SECRET}}") 
-		},
-		new ExtensionConfiguration{
-                    Id = "{{INSERT_YOUR_EXTENSION_CLIENTID}}",
-                    OwnerId= "{{THE_TWITCH_ID_OF_EXTENSION_OWNER}}",
-                    VersionNumber ="{{VERSION_NUMBER_YOU_ARE_USING}}",//e.g. 0.0.1
-                    SecretHandler = new StaticSecretHandler("{{YOUR_EXTENSION_SECRET}}") 
-		}
-	}
+        })
+    },
+    {
+        "{{INSERT_YOUR_EXTENSION_CLIENTID2}}",
+        new StaticSecretExtension( new ExtensionConfiguration {
+                    Id = "{{INSERT_YOUR_EXTENSION_CLIENTID2}}",
+                    OwnerId= "{{THE_TWITCH_ID_OF_EXTENSION_OWNER2}}",
+                    VersionNumber ="{{VERSION_NUMBER_YOU_ARE_USING2}}",//e.g. 0.0.1
+                    SecretHandler = new StaticSecretHandler("{{YOUR_EXTENSION_SECRET2}}") 
+        })
+    }
 });
+
+
+
 .....
 }
 ```
@@ -144,7 +175,7 @@ app.UseTwitchExtensionManager(serviceProvider, new ExtensionsConfiguration
 ```csharp
 [Produces("application/json")]
 [Route("api/[Controller]")]
-[Authorize(AuthenticationSchemes = "TwitchExtensionAuth")]
+[Authorize(AuthenticationSchemes = "TwitchExtensionAuth", Policy ="{{ENTER_THE_POLICY_USED_AT_STARTUP}}")]
 public class ExampleController : Controller
 {
 	private readonly ExtensionManager _extensionManager;
