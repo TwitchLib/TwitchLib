@@ -20,7 +20,7 @@ This is meant to be utilized as part of a web based frontend, with that in mind 
 
  **NOTE**: This documentation is currently not final, support for the Extension Library wil be done via the <a href="https://discord.gg/Cq2ar37">Twitch API - Discord server</a>
 
-#### Basics - full framework or dotnet core
+### Basics - full framework or dotnet core
 ```csharp
 using TwitchLib.Extension;
 
@@ -106,7 +106,7 @@ complete = await extension.SendExtensionPubSubMessageAsync(channelId, new Twitch
 
 
 
-#### .Net Core
+### .Net Core
 There is currently additional support for .Net core.
 
 #### Startup.cs
