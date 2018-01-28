@@ -177,7 +177,7 @@
                     Noisy = (part.Split('=')[1] == "1") ? Enums.Noisy.True : Enums.Noisy.False;
                 }
             }
-            Message = ircString.Split(new[] { $" PRIVMSG #{Channel} :" }, StringSplitOptions.None)[1];
+            Message = ircString.Split(new[] { $" PRIVMSG #{Channel} :" }, 2, StringSplitOptions.None)[1];
             EmoteSet = new EmoteSet(emoteSetStorage, Message);
             if (Message.Length > 0 && (byte)Message[0] == 1 && (byte)Message[Message.Length - 1] == 1)
             {
