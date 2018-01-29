@@ -269,6 +269,9 @@
 
         /// <summary>Fires when a ritual for a new chatter is received.</summary>
         public EventHandler<OnRitualNewChatterArgs> OnRitualNewChatter;
+        
+        /// <summary>Fires when the client was unable to join a channel.</summary>
+        public EventHandler<OnFailureToReceiveJoinConfirmationArgs> OnFailureToReceiveJoinConfirmation;
 
         /// <summary>Fires when data is received from Twitch that is not able to be parsed.</summary>
         public EventHandler<OnUnaccountedForArgs> OnUnaccountedFor;
