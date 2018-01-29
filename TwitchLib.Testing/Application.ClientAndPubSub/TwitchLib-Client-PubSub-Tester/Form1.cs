@@ -83,7 +83,7 @@ namespace TwitchLibExample
             newClient.OnRitualNewChatter += onRitualNewChatter;
             newClient.OnBeingHosted += onBeingHosted;
             
-            // newClient.OnBeingHosted += new EventHandler<OnBeingHostedArgs>(onBeingHosted); ONLY USE IF YOU ARE JOING BROADCASTER's CHANNEL AS THE BROADCASTER (exception will be thrown if not)
+            newClient.OnBeingHosted += new EventHandler<OnBeingHostedArgs>(onBeingHosted); // ONLY USE IF YOU ARE JOING BROADCASTER's CHANNEL AS THE BROADCASTER (exception will be thrown if not)
             //Add message throttler
             newClient.Connect();
             clients.Add(newClient);
@@ -264,7 +264,7 @@ namespace TwitchLibExample
             //Don't do this in production
             CheckForIllegalCrossThreadCalls = false;
 
-            richTextBox1.BackColor = e.ChatMessage.Color;
+            richTextBox1.Text = $"{richTextBox1.Text}\n#{e.ChatMessage.Channel} [isSub: {e.ChatMessage.IsSubscriber}, isMod: {e.ChatMessage.IsModerator}, isMe: {e.ChatMessage.IsMe}] {e.ChatMessage.Message}";
             richTextBox1.Text = String.Format("#{0} {1}[isSub: {2}, isPartner: {3}, subbedFor: {4}]: {3}", e.ChatMessage.Channel, e.ChatMessage.DisplayName, e.ChatMessage.IsSubscriber, "", e.ChatMessage.SubscribedMonthCount, e.ChatMessage.Message) + 
                 "\n" + richTextBox1.Text;
         }
