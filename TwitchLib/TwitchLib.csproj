@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <PackageId>TwitchLib</PackageId>
-    <Version>1.6.0</Version>
+    <Version>1.6.1</Version>
     <Description>Twitch C# library for accessing Twitch chat and whispers with events, Twitch API with both authenticated and unauthenticated calls, and PubSub with events.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>swiftyspiffy, Prom3theu5</Authors>
@@ -12,13 +12,13 @@
     <PackageProjectUrl>https://github.com/swiftyspiffy/TwitchLib</PackageProjectUrl>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <Copyright>Copyright 2017</Copyright>
-    <PackageReleaseNotes>LivestreamMonitor changes, raid extension added, mercury field added to ChannelState, SelfRaidError, NoPermissionError and RaidedChannelIsMatureAudience events, api rate limiting, helix.GetStreams fixed, scanning for expired token, tokenexpiredexception, auth API and refresh response added for token auth, state checking on sendmessage overrides, broadcaster set correctly in GetChatters, nullreference fixed in helix videos call, rituals flag added to ChannelState, GetTopGames correctly applies parameters, support for getting and creating clips via helix endpoints, support for new auth scope clips:edit, stream up/stream down webhook subscription endpoint added, and unaccounted for event added.</PackageReleaseNotes>
+    <PackageReleaseNotes>Corrects security issues discovered by chfoo. Various corrects to models. Bug fixes for API calls. New GetCommentsPageAsync undocumented call (thanks DumpsterDoofus). OnBeingHosted event fixed. NewChatter ritual event OnRitualNewChatter event added. FollowersOnlyOn name corrected. SlowModOff name corrected. SetStreamsByUsernames invokes getUserIds synchronously now. PubSub support for gifting. First draft support for Twitch Extensions exists in repo now (thanks LuckyNoS7evin).</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>1.6.0.0</AssemblyVersion>
-    <FileVersion>1.6.0.0</FileVersion>
+    <AssemblyVersion>1.6.1.0</AssemblyVersion>
+    <FileVersion>1.6.1.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
