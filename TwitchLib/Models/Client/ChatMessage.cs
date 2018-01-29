@@ -78,38 +78,34 @@
             BotUsername = botUsername;
             RawIrcMessage = ircString;
             _emoteCollection = emoteCollection;
-            var parts = ircString.Split(';');
+
+            Username = ircString.Split('!')[1].Split('@')[0];
+            Channel = ircString.Split(new[] { " #" }, StringSplitOptions.None)[1].Split(' ')[0];
+            
+            var userTypeStr = ircString.Split(new[] { ";user-type=" }, StringSplitOptions.None)[1].Split(' ')[0];
+            switch (userTypeStr)
+            {
+                case "mod":
+                    UserType = Enums.UserType.Moderator;
+                    break;
+                case "global_mod":
+                    UserType = Enums.UserType.GlobalModerator;
+                    break;
+                case "admin":
+                    UserType = Enums.UserType.Admin;
+                    break;
+                case "staff":
+                    UserType = Enums.UserType.Staff;
+                    break;
+                default:
+                    UserType = Enums.UserType.Viewer;
+                    break;
+            }
+
+            var parts = ircString.Split(new[] { $":{Username}!{Username}@{Username}.tmi.twitch.tv" }, StringSplitOptions.None)[0].Split(';');
             foreach (var part in parts)
             {
-                if (part.Contains("!"))
-                {
-                    if (Channel == null)
-                        Channel = part.Split('#')[1].Split(' ')[0];
-                    if (Username == null)
-                        Username = part.Split('!')[1].Split('@')[0];
-                    if(part.Split('=').Count() > 1 && part.Split('=')[1].Contains(" "))
-                    {
-                        switch (part.Split('=')[1].Split(' ')[0])
-                        {
-                            case "mod":
-                                UserType = Enums.UserType.Moderator;
-                                break;
-                            case "global_mod":
-                                UserType = Enums.UserType.GlobalModerator;
-                                break;
-                            case "admin":
-                                UserType = Enums.UserType.Admin;
-                                break;
-                            case "staff":
-                                UserType = Enums.UserType.Staff;
-                                break;
-                            default:
-                                UserType = Enums.UserType.Viewer;
-                                break;
-                        }
-                    }
-                }
-                else if (part.Contains("@badges="))
+                if (part.Contains("@badges="))
                 {
                     Badges = new List<KeyValuePair<string, string>>();
                     string badges = part.Split('=')[1];
@@ -185,10 +181,10 @@
                 //This setup clears all of that leaving just the action's text.
                 //If you want to clear just the nonstandard bytes, use:
                 //_message = _message.Substring(1, text.Length-2);
-                if (Message.Contains("ACTION"))
+                if (Message.Substring(1, 6) == "ACTION")
                 {
-                 	Message = Message.Substring(8, Message.Length - 9);
-                        IsMe = true;
+                    Message = Message.Substring(8, Message.Length - 9);
+                    IsMe = true;
                 }
             }
 
