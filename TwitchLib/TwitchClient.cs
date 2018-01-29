@@ -883,7 +883,9 @@
                 string payload = ircMessage.Split(':')[2];
                 string hostedBy = payload.Split(' ')[0];
                 bool isAuto = payload.Contains("auto hosting");
-                int viewers = int.Parse(payload.Split(' ')[payload.Split(' ').Count() - 2]);
+                int viewers = -1;
+                if(payload.Contains("up to"))
+                    viewers = int.Parse(payload.Split(' ')[payload.Split(' ').Count() - 2]);
                 OnBeingHosted?.Invoke(this, new OnBeingHostedArgs { Channel = response.Channel, BotUsername = TwitchUsername, HostedByChannel = hostedBy,
                     Viewers = viewers, IsAutoHosted = isAuto });
                 return;
