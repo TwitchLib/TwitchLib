@@ -28,6 +28,8 @@
         private HashSet<char> _whisperCommandIdentifiers = new HashSet<char>();
         private Queue<JoinedChannel> joinChannelQueue = new Queue<JoinedChannel>();
         private bool currentlyJoiningChannels = false;
+        private System.Timers.Timer _joinTimer;
+        private List<KeyValuePair<string, DateTime>> _awaitingJoins;
        
         // variables used for constructing OnMessageSent properties
         private List<string> _hasSeenJoinedChannels = new List<string>();
@@ -616,6 +618,38 @@
         }
        
         #endregion
+        
+        private void StartJoinedChannelTimer(string channel)
+        {
+            if (_joinTimer == null)
+            {
+                _joinTimer = new System.Timers.Timer(1000);
+                _joinTimer.Elapsed += JoinChannelTimeout;
+                _awaitingJoins = new List<KeyValuePair<string, DateTime>>();
+            }
+            _awaitingJoins.Add(new KeyValuePair<string, DateTime>(channel, DateTime.Now));
+            if (!_joinTimer.Enabled)
+                _joinTimer.Start();
+        }
+
+        private void JoinChannelTimeout(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (_awaitingJoins.Any())
+            {
+                var expiredChannels = _awaitingJoins.Where(x => (DateTime.Now - x.Value).TotalSeconds > 5).ToList();
+                if (expiredChannels != null && expiredChannels.Any())
+                {
+                    _awaitingJoins.RemoveAll(x => (DateTime.Now - x.Value).TotalSeconds > 5);
+                    foreach (var expiredChannel in expiredChannels)
+                    {
+                        JoinedChannels.Remove(JoinedChannels.FirstOrDefault(x => string.Equals(x.Channel, expiredChannel.Key, StringComparison.InvariantCultureIgnoreCase)));
+                        OnFailureToReceiveJoinConfirmation?.Invoke(this, new OnFailureToReceiveJoinConfirmationArgs { Exception = new FailureToReceiveJoinConfirmationException(expiredChannel.Key) });
+                    }
+                }
+            }
+            if (_awaitingJoins.Any())
+                _joinTimer.Stop();
+        }
 
         private void ParseIrcMessage(string ircMessage)
         {
@@ -675,6 +709,9 @@
             {
                 if (TwitchUsername.ToLower() == ircMessage.Split('!')[1].Split('@')[0].ToLower())
                 {
+                    var chan = _awaitingJoins.FirstOrDefault(x => x.Key == response.Channel);
+                    _awaitingJoins.Remove(chan);
+                    
                     OnJoinedChannel?.Invoke(this, new OnJoinedChannelArgs { Channel = response.Channel, BotUsername = ircMessage.Split('!')[1].Split('@')[0] });
                     if (OnBeingHosted != null)
                         if (response.Channel.ToLower() != TwitchUsername && !OverrideBeingHostedCheck)
@@ -1025,6 +1062,7 @@
                 Log($"Joining channel: {channelToJoin.Channel}");
                 _client.Send(Rfc2812.Join($"#{channelToJoin.Channel}"));
                 JoinedChannels.Add(new JoinedChannel(channelToJoin.Channel));
+                StartJoinedChannelTimer(channelToJoin.Channel);
             } else
             {
                 Log("Finished channel joining queue.");
