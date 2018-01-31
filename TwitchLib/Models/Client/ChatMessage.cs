@@ -181,9 +181,9 @@
                 //This setup clears all of that leaving just the action's text.
                 //If you want to clear just the nonstandard bytes, use:
                 //_message = _message.Substring(1, text.Length-2);
-                if (Message.Substring(1, 6) == "ACTION ")
+                if (Message.StartsWith("\u0001ACTION ") && Message.EndsWith("\u0001"))
                 {
-                    Message = Message.Substring(8, Message.Length - 9);
+                    Message = Message.Trim('\u0001').Substring(7);
                     IsMe = true;
                 }
             }
