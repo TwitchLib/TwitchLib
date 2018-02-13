@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.Undocumented.ClipChat
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.Undocumented.ClipChat
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class ReChatMessageAttributes
     {
         [JsonProperty(PropertyName = "command")]

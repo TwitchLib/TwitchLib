@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.Undocumented.Hosting
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.Undocumented.Hosting
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class ChannelHostsResponse
     {
         [JsonProperty(PropertyName = "hosts")]

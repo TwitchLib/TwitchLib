@@ -1,9 +1,8 @@
-﻿namespace TwitchLib.Models.API.Undocumented.TwitchPrimeOffers
+﻿using System;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.Undocumented.TwitchPrimeOffers
 {
-    #region using directives
-    using System;
-    using Newtonsoft.Json;
-    #endregion
     public class Offer
     {
         [JsonProperty(PropertyName = "applicableGame")]
