@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.Users
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Users
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class UserBlocks
     {
         #region Total

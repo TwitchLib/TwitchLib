@@ -1,10 +1,9 @@
-﻿namespace TwitchLib.Models.API.v5.ChannelFeed
+﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.ChannelFeed
 {
-    #region using directives
-    using System;
-    using System.Collections.Generic;
-    using Newtonsoft.Json;
-    #endregion
     public class FeedPost
     {
         #region Body

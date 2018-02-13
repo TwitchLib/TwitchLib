@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.Communities
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Communities
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class TimedOutUsers
     {
         #region Cursor

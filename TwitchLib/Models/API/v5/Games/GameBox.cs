@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.Games
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Games
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class GameBox
     {
         #region Large

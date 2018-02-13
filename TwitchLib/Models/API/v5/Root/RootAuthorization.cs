@@ -1,9 +1,8 @@
-﻿namespace TwitchLib.Models.API.v5.Root
+﻿using System;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Root
 {
-    #region using directives
-    using System;
-    using Newtonsoft.Json;
-    #endregion
     public class RootAuthorization
     {
         #region CreatedAt

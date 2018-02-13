@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.Videos
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Videos
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class VideoThumbnails
     {
         #region Large

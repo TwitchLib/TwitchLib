@@ -1,9 +1,8 @@
-﻿namespace TwitchLib.Models.API.v5.Teams
+﻿using System;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Teams
 {
-    #region using directives
-    using System;
-    using Newtonsoft.Json;
-    #endregion
     /// <summary>Class representing a more detailed team object from Twitch API</summary>
     public class Team
     {

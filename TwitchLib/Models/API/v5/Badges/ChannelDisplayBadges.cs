@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.Badges
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Badges
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class ChannelDisplayBadges
     {
         #region BadgeSets
