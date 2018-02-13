@@ -161,15 +161,15 @@ namespace TwitchLib
                     switch (msg.Topic.Split('.')[0])
                     {
                         case "channel-subscribe-events-v1":
-                            var subscription = msg.messageData as ChannelSubscription;
+                            var subscription = msg.MessageData as ChannelSubscription;
                             OnChannelSubscription?.Invoke(this, new OnChannelSubscriptionArgs { Subscription = subscription });
                             return;
                         case "whispers":
-                            var whisper = (Whisper)msg.messageData;
+                            var whisper = (Whisper)msg.MessageData;
                             OnWhisper?.Invoke(this, new OnWhisperArgs { Whisper = whisper });
                             return;
                         case "chat_moderator_actions":
-                            var cma = msg.messageData as ChatModeratorActions;
+                            var cma = msg.MessageData as ChatModeratorActions;
                             var reason = "";
                             switch (cma?.ModerationAction.ToLower())
                             {
@@ -225,7 +225,7 @@ namespace TwitchLib
                             }
                             break;
                         case "channel-bits-events-v1":
-                            if (msg.messageData is ChannelBitsEvents cbe)
+                            if (msg.MessageData is ChannelBitsEvents cbe)
                                 OnBitsReceived?.Invoke(this, new OnBitsReceivedArgs
                                 {
                                     BitsUsed = cbe.BitsUsed,
@@ -240,7 +240,7 @@ namespace TwitchLib
                                 });
                             return;
                         case "video-playback":
-                            var vP = msg.messageData as VideoPlayback;
+                            var vP = msg.MessageData as VideoPlayback;
                             switch (vP?.Type)
                             {
                                 case VideoPlaybackType.StreamDown:
