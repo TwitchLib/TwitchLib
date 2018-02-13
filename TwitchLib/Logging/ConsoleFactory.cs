@@ -5,7 +5,7 @@ namespace TwitchLib.Logging
 	public class ConsoleFactory :
 		ILoggerFactory
 	{
-		private LoggerLevel? level;
+		private LoggerLevel? _level;
 
 		public ConsoleFactory()
 		{
@@ -13,7 +13,7 @@ namespace TwitchLib.Logging
 
 		public ConsoleFactory(LoggerLevel level)
 		{
-			this.level = level;
+			_level = level;
 		}
 
 		public ILogger Create(Type type)
@@ -23,11 +23,7 @@ namespace TwitchLib.Logging
 
 		public ILogger Create(string name)
 		{
-			if (level.HasValue)
-			{
-				return Create(name, level.Value);
-			}
-			return new ConsoleLogger(name);
+		    return _level.HasValue ? Create(name, _level.Value) : new ConsoleLogger(name);
 		}
 
 		public ILogger Create(Type type, LoggerLevel level)
