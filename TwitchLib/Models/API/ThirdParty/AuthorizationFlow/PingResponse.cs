@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TwitchLib.Models.API.ThirdParty.AuthorizationFlow
 {
@@ -22,7 +18,7 @@ namespace TwitchLib.Models.API.ThirdParty.AuthorizationFlow
 
         public PingResponse(string jsonStr)
         {
-            JObject json = JObject.Parse(jsonStr);
+            var json = JObject.Parse(jsonStr);
             Success = bool.Parse(json.SelectToken("success").ToString());
             if(!Success)
             {
