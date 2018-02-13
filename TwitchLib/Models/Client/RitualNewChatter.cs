@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TwitchLib.Models.Client
 {
@@ -33,66 +31,67 @@ namespace TwitchLib.Models.Client
         {
             if (ircMessage[0] == '@')
                 ircMessage = ircMessage.Substring(0, ircMessage.Length - 1);
-            var main = ircMessage.Split(new string[] { " USERNOTICE" }, StringSplitOptions.None);
-            Message = main[1].Split(new string[] { ": " }, StringSplitOptions.None)[1];
+            var main = ircMessage.Split(new [] { " USERNOTICE" }, StringSplitOptions.None);
+            Message = main[1].Split(new [] { ": " }, StringSplitOptions.None)[1];
             foreach (var part in main[0].Split(';'))
             {
-                if (part.Contains("="))
+                if (!part.Contains("=")) continue;
+
+                var key = part.Split('=')[0];
+                var val = part.Split('=')[1];
+                switch (key)
                 {
-                    var key = part.Split('=')[0];
-                    var val = part.Split('=')[1];
-                    switch (key)
-                    {
-                        case "badges":
-                            Badges = val;
-                            break;
-                        case "color":
-                            Color = val;
-                            break;
-                        case "display-name":
-                            DisplayName = val;
-                            break;
-                        case "emotes":
-                            Emotes = val;
-                            break;
-                        case "id":
-                            Id = val;
-                            break;
-                        case "login":
-                            Login = val;
-                            break;
-                        case "mod":
-                            Moderator = (val == "1");
-                            break;
-                        case "msg-id":
-                            MsgId = val;
-                            break;
-                        case "msg-param-ritual-name":
-                            MsgParamRitualName = val;
-                            break;
-                        case "room-id":
-                            RoomId = val;
-                            break;
-                        case "subscriber":
-                            Subscriber = (val == "1");
-                            break;
-                        case "system-msg":
-                            SystemMsg = val;
-                            SystemMsgParsed = val.Replace("\\s", " ").Replace("\\n", "");
-                            break;
-                        case "tmi-sent-ts":
-                            TmiSentTs = val;
-                            break;
-                        case "turbo":
-                            Turbo = (val == "1");
-                            break;
-                        case "user-id":
-                            UserId = val;
-                            break;
-                        case "user-type":
-                            UserType = val;
-                            break;
-                    }
+                    case "badges":
+                        Badges = val;
+                        break;
+                    case "color":
+                        Color = val;
+                        break;
+                    case "display-name":
+                        DisplayName = val;
+                        break;
+                    case "emotes":
+                        Emotes = val;
+                        break;
+                    case "id":
+                        Id = val;
+                        break;
+                    case "login":
+                        Login = val;
+                        break;
+                    case "mod":
+                        Moderator = (val == "1");
+                        break;
+                    case "msg-id":
+                        MsgId = val;
+                        break;
+                    case "msg-param-ritual-name":
+                        MsgParamRitualName = val;
+                        break;
+                    case "room-id":
+                        RoomId = val;
+                        break;
+                    case "subscriber":
+                        Subscriber = (val == "1");
+                        break;
+                    case "system-msg":
+                        SystemMsg = val;
+                        SystemMsgParsed = val.Replace("\\s", " ").Replace("\\n", "");
+                        break;
+                    case "tmi-sent-ts":
+                        TmiSentTs = val;
+                        break;
+                    case "turbo":
+                        Turbo = (val == "1");
+                        break;
+                    case "user-id":
+                        UserId = val;
+                        break;
+                    case "user-type":
+                        UserType = val;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(key));
                 }
             }
         }

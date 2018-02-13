@@ -1,10 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace TwitchLib.Models.Client
 {
-    #region using directives
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    #endregion
     /// <summary>Class representing state of a specific user.</summary>
     public class UserState
     {
@@ -31,7 +30,7 @@ namespace TwitchLib.Models.Client
         /// <param name="ircString"></param>
         public UserState(string ircString)
         {
-            foreach (string part in ircString.Split(';'))
+            foreach (var part in ircString.Split(';'))
             {
                 // The 'user-type' section does not have a ; suffix, we will account for this outside of for loop, we should exit loop immediately
                 if (part.Contains(" :tmi.twitch.tv USERSTATE "))
@@ -45,13 +44,13 @@ namespace TwitchLib.Models.Client
                 switch (part.Split('=')[0])
                 {
                     case "@badges":
-                        string badges = part.Split('=')[1];
+                        var badges = part.Split('=')[1];
                         if (badges.Contains('/'))
                         {
                             if (!badges.Contains(","))
                                 Badges.Add(new KeyValuePair<string, string>(badges.Split('/')[0], badges.Split('/')[1]));
                             else
-                                foreach (string badge in badges.Split(','))
+                                foreach (var badge in badges.Split(','))
                                     Badges.Add(new KeyValuePair<string, string>(badge.Split('/')[0], badge.Split('/')[1]));
                         }
                         break;
@@ -100,7 +99,7 @@ namespace TwitchLib.Models.Client
                     break;
             }
             Channel = ircString.Split(' ')[3].Replace("#", "");
-            if (DisplayName.ToLower() == Channel.ToLower())
+            if (string.Equals(DisplayName, Channel, StringComparison.InvariantCultureIgnoreCase))
                 UserType = Enums.UserType.Broadcaster;
         }
     }

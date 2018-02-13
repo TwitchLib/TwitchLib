@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TwitchLib.Models.Client
 {
@@ -32,77 +30,78 @@ namespace TwitchLib.Models.Client
         {
             if (ircMessage[0] == '@')
                 ircMessage = ircMessage.Substring(0, ircMessage.Length - 1);
-            var parts = ircMessage.Split(new string[] { ":tmi.twitch.tv" }, StringSplitOptions.None)[0].Split(';');
+            var parts = ircMessage.Split(new [] { ":tmi.twitch.tv" }, StringSplitOptions.None)[0].Split(';');
             foreach (var part in parts)
             {
-                if (part.Contains("="))
+                if (!part.Contains("=")) continue;
+
+                var key = part.Split('=')[0];
+                var val = part.Split('=')[1];
+                switch (key)
                 {
-                    var key = part.Split('=')[0];
-                    var val = part.Split('=')[1];
-                    switch (key)
-                    {
-                        case "badges":
-                            Badges = val;
-                            break;
-                        case "color":
-                            Color = val;
-                            break;
-                        case "display-name":
-                            DisplayName = val;
-                            break;
-                        case "emotes":
-                            Emotes = val;
-                            break;
-                        case "id":
-                            Id = val;
-                            break;
-                        case "login":
-                            Login = val;
-                            break;
-                        case "mod":
-                            Moderator = (val == "1");
-                            break;
-                        case "msg-id":
-                            MsgId = val;
-                            break;
-                        case "msg-param-months":
-                            MsgParamMonths = val;
-                            break;
-                        case "msg-param-recipient-display-name":
-                            MsgParamRecipientDisplayName = val;
-                            break;
-                        case "msg-param-recipient-id":
-                            MsgParamRecipientId = val;
-                            break;
-                        case "msg-param-recipient-user-name":
-                            MsgParamRecipientUserName = val;
-                            break;
-                        case "msg-param-sub-plan-name":
-                            MsgParamSubPlanName = val;
-                            break;
-                        case "msg-param-sub-plan":
-                            MsgParamSubPlan = val;
-                            break;
-                        case "room-id":
-                            RoomId = val;
-                            break;
-                        case "subscriber":
-                            Subscriber = (val == "1");
-                            break;
-                        case "system-msg":
-                            SystemMsg = val;
-                            SystemMsgParsed = val.Replace("\\s", " ").Replace("\\n", "");
-                            break;
-                        case "tmi-sent-ts":
-                            TmiSentTs = val;
-                            break;
-                        case "turbo":
-                            Turbo = (val == "1");
-                            break;
-                        case "user-type":
-                            UserType = val;
-                            break;
-                    }
+                    case "badges":
+                        Badges = val;
+                        break;
+                    case "color":
+                        Color = val;
+                        break;
+                    case "display-name":
+                        DisplayName = val;
+                        break;
+                    case "emotes":
+                        Emotes = val;
+                        break;
+                    case "id":
+                        Id = val;
+                        break;
+                    case "login":
+                        Login = val;
+                        break;
+                    case "mod":
+                        Moderator = (val == "1");
+                        break;
+                    case "msg-id":
+                        MsgId = val;
+                        break;
+                    case "msg-param-months":
+                        MsgParamMonths = val;
+                        break;
+                    case "msg-param-recipient-display-name":
+                        MsgParamRecipientDisplayName = val;
+                        break;
+                    case "msg-param-recipient-id":
+                        MsgParamRecipientId = val;
+                        break;
+                    case "msg-param-recipient-user-name":
+                        MsgParamRecipientUserName = val;
+                        break;
+                    case "msg-param-sub-plan-name":
+                        MsgParamSubPlanName = val;
+                        break;
+                    case "msg-param-sub-plan":
+                        MsgParamSubPlan = val;
+                        break;
+                    case "room-id":
+                        RoomId = val;
+                        break;
+                    case "subscriber":
+                        Subscriber = (val == "1");
+                        break;
+                    case "system-msg":
+                        SystemMsg = val;
+                        SystemMsgParsed = val.Replace("\\s", " ").Replace("\\n", "");
+                        break;
+                    case "tmi-sent-ts":
+                        TmiSentTs = val;
+                        break;
+                    case "turbo":
+                        Turbo = (val == "1");
+                        break;
+                    case "user-type":
+                        UserType = val;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(key));
                 }
             }
         }

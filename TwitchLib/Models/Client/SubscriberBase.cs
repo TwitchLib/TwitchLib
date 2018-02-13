@@ -1,16 +1,15 @@
-namespace TwitchLib.Models.Client
-{
-    #region using directives
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 #if NETSTANDARD
-    using TwitchLib.NetCore.Extensions.NetCore;
+using TwitchLib.NetCore.Extensions.NetCore;
 #endif
 #if NET452
     using System.Drawing;
 #endif
-    #endregion
+
+namespace TwitchLib.Models.Client
+{
     /// <summary>Class representing a resubscriber.</summary>
     public class SubscriberBase
     {
@@ -62,95 +61,98 @@ namespace TwitchLib.Models.Client
         public bool IsTwitchPrime { get; protected set; }
         // @badges=subscriber/1,turbo/1;color=#2B119C;display-name=JustFunkIt;emotes=;id=9dasn-asdibas-asdba-as8as;login=justfunkit;mod=0;msg-id=resub;msg-param-months=2;room-id=44338537;subscriber=1;system-msg=JustFunkIt\ssubscribed\sfor\s2\smonths\sin\sa\srow!;turbo=1;user-id=26526370;user-type= :tmi.twitch.tv USERNOTICE #burkeblack :AVAST YEE SCURVY DOG
 
-        protected int months;
+        protected readonly int months;
 
         /// <summary>Subscriber object constructor.</summary>
         public SubscriberBase(string ircString)
         {
             RawIrc = ircString;
-            foreach (string section in ircString.Split(';'))
+            foreach (var section in ircString.Split(';'))
             {
-                if (section.Contains("="))
+                if (!section.Contains("=")) continue;
+
+                var key = section.Split('=')[0];
+                var value = section.Split('=')[1];
+                switch (key)
                 {
-                    string key = section.Split('=')[0];
-                    string value = section.Split('=')[1];
-                    switch (key)
-                    {
-                        case "@badges":
-                            Badges = new List<KeyValuePair<string, string>>();
-                            foreach (string badgeValue in value.Split(','))
-                                if (badgeValue.Contains('/'))
-                                    Badges.Add(new KeyValuePair<string, string>(badgeValue.Split('/')[0], badgeValue.Split('/')[1]));
-                            // iterate through badges for special circumstances
-                            foreach(var badge in Badges)
-                            {
-                                if (badge.Key == "partner")
-                                    IsPartner = true;
-                            }
-                            break;
-                        case "color":
-                            ColorHex = value;
-                            if (!string.IsNullOrEmpty(ColorHex))
-                                Color = ColorTranslator.FromHtml(ColorHex);
-                            break;
-                        case "display-name":
-                            DisplayName = value.Replace(" ", "");
-                            break;
-                        case "emotes":
-                            EmoteSet = value;
-                            break;
-                        case "id":
-                            Id = value;
-                            break;
-                        case "login":
-                            Login = value;
-                            break;
-                        case "mod":
-                            IsModerator = value == "1";
-                            break;
-                        case "msg-param-months":
-                            months = int.Parse(value);
-                            break;
-                        case "msg-param-sub-plan":
-                            switch(value.ToLower())
-                            {
-                                case "prime":
-                                    SubscriptionPlan = Enums.SubscriptionPlan.Prime;
-                                    break;
-                                case "1000":
-                                    SubscriptionPlan = Enums.SubscriptionPlan.Tier1;
-                                    break;
-                                case "2000":
-                                    SubscriptionPlan = Enums.SubscriptionPlan.Tier2;
-                                    break;
-                                case "3000":
-                                    SubscriptionPlan = Enums.SubscriptionPlan.Tier3;
-                                    break;
-                            }
-                            break;
-                        case "msg-param-sub-plan-name":
-                            SubscriptionPlanName = value.Replace("\\s", " ");
-                            break;
-                        case "room-id":
-                            RoomId = value;
-                            break;
-                        case "subscriber":
-                            IsSubscriber = value == "1";
-                            break;
-                        case "system-msg":
-                            SystemMessage = value;
-                            SystemMessageParsed = value.Replace("\\s", " ");
-                            break;
-                        case "tmi-sent-ts":
-                            TmiSentTs = value;
-                            break;
-                        case "turbo":
-                            IsTurbo = value == "1";
-                            break;
-                        case "user-id":
-                            UserId = value;
-                            break;
-                    }
+                    case "@badges":
+                        Badges = new List<KeyValuePair<string, string>>();
+                        foreach (var badgeValue in value.Split(','))
+                            if (badgeValue.Contains('/'))
+                                Badges.Add(new KeyValuePair<string, string>(badgeValue.Split('/')[0], badgeValue.Split('/')[1]));
+                        // iterate through badges for special circumstances
+                        foreach (var badge in Badges)
+                        {
+                            if (badge.Key == "partner")
+                                IsPartner = true;
+                        }
+                        break;
+                    case "color":
+                        ColorHex = value;
+                        if (!string.IsNullOrEmpty(ColorHex))
+                            Color = ColorTranslator.FromHtml(ColorHex);
+                        break;
+                    case "display-name":
+                        DisplayName = value.Replace(" ", "");
+                        break;
+                    case "emotes":
+                        EmoteSet = value;
+                        break;
+                    case "id":
+                        Id = value;
+                        break;
+                    case "login":
+                        Login = value;
+                        break;
+                    case "mod":
+                        IsModerator = value == "1";
+                        break;
+                    case "msg-param-months":
+                        months = int.Parse(value);
+                        break;
+                    case "msg-param-sub-plan":
+                        switch (value.ToLower())
+                        {
+                            case "prime":
+                                SubscriptionPlan = Enums.SubscriptionPlan.Prime;
+                                break;
+                            case "1000":
+                                SubscriptionPlan = Enums.SubscriptionPlan.Tier1;
+                                break;
+                            case "2000":
+                                SubscriptionPlan = Enums.SubscriptionPlan.Tier2;
+                                break;
+                            case "3000":
+                                SubscriptionPlan = Enums.SubscriptionPlan.Tier3;
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(value.ToLower));
+                        }
+                        break;
+                    case "msg-param-sub-plan-name":
+                        SubscriptionPlanName = value.Replace("\\s", " ");
+                        break;
+                    case "room-id":
+                        RoomId = value;
+                        break;
+                    case "subscriber":
+                        IsSubscriber = value == "1";
+                        break;
+                    case "system-msg":
+                        SystemMessage = value;
+                        SystemMessageParsed = value.Replace("\\s", " ");
+                        break;
+                    case "tmi-sent-ts":
+                        TmiSentTs = value;
+                        break;
+                    case "turbo":
+                        IsTurbo = value == "1";
+                        break;
+                    case "user-id":
+                        UserId = value;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(key));
                 }
             }
             // Parse user-type
@@ -180,12 +182,9 @@ namespace TwitchLib.Models.Client
             // Parse channel
             if (ircString.Contains("#"))
             {
-                if (ircString.Split('#').Count() > 2)
+                if (ircString.Split('#').Length > 2)
                 {
-                    if (ircString.Split('#')[2].Contains(" "))
-                        Channel = ircString.Split('#')[2].Split(' ')[0].Replace(" ", "");
-                    else
-                        Channel = ircString.Split('#')[2].Replace(" ", "");
+                    Channel = ircString.Split('#')[2].Contains(" ") ? ircString.Split('#')[2].Split(' ')[0].Replace(" ", "") : ircString.Split('#')[2].Replace(" ", "");
                 }
                 else
                 {
@@ -201,7 +200,7 @@ namespace TwitchLib.Models.Client
             ResubMessage = "";
             if (ircString.Contains($"#{Channel} :"))
             {
-                string rawParsedIrc = ircString.Split(new string[] { $"#{Channel} :" }, StringSplitOptions.None)[0];
+                var rawParsedIrc = ircString.Split(new[] { $"#{Channel} :" }, StringSplitOptions.None)[0];
                 ResubMessage = ircString.Replace($"{rawParsedIrc}#{Channel} :", "");
             }
 
@@ -212,8 +211,9 @@ namespace TwitchLib.Models.Client
         /// <summary>Overriden ToString method, prints out all properties related to resub.</summary>
         public override string ToString()
         {
-            return $"Badges: {Badges.Count}, color hex: {ColorHex}, display name: {DisplayName}, emote set: {EmoteSet}, login: {Login}, system message: {SystemMessage}, " + 
-                "resub message: {ResubMessage}, months: {Months}, room id: {RoomId}, user id: {UserId}, mod: {IsModerator}, turbo: {IsTurbo}, sub: {IsSubscriber}, user type: {UserType}, " + "channel: {Channel}, raw irc: {RawIrc}";
+            return $"Badges: {Badges.Count}, color hex: {ColorHex}, display name: {DisplayName}, emote set: {EmoteSet}, login: {Login}, system message: {SystemMessage}, " +
+                $"resub message: {ResubMessage}, months: {months}, room id: {RoomId}, user id: {UserId}, mod: {IsModerator}, turbo: {IsTurbo}, sub: {IsSubscriber}, user type: {UserType}, " +
+                   $"channel: {Channel}, raw irc: {RawIrc}";
         }
     }
 }
