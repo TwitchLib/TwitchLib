@@ -1,21 +1,22 @@
-﻿namespace TwitchLib
-{
-    #region using directives
-    using System;
-    using System.Linq;
-    using System.Timers;
-    using System.Collections.Generic;
-    using Newtonsoft.Json.Linq;
-    using WebSocket4Net;
-    using SuperSocket.ClientEngine;
-    using Events.PubSub;
-    using Models.PubSub.Responses.Messages;
-    using Enums;
-    using Models.PubSub;
-    using System.Net;
-    using SuperSocket.ClientEngine.Proxy;
+﻿#region using directives
+using System;
+using System.Linq;
+using System.Timers;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using WebSocket4Net;
+using SuperSocket.ClientEngine;
+using TwitchLib.Events.PubSub;
+using TwitchLib.Models.PubSub.Responses.Messages;
+using TwitchLib.Enums;
+using TwitchLib.Models.PubSub;
+using System.Net;
+using SuperSocket.ClientEngine.Proxy;
 
-    #endregion
+#endregion
+
+namespace TwitchLib
+{
     /// <summary>Class represneting interactions with the Twitch PubSub</summary>
     public class TwitchPubSub : ITwitchPubSub
     {
@@ -83,7 +84,8 @@
         /// Constructor for a client that interface's with Twitch's new PubSub system.
         /// </summary>
         /// <param name="logging">Set this true to have raw messages from PubSub system printed to console.</param>
-        public TwitchPubSub(bool logging = false, IPEndPoint proxy = null)
+        /// <param name="proxy">Optional IPEndpoint param to enable proxy support</param>
+        public TwitchPubSub(bool logging = false, EndPoint proxy = null)
         {
             _logging = logging;
             _socket = new WebSocket("wss://pubsub-edge.twitch.tv");
@@ -92,7 +94,7 @@
             _socket.MessageReceived += OnMessage;
             _socket.Closed += Socket_OnDisconnected;
 
-            if(proxy != null)
+            if (proxy != null)
                 _socket.Proxy = new HttpConnectProxy(proxy);
         }
 
@@ -113,7 +115,7 @@
         private void Socket_OnDisconnected(object sender, EventArgs e)
         {
             if (_logging)
-                Console.WriteLine($"[TwitchPubSub]OnClose");
+                Console.WriteLine("[TwitchPubSub]OnClose");
             _pingTimer.Stop();
             OnPubSubServiceClosed?.Invoke(this, null);
         }
@@ -167,75 +169,74 @@
                             OnWhisper?.Invoke(this, new OnWhisperArgs { Whisper = whisper });
                             return;
                         case "chat_moderator_actions":
-                            var cMA = msg.messageData as ChatModeratorActions;
+                            var cma = msg.messageData as ChatModeratorActions;
                             var reason = "";
-                            switch (cMA?.ModerationAction.ToLower())
+                            switch (cma?.ModerationAction.ToLower())
                             {
                                 case "timeout":
-                                    if (cMA.Args.Count > 2)
-                                        reason = cMA.Args[2];
+                                    if (cma.Args.Count > 2)
+                                        reason = cma.Args[2];
                                     OnTimeout?.Invoke(this, new OnTimeoutArgs
                                     {
-                                        TimedoutBy = cMA.CreatedBy,
-                                        TimedoutById = cMA.CreatedByUserId,
-                                        TimedoutUserId = cMA.TargetUserId,
-                                        TimeoutDuration = TimeSpan.FromSeconds(int.Parse(cMA.Args[1])),
+                                        TimedoutBy = cma.CreatedBy,
+                                        TimedoutById = cma.CreatedByUserId,
+                                        TimedoutUserId = cma.TargetUserId,
+                                        TimeoutDuration = TimeSpan.FromSeconds(int.Parse(cma.Args[1])),
                                         TimeoutReason = reason,
-                                        TimedoutUser = cMA.Args[0]
+                                        TimedoutUser = cma.Args[0]
                                     });
                                     return;
                                 case "ban":
-                                    if (cMA.Args.Count > 1)
-                                        reason = cMA.Args[1];
-                                    OnBan?.Invoke(this, new OnBanArgs { BannedBy = cMA.CreatedBy, BannedByUserId = cMA.CreatedByUserId, BannedUserId = cMA.TargetUserId, BanReason = reason, BannedUser = cMA.Args[0] });
+                                    if (cma.Args.Count > 1)
+                                        reason = cma.Args[1];
+                                    OnBan?.Invoke(this, new OnBanArgs { BannedBy = cma.CreatedBy, BannedByUserId = cma.CreatedByUserId, BannedUserId = cma.TargetUserId, BanReason = reason, BannedUser = cma.Args[0] });
                                     return;
                                 case "unban":
-                                    OnUnban?.Invoke(this, new OnUnbanArgs { UnbannedBy = cMA.CreatedBy, UnbannedByUserId = cMA.CreatedByUserId, UnbannedUserId = cMA.TargetUserId });
+                                    OnUnban?.Invoke(this, new OnUnbanArgs { UnbannedBy = cma.CreatedBy, UnbannedByUserId = cma.CreatedByUserId, UnbannedUserId = cma.TargetUserId });
                                     return;
                                 case "untimeout":
-                                    OnUntimeout?.Invoke(this, new OnUntimeoutArgs { UntimeoutedBy = cMA.CreatedBy, UntimeoutedByUserId = cMA.CreatedByUserId, UntimeoutedUserId = cMA.TargetUserId });
+                                    OnUntimeout?.Invoke(this, new OnUntimeoutArgs { UntimeoutedBy = cma.CreatedBy, UntimeoutedByUserId = cma.CreatedByUserId, UntimeoutedUserId = cma.TargetUserId });
                                     return;
                                 case "host":
-                                    OnHost?.Invoke(this, new OnHostArgs { HostedChannel = cMA.Args[0], Moderator = cMA.CreatedBy });
+                                    OnHost?.Invoke(this, new OnHostArgs { HostedChannel = cma.Args[0], Moderator = cma.CreatedBy });
                                     return;
                                 case "subscribers":
-                                    OnSubscribersOnly?.Invoke(this, new OnSubscribersOnlyArgs { Moderator = cMA.CreatedBy });
+                                    OnSubscribersOnly?.Invoke(this, new OnSubscribersOnlyArgs { Moderator = cma.CreatedBy });
                                     return;
                                 case "subscribersoff":
-                                    OnSubscribersOnlyOff?.Invoke(this, new OnSubscribersOnlyOffArgs { Moderator = cMA.CreatedBy });
+                                    OnSubscribersOnlyOff?.Invoke(this, new OnSubscribersOnlyOffArgs { Moderator = cma.CreatedBy });
                                     return;
                                 case "clear":
-                                    OnClear?.Invoke(this, new OnClearArgs { Moderator = cMA.CreatedBy });
+                                    OnClear?.Invoke(this, new OnClearArgs { Moderator = cma.CreatedBy });
                                     return;
                                 case "emoteonly":
-                                    OnEmoteOnly?.Invoke(this, new OnEmoteOnlyArgs { Moderator = cMA.CreatedBy });
+                                    OnEmoteOnly?.Invoke(this, new OnEmoteOnlyArgs { Moderator = cma.CreatedBy });
                                     return;
                                 case "emoteonlyoff":
-                                    OnEmoteOnlyOff?.Invoke(this, new OnEmoteOnlyOffArgs { Moderator = cMA.CreatedBy });
+                                    OnEmoteOnlyOff?.Invoke(this, new OnEmoteOnlyOffArgs { Moderator = cma.CreatedBy });
                                     return;
                                 case "r9kbeta":
-                                    OnR9kBeta?.Invoke(this, new OnR9kBetaArgs { Moderator = cMA.CreatedBy });
+                                    OnR9kBeta?.Invoke(this, new OnR9kBetaArgs { Moderator = cma.CreatedBy });
                                     return;
                                 case "r9kbetaoff":
-                                    OnR9kBetaOff?.Invoke(this, new OnR9kBetaOffArgs { Moderator = cMA.CreatedBy });
+                                    OnR9kBetaOff?.Invoke(this, new OnR9kBetaOffArgs { Moderator = cma.CreatedBy });
                                     return;
 
                             }
                             break;
                         case "channel-bits-events-v1":
-                            var cBE = msg.messageData as ChannelBitsEvents;
-                            if (cBE != null)
+                            if (msg.messageData is ChannelBitsEvents cbe)
                                 OnBitsReceived?.Invoke(this, new OnBitsReceivedArgs
                                 {
-                                    BitsUsed = cBE.BitsUsed,
-                                    ChannelId = cBE.ChannelId,
-                                    ChannelName = cBE.ChannelName,
-                                    ChatMessage = cBE.ChatMessage,
-                                    Context = cBE.Context,
-                                    Time = cBE.Time,
-                                    TotalBitsUsed = cBE.TotalBitsUsed,
-                                    UserId = cBE.UserId,
-                                    Username = cBE.Username
+                                    BitsUsed = cbe.BitsUsed,
+                                    ChannelId = cbe.ChannelId,
+                                    ChannelName = cbe.ChannelName,
+                                    ChatMessage = cbe.ChatMessage,
+                                    Context = cbe.Context,
+                                    Time = cbe.Time,
+                                    TotalBitsUsed = cbe.TotalBitsUsed,
+                                    UserId = cbe.UserId,
+                                    Username = cbe.Username
                                 });
                             return;
                         case "video-playback":
@@ -261,7 +262,7 @@
         }
 
         private static readonly Random Random = new Random();
-        private string generateNonce()
+        private static string GenerateNonce()
         {
             return new string(Enumerable.Repeat("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 8)
                 .Select(s => s[Random.Next(s.Length)]).ToArray());
@@ -279,7 +280,7 @@
                 oauth = oauth.Replace("oauth:", "");
             }
 
-            var nonce = generateNonce();
+            var nonce = GenerateNonce();
 
             var topics = new JArray();
             foreach (var val in _topicList)
