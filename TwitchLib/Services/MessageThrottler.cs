@@ -15,12 +15,12 @@ namespace TwitchLib.Services
     public class MessageThrottler
     {
         #region Private Properties
-        private TimeSpan _periodDuration;
+        private readonly TimeSpan _periodDuration;
         private readonly Random _nonceRand;
         private readonly ConcurrentQueue<OutgoingMessage> _pendingSends;
         private readonly ConcurrentDictionary<int, string> _pendingSendsByNonce;
         private int _sentCount;
-        private int _messageLimit;
+        private readonly int _messageLimit;
         #endregion
 
         #region Public Properties
@@ -107,7 +107,7 @@ namespace TwitchLib.Services
 
         public void Clear()
         {
-            while (_pendingSends.TryDequeue(out OutgoingMessage msg))
+            while (_pendingSends.TryDequeue(out var msg))
             { }
 
             _pendingSendsByNonce.Clear();
@@ -123,41 +123,39 @@ namespace TwitchLib.Services
                 {
                     while (!cancelToken.IsCancellationRequested)
                     {
-                        await Task.Delay(250).ConfigureAwait(false);
+                        await Task.Delay(250, cancelToken).ConfigureAwait(false);
                         if (_sentCount == _messageLimit) continue;
 
-                        while (_pendingSends.TryDequeue(out OutgoingMessage msg))
+                        while (_pendingSends.TryDequeue(out var msg))
                         {
                             IncrementCount();
-                            if (_pendingSendsByNonce.TryRemove(msg.Nonce, out string message))
+                            if (!_pendingSendsByNonce.TryRemove(msg.Nonce, out var _)) continue;
+                            try
                             {
-                                try
-                                {
-                                    Client.SendQueuedItem(msg.Message);
-                                    msg.State = MessageState.Normal;
-                                    break;
-                                }
-                                catch (Exception ex)
-                                {
-                                    msg.State = MessageState.Failed;
-                                    Client.Log($"Failed to send message to {msg.Channel}, Error: {ex.Message}");
-                                }
+                                Client.SendQueuedItem(msg.Message);
+                                msg.State = MessageState.Normal;
+                                break;
+                            }
+                            catch (Exception ex)
+                            {
+                                msg.State = MessageState.Failed;
+                                Client.Log($"Failed to send message to {msg.Channel}, Error: {ex.Message}");
                             }
                         }
                     }
                 }
                 catch (OperationCanceledException) { }
-            });
+            }, cancelToken);
         }
-        private Task StartResetTask(CancellationToken _token)
+        private Task StartResetTask(CancellationToken token)
         {
             return Task.Run(async () => {
-                while (!_token.IsCancellationRequested)
+                while (!token.IsCancellationRequested)
                 {
-                    await Task.Delay(_periodDuration);
+                    await Task.Delay(_periodDuration, token);
                     Interlocked.Exchange(ref _sentCount, 0);
                 }
-            });
+            }, token);
         }
         private int GenerateNonce()
         {
@@ -182,18 +180,17 @@ namespace TwitchLib.Services
                     });
                 return false;
             }
-            if (message.Length < MinimumMessageLengthAllowed)
-            {
-                OnClientThrottled?.Invoke(this,
-                    new OnClientThrottledArgs
-                    {
-                        Message = message,
-                        ThrottleViolation = ThrottleType.MessageTooShort
-                    });
-                return false;
-            }
-            
-            return true;
+
+            if (message.Length >= MinimumMessageLengthAllowed) return true;
+
+            OnClientThrottled?.Invoke(this,
+                new OnClientThrottledArgs
+                {
+                    Message = message,
+                    ThrottleViolation = ThrottleType.MessageTooShort
+                });
+            return false;
+
         }
         #endregion
     }
