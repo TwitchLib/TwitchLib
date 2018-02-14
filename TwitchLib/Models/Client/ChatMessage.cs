@@ -127,8 +127,6 @@ namespace TwitchLib.Models.Client
                             case "subscriber":
                                 SubscribedMonthCount = int.Parse(badge.Value);
                                 break;
-                            default:
-                                throw new ArgumentOutOfRangeException(nameof(badge.Key));
                         }
                     }
                 }
