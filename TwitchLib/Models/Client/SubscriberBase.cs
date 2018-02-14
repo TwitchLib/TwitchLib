@@ -151,8 +151,6 @@ namespace TwitchLib.Models.Client
                     case "user-id":
                         UserId = value;
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(key));
                 }
             }
             // Parse user-type

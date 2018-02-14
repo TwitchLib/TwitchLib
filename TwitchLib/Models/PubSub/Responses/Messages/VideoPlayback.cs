@@ -33,8 +33,6 @@ namespace TwitchLib.Models.PubSub.Responses.Messages
                 case "viewcount":
                     Type = VideoPlaybackType.ViewCount;
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
             ServerTime = json.SelectToken("server_time")?.ToString();
             switch (Type)
@@ -47,8 +45,6 @@ namespace TwitchLib.Models.PubSub.Responses.Messages
                     break;
                 case VideoPlaybackType.StreamDown:
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(Type));
             }
         }
     }

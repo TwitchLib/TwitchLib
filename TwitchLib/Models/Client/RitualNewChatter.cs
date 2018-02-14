@@ -90,8 +90,6 @@ namespace TwitchLib.Models.Client
                     case "user-type":
                         UserType = val;
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(key));
                 }
             }
         }

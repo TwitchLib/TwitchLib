@@ -35,8 +35,6 @@ namespace TwitchLib.Models.PubSub.Responses
                 case "channel-subscribe-events-v1":
                     MessageData = new ChannelSubscription(encodedJsonMessage);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
     }

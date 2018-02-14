@@ -119,8 +119,6 @@ namespace TwitchLib.Models.Client
                                 break;
                         }
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(key));
                 }
             }
         }
