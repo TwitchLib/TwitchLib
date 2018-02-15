@@ -293,7 +293,7 @@
                 if (toId != null)
                     getParams.Add(new KeyValuePair<string, string>("to_id", toId));
 
-                return await Api.GetGenericAsync<Models.API.Helix.Users.GetUsersFollows.GetUsersFollowsResponse>($"https://api.twitch.tv/helix/users/follows{getParams}", api: ApiVersion.Helix).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.Helix.Users.GetUsersFollows.GetUsersFollowsResponse>($"https://api.twitch.tv/helix/users/follows", getParams, api: ApiVersion.Helix).ConfigureAwait(false);
             }
 
             public async Task PutUsers(string description, string accessToken = null)
