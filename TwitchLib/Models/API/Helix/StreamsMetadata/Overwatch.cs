@@ -8,6 +8,7 @@ namespace TwitchLib.Models.API.Helix.StreamsMetadata
 {
     public class Overwatch
     {
+        [JsonProperty(PropertyName = "broadcaster")]
         public PlayerHearthstone Broadcaster { get; protected set; }
     }
 }
