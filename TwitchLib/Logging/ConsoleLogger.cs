@@ -3,6 +3,7 @@ using System;
 
 namespace TwitchLib.Logging
 {
+    /// <inheritdoc />
     /// <summary>
     /// The Logger sending everything to the standard output streams.
     /// This is mainly for the cases when you have a utility that
@@ -10,6 +11,7 @@ namespace TwitchLib.Logging
     /// </summary>
     public class ConsoleLogger : LevelFilteredLogger
 	{
+		/// <inheritdoc />
 		/// <summary>
 		///   Creates a new ConsoleLogger with the <c>Level</c>
 		///   set to <c>LoggerLevel.Debug</c> and the <c>Name</c>
@@ -19,20 +21,22 @@ namespace TwitchLib.Logging
 		{
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Creates a new ConsoleLogger with the <c>Name</c>
 		///   set to <c>string.Empty</c>.
 		/// </summary>
-		/// <param name = "logLevel">The logs Level.</param>
+		/// <param name="logLevel">The logs Level.</param>
 		public ConsoleLogger(LoggerLevel logLevel) : this(string.Empty, logLevel)
 		{
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Creates a new ConsoleLogger with the <c>Level</c>
 		///   set to <c>LoggerLevel.Debug</c>.
 		/// </summary>
-		/// <param name = "name">The logs Name.</param>
+		/// <param name="name">The logs Name.</param>
 		public ConsoleLogger(string name) : this(name, LoggerLevel.Debug)
 		{
 		}
@@ -46,13 +50,14 @@ namespace TwitchLib.Logging
 		{
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   A Common method to log.
 		/// </summary>
-		/// <param name = "loggerLevel">The level of logging</param>
-		/// <param name = "loggerName">The name of the logger</param>
-		/// <param name = "message">The Message</param>
-		/// <param name = "exception">The Exception</param>
+		/// <param name="loggerLevel">The level of logging</param>
+		/// <param name="loggerName">The name of the logger</param>
+		/// <param name="message">The Message</param>
+		/// <param name="exception">The Exception</param>
 		protected override void Log(LoggerLevel loggerLevel, string loggerName, string message, Exception exception)
 		{
 			Console.Out.WriteLine($"[{loggerLevel}] '{loggerName}' {message}");

@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.Collections
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Collections
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class Collection
     {
         #region Id

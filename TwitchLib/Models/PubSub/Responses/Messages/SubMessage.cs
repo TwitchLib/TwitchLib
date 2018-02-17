@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TwitchLib.Models.PubSub.Responses.Messages
 {
@@ -15,7 +11,7 @@ namespace TwitchLib.Models.PubSub.Responses.Messages
         public SubMessage(JToken json)
         {
             Message = json.SelectToken("message")?.ToString();
-            foreach (JToken token in json.SelectToken("emotes"))
+            foreach (var token in json.SelectToken("emotes"))
                 Emotes.Add(new Emote(token));
         }
 

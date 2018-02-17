@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.Undocumented.CSMaps
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.Undocumented.CSMaps
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class Map
     {
         [JsonProperty(PropertyName = "map")]

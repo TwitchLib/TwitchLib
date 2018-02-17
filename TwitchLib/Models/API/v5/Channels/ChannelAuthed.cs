@@ -1,9 +1,8 @@
-﻿namespace TwitchLib.Models.API.v5.Channels
+﻿using System;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Channels
 {
-    #region using directives
-    using System;
-    using Newtonsoft.Json;
-    #endregion
     /// <summary>
     /// Class representing a privileged channel object from Twitch API.
     /// This class contains more data than the Channel class because the channel object is based on a specified oauth token.

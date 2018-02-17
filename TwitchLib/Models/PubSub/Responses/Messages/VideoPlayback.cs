@@ -1,9 +1,10 @@
-﻿namespace TwitchLib.Models.PubSub.Responses.Messages
+﻿using System;
+using Newtonsoft.Json.Linq;
+using TwitchLib.Enums;
+
+namespace TwitchLib.Models.PubSub.Responses.Messages
 {
-    #region using directives
-    using Newtonsoft.Json.Linq;
-    using Enums;
-    #endregion
+    /// <inheritdoc />
     /// <summary>VideoPlayback model constructor.</summary>
     public class VideoPlayback : MessageData
     {
@@ -41,6 +42,8 @@
                     break;
                 case VideoPlaybackType.ViewCount:
                     Viewers = int.Parse(json.SelectToken("viewers").ToString());
+                    break;
+                case VideoPlaybackType.StreamDown:
                     break;
             }
         }

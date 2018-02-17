@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace TwitchLib.Logging
 {
+	/// <inheritdoc />
 	/// <summary>
 	///   The TraceLogger sends all logging to the System.Diagnostics.TraceSource
 	///   built into the .net framework.
@@ -11,18 +12,16 @@ namespace TwitchLib.Logging
 	/// <remarks>
 	///   Logging can be configured in the system.diagnostics configuration 
 	///   section. 
-	/// 
 	///   If logger doesn't find a source name with a full match it will
 	///   use source names which match the namespace partially. 
-	/// 
 	///   If no portion of the namespace matches the source named "Default" will
 	///   be used.
 	/// </remarks>
 	public class TraceLogger : LevelFilteredLogger
 	{
-		private static readonly Dictionary<string, TraceSource> cache = new Dictionary<string, TraceSource>();
+		private static readonly Dictionary<string, TraceSource> Cache = new Dictionary<string, TraceSource>();
 
-		private TraceSource traceSource;
+		private TraceSource _traceSource;
 
 		/// <summary>
 		/// Build a new trace logger based on the named TraceSource
@@ -32,7 +31,7 @@ namespace TwitchLib.Logging
 			: base(name)
 		{
 			Initialize();
-			Level = MapLoggerLevel(traceSource.Switch.Level);
+			Level = MapLoggerLevel(_traceSource.Switch.Level);
 		}
 
 		/// <summary>
@@ -45,7 +44,7 @@ namespace TwitchLib.Logging
 			: base(name, level)
 		{
 			Initialize();
-			Level = MapLoggerLevel(traceSource.Switch.Level);
+			Level = MapLoggerLevel(_traceSource.Switch.Level);
 		}
 
 		/// <summary>
@@ -68,35 +67,35 @@ namespace TwitchLib.Logging
 		{
 			if (exception == null)
 			{
-				traceSource.TraceEvent(MapTraceEventType(loggerLevel), 0, message);
+				_traceSource.TraceEvent(MapTraceEventType(loggerLevel), 0, message);
 			}
 			else
 			{
-				traceSource.TraceData(MapTraceEventType(loggerLevel), 0, message, exception);
+				_traceSource.TraceData(MapTraceEventType(loggerLevel), 0, message, exception);
 			}
 		}
 
 		private void Initialize()
 		{
-			lock (cache)
+			lock (Cache)
 			{
 				// because TraceSource is meant to be used as a static member, and because
 				// building up the configuraion inheritance is non-trivial, the instances
 				// themselves are cached for so multiple TraceLogger instances will reuse
 				// the named TraceSources which have been created
 
-				if (cache.TryGetValue(Name, out traceSource))
+				if (Cache.TryGetValue(Name, out _traceSource))
 				{
 					return;
 				}
 
 				var defaultLevel = MapSourceLevels(Level);
-				traceSource = new TraceSource(Name, defaultLevel);
+				_traceSource = new TraceSource(Name, defaultLevel);
 
 				// no further action necessary when the named source is configured
-				if (IsSourceConfigured(traceSource))
+				if (IsSourceConfigured(_traceSource))
 				{
-					cache.Add(Name, traceSource);
+					Cache.Add(Name, _traceSource);
 					return;
 				}
 
@@ -117,36 +116,26 @@ namespace TwitchLib.Logging
 				}
 
 				// reconfigure the created source to act like the found source
-				traceSource.Switch = foundSource.Switch;
-				traceSource.Listeners.Clear();
+				_traceSource.Switch = foundSource.Switch;
+				_traceSource.Listeners.Clear();
 				foreach (TraceListener listener in foundSource.Listeners)
 				{
-					traceSource.Listeners.Add(listener);
+					_traceSource.Listeners.Add(listener);
 				}
 
-				cache.Add(Name, traceSource);
+				Cache.Add(Name, _traceSource);
 			}
 		}
 
 		private static string ShortenName(string name)
 		{
 			var lastDot = name.LastIndexOf('.');
-			if (lastDot != -1)
-			{
-				return name.Substring(0, lastDot);
-			}
-			return null;
+			return lastDot != -1 ? name.Substring(0, lastDot) : null;
 		}
 
 		private static bool IsSourceConfigured(TraceSource source)
 		{
-			if (source.Listeners.Count == 1 &&
-			    source.Listeners[0] is DefaultTraceListener &&
-			    source.Listeners[0].Name == "Default")
-			{
-				return false;
-			}
-			return true;
+		    return source.Listeners.Count != 1 || !(source.Listeners[0] is DefaultTraceListener) || source.Listeners[0].Name != "Default";
 		}
 
 		private static LoggerLevel MapLoggerLevel(SourceLevels level)

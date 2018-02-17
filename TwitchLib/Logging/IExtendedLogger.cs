@@ -1,7 +1,8 @@
 namespace TwitchLib.Logging
 {
+	/// <inheritdoc />
 	/// <summary>
-	///   Provides an interface that supports <see cref = "ILogger" /> and
+	///   Provides an interface that supports <see cref="T:TwitchLib.Logging.ILogger" /> and
 	///   allows the storage and retrieval of Contexts. These are supported in
 	///   both log4net and NLog.
 	/// </summary>

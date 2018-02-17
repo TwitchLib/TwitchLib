@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.Channels
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Channels
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     /// <summary>Class representing a commercial object from Twitch API.</summary>
     public class ChannelCommercial
     {

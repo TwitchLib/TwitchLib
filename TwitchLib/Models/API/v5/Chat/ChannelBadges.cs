@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.Chat
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Chat
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     /// <summary>[deprecated] Class representing the channel badges response from Twitch API.</summary>
     public class ChannelBadges
     {

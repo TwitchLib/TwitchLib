@@ -1,9 +1,8 @@
-﻿namespace TwitchLib.Models.API.v5.Subscriptions
+﻿using System;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Subscriptions
 {
-    #region using directives
-    using System;
-    using Newtonsoft.Json;
-    #endregion
     /// <summary>Class representing a subscription object from Twitch API.</summary>
     public class Subscription
     {
