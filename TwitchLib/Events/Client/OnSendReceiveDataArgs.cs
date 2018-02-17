@@ -1,8 +1,8 @@
-﻿namespace TwitchLib.Events.Client
+﻿using System;
+
+namespace TwitchLib.Events.Client
 {
-    #region using directives
-    using System;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Args representing on channel state changed event.</summary>
     public class OnSendReceiveDataArgs : EventArgs
     {

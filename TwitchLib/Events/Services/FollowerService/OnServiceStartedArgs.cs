@@ -1,8 +1,8 @@
-﻿namespace TwitchLib.Events.Services.FollowerService
+﻿using System;
+
+namespace TwitchLib.Events.Services.FollowerService
 {
-    #region using directives
-    using System;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Class representing event args for OnServiceStarted event.</summary>
     public class OnServiceStartedArgs : EventArgs
     {

@@ -1,8 +1,8 @@
-﻿namespace TwitchLib.Events.Client
+﻿using System;
+
+namespace TwitchLib.Events.Client
 {
-    #region using directives
-    using System;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Args representing an event where another channel has started hosting the broadcaster's channel.</summary>
     public class OnBeingHostedArgs : EventArgs
     {

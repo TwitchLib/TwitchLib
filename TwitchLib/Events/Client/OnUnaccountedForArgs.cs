@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TwitchLib.Events.Client
+﻿namespace TwitchLib.Events.Client
 {
     public class OnUnaccountedForArgs
     {

@@ -1,9 +1,9 @@
-﻿namespace TwitchLib.Events.Client
+﻿using System;
+using TwitchLib.Exceptions.Client;
+
+namespace TwitchLib.Events.Client
 {
-    #region using directives
-    using System;
-    using Exceptions.Client;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Args representing an incorrect login event.</summary>
     public class OnIncorrectLoginArgs : EventArgs
     {

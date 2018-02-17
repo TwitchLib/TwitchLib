@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Events.PubSub
+﻿using System;
+
+namespace TwitchLib.Events.PubSub
 {
-    #region using directives
-    using System;
-    #endregion
     /// <summary>Class representing timeout event.</summary>
     public class OnTimeoutArgs
     {
