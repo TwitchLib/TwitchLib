@@ -1,4 +1,6 @@
-﻿namespace TwitchLib
+﻿using TwitchLib.Api.Sections;
+
+namespace TwitchLib
 {
     public interface ITwitchAPI
     {
@@ -26,5 +28,6 @@
         Undocumented Undocumented { get; }
         Users Users { get; }
         Videos Videos { get; }
+        Webhooks Webhooks { get; }
     }
 }
