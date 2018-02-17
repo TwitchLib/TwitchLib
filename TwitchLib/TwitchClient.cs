@@ -657,7 +657,7 @@ namespace TwitchLib
             DetectionReturn response;
 
             // On Connected
-            if (Internal.Parsing.Chat.detectConnected(ircMessage))
+            if (Internal.Parsing.Chat.DetectConnected(ircMessage))
             {
                 var oAuthUsername = ircMessage.Split(' ')[2];
                 if (!string.Equals(oAuthUsername, TwitchUsername, StringComparison.InvariantCultureIgnoreCase))
@@ -671,7 +671,7 @@ namespace TwitchLib
             }
 
             // On New Subscriber
-            response = Internal.Parsing.Chat.detectNewSubscriber(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectNewSubscriber(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnNewSubscriber?.Invoke(this, new OnNewSubscriberArgs { Subscriber = new Subscriber(ircMessage), Channel = response.Channel });
@@ -679,7 +679,7 @@ namespace TwitchLib
             }
 
             // On Message Received
-            response = Internal.Parsing.Chat.detectMessageReceived(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectMessageReceived(ircMessage, JoinedChannels);
             var foundMessage = false;
             if (response.Successful)
             {
@@ -693,7 +693,7 @@ namespace TwitchLib
             }
 
             // On Command Received (PURPOSELY DROP THROUGH WITHOUT RETURN)
-            response = Internal.Parsing.Chat.detectCommandReceived(TwitchUsername, ircMessage, JoinedChannels, ChannelEmotes, WillReplaceEmotes, _chatCommandIdentifiers);
+            response = Internal.Parsing.Chat.DetectCommandReceived(TwitchUsername, ircMessage, JoinedChannels, ChannelEmotes, WillReplaceEmotes, _chatCommandIdentifiers);
             if (response.Successful)
             {
                 var chatMessage = new ChatMessage(TwitchUsername, ircMessage, ref _channelEmotes, WillReplaceEmotes);
@@ -705,7 +705,7 @@ namespace TwitchLib
                 return;
 
             // On Viewer Joined
-            response = Internal.Parsing.Chat.detectUserJoined(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectUserJoined(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 if (string.Equals(TwitchUsername, ircMessage.Split('!')[1].Split('@')[0], StringComparison.InvariantCultureIgnoreCase))
@@ -726,7 +726,7 @@ namespace TwitchLib
             }
 
             // On Viewer Left
-            response = Internal.Parsing.Chat.detectedUserLeft(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedUserLeft(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 var username = ircMessage.Split(':')[1].Split('!')[0];
@@ -744,7 +744,7 @@ namespace TwitchLib
             }
 
             // On Moderator Joined
-            response = Internal.Parsing.Chat.detectedModeratorJoined(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedModeratorJoined(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnModeratorJoined?.Invoke(this, new OnModeratorJoinedArgs { Username = ircMessage.Split(' ')[4], Channel = response.Channel });
@@ -752,7 +752,7 @@ namespace TwitchLib
             }
 
             // On Moderator Left
-            response = Internal.Parsing.Chat.detectedModeatorLeft(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedModeatorLeft(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnModeratorLeft?.Invoke(this, new OnModeratorLeftArgs { Username = ircMessage.Split(' ')[4], Channel = response.Channel });
@@ -760,7 +760,7 @@ namespace TwitchLib
             }
 
             // On Incorrect login
-            response = Internal.Parsing.Chat.detectedIncorrectLogin(ircMessage);
+            response = Internal.Parsing.Chat.DetectedIncorrectLogin(ircMessage);
             if (response.Successful)
             {
                 Disconnect();
@@ -769,7 +769,7 @@ namespace TwitchLib
             }
 
             // On Malformed OAuth
-            response = Internal.Parsing.Chat.detectedMalformedOAuth(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedMalformedOAuth(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 Disconnect();
@@ -778,7 +778,7 @@ namespace TwitchLib
             }
 
             // On Host Left
-            response = Internal.Parsing.Chat.detectedHostLeft(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedHostLeft(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnHostLeft?.Invoke(this, null);
@@ -786,7 +786,7 @@ namespace TwitchLib
             }
 
             // On Channel State Changed
-            response = Internal.Parsing.Chat.detectedChannelStateChanged(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedChannelStateChanged(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnChannelStateChanged?.Invoke(this, new OnChannelStateChangedArgs { ChannelState = new ChannelState(ircMessage), Channel = response.Channel });
@@ -794,7 +794,7 @@ namespace TwitchLib
             }
 
             // On User State Changed
-            response = Internal.Parsing.Chat.detectedUserStateChanged(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedUserStateChanged(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 var userState = new UserState(ircMessage);
@@ -813,7 +813,7 @@ namespace TwitchLib
             }
 
             // On ReSubscriber
-            response = Internal.Parsing.Chat.detectedReSubscriber(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedReSubscriber(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 var resub = new ReSubscriber(ircMessage);
@@ -822,7 +822,7 @@ namespace TwitchLib
             }
 
             // On PING received
-            response = Internal.Parsing.Chat.detectedPing(ircMessage);
+            response = Internal.Parsing.Chat.DetectedPing(ircMessage);
             if (response.Successful && !DisableAutoPong)
             {
                 SendRaw("PONG");
@@ -830,12 +830,12 @@ namespace TwitchLib
             }
 
             // On PONG received (don't do anything)
-            response = Internal.Parsing.Chat.detectedPong(ircMessage);
+            response = Internal.Parsing.Chat.DetectedPong(ircMessage);
             if (response.Successful)
                 return;
 
             // On Hosting Stopped
-            if (Internal.Parsing.Chat.detectedHostingStopped(ircMessage))
+            if (Internal.Parsing.Chat.DetectedHostingStopped(ircMessage))
             {
                 int.TryParse(ircMessage.Split(' ')[4], out var viewers);
                 OnHostingStopped?.Invoke(this, new OnHostingStoppedArgs { Viewers = viewers, HostingChannel = ircMessage.Split(' ')[2].Remove(0, 1) });
@@ -843,7 +843,7 @@ namespace TwitchLib
             }
 
             // On Hosting Started
-            if (Internal.Parsing.Chat.detectedHostingStarted(ircMessage))
+            if (Internal.Parsing.Chat.DetectedHostingStarted(ircMessage))
             {
                 int.TryParse(ircMessage.Split(' ')[4], out var viewers);
                 OnHostingStarted?.Invoke(this, new OnHostingStartedArgs { Viewers = viewers, HostingChannel = ircMessage.Split(' ')[2].Remove(0, 1), TargetChannel = ircMessage.Split(' ')[3].Remove(0, 1) });
@@ -851,7 +851,7 @@ namespace TwitchLib
             }
 
             // On Existing Users Detected
-            response = Internal.Parsing.Chat.detectedExistingUsers(ircMessage, _credentials.TwitchUsername, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedExistingUsers(ircMessage, _credentials.TwitchUsername, JoinedChannels);
             if (response.Successful)
             {
                 OnExistingUsersDetected?.Invoke(this, new OnExistingUsersDetectedArgs
@@ -863,7 +863,7 @@ namespace TwitchLib
             }
 
             // On Now Hosting
-            response = Internal.Parsing.Chat.detectedNowHosting(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedNowHosting(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnNowHosting?.Invoke(this, new OnNowHostingArgs
@@ -875,7 +875,7 @@ namespace TwitchLib
             }
 
             // On channel join completed with all existing names
-            response = Internal.Parsing.Chat.detectedJoinChannelCompleted(ircMessage);
+            response = Internal.Parsing.Chat.DetectedJoinChannelCompleted(ircMessage);
             if (response.Successful)
             {
                 _currentlyJoiningChannels = false;
@@ -886,7 +886,7 @@ namespace TwitchLib
             // On another channel hosts this broadcaster's channel [UNTESTED]
             // BurkeBlack is now hosting you for up to 206 viewers.
             // :jtv!jtv@jtv.tmi.twitch.tv PRIVMSG annemunition :WhateverChannelNameHere is auto hosting you for up to 100 viewers.
-            response = Internal.Parsing.Chat.detectedBeingHosted(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedBeingHosted(ircMessage);
             if (response.Successful)
             {
                 var payload = ircMessage.Split(':')[2];
@@ -907,7 +907,7 @@ namespace TwitchLib
             }
 
             // On raid notice detected in chat
-            response = Internal.Parsing.Chat.detectedRaidNotification(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedRaidNotification(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 var raidNotification = new RaidNotification(ircMessage);
@@ -916,7 +916,7 @@ namespace TwitchLib
             }
 
             // On gifted subscription detected in chat
-            response = Internal.Parsing.Chat.detectedGiftedSubscription(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedGiftedSubscription(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 var giftedSubscription = new GiftedSubscription(ircMessage);
@@ -925,7 +925,7 @@ namespace TwitchLib
             }
 
             // On TwitchClient tried to raid channel it is currently in
-            response = Internal.Parsing.Chat.detectedSelfRaidError(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedSelfRaidError(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnSelfRaidError?.Invoke(this, null);
@@ -933,7 +933,7 @@ namespace TwitchLib
             }
 
             // On generic no permission error is detected in chat
-            response = Internal.Parsing.Chat.detectedNoPermissionError(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedNoPermissionError(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnNoPermissionError?.Invoke(this, null);
@@ -941,7 +941,7 @@ namespace TwitchLib
             }
 
             // On raided channel is detected as being mature audience only
-            response = Internal.Parsing.Chat.detectedRaidedChannelIsMatureAudience(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedRaidedChannelIsMatureAudience(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnRaidedChannelIsMatureAudience?.Invoke(this, null);
@@ -949,7 +949,7 @@ namespace TwitchLib
             }
 
             // On ritual new chatter is detected in chat
-            response = Internal.Parsing.Chat.detectedRitualNewChatter(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedRitualNewChatter(ircMessage);
             if (response.Successful)
             {
                 OnRitualNewChatter?.Invoke(this, new OnRitualNewChatterArgs { RitualNewChatter = new RitualNewChatter(ircMessage) });
@@ -960,7 +960,7 @@ namespace TwitchLib
 
             #region Clear Chat, Timeouts, and Bans
             // On clear chat detected
-            response = Internal.Parsing.Chat.detectedClearedChat(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedClearedChat(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnChatCleared?.Invoke(this, new OnChatClearedArgs { Channel = response.Channel });
@@ -968,7 +968,7 @@ namespace TwitchLib
             }
 
             // On timeout detected
-            response = Internal.Parsing.Chat.detectedUserTimedout(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedUserTimedout(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnUserTimedout?.Invoke(this, new OnUserTimedoutArgs
@@ -982,7 +982,7 @@ namespace TwitchLib
             }
 
             // On ban detected
-            response = Internal.Parsing.Chat.detectedUserBanned(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedUserBanned(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnUserBanned?.Invoke(this, new OnUserBannedArgs
@@ -995,7 +995,7 @@ namespace TwitchLib
             }
 
             // On moderators received detected
-            response = Internal.Parsing.Chat.detectedModeratorsReceived(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedModeratorsReceived(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 if (ircMessage.Contains("There are no moderators of this room."))
@@ -1020,7 +1020,7 @@ namespace TwitchLib
 
             #region Others
             // On chat color changed detected
-            response = Internal.Parsing.Chat.detectedChatColorChanged(ircMessage, JoinedChannels);
+            response = Internal.Parsing.Chat.DetectedChatColorChanged(ircMessage, JoinedChannels);
             if (response.Successful)
             {
                 OnChatColorChanged?.Invoke(this, new OnChatColorChangedArgs
@@ -1037,7 +1037,7 @@ namespace TwitchLib
 
                 // On Whisper Message Received
                 WhisperMessage receivedMessage = null;
-                if (Internal.Parsing.Whisper.detectedWhisperReceived(ircMessage, _credentials.TwitchUsername))
+                if (Internal.Parsing.Whisper.DetectedWhisperReceived(ircMessage, _credentials.TwitchUsername))
                 {
                     receivedMessage = new WhisperMessage(ircMessage, _credentials.TwitchUsername);
                     PreviousWhisper = receivedMessage;
@@ -1046,7 +1046,7 @@ namespace TwitchLib
                 }
 
                 // On Whisper Command Received
-                if (Internal.Parsing.Whisper.detectedWhisperCommandReceived(ircMessage, _credentials.TwitchUsername, _whisperCommandIdentifiers))
+                if (Internal.Parsing.Whisper.DetectedWhisperCommandReceived(ircMessage, _credentials.TwitchUsername, _whisperCommandIdentifiers))
                 {
                     var whisperMessage = new WhisperMessage(ircMessage, _credentials.TwitchUsername);
                     var command = whisperMessage.Message.Split(' ')?[0].Substring(1, whisperMessage.Message.Split(' ')[0].Length - 1) ?? whisperMessage.Message.Substring(1, whisperMessage.Message.Length - 1);
