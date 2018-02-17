@@ -1,12 +1,9 @@
-﻿namespace TwitchLib
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using TwitchLib.Api;
+
+namespace TwitchLib
 {
-
-    #region using directives
-    using System.Threading.Tasks;
-    using Api;
-    using System.Collections.Generic;
-    #endregion
-
     public class Auth
     {
         public V5 v5 { get; }

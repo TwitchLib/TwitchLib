@@ -2,9 +2,9 @@
 {
     public class ApiSection
     {
-        protected TwitchAPI Api;
+        protected readonly TwitchAPI Api;
 
-        public ApiSection(TwitchAPI api)
+        protected ApiSection(TwitchAPI api)
         {
             Api = api;
         }

@@ -1,14 +1,14 @@
-﻿namespace TwitchLib
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
+using System.Timers;
+using Newtonsoft.Json;
+using TwitchLib.Api;
+using TwitchLib.Enums;
+
+namespace TwitchLib
 {
-    using Newtonsoft.Json;
-    #region using directives
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
-    using System.Threading.Tasks;
-    using TwitchLib.Api;
-    using TwitchLib.Enums;
-    #endregion
     /// <summary>These endpoints are offered by third party services (NOT TWITCH), but are still pretty cool.</summary>
     public class ThirdParty
     {
@@ -31,8 +31,12 @@
             #region GetUsernameChanges
             public async Task<List<Models.API.ThirdParty.UsernameChange.UsernameChangeListing>> GetUsernameChangesAsync(string username)
             {
-                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("q", username), new KeyValuePair<string, string>("format", "json") };
-                return await Api.GetGenericAsync<List<Models.API.ThirdParty.UsernameChange.UsernameChangeListing>>($"https://twitch-tools.rootonline.de/username_changelogs_search.php", getParams, null, ApiVersion.Void).ConfigureAwait(false);
+                var getParams = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("q", username),
+                    new KeyValuePair<string, string>("format", "json")
+                };
+                return await Api.GetGenericAsync<List<Models.API.ThirdParty.UsernameChange.UsernameChangeListing>>("https://twitch-tools.rootonline.de/username_changelogs_search.php", getParams, null, ApiVersion.Void).ConfigureAwait(false);
             }
             #endregion
         }
@@ -46,7 +50,11 @@
             {
                 if (useTls12)
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("offset", offset.ToString()), new KeyValuePair<string, string>("limit", limit.ToString()) };
+                var getParams = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("offset", offset.ToString()),
+                    new KeyValuePair<string, string>("limit", limit.ToString())
+                };
                 return await Api.GetGenericAsync<Models.API.ThirdParty.ModLookup.ModLookupResponse>($"https://twitchstuff.3v.fi/modlookup/api/user/{username}").ConfigureAwait(false);
             }
 
@@ -54,14 +62,14 @@
             {
                 if (useTls12)
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                return await Api.GetGenericAsync<Models.API.ThirdParty.ModLookup.TopResponse>($"https://twitchstuff.3v.fi/modlookup/api/top");
+                return await Api.GetGenericAsync<Models.API.ThirdParty.ModLookup.TopResponse>("https://twitchstuff.3v.fi/modlookup/api/top");
             }
 
             public async Task<Models.API.ThirdParty.ModLookup.StatsResponse> GetChannelsModdedForStatsAsync(bool useTls12 = true)
             {
                 if (useTls12)
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                return await Api.GetGenericAsync<Models.API.ThirdParty.ModLookup.StatsResponse>($"https://twitchstuff.3v.fi/modlookup/api/stats").ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.ThirdParty.ModLookup.StatsResponse>("https://twitchstuff.3v.fi/modlookup/api/stats").ConfigureAwait(false);
             }
         }
 
@@ -74,11 +82,11 @@
             public event EventHandler<Events.API.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetectedArgs> OnUserAuthorizationDetected;
             public event EventHandler<Events.API.ThirdParty.AuthorizationFlow.OnErrorArgs> OnError;
 
-            private string baseUrl = "https://twitchtokengenerator.com/api";
-            private System.Timers.Timer pingTimer;
-            private string apiId;
+            private const string BaseUrl = "https://twitchtokengenerator.com/api";
+            private Timer _pingTimer;
+            private string _apiId;
 
-            public Models.API.ThirdParty.AuthorizationFlow.CreatedFlow CreateFlow(string applicationTitle, List<Enums.AuthScopes> scopes)
+            public Models.API.ThirdParty.AuthorizationFlow.CreatedFlow CreateFlow(string applicationTitle, IEnumerable<AuthScopes> scopes)
             {
                 string scopesStr = null;
                 foreach (var scope in scopes)
@@ -89,54 +97,53 @@
                         scopesStr += $"+{Common.Helpers.AuthScopesToString(scope)}";
                 }
 
-                string createUrl = $"{baseUrl}/create/{Common.Helpers.Base64Encode(applicationTitle)}/{scopesStr}";
+                var createUrl = $"{BaseUrl}/create/{Common.Helpers.Base64Encode(applicationTitle)}/{scopesStr}";
 
-                var resp = new System.Net.WebClient().DownloadString(createUrl);
+                var resp = new WebClient().DownloadString(createUrl);
                 return JsonConvert.DeserializeObject<Models.API.ThirdParty.AuthorizationFlow.CreatedFlow>(resp);
             }
 
             public Models.API.ThirdParty.AuthorizationFlow.RefreshTokenResponse RefreshToken(string refreshToken)
             {
-                string refreshUrl = $"{baseUrl}/refresh/{refreshToken}";
+                var refreshUrl = $"{BaseUrl}/refresh/{refreshToken}";
 
-                var resp = new System.Net.WebClient().DownloadString(refreshUrl);
+                var resp = new WebClient().DownloadString(refreshUrl);
                 return JsonConvert.DeserializeObject<Models.API.ThirdParty.AuthorizationFlow.RefreshTokenResponse>(resp);
             }
 
             public void BeginPingingStatus(string id, int intervalMs = 5000)
             {
-                apiId = id;
-                pingTimer = new System.Timers.Timer(intervalMs);
-                pingTimer.Elapsed += onPingTimerElapsed;
-                pingTimer.Start();
+                _apiId = id;
+                _pingTimer = new Timer(intervalMs);
+                _pingTimer.Elapsed += OnPingTimerElapsed;
+                _pingTimer.Start();
             }
 
             public Models.API.ThirdParty.AuthorizationFlow.PingResponse PingStatus(string id = null)
             {
                 if (id != null)
-                    apiId = id;
+                    _apiId = id;
 
-                var resp = new System.Net.WebClient().DownloadString($"{baseUrl}/status/{apiId}");
+                var resp = new WebClient().DownloadString($"{BaseUrl}/status/{_apiId}");
                 var model = new Models.API.ThirdParty.AuthorizationFlow.PingResponse(resp);
 
                 return model;
             }
 
-            private void onPingTimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
+            private void OnPingTimerElapsed(object sender, ElapsedEventArgs e)
             {
                 var ping = PingStatus();
                 if (ping.Success)
                 {
-                    pingTimer.Stop();
+                    _pingTimer.Stop();
                     OnUserAuthorizationDetected?.Invoke(null, new Events.API.ThirdParty.AuthorizationFlow.OnUserAuthorizationDetectedArgs { Id = ping.Id, Scopes = ping.Scopes, Token = ping.Token, Username = ping.Username, Refresh = ping.Refresh });
                 }
                 else
                 {
-                    if (ping.Error != 3)
-                    {
-                        pingTimer.Stop();
-                        OnError?.Invoke(null, new Events.API.ThirdParty.AuthorizationFlow.OnErrorArgs { Error = ping.Error, Message = ping.Message });
-                    }
+                    if (ping.Error == 3) return;
+                    
+                    _pingTimer.Stop();
+                    OnError?.Invoke(null, new Events.API.ThirdParty.AuthorizationFlow.OnErrorArgs { Error = ping.Error, Message = ping.Message });
                 }
             }
         }

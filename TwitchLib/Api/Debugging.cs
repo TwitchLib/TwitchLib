@@ -1,8 +1,7 @@
-﻿namespace TwitchLib
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     /// <summary>These methods are intended to aid in developing the library.</summary>
     public class Debugging
     {

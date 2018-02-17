@@ -1,11 +1,11 @@
-﻿namespace TwitchLib
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using TwitchLib.Api;
+
+namespace TwitchLib
 {
-    #region using directives
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using TwitchLib.Api;
-    using System.Linq;
-    #endregion
     /// <summary>These endpoints are pretty cool, but they may stop working at anytime due to changes Twitch makes.</summary>
     public class Undocumented : ApiSection
     {
@@ -19,8 +19,8 @@
             if (clip == null)
                 return null;
 
-            string vodId = $"v{clip.VOD.Id}";
-            string offsetTime = clip.VOD.Url.Split('=')[1];
+            var vodId = $"v{clip.VOD.Id}";
+            var offsetTime = clip.VOD.Url.Split('=')[1];
             long offsetSeconds = 2; // for some reason, VODs have 2 seconds behind where clips start
 
             if (offsetTime.Contains("h"))
@@ -36,8 +36,12 @@
             if (offsetTime.Contains("s"))
                 offsetSeconds += int.Parse(offsetTime.Split('s')[0]);
 
-            List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("video_id", vodId), new KeyValuePair<string, string>("offset_seconds", offsetSeconds.ToString()) };
-            var rechatResource = $"https://rechat.twitch.tv/rechat-messages";
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("video_id", vodId),
+                new KeyValuePair<string, string>("offset_seconds", offsetSeconds.ToString())
+            };
+            const string rechatResource = "https://rechat.twitch.tv/rechat-messages";
             return await Api.GetGenericAsync<Models.API.Undocumented.ClipChat.GetClipChatResponse>(rechatResource, getParams).ConfigureAwait(false);
         }
         #endregion
@@ -49,15 +53,15 @@
             {
                 throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             }
-            if (contentOffsetSeconds != null)
+            if (contentOffsetSeconds.HasValue)
             {
-                getParams.Add(new KeyValuePair<string, string>("content_offset_seconds", contentOffsetSeconds.ToString()));
+                getParams.Add(new KeyValuePair<string, string>("content_offset_seconds", contentOffsetSeconds.Value.ToString()));
             }
             if (cursor != null)
             {
                 getParams.Add(new KeyValuePair<string, string>("cursor", cursor));
             }
-            return await Api.GetGenericAsync<Models.API.Undocumented.Comments.CommentsPage>($"https://api.twitch.tv/kraken/videos/{videoId}/comments", getParams, null, TwitchLib.Enums.ApiVersion.v5).ConfigureAwait(false);
+            return await Api.GetGenericAsync<Models.API.Undocumented.Comments.CommentsPage>($"https://api.twitch.tv/kraken/videos/{videoId}/comments", getParams).ConfigureAwait(false);
         }
 
         public async Task<List<Models.API.Undocumented.Comments.CommentsPage>> GetAllCommentsAsync(string videoId)
@@ -73,15 +77,15 @@
         #region GetTwitchPrimeOffers
         public async Task<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers> GetTwitchPrimeOffersAsync()
         {
-            List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("on_site", "1") };
-            return await Api.GetGenericAsync<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers>($"https://api.twitch.tv/api/premium/offers", getParams).ConfigureAwait(false);
+            var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("on_site", "1") };
+            return await Api.GetGenericAsync<Models.API.Undocumented.TwitchPrimeOffers.TwitchPrimeOffers>("https://api.twitch.tv/api/premium/offers", getParams).ConfigureAwait(false);
         }
         #endregion
         #region GetChannelHosts
         public async Task<Models.API.Undocumented.Hosting.ChannelHostsResponse> GetChannelHostsAsync(string channelId)
         {
-            List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("include_logins", "1"), new KeyValuePair<string, string>("target", channelId) };
-            return await Api.GetSimpleGenericAsync<Models.API.Undocumented.Hosting.ChannelHostsResponse>($"https://tmi.twitch.tv/hosts", getParams);
+            var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("include_logins", "1"), new KeyValuePair<string, string>("target", channelId) };
+            return await Api.GetSimpleGenericAsync<Models.API.Undocumented.Hosting.ChannelHostsResponse>("https://tmi.twitch.tv/hosts", getParams);
         }
         #endregion
         #region GetChatProperties
@@ -105,8 +109,12 @@
         #region GetCSStreams
         public async Task<Models.API.Undocumented.CSStreams.CSStreams> GetCSStreamsAsync(int limit = 25, int offset = 0)
         {
-            List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("limit", limit.ToString()), new KeyValuePair<string, string>("offset", offset.ToString()) };
-            return await Api.GetGenericAsync<Models.API.Undocumented.CSStreams.CSStreams>($"https://api.twitch.tv/api/cs", getParams);
+            var getParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("limit", limit.ToString()),
+                new KeyValuePair<string, string>("offset", offset.ToString())
+            };
+            return await Api.GetGenericAsync<Models.API.Undocumented.CSStreams.CSStreams>("https://api.twitch.tv/api/cs", getParams);
         }
         #endregion
         #region GetRecentMessages
@@ -119,21 +127,15 @@
         public async Task<List<Models.API.Undocumented.Chatters.ChatterFormatted>> GetChattersAsync(string channelName)
         {
             var resp = await Api.GetGenericAsync<Models.API.Undocumented.Chatters.ChattersResponse>($"https://tmi.twitch.tv/group/user/{channelName.ToLower()}/chatters");
-
-            List<Models.API.Undocumented.Chatters.ChatterFormatted> chatters = new List<Models.API.Undocumented.Chatters.ChatterFormatted>();
-            foreach (var chatter in resp.Chatters.Staff)
-                chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Staff));
-            foreach (var chatter in resp.Chatters.Admins)
-                chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Admin));
-            foreach (var chatter in resp.Chatters.GlobalMods)
-                chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.GlobalModerator));
-            foreach (var chatter in resp.Chatters.Moderators)
-                chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Moderator));
-            foreach (var chatter in resp.Chatters.Viewers)
-                chatters.Add(new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Viewer));
+            
+            var chatters = resp.Chatters.Staff.Select(chatter => new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Staff)).ToList();
+            chatters.AddRange(resp.Chatters.Admins.Select(chatter => new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Admin)));
+            chatters.AddRange(resp.Chatters.GlobalMods.Select(chatter => new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.GlobalModerator)));
+            chatters.AddRange(resp.Chatters.Moderators.Select(chatter => new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Moderator)));
+            chatters.AddRange(resp.Chatters.Viewers.Select(chatter => new Models.API.Undocumented.Chatters.ChatterFormatted(chatter, Enums.UserType.Viewer)));
 
             foreach (var chatter in chatters)
-                if (chatter.Username.ToLower() == channelName.ToLower())
+                if (string.Equals(chatter.Username, channelName, StringComparison.CurrentCultureIgnoreCase))
                     chatter.UserType = Enums.UserType.Broadcaster;
 
             return chatters;
@@ -150,21 +152,24 @@
         {
             if (channelId != null)
                 return await Api.GetGenericAsync<Models.API.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/channels/{channelId}");
-            else
-                return await Api.GetGenericAsync<Models.API.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/");
+
+            return await Api.GetGenericAsync<Models.API.Undocumented.ChatUser.ChatUserResponse>($"https://api.twitch.tv/kraken/users/{userId}/chat/");
         }
         #endregion
         #region IsUsernameAvailable
         public bool IsUsernameAvailable(string username)
         {
-            List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("users_service", "true") };
+            var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("users_service", "true") };
             var resp = Api.RequestReturnResponseCode($"https://passport.twitch.tv/usernames/{username}", "HEAD", getParams);
-            if (resp == 200)
-                return false;
-            else if (resp == 204)
-                return true;
-            else
-                throw new Exceptions.API.BadResourceException("Unexpected response from resource. Expecting response code 200 or 204, received: " + resp);
+            switch (resp)
+            {
+                case 200:
+                    return false;
+                case 204:
+                    return true;
+                default:
+                    throw new Exceptions.API.BadResourceException("Unexpected response from resource. Expecting response code 200 or 204, received: " + resp);
+            }
 
         }
         #endregion

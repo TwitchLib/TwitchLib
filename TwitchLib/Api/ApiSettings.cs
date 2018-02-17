@@ -1,27 +1,27 @@
-﻿namespace TwitchLib
-{
-    #region using directives
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using TwitchLib.Exceptions.API;
-    #endregion
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using TwitchLib.Enums;
+using TwitchLib.Exceptions.API;
+using TwitchLib.Models.API.v5.Root;
 
+namespace TwitchLib
+{
     public class ApiSettings : IApiSettings
     {
         public string ClientId
         {
-            get { return clientIdInternal; }
-            set { setClientId(value); }
+            get => _cliendId;
+            set => SetClientId(value);
         }
 
         public string AccessToken
         {
-            get { return accessTokenInternal; }
-            set { setAccessToken(value); }
+            get => _accessToken;
+            set => SetAccessToken(value);
         }
 
-        private string clientIdInternal;
-        private string accessTokenInternal;
+        private string _cliendId;
+        private string _accessToken;
         private readonly TwitchAPI _api;
 
         public ApiSettings(TwitchAPI api)
@@ -30,53 +30,53 @@
             _api = api;
         }
 
-        public void ValidateScope(Enums.AuthScopes requiredScope, string accessToken = null)
+        public void ValidateScope(AuthScopes requiredScope, string accessToken = null)
         {
             if (accessToken != null)
                 return;
             if (Scopes.Contains(requiredScope))
-                throw new Exceptions.API.InvalidCredentialException($"The call you attempted was blocked because you are missing required scope: {requiredScope.ToString().ToLower()}. You can ignore this protection by using TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = false . You can also generate a new token with the required scope here: https://twitchtokengenerator.com");
+                throw new InvalidCredentialException($"The call you attempted was blocked because you are missing required scope: {requiredScope.ToString().ToLower()}. You can ignore this protection by using TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = false . You can also generate a new token with the required scope here: https://twitchtokengenerator.com");
         }
 
         public CredentialValidators Validators { get; private set; }
         
         #region DynamicScopeValidation
-        public void DynamicScopeValidation(Enums.AuthScopes requiredScope, string accessToken = null)
+        public void DynamicScopeValidation(AuthScopes requiredScope, string accessToken = null)
         {
             if (!Validators.SkipDynamicScopeValidation && accessToken == null)
-                if (!Scopes.Contains(requiredScope) || (requiredScope == Enums.AuthScopes.Any && Scopes.Count == 0))
-                    throw new InvalidCredentialException($"The current access token ({Scopes.ToString()}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
+                if (!Scopes.Contains(requiredScope) || (requiredScope == AuthScopes.Any && Scopes.Count == 0))
+                    throw new InvalidCredentialException($"The current access token ({Scopes}) does not support this call. Missing required scope: {requiredScope.ToString().ToLower()}. You can skip this check by using: TwitchLib.TwitchAPI.Settings.Validators.SkipDynamicScopeValidation = true . You can also generate a new token with this scope here: https://twitchtokengenerator.com");
         }
         #endregion
 
-        #region setClientId
-        private void setClientId(string clientId)
+        #region SetClientId
+        private void SetClientId(string clientId)
         {
             if (!Validators.SkipClientIdValidation)
             {
-                if ((!string.IsNullOrWhiteSpace(clientId) || !string.IsNullOrWhiteSpace(AccessToken)) && !(validClientId(clientId).Result))
+                if ((!string.IsNullOrWhiteSpace(clientId) || !string.IsNullOrWhiteSpace(AccessToken)) && !(ValidClientId(clientId).Result))
                     throw new InvalidCredentialException("The passed Client Id was not valid. To get a valid Client Id, register an application here: https://www.twitch.tv/kraken/oauth2/clients/new");
             }
-            clientIdInternal = clientId;
+            _cliendId = clientId;
         }
         #endregion
 
-        #region setAccessToken
-        private void setAccessToken(string accessToken)
+        #region SetAccessToken
+        private void SetAccessToken(string accessToken)
         {
             if (!Validators.SkipAccessTokenValidation)
             {
                 if (string.IsNullOrEmpty(accessToken))
                     throw new InvalidCredentialException("Access Token cannot be empty or null. Set it using: TwitchLib.TwitchAPI.Settings.AccessToken = {access_token}");
-                if (!(validAccessToken(accessToken).Result))
+                if (!(ValidAccessToken(accessToken).Result))
                     throw new InvalidCredentialException("The passed Access Token was not valid. To get an access token, go here:  https://twitchtokengenerator.com/");
             }
-            accessTokenInternal = accessToken;
+            _accessToken = accessToken;
         }
         #endregion
 
-        #region validClientId
-        private async Task<bool> validClientId(string clientId)
+        #region ValidClientId
+        private async Task<bool> ValidClientId(string clientId)
         {
             try
             {
@@ -89,21 +89,17 @@
             }
         }
         #endregion
-        #region validAccessToken
-        private async Task<bool> validAccessToken(string accessToken)
+        #region ValidAccessToken
+        private async Task<bool> ValidAccessToken(string accessToken)
         {
             try
             {
                 var resp = await _api.Root.v5.GetRoot(accessToken);
-                if (resp.Token != null)
-                {
-                    Scopes = buildScopesList(resp.Token);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                if (resp.Token == null) return false;
+
+                Scopes = BuildScopesList(resp.Token);
+                return true;
+
             }
             catch
             {
@@ -111,86 +107,86 @@
             }
         }
         #endregion
-
+        
         #region buildScopesList
-        private static List<Enums.AuthScopes> buildScopesList(Models.API.v5.Root.RootToken token)
+        private static List<AuthScopes> BuildScopesList(RootToken token)
         {
-            List<Enums.AuthScopes> scopes = new List<Enums.AuthScopes>();
-            foreach (string scope in token.Auth.Scopes)
+            var scopes = new List<AuthScopes>();
+            foreach (var scope in token.Auth.Scopes)
             {
                 switch (scope)
                 {
                     case "channel_check_subscription":
-                        scopes.Add(Enums.AuthScopes.Channel_Check_Subscription);
+                        scopes.Add(AuthScopes.Channel_Check_Subscription);
                         break;
                     case "channel_commercial":
-                        scopes.Add(Enums.AuthScopes.Channel_Commercial);
+                        scopes.Add(AuthScopes.Channel_Commercial);
                         break;
                     case "channel_editor":
-                        scopes.Add(Enums.AuthScopes.Channel_Editor);
+                        scopes.Add(AuthScopes.Channel_Editor);
                         break;
                     case "channel_feed_edit":
-                        scopes.Add(Enums.AuthScopes.Channel_Feed_Edit);
+                        scopes.Add(AuthScopes.Channel_Feed_Edit);
                         break;
                     case "channel_feed_read":
-                        scopes.Add(Enums.AuthScopes.Channel_Feed_Read);
+                        scopes.Add(AuthScopes.Channel_Feed_Read);
                         break;
                     case "channel_read":
-                        scopes.Add(Enums.AuthScopes.Channel_Read);
+                        scopes.Add(AuthScopes.Channel_Read);
                         break;
                     case "channel_stream":
-                        scopes.Add(Enums.AuthScopes.Channel_Stream);
+                        scopes.Add(AuthScopes.Channel_Stream);
                         break;
                     case "channel_subscriptions":
-                        scopes.Add(Enums.AuthScopes.Channel_Subscriptions);
+                        scopes.Add(AuthScopes.Channel_Subscriptions);
                         break;
                     case "chat_login":
-                        scopes.Add(Enums.AuthScopes.Chat_Login);
+                        scopes.Add(AuthScopes.Chat_Login);
                         break;
                     case "collections_edit":
-                        scopes.Add(Enums.AuthScopes.Collections_Edit);
+                        scopes.Add(AuthScopes.Collections_Edit);
                         break;
                     case "communities_edit":
-                        scopes.Add(Enums.AuthScopes.Communities_Edit);
+                        scopes.Add(AuthScopes.Communities_Edit);
                         break;
                     case "communities_moderate":
-                        scopes.Add(Enums.AuthScopes.Communities_Moderate);
+                        scopes.Add(AuthScopes.Communities_Moderate);
                         break;
                     case "user_blocks_edit":
-                        scopes.Add(Enums.AuthScopes.User_Blocks_Edit);
+                        scopes.Add(AuthScopes.User_Blocks_Edit);
                         break;
                     case "user_blocks_read":
-                        scopes.Add(Enums.AuthScopes.User_Blocks_Read);
+                        scopes.Add(AuthScopes.User_Blocks_Read);
                         break;
                     case "user_follows_edit":
-                        scopes.Add(Enums.AuthScopes.User_Follows_Edit);
+                        scopes.Add(AuthScopes.User_Follows_Edit);
                         break;
                     case "user_read":
-                        scopes.Add(Enums.AuthScopes.User_Read);
+                        scopes.Add(AuthScopes.User_Read);
                         break;
                     case "user_subscriptions":
-                        scopes.Add(Enums.AuthScopes.User_Subscriptions);
+                        scopes.Add(AuthScopes.User_Subscriptions);
                         break;
                     case "openid":
-                        scopes.Add(Enums.AuthScopes.OpenId);
+                        scopes.Add(AuthScopes.OpenId);
                         break;
                     case "viewing_activity_read":
-                        scopes.Add(Enums.AuthScopes.Viewing_Activity_Read);
+                        scopes.Add(AuthScopes.Viewing_Activity_Read);
                         break;
                     case "user:edit":
-                        scopes.Add(Enums.AuthScopes.Helix_User_Edit);
+                        scopes.Add(AuthScopes.Helix_User_Edit);
                         break;
                     case "user:read:email":
-                        scopes.Add(Enums.AuthScopes.Helix_User_Read_Email);
+                        scopes.Add(AuthScopes.Helix_User_Read_Email);
                         break;
                     case "clips:edit":
-                        scopes.Add(Enums.AuthScopes.Helix_Clips_Edit);
+                        scopes.Add(AuthScopes.Helix_Clips_Edit);
                         break;
                 }
             }
 
             if (scopes.Count == 0)
-                scopes.Add(Enums.AuthScopes.None);
+                scopes.Add(AuthScopes.None);
             return scopes;
         }
 
@@ -208,7 +204,7 @@
         }
 
         #region Scopes
-        public List<Enums.AuthScopes> Scopes { get; private set; }
+        public List<AuthScopes> Scopes { get; private set; }
         #endregion
         #endregion
     }
