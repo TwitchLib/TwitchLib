@@ -1,11 +1,12 @@
-﻿namespace TwitchLib.Exceptions.API.UploadVideo.UploadVideoPart
+﻿using System;
+
+namespace TwitchLib.Exceptions.API.UploadVideo.UploadVideoPart
 {
-    #region using directives
-    using System;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Exception thrown when this library detects the part is invalid.</summary>
     public class BadPartException : Exception
     {
+        /// <inheritdoc />
         /// <summary>Exception constructor</summary>
         public BadPartException(string apiData)
             : base(apiData)

@@ -1,11 +1,12 @@
-﻿namespace TwitchLib.Exceptions.API.UploadVideo
+﻿using System;
+
+namespace TwitchLib.Exceptions.API.UploadVideo
 {
-    #region using directives
-    using System;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Exception representing an internal server error while creating a video.</summary>
     public class InternalServerErrorException : Exception
     {
+        /// <inheritdoc />
         /// <summary>Exception constructor</summary>
         public InternalServerErrorException(string apiData)
             : base(apiData)
