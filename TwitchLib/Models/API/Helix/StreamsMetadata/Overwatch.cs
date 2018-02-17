@@ -2,6 +2,6 @@
 {
     public class Overwatch
     {
-        public PlayerHearthstone Broadcaster { get; protected set; }
+        public PlayerOverwatch Broadcaster { get; protected set; }
     }
 }
