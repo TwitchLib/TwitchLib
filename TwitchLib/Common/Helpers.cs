@@ -1,13 +1,10 @@
-﻿namespace TwitchLib.Common
-{
-    #region using directives
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using TwitchLib.Enums;
 
-    using Newtonsoft.Json.Linq;
-    #endregion
+namespace TwitchLib.Common
+{
     /// <summary>Static class of helper functions used around the project.</summary>
     public static class Helpers
     {
@@ -18,9 +15,7 @@
         /// <returns></returns>
         public static string FormatOAuth(string token)
         {
-            if (token.Contains(" "))
-                return token.Split(' ')[1];
-            return token;
+            return token.Contains(" ") ? token.Split(' ')[1] : token;
         }
 
         /// <summary>
@@ -31,11 +26,11 @@
         /// <returns>Boolean on whether true or not.</returns>
         public static bool JsonIsNullOrEmpty(JToken token)
         {
-            return (token == null) ||
-                   (token.Type == JTokenType.Array && !token.HasValues) ||
-                   (token.Type == JTokenType.Object && !token.HasValues) ||
-                   (token.Type == JTokenType.String && token.ToString() == String.Empty) ||
-                   (token.Type == JTokenType.Null);
+            return token == null ||
+                   token.Type == JTokenType.Array && !token.HasValues ||
+                   token.Type == JTokenType.Object && !token.HasValues ||
+                   token.Type == JTokenType.String && token.ToString() == string.Empty ||
+                   token.Type == JTokenType.Null;
         }
 
         /// <summary>Takes date time string received from Twitch API and converts it to DateTime object.</summary>
@@ -43,9 +38,7 @@
         /// <returns></returns>
         public static DateTime DateTimeStringToObject(string dateTime)
         {
-            if (dateTime == null)
-                return new DateTime();
-            return Convert.ToDateTime(dateTime);
+            return dateTime == null ? new DateTime() : Convert.ToDateTime(dateTime);
         }
 
         /// <summary>
@@ -55,15 +48,15 @@
         /// <returns>List of contents of quotes from the input string</returns>
         public static List<string> ParseQuotesAndNonQuotes(string message)
         {
-            List<string> args = new List<string>();
+            var args = new List<string>();
 
             // Return if empty string
             if (message == "")
                 return new List<string>();
 
-            bool previousQuoted = message[0] != '"';
+            var previousQuoted = message[0] != '"';
             // Parse quoted text as a single argument
-            foreach (string arg in message.Split('"'))
+            foreach (var arg in message.Split('"'))
             {
                 if (string.IsNullOrEmpty(arg))
                     continue;
@@ -80,7 +73,7 @@
                     continue;
 
                 // This arg is non-quoted, iterate through each split and add it if it's not empty/whitespace
-                foreach (string dynArg in arg.Split(' '))
+                foreach (var dynArg in arg.Split(' '))
                 {
                     if (string.IsNullOrWhiteSpace(dynArg))
                         continue;
@@ -92,95 +85,95 @@
             return args;
         }
 
-        public static string AuthScopesToString(Enums.AuthScopes scope)
+        public static string AuthScopesToString(AuthScopes scope)
         {
             switch (scope)
             {
-                case Enums.AuthScopes.Channel_Check_Subscription:
+                case AuthScopes.Channel_Check_Subscription:
                     return "channel_check_subscription";
-                case Enums.AuthScopes.Channel_Commercial:
+                case AuthScopes.Channel_Commercial:
                     return "channel_commercial";
-                case Enums.AuthScopes.Channel_Editor:
+                case AuthScopes.Channel_Editor:
                     return "channel_editor";
-                case Enums.AuthScopes.Channel_Feed_Edit:
+                case AuthScopes.Channel_Feed_Edit:
                     return "channel_feed_edit";
-                case Enums.AuthScopes.Channel_Feed_Read:
+                case AuthScopes.Channel_Feed_Read:
                     return "channel_feed_read";
-                case Enums.AuthScopes.Channel_Read:
+                case AuthScopes.Channel_Read:
                     return "channel_read";
-                case Enums.AuthScopes.Channel_Stream:
+                case AuthScopes.Channel_Stream:
                     return "channel_stream";
-                case Enums.AuthScopes.Channel_Subscriptions:
+                case AuthScopes.Channel_Subscriptions:
                     return "channel_subscriptions";
-                case Enums.AuthScopes.Chat_Login:
+                case AuthScopes.Chat_Login:
                     return "chat_login";
-                case Enums.AuthScopes.Collections_Edit:
+                case AuthScopes.Collections_Edit:
                     return "collections_edit";
-                case Enums.AuthScopes.Communities_Edit:
+                case AuthScopes.Communities_Edit:
                     return "communities_edit";
-                case Enums.AuthScopes.Communities_Moderate:
+                case AuthScopes.Communities_Moderate:
                     return "communities_moderate";
-                case Enums.AuthScopes.User_Blocks_Edit:
+                case AuthScopes.User_Blocks_Edit:
                     return "user_blocks_edit";
-                case Enums.AuthScopes.User_Blocks_Read:
+                case AuthScopes.User_Blocks_Read:
                     return "user_blocks_read";
-                case Enums.AuthScopes.User_Follows_Edit:
+                case AuthScopes.User_Follows_Edit:
                     return "user_follows_edit";
-                case Enums.AuthScopes.User_Read:
+                case AuthScopes.User_Read:
                     return "user_read";
-                case Enums.AuthScopes.User_Subscriptions:
+                case AuthScopes.User_Subscriptions:
                     return "user_subscriptions";
-                case Enums.AuthScopes.Viewing_Activity_Read:
+                case AuthScopes.Viewing_Activity_Read:
                     return "viewing_activity_read";
-                case Enums.AuthScopes.OpenId:
+                case AuthScopes.OpenId:
                     return "openid";
-                case Enums.AuthScopes.Helix_User_Edit:
+                case AuthScopes.Helix_User_Edit:
                     return "user:edit";
-                case Enums.AuthScopes.Helix_User_Read_Email:
+                case AuthScopes.Helix_User_Read_Email:
                     return "user:read:email";
                 default:
                     return "";
             }
         }
 
-        public static Enums.AuthScopes StringToScope(string scope)
+        public static AuthScopes StringToScope(string scope)
         {
             switch (scope)
             {
                 case "user_read":
-                    return Enums.AuthScopes.User_Read;
+                    return AuthScopes.User_Read;
                 case "user_blocks_edit":
-                    return Enums.AuthScopes.User_Blocks_Edit;
+                    return AuthScopes.User_Blocks_Edit;
                 case "user_blocks_read":
-                    return Enums.AuthScopes.User_Blocks_Read;
+                    return AuthScopes.User_Blocks_Read;
                 case "user_follows_edit":
-                    return Enums.AuthScopes.User_Follows_Edit;
+                    return AuthScopes.User_Follows_Edit;
                 case "channel_read":
-                    return Enums.AuthScopes.Channel_Read;
+                    return AuthScopes.Channel_Read;
                 case "channel_commercial":
-                    return Enums.AuthScopes.Channel_Commercial;
+                    return AuthScopes.Channel_Commercial;
                 case "channel_stream":
-                    return Enums.AuthScopes.Channel_Subscriptions;
+                    return AuthScopes.Channel_Subscriptions;
                 case "channel_subscriptions":
-                    return Enums.AuthScopes.Channel_Subscriptions;
+                    return AuthScopes.Channel_Subscriptions;
                 case "user_subscriptions":
-                    return Enums.AuthScopes.User_Subscriptions;
+                    return AuthScopes.User_Subscriptions;
                 case "channel_check_subscription":
-                    return Enums.AuthScopes.Channel_Check_Subscription;
+                    return AuthScopes.Channel_Check_Subscription;
                 case "chat_login":
-                    return Enums.AuthScopes.Chat_Login;
+                    return AuthScopes.Chat_Login;
                 case "channel_feed_read":
-                    return Enums.AuthScopes.Channel_Feed_Read;
+                    return AuthScopes.Channel_Feed_Read;
                 case "channel_feed_edit":
-                    return Enums.AuthScopes.Channel_Feed_Edit;
+                    return AuthScopes.Channel_Feed_Edit;
                 case "collections_edit":
-                    return Enums.AuthScopes.Collections_Edit;
+                    return AuthScopes.Collections_Edit;
                 case "communities_edit":
-                    return Enums.AuthScopes.Communities_Edit;
+                    return AuthScopes.Communities_Edit;
                 case "communities_moderate":
-                    return Enums.AuthScopes.Communities_Moderate;
+                    return AuthScopes.Communities_Moderate;
                 case "viewing_activity_read":
-                    return Enums.AuthScopes.Viewing_Activity_Read;
+                    return AuthScopes.Viewing_Activity_Read;
                 default:
                     throw new Exception("Unknown scope");
             }
@@ -189,7 +182,7 @@
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
+            return Convert.ToBase64String(plainTextBytes);
         }
     }
 }
