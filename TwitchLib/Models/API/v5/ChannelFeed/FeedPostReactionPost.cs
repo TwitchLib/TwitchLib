@@ -1,9 +1,8 @@
-﻿namespace TwitchLib.Models.API.v5.ChannelFeed
+﻿using System;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.ChannelFeed
 {
-    #region using directives
-    using System;
-    using Newtonsoft.Json;
-    #endregion
     public class FeedPostReactionPost
     {
         #region CreatedAt

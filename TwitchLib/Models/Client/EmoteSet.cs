@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.Client
+﻿using System.Collections.Generic;
+
+namespace TwitchLib.Models.Client
 {
-    #region using directives
-    using System.Collections.Generic;
-    #endregion
     /// <summary>Object representing emote set from a chat message.</summary>
     public class EmoteSet
     {
@@ -23,41 +22,41 @@
             if (emoteSetData.Contains("/"))
             {
                 // Message contains multiple different emotes, first parse by unique emotes: 28087:15-21/25:5-9,28-32
-                foreach (string emoteData in emoteSetData.Split('/'))
+                foreach (var emoteData in emoteSetData.Split('/'))
                 {
-                    int emoteId = int.Parse(emoteData.Split(':')[0]);
+                    var emoteId = int.Parse(emoteData.Split(':')[0]);
                     if (emoteData.Contains(","))
                     {
                         // Multiple copies of a single emote: 25:5-9,28-32
-                        foreach (string emote in emoteData.Replace($"{emoteId}:", "").Split(','))
-                            addEmote(emote, emoteId, message);
+                        foreach (var emote in emoteData.Replace($"{emoteId}:", "").Split(','))
+                            AddEmote(emote, emoteId, message);
 
                     }
                     else
                     {
                         // Single copy of single emote: 25:5-9/28087:16-22
-                        addEmote(emoteData, emoteId, message, true);
+                        AddEmote(emoteData, emoteId, message, true);
                     }
                 }
             }
             else
             {
-                int emoteId = int.Parse(emoteSetData.Split(':')[0]);
+                var emoteId = int.Parse(emoteSetData.Split(':')[0]);
                 // Message contains a single, or multiple of the same emote
                 if (emoteSetData.Contains(","))
                 {
                     // Multiple copies of a single emote: 25:5-9,28-32
-                    foreach (string emote in emoteSetData.Replace($"{emoteId}:", "").Split(','))
-                        addEmote(emote, emoteId, message);
+                    foreach (var emote in emoteSetData.Replace($"{emoteId}:", "").Split(','))
+                        AddEmote(emote, emoteId, message);
                 } else
                 {
                     // Single copy of single emote: 25:5-9
-                    addEmote(emoteSetData, emoteId, message, true);
+                    AddEmote(emoteSetData, emoteId, message, true);
                 }
             }
         }
 
-        private void addEmote(string emoteData, int emoteId, string message, bool single = false)
+        private void AddEmote(string emoteData, int emoteId, string message, bool single = false)
         {
             int startIndex = -1, endIndex = -1;
             if (single)

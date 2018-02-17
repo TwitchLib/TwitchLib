@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.Undocumented.Chatters
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.Undocumented.Chatters
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class Chatters
     {
         [JsonProperty(PropertyName = "moderators")]

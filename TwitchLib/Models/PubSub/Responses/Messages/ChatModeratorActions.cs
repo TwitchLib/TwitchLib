@@ -1,9 +1,9 @@
-﻿namespace TwitchLib.Models.PubSub.Responses.Messages
+﻿using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+
+namespace TwitchLib.Models.PubSub.Responses.Messages
 {
-    #region using directives
-    using System.Collections.Generic;
-    using Newtonsoft.Json.Linq;
-    #endregion
+    /// <inheritdoc />
     /// <summary>ChatModeratorActions model.</summary>
     public class ChatModeratorActions : MessageData
     {
@@ -23,11 +23,11 @@
         /// <summary>ChatModeratorActions model constructor.</summary>
         public ChatModeratorActions(string jsonStr)
         {
-            JToken json = JObject.Parse(jsonStr).SelectToken("data");
+            var json = JObject.Parse(jsonStr).SelectToken("data");
             Type = json.SelectToken("type")?.ToString();
             ModerationAction = json.SelectToken("moderation_action")?.ToString();
             if(json.SelectToken("args") != null)
-                foreach (JToken arg in json.SelectToken("args"))
+                foreach (var arg in json.SelectToken("args"))
                     Args.Add(arg.ToString());
             CreatedBy = json.SelectToken("created_by").ToString();
             CreatedByUserId = json.SelectToken("created_by_user_id").ToString();

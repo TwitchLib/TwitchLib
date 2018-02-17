@@ -1,19 +1,18 @@
-﻿
+﻿#region using directives
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Timers;
+using TwitchLib.Events.Services.LiveStreamMonitor;
+using System.Linq;
+using System.Collections.Concurrent;
+using TwitchLib.Exceptions.API;
+using TwitchLib.Exceptions.Services;
+#endregion
 
 namespace TwitchLib.Services
 {
-    #region using directives
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Threading.Tasks;
-    using System.Timers;
-    using Events.Services.LiveStreamMonitor;
-    using System.Linq;
-    using System.Collections.Concurrent;
-    using Exceptions.API;
-    using Exceptions.Services;
-    #endregion
     /// <summary>Service that allows customizability and subscribing to detection of channels going online/offline.</summary>
     public class LiveStreamMonitor
     {
@@ -217,7 +216,7 @@ namespace TwitchLib.Services
             return livestreamers;
         }
 
-        private async Task _getUserIds(List<string> usernames)
+        private async Task _getUserIds(IEnumerable<string> usernames)
         {
             var usernamesToGet = usernames.Where(u => !_channelToId.Any(c => c.Key.Equals(u))).ToList();
             var pages = (usernamesToGet.Count + 100 - 1) / 100;

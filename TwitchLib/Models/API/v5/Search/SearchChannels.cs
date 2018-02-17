@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.Search
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Search
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class SearchChannels
     {
         #region Total

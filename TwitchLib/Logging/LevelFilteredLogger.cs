@@ -3,6 +3,7 @@ using System.Globalization;
 
 namespace TwitchLib.Logging
 {
+	/// <inheritdoc />
 	/// <summary>
 	/// The Level Filtered Logger class.  This is a base clase which
 	/// provides a LogLevel attribute and reroutes all functions into
@@ -11,8 +12,8 @@ namespace TwitchLib.Logging
 	public abstract class LevelFilteredLogger :
 		ILogger
 	{
-		private LoggerLevel level = LoggerLevel.Off;
-		private string name = "unnamed";
+		private LoggerLevel _level = LoggerLevel.Off;
+		private string _name = "unnamed";
 
 		/// <summary>
 		///   Creates a new <c>LevelFilteredLogger</c>.
@@ -28,7 +29,7 @@ namespace TwitchLib.Logging
 
 		protected LevelFilteredLogger(LoggerLevel loggerLevel)
 		{
-			level = loggerLevel;
+			_level = loggerLevel;
 		}
 
 		protected LevelFilteredLogger(string loggerName, LoggerLevel loggerLevel) : this(loggerLevel)
@@ -44,27 +45,25 @@ namespace TwitchLib.Logging
 		/// </value>
 		public LoggerLevel Level
 		{
-			get { return level; }
-			set { level = value; }
+			get => _level;
+		    set => _level = value;
 		}
 
 		/// <value>
 		///   The name that this logger will be using. 
 		///   Defaults to <c>string.Empty</c>
 		/// </value>
-		public string Name
-		{
-			get { return name; }
-		}
+		public string Name => _name;
 
-		#region ILogger implementation
+	    #region ILogger implementation
 
 		#region Debug
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a debug message.
 		/// </summary>
-		/// <param name = "message">The message to log</param>
+		/// <param name="message">The message to log</param>
 		public void Debug(string message)
 		{
 			if (!IsDebugEnabled)
@@ -85,11 +84,12 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Debug, messageFactory.Invoke(), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a debug message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "message">The message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="message">The message to log</param>
 		public void Debug(string message, Exception exception)
 		{
 			if (!IsDebugEnabled)
@@ -100,11 +100,12 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Debug, message, exception);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a debug message.
 		/// </summary>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void DebugFormat(string format, params object[] args)
 		{
 			if (!IsDebugEnabled)
@@ -115,12 +116,13 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Debug, string.Format(CultureInfo.CurrentCulture, format, args), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a debug message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void DebugFormat(Exception exception, string format, params object[] args)
 		{
 			if (!IsDebugEnabled)
@@ -131,12 +133,13 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Debug, string.Format(CultureInfo.CurrentCulture, format, args), exception);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a debug message.
 		/// </summary>
-		/// <param name = "formatProvider">The format provider to use</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="formatProvider">The format provider to use</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void DebugFormat(IFormatProvider formatProvider, string format, params object[] args)
 		{
 			if (!IsDebugEnabled)
@@ -147,13 +150,14 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Debug, string.Format(formatProvider, format, args), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a debug message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "formatProvider">The format provider to use</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="formatProvider">The format provider to use</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void DebugFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
 		{
 			if (!IsDebugEnabled)
@@ -168,10 +172,11 @@ namespace TwitchLib.Logging
 
 		#region Info
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs an info message.
 		/// </summary>
-		/// <param name = "message">The message to log</param>
+		/// <param name="message">The message to log</param>
 		public void Info(string message)
 		{
 			if (!IsInfoEnabled)
@@ -192,11 +197,12 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Info, messageFactory.Invoke(), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs an info message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "message">The message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="message">The message to log</param>
 		public void Info(string message, Exception exception)
 		{
 			if (!IsInfoEnabled)
@@ -207,11 +213,12 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Info, message, exception);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs an info message.
 		/// </summary>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void InfoFormat(string format, params object[] args)
 		{
 			if (!IsInfoEnabled)
@@ -222,12 +229,13 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Info, string.Format(CultureInfo.CurrentCulture, format, args), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs an info message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void InfoFormat(Exception exception, string format, params object[] args)
 		{
 			if (!IsInfoEnabled)
@@ -238,12 +246,13 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Info, string.Format(CultureInfo.CurrentCulture, format, args), exception);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs an info message.
 		/// </summary>
-		/// <param name = "formatProvider">The format provider to use</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="formatProvider">The format provider to use</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void InfoFormat(IFormatProvider formatProvider, string format, params object[] args)
 		{
 			if (!IsInfoEnabled)
@@ -254,13 +263,14 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Info, string.Format(formatProvider, format, args), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs an info message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "formatProvider">The format provider to use</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="formatProvider">The format provider to use</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void InfoFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
 		{
 			if (!IsInfoEnabled)
@@ -275,10 +285,11 @@ namespace TwitchLib.Logging
 
 		#region Warn
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a warn message.
 		/// </summary>
-		/// <param name = "message">The message to log</param>
+		/// <param name="message">The message to log</param>
 		public void Warn(string message)
 		{
 			if (!IsWarnEnabled)
@@ -299,11 +310,12 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Warn, messageFactory.Invoke(), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a warn message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "message">The message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="message">The message to log</param>
 		public void Warn(string message, Exception exception)
 		{
 			if (!IsWarnEnabled)
@@ -314,11 +326,12 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Warn, message, exception);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a warn message.
 		/// </summary>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void WarnFormat(string format, params object[] args)
 		{
 			if (!IsWarnEnabled)
@@ -329,12 +342,13 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Warn, string.Format(CultureInfo.CurrentCulture, format, args), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a warn message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void WarnFormat(Exception exception, string format, params object[] args)
 		{
 			if (!IsWarnEnabled)
@@ -345,12 +359,13 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Warn, string.Format(CultureInfo.CurrentCulture, format, args), exception);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a warn message.
 		/// </summary>
-		/// <param name = "formatProvider">The format provider to use</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="formatProvider">The format provider to use</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void WarnFormat(IFormatProvider formatProvider, string format, params object[] args)
 		{
 			if (!IsWarnEnabled)
@@ -361,13 +376,14 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Warn, string.Format(formatProvider, format, args), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a warn message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "formatProvider">The format provider to use</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="formatProvider">The format provider to use</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void WarnFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
 		{
 			if (!IsWarnEnabled)
@@ -382,10 +398,11 @@ namespace TwitchLib.Logging
 
 		#region Error
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs an error message.
 		/// </summary>
-		/// <param name = "message">The message to log</param>
+		/// <param name="message">The message to log</param>
 		public void Error(string message)
 		{
 			if (!IsErrorEnabled)
@@ -406,11 +423,12 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Error, messageFactory.Invoke(), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs an error message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "message">The message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="message">The message to log</param>
 		public void Error(string message, Exception exception)
 		{
 			if (!IsErrorEnabled)
@@ -421,11 +439,12 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Error, message, exception);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs an error message.
 		/// </summary>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void ErrorFormat(string format, params object[] args)
 		{
 			if (!IsErrorEnabled)
@@ -436,12 +455,13 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Error, string.Format(CultureInfo.CurrentCulture, format, args), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs an error message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void ErrorFormat(Exception exception, string format, params object[] args)
 		{
 			if (!IsErrorEnabled)
@@ -452,12 +472,13 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Error, string.Format(CultureInfo.CurrentCulture, format, args), exception);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs an error message.
 		/// </summary>
-		/// <param name = "formatProvider">The format provider to use</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="formatProvider">The format provider to use</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void ErrorFormat(IFormatProvider formatProvider, string format, params object[] args)
 		{
 			if (!IsErrorEnabled)
@@ -468,13 +489,14 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Error, string.Format(formatProvider, format, args), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs an error message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "formatProvider">The format provider to use</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="formatProvider">The format provider to use</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void ErrorFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
 		{
 			if (!IsErrorEnabled)
@@ -489,10 +511,11 @@ namespace TwitchLib.Logging
 
 		#region Fatal
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a fatal message.
 		/// </summary>
-		/// <param name = "message">The message to log</param>
+		/// <param name="message">The message to log</param>
 		public void Fatal(string message)
 		{
 			if (!IsFatalEnabled)
@@ -513,11 +536,12 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Fatal, messageFactory.Invoke(), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a fatal message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "message">The message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="message">The message to log</param>
 		public void Fatal(string message, Exception exception)
 		{
 			if (!IsFatalEnabled)
@@ -528,11 +552,12 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Fatal, message, exception);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a fatal message.
 		/// </summary>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void FatalFormat(string format, params object[] args)
 		{
 			if (!IsFatalEnabled)
@@ -543,12 +568,13 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Fatal, string.Format(CultureInfo.CurrentCulture, format, args), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a fatal message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void FatalFormat(Exception exception, string format, params object[] args)
 		{
 			if (!IsFatalEnabled)
@@ -559,12 +585,13 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Fatal, string.Format(CultureInfo.CurrentCulture, format, args), exception);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a fatal message.
 		/// </summary>
-		/// <param name = "formatProvider">The format provider to use</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="formatProvider">The format provider to use</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void FatalFormat(IFormatProvider formatProvider, string format, params object[] args)
 		{
 			if (!IsFatalEnabled)
@@ -575,13 +602,14 @@ namespace TwitchLib.Logging
 			Log(LoggerLevel.Fatal, string.Format(formatProvider, format, args), null);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Logs a fatal message.
 		/// </summary>
-		/// <param name = "exception">The exception to log</param>
-		/// <param name = "formatProvider">The format provider to use</param>
-		/// <param name = "format">Format string for the message to log</param>
-		/// <param name = "args">Format arguments for the message to log</param>
+		/// <param name="exception">The exception to log</param>
+		/// <param name="formatProvider">The format provider to use</param>
+		/// <param name="format">Format string for the message to log</param>
+		/// <param name="args">Format arguments for the message to log</param>
 		public void FatalFormat(Exception exception, IFormatProvider formatProvider, string format, params object[] args)
 		{
 			if (!IsFatalEnabled)
@@ -594,52 +622,42 @@ namespace TwitchLib.Logging
 
 		#endregion
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Determines if messages of priority "debug" will be logged.
 		/// </summary>
-		/// <value><c>true</c> if log level flags include the <see cref = "LoggerLevel.Debug" /> bit</value>
-		public bool IsDebugEnabled
-		{
-			get { return (Level >= LoggerLevel.Debug); }
-		}
+		/// <value><c>true</c> if log level flags include the <see cref="F:TwitchLib.Logging.LoggerLevel.Debug" /> bit</value>
+		public bool IsDebugEnabled => (Level >= LoggerLevel.Debug);
 
-		/// <summary>
-		///   Determines if messages of priority "info" will be logged.
-		/// </summary>
-		/// <value><c>true</c> if log level flags include the <see cref = "LoggerLevel.Info" /> bit</value>
-		public bool IsInfoEnabled
-		{
-			get { return (Level >= LoggerLevel.Info); }
-		}
+	    /// <inheritdoc />
+	    /// <summary>
+	    ///   Determines if messages of priority "info" will be logged.
+	    /// </summary>
+	    /// <value><c>true</c> if log level flags include the <see cref="F:TwitchLib.Logging.LoggerLevel.Info" /> bit</value>
+		public bool IsInfoEnabled => (Level >= LoggerLevel.Info);
 
-		/// <summary>
-		///   Determines if messages of priority "warn" will be logged.
-		/// </summary>
-		/// <value><c>true</c> if log level flags include the <see cref = "LoggerLevel.Warn" /> bit</value>
-		public bool IsWarnEnabled
-		{
-			get { return (Level >= LoggerLevel.Warn); }
-		}
+	    /// <inheritdoc />
+	    /// <summary>
+	    ///   Determines if messages of priority "warn" will be logged.
+	    /// </summary>
+	    /// <value><c>true</c> if log level flags include the <see cref="F:TwitchLib.Logging.LoggerLevel.Warn" /> bit</value>
+		public bool IsWarnEnabled => (Level >= LoggerLevel.Warn);
 
-		/// <summary>
-		///   Determines if messages of priority "error" will be logged.
-		/// </summary>
-		/// <value><c>true</c> if log level flags include the <see cref = "LoggerLevel.Error" /> bit</value>
-		public bool IsErrorEnabled
-		{
-			get { return (Level >= LoggerLevel.Error); }
-		}
+	    /// <inheritdoc />
+	    /// <summary>
+	    ///   Determines if messages of priority "error" will be logged.
+	    /// </summary>
+	    /// <value><c>true</c> if log level flags include the <see cref="F:TwitchLib.Logging.LoggerLevel.Error" /> bit</value>
+		public bool IsErrorEnabled => (Level >= LoggerLevel.Error);
 
-		/// <summary>
-		///   Determines if messages of priority "fatal" will be logged.
-		/// </summary>
-		/// <value><c>true</c> if log level flags include the <see cref = "LoggerLevel.Fatal" /> bit</value>
-		public bool IsFatalEnabled
-		{
-			get { return (Level >= LoggerLevel.Fatal); }
-		}
+	    /// <inheritdoc />
+	    /// <summary>
+	    ///   Determines if messages of priority "fatal" will be logged.
+	    /// </summary>
+	    /// <value><c>true</c> if log level flags include the <see cref="F:TwitchLib.Logging.LoggerLevel.Fatal" /> bit</value>
+		public bool IsFatalEnabled => (Level >= LoggerLevel.Fatal);
 
-		#endregion
+	    #endregion
 
 		/// <summary>
 		///   Implementors output the log content by implementing this method only.
@@ -654,7 +672,7 @@ namespace TwitchLib.Logging
 		protected void ChangeName(string newName)
 		{
             if (newName != null)
-                name = newName;
+                _name = newName;
             else
                 throw new ArgumentNullException("newName");
 		}

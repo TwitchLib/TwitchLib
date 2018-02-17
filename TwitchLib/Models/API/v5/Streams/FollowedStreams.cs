@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.Streams
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Streams
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class FollowedStreams
     {
         #region Total

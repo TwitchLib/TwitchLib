@@ -1,15 +1,15 @@
-namespace TwitchLib.Models.Client
-{
-    #region using directives
-    using System.Collections.Generic;
-    using System.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 #if NETSTANDARD
-    using TwitchLib.NetCore.Extensions.NetCore;
+using TwitchLib.NetCore.Extensions.NetCore;
 #endif
 #if NET452
     using System.Drawing;
 #endif
-    #endregion
+
+namespace TwitchLib.Models.Client
+{
     /// <summary>Class representing a received whisper from TwitchWhisperClient</summary>
     public class WhisperMessage
     {
@@ -52,10 +52,10 @@ namespace TwitchLib.Models.Client
             Message = ircString.Replace($"{ircString.Split('!')[0]}!{Username}@{Username}.tmi.twitch.tv WHISPER {botUsername.ToLower()} :", "");
 
             var props = ircString.Replace(Message, "");
-            foreach (string part in props.Split(';'))
+            foreach (var part in props.Split(';'))
             {
-                string key = part.Split('=')[0];
-                string value = part.Split('=')[1];
+                var key = part.Split('=')[0];
+                var value = part.Split('=')[1];
                 switch (key)
                 {
 
@@ -66,7 +66,7 @@ namespace TwitchLib.Models.Client
                             if (!value.Contains(","))
                                 Badges.Add(new KeyValuePair<string, string>(value.Split('/')[0], value.Split('/')[1]));
                             else
-                                foreach (string badge in value.Split(','))
+                                foreach (var badge in value.Split(','))
                                     Badges.Add(new KeyValuePair<string, string>(badge.Split('/')[0], badge.Split('/')[1]));
                         }
                         break;

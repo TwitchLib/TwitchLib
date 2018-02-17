@@ -1,9 +1,9 @@
-﻿namespace TwitchLib.Models.PubSub.Responses.Messages
+﻿using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+
+namespace TwitchLib.Models.PubSub.Responses.Messages
 {
-    #region using directives
-    using System.Collections.Generic;
-    using Newtonsoft.Json.Linq;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Class representing a whisper received via PubSub.</summary>
     public class Whisper : MessageData
     {
@@ -17,7 +17,7 @@
         /// <summary>Whisper object constructor.</summary>
         public Whisper(string jsonStr)
         {
-            JObject json = JObject.Parse(jsonStr);
+            var json = JObject.Parse(jsonStr);
             Type = json.SelectToken("type").ToString();
             Data = json.SelectToken("data").ToString();
             DataObject = new DataObj(json.SelectToken("data_object"));
@@ -70,9 +70,9 @@
                 /// <summary>True or false for whether whisperer is turbo</summary>
                 public bool Turbo { get; protected set; }
                 /// <summary>List of emotes found in whisper</summary>
-                public List<EmoteObj> Emotes = new List<EmoteObj>();
+                public readonly List<EmoteObj> Emotes = new List<EmoteObj>();
                 /// <summary>All badges associated with the whisperer</summary>
-                public List<Badge> Badges = new List<Badge>();
+                public readonly List<Badge> Badges = new List<Badge>();
 
                 /// <summary></summary>
                 public TagsObj(JToken json)
@@ -82,9 +82,9 @@
                     Color = json.SelectToken("color")?.ToString();
                     UserType = json.SelectToken("user_type")?.ToString();
                     Turbo = bool.Parse(json.SelectToken("turbo").ToString());
-                    foreach(JToken emote in json.SelectToken("emotes"))
+                    foreach(var emote in json.SelectToken("emotes"))
                         Emotes.Add(new EmoteObj(emote));
-                    foreach (JToken badge in json.SelectToken("badges"))
+                    foreach (var badge in json.SelectToken("badges"))
                         Badges.Add(new Badge(badge));
                 }
 
@@ -136,7 +136,7 @@
                     UserType = json.SelectToken("user_type")?.ToString();
                     Turbo = bool.Parse(json.SelectToken("turbo").ToString());
                     Badges = new List<Badge>();
-                    foreach (JToken badge in json.SelectToken("badges"))
+                    foreach (var badge in json.SelectToken("badges"))
                         Badges.Add(new Badge(badge));
 
                 }

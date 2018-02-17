@@ -6,6 +6,7 @@ namespace TwitchLib.Logging
 	public abstract class AbstractExtendedLoggerFactory :
 		IExtendedLoggerFactory
 	{
+		/// <inheritdoc />
 		/// <summary>
 		///   Creates a new extended logger, getting the logger name from the specified type.
 		/// </summary>
@@ -19,11 +20,13 @@ namespace TwitchLib.Logging
 			return Create(type.FullName);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Creates a new extended logger.
 		/// </summary>
 		public abstract IExtendedLogger Create(string name);
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Creates a new extended logger, getting the logger name from the specified type.
 		/// </summary>
@@ -37,11 +40,13 @@ namespace TwitchLib.Logging
 			return Create(type.FullName, level);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Creates a new extended logger.
 		/// </summary>
 		public abstract IExtendedLogger Create(string name, LoggerLevel level);
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Creates a new logger, getting the logger name from the specified type.
 		/// </summary>
@@ -50,6 +55,7 @@ namespace TwitchLib.Logging
 			return Create(type);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Creates a new logger.
 		/// </summary>
@@ -58,6 +64,7 @@ namespace TwitchLib.Logging
 			return Create(name);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Creates a new logger, getting the logger name from the specified type.
 		/// </summary>
@@ -66,6 +73,7 @@ namespace TwitchLib.Logging
 			return Create(type, level);
 		}
 
+		/// <inheritdoc />
 		/// <summary>
 		///   Creates a new logger.
 		/// </summary>

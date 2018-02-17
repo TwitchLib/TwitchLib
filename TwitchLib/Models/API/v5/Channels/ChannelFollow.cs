@@ -1,13 +1,13 @@
-﻿namespace TwitchLib.Models.API.v5.Channels
+﻿using System;
+using Newtonsoft.Json;
+using TwitchLib.Interfaces;
+
+namespace TwitchLib.Models.API.v5.Channels
 {
-    #region using directives
-    using System;
-    using Newtonsoft.Json;
-    #endregion
     /// <summary>Class representing a follow object from Twitch API.</summary>
-    public class ChannelFollow : Interfaces.IFollow
+    public class ChannelFollow : IFollow
     {
-        public ChannelFollow(Users.User user)
+        public ChannelFollow(IUser user)
         {
             User = user;
         }
@@ -24,7 +24,7 @@
         #region User
         /// <summary>Property representing the User that follows.</summary>
         [JsonProperty(PropertyName = "user")]
-        public Interfaces.IUser User { get; protected set; }
+        public IUser User { get; protected set; }
         #endregion
     }
 }

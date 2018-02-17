@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.Client
+﻿using System;
+
+namespace TwitchLib.Models.Client
 {
-    #region using directives
-    using System;
-    #endregion
     /// <summary>Class representing a channel state as received from Twitch chat.</summary>
     public class ChannelState
     {
@@ -31,8 +30,8 @@
         public ChannelState(string ircString)
         {
             //@broadcaster-lang=;emote-only=0;r9k=0;slow=0;subs-only=1 :tmi.twitch.tv ROOMSTATE #burkeblack
-            string propertyStrig = ircString.Split(' ')[0];
-            foreach(string part in propertyStrig.Split(';'))
+            var propertyStrig = ircString.Split(' ')[0];
+            foreach(var part in propertyStrig.Split(';'))
             {
                 switch(part.Split('=')[0].Replace("@", ""))
                 {
@@ -55,11 +54,8 @@
                         SubOnly = ConvertToBool(part.Split('=')[1]);
                         break;
                     case "followers-only":
-                        int minutes = int.Parse(part.Split('=')[1]);
-                        if(minutes == -1)
-                            FollowersOnly = TimeSpan.FromMinutes(0);
-                        else
-                            FollowersOnly = TimeSpan.FromMinutes(minutes);
+                        var minutes = int.Parse(part.Split('=')[1]);
+                        FollowersOnly = TimeSpan.FromMinutes(minutes == -1 ? 0 : minutes);
                         break;
                     case "room-id":
                         RoomId = part.Split('=')[1];

@@ -1,9 +1,8 @@
-﻿namespace TwitchLib.Models.API.Undocumented.ClipChat
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.Undocumented.ClipChat
 {
-    #region using directives
-    using System.Collections.Generic;
-    using Newtonsoft.Json;
-    #endregion
     public class ReChatMessageAttributesTags
     {
         [JsonProperty(PropertyName = "badges")]

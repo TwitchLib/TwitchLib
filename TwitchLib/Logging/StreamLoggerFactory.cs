@@ -16,10 +16,8 @@ namespace TwitchLib.Logging
 
 		public override ILogger Create(string name, LoggerLevel level)
 		{
-			var logger =
-				new StreamLogger(name, new FileStream(name + ".log", FileMode.Append, FileAccess.Write));
-			logger.Level = level;
-			return logger;
+		    var logger = new StreamLogger(name, new FileStream(name + ".log", FileMode.Append, FileAccess.Write)) {Level = level};
+		    return logger;
 		}
 	}
 }

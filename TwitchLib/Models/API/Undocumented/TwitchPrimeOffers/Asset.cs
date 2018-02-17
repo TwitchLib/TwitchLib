@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.Undocumented.TwitchPrimeOffers
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.Undocumented.TwitchPrimeOffers
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class Asset
     {
         [JsonProperty(PropertyName = "assetType")]

@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.Auth
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Auth
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class RefreshResponse
     {
         [JsonProperty(PropertyName = "access_token")]

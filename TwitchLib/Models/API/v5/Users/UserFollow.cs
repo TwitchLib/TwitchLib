@@ -1,9 +1,8 @@
-﻿namespace TwitchLib.Models.API.v5.Users
+﻿using System;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Users
 {
-    #region using directives
-    using System;
-    using Newtonsoft.Json;
-    #endregion
     public class UserFollow
     {
         #region CreatedAt

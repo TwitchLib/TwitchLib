@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.Ingests
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Ingests
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class Ingests
     {
         #region Ingests
