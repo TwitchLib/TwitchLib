@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TwitchLib.Models.Client;
+﻿using TwitchLib.Models.Client;
 
 namespace TwitchLib.Extensions.Client
 {
