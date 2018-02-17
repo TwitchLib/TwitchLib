@@ -79,6 +79,13 @@
                 return await Api.GetGenericAsync<Models.API.v5.Chat.AllChatEmotes>("https://api.twitch.tv/kraken/chat/emoticons", null, null, ApiVersion.v5).ConfigureAwait(false);
             }
             #endregion
+            #region GetChatRoomsByChannel 
+            public async Task<Models.API.v5.Chat.ChatRoomsByChannelResponse> GetChatRoomsByChannelAsync(string channelId, string authToken = null)
+            {
+                Api.Settings.DynamicScopeValidation(AuthScopes.Any, authToken);
+                return await Api.GetGenericAsync<Models.API.v5.Chat.ChatRoomsByChannelResponse>($"https://api.twitch.tv/kraken/chat/{channelId}/rooms", null, authToken);
+            }
+            #endregion
         }
     }
 }
