@@ -1,11 +1,12 @@
-﻿namespace TwitchLib.Exceptions.Client
+﻿using System;
+
+namespace TwitchLib.Exceptions.Client
 {
-    #region using directives
-    using System;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Exception thrown when an event that is not handled is required to be handled.</summary>
     public class EventNotHandled : Exception
     {
+        /// <inheritdoc />
         /// <summary>Exception constructor</summary>
         public EventNotHandled(string eventName, string additionalDetails = "")
             : base(string.IsNullOrEmpty(additionalDetails) 

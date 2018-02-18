@@ -1,11 +1,10 @@
-﻿namespace TwitchLib
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using TwitchLib.Api;
+using TwitchLib.Enums;
+
+namespace TwitchLib
 {
-    using System.Collections.Generic;
-    #region using directives
-    using System.Threading.Tasks;
-    using TwitchLib.Api;
-    using TwitchLib.Enums;
-    #endregion
     public class Blocks
     {
         public Blocks(TwitchAPI api)
@@ -24,7 +23,7 @@
             public async Task<Models.API.v3.Blocks.GetBlocksResponse> GetBlocksAsync(string channel, int limit = 25, int offset = 0, string accessToken = null)
             {
                 Api.Settings.DynamicScopeValidation(Enums.AuthScopes.User_Blocks_Read, accessToken);
-                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("limit", limit.ToString()), new KeyValuePair<string, string>("offset", offset.ToString()) };
+                var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("limit", limit.ToString()), new KeyValuePair<string, string>("offset", offset.ToString()) };
                 return await Api.GetGenericAsync<Models.API.v3.Blocks.GetBlocksResponse>($"https://api.twitch.tv/kraken/users/{channel}/blocks", getParams, accessToken, ApiVersion.v3).ConfigureAwait(false);
             }
             #endregion

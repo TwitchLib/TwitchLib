@@ -1,11 +1,9 @@
-﻿namespace TwitchLib
+﻿using System.Threading.Tasks;
+using TwitchLib.Api;
+using TwitchLib.Enums;
+
+namespace TwitchLib
 {
-    #region using directives
-    using System.Threading.Tasks;
-    using TwitchLib.Api;
-    using TwitchLib.Enums;
-    using TwitchLib.Internal;
-    #endregion
     public class Root
     {
         public Root(TwitchAPI api)

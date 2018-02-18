@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Extensions.Client
+﻿using TwitchLib.Models.Client;
+
+namespace TwitchLib.Extensions.Client
 {
-    #region using directives
-    using Models.Client;
-    #endregion
     /// <summary>Extension for implementing clear chat functionality in TwitchClient.</summary>
     public static class ClearChatExt
     {

@@ -1,11 +1,9 @@
-﻿namespace TwitchLib
-{
-    using System.Collections.Generic;
-    #region using directives
-    using System.Threading.Tasks;
-    using TwitchLib.Api;
-    #endregion
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using TwitchLib.Api;
 
+namespace TwitchLib
+{
     public class Bits
     {
         public Bits(TwitchAPI api)
@@ -26,7 +24,7 @@
             {
                 List<KeyValuePair<string, string>> getParams = null;
                 if (channelId != null)
-                    getParams = new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("channel_id", channelId) };
+                    getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("channel_id", channelId) };
                 return await Api.GetGenericAsync<Models.API.v5.Bits.Cheermotes>("https://api.twitch.tv/kraken/bits/actions", getParams).ConfigureAwait(false);
             }
             #endregion

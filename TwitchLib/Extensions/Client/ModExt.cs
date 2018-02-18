@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Extensions.Client
+﻿using TwitchLib.Models.Client;
+
+namespace TwitchLib.Extensions.Client
 {
-    #region using directives
-    using Models.Client;
-    #endregion
     /// <summary>Extension implementing the ability to mod a viewer in TwitchClient.</summary>
     public static class ModExt
     {

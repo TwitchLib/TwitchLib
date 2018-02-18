@@ -1,14 +1,13 @@
-﻿namespace TwitchLib.Extensions.Client
+﻿using System;
+using TwitchLib.Models.Client;
+
+namespace TwitchLib.Extensions.Client
 {
-    #region using directives
-    using System;
-    using Models.Client;
-    #endregion
     /// <summary>Extension for implementing followers online mode functionality in TwitchClient</summary>
     public static class FollowersOnlyExt
     {
         // Using variable so it's easily changed if Twitch changes their requirement.
-        private static int maximumDurationAllowedDays = 90;
+        private const int MaximumDurationAllowedDays = 90;
 
         /// <summary>
         /// Enables follower only chat, requires a TimeSpan object to indicate how long a viewer must have been following to chat. Maximum time is 90 days (3 months).
@@ -18,10 +17,10 @@
         /// <param name="client">Client reference used to identify extension.</param>
         public static void FollowersOnlyOn(this TwitchClient client, JoinedChannel channel, TimeSpan requiredFollowTime)
         {
-            if (requiredFollowTime > TimeSpan.FromDays(maximumDurationAllowedDays))
+            if (requiredFollowTime > TimeSpan.FromDays(MaximumDurationAllowedDays))
                 throw new Exceptions.Client.InvalidParameterException("The amount of time required to chat exceeded the maximum allowed by Twitch, which is 3 months.", client.TwitchUsername);
 
-            string duration = $"{requiredFollowTime.Days}d {requiredFollowTime.Hours}h {requiredFollowTime.Minutes}m";
+            var duration = $"{requiredFollowTime.Days}d {requiredFollowTime.Hours}h {requiredFollowTime.Minutes}m";
 
             client.SendMessage(channel, $".followers {duration}");
         }
@@ -34,10 +33,10 @@
         /// <param name="client">Client reference used to identify extension.</param>
         public static void FollowersOnlyOn(this TwitchClient client, string channel, TimeSpan requiredFollowTime)
         {
-            if (requiredFollowTime > TimeSpan.FromDays(maximumDurationAllowedDays))
+            if (requiredFollowTime > TimeSpan.FromDays(MaximumDurationAllowedDays))
                 throw new Exceptions.Client.InvalidParameterException("The amount of time required to chat exceeded the maximum allowed by Twitch, which is 3 months.", client.TwitchUsername);
 
-            string duration = $"{requiredFollowTime.Days}d {requiredFollowTime.Hours}h {requiredFollowTime.Minutes}m";
+            var duration = $"{requiredFollowTime.Days}d {requiredFollowTime.Hours}h {requiredFollowTime.Minutes}m";
 
             client.SendMessage(channel, $".followers {duration}");
         }
@@ -49,10 +48,10 @@
         /// <param name="client">Client reference used to identify extension.</param>
         public static void FollowersOnlyOn(this TwitchClient client, TimeSpan requiredFollowTime)
         {
-            if (requiredFollowTime > TimeSpan.FromDays(maximumDurationAllowedDays))
+            if (requiredFollowTime > TimeSpan.FromDays(MaximumDurationAllowedDays))
                 throw new Exceptions.Client.InvalidParameterException("The amount of time required to chat exceeded the maximum allowed by Twitch, which is 3 months.", client.TwitchUsername);
 
-            string duration = $"{requiredFollowTime.Days}d {requiredFollowTime.Hours}h {requiredFollowTime.Minutes}m";
+            var duration = $"{requiredFollowTime.Days}d {requiredFollowTime.Hours}h {requiredFollowTime.Minutes}m";
 
             client.SendMessage($".followers {duration}");
         }

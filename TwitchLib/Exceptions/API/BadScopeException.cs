@@ -1,11 +1,12 @@
-﻿namespace TwitchLib.Exceptions.API
+﻿using System;
+
+namespace TwitchLib.Exceptions.API
 {
-    #region using directives
-    using System;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Exception representing a provided scope was not permitted.</summary>
     public class BadScopeException : Exception
     {
+        /// <inheritdoc />
         /// <summary>Exception constructor</summary>
         public BadScopeException(string data)
             : base(data)

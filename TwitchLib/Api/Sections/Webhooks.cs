@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace TwitchLib.Api.Sections
@@ -22,62 +21,57 @@ namespace TwitchLib.Api.Sections
             #region UserFollowsSomeone
             public async Task<bool> UserFollowsSomeoneAsync(string callbackUrl, Enums.WebhookCallMode mode, string userInitiatorId, TimeSpan? duration = null, string signingSecret = null)
             {
-                int leaseSeconds = (int)validateTimespan(duration).TotalSeconds;
-                return await performWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?first=1&from_id={userInitiatorId}", callbackUrl, leaseSeconds, signingSecret);
+                var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
+                return await PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?first=1&from_id={userInitiatorId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
             #region UserReceivesFollower
             public async Task<bool> UserReceivesFollowerAsync(string callbackUrl, Enums.WebhookCallMode mode, string userReceiverId, TimeSpan? duration = null, string signingSecret = null)
             {
-                int leaseSeconds = (int)validateTimespan(duration).TotalSeconds;
-                return await performWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?first=1&to_id={userReceiverId}", callbackUrl, leaseSeconds, signingSecret);
+                var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
+                return await PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?first=1&to_id={userReceiverId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
             #region UserFollowsUser
             public async Task<bool> UserFollowsUser(string callbackUrl, Enums.WebhookCallMode mode, string userInitiator, string userReceiverId, TimeSpan? duration = null, string signingSecret = null)
             {
-                int leaseSeconds = (int)validateTimespan(duration).TotalSeconds;
-                return await performWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?to_id={userReceiverId}", callbackUrl, leaseSeconds, signingSecret);
+                var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
+                return await PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/users/follows?to_id={userReceiverId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
             #region StreamUpDown
             public async Task<bool> StreamUpDown(string callbackUrl, Enums.WebhookCallMode mode, string userId, TimeSpan? duration = null, string signingSecret = null)
             {
-                int leaseSeconds = (int)validateTimespan(duration).TotalSeconds;
-                return await performWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/streams?user_id={userId}", callbackUrl, leaseSeconds, signingSecret);
+                var leaseSeconds = (int)ValidateTimespan(duration).TotalSeconds;
+                return await PerformWebhookRequestAsync(mode, $"https://api.twitch.tv/helix/streams?user_id={userId}", callbackUrl, leaseSeconds, signingSecret);
             }
             #endregion
 
-            private TimeSpan validateTimespan(TimeSpan? duration)
+            private TimeSpan ValidateTimespan(TimeSpan? duration)
             {
                 if (duration != null && duration.Value > TimeSpan.FromDays(10))
                     throw new Exceptions.API.BadParameterException("Maximum timespan allowed for webhook subscription duration is 10 days.");
-                else if (duration != null)
-                    return duration.Value;
-                else
-                    return TimeSpan.FromDays(10);
+                return duration ?? TimeSpan.FromDays(10);
             }
 
-            private async Task<bool> performWebhookRequestAsync(Enums.WebhookCallMode mode, string topicUrl, string callbackUrl, int leaseSeconds, string signingSecret = null)
+            private async Task<bool> PerformWebhookRequestAsync(Enums.WebhookCallMode mode, string topicUrl, string callbackUrl, int leaseSeconds, string signingSecret = null)
             {
-                List<KeyValuePair<string, string>> getParams = new List<KeyValuePair<string, string>>();
-                if (mode == Enums.WebhookCallMode.Subscribe)
-                    getParams.Add(new KeyValuePair<string, string>("hub.mode", "subscribe"));
-                else
-                    getParams.Add(new KeyValuePair<string, string>("hub.mode", "unsubscribe"));
+                var getParams = new List<KeyValuePair<string, string>>
+                {
+                    mode == Enums.WebhookCallMode.Subscribe
+                        ? new KeyValuePair<string, string>("hub.mode", "subscribe")
+                        : new KeyValuePair<string, string>("hub.mode", "unsubscribe"),
+                    new KeyValuePair<string, string>("hub.topic", topicUrl),
+                    new KeyValuePair<string, string>("hub.callback", callbackUrl),
+                    new KeyValuePair<string, string>("hub.lease_seconds", leaseSeconds.ToString())
+                };
 
-                getParams.Add(new KeyValuePair<string, string>("hub.topic", topicUrl));
-                getParams.Add(new KeyValuePair<string, string>("hub.callback", callbackUrl));
-                getParams.Add(new KeyValuePair<string, string>("hub.lease_seconds", leaseSeconds.ToString()));
 
                 if (signingSecret != null)
                     getParams.Add(new KeyValuePair<string, string>("hub.secret", signingSecret));
 
                 var resp = await Api.PostAsync("https://api.twitch.tv/helix/webhooks/hub", null, getParams);
-                if (resp.Key == 202)
-                    return true;
-                else
-                    return false;
+                return resp.Key == 202;
             }
         }
     }

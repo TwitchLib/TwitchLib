@@ -1,12 +1,12 @@
-﻿
+﻿using System;
+
 namespace TwitchLib.Exceptions.API
 {
-    #region using directives
-    using System;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Exception representing a detection that the OAuth token expired</summary>
     public class TokenExpiredException : Exception
     {
+        /// <inheritdoc />
         /// <summary>Exception constructor</summary>
         public TokenExpiredException(string data)
             : base(data)

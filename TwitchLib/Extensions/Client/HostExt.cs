@@ -1,13 +1,12 @@
-﻿namespace TwitchLib.Extensions.Client
+﻿using TwitchLib.Models.Client;
+
+namespace TwitchLib.Extensions.Client
 {
-    #region using directives
-    using Models.Client;
-    #endregion
     /// <summary>Extension for implementing host functionality in TwitchClient.</summary>
     public static class HostExt
     {
         /// <summary>
-        /// Sends command to host a given channel.
+        /// Sends command to host a given channel.r
         /// </summary>
         /// <param name="userToHost">The channel to be hosted.</param>
         /// <param name="channel">JoinedChannel representation of which channel to send the host command to.</param>
