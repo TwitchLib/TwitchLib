@@ -11,6 +11,7 @@ using TwitchLib.PubSub.Enums;
 using TwitchLib.PubSub.Models;
 using System.Net;
 using SuperSocket.ClientEngine.Proxy;
+using Microsoft.Extensions.Logging;
 
 namespace TwitchLib.PubSub
 {
@@ -19,10 +20,13 @@ namespace TwitchLib.PubSub
     {
         private readonly WebSocket _socket;
         private readonly List<PreviousRequest> _previousRequests = new List<PreviousRequest>();
-        private readonly bool _logging;
+        private readonly ILogger<TwitchPubSub> _logger;
+
         private readonly Timer _pingTimer = new Timer();
 
         private readonly List<string> _topicList = new List<string>();
+
+        
 
         /*
         NON-IMPLEMENTED AVAILABLE TOPICS (i'm aware of):
@@ -82,9 +86,9 @@ namespace TwitchLib.PubSub
         /// </summary>
         /// <param name="logging">Set this true to have raw messages from PubSub system printed to console.</param>
         /// <param name="proxy">Optional IPEndpoint param to enable proxy support</param>
-        public TwitchPubSub(bool logging = false, EndPoint proxy = null)
+        public TwitchPubSub(ILogger<TwitchPubSub> logger = null, EndPoint proxy = null)
         {
-            _logging = logging;
+            _logger = logger;
             _socket = new WebSocket("wss://pubsub-edge.twitch.tv");
             _socket.Opened += Socket_OnConnected;
             _socket.Error += OnError;
@@ -97,30 +101,26 @@ namespace TwitchLib.PubSub
 
         private void OnError(object sender, ErrorEventArgs e)
         {
-            if (_logging)
-                Console.WriteLine($"[TwitchPubSub]OnError: {e.Exception.Message}");
+            _logger?.LogInformation($"[TwitchPubSub]OnError: {e.Exception.Message}");
             OnPubSubServiceError?.Invoke(this, new OnPubSubServiceErrorArgs { Exception = e.Exception });
         }
 
         private void OnMessage(object sender, MessageReceivedEventArgs e)
         {
-            if (_logging)
-                Console.WriteLine($"[TwitchPubSub] {e.Message}");
+            _logger?.LogInformation($"[TwitchPubSub] {e.Message}");
             ParseMessage(e.Message);
         }
 
         private void Socket_OnDisconnected(object sender, EventArgs e)
         {
-            if (_logging)
-                Console.WriteLine("[TwitchPubSub]OnClose");
+            _logger?.LogInformation("[TwitchPubSub]OnClose");
             _pingTimer.Stop();
             OnPubSubServiceClosed?.Invoke(this, null);
         }
 
         private void Socket_OnConnected(object sender, EventArgs e)
         {
-            if (_logging)
-                Console.WriteLine("[TwitchPubSub]OnOpen!");
+            _logger?.LogInformation("[TwitchPubSub]OnOpen!");
             _pingTimer.Interval = 180000;
             _pingTimer.Elapsed += PingTimerTick;
             _pingTimer.Start();
@@ -254,8 +254,7 @@ namespace TwitchLib.PubSub
                     }
                     break;
             }
-            if (_logging)
-                UnaccountedFor(message);
+            UnaccountedFor(message);
         }
 
         private static readonly Random Random = new Random();
@@ -307,8 +306,7 @@ namespace TwitchLib.PubSub
 
         private void UnaccountedFor(string message)
         {
-            if (_logging)
-                Console.WriteLine($"[TwitchPubSub] {message}");
+            _logger?.LogInformation($"[TwitchPubSub] {message}");
         }
 
         #region Listeners

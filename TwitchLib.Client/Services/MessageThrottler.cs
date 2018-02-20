@@ -1,4 +1,5 @@
 ﻿#region using directives
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace TwitchLib.Services
         private readonly Random _nonceRand;
         private readonly ConcurrentQueue<OutgoingMessage> _pendingSends;
         private readonly ConcurrentDictionary<int, string> _pendingSendsByNonce;
+        private readonly ILogger<MessageThrottler> _logger;
         private int _sentCount;
         private readonly int _messageLimit;
         #endregion
@@ -46,7 +48,7 @@ namespace TwitchLib.Services
 
         #region Constructor
         /// <summary>MessageThrottler constructor.</summary>
-        public MessageThrottler(ITwitchClient client, int messagesAllowedInPeriod, TimeSpan periodDuration, bool applyThrottlingToRawMessages = false, int minimumMessageLengthAllowed = -1, int maximumMessageLengthAllowed = -1)
+        public MessageThrottler(ITwitchClient client, int messagesAllowedInPeriod, TimeSpan periodDuration, ILogger<MessageThrottler> logger=null, bool applyThrottlingToRawMessages = false, int minimumMessageLengthAllowed = -1, int maximumMessageLengthAllowed = -1)
         {
             Client = client;
             MessagesAllowedInPeriod = messagesAllowedInPeriod;
@@ -58,6 +60,7 @@ namespace TwitchLib.Services
             _pendingSends = new ConcurrentQueue<OutgoingMessage>();
             _pendingSendsByNonce = new ConcurrentDictionary<int, string>();
             _sentCount = 0;
+            _logger = logger;
         }
         #endregion
 
@@ -139,7 +142,7 @@ namespace TwitchLib.Services
                             catch (Exception ex)
                             {
                                 msg.State = MessageState.Failed;
-                                Client.Log($"Failed to send message to {msg.Channel}, Error: {ex.Message}");
+                                _logger?.LogError($"Failed to send message to {msg.Channel}, Error: {ex.Message}");
                             }
                         }
                     }

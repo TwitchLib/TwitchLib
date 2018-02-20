@@ -14,8 +14,6 @@ namespace TwitchLib
         bool DisableAutoPong { get; set; }
         bool IsConnected { get; }
         List<JoinedChannel> JoinedChannels { get; }
-      //  ILogger Logger { get; }
-        bool Logging { get; set; }
         bool OverrideBeingHostedCheck { get; set; }
         WhisperMessage PreviousWhisper { get; }
         string TwitchUsername { get; }
@@ -70,7 +68,7 @@ namespace TwitchLib
         void JoinChannel(string channel, bool overrideCheck = false);
         void LeaveChannel(JoinedChannel channel);
         void LeaveChannel(string channel);
-        void Log(string message, bool includeDate = false, bool includeTime = false);
+        //void Log(string message, bool includeDate = false, bool includeTime = false);
         void OnReadLineTest(string rawIrc);
         void Reconnect();
         void RemoveChatCommandIdentifier(char identifier);
