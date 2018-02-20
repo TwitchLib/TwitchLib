@@ -2,7 +2,7 @@
 
 namespace TwitchLib.Events.Client
 {
-    public class OnLogArgs
+    public class OnLogArgs : EventArgs
     {
         public string BotUsername;
         public string Data;
