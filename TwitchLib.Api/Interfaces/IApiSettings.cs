@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using TwitchLib.Enums;
+using TwitchLib.Api.Enums;
 
-namespace TwitchLib
+namespace TwitchLib.Api
 {
     public interface IApiSettings
     {

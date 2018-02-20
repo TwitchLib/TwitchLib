@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace TwitchLib.Extensions.System
+namespace TwitchLib.Api.Extensions.System
 {
     public static class DateTimeExtensions
     {

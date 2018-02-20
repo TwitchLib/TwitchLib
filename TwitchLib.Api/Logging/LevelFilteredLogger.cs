@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace TwitchLib.Logging
+namespace TwitchLib.Api.Logging
 {
 	/// <inheritdoc />
 	/// <summary>

@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace TwitchLib.Internal
+namespace TwitchLib.Api.Internal
 {
     /// <summary>Class detailing Rfc2812 specifications</summary>
     public sealed class Rfc2812

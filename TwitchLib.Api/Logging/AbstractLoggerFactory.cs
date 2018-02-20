@@ -2,7 +2,7 @@ using System;
 using System.IO;
 
 
-namespace TwitchLib.Logging
+namespace TwitchLib.Api.Logging
 {
 
 	public abstract class AbstractLoggerFactory :

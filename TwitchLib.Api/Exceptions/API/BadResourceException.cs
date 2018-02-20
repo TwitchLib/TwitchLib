@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Exceptions.API
+namespace TwitchLib.Api.Exceptions.API
 {
     /// <inheritdoc />
     /// <summary>Exception representing an invalid resource</summary>

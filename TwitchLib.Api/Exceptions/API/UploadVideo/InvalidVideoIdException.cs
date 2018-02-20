@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Exceptions.API.UploadVideo
+namespace TwitchLib.Api.Exceptions.API.UploadVideo
 {
     /// <inheritdoc />
     /// <summary>Exception thrown when the video Id provided is invalid.</summary>

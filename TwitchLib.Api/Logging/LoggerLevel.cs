@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Logging
+﻿namespace TwitchLib.Api.Logging
 {
 	/// <summary>
 	///   Supporting Logger levels.

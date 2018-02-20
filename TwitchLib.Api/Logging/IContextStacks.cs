@@ -1,4 +1,4 @@
-namespace TwitchLib.Logging
+namespace TwitchLib.Api.Logging
 {
 	public interface IContextStacks
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Exceptions.API.UploadVideo.UploadVideoPart
+namespace TwitchLib.Api.Exceptions.API.UploadVideo.UploadVideoPart
 {
     /// <inheritdoc />
     /// <summary>Thrown when Twitch reports a failure of the upload.</summary>

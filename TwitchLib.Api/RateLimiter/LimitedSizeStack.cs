@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TwitchLib.RateLimiter
+namespace TwitchLib.Api.RateLimiter
 {
     public class LimitedSizeStack<T>: LinkedList<T>
     {

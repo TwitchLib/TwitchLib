@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TwitchLib.RateLimiter
+namespace TwitchLib.Api.RateLimiter
 {
     public interface ITime
     {

@@ -1,10 +1,10 @@
-﻿namespace TwitchLib.Extensions.API.v5
+﻿namespace TwitchLib.Api.Extensions.API.v5
 {
     public static class UserAuthedExt
     {
-        public static Models.API.v5.Users.User ToUser(this Models.API.v5.Users.UserAuthed authed)
+        public static Models.v5.Users.User ToUser(this Models.v5.Users.UserAuthed authed)
         {
-            return new Models.API.v5.Users.User
+            return new Models.v5.Users.User
             {
                 Id = authed.Id,
                 Bio = authed.Bio,

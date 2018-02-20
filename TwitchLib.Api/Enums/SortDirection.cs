@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Enums
+﻿namespace TwitchLib.Api.Enums
 {
     /// <summary>A list of valid sorting directions.</summary>
     public enum SortDirection

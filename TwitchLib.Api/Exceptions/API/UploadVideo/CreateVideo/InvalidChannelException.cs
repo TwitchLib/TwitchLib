@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Exceptions.API.UploadVideo.CreateVideo
+namespace TwitchLib.Api.Exceptions.API.UploadVideo.CreateVideo
 {
     /// <inheritdoc />
     /// <summary>Exception thrown when attempting to upload to an invalid channel.</summary>

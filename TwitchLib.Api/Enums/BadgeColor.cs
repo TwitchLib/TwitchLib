@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Enums
+﻿namespace TwitchLib.Api.Enums
 {
     /// <summary>Color enum representing color based on cheer amount.</summary>
     public enum BadgeColor

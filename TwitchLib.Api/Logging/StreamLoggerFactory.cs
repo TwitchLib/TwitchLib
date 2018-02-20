@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace TwitchLib.Logging
+namespace TwitchLib.Api.Logging
 {
 	/// <summary>
 	///   Creates <see cref = "StreamLogger" /> outputing 

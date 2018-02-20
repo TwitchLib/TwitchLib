@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.RateLimiter
+namespace TwitchLib.Api.RateLimiter
 {
     public class DisposeAction : IDisposable
     {

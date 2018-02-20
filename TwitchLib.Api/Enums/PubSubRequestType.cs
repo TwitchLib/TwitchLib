@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Enums
+﻿namespace TwitchLib.Api.Enums
 {
     /// <summary>Enum representing various request types for PubSub service</summary>
     public enum PubSubRequestType

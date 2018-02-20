@@ -1,6 +1,6 @@
 using System;
 
-namespace TwitchLib.Logging
+namespace TwitchLib.Api.Logging
 {
 	/// <summary>
 	/// NullLogFactory used when logging is turned off.

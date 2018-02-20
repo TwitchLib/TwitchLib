@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Enums
+﻿namespace TwitchLib.Api.Enums
 {
     /// <summary>Enum representing the available chat name color presets.</summary>
     public enum ChatColorPresets

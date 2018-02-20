@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.RateLimiter
+﻿namespace TwitchLib.Api.RateLimiter
 {
     public static class IAwaitableConstraintExtension
     {

@@ -1,10 +1,10 @@
-﻿namespace TwitchLib.Extensions.API.v5
+﻿namespace TwitchLib.Api.Extensions.API.v5
 {
     public static class ChannelAuthedExt
     {
-        public static Models.API.v5.Channels.Channel ToChannel(this Models.API.v5.Channels.ChannelAuthed channel)
+        public static Models.v5.Channels.Channel ToChannel(this Models.v5.Channels.ChannelAuthed channel)
         {
-            return new Models.API.v5.Channels.Channel
+            return new Models.v5.Channels.Channel
             {
                 Id = channel.Id,
                 BroadcasterLanguage = channel.BroadcasterLanguage,

@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Enums
+﻿namespace TwitchLib.Api.Enums
 {
     /// <summary>Enum representing various ways to represent a stream id.</summary>
     public enum StreamIdentifierType : byte

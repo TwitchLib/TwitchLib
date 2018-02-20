@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using TwitchLib.Enums;
+using TwitchLib.Api.Enums;
 
-namespace TwitchLib.Common
+namespace TwitchLib.Api.Common
 {
     /// <summary>Static class of helper functions used around the project.</summary>
     public static class Helpers
@@ -16,73 +14,6 @@ namespace TwitchLib.Common
         public static string FormatOAuth(string token)
         {
             return token.Contains(" ") ? token.Split(' ')[1] : token;
-        }
-
-        /// <summary>
-        /// Function to check if a jtoken is null.
-        /// Credits: http://stackoverflow.com/questions/24066400/checking-for-empty-null-jtoken-in-a-jobject
-        /// </summary>
-        /// <param name="token">JToken to check if null or not.</param>
-        /// <returns>Boolean on whether true or not.</returns>
-        public static bool JsonIsNullOrEmpty(JToken token)
-        {
-            return token == null ||
-                   token.Type == JTokenType.Array && !token.HasValues ||
-                   token.Type == JTokenType.Object && !token.HasValues ||
-                   token.Type == JTokenType.String && token.ToString() == string.Empty ||
-                   token.Type == JTokenType.Null;
-        }
-
-        /// <summary>Takes date time string received from Twitch API and converts it to DateTime object.</summary>
-        /// <param name="dateTime"></param>
-        /// <returns></returns>
-        public static DateTime DateTimeStringToObject(string dateTime)
-        {
-            return dateTime == null ? new DateTime() : Convert.ToDateTime(dateTime);
-        }
-
-        /// <summary>
-        /// Parses out strings that have quotes, ideal for commands that use quotes for parameters
-        /// </summary>
-        /// <param name="message">Input string to attempt to parse.</param>
-        /// <returns>List of contents of quotes from the input string</returns>
-        public static List<string> ParseQuotesAndNonQuotes(string message)
-        {
-            var args = new List<string>();
-
-            // Return if empty string
-            if (message == "")
-                return new List<string>();
-
-            var previousQuoted = message[0] != '"';
-            // Parse quoted text as a single argument
-            foreach (var arg in message.Split('"'))
-            {
-                if (string.IsNullOrEmpty(arg))
-                    continue;
-
-                // This arg is a quoted arg, add it right away
-                if (!previousQuoted)
-                {
-                    args.Add(arg);
-                    previousQuoted = true;
-                    continue;
-                }
-
-                if (!arg.Contains(" "))
-                    continue;
-
-                // This arg is non-quoted, iterate through each split and add it if it's not empty/whitespace
-                foreach (var dynArg in arg.Split(' '))
-                {
-                    if (string.IsNullOrWhiteSpace(dynArg))
-                        continue;
-
-                    args.Add(dynArg);
-                    previousQuoted = false;
-                }
-            }
-            return args;
         }
 
         public static string AuthScopesToString(AuthScopes scope)

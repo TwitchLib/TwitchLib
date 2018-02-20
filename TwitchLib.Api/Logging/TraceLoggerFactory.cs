@@ -1,4 +1,4 @@
-namespace TwitchLib.Logging
+namespace TwitchLib.Api.Logging
 {
 	/// <summary>
 	///   Used to create the TraceLogger implementation of ILogger interface. See <see cref = "TraceLogger" />.

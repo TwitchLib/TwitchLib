@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TwitchLib.RateLimiter
+namespace TwitchLib.Api.RateLimiter
 {
     /// <summary>
     /// <see cref="CountByIntervalAwaitableConstraint"/> that is able to save own state.

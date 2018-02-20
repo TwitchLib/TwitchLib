@@ -1,6 +1,6 @@
-﻿using TwitchLib.Api.Sections;
+﻿
 
-namespace TwitchLib
+namespace TwitchLib.Api
 {
     public interface ITwitchAPI
     {

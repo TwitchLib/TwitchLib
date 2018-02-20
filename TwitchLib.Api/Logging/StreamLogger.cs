@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace TwitchLib.Logging
+namespace TwitchLib.Api.Logging
 {
 	/// <summary>
 	///	The Stream Logger class.  This class can stream log information

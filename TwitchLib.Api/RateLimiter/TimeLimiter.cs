@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TwitchLib.RateLimiter
+namespace TwitchLib.Api.RateLimiter
 {
     public class TimeLimiter : IRateLimiter
     {

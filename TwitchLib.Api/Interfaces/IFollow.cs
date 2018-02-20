@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Interfaces
+namespace TwitchLib.Api.Interfaces
 {
     public interface IFollow
     {
