@@ -1,19 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-
-VisualStudioVersion = 15.0.27130.2026
-
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib", "TwitchLib\TwitchLib.csproj", "{5D5746FD-63B3-4DB0-9389-7FEDA1A05A09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api", "TwitchLib.Api\TwitchLib.Api.csproj", "{7ED6148F-6B4F-40BD-8836-33E391B9BC82}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.Log4Net", "TwitchLib.Logging\Provider.Log4Net\Provider.Log4Net.csproj", "{8C9B5038-DBD8-4696-8242-EE8CAE076278}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Client", "TwitchLib.Client\TwitchLib.Client.csproj", "{0D665DCA-564F-4ADA-8216-FE386ED0C05F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.NLog", "TwitchLib.Logging\Providers.NLog\Provider.NLog.csproj", "{FF0918B9-3AE7-48E3-AF14-4365142276E1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.SeriLog", "TwitchLib.Logging\Providers.SeriLog\Provider.SeriLog.csproj", "{5798A9F5-D6EB-46CD-AFF8-5A81C2BD0BC6}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TwitchLib.Logging", "TwitchLib.Logging", "{7FFF330A-C7A1-41EC-8FAB-4331063641CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.PubSub", "TwitchLib.PubSub\TwitchLib.PubSub.csproj", "{C3B148F6-610C-44A2-B384-3C6979246E06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,30 +15,21 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5D5746FD-63B3-4DB0-9389-7FEDA1A05A09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D5746FD-63B3-4DB0-9389-7FEDA1A05A09}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D5746FD-63B3-4DB0-9389-7FEDA1A05A09}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D5746FD-63B3-4DB0-9389-7FEDA1A05A09}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C9B5038-DBD8-4696-8242-EE8CAE076278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C9B5038-DBD8-4696-8242-EE8CAE076278}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C9B5038-DBD8-4696-8242-EE8CAE076278}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C9B5038-DBD8-4696-8242-EE8CAE076278}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FF0918B9-3AE7-48E3-AF14-4365142276E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF0918B9-3AE7-48E3-AF14-4365142276E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF0918B9-3AE7-48E3-AF14-4365142276E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF0918B9-3AE7-48E3-AF14-4365142276E1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5798A9F5-D6EB-46CD-AFF8-5A81C2BD0BC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5798A9F5-D6EB-46CD-AFF8-5A81C2BD0BC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5798A9F5-D6EB-46CD-AFF8-5A81C2BD0BC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5798A9F5-D6EB-46CD-AFF8-5A81C2BD0BC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ED6148F-6B4F-40BD-8836-33E391B9BC82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ED6148F-6B4F-40BD-8836-33E391B9BC82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ED6148F-6B4F-40BD-8836-33E391B9BC82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ED6148F-6B4F-40BD-8836-33E391B9BC82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D665DCA-564F-4ADA-8216-FE386ED0C05F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D665DCA-564F-4ADA-8216-FE386ED0C05F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D665DCA-564F-4ADA-8216-FE386ED0C05F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D665DCA-564F-4ADA-8216-FE386ED0C05F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3B148F6-610C-44A2-B384-3C6979246E06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3B148F6-610C-44A2-B384-3C6979246E06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3B148F6-610C-44A2-B384-3C6979246E06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3B148F6-610C-44A2-B384-3C6979246E06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{8C9B5038-DBD8-4696-8242-EE8CAE076278} = {7FFF330A-C7A1-41EC-8FAB-4331063641CE}
-		{FF0918B9-3AE7-48E3-AF14-4365142276E1} = {7FFF330A-C7A1-41EC-8FAB-4331063641CE}
-		{5798A9F5-D6EB-46CD-AFF8-5A81C2BD0BC6} = {7FFF330A-C7A1-41EC-8FAB-4331063641CE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E2625CCD-E29C-47B5-B7F3-984A4181835F}

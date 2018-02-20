@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+    <PackageId>TwitchLib</PackageId>
+    <Version>1.6.1</Version>
+    <Description>Twitch C# library for accessing Twitch chat and whispers with events, Twitch API with both authenticated and unauthenticated calls, and PubSub with events.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>swiftyspiffy, Prom3theu5</Authors>
+    <Company>swiftyspiffy (cole)</Company>
+    <PackageIconUrl>https://colejelinek.com/dev/twitchlib.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/swiftyspiffy/TwitchLib</PackageProjectUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <Copyright>Copyright 2017</Copyright>
+    <PackageReleaseNotes>Corrects security issues discovered by chfoo. Various corrects to models. Bug fixes for API calls. New GetCommentsPageAsync undocumented call (thanks DumpsterDoofus). OnBeingHosted event fixed. NewChatter ritual event OnRitualNewChatter event added. FollowersOnlyOn name corrected. SlowModOff name corrected. SetStreamsByUsernames invokes getUserIds synchronously now. PubSub support for gifting. First draft support for Twitch Extensions exists in repo now (thanks LuckyNoS7evin).</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyVersion>1.6.1.0</AssemblyVersion>
+    <FileVersion>1.6.1.0</FileVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="WebSocket4Net" Version="0.15.0" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452'">
+    <DefineConstants>NET452</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+</Project>
