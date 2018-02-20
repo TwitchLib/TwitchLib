@@ -492,6 +492,16 @@ namespace TwitchLib
                 QueueingJoinCheck();
         }
 
+        public void JoinRoom(string channelId, string roomId, bool overrideCheck = false)
+        {
+            if (_initialized) HandleNotInitialized();
+            // Check to see if client is already in channel
+            if (JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == $"chatrooms:{channelId}:{roomId}" && !overrideCheck) != null)
+                return;
+            _joinChannelQueue.Enqueue(new JoinedChannel($"chatrooms:{channelId}:{roomId}"));
+            if (!_currentlyJoiningChannels)
+                QueueingJoinCheck();
+        }
         /// <summary>
         /// Returns a JoinedChannel object using a passed string/>.
         /// </summary>
@@ -518,6 +528,15 @@ namespace TwitchLib
             var joinedChannel = JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == channel.ToLower());
             if (joinedChannel != null)
                 _client.Send(Rfc2812.Part($"#{channel}"));
+        }
+
+        public void LeaveRoom(string channelId, string roomId)
+        {
+            if (_initialized) HandleNotInitialized();
+            Log($"Leaving channel: chatrooms:{channelId}:{roomId}");
+            var joinedChannel = JoinedChannels.FirstOrDefault(x => x.Channel.ToLower() == $"chatrooms:{channelId}:{roomId}");
+            if (joinedChannel != null)
+                _client.Send(Rfc2812.Part($"#chatrooms:{channelId}:{roomId}"));
         }
 
         /// <summary>
