@@ -17,7 +17,7 @@ namespace TwitchLib.Internal.Parsing
         }
 
         /// <summary>Function used to detect if a whisper command was received or not.</summary>
-        public static bool DetectedWhisperCommandReceived(string message, string username, HashSet<char> commandIdentifiers)
+        public static bool DetectedWhisperCommandReceived(string message, string username, ICollection<char> commandIdentifiers)
         {
             if (!DetectedWhisperReceived(message, username)) return false;
 

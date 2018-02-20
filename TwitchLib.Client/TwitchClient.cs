@@ -23,8 +23,8 @@ namespace TwitchLib
         private WebSocket _client;
         private ConnectionCredentials _credentials;
         private MessageEmoteCollection _channelEmotes = new MessageEmoteCollection();
-        private readonly HashSet<char> _chatCommandIdentifiers = new HashSet<char>();
-        private readonly HashSet<char> _whisperCommandIdentifiers = new HashSet<char>();
+        private readonly ICollection<char> _chatCommandIdentifiers = new HashSet<char>();
+        private readonly ICollection<char> _whisperCommandIdentifiers = new HashSet<char>();
         private readonly Queue<JoinedChannel> _joinChannelQueue = new Queue<JoinedChannel>();
         private readonly ILogger<TwitchClient> _logger;
         private bool _initialized = false;

@@ -97,7 +97,7 @@ namespace TwitchLib.Internal.Parsing
         /// <param name="willReplaceEmotes"></param>
         /// <param name="commandIdentifiers"></param>
         /// <returns></returns>
-        public static DetectionReturn DetectCommandReceived(string botUsername, string message, IEnumerable<JoinedChannel> channels, MessageEmoteCollection channelEmotes, bool willReplaceEmotes, HashSet<char> commandIdentifiers)
+        public static DetectionReturn DetectCommandReceived(string botUsername, string message, IEnumerable<JoinedChannel> channels, MessageEmoteCollection channelEmotes, bool willReplaceEmotes, ICollection<char> commandIdentifiers)
         {
             string readType = null;
             string channelRet = null;
