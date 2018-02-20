@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Timers;
-using TwitchLib.Exceptions.Services;
-using TwitchLib.Events.Services.FollowerService;
 using System.Threading.Tasks;
-using TwitchLib.Exceptions.API;
+using TwitchLib.Api.Services.Exceptions;
+using TwitchLib.Api.Services.Events.FollowerService;
 
-namespace TwitchLib.Services
+namespace TwitchLib.Api.Services
 {
     /// <summary>Service that allows customizability and subscribing to detection of new Twitch followers.</summary>
     public class FollowerService

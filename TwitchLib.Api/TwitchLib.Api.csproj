@@ -24,6 +24,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="WebSocket4Net" Version="0.15.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\Exceptions\" />
+    <Folder Include="Services\Events\" />
+  </ItemGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net452'">
     <DefineConstants>NET452</DefineConstants>

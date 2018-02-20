@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Client", "TwitchL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.PubSub", "TwitchLib.PubSub\TwitchLib.PubSub.csproj", "{C3B148F6-610C-44A2-B384-3C6979246E06}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Services", "TwitchLib.Services\TwitchLib.Services.csproj", "{7437521F-AFA1-4F75-95DA-B367E8B53724}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{C3B148F6-610C-44A2-B384-3C6979246E06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3B148F6-610C-44A2-B384-3C6979246E06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3B148F6-610C-44A2-B384-3C6979246E06}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7437521F-AFA1-4F75-95DA-B367E8B53724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7437521F-AFA1-4F75-95DA-B367E8B53724}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7437521F-AFA1-4F75-95DA-B367E8B53724}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7437521F-AFA1-4F75-95DA-B367E8B53724}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
