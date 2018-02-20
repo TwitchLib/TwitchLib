@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using TwitchLib.Events.Client;
-using TwitchLib.Logging;
 using TwitchLib.Models.Client;
 using TwitchLib.Services;
 
@@ -15,7 +14,7 @@ namespace TwitchLib
         bool DisableAutoPong { get; set; }
         bool IsConnected { get; }
         List<JoinedChannel> JoinedChannels { get; }
-        ILogger Logger { get; }
+      //  ILogger Logger { get; }
         bool Logging { get; set; }
         bool OverrideBeingHostedCheck { get; set; }
         WhisperMessage PreviousWhisper { get; }

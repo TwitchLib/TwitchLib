@@ -7,7 +7,7 @@ using TwitchLib.Events.Client;
 using TwitchLib.Exceptions.Client;
 using TwitchLib.Internal;
 using TwitchLib.Models.Client;
-using TwitchLib.Logging;
+using Microsoft.Extensions.Logging;
 using WebSocket4Net;
 using SuperSocket.ClientEngine;
 using SuperSocket.ClientEngine.Proxy;
@@ -27,6 +27,7 @@ namespace TwitchLib
         private readonly HashSet<char> _chatCommandIdentifiers = new HashSet<char>();
         private readonly HashSet<char> _whisperCommandIdentifiers = new HashSet<char>();
         private readonly Queue<JoinedChannel> _joinChannelQueue = new Queue<JoinedChannel>();
+        private readonly ILogger<TwitchClient> _logger;
         private bool _currentlyJoiningChannels;
         private System.Timers.Timer _joinTimer;
         private List<KeyValuePair<string, DateTime>> _awaitingJoins;
@@ -79,7 +80,7 @@ namespace TwitchLib
         /// <summary>Provides access to autorelistiononexception on off boolean.</summary>
         public bool AutoReListenOnException { get; set; }
         /// <summary>Provides access to a Logger</summary>
-        public ILogger Logger { get; private set; }
+       // public ILogger Logger { get; private set; }
         #endregion
 
         #region Events
@@ -288,7 +289,7 @@ namespace TwitchLib
         /// <param name="logger">Logger Type.</param>
         /// <param name="autoReListenOnExceptions">By default, TwitchClient will silence exceptions and auto-relisten for overall stability. For debugging, you may wish to have the exception bubble up, set this to false.</param>
         public TwitchClient(ConnectionCredentials credentials, string channel = null, char chatCommandIdentifier = '!', char whisperCommandIdentifier = '!',
-            bool logging = false, ILogger logger = null, bool autoReListenOnExceptions = true)
+            bool logging = false, ILogger<TwitchClient> logger = null, bool autoReListenOnExceptions = true)
         {
             Log($"TwitchLib-TwitchClient initialized, assembly version: {Assembly.GetExecutingAssembly().GetName().Version}");
             _credentials = credentials;
@@ -299,7 +300,7 @@ namespace TwitchLib
             if (whisperCommandIdentifier != '\0')
                 _whisperCommandIdentifiers.Add(whisperCommandIdentifier);
             Logging = logging;
-            Logger = logger ?? new ConsoleFactory().Create("ConsoleLog");
+            _logger = logger;
             AutoReListenOnException = autoReListenOnExceptions;
 
             _client = new WebSocket($"ws://{_credentials.TwitchHost}:{_credentials.TwitchPort}");
@@ -1100,9 +1101,9 @@ namespace TwitchLib
                 dateTimeStr = $"{DateTime.UtcNow.ToShortTimeString()}";
 
             if (includeDate || includeTime)
-                Logger.Info($"[TwitchLib, {Assembly.GetExecutingAssembly().GetName().Version} - {dateTimeStr}] {message}");
+                _logger?.LogInformation($"[TwitchLib, {Assembly.GetExecutingAssembly().GetName().Version} - {dateTimeStr}] {message}");
             else
-                Logger.Info($"[TwitchLib, {Assembly.GetExecutingAssembly().GetName().Version}] {message}");
+                _logger?.LogInformation($"[TwitchLib, {Assembly.GetExecutingAssembly().GetName().Version}] {message}");
 
             OnLog?.Invoke(this, new OnLogArgs { BotUsername = ConnectionCredentials.TwitchUsername, Data = message, DateTime = DateTime.UtcNow });
         }
