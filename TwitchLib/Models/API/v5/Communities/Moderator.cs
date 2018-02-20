@@ -1,9 +1,8 @@
-﻿namespace TwitchLib.Models.API.v5.Communities
+﻿using System;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Communities
 {
-    #region using directives
-    using System;
-    using Newtonsoft.Json;
-    #endregion
     public class Moderator
     {
         #region DisplayName

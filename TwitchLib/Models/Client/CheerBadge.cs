@@ -23,9 +23,7 @@
                 return Enums.BadgeColor.Blue;
             if (cheerAmount >= 1000)
                 return Enums.BadgeColor.Green;
-            if (cheerAmount >= 100)
-                return Enums.BadgeColor.Purple;
-            return Enums.BadgeColor.Gray;
+            return cheerAmount >= 100 ? Enums.BadgeColor.Purple : Enums.BadgeColor.Gray;
         }
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace TwitchLib.Events.Client
 {
-    public class OnUnaccountedForArgs
+    public class OnUnaccountedForArgs : EventArgs
     {
         public string RawIRC { get; set; }
         public string Location { get; set; }

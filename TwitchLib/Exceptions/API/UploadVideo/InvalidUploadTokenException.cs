@@ -1,11 +1,12 @@
-﻿namespace TwitchLib.Exceptions.API.UploadVideo
+﻿using System;
+
+namespace TwitchLib.Exceptions.API.UploadVideo
 {
-    #region using directives
-    using System;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Exception thrown when the identifying video token is invalid.</summary>
     public class InvalidUploadTokenException : Exception
     {
+        /// <inheritdoc />
         /// <summary>Exception constructor</summary>
         public InvalidUploadTokenException(string apiData)
             : base(apiData)

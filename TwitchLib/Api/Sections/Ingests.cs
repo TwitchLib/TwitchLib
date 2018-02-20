@@ -1,10 +1,9 @@
-﻿namespace TwitchLib
+﻿using System.Threading.Tasks;
+using TwitchLib.Api;
+using TwitchLib.Enums;
+
+namespace TwitchLib
 {
-    #region using directives
-    using System.Threading.Tasks;
-    using TwitchLib.Api;
-    using TwitchLib.Enums;
-    #endregion
     public class Ingests
     {
         public Ingests(TwitchAPI api)
@@ -37,7 +36,7 @@
             #region GetIngestServerList
             public async Task<Models.API.v5.Ingests.Ingests> GetIngestServerListAsync()
             {
-                return await Api.GetGenericAsync<Models.API.v5.Ingests.Ingests>("https://api.twitch.tv/kraken/ingests", null, null, ApiVersion.v5).ConfigureAwait(false);
+                return await Api.GetGenericAsync<Models.API.v5.Ingests.Ingests>("https://api.twitch.tv/kraken/ingests").ConfigureAwait(false);
             }
             #endregion
         }

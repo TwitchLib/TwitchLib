@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Extensions.Client
+﻿using TwitchLib.Models.Client;
+
+namespace TwitchLib.Extensions.Client
 {
-    #region using directives
-    using Models.Client;
-    #endregion
     /// <summary>Extension implementing the ban functionality in TwitchClient.</summary>
     public static class BanUserExt
     {

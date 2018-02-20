@@ -4,7 +4,7 @@
     {
         public static Models.API.v5.Channels.Channel ToChannel(this Models.API.v5.Channels.ChannelAuthed channel)
         {
-            return new Models.API.v5.Channels.Channel()
+            return new Models.API.v5.Channels.Channel
             {
                 Id = channel.Id,
                 BroadcasterLanguage = channel.BroadcasterLanguage,

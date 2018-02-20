@@ -2,9 +2,10 @@ using System;
 
 namespace TwitchLib.Logging
 {
+	/// <inheritdoc />
 	/// <summary>
-	///   Provides a factory that can produce either <see cref = "ILogger" /> or
-	///   <see cref = "IExtendedLogger" /> classes.
+	///   Provides a factory that can produce either <see cref="T:TwitchLib.Logging.ILogger" /> or
+	///   <see cref="T:TwitchLib.Logging.IExtendedLogger" /> classes.
 	/// </summary>
 	public interface IExtendedLoggerFactory : ILoggerFactory
 	{

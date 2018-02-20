@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.Undocumented.ChatProperties
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.Undocumented.ChatProperties
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class ChatProperties
     {
         [JsonProperty(PropertyName = "_id")]

@@ -1,8 +1,8 @@
-﻿namespace TwitchLib.Models.PubSub.Responses.Messages
+﻿using Newtonsoft.Json.Linq;
+
+namespace TwitchLib.Models.PubSub.Responses.Messages
 {
-    #region using directives
-    using Newtonsoft.Json.Linq;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Model representing the data in a channel bits event.</summary>
     public class ChannelBitsEvents : MessageData
     {
@@ -28,8 +28,6 @@
         /// <summary>ChannelBitsEvent model constructor.</summary>
         public ChannelBitsEvents(string jsonStr)
         {
-            string _local = jsonStr;
-
             JToken json = JObject.Parse(jsonStr);
             Username = json.SelectToken("data").SelectToken("user_name")?.ToString();
             ChannelName = json.SelectToken("data").SelectToken("channel_name")?.ToString();

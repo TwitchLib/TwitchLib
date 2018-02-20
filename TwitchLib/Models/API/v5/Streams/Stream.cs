@@ -1,9 +1,8 @@
-﻿namespace TwitchLib.Models.API.v5.Streams
+﻿using System;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Streams
 {
-    #region using directives
-    using Newtonsoft.Json;
-    using System;
-    #endregion
     public class Stream
     {
         #region Id

@@ -4,7 +4,7 @@
     {
         public static Models.API.v5.Users.User ToUser(this Models.API.v5.Users.UserAuthed authed)
         {
-            return new Models.API.v5.Users.User()
+            return new Models.API.v5.Users.User
             {
                 Id = authed.Id,
                 Bio = authed.Bio,

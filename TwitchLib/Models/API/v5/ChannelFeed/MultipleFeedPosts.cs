@@ -1,8 +1,7 @@
-﻿namespace TwitchLib.Models.API.v5.ChannelFeed
+﻿using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.ChannelFeed
 {
-    #region using directives
-    using Newtonsoft.Json;
-    #endregion
     public class MultipleFeedPosts
     {
         #region Cursor

@@ -13,11 +13,12 @@
 </p>
 
 ## About
-TwitchLib is a powerful C# library that allows for interaction with various Twitch services. Currently supported services are: chat and whisper, API's (v3, v5, helix, undocumented, and third party), and PubSub event system. Below are the descriptions of the core components that make up TwitchLib.
+TwitchLib is a powerful C# library that allows for interaction with various Twitch services. Currently supported services are: chat and whisper, API's (v3, v5, helix, undocumented, and third party), PubSub event system, and Twitch Extensions. Below are the descriptions of the core components that make up TwitchLib.
 
 * **TwitchClient**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Helper methods also exist for replying to whispers or fetching moderator lists.
 * **TwitchAPI**: Complete coverage of v3, v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publically accessable data as well as modify Twitch services like profiles and streams.
 * **TwitchPubSub**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
+* **TwitchLib.Extension**: EBS implementation for validating requests, interacting with extension via PubSub and calling Extension endpoints.
 
 ## Features
 * **TwitchClient**:
@@ -80,6 +81,11 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 	    * VideoPlayback
 	    * Whispers
 	    * Subscriptions
+* **Extension**:
+	* Developed to be used as part of an EBS (extension back-end service) for a Twitch Extension.
+	* Perform API calls related to Extensions (create secret, revoke, channles using extension, etc.)
+	* Validation of requests to EBS using extension secret and JWT.
+	* Interact with extension via PubSub.
 
 ## Documentation
 #### Doxygen
@@ -176,6 +182,9 @@ private void onPubSubBitsReceived() {
 }
 ```
 For a complete list of TwitchPubSub functionality, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_pub_sub.html" target="_blank">here</a>
+
+#### TwitchLib.Extension
+See the Extension README <a href="https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib.Extension" target="_blank">here</a>.
 
 ## Using TwitchLib with Unity Guide
 

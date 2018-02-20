@@ -1,12 +1,9 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TwitchLib.Models.PubSub.Responses.Messages
 {
+    /// <inheritdoc />
     /// <summary>ChatModeratorActions model.</summary>
     public class  ChannelSubscription: MessageData
     {
@@ -38,7 +35,7 @@ namespace TwitchLib.Models.PubSub.Responses.Messages
             RecipientId = message.SelectToken("recipient_id")?.ToString();
             ChannelId = message.SelectToken("channel_id")?.ToString();
             Time = Common.Helpers.DateTimeStringToObject(message.SelectToken("time")?.ToString());
-            switch(message.SelectToken("sub_plan").ToString().ToLower())
+            switch (message.SelectToken("sub_plan").ToString().ToLower())
             {
                 case "prime":
                     SubscriptionPlan = Enums.SubscriptionPlan.Prime;
@@ -52,6 +49,8 @@ namespace TwitchLib.Models.PubSub.Responses.Messages
                 case "3000":
                     SubscriptionPlan = Enums.SubscriptionPlan.Tier3;
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
             SubscriptionPlanName = message.SelectToken("sub_plan_name")?.ToString();
             Months = int.Parse(message.SelectToken("months").ToString());

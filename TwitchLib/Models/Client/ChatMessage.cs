@@ -1,20 +1,19 @@
-﻿namespace TwitchLib.Models.Client
-{
-    #region using directives
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 #if NETSTANDARD
-    using TwitchLib.NetCore.Extensions.NetCore;
+using TwitchLib.NetCore.Extensions.NetCore;
 #endif
 #if NET452
     using System.Drawing;
 #endif
-    #endregion
+
+namespace TwitchLib.Models.Client
+{
     /// <summary>Class represents ChatMessage in a Twitch channel.</summary>
     public class ChatMessage
     {
-        private MessageEmoteCollection _emoteCollection;
+        private readonly MessageEmoteCollection _emoteCollection;
 
         /// <summary>Twitch username of the bot that received the message.</summary>
         public string BotUsername { get; protected set; }
@@ -65,7 +64,7 @@
         /// <summary>Number of USD (United States Dollars) spent on bits.</summary>
         public double BitsInDollars { get; protected set; }
 
-        private string emoteSetStorage = null;
+        private readonly string _emoteSetStorage;
 
         //Example IRC message: @badges=moderator/1,warcraft/alliance;color=;display-name=Swiftyspiffyv4;emotes=;mod=1;room-id=40876073;subscriber=0;turbo=0;user-id=103325214;user-type=mod :swiftyspiffyv4!swiftyspiffyv4@swiftyspiffyv4.tmi.twitch.tv PRIVMSG #swiftyspiffy :asd
         /// <summary>Constructor for ChatMessage object.</summary>
@@ -78,62 +77,63 @@
             BotUsername = botUsername;
             RawIrcMessage = ircString;
             _emoteCollection = emoteCollection;
-            var parts = ircString.Split(';');
+
+            Username = ircString.Split('!')[1].Split('@')[0];
+            Channel = ircString.Split(new[] { " #" }, StringSplitOptions.None)[1].Split(' ')[0];
+            
+            var userTypeStr = ircString.Split(new[] { ";user-type=" }, StringSplitOptions.None)[1].Split(' ')[0];
+            switch (userTypeStr)
+            {
+                case "mod":
+                    UserType = Enums.UserType.Moderator;
+                    break;
+                case "global_mod":
+                    UserType = Enums.UserType.GlobalModerator;
+                    break;
+                case "admin":
+                    UserType = Enums.UserType.Admin;
+                    break;
+                case "staff":
+                    UserType = Enums.UserType.Staff;
+                    break;
+                default:
+                    UserType = Enums.UserType.Viewer;
+                    break;
+            }
+
+            var parts = ircString.Split(new[] { $":{Username}!{Username}@{Username}.tmi.twitch.tv" }, StringSplitOptions.None)[0].Split(';');
             foreach (var part in parts)
             {
-                if (part.Contains("!"))
-                {
-                    if (Channel == null)
-                        Channel = part.Split('#')[1].Split(' ')[0];
-                    if (Username == null)
-                        Username = part.Split('!')[1].Split('@')[0];
-                    if(part.Split('=').Count() > 1 && part.Split('=')[1].Contains(" "))
-                    {
-                        switch (part.Split('=')[1].Split(' ')[0])
-                        {
-                            case "mod":
-                                UserType = Enums.UserType.Moderator;
-                                break;
-                            case "global_mod":
-                                UserType = Enums.UserType.GlobalModerator;
-                                break;
-                            case "admin":
-                                UserType = Enums.UserType.Admin;
-                                break;
-                            case "staff":
-                                UserType = Enums.UserType.Staff;
-                                break;
-                            default:
-                                UserType = Enums.UserType.Viewer;
-                                break;
-                        }
-                    }
-                }
-                else if (part.Contains("@badges="))
+                if (part.Contains("@badges="))
                 {
                     Badges = new List<KeyValuePair<string, string>>();
-                    string badges = part.Split('=')[1];
+                    var badges = part.Split('=')[1];
                     if (badges.Contains('/'))
                     {
                         if (!badges.Contains(","))
                             Badges.Add(new KeyValuePair<string, string>(badges.Split('/')[0], badges.Split('/')[1]));
                         else
-                            foreach (string badge in badges.Split(','))
+                            foreach (var badge in badges.Split(','))
                                 Badges.Add(new KeyValuePair<string, string>(badge.Split('/')[0], badge.Split('/')[1]));
                     }
                     // Iterate through saved badges for special circumstances
-                    foreach (KeyValuePair<string, string> badge in Badges)
+                    foreach (var badge in Badges)
                     {
-                        if (badge.Key == "bits")
-                            CheerBadge = new CheerBadge(int.Parse(badge.Value));
-                        if (badge.Key == "subscriber")
-                            SubscribedMonthCount = int.Parse(badge.Value);
+                        switch (badge.Key)
+                        {
+                            case "bits":
+                                CheerBadge = new CheerBadge(int.Parse(badge.Value));
+                                break;
+                            case "subscriber":
+                                SubscribedMonthCount = int.Parse(badge.Value);
+                                break;
+                        }
                     }
                 }
                 else if (part.Contains("bits="))
                 {
                     Bits = int.Parse(part.Split('=')[1]);
-                    BitsInDollars = convertBitsToUSD(Bits);
+                    BitsInDollars = ConvertBitsToUsd(Bits);
                 }
                 else if (part.Contains("color="))
                 {
@@ -149,8 +149,8 @@
                 }
                 else if (part.Contains("emotes="))
                 {
-                    if (emoteSetStorage == null)
-                        emoteSetStorage = part.Split('=')[1];
+                    if (_emoteSetStorage == null)
+                        _emoteSetStorage = part.Split('=')[1];
                 }
                 else if (part.Contains("subscriber="))
                 {
@@ -174,31 +174,31 @@
                 }
                 else if(part.Contains("noisy="))
                 {
-                    Noisy = (part.Split('=')[1] == "1") ? Enums.Noisy.True : Enums.Noisy.False;
+                    Noisy = part.Split('=')[1] == "1" ? Enums.Noisy.True : Enums.Noisy.False;
                 }
             }
-            Message = ircString.Split(new[] { $" PRIVMSG #{Channel} :" }, StringSplitOptions.None)[1];
-            EmoteSet = new EmoteSet(emoteSetStorage, Message);
+            Message = ircString.Split(new[] { $" PRIVMSG #{Channel} :" }, 2, StringSplitOptions.None)[1];
+            EmoteSet = new EmoteSet(_emoteSetStorage, Message);
             if (Message.Length > 0 && (byte)Message[0] == 1 && (byte)Message[Message.Length - 1] == 1)
             {
                 //Actions (/me {action}) are wrapped by byte=1 and prepended with "ACTION "
                 //This setup clears all of that leaving just the action's text.
                 //If you want to clear just the nonstandard bytes, use:
                 //_message = _message.Substring(1, text.Length-2);
-                if (Message.Contains("ACTION"))
+                if (Message.StartsWith("\u0001ACTION ") && Message.EndsWith("\u0001"))
                 {
-                 	Message = Message.Substring(8, Message.Length - 9);
-                        IsMe = true;
+                    Message = Message.Trim('\u0001').Substring(7);
+                    IsMe = true;
                 }
             }
 
             //Parse the emoteSet
             if (EmoteSet != null && Message != null && EmoteSet.Emotes.Count > 0)
             {
-                string[] uniqueEmotes = EmoteSet.RawEmoteSetString.Split('/');
+                var uniqueEmotes = EmoteSet.RawEmoteSetString.Split('/');
                 string id, text;
                 int firstColon, firstComma, firstDash, low, high;
-                foreach (string emote in uniqueEmotes)
+                foreach (var emote in uniqueEmotes)
                 {
                     firstColon = emote.IndexOf(':');
                     firstComma = emote.IndexOf(',');
@@ -206,15 +206,15 @@
                     firstDash = emote.IndexOf('-');
                     if (firstColon > 0 && firstDash > firstColon && firstComma > firstDash)
                     {
-                        if (Int32.TryParse(emote.Substring(firstColon + 1, (firstDash - firstColon) - 1), out low) &&
-                            Int32.TryParse(emote.Substring(firstDash + 1, (firstComma - firstDash) - 1), out high))
+                        if (int.TryParse(emote.Substring(firstColon + 1, firstDash - firstColon - 1), out low) &&
+                            int.TryParse(emote.Substring(firstDash + 1, firstComma - firstDash - 1), out high))
                         {
                             if (low >= 0 && low < high && high < Message.Length)
                             {
                                 //Valid emote, let's parse
                                 id = emote.Substring(0, firstColon);
                                 //Pull the emote text from the message
-                                text = Message.Substring(low, (high - low) + 1);
+                                text = Message.Substring(low, high - low + 1);
                                 _emoteCollection.Add(new MessageEmote(id, text));
                             }
                         }
@@ -231,7 +231,7 @@
                 DisplayName = Username;
 
             // Check if message is from broadcaster
-            if (Channel.ToLower() == Username.ToLower())
+            if (string.Equals(Channel, Username, StringComparison.InvariantCultureIgnoreCase))
             {
                 UserType = Enums.UserType.Broadcaster;
                 IsBroadcaster = true;
@@ -253,12 +253,12 @@
             Message = message;
         }
 
-        private static bool convertToBool(string data)
+        private static bool ConvertToBool(string data)
         {
             return data == "1";
         }
 
-        private static double convertBitsToUSD(int bits)
+        private static double ConvertBitsToUsd(int bits)
         {
             /*
             Conversion Rates
@@ -271,21 +271,21 @@
             */
             if (bits < 1500)
             {
-                return ((double)(bits) / 100) * 1.4;
+                return (double)bits / 100 * 1.4;
             }
             if (bits < 5000)
             {
-                return ((double)(bits) / 1500) * 19.95;
+                return (double)bits / 1500 * 19.95;
             }
             if (bits < 10000)
             {
-                return ((double)(bits) / 5000) * 64.40;
+                return (double)bits / 5000 * 64.40;
             }
             if (bits < 25000)
             {
-                return ((double)(bits) / 10000) * 126;
+                return (double)bits / 10000 * 126;
             }
-            return ((double)(bits) / 25000) * 308;
+            return (double)bits / 25000 * 308;
         }
     }
 }

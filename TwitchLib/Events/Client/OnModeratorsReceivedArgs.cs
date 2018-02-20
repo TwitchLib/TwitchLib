@@ -1,9 +1,9 @@
-﻿namespace TwitchLib.Events.Client
+﻿using System;
+using System.Collections.Generic;
+
+namespace TwitchLib.Events.Client
 {
-    #region using directives
-    using System;
-    using System.Collections.Generic;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Args representing a list of moderators received from chat.</summary>
     public class OnModeratorsReceivedArgs : EventArgs
     {

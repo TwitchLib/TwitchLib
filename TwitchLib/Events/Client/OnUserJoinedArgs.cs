@@ -1,8 +1,8 @@
-﻿namespace TwitchLib.Events.Client
+﻿using System;
+
+namespace TwitchLib.Events.Client
 {
-    #region using directives
-    using System;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Args representing viewer joined event.</summary>
     public class OnUserJoinedArgs : EventArgs
     {

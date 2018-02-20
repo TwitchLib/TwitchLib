@@ -1,9 +1,9 @@
-﻿namespace TwitchLib.Events.Client
+﻿using System;
+using TwitchLib.Models.Client;
+
+namespace TwitchLib.Events.Client
 {
-    #region using directives
-    using System;
-    using Models.Client;
-    #endregion
+    /// <inheritdoc />
     /// <summary>Args representing on user state changed event.</summary>
     public class OnUserStateChangedArgs : EventArgs
     {

@@ -1,10 +1,9 @@
-﻿namespace TwitchLib.Models.API.v5.Videos
+﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Videos
 {
-    #region using directives
-    using System;
-    using System.Collections.Generic;
-    using Newtonsoft.Json;
-    #endregion
     public class Video
     {
         #region Id

@@ -1,9 +1,8 @@
-﻿namespace TwitchLib.Models.API.v5.Chat
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+
+namespace TwitchLib.Models.API.v5.Chat
 {
-    #region using directives
-    using System.Collections.Generic;
-    using Newtonsoft.Json;
-    #endregion
     public class EmoteSet
     {
         #region EmoticonSets
