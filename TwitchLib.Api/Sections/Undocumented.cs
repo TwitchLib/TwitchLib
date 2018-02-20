@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TwitchLib.Api;
+using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api
 {
@@ -51,7 +51,7 @@ namespace TwitchLib.Api
             var getParams = new List<KeyValuePair<string, string>>();
             if (string.IsNullOrWhiteSpace(videoId))
             {
-                throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
+                throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces.");
             }
             if (contentOffsetSeconds.HasValue)
             {
@@ -168,7 +168,7 @@ namespace TwitchLib.Api
                 case 204:
                     return true;
                 default:
-                    throw new Exceptions.API.BadResourceException("Unexpected response from resource. Expecting response code 200 or 204, received: " + resp);
+                    throw new BadResourceException("Unexpected response from resource. Expecting response code 200 or 204, received: " + resp);
             }
 
         }

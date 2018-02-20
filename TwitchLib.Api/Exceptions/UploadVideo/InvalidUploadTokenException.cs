@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Api.Exceptions.API.UploadVideo
+namespace TwitchLib.Api.Exceptions.UploadVideo
 {
     /// <inheritdoc />
     /// <summary>Exception thrown when the identifying video token is invalid.</summary>

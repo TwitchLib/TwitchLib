@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Api.Exceptions.API
+namespace TwitchLib.Api.Exceptions
 {
     /// <inheritdoc />
     /// <summary>Exception representing a detection that the OAuth token expired</summary>

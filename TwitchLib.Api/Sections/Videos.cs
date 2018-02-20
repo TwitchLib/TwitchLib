@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
 using TwitchLib.Api.Extensions.System;
+using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api
 {
@@ -72,7 +73,7 @@ namespace TwitchLib.Api
             #region GetVideo
             public async Task<Models.v5.Videos.Video> GetVideoAsync(string videoId)
             {
-                if (string.IsNullOrWhiteSpace(videoId)) { throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(videoId)) { throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return await Api.GetGenericAsync<Models.v5.Videos.Video>($"https://api.twitch.tv/kraken/videos/{videoId}").ConfigureAwait(false);
             }
             #endregion
@@ -149,7 +150,7 @@ namespace TwitchLib.Api
             public async Task<Models.v5.Videos.Video> UpdateVideoAsync(string videoId, string description = null, string game = null, string language = null, string tagList = null, string title = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
-                if (string.IsNullOrWhiteSpace(videoId)) { throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(videoId)) { throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrWhiteSpace(description))
                     getParams.Add(new KeyValuePair<string, string>("description", description));
@@ -169,7 +170,7 @@ namespace TwitchLib.Api
             public async Task DeleteVideoAsync(string videoId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Channel_Editor, authToken);
-                if (string.IsNullOrWhiteSpace(videoId)) { throw new Exceptions.API.BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(videoId)) { throw new BadParameterException("The video id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 await Api.DeleteAsync($"https://api.twitch.tv/kraken/videos/{videoId}", null, authToken).ConfigureAwait(false);
             }
             #endregion
@@ -205,10 +206,10 @@ namespace TwitchLib.Api
             private void UploadVideoParts(string videoPath, Models.v5.UploadVideo.Upload upload)
             {
                 if (!File.Exists(videoPath))
-                    throw new Exceptions.API.BadParameterException($"The provided path for a video upload does not appear to be value: {videoPath}");
+                    throw new BadParameterException($"The provided path for a video upload does not appear to be value: {videoPath}");
                 var videoInfo = new FileInfo(videoPath);
                 if (videoInfo.Length >= MAX_VIDEO_SIZE)
-                    throw new Exceptions.API.BadParameterException($"The provided file was too large (larger than 10gb). File size: {videoInfo.Length}");
+                    throw new BadParameterException($"The provided file was too large (larger than 10gb). File size: {videoInfo.Length}");
 
                 const long size24Mb = 25165824;
                 var fileSize = videoInfo.Length;
@@ -259,11 +260,11 @@ namespace TwitchLib.Api
             public async Task<Models.Helix.Videos.GetVideos.GetVideosResponse> GetVideoAsync(List<string> videoIds = null, string userId = null, string gameId = null, string after = null, string before = null, int first = 20, string language = null, Period period = Period.All, VideoSort sort = VideoSort.Time, VideoType type = VideoType.All)
             {
                 if ((videoIds == null || videoIds.Count == 0) && userId == null && gameId == null)
-                    throw new Exceptions.API.BadParameterException("VideoIds, userId, and gameId cannot all be null/empty.");
+                    throw new BadParameterException("VideoIds, userId, and gameId cannot all be null/empty.");
                 if (videoIds != null && videoIds.Count > 0 && userId != null ||
                     videoIds != null && videoIds.Count > 0 && gameId != null ||
                     userId != null && gameId != null)
-                    throw new Exceptions.API.BadParameterException("If videoIds are present, you may not use userid or gameid. If gameid is present, you may not use videoIds or userid. If userid is present, you may not use videoids or gameids.");
+                    throw new BadParameterException("If videoIds are present, you may not use userid or gameid. If gameid is present, you may not use videoIds or userid. If userid is present, you may not use videoids or gameids.");
 
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (videoIds != null && videoIds.Count > 0)

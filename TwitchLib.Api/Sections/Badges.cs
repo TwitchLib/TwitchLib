@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
-using TwitchLib.Api;
-using TwitchLib.Api.Enums;
+using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api
 {
@@ -22,7 +21,7 @@ namespace TwitchLib.Api
             #region GetSubscriberBadgesForChannel
             public async Task<Models.v5.Badges.ChannelDisplayBadges> GetSubscriberBadgesForChannelAsync(string channelId)
             {
-                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return await Api.GetGenericAsync<Models.v5.Badges.ChannelDisplayBadges>($"https://badges.twitch.tv/v1/badges/channels/{channelId}/display").ConfigureAwait(false);
             }
             #endregion

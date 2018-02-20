@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Api.Exceptions.API
+namespace TwitchLib.Api.Exceptions
 {
     /// <inheritdoc />
     /// <summary>Exception representing an attempt to fetch stream data on a stream that is offline.</summary>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Api.Exceptions.API.UploadVideo.UploadVideoPart
+namespace TwitchLib.Api.Exceptions.UploadVideo.UploadVideoPart
 {
     /// <inheritdoc />
     /// <summary>Exception thrown when this library detects the part is invalid.</summary>

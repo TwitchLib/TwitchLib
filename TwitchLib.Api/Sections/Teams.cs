@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using TwitchLib.Api;
 using TwitchLib.Api.Enums;
+using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api
 {
@@ -60,7 +61,7 @@ namespace TwitchLib.Api
             #region GetTeam
             public async Task<Models.v5.Teams.Team> GetTeamAsync(string teamName)
             {
-                if (string.IsNullOrWhiteSpace(teamName)) { throw new Exceptions.API.BadParameterException("The team name is not valid for fetching teams. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(teamName)) { throw new BadParameterException("The team name is not valid for fetching teams. It is not allowed to be null, empty or filled with whitespaces."); }
                 return await Api.GetGenericAsync<Models.v5.Teams.Team>($"https://api.twitch.tv/kraken/teams/{teamName}").ConfigureAwait(false);
             }
             #endregion

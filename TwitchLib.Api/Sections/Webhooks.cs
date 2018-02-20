@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api
 {
@@ -50,7 +51,7 @@ namespace TwitchLib.Api
             private TimeSpan ValidateTimespan(TimeSpan? duration)
             {
                 if (duration != null && duration.Value > TimeSpan.FromDays(10))
-                    throw new Exceptions.API.BadParameterException("Maximum timespan allowed for webhook subscription duration is 10 days.");
+                    throw new BadParameterException("Maximum timespan allowed for webhook subscription duration is 10 days.");
                 return duration ?? TimeSpan.FromDays(10);
             }
 

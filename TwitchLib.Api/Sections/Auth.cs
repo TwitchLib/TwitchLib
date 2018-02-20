@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TwitchLib.Api;
+using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api
 {
@@ -30,9 +30,9 @@ namespace TwitchLib.Api
             {
                 var internalClientId = clientId ?? Api.Settings.ClientId;
 
-                if (string.IsNullOrWhiteSpace(refreshToken)) { throw new Exceptions.API.BadParameterException("The refresh token is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(clientSecret)) { throw new Exceptions.API.BadParameterException("The client secret is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(internalClientId)) { throw new Exceptions.API.BadParameterException("The clientId is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(refreshToken)) { throw new BadParameterException("The refresh token is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(clientSecret)) { throw new BadParameterException("The client secret is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(internalClientId)) { throw new BadParameterException("The clientId is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
 
                 var getParams = new List<KeyValuePair<string, string>>
                 {

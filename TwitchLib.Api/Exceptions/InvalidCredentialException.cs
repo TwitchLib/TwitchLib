@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Api.Exceptions.API
+namespace TwitchLib.Api.Exceptions
 {
     /// <inheritdoc />
     /// <summary>Exception representing a detection that sent credentials were invalid.</summary>

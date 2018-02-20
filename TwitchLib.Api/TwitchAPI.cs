@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SuperSocket.ClientEngine;
 using TwitchLib.Api.Enums;
-using TwitchLib.Api.Exceptions.API;
+using TwitchLib.Api.Exceptions;
 using TwitchLib.Api.RateLimiter;
 
 namespace TwitchLib.Api

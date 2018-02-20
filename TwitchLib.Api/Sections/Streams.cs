@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
+using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api
 {
@@ -90,7 +91,7 @@ namespace TwitchLib.Api
             #region GetStreamByUser
             public async Task<Models.v5.Streams.StreamByUser> GetStreamByUserAsync(string channelId, string streamType = null)
             {
-                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid for fetching streams. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid for fetching streams. It is not allowed to be null, empty or filled with whitespaces."); }
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrWhiteSpace(streamType) && (streamType == "live" || streamType == "playlist" || streamType == "all" || streamType == "watch_party"))
                 {

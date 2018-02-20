@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using TwitchLib.Api;
 using TwitchLib.Api.Enums;
+using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api
 {
@@ -62,11 +63,11 @@ namespace TwitchLib.Api
                 if (gameIds == null && gameNames == null ||
                     gameIds != null && gameIds.Count == 0 && gameNames == null ||
                     gameNames != null && gameNames.Count == 0 && gameIds == null)
-                    throw new Exceptions.API.BadParameterException("Either gameIds or gameNames must have at least one value");
+                    throw new BadParameterException("Either gameIds or gameNames must have at least one value");
                 if (gameIds != null && gameIds.Count > 100)
-                    throw new Exceptions.API.BadParameterException("gameIds list cannot exceed 100 items");
+                    throw new BadParameterException("gameIds list cannot exceed 100 items");
                 if (gameNames != null && gameNames.Count > 100)
-                    throw new Exceptions.API.BadParameterException("gameNames list cannot exceed 100 items");
+                    throw new BadParameterException("gameNames list cannot exceed 100 items");
 
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (gameIds != null && gameIds.Count > 0)

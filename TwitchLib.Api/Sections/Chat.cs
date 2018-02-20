@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using TwitchLib.Api;
 using TwitchLib.Api.Enums;
+using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api
 {
@@ -50,7 +51,7 @@ namespace TwitchLib.Api
             #region GetChatBadgesByChannel
             public async Task<Models.v5.Chat.ChannelBadges> GetChatBadgesByChannelAsync(string channelId)
             {
-                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid for catching the channel badges. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid for catching the channel badges. It is not allowed to be null, empty or filled with whitespaces."); }
                 return await Api.GetGenericAsync<Models.v5.Chat.ChannelBadges>($"https://api.twitch.tv/kraken/chat/{channelId}/badges").ConfigureAwait(false);
             }
             #endregion

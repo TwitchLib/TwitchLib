@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TwitchLib.Api.Enums;
+using TwitchLib.Api.Exceptions;
 
 namespace TwitchLib.Api
 {
@@ -107,7 +108,7 @@ namespace TwitchLib.Api
             #region GetUsersByName
             public async Task<Models.v5.Users.Users> GetUsersByNameAsync(List<string> usernames)
             {
-                if (usernames == null || usernames.Count == 0) { throw new Exceptions.API.BadParameterException("The username list is not valid. It is not allowed to be null or empty."); }
+                if (usernames == null || usernames.Count == 0) { throw new BadParameterException("The username list is not valid. It is not allowed to be null or empty."); }
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("login", string.Join(",", usernames)) };
                 return await Api.GetGenericAsync<Models.v5.Users.Users>("https://api.twitch.tv/kraken/users", getParams).ConfigureAwait(false);
             }
@@ -122,14 +123,14 @@ namespace TwitchLib.Api
             #region GetUserByID
             public async Task<Models.v5.Users.User> GetUserByIDAsync(string userId)
             {
-                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return await Api.GetGenericAsync<Models.v5.Users.User>($"https://api.twitch.tv/kraken/users/{userId}").ConfigureAwait(false);
             }
             #endregion
             #region GetUserByName
             public async Task<Models.v5.Users.Users> GetUserByNameAsync(string username)
             {
-                if (string.IsNullOrEmpty(username)) { throw new Exceptions.API.BadParameterException("The username is not valid."); }
+                if (string.IsNullOrEmpty(username)) { throw new BadParameterException("The username is not valid."); }
                 var getParams = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("login", username) };
                 return await Api.GetGenericAsync<Models.v5.Users.Users>("https://api.twitch.tv/kraken/users", getParams);
             }
@@ -138,7 +139,7 @@ namespace TwitchLib.Api
             public async Task<Models.v5.Users.UserEmotes> GetUserEmotesAsync(string userId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Subscriptions, authToken);
-                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return await Api.GetGenericAsync<Models.v5.Users.UserEmotes>($"https://api.twitch.tv/kraken/users/{userId}/emotes", null, authToken).ConfigureAwait(false);
             }
             #endregion
@@ -146,15 +147,15 @@ namespace TwitchLib.Api
             public async Task<Models.v5.Subscriptions.Subscription> CheckUserSubscriptionByChannelAsync(string userId, string channelId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Subscriptions, authToken);
-                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return await Api.GetGenericAsync<Models.v5.Subscriptions.Subscription>($"https://api.twitch.tv/kraken/users/{userId}/subscriptions/{channelId}", null, authToken).ConfigureAwait(false);
             }
             #endregion
             #region GetUserFollows
             public async Task<Models.v5.Users.UserFollows> GetUserFollowsAsync(string userId, int? limit = null, int? offset = null, string direction = null, string sortby = null)
             {
-                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (limit.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("limit", limit.Value.ToString()));
@@ -171,22 +172,22 @@ namespace TwitchLib.Api
             #region CheckUserFollowsByChannel
             public async Task<Models.v5.Users.UserFollow> CheckUserFollowsByChannelAsync(string userId, string channelId)
             {
-                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return await Api.GetGenericAsync<Models.v5.Users.UserFollow>($"https://api.twitch.tv/kraken/users/{userId}/follows/channels/{channelId}").ConfigureAwait(false);
             }
             #endregion
             #region UserFollowsChannel
             public async Task<bool> UserFollowsChannelAsync(string userId, string channelId)
             {
-                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 try
                 {
                     await Api.GetGenericAsync<Models.v5.Users.UserFollow>($"https://api.twitch.tv/kraken/users/{userId}/follows/channels/{channelId}").ConfigureAwait(false);
                     return true;
                 }
-                catch (Exceptions.API.BadResourceException)
+                catch (BadResourceException)
                 {
                     return false;
                 }
@@ -196,8 +197,8 @@ namespace TwitchLib.Api
             public async Task<Models.v5.Users.UserFollow> FollowChannelAsync(string userId, string channelId, bool? notifications = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Follows_Edit, authToken);
-                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 var optionalRequestBody = notifications.HasValue ? "{\"notifications\": " + notifications.Value + "}" : null;
                 return await Api.PutGenericAsync<Models.v5.Users.UserFollow>($"https://api.twitch.tv/kraken/users/{userId}/follows/channels/{channelId}", optionalRequestBody, null, authToken).ConfigureAwait(false);
             }
@@ -206,8 +207,8 @@ namespace TwitchLib.Api
             public async Task UnfollowChannelAsync(string userId, string channelId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Follows_Edit, authToken);
-                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(channelId)) { throw new Exceptions.API.BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(channelId)) { throw new BadParameterException("The channel id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 await Api.DeleteAsync($"https://api.twitch.tv/kraken/users/{userId}/follows/channels/{channelId}", null, authToken).ConfigureAwait(false);
             }
             #endregion
@@ -215,7 +216,7 @@ namespace TwitchLib.Api
             public async Task<Models.v5.Users.UserBlocks> GetUserBlockListAsync(string userId, int? limit = null, int? offset = null, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Blocks_Read, authToken);
-                if (string.IsNullOrWhiteSpace(userId)) { throw new Exceptions.API.BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(userId)) { throw new BadParameterException("The user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 var getParams = new List<KeyValuePair<string, string>>();
                 if (limit.HasValue)
                     getParams.Add(new KeyValuePair<string, string>("limit", limit.Value.ToString()));
@@ -229,8 +230,8 @@ namespace TwitchLib.Api
             public async Task<Models.v5.Users.UserBlock> BlockUserAsync(string sourceUserId, string targetUserId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Blocks_Edit, authToken);
-                if (string.IsNullOrWhiteSpace(sourceUserId)) { throw new Exceptions.API.BadParameterException("The source user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(targetUserId)) { throw new Exceptions.API.BadParameterException("The target user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(sourceUserId)) { throw new BadParameterException("The source user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(targetUserId)) { throw new BadParameterException("The target user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 return await Api.PutGenericAsync<Models.v5.Users.UserBlock>($"https://api.twitch.tv/kraken/users/{sourceUserId}/blocks/{targetUserId}", null, null, authToken).ConfigureAwait(false);
             }
             #endregion
@@ -238,8 +239,8 @@ namespace TwitchLib.Api
             public async Task UnblockUserAsync(string sourceUserId, string targetUserId, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.User_Blocks_Edit, authToken);
-                if (string.IsNullOrWhiteSpace(sourceUserId)) { throw new Exceptions.API.BadParameterException("The source user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
-                if (string.IsNullOrWhiteSpace(targetUserId)) { throw new Exceptions.API.BadParameterException("The target user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(sourceUserId)) { throw new BadParameterException("The source user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(targetUserId)) { throw new BadParameterException("The target user id is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 await Api.DeleteAsync($"https://api.twitch.tv/kraken/users/{sourceUserId}/blocks/{targetUserId}", null, authToken).ConfigureAwait(false);
             }
             #endregion
@@ -248,7 +249,7 @@ namespace TwitchLib.Api
             public async Task CreateUserConnectionToViewerHeartbeatServiceAsync(string identifier, string authToken = null)
             {
                 Api.Settings.DynamicScopeValidation(AuthScopes.Viewing_Activity_Read, authToken);
-                if (string.IsNullOrWhiteSpace(identifier)) { throw new Exceptions.API.BadParameterException("The identifier is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
+                if (string.IsNullOrWhiteSpace(identifier)) { throw new BadParameterException("The identifier is not valid. It is not allowed to be null, empty or filled with whitespaces."); }
                 await Api.PutAsync("https://api.twitch.tv/kraken/user/vhs", "{\"identifier\": \"" + identifier + "\"}", null, authToken).ConfigureAwait(false);
             }
             #endregion

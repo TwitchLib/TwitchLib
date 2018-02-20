@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Api.Exceptions.API
+namespace TwitchLib.Api.Exceptions
 {
     /// <inheritdoc />
     /// <summary>Exception representing a request to a partner only resource under an unpartnered account.</summary>

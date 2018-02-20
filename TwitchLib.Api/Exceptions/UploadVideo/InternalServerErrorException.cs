@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Api.Exceptions.API.UploadVideo
+namespace TwitchLib.Api.Exceptions.UploadVideo
 {
     /// <inheritdoc />
     /// <summary>Exception representing an internal server error while creating a video.</summary>
