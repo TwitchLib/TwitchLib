@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Models.Client
+namespace TwitchLib.Client.Models.Client
 {
     /// <summary>Class representing a channel state as received from Twitch chat.</summary>
     public class ChannelState

@@ -21,12 +21,8 @@ namespace TwitchLib.PubSub
         private readonly WebSocket _socket;
         private readonly List<PreviousRequest> _previousRequests = new List<PreviousRequest>();
         private readonly ILogger<TwitchPubSub> _logger;
-
         private readonly Timer _pingTimer = new Timer();
-
         private readonly List<string> _topicList = new List<string>();
-
-        
 
         /*
         NON-IMPLEMENTED AVAILABLE TOPICS (i'm aware of):

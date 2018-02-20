@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Events.Client
+namespace TwitchLib.Client.Events.Client
 {
     /// <inheritdoc />
     /// <summary>Args representing whisper sent event.</summary>

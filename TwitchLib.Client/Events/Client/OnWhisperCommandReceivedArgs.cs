@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwitchLib.Models.Client;
+using TwitchLib.Client.Models.Client;
 
-namespace TwitchLib.Events.Client
+namespace TwitchLib.Client.Events.Client
 {
     /// <inheritdoc />
     /// <summary>Args representing whisper command received event.</summary>

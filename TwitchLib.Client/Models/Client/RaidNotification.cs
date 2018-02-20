@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Models.Client
+namespace TwitchLib.Client.Models.Client
 {
     public class RaidNotification
     {

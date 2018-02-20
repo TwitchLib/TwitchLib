@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Events.Services.MessageThrottler
+namespace TwitchLib.Client.Events.Services.MessageThrottler
 {
     /// <inheritdoc />
     /// <summary>Class representing event args for OnClientThrottled.</summary>

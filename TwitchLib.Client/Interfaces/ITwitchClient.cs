@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwitchLib.Events.Client;
-using TwitchLib.Models.Client;
-using TwitchLib.Services;
+using TwitchLib.Client.Events.Client;
+using TwitchLib.Client.Models.Client;
+using TwitchLib.Client.Services;
 
-namespace TwitchLib
+namespace TwitchLib.Client
 {
     public interface ITwitchClient
     {
@@ -57,6 +57,7 @@ namespace TwitchLib
         event EventHandler<OnWhisperReceivedArgs> OnWhisperReceived;
         event EventHandler<OnWhisperSentArgs> OnWhisperSent;
 
+        void Initialize(ConnectionCredentials credentials, string channel = null, char chatCommandIdentifier = '!', char whisperCommandIdentifier = '!', bool autoReListenOnExceptions = true);
         void AddChatCommandIdentifier(char identifier);
         void AddWhisperCommandIdentifier(char identifier);
         void Connect();
@@ -66,8 +67,10 @@ namespace TwitchLib
         void GetChannelModerators(string channel);
         JoinedChannel GetJoinedChannel(string channel);
         void JoinChannel(string channel, bool overrideCheck = false);
+        void JoinRoom(string channelId, string roomId, bool overrideCheck = false);
         void LeaveChannel(JoinedChannel channel);
         void LeaveChannel(string channel);
+        void LeaveRoom(string channelId, string roomId);
         //void Log(string message, bool includeDate = false, bool includeTime = false);
         void OnReadLineTest(string rawIrc);
         void Reconnect();

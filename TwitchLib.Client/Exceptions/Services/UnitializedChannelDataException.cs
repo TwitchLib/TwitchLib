@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Exceptions.Services
+namespace TwitchLib.Client.Exceptions.Services
 {
     /// <inheritdoc />
     /// <summary>Exception representing no channel data set.</summary>

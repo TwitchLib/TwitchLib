@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Enums
+﻿namespace TwitchLib.Client.Enums
 {
     /// <summary>Enum representing the available throttle types.</summary>
     public enum ThrottleType

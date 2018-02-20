@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Exceptions.Client
+namespace TwitchLib.Client.Exceptions.Client
 {
     /// <inheritdoc />
     /// <summary>Exception representing bad information being provided to function/method.</summary>

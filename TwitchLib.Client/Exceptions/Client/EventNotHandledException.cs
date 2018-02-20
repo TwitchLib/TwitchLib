@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Exceptions.Client
+namespace TwitchLib.Client.Exceptions.Client
 {
     /// <inheritdoc />
     /// <summary>Exception thrown when an event that is not handled is required to be handled.</summary>

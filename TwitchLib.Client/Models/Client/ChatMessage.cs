@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 #if NETSTANDARD
-using TwitchLib.NetCore.Extensions.NetCore;
+    using TwitchLib.Client.Extensions.NetCore;
 #endif
 #if NET452
     using System.Drawing;
 #endif
 
-namespace TwitchLib.Models.Client
+namespace TwitchLib.Client.Models.Client
 {
     /// <summary>Class represents ChatMessage in a Twitch channel.</summary>
     public class ChatMessage
@@ -236,6 +236,22 @@ namespace TwitchLib.Models.Client
                 UserType = Enums.UserType.Broadcaster;
                 IsBroadcaster = true;
             }
+
+            if (Channel.Split(':').Length == 3)
+            {
+                if (string.Equals(Channel.Split(':')[1], UserId, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    UserType = Enums.UserType.Broadcaster;
+                    IsBroadcaster = true;
+                }
+            }
+            if (string.Equals(Channel, Username, StringComparison.InvariantCultureIgnoreCase))
+            {
+                UserType = Enums.UserType.Broadcaster;
+                IsBroadcaster = true;
+            }
+
+
         }
 
         /// <summary>Chat Message constructor with passed in values.</summary>

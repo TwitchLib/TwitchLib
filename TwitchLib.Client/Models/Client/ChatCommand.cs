@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace TwitchLib.Models.Client
+namespace TwitchLib.Client.Models.Client
 {
     /// <summary>Object representing a command received via Twitch chat.</summary>
     public class ChatCommand

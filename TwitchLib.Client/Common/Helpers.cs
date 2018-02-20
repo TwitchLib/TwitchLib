@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using TwitchLib.Enums;
+using TwitchLib.Client.Enums;
 
-namespace TwitchLib.Common
+namespace TwitchLib.Client.Common
 {
     /// <summary>Static class of helper functions used around the project.</summary>
     public static class Helpers

@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Enums
+﻿namespace TwitchLib.Client.Enums
 {
     /// <summary>Enum to show which direction the message was detected from.</summary>
     public enum SendReceiveDirection

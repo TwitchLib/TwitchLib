@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwitchLib.Models.Client;
+using TwitchLib.Client.Models.Client;
 
-namespace TwitchLib.Internal.Parsing
+namespace TwitchLib.Client.Internal.Parsing
 {
     /// <summary>Static class used for detecting whisper commands and messages.</summary>
     internal static class Whisper

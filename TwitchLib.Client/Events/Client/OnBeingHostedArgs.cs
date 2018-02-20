@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Events.Client
+namespace TwitchLib.Client.Events.Client
 {
     /// <inheritdoc />
     /// <summary>Args representing an event where another channel has started hosting the broadcaster's channel.</summary>

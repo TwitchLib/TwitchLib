@@ -1,5 +1,5 @@
 ﻿using System;
-namespace TwitchLib.Events.Client
+namespace TwitchLib.Client.Events.Client
 {
     public class OnUnaccountedForArgs : EventArgs
     {

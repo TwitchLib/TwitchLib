@@ -5,12 +5,12 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TwitchLib.Enums;
-using TwitchLib.Events.Services.MessageThrottler;
-using TwitchLib.Models.Client;
+using TwitchLib.Client.Enums;
+using TwitchLib.Client.Events.Services.MessageThrottler;
+using TwitchLib.Client.Models.Client;
 #endregion
 
-namespace TwitchLib.Services
+namespace TwitchLib.Client.Services
 {
     /// <summary>Class used to throttle Regular Channel Chat Messages to enforce guidelines.</summary>
     public class MessageThrottler

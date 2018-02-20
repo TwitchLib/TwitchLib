@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Exceptions.Client
+namespace TwitchLib.Client.Exceptions.Client
 {
     /// <inheritdoc />
     /// <summary>Exception representing credentials provided for logging in were bad.</summary>

@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Models.Client
+﻿namespace TwitchLib.Client.Models.Client
 {
     /// <summary>Class representing a joined channel.</summary>
     public class JoinedChannel

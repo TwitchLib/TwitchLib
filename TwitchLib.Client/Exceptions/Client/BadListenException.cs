@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Exceptions.Client
+namespace TwitchLib.Client.Exceptions.Client
 {
     /// <inheritdoc />
     /// <summary>Exception thrown when an event is subscribed to when it shouldn't be.</summary>

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.RegularExpressions;
 
-namespace TwitchLib.Models.Client
+namespace TwitchLib.Client.Models.Client
 {
     /// <summary>Class used to store credentials used to connect to Twitch chat/whisper.</summary>
     public class ConnectionCredentials

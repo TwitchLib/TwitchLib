@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using TwitchLib.Models.Client;
+using TwitchLib.Client.Models.Client;
 
-namespace TwitchLib.Internal.Parsing
+namespace TwitchLib.Client.Internal.Parsing
 {
     internal static class Chat
     {

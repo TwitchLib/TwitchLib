@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Models.Client
+namespace TwitchLib.Client.Models.Client
 {
     /// <summary>Class representing the error that the websocket encountered.</summary>
     public class ErrorEvent

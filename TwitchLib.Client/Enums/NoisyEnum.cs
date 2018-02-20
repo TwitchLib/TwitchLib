@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Enums
+﻿namespace TwitchLib.Client.Enums
 {
     public enum Noisy
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TwitchLib.Models.Client
+namespace TwitchLib.Client.Models.Client
 {
     /// <summary>Object representing emote set from a chat message.</summary>
     public class EmoteSet

@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 #if NETSTANDARD
-using TwitchLib.NetCore.Extensions.NetCore;
+    using TwitchLib.Client.Extensions.NetCore;
 #endif
 #if NET452
     using System.Drawing;
 #endif
 
-namespace TwitchLib.Models.Client
+namespace TwitchLib.Client.Models.Client
 {
     /// <summary>Class representing a resubscriber.</summary>
     public class SubscriberBase

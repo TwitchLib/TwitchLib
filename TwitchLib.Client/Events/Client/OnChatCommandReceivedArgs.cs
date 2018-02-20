@@ -1,7 +1,7 @@
 ﻿using System;
-using TwitchLib.Models.Client;
+using TwitchLib.Client.Models.Client;
 
-namespace TwitchLib.Events.Client
+namespace TwitchLib.Client.Events.Client
 {
     /// <inheritdoc />
     /// <summary>Args representing chat command received event.</summary>

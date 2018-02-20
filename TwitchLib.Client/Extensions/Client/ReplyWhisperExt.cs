@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Extensions.Client
+﻿namespace TwitchLib.Client.Extensions.Client
 {
     /// <summary>Extension implementing reply to previous whisper functionality.</summary>
     public static class ReplyWhisperExt

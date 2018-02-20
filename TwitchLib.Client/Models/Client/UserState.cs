@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TwitchLib.Models.Client
+namespace TwitchLib.Client.Models.Client
 {
     /// <summary>Class representing state of a specific user.</summary>
     public class UserState
@@ -34,7 +34,35 @@ namespace TwitchLib.Models.Client
             {
                 // The 'user-type' section does not have a ; suffix, we will account for this outside of for loop, we should exit loop immediately
                 if (part.Contains(" :tmi.twitch.tv USERSTATE "))
+                {
+                    // Lets deal with that user-type
+                    if (part.Split(' ')[0].Split('=')[0] == "user-type")
+                    {
+                        switch (part.Split(' ')[0].Split('=')[1])
+                        {
+                            case "mod":
+                                UserType = Enums.UserType.Moderator;
+                                break;
+
+                            case "global_mod":
+                                UserType = Enums.UserType.GlobalModerator;
+                                break;
+
+                            case "admin":
+                                UserType = Enums.UserType.Admin;
+                                break;
+
+                            case "staff":
+                                UserType = Enums.UserType.Staff;
+                                break;
+
+                            default:
+                                UserType = Enums.UserType.Viewer;
+                                break;
+                        }
+                    }
                     break;
+                }
                 if (!part.Contains("="))
                 {
                     // This should never happen, unless Twitch changes their shit.
@@ -54,6 +82,7 @@ namespace TwitchLib.Models.Client
                                     Badges.Add(new KeyValuePair<string, string>(badge.Split('/')[0], badge.Split('/')[1]));
                         }
                         break;
+                    case "@color":
                     case "color":
                         ColorHex = part.Split('=')[1];
                         break;
@@ -75,32 +104,11 @@ namespace TwitchLib.Models.Client
                         break;
                 }
             }
-            // Lets deal with that user-type
-            switch (ircString.Split('=')[6].Split(' ')[0])
-            {
-                case "mod":
-                    UserType = Enums.UserType.Moderator;
-                    break;
 
-                case "global_mod":
-                    UserType = Enums.UserType.GlobalModerator;
-                    break;
-
-                case "admin":
-                    UserType = Enums.UserType.Admin;
-                    break;
-
-                case "staff":
-                    UserType = Enums.UserType.Staff;
-                    break;
-
-                default:
-                    UserType = Enums.UserType.Viewer;
-                    break;
-            }
             Channel = ircString.Split(' ')[3].Replace("#", "");
             if (string.Equals(DisplayName, Channel, StringComparison.InvariantCultureIgnoreCase))
                 UserType = Enums.UserType.Broadcaster;
+
         }
     }
 }

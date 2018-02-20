@@ -1,6 +1,6 @@
-﻿using TwitchLib.Models.Client;
+﻿using TwitchLib.Client.Models.Client;
 
-namespace TwitchLib.Extensions.Client
+namespace TwitchLib.Client.Extensions.Client
 {
     /// <summary>Extension implementing the ban functionality in TwitchClient.</summary>
     public static class BanUserExt

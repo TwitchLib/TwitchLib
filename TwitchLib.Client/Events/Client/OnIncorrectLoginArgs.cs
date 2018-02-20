@@ -1,7 +1,7 @@
 ﻿using System;
-using TwitchLib.Exceptions.Client;
+using TwitchLib.Client.Exceptions.Client;
 
-namespace TwitchLib.Events.Client
+namespace TwitchLib.Client.Events.Client
 {
     /// <inheritdoc />
     /// <summary>Args representing an incorrect login event.</summary>
