@@ -15,15 +15,17 @@
 ## About
 TwitchLib is a powerful C# library that allows for interaction with various Twitch services. Currently supported services are: chat and whisper, API's (v3, v5, helix, undocumented, and third party), PubSub event system, and Twitch Extensions. Below are the descriptions of the core components that make up TwitchLib.
 
-* **TwitchClient**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Helper methods also exist for replying to whispers or fetching moderator lists.
-* **TwitchAPI**: Complete coverage of v3, v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publically accessable data as well as modify Twitch services like profiles and streams.
-* **TwitchPubSub**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
-* **TwitchLib.Extension**: EBS implementation for validating requests, interacting with extension via PubSub and calling Extension endpoints.
+* **[TwitchLib.Client](https://github.com/TwitchLib/TwitchLib.Client)**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Supports Twitch Rooms. Helper methods also exist for replying to whispers or fetching moderator lists.
+* **[TwitchLib.Api](https://github.com/TwitchLib/TwitchLib.Api)**: Complete coverage of v3, v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publically accessable data as well as modify Twitch services like profiles and streams.
+* **[TwitchLib.PubSub](https://github.com/TwitchLib/TwitchLib.PubSub)**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
+* **[TwitchLib.Extension](https://github.com/TwitchLib/TwitchLib.Extension)**: EBS implementation for validating requests, interacting with extension via PubSub and calling Extension endpoints.
+* **[TwitchLib.Unity](https://github.com/TwitchLib/TwitchLib.Unity)**: Unity wrapper system for TwitchLib to allow easy usage of TwitchLib in Unity projects!
 
 ## Features
-* **TwitchClient**:
+* **TwitchLib.Client**:
     * Send formatted or raw messages to Twitch
     * Chat and Whisper command detection and parsing
+    * Supports Twitch Rooms
     * Helper methods
         * Timeout, ban, unban users
         * Change chat color and clear chat
@@ -40,11 +42,7 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 	    * New subscriptions and resubscriptions
 	    * Hosting and raid detection
 	    * Chat clear, user timeouts, user bans
-* **Services**:
-	* **FollowerService**: Service for detection of new followers in somewhat real time.
-	* **LiveStreamMonitor**: Service for detecting when a channel goes online/offline in somewhat real time.
-	* **MessageThrottler**: Service to throttle chat messages to abide by Twitch use requirements.
-* **TwitchAPI**:
+* **TwitchLib.APi**:
 	* Supported Twitch API endpoitns:**v3**, **v5**, **Helix**
 	* Supported API sections:
 	    * Badges, Bits, Blocks
@@ -74,14 +72,18 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 	        * UsernameAvailable
 	    * User
 	    * Videos
-* **TwitchPubSub**:
+	* Services
+		* **FollowerService**: Service for detection of new followers in somewhat real time.
+		* **LiveStreamMonitor**: Service for detecting when a channel goes online/offline in somewhat real time.
+		* **MessageThrottler**: Service to throttle chat messages to abide by Twitch use requirements.
+* **TwitchLib.PubSub**:
 	* Supported topics:
 	    * ChatModeratorActions
 	    * BitsEvents
 	    * VideoPlayback
 	    * Whispers
 	    * Subscriptions
-* **Extension**:
+* **TwitchLib.Extension**:
 	* Developed to be used as part of an EBS (extension back-end service) for a Twitch Extension.
 	* Perform API calls related to Extensions (create secret, revoke, channles using extension, etc.)
 	* Validation of requests to EBS using extension secret and JWT.
@@ -193,19 +195,17 @@ Björn has kindly created a guide for using TwitchLib with Unity. To view the gu
 ## Examples, Applications, Community Work, and Projects
 
 - Recent commits in projects using TwitchLib: [Link](https://github.com/search?o=desc&q=twitchlib&s=indexed&type=Code)
-- TwitchLib-API-Tester: Repo testing application for TwitchAPI and Services: [Link](https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib-API-Tester)
-- TwitchLib-Client-PubSub-Tester: Repo testing application for TwitchClient and TwitchPubSub: [Link](https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib-Client-PubSub-Tester)
 - [Bacon_Donut](https://www.twitch.tv/bacon_donut)'s VOD on building a Twitch bot using TwitchLib: [twitch.tv/videos/115788601](https://www.twitch.tv/videos/115788601)
 - Prom3theu5's Conan Exiles Dedicated Server Updater / Service - [Steam](http://steamcommunity.com/app/440900/discussions/6/133256240742484919/) [Github](https://steamcommunity.com/linkfilter/?url=https://github.com/prom3theu5/ConanExilesServerUpdater)
 - Von Jan Suchotzki's German Video Tutorial Series - [His Website](http://www.lernmoment.de/csharp-tutorial-deutsch/twitch-client-architektur/) [Youtube](https://www.youtube.com/watch?v=N0OPTdTGgTI)
 - DHSean's TwitchAutomator [Reddit](https://www.reddit.com/r/pcgaming/comments/4wfosp/ive_created_an_app_called_twitchautomator_which/) [Github](https://github.com/XenZibe/TwitchUpdater)
-- PFCKrutonium's [TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot) - This project implements the bot using VisualBasic.
 - Moerty's Avia Bot, a fully featured bot that is a good example of a built out bot: [https://github.com/Moerty/AivaBot](https://github.com/Moerty/AivaBot)
 - [HardlyDifficult](https://www.twitch.tv/hardlydifficult)'s Chat Bot Creation VODs: [#1](https://www.twitch.tv/videos/141096702) [#2](https://www.twitch.tv/videos/141154684) [#3](https://www.twitch.tv/videos/141210422) [#4](https://www.twitch.tv/videos/141535267)
 - Prom3theu5's TwitchBotBase - [github.com/prom3theu5/TwitchBotBase](https://github.com/prom3theu5/TwitchBotBase)
 - Trump Academi's ASP.NET TwitchLib Implementation - [trumpacademi.com/day-9-twitch-bot-and-mvc-asp-net-implementing-twitchlib/](http://www.trumpacademi.com/day-9-twitch-bot-and-mvc-asp-net-implementing-twitchlib/)
 - ubhkid's Zombie Twitch chat game/overlay - [reddit.com/r/Unity3D/comments/6ll10k/i_made_a_game_for_my_twitch_chat/](https://www.reddit.com/r/Unity3D/comments/6ll10k/i_made_a_game_for_my_twitch_chat/)
 - FPH SpedV: Virtual Freight Company Tool - [sped-v.de](https://www.sped-v.de/)
+- Foglio's Tera Custom Cooldowns - [Tera Custom Cooldowns](https://github.com/Foglio1024/Tera-custom-cooldowns)
 
 ## Installation
 
@@ -244,6 +244,7 @@ You are also more than welcome to clone/fork this repo and build the library you
  * Tobias Teske ([Syzuna](https://github.com/Syzuna))
  * LuckyNoS7evin ([luckynos7evin](https://twitch.tv/luckynos7evin))
  * Peter Richter ([DumpsterDoofus](DumpsterDoofus))
+ * Mahsaap (@[Mahsaap](https://twitter.com/mahsabludra))
 
 ## License
 
