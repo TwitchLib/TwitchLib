@@ -4,9 +4,9 @@ dotnet: 2.0.0
 dist: trusty
 script:
  - dotnet restore
- - dotnet build /home/travis/build/TwitchLib/TwitchLib.Api/TwitchLib.Api.csproj
- - dotnet build /home/travis/build/TwitchLib/TwitchLib.Client/TwitchLib.Client.csproj
- - dotnet build /home/travis/build/TwitchLib/TwitchLib.PubSub/TwitchLib.PubSub.csproj
+ - dotnet build /home/travis/build/TwitchLib/TwitchLib/TwitchLib.Api/TwitchLib.Api.csproj
+ - dotnet build /home/travis/build/TwitchLib/TwitchLib/TwitchLib.Client/TwitchLib.Client.csproj
+ - dotnet build /home/travis/build/TwitchLib/TwitchLib/TwitchLib.PubSub/TwitchLib.PubSub.csproj
 
 addons:
   apt:
