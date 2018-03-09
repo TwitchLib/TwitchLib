@@ -3,10 +3,7 @@ mono: none
 dotnet: 2.0.0
 dist: trusty
 script:
- - dotnet restore
- - dotnet build /home/travis/build/TwitchLib/TwitchLib/TwitchLib.Api/TwitchLib.Api/TwitchLib.Api.csproj --framework netstandard2.0
- - dotnet build /home/travis/build/TwitchLib/TwitchLib/TwitchLib.Client/TwitchLib.Client/TwitchLib.Client.csproj --framework netstandard2.0
- - dotnet build /home/travis/build/TwitchLib/TwitchLib/TwitchLib.PubSub/TwitchLib.PubSub/TwitchLib.PubSub.csproj --framework netstandard2.0
+ - ./travis-build.sh
 
 addons:
   apt:
