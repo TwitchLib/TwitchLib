@@ -189,10 +189,6 @@ For a complete list of TwitchPubSub functionality, click <a href="http://swiftys
 #### TwitchLib.Extension
 See the Extension README <a href="https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib.Extension" target="_blank">here</a>.
 
-## Using TwitchLib with Unity Guide
-
-Björn has kindly created a guide for using TwitchLib with Unity. To view the guide, click <a href="https://github.com/swiftyspiffy/TwitchLib/blob/master/unity.md" target="_blank">here</a>..
-
 ## Examples, Applications, Community Work, and Projects
 
 - Recent commits in projects using TwitchLib: [Link](https://github.com/search?o=desc&q=twitchlib&s=indexed&type=Code)
