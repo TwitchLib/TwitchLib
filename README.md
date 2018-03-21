@@ -119,23 +119,27 @@ public class Example(){
 		client.Connect();
 	}
 
-	private void onJoinedChannel(object sender, OnJoinedChannelArgs e) {
-		client.SendMessage("Hey guys! I am a bot connected via TwitchLib!");
-	}
-	private void onMessageReceived(object sender, OnMessageReceivedArgs e) {
-		if(e.ChatMessage.Message.Contains("badword"))
-		client.TimeoutUser(e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
-	}
-	private void onWhisperReceived(object sender, OnWhisperReceivedArgs e) {
-		if(e.WhisperMessage.Username == "my_friend")
-		client.SendWhisper(e.WhisperMessage.Username, "Hey! Whispers are so cool!!");
-	}
-	private void onNewSubscriber(object sender, OnNewSubscriberArgs e) {
-		if(e.Subscriber.IsTwitchPrime)
-			client.SendMessage($"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
-	    else
-		client.SendMessage($"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
-	}
+	private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
+        {
+            client.SendMessage(e.Channel, "Hey guys! I am a bot connected via TwitchLib!");
+        }
+    	private void onMessageReceived(object sender, OnMessageReceivedArgs e)
+        {
+            if (e.ChatMessage.Message.Contains("badword"))
+                client.TimeoutUser(e.ChatMessage.Channel, e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
+        }
+    	private void onWhisperReceived(object sender, OnWhisperReceivedArgs e)
+        {
+            if (e.WhisperMessage.Username == "my_friend")
+                client.SendWhisper(e.WhisperMessage.Username, "Hey! Whispers are so cool!!");
+        }
+    	private void onNewSubscriber(object sender, OnNewSubscriberArgs e)
+        {
+            if (e.Subscriber.IsTwitchPrime)
+                client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
+            else
+                client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
+        }
 }
 ```
 For a complete list of TwitchClient events and calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_client.html" target="_blank">here</a>
