@@ -103,7 +103,7 @@ using TwitchLib.Client.Models;
 using TwitchLib.Client.Events;
 using TwtichLib.Client.Extensions;
 
-public class Example()
+public class Example
 {
 	TwitchClient client;
 	
