@@ -4,10 +4,9 @@ dotnet: 2.0.0
 dist: trusty
 script:
  - dotnet restore
- - dotnet build /home/travis/build/swiftyspiffy/TwitchLib/TwitchLib.Logging/Provider.Log4Net/Provider.Log4Net.csproj
- - dotnet build /home/travis/build/swiftyspiffy/TwitchLib/TwitchLib.Logging/Providers.NLog/Provider.NLog.csproj
- - dotnet build /home/travis/build/swiftyspiffy/TwitchLib/TwitchLib.Logging/Providers.SeriLog/Provider.SeriLog.csproj
- - dotnet build /home/travis/build/swiftyspiffy/TwitchLib/TwitchLib/TwitchLib.csproj --framework netstandard2.0
+ - dotnet build /home/travis/build/TwitchLib/TwitchLib/TwitchLib.Api/TwitchLib.Api/TwitchLib.Api.csproj --framework netstandard2.0
+ - dotnet build /home/travis/build/TwitchLib/TwitchLib/TwitchLib.Client/TwitchLib.Client/TwitchLib.Client.csproj --framework netstandard2.0
+ - dotnet build /home/travis/build/TwitchLib/TwitchLib/TwitchLib.PubSub/TwitchLib.PubSub/TwitchLib.PubSub.csproj --framework netstandard2.0
 
 addons:
   apt:

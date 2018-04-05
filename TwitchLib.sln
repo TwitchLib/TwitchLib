@@ -9,10 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Client", "TwitchL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.PubSub", "TwitchLib.PubSub\TwitchLib.PubSub\TwitchLib.PubSub.csproj", "{69BB3ED3-E927-4196-A2BC-168317B5094C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Extension", "TwitchLib.Extension\TwitchLib.Extension\TwitchLib.Extension.csproj", "{D9600F9E-C773-4657-92D4-0E7883D45667}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Extension.Core", "TwitchLib.Extension\TwitchLib.Extension.Core\TwitchLib.Extension.Core.csproj", "{09A0CA34-FB46-4BBF-82C5-D32E82588483}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
