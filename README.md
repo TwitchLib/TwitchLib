@@ -299,6 +299,10 @@ You are also more than welcome to clone/fork this repo and build the library you
  * Peter Richter ([DumpsterDoofus](DumpsterDoofus))
  * Mahsaap (@[Mahsaap](https://twitter.com/mahsabludra))
 
+## Credits and Other Project Licenses
+ * TwitchChatSharp - https://github.com/3ventic/TwitchChatSharp
+   * We used a good portion of the parsing in this project to improve our parsing. Special thanks to **3ventic**.
+
 ## License
 
 This project is available under the MIT license. See the LICENSE file for more info.
