@@ -301,7 +301,7 @@ You are also more than welcome to clone/fork this repo and build the library you
 
 ## Credits and Other Project Licenses
  * TwitchChatSharp - https://github.com/3ventic/TwitchChatSharp
-   * We used a good portion of the parsing in this project to improve our parsing. Special thanks to **3ventic**.
+   * We used a good portion of the parsing in this project to improve our parsing. Special thanks to [@3ventic](https://twitter.com/3ventic).
 
 ## License
 
