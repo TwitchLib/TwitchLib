@@ -98,52 +98,54 @@ For complete library documentation, view the doxygen docs <a href="http://swifty
 Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples, but this library can also be used in Visual Basic.
 #### TwitchClient
 ```csharp
-using TwitchLib;
-using TwitchLib.Client.Models;
+using System;
+using TwitchLib.Client;
+using TwitchLib.Client.Enums;
 using TwitchLib.Client.Events;
-using TwtichLib.Client.Extensions;
+using TwitchLib.Client.Extensions;
+using TwitchLib.Client.Models;
 
 public class Example
 {
 	TwitchClient client;
-	
-	//You will have to supply an entry to point to Start().
-	
-	public void Start()
-	{
-		ConnectionCredentials credentials = new ConnectionCredentials("twitch_username", "access_token");
 
-		client = new TwitchClient();
-		client.Initialize(credentials, "channel");
+        //You will have to supply an entry to point to Start().
 
-		client.OnJoinedChannel += onJoinedChannel;
-		client.OnMessageReceived += onMessageReceived;
-		client.OnWhisperReceived += onWhisperReceived;
-		client.OnNewSubscriber += onNewSubscriber;
+        public void Start()
+        {
+            ConnectionCredentials credentials = new ConnectionCredentials("twitch_username", "access_token");
 
-		client.Connect();
-	}
+            client = new TwitchClient();
+            client.Initialize(credentials, "channel");
 
-	private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
+            client.OnJoinedChannel += onJoinedChannel;
+            client.OnMessageReceived += onMessageReceived;
+            client.OnWhisperReceived += onWhisperReceived;
+            client.OnNewSubscriber += onNewSubscriber;
+
+            client.Connect();
+        }
+
+        private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
             client.SendMessage(e.Channel, "Hey guys! I am a bot connected via TwitchLib!");
         }
-    	private void onMessageReceived(object sender, OnMessageReceivedArgs e)
+        private void onMessageReceived(object sender, OnMessageReceivedArgs e)
         {
             if (e.ChatMessage.Message.Contains("badword"))
                 client.TimeoutUser(e.ChatMessage.Channel, e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
         }
-    	private void onWhisperReceived(object sender, OnWhisperReceivedArgs e)
+        private void onWhisperReceived(object sender, OnWhisperReceivedArgs e)
         {
             if (e.WhisperMessage.Username == "my_friend")
                 client.SendWhisper(e.WhisperMessage.Username, "Hey! Whispers are so cool!!");
         }
-    	private void onNewSubscriber(object sender, OnNewSubscriberArgs e)
+        private void onNewSubscriber(object sender, OnNewSubscriberArgs e)
         {
-            if (e.Subscriber.IsTwitchPrime)
-                client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
+            if (e.Subscriber.SubscriptionPlan == SubscriptionPlan.Prime)
+                client.SendMessage(e.Subscriber.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
             else
-                client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
+                client.SendMessage(e.Subscriber.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
         }
 }
 ```
