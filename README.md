@@ -13,10 +13,10 @@
 </p>
 
 ## About
-TwitchLib is a powerful C# library that allows for interaction with various Twitch services. Currently supported services are: chat and whisper, API's (v3, v5, helix, undocumented, and third party), PubSub event system, and Twitch Extensions. Below are the descriptions of the core components that make up TwitchLib.
+TwitchLib is a powerful C# library that allows for interaction with various Twitch services. Currently supported services are: chat and whisper, API's (v5, helix, undocumented, and third party), PubSub event system, and Twitch Extensions. Below are the descriptions of the core components that make up TwitchLib.
 
 * **[TwitchLib.Client](https://github.com/TwitchLib/TwitchLib.Client)**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Supports Twitch Rooms. Helper methods also exist for replying to whispers or fetching moderator lists.
-* **[TwitchLib.Api](https://github.com/TwitchLib/TwitchLib.Api)**: Complete coverage of v3, v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publically accessable data as well as modify Twitch services like profiles and streams.
+* **[TwitchLib.Api](https://github.com/TwitchLib/TwitchLib.Api)**: Complete coverage of v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publically accessable data as well as modify Twitch services like profiles and streams.
 * **[TwitchLib.PubSub](https://github.com/TwitchLib/TwitchLib.PubSub)**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
 * **[TwitchLib.Extension](https://github.com/TwitchLib/TwitchLib.Extension)**: EBS implementation for validating requests, interacting with extension via PubSub and calling Extension endpoints.
 * **[TwitchLib.Unity](https://github.com/TwitchLib/TwitchLib.Unity)**: Unity wrapper system for TwitchLib to allow easy usage of TwitchLib in Unity projects!
@@ -44,7 +44,7 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 	    * Hosting and raid detection
 	    * Chat clear, user timeouts, user bans
 * **TwitchLib.APi**:
-	* Supported Twitch API endpoitns:**v3**, **v5**, **Helix**
+	* Supported Twitch API endpoitns:**v5**, **Helix**
 	* Supported API sections:
 	    * Badges, Bits, Blocks
 	    * ChannelFeeds, Channels, Chat, Clips, Collections, Communities,
@@ -294,7 +294,7 @@ You are also more than welcome to clone/fork this repo and build the library you
  * prom3theu5 ([@prom3theu5](https://twitter.com/prom3theu5))
  * Ethan Lu ([elu00](https://github.com/elu00))
  * BeerHawk ([BeerHawk](https://github.com/BeerHawk))
- * Tobias Teske ([Syzuna](https://github.com/Syzuna))
+ * Syzuna ([Syzuna](https://github.com/Syzuna))
  * LuckyNoS7evin ([luckynos7evin](https://twitch.tv/luckynos7evin))
  * Peter Richter ([DumpsterDoofus](DumpsterDoofus))
  * Mahsaap (@[Mahsaap](https://twitter.com/mahsabludra))
