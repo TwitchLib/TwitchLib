@@ -95,7 +95,8 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 For complete library documentation, view the doxygen docs <a href="http://swiftyspiffy.com/TwitchLib/index.html" target="_blank">here</a>.
 	
 ## Implementing
-Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples, but this library can also be used in Visual Basic.
+Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples. 
+*NOTE: This library currently does not support Visual Basic.*
 #### TwitchClient
 ```csharp
 using System;
