@@ -96,8 +96,9 @@ For complete library documentation, view the doxygen docs <a href="http://swifty
 	
 ## Implementing
 Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples. 
-*NOTE: This library currently does not support Visual Basic.*
-#### TwitchClient
+*NOTE: Twitchlib.API currently does not support Visual Basic.*
+
+#### Twitchlib.Client
 ```csharp
 using System;
 using TwitchLib.Client;
@@ -151,7 +152,7 @@ public class Example
 }
 ```
 For a complete list of TwitchClient events and calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_client.html" target="_blank">here</a>
-#### TwitchAPI
+#### Twitchlib.API
 Note: TwitchAPI is now a singleton class that needs to be instantiated with optional clientid and auth token. Please know that failure to provide at least a client id, and sometimes an access token will result in exceptions. The v3 subclass operates almost entirely on Twitch usernames. v5 and Helix operate almost entirely on Twitch user id's. There are methods in all Twitch api versions to get corresponding usernames/userids.
 
 ```csharp
@@ -198,7 +199,7 @@ namespace Example
 }
 ```
 For a complete list of TwitchAPI calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_a_p_i.html" target="_blank">here</a>
-#### TwitchPubSub
+#### Twitchlib.PubSub
 ```csharp
 using System;
 using TwitchLib.PubSub;
