@@ -169,22 +169,25 @@ namespace Example
     {
         private static TwitchAPI api;
 
-	//You will have to supply an entry to point to MainAsync().
-	
+        //You will have to supply an entry to point to MainAsync().
+
         private async Task MainAsync()
         {
             api = new TwitchAPI();
-            await api.InitializeAsync("client_id", "access_token");
+            api.Settings.ClientId = "client_id";
+            api.Settings.AccessToken = "access_token";
         }
 
         private async Task ExampleCallsAsync()
-        {            
+        {
+            //Checks subscription for a specific user and the channel specified.
             Subscription subscription = await api.Channels.v5.CheckChannelSubscriptionByUserAsync("channel_id", "user_id");
-                        
+
+            //Gets a list of all the subscritions of the specified channel.
             List<Subscription> allSubscriptions = await api.Channels.v5.GetAllSubscribersAsync("channel_id");
 
             //Get channels a specified user follows.
-            GetUsersFollowsResponse userFollows = await api.Users.helix.GetUsersFollows("user_id");
+            GetUsersFollowsResponse userFollows = await api.Users.helix.GetUsersFollowsAsync("user_id");
 
             //Get Spedicified Channel Follows
             var channelFollowers = await api.Channels.v5.GetChannelFollowersAsync("channel_id");
@@ -194,7 +197,7 @@ namespace Example
 
             //Update Channel Title/Game
             await api.Channels.v5.UpdateChannelAsync("channel_id", "New stream title", "Stronghold Crusader");
-        }       
+        }
     }
 }
 ```
