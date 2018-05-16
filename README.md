@@ -13,17 +13,20 @@
 </p>
 
 ## About
-TwitchLib is a powerful C# library that allows for interaction with various Twitch services. Currently supported services are: chat and whisper, API's (v3, v5, helix, undocumented, and third party), PubSub event system, and Twitch Extensions. Below are the descriptions of the core components that make up TwitchLib.
+TwitchLib is a powerful C# library that allows for interaction with various Twitch services. Currently supported services are: chat and whisper, API's (v5, helix, undocumented, and third party), PubSub event system, and Twitch Extensions. Below are the descriptions of the core components that make up TwitchLib.
 
-* **TwitchClient**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Helper methods also exist for replying to whispers or fetching moderator lists.
-* **TwitchAPI**: Complete coverage of v3, v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publically accessable data as well as modify Twitch services like profiles and streams.
-* **TwitchPubSub**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
-* **TwitchLib.Extension**: EBS implementation for validating requests, interacting with extension via PubSub and calling Extension endpoints.
+* **[TwitchLib.Client](https://github.com/TwitchLib/TwitchLib.Client)**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Supports Twitch Rooms. Helper methods also exist for replying to whispers or fetching moderator lists.
+* **[TwitchLib.Api](https://github.com/TwitchLib/TwitchLib.Api)**: Complete coverage of v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publically accessable data as well as modify Twitch services like profiles and streams.
+* **[TwitchLib.PubSub](https://github.com/TwitchLib/TwitchLib.PubSub)**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
+* **[TwitchLib.Extension](https://github.com/TwitchLib/TwitchLib.Extension)**: EBS implementation for validating requests, interacting with extension via PubSub and calling Extension endpoints.
+* **[TwitchLib.Unity](https://github.com/TwitchLib/TwitchLib.Unity)**: Unity wrapper system for TwitchLib to allow easy usage of TwitchLib in Unity projects!
+* **[TwitchLib.Webhook](https://github.com/TwitchLib/TwitchLib.Webhook)**: Implements ASP.NET Core Webhook Receiver with TwitchLib. [Requires DotNet Core 2.1+]
 
 ## Features
-* **TwitchClient**:
+* **TwitchLib.Client**:
     * Send formatted or raw messages to Twitch
     * Chat and Whisper command detection and parsing
+    * Supports Twitch Rooms
     * Helper methods
         * Timeout, ban, unban users
         * Change chat color and clear chat
@@ -40,12 +43,8 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 	    * New subscriptions and resubscriptions
 	    * Hosting and raid detection
 	    * Chat clear, user timeouts, user bans
-* **Services**:
-	* **FollowerService**: Service for detection of new followers in somewhat real time.
-	* **LiveStreamMonitor**: Service for detecting when a channel goes online/offline in somewhat real time.
-	* **MessageThrottler**: Service to throttle chat messages to abide by Twitch use requirements.
-* **TwitchAPI**:
-	* Supported Twitch API endpoitns:**v3**, **v5**, **Helix**
+* **TwitchLib.APi**:
+	* Supported Twitch API endpoitns:**v5**, **Helix**
 	* Supported API sections:
 	    * Badges, Bits, Blocks
 	    * ChannelFeeds, Channels, Chat, Clips, Collections, Communities,
@@ -74,14 +73,18 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 	        * UsernameAvailable
 	    * User
 	    * Videos
-* **TwitchPubSub**:
+	* Services
+		* **FollowerService**: Service for detection of new followers in somewhat real time.
+		* **LiveStreamMonitor**: Service for detecting when a channel goes online/offline in somewhat real time.
+		* **MessageThrottler**: Service to throttle chat messages to abide by Twitch use requirements.
+* **TwitchLib.PubSub**:
 	* Supported topics:
 	    * ChatModeratorActions
 	    * BitsEvents
 	    * VideoPlayback
 	    * Whispers
 	    * Subscriptions
-* **Extension**:
+* **TwitchLib.Extension**:
 	* Developed to be used as part of an EBS (extension back-end service) for a Twitch Extension.
 	* Perform API calls related to Extensions (create secret, revoke, channles using extension, etc.)
 	* Validation of requests to EBS using extension secret and JWT.
@@ -92,93 +95,154 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 For complete library documentation, view the doxygen docs <a href="http://swiftyspiffy.com/TwitchLib/index.html" target="_blank">here</a>.
 	
 ## Implementing
-Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples, but this library can also be used in Visual Basic.
-#### TwitchClient
+Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples. 
+*NOTE: Twitchlib.API currently does not support Visual Basic.*
+
+#### Twitchlib.Client
 ```csharp
-using TwitchLib;
-using TwitchLib.Models.Client;
-using TwitchLib.Events.Client;
+using System;
+using TwitchLib.Client;
+using TwitchLib.Client.Enums;
+using TwitchLib.Client.Events;
+using TwitchLib.Client.Extensions;
+using TwitchLib.Client.Models;
 
-TwitchClient client;
-ConnectionCredentials credentials = new ConnectionCredentials("twitch_username", "access_token");
+public class Example
+{
+	TwitchClient client;
 
-client = new TwitchClient(credentials, "channel_to_join");
-client.OnJoinedChannel += onJoinedChannel;
-client.OnMessageReceived += onMessageReceived;
-client.OnWhisperReceived += onWhisperReceived;
-client.OnNewSubscriber += onNewSubscriber;
+        //You will have to supply an entry to point to Start().
 
-client.Connect();
+        public void Start()
+        {
+            ConnectionCredentials credentials = new ConnectionCredentials("twitch_username", "access_token");
 
-private void onJoinedChannel(object sender, OnJoinedChannelArgs e) {
-	client.SendMessage("Hey guys! I am a bot connected via TwitchLib!");
-}
-private void onMessageReceived(object sender, OnMessageReceivedArgs e) {
-	if(e.ChatMessage.Message.Contains("badword"))
-    	client.TimeoutUser(e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
-}
-private void onCommandReceived(object sender, OnWhisperCommandReceivedArgs e) {
-	if(e.Command == "help")
-    	client.SendMessage($"Hi there {e.WhisperMessage.Username}! You can view all commands using !command");
-}
-private void onWhisperReceived(object sender, OnWhisperReceivedArgs e) {
-	if(e.WhisperMessage.Username == "my_friend")
-    	client.SendWhisper(e.WhisperMessage.Username, "Hey! Whispers are so cool!!");
-}
-private void onNewSubscriber(object sender, OnNewSubscriberArgs e) {
-	if(e.Subscriber.IsTwitchPrime)
-		client.SendMessage($"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
-    else
-    	client.SendMessage($"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
+            client = new TwitchClient();
+            client.Initialize(credentials, "channel");
+
+            client.OnJoinedChannel += onJoinedChannel;
+            client.OnMessageReceived += onMessageReceived;
+            client.OnWhisperReceived += onWhisperReceived;
+            client.OnNewSubscriber += onNewSubscriber;
+
+            client.Connect();
+        }
+
+        private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
+        {
+            client.SendMessage(e.Channel, "Hey guys! I am a bot connected via TwitchLib!");
+        }
+        private void onMessageReceived(object sender, OnMessageReceivedArgs e)
+        {
+            if (e.ChatMessage.Message.Contains("badword"))
+                client.TimeoutUser(e.ChatMessage.Channel, e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
+        }
+        private void onWhisperReceived(object sender, OnWhisperReceivedArgs e)
+        {
+            if (e.WhisperMessage.Username == "my_friend")
+                client.SendWhisper(e.WhisperMessage.Username, "Hey! Whispers are so cool!!");
+        }
+        private void onNewSubscriber(object sender, OnNewSubscriberArgs e)
+        {
+            if (e.Subscriber.SubscriptionPlan == SubscriptionPlan.Prime)
+                client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
+            else
+                client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
+        }
 }
 ```
 For a complete list of TwitchClient events and calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_client.html" target="_blank">here</a>
-#### TwitchAPI
+#### Twitchlib.API
 Note: TwitchAPI is now a singleton class that needs to be instantiated with optional clientid and auth token. Please know that failure to provide at least a client id, and sometimes an access token will result in exceptions. The v3 subclass operates almost entirely on Twitch usernames. v5 and Helix operate almost entirely on Twitch user id's. There are methods in all Twitch api versions to get corresponding usernames/userids.
 
 ```csharp
-using TwitchLib;
-using TwitchLib.Models.API;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-private static TwitchLib.TwitchAPI api;
+using TwitchLib.Api;
+using TwitchLib.Api.Models.Helix.Users.GetUsersFollows;
+using TwitchLib.Api.Models.v5.Subscriptions;
 
-api = new TwitchLib.TwitchAPI("client_id", "access_token");
+namespace Example
+{
+    class Program
+    {
+        private static TwitchAPI api;
 
-var subscription = await api.Channels.v5.CheckChannelSubscriptionByUserAsync("channel_id", "user_id");
-var allSubscriptions = await api.Channels.v5.GetAllSubscribersAsync("channel_id");
+        //You will have to supply an entry to point to MainAsync().
 
-var userFollows = await api.Users.v5.GetUserFollowsAsync("user_id");
-var channelFollowers = await api.Channels.v5.GetChannelFollowersAsync("channel_id");
-bool userFollowsChannel = await api.Users.v5.FollowChannelAsync("user_id", "channel_id");
+        private async Task MainAsync()
+        {
+            api = new TwitchAPI();
+            api.Settings.ClientId = "client_id";
+            api.Settings.AccessToken = "access_token";
+        }
 
-bool isStreaming = await api.Streams.v5.BroadcasterOnlineAsync("channel_id");]
+        private async Task ExampleCallsAsync()
+        {
+            //Checks subscription for a specific user and the channel specified.
+            Subscription subscription = await api.Channels.v5.CheckChannelSubscriptionByUserAsync("channel_id", "user_id");
 
-await api.Channels.v5.UpdateChannelAsync("channel_id", "New stream title", "Stronghold Crusader");
+            //Gets a list of all the subscritions of the specified channel.
+            List<Subscription> allSubscriptions = await api.Channels.v5.GetAllSubscribersAsync("channel_id");
+
+            //Get channels a specified user follows.
+            GetUsersFollowsResponse userFollows = await api.Users.helix.GetUsersFollowsAsync("user_id");
+
+            //Get Spedicified Channel Follows
+            var channelFollowers = await api.Channels.v5.GetChannelFollowersAsync("channel_id");
+
+            //Return bool if channel is online/offline.
+            bool isStreaming = await api.Streams.v5.BroadcasterOnlineAsync("channel_id");
+
+            //Update Channel Title/Game
+            await api.Channels.v5.UpdateChannelAsync("channel_id", "New stream title", "Stronghold Crusader");
+        }
+    }
+}
 ```
 For a complete list of TwitchAPI calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_a_p_i.html" target="_blank">here</a>
-#### TwitchPubSub
+#### Twitchlib.PubSub
 ```csharp
-using TwitchLib;
+using System;
+using TwitchLib.PubSub;
 
-TwitchPubSub pubsub = new TwitchPubSub();
-pubsub.OnPubSubServiceConnected += onPubSubConnected;
-pubsub.OnListenResponse += onPubSubResponse;
-pubsub.OnBitsReceived += onPubSubBitsReceived;
+namespace Example
+{
+    class Program
+    {
+        private TwitchPubSub pubsub;
 
-pubsub.Connect();
+        //You will have to supply an entry to point to Start().
 
-private void onPubSubConnected(object sender, object e) {
-	// MY ACCOUNT ID, MY OAUTH
-    pubsub.ListenToWhispers(0, "oauth_token");
-}
-private void onPubSubResponse(object sender, OnListenResponseArgs e) {
-	if (e.Successful)
-    	MessageBox.Show($"Successfully verified listening to topic: {e.Topic}");
-    else
-        MessageBox.Show($"Failed to listen! Error: {e.Response.Error}");	
-}
-private void onPubSubBitsReceived() {
-	MessageBox.Show($"Just received {e.BitsUsed} bits from {e.Username}. That brings their total to {e.TotalBitsUsed} bits!");
+        public void Start()
+        {
+            pubsub = new TwitchPubSub();
+            pubsub.OnPubSubServiceConnected += Pubsub_OnPubSubServiceConnected;
+            pubsub.OnListenResponse += Pubsub_OnListenResponse;
+            pubsub.OnBitsReceived += Pubsub_OnBitsReceived;
+
+            pubsub.Connect();
+        }
+
+        private void Pubsub_OnPubSubServiceConnected(object sender, System.EventArgs e)
+        {
+            pubsub.ListenToWhispers("Channel_Id");
+        }
+
+        private void Pubsub_OnBitsReceived(object sender, TwitchLib.PubSub.Events.OnBitsReceivedArgs e)
+        {
+           Console.WriteLine($"Just received {e.BitsUsed} bits from {e.Username}. That brings their total to {e.TotalBitsUsed} bits!");
+        }
+
+        private void Pubsub_OnListenResponse(object sender, TwitchLib.PubSub.Events.OnListenResponseArgs e)
+        {
+            if (e.Successful)
+                Console.WriteLine($"Successfully verified listening to topic: {e.Topic}");
+            else
+                Console.WriteLine($"Failed to listen! Error: {e.Response.Error}");
+        }
+    }
 }
 ```
 For a complete list of TwitchPubSub functionality, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_pub_sub.html" target="_blank">here</a>
@@ -186,26 +250,20 @@ For a complete list of TwitchPubSub functionality, click <a href="http://swiftys
 #### TwitchLib.Extension
 See the Extension README <a href="https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib.Extension" target="_blank">here</a>.
 
-## Using TwitchLib with Unity Guide
-
-Björn has kindly created a guide for using TwitchLib with Unity. To view the guide, click <a href="https://github.com/swiftyspiffy/TwitchLib/blob/master/unity.md" target="_blank">here</a>..
-
 ## Examples, Applications, Community Work, and Projects
 
 - Recent commits in projects using TwitchLib: [Link](https://github.com/search?o=desc&q=twitchlib&s=indexed&type=Code)
-- TwitchLib-API-Tester: Repo testing application for TwitchAPI and Services: [Link](https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib-API-Tester)
-- TwitchLib-Client-PubSub-Tester: Repo testing application for TwitchClient and TwitchPubSub: [Link](https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib-Client-PubSub-Tester)
 - [Bacon_Donut](https://www.twitch.tv/bacon_donut)'s VOD on building a Twitch bot using TwitchLib: [twitch.tv/videos/115788601](https://www.twitch.tv/videos/115788601)
 - Prom3theu5's Conan Exiles Dedicated Server Updater / Service - [Steam](http://steamcommunity.com/app/440900/discussions/6/133256240742484919/) [Github](https://steamcommunity.com/linkfilter/?url=https://github.com/prom3theu5/ConanExilesServerUpdater)
 - Von Jan Suchotzki's German Video Tutorial Series - [His Website](http://www.lernmoment.de/csharp-tutorial-deutsch/twitch-client-architektur/) [Youtube](https://www.youtube.com/watch?v=N0OPTdTGgTI)
 - DHSean's TwitchAutomator [Reddit](https://www.reddit.com/r/pcgaming/comments/4wfosp/ive_created_an_app_called_twitchautomator_which/) [Github](https://github.com/XenZibe/TwitchUpdater)
-- PFCKrutonium's [TwitchieBot](https://github.com/PFCKrutonium/TwitchieBot) - This project implements the bot using VisualBasic.
 - Moerty's Avia Bot, a fully featured bot that is a good example of a built out bot: [https://github.com/Moerty/AivaBot](https://github.com/Moerty/AivaBot)
 - [HardlyDifficult](https://www.twitch.tv/hardlydifficult)'s Chat Bot Creation VODs: [#1](https://www.twitch.tv/videos/141096702) [#2](https://www.twitch.tv/videos/141154684) [#3](https://www.twitch.tv/videos/141210422) [#4](https://www.twitch.tv/videos/141535267)
 - Prom3theu5's TwitchBotBase - [github.com/prom3theu5/TwitchBotBase](https://github.com/prom3theu5/TwitchBotBase)
 - Trump Academi's ASP.NET TwitchLib Implementation - [trumpacademi.com/day-9-twitch-bot-and-mvc-asp-net-implementing-twitchlib/](http://www.trumpacademi.com/day-9-twitch-bot-and-mvc-asp-net-implementing-twitchlib/)
 - ubhkid's Zombie Twitch chat game/overlay - [reddit.com/r/Unity3D/comments/6ll10k/i_made_a_game_for_my_twitch_chat/](https://www.reddit.com/r/Unity3D/comments/6ll10k/i_made_a_game_for_my_twitch_chat/)
 - FPH SpedV: Virtual Freight Company Tool - [sped-v.de](https://www.sped-v.de/)
+- Foglio's Tera Custom Cooldowns - [Tera Custom Cooldowns](https://github.com/Foglio1024/Tera-custom-cooldowns)
 
 ## Installation
 
@@ -241,9 +299,14 @@ You are also more than welcome to clone/fork this repo and build the library you
  * prom3theu5 ([@prom3theu5](https://twitter.com/prom3theu5))
  * Ethan Lu ([elu00](https://github.com/elu00))
  * BeerHawk ([BeerHawk](https://github.com/BeerHawk))
- * Tobias Teske ([Syzuna](https://github.com/Syzuna))
+ * Syzuna ([Syzuna](https://github.com/Syzuna))
  * LuckyNoS7evin ([luckynos7evin](https://twitch.tv/luckynos7evin))
  * Peter Richter ([DumpsterDoofus](DumpsterDoofus))
+ * Mahsaap (@[Mahsaap](https://twitter.com/mahsabludra))
+
+## Credits and Other Project Licenses
+ * TwitchChatSharp - https://github.com/3ventic/TwitchChatSharp
+   * We used a good portion of the parsing in this project to improve our parsing. Special thanks to [@3ventic](https://twitter.com/3ventic).
 
 ## License
 
