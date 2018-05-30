@@ -128,20 +128,20 @@ namespace TestConsole
         {
             ConnectionCredentials credentials = new ConnectionCredentials("twitch_username", "access_token");
 
-
             client = new TwitchClient();
             client.Initialize(credentials, "channel");
 
             client.OnJoinedChannel += onJoinedChannel;
+	    client.OnMessageReceived += onMessageReceived;
+-            client.OnWhisperReceived += onWhisperReceived;
+-            client.OnNewSubscriber += onNewSubscriber;
             client.OnConnected += Client_OnConnected;
-
 
             client.Connect();
         }
         private void Client_OnConnected(object sender, OnConnectedArgs e)
         {
             Console.WriteLine($"Connected to {e.AutoJoinChannel}");
-            client.SendMessage(e.AutoJoinChannel, $"Connected to {e.AutoJoinChannel}");
         }
         private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
