@@ -109,31 +109,46 @@ using TwitchLib.Client.Events;
 using TwitchLib.Client.Extensions;
 using TwitchLib.Client.Models;
 
-public class Example
+namespace TestConsole
 {
-	TwitchClient client;
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Bot bot = new Bot();
+            Console.ReadLine();
+        }
+    }
 
-        //You will have to supply an entry to point to Start().
+    class Bot
+    {
+        TwitchClient client;
 
-        public void Start()
+        public Bot()
         {
             ConnectionCredentials credentials = new ConnectionCredentials("twitch_username", "access_token");
+
 
             client = new TwitchClient();
             client.Initialize(credentials, "channel");
 
             client.OnJoinedChannel += onJoinedChannel;
-            client.OnMessageReceived += onMessageReceived;
-            client.OnWhisperReceived += onWhisperReceived;
-            client.OnNewSubscriber += onNewSubscriber;
+            client.OnConnected += Client_OnConnected;
+
 
             client.Connect();
         }
-
+        private void Client_OnConnected(object sender, OnConnectedArgs e)
+        {
+            Console.WriteLine($"Connected to {e.AutoJoinChannel}");
+            client.SendMessage(e.AutoJoinChannel, $"Connected to {e.AutoJoinChannel}");
+        }
         private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
+            Console.WriteLine("Hey guys! I am a bot connected via TwitchLib!");
             client.SendMessage(e.Channel, "Hey guys! I am a bot connected via TwitchLib!");
         }
+
         private void onMessageReceived(object sender, OnMessageReceivedArgs e)
         {
             if (e.ChatMessage.Message.Contains("badword"))
@@ -151,6 +166,7 @@ public class Example
             else
                 client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
         }
+    }
 }
 ```
 For a complete list of TwitchClient events and calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_client.html" target="_blank">here</a>
