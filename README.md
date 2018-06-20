@@ -15,6 +15,8 @@
 ## About
 TwitchLib is a powerful C# library that allows for interaction with various Twitch services. Currently supported services are: chat and whisper, API's (v5, helix, undocumented, and third party), PubSub event system, and Twitch Extensions. Below are the descriptions of the core components that make up TwitchLib.
 
+Talk directly with us on Discord. https://discord.gg/8NXaEyV
+
 * **[TwitchLib.Client](https://github.com/TwitchLib/TwitchLib.Client)**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Supports Twitch Rooms. Helper methods also exist for replying to whispers or fetching moderator lists.
 * **[TwitchLib.Api](https://github.com/TwitchLib/TwitchLib.Api)**: Complete coverage of v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publically accessable data as well as modify Twitch services like profiles and streams.
 * **[TwitchLib.PubSub](https://github.com/TwitchLib/TwitchLib.PubSub)**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
@@ -107,13 +109,22 @@ using TwitchLib.Client.Events;
 using TwitchLib.Client.Extensions;
 using TwitchLib.Client.Models;
 
-public class Example
+namespace TestConsole
 {
-	TwitchClient client;
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Bot bot = new Bot();
+            Console.ReadLine();
+        }
+    }
 
-        //You will have to supply an entry to point to Start().
+    class Bot
+    {
+        TwitchClient client;
 
-        public void Start()
+        public Bot()
         {
             ConnectionCredentials credentials = new ConnectionCredentials("twitch_username", "access_token");
 
@@ -121,17 +132,23 @@ public class Example
             client.Initialize(credentials, "channel");
 
             client.OnJoinedChannel += onJoinedChannel;
-            client.OnMessageReceived += onMessageReceived;
-            client.OnWhisperReceived += onWhisperReceived;
-            client.OnNewSubscriber += onNewSubscriber;
+	    client.OnMessageReceived += onMessageReceived;
+-            client.OnWhisperReceived += onWhisperReceived;
+-            client.OnNewSubscriber += onNewSubscriber;
+            client.OnConnected += Client_OnConnected;
 
             client.Connect();
         }
-
+        private void Client_OnConnected(object sender, OnConnectedArgs e)
+        {
+            Console.WriteLine($"Connected to {e.AutoJoinChannel}");
+        }
         private void onJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
+            Console.WriteLine("Hey guys! I am a bot connected via TwitchLib!");
             client.SendMessage(e.Channel, "Hey guys! I am a bot connected via TwitchLib!");
         }
+
         private void onMessageReceived(object sender, OnMessageReceivedArgs e)
         {
             if (e.ChatMessage.Message.Contains("badword"))
@@ -149,9 +166,10 @@ public class Example
             else
                 client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
         }
+    }
 }
 ```
-For a complete list of TwitchClient events and calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_client.html" target="_blank">here</a>
+For a complete list of TwitchClient events and calls, click <a href="https://swiftyspiffy.com/TwitchLib/Client/index.html" target="_blank">here</a>
 #### Twitchlib.API
 Note: TwitchAPI is now a singleton class that needs to be instantiated with optional clientid and auth token. Please know that failure to provide at least a client id, and sometimes an access token will result in exceptions. The v3 subclass operates almost entirely on Twitch usernames. v5 and Helix operate almost entirely on Twitch user id's. There are methods in all Twitch api versions to get corresponding usernames/userids.
 
@@ -201,7 +219,7 @@ namespace Example
     }
 }
 ```
-For a complete list of TwitchAPI calls, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_a_p_i.html" target="_blank">here</a>
+For a complete list of TwitchAPI calls, click <a href="https://swiftyspiffy.com/TwitchLib/Api/index.html" target="_blank">here</a>
 #### Twitchlib.PubSub
 ```csharp
 using System;
@@ -245,7 +263,7 @@ namespace Example
     }
 }
 ```
-For a complete list of TwitchPubSub functionality, click <a href="http://swiftyspiffy.com/TwitchLib/class_twitch_lib_1_1_twitch_pub_sub.html" target="_blank">here</a>
+For a complete list of TwitchPubSub functionality, click <a href="https://swiftyspiffy.com/TwitchLib/PubSub/index.html" target="_blank">here</a>
 
 #### TwitchLib.Extension
 See the Extension README <a href="https://github.com/swiftyspiffy/TwitchLib/tree/master/TwitchLib.Extension" target="_blank">here</a>.
