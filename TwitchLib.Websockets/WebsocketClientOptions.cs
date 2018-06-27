@@ -23,9 +23,9 @@ namespace TwitchLib.Websockets
         public TimeSpan SendCacheItemTimeout { get; set; } = TimeSpan.FromMinutes(30);
 
         /// <summary>
-        /// Minimum time between sending items from the queue [in ms] (default 80ms).
+        /// Minimum time between sending items from the queue [in ms] (default 50ms).
         /// </summary>
-        public ushort SendDelay { get; set; } = 80;
+        public ushort SendDelay { get; set; } = 50;
 
         /// <summary>
         /// Reconnection Policy Settings. Reconnect without Losing data etc.
@@ -46,5 +46,15 @@ namespace TwitchLib.Websockets
         /// Type of the Client to Create. Possible Types Chat or PubSub.
         /// </summary>
         public ClientType ClientType { get; set; } = ClientType.Chat;
+
+        /// <summary>
+        /// Period Between each reset of the throttling instance window. (default 30s)
+        /// </summary>
+        public TimeSpan ThrottlingPeriod { get; set; } = TimeSpan.FromSeconds(30);
+
+        /// <summary>
+        /// Number of Messages Allowed Per Instance of the Throttling Period. (default 100)
+        /// </summary>
+        public int MessagesAllowedInPeriod { get; set; } = 100;
     }
 }

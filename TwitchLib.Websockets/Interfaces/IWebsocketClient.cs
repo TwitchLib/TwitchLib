@@ -30,6 +30,8 @@ namespace TwitchLib.Websockets
         /// <inheritdoc />
         event EventHandler<OnStateChangedEventArgs> OnStateChanged;
         /// <inheritdoc />
+        event EventHandler<OnMessageThrottledEventArgs> OnMessageThrottled;
+        /// <inheritdoc />
         void Close();
         /// <inheritdoc />
         void Dispose();

@@ -7,20 +7,24 @@ namespace TwitchLib.Websockets
     public interface IWebsocketClientOptions
     {
         /// <inheritdoc />
+        ClientType ClientType { get; set; }
+        /// <inheritdoc />
+        int DisconnectWait { get; set; }
+        /// <inheritdoc />
         IEnumerable<Tuple<string, string>> Headers { get; set; }
         /// <inheritdoc />
-        int SendQueueCapacity { get; set; }
+        int MessagesAllowedInPeriod { get; set; }
+        /// <inheritdoc />
+        ReconnectionPolicy ReconnectionPolicy { get; set; }
         /// <inheritdoc />
         TimeSpan SendCacheItemTimeout { get; set; }
         /// <inheritdoc />
         ushort SendDelay { get; set; }
         /// <inheritdoc />
-        ReconnectionPolicy ReconnectionPolicy { get; set; }
+        int SendQueueCapacity { get; set; }
+        /// <inheritdoc />
+        TimeSpan ThrottlingPeriod { get; set; }
         /// <inheritdoc />
         bool UseWSS { get; set; }
-        /// <inheritdoc />
-        int DisconnectWait { get; set; }
-        /// <inheritdoc />
-        ClientType ClientType { get; set; }
     }
 }

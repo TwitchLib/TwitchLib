@@ -23,10 +23,13 @@ namespace TwitchLib.Websockets
         private bool _senderRunning;
         private bool _monitorRunning;
         private bool _reconnecting;
+        private bool _resetThrottlerRunning;
+        private int _sentCount = 0;
         private CancellationTokenSource _tokenSource = new CancellationTokenSource();
         private Task _monitor;
         private Task _listener;
         private Task _sender;
+        private Task _resetThrottler;
 
         /// <summary>
         /// The current state of the connection.
@@ -85,6 +88,11 @@ namespace TwitchLib.Websockets
         /// Fires when a Fatal Error Occurs.
         /// </summary>
         public event EventHandler<OnFatalErrorEventArgs> OnFatality;
+
+        /// <summary>
+        /// Fires when a Message has been throttled.
+        /// </summary>
+        public event EventHandler<OnMessageThrottledEventArgs> OnMessageThrottled;
         #endregion
 
         public WebsocketClient(IWebsocketClientOptions options)
@@ -103,6 +111,11 @@ namespace TwitchLib.Websockets
 
             InitializeClient();
             StartMonitor();
+        }
+
+        private void IncrementSentCount()
+        {
+            Interlocked.Increment(ref _sentCount);
         }
 
         private void InitializeClient()
@@ -135,13 +148,12 @@ namespace TwitchLib.Websockets
                 _ws.ConnectAsync(new Uri(Url), _tokenSource.Token).Wait(15000);
                 StartListener();
                 StartSender();
+                StartThrottlingWindowReset();
 
                 Task.Run(() =>
                 {
                     while (_ws.State != WebSocketState.Open)
-                    {
-
-                    }
+                    { }
                 }).Wait(15000);
                 return _ws.State == WebSocketState.Open;
             }
@@ -290,6 +302,8 @@ namespace TwitchLib.Websockets
                         StartListener();
                     if (!_senderRunning)
                         StartSender();
+                    if (!_resetThrottlerRunning)
+                        StartThrottlingWindowReset();
                 }
             });
         }
@@ -377,6 +391,21 @@ namespace TwitchLib.Websockets
                 {
                     while (!_disposedValue && !_reconnecting)
                     {
+                        await Task.Delay(_options.SendDelay);
+
+                        if (_sentCount == _options.MessagesAllowedInPeriod)
+                        {
+                            OnMessageThrottled?.Invoke(this, new OnMessageThrottledEventArgs
+                            {
+                                Message = "Message Throttle Occured. Too Many Messages within the period specified in WebsocketClientOptions.",
+                                AllowedInPeriod = _options.MessagesAllowedInPeriod,
+                                Period = _options.ThrottlingPeriod,
+                                SentMessageCount = Interlocked.CompareExchange(ref _sentCount, 0, 0)
+                            });
+
+                            continue;
+                        }
+
                         if (_ws.State == WebSocketState.Open && !_reconnecting)
                         {
                             var msg = _sendQueue.Take(_tokenSource.Token);
@@ -388,6 +417,7 @@ namespace TwitchLib.Websockets
                             try
                             {
                                 await _ws.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, _tokenSource.Token);
+                                IncrementSentCount();
                             }
                             catch (Exception ex)
                             {
@@ -396,7 +426,6 @@ namespace TwitchLib.Websockets
                                 break;
                             }
                         }
-                        Thread.Sleep(_options.SendDelay);
                     }
                 }
                 catch (Exception ex)
@@ -405,6 +434,20 @@ namespace TwitchLib.Websockets
                     OnError?.Invoke(this, new OnErrorEventArgs { Exception = ex });
                 }
                 _senderRunning = false;
+                return Task.CompletedTask;
+            });
+        }
+
+        private void StartThrottlingWindowReset()
+        {
+            _resetThrottler = Task.Run(async () => {
+                _resetThrottlerRunning = true;
+                while (!_disposedValue && !_reconnecting)
+                {
+                    Interlocked.Exchange(ref _sentCount, 0);
+                    await Task.Delay(_options.ThrottlingPeriod);
+                }
+                _resetThrottlerRunning = false;
                 return Task.CompletedTask;
             });
         }
