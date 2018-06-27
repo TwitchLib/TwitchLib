@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Net.WebSockets;
-using TwitchLib.Websockets.Events;
+using TwitchLib.WebSocket.Events;
 
-namespace TwitchLib.Websockets
+namespace TwitchLib.WebSocket
 {
     public interface IWebsocketClient
     {

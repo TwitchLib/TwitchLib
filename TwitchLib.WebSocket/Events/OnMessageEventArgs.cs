@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitchLib.Websockets.Events
+namespace TwitchLib.WebSocket.Events
 {
     public class OnMessageEventArgs : EventArgs
     {

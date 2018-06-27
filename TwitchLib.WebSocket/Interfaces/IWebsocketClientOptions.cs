@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using TwitchLib.Websockets.Enums;
+using TwitchLib.WebSocket.Enums;
 
-namespace TwitchLib.Websockets
+namespace TwitchLib.WebSocket
 {
     public interface IWebsocketClientOptions
     {

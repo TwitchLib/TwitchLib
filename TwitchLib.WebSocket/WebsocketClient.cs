@@ -7,12 +7,12 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TwitchLib.Websockets.Enums;
-using TwitchLib.Websockets.Events;
+using TwitchLib.WebSocket.Enums;
+using TwitchLib.WebSocket.Events;
 
-namespace TwitchLib.Websockets
+namespace TwitchLib.WebSocket
 {
-    public class WebsocketClient : IWebsocketClient, IDisposable
+    public class WebSocketClient : IWebsocketClient, IDisposable
     {
         private string Url { get; }
         private ClientWebSocket _ws;
@@ -95,7 +95,7 @@ namespace TwitchLib.Websockets
         public event EventHandler<OnMessageThrottledEventArgs> OnMessageThrottled;
         #endregion
 
-        public WebsocketClient(IWebsocketClientOptions options)
+        public WebSocketClient(IWebsocketClientOptions options)
         {
             _options = options;
 

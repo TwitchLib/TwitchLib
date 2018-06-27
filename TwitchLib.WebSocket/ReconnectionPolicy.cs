@@ -1,4 +1,4 @@
-﻿namespace TwitchLib.Websockets
+﻿namespace TwitchLib.WebSocket
 {
     public class ReconnectionPolicy
     {
