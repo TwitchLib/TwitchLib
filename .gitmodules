@@ -10,3 +10,8 @@
 [submodule "TwitchLib.Extension"]
 	path = TwitchLib.Extension
 	url = https://github.com/TwitchLib/TwitchLib.Extension
+[submodule "TwitchLib.WebSocket"]
+	
+	path = TwitchLib.WebSocket
+	
+	url = https://github.com/TwitchLib/TwitchLib.WebSocket
