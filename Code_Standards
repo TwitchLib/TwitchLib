@@ -33,3 +33,5 @@ Use implicit typing in the declaration of query variables and range variables.
 Start a private variable name with '_' character.
 Use PascalCase for methods and Properties.
 Use camelCase for variables.
+Use implicit typing for local variables when the type of the variable is obvious from the right side of the assignment,
+  or when the precise type is not important. Excluding primitive variables (string,int,etc..)
