@@ -270,6 +270,10 @@ See the Extension README <a href="https://github.com/swiftyspiffy/TwitchLib/tree
 
 ## Examples, Applications, Community Work, and Projects
 
+*NOTE: Use these projects as a reference, they are NOT guaranteed to be up-to-date.*
+
+*If you have any issues using these examples, please indicate what example you are referencing in the Issue or in Discord.*
+
 - Recent commits in projects using TwitchLib: [Link](https://github.com/search?o=desc&q=twitchlib&s=indexed&type=Code)
 - [Bacon_Donut](https://www.twitch.tv/bacon_donut)'s VOD on building a Twitch bot using TwitchLib: [twitch.tv/videos/115788601](https://www.twitch.tv/videos/115788601)
 - Prom3theu5's Conan Exiles Dedicated Server Updater / Service - [Steam](http://steamcommunity.com/app/440900/discussions/6/133256240742484919/) [Github](https://steamcommunity.com/linkfilter/?url=https://github.com/prom3theu5/ConanExilesServerUpdater)
