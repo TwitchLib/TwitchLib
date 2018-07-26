@@ -131,7 +131,7 @@ namespace TestConsole
             client = new TwitchClient();
             client.Initialize(credentials, "channel");
 
-	    client.OnLog += onLog;
+	    client.OnLog += Client_OnLog;
             client.OnJoinedChannel += Client_OnJoinedChannel;
 	    client.OnMessageReceived += Client_OnMessageReceived;
 -           client.OnWhisperReceived += Client_OnWhisperReceived;
