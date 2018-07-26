@@ -143,7 +143,7 @@ namespace TestConsole
 	
 	private void Client_OnLog(object sender, OnLogArgs e)
         {
-            Console.WriteLine($"{e.DateYime}: {e.BotPUsername} - {e.Data}");
+            Console.WriteLine($"{e.DateTime.ToString()}: {e.BotPUsername} - {e.Data}");
         }
 	
         private void Client_OnConnected(object sender, OnConnectedArgs e)
