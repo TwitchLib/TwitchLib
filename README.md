@@ -98,7 +98,7 @@ For complete library documentation, view the doxygen docs <a href="http://swifty
 	
 ## Implementing
 Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples. 
-*NOTE: Twitchlib.API currently does not support Visual Basic.*
+*NOTE: Twitchlib.API currently does not support Visual Basic. UPDATE: PR'd Visual Basic fix but requires testing by someone that uses it.*
 
 #### Twitchlib.Client - CSharp
 ```csharp
