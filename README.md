@@ -100,7 +100,7 @@ For complete library documentation, view the doxygen docs <a href="http://swifty
 Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples. 
 *NOTE: Twitchlib.API currently does not support Visual Basic.*
 
-#### Twitchlib.Client
+#### Twitchlib.Client - CSharp
 ```csharp
 using System;
 using TwitchLib.Client;
@@ -179,6 +179,73 @@ namespace TestConsole
     }
 }
 ```
+
+#### Twitchlib.Client - Visual Basic
+```vb
+Imports System
+Imports TwitchLib.Client
+Imports TwitchLib.Client.Enums
+Imports TwitchLib.Client.Events
+Imports TwitchLib.Client.Extensions
+Imports TwitchLib.Client.Models
+
+
+Module Module1
+
+    Sub Main()
+        Dim bot As New Bot()
+        Console.ReadLine()
+    End Sub
+
+    Friend Class Bot
+        Private client As TwitchClient
+
+        Public Sub New()
+            Dim credentials As New ConnectionCredentials("twitch_username", "Token")
+
+            client = New TwitchClient()
+            client.Initialize(credentials, "Channel")
+
+            AddHandler client.OnJoinedChannel, AddressOf onJoinedChannel
+            AddHandler client.OnMessageReceived, AddressOf onMessageReceived
+            AddHandler client.OnWhisperReceived, AddressOf onWhisperReceived
+            AddHandler client.OnNewSubscriber, AddressOf onNewSubscriber
+            AddHandler client.OnConnected, AddressOf Client_OnConnected
+
+            client.Connect()
+        End Sub
+        Private Sub Client_OnConnected(ByVal sender As Object, ByVal e As OnConnectedArgs)
+            Console.WriteLine($"Connected to {e.AutoJoinChannel}")
+        End Sub
+        Private Sub onJoinedChannel(ByVal sender As Object, ByVal e As OnJoinedChannelArgs)
+            Console.WriteLine("Hey guys! I am a bot connected via TwitchLib!")
+            client.SendMessage(e.Channel, "Hey guys! I am a bot connected via TwitchLib!")
+        End Sub
+
+        Private Sub onMessageReceived(ByVal sender As Object, ByVal e As OnMessageReceivedArgs)
+            If e.ChatMessage.Message.Contains("badword") Then
+                client.TimeoutUser(e.ChatMessage.Channel, e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!")
+            End If
+        End Sub
+        Private Sub onWhisperReceived(ByVal sender As Object, ByVal e As OnWhisperReceivedArgs)
+            If e.WhisperMessage.Username = "my_friend" Then
+                client.SendWhisper(e.WhisperMessage.Username, "Hey! Whispers are so cool!!")
+            End If
+        End Sub
+        Private Sub onNewSubscriber(ByVal sender As Object, ByVal e As OnNewSubscriberArgs)
+            If e.Subscriber.SubscriptionPlan = SubscriptionPlan.Prime Then
+                client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!")
+            Else
+                client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!")
+            End If
+        End Sub
+    End Class
+
+
+End Module
+```
+
+
 For a complete list of TwitchClient events and calls, click <a href="https://swiftyspiffy.com/TwitchLib/Client/index.html" target="_blank">here</a>
 #### Twitchlib.API
 Note: TwitchAPI is now a singleton class that needs to be instantiated with optional clientid and auth token. Please know that failure to provide at least a client id, and sometimes an access token will result in exceptions. The v3 subclass operates almost entirely on Twitch usernames. v5 and Helix operate almost entirely on Twitch user id's. There are methods in all Twitch api versions to get corresponding usernames/userids.
