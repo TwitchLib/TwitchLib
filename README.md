@@ -134,8 +134,8 @@ namespace TestConsole
 	    client.OnLog += Client_OnLog;
             client.OnJoinedChannel += Client_OnJoinedChannel;
 	    client.OnMessageReceived += Client_OnMessageReceived;
--           client.OnWhisperReceived += Client_OnWhisperReceived;
--           client.OnNewSubscriber += Client_OnNewSubscriber;
+            client.OnWhisperReceived += Client_OnWhisperReceived;
+            client.OnNewSubscriber += Client_OnNewSubscriber;
             client.OnConnected += Client_OnConnected;
 
             client.Connect();
