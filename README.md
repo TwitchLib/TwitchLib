@@ -182,8 +182,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using TwitchLib.Api;
-using TwitchLib.Api.Models.Helix.Users.GetUsersFollows;
-using TwitchLib.Api.Models.v5.Subscriptions;
+using TwitchLib.Api.Helix.Models.Users;
+using TwitchLib.Api.V5.Models.Subscriptions;
 
 namespace Example
 {
@@ -191,9 +191,7 @@ namespace Example
     {
         private static TwitchAPI api;
 
-        //You will have to supply an entry to point to MainAsync().
-
-        private async Task MainAsync()
+        private void Main()
         {
             api = new TwitchAPI();
             api.Settings.ClientId = "client_id";
@@ -203,22 +201,22 @@ namespace Example
         private async Task ExampleCallsAsync()
         {
             //Checks subscription for a specific user and the channel specified.
-            Subscription subscription = await api.Channels.v5.CheckChannelSubscriptionByUserAsync("channel_id", "user_id");
+            Subscription subscription = await api.V5.Channels.CheckChannelSubscriptionByUserAsync("channel_id", "user_id");
 
             //Gets a list of all the subscritions of the specified channel.
-            List<Subscription> allSubscriptions = await api.Channels.v5.GetAllSubscribersAsync("channel_id");
+            List<Subscription> allSubscriptions = await api.V5.Channels.GetAllSubscribersAsync("channel_id");
 
             //Get channels a specified user follows.
-            GetUsersFollowsResponse userFollows = await api.Users.helix.GetUsersFollowsAsync("user_id");
+            GetUsersFollowsResponse userFollows = await api.Helix.Users.GetUsersFollowsAsync("user_id");
 
             //Get Spedicified Channel Follows
-            var channelFollowers = await api.Channels.v5.GetChannelFollowersAsync("channel_id");
+            var channelFollowers = await api.V5.Channels.GetChannelFollowersAsync("channel_id");
 
             //Return bool if channel is online/offline.
-            bool isStreaming = await api.Streams.v5.BroadcasterOnlineAsync("channel_id");
+            bool isStreaming = await api.V5.Streams.BroadcasterOnlineAsync("channel_id");
 
             //Update Channel Title/Game
-            await api.Channels.v5.UpdateChannelAsync("channel_id", "New stream title", "Stronghold Crusader");
+            await api.V5.Channels.UpdateChannelAsync("channel_id", "New stream title", "Stronghold Crusader");
         }
     }
 }
