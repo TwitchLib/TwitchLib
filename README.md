@@ -98,9 +98,9 @@ For complete library documentation, view the doxygen docs <a href="http://swifty
 	
 ## Implementing
 Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples. 
-*NOTE: Twitchlib.API currently does not support Visual Basic.*
+*NOTE: Twitchlib.API currently does not support Visual Basic. UPDATE: PR'd Visual Basic fix but requires testing by someone that uses it.*
 
-#### Twitchlib.Client
+#### Twitchlib.Client - CSharp
 ```csharp
 using System;
 using TwitchLib.Client;
@@ -131,39 +131,45 @@ namespace TestConsole
             client = new TwitchClient();
             client.Initialize(credentials, "channel");
 
-            client.OnConnected += OnConnected;
-            client.OnJoinedChannel += OnJoinedChannel;
-	        client.OnMessageReceived += OnMessageReceived;
-            client.OnWhisperReceived += OnWhisperReceived;
-            client.OnNewSubscriber += OnNewSubscriber;
-            
+	          client.OnLog += Client_OnLog;
+            client.OnJoinedChannel += Client_OnJoinedChannel;
+	          client.OnMessageReceived += Client_OnMessageReceived;
+            client.OnWhisperReceived += Client_OnWhisperReceived;
+            client.OnNewSubscriber += Client_OnNewSubscriber;
+            client.OnConnected += Client_OnConnected;
 
             client.Connect();
         }
-
-        private void OnConnected(object sender, OnConnectedArgs e)
+	
+	      private void Client_OnLog(object sender, OnLogArgs e)
+        {
+            Console.WriteLine($"{e.DateTime.ToString()}: {e.BotPUsername} - {e.Data}");
+        }
+	
+        private void Client_OnConnected(object sender, OnConnectedArgs e)
         {
             Console.WriteLine($"Connected to {e.AutoJoinChannel}");
         }
-        private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
+	
+        private void Client_OnJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
             Console.WriteLine("Hey guys! I am a bot connected via TwitchLib!");
             client.SendMessage(e.Channel, "Hey guys! I am a bot connected via TwitchLib!");
         }
 
-        private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
+        private void Client_OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
             if (e.ChatMessage.Message.Contains("badword"))
                 client.TimeoutUser(e.ChatMessage.Channel, e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
         }
-
-        private void OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
+        
+        private void Client_OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
         {
             if (e.WhisperMessage.Username == "my_friend")
                 client.SendWhisper(e.WhisperMessage.Username, "Hey! Whispers are so cool!!");
         }
-
-        private void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
+        
+        private void Client_OnNewSubscriber(object sender, OnNewSubscriberArgs e)
         {
             if (e.Subscriber.SubscriptionPlan == SubscriptionPlan.Prime)
                 client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
@@ -173,8 +179,75 @@ namespace TestConsole
     }
 }
 ```
+
+#### Twitchlib.Client - Visual Basic
+```vb
+Imports System
+Imports TwitchLib.Client
+Imports TwitchLib.Client.Enums
+Imports TwitchLib.Client.Events
+Imports TwitchLib.Client.Extensions
+Imports TwitchLib.Client.Models
+
+
+Module Module1
+
+    Sub Main()
+        Dim bot As New Bot()
+        Console.ReadLine()
+    End Sub
+
+    Friend Class Bot
+        Private client As TwitchClient
+
+        Public Sub New()
+            Dim credentials As New ConnectionCredentials("twitch_username", "Token")
+
+            client = New TwitchClient()
+            client.Initialize(credentials, "Channel")
+
+            AddHandler client.OnJoinedChannel, AddressOf onJoinedChannel
+            AddHandler client.OnMessageReceived, AddressOf onMessageReceived
+            AddHandler client.OnWhisperReceived, AddressOf onWhisperReceived
+            AddHandler client.OnNewSubscriber, AddressOf onNewSubscriber
+            AddHandler client.OnConnected, AddressOf Client_OnConnected
+
+            client.Connect()
+        End Sub
+        Private Sub Client_OnConnected(ByVal sender As Object, ByVal e As OnConnectedArgs)
+            Console.WriteLine($"Connected to {e.AutoJoinChannel}")
+        End Sub
+        Private Sub onJoinedChannel(ByVal sender As Object, ByVal e As OnJoinedChannelArgs)
+            Console.WriteLine("Hey guys! I am a bot connected via TwitchLib!")
+            client.SendMessage(e.Channel, "Hey guys! I am a bot connected via TwitchLib!")
+        End Sub
+
+        Private Sub onMessageReceived(ByVal sender As Object, ByVal e As OnMessageReceivedArgs)
+            If e.ChatMessage.Message.Contains("badword") Then
+                client.TimeoutUser(e.ChatMessage.Channel, e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!")
+            End If
+        End Sub
+        Private Sub onWhisperReceived(ByVal sender As Object, ByVal e As OnWhisperReceivedArgs)
+            If e.WhisperMessage.Username = "my_friend" Then
+                client.SendWhisper(e.WhisperMessage.Username, "Hey! Whispers are so cool!!")
+            End If
+        End Sub
+        Private Sub onNewSubscriber(ByVal sender As Object, ByVal e As OnNewSubscriberArgs)
+            If e.Subscriber.SubscriptionPlan = SubscriptionPlan.Prime Then
+                client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!")
+            Else
+                client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!")
+            End If
+        End Sub
+    End Class
+
+
+End Module
+```
+
+
 For a complete list of TwitchClient events and calls, click <a href="https://swiftyspiffy.com/TwitchLib/Client/index.html" target="_blank">here</a>
-#### Twitchlib.API
+#### Twitchlib.API - CSharp
 Note: TwitchAPI is now a singleton class that needs to be instantiated with optional clientid and auth token. Please know that failure to provide at least a client id, and sometimes an access token will result in exceptions. The v3 subclass operates almost entirely on Twitch usernames. v5 and Helix operate almost entirely on Twitch user id's. There are methods in all Twitch api versions to get corresponding usernames/userids.
 
 ```csharp
@@ -220,6 +293,84 @@ namespace Example
         }
     }
 }
+```
+
+#### Twitchlib.API - Visual Basic
+```vb
+Imports System.Collections.Generic
+Imports System.Threading.Tasks
+
+Imports TwitchLib.Api
+Imports TwitchLib.Api.Models.Helix.Users.GetUsersFollows
+Imports TwitchLib.Api.Models.Helix.Users.GetUsers
+Imports TwitchLib.Api.Models.v5.Subscriptions
+
+Module Module1
+
+    Public api As TwitchAPI
+
+    Sub Main()
+        api = New TwitchAPI()
+        api.Settings.ClientId = "Client_id"
+        api.Settings.AccessToken = "access_token"
+        streaming().Wait()
+        getchanfollows().Wait()
+        getusersubs().Wait()
+        getnumberofsubs().Wait()
+        getsubstochannel().Wait()
+        Console.ReadLine()
+    End Sub
+
+    Private Async Function getusersubs() As Task
+        'Checks subscription for a specific user and the channel specified.
+        Dim subscription As Subscription = Await api.Channels.v5.CheckChannelSubscriptionByUserAsync("channel_id", "user_id")
+        Console.WriteLine("User subed: " + subscription.User.Name.ToString)
+    End Function
+
+    Private Async Function streaming() As Task
+        'shows if the channel is streaming or not (true/false)
+        Dim isStreaming As Boolean = Await api.Streams.v5.BroadcasterOnlineAsync("channel_id")
+        If isStreaming = True Then
+            Console.WriteLine("Streaming")
+        Else
+            Console.WriteLine("Not Streaming")
+        End If
+    End Function
+
+    Private Async Function chanupdate() As Task
+        'Update Channel Title/Game
+        'not used this yet
+        Await api.Channels.v5.UpdateChannelAsync("channel_id", "New stream title", "Stronghold Crusader")
+    End Function
+
+    Private Async Function getchanfollows() As Task
+        'Get Spedicified Channel Follows
+        Dim channelFollowers = Await api.Channels.v5.GetChannelFollowersAsync("channel_id")
+        Console.WriteLine(channelFollowers.Total.ToString)
+    End Function
+
+    Private Async Function getchanuserfollow() As Task
+        'Get channels a specified user follows.
+        Dim userFollows As GetUsersFollowsResponse = Await api.Users.helix.GetUsersFollowsAsync("user_id")
+        Console.WriteLine(userFollows.TotalFollows.ToString)
+    End Function
+
+    Private Async Function getnumberofsubs() As Task
+        'Get the number of subs to your channel
+        Dim numberofsubs = Await api.Channels.v5.GetChannelSubscribersAsync("channel_id")
+        Console.WriteLine(numberofsubs.Total.ToString)
+    End Function
+
+    Private Async Function getsubstochannel() As Task
+        'Gets a list of all the subscritions of the specified channel.
+        Dim allSubscriptions As List(Of Subscription) = Await api.Channels.v5.GetAllSubscribersAsync("channel_id")
+        Dim num As Integer
+        For num = 0 To allSubscriptions.Count - 1
+            Console.WriteLine(allSubscriptions.Item(num).User.Name.ToString)
+        Next num
+    End Function
+
+End Module
 ```
 For a complete list of TwitchAPI calls, click <a href="https://swiftyspiffy.com/TwitchLib/Api/index.html" target="_blank">here</a>
 #### Twitchlib.PubSub
