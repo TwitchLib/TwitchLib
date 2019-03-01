@@ -18,7 +18,7 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 Talk directly with us on Discord. https://discord.gg/8NXaEyV
 
 * **[TwitchLib.Client](https://github.com/TwitchLib/TwitchLib.Client)**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Supports Twitch Rooms. Helper methods also exist for replying to whispers or fetching moderator lists.
-* **[TwitchLib.Api](https://github.com/TwitchLib/TwitchLib.Api)**: Complete coverage of v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publically accessable data as well as modify Twitch services like profiles and streams.
+* **[TwitchLib.Api](https://github.com/TwitchLib/TwitchLib.Api)**: Complete coverage of v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publicly accessible data as well as modify Twitch services like profiles and streams.
 * **[TwitchLib.PubSub](https://github.com/TwitchLib/TwitchLib.PubSub)**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
 * **[TwitchLib.Extension](https://github.com/TwitchLib/TwitchLib.Extension)**: EBS implementation for validating requests, interacting with extension via PubSub and calling Extension endpoints.
 * **[TwitchLib.Unity](https://github.com/TwitchLib/TwitchLib.Unity)**: Unity wrapper system for TwitchLib to allow easy usage of TwitchLib in Unity projects!
@@ -46,7 +46,7 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 	    * Hosting and raid detection
 	    * Chat clear, user timeouts, user bans
 * **TwitchLib.APi**:
-	* Supported Twitch API endpoitns:**v5**, **Helix**
+	* Supported Twitch API endpoints:**v5**, **Helix**
 	* Supported API sections:
 	    * Badges, Bits, Blocks
 	    * ChannelFeeds, Channels, Chat, Clips, Collections, Communities,
@@ -88,7 +88,7 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 	    * Subscriptions
 * **TwitchLib.Extension**:
 	* Developed to be used as part of an EBS (extension back-end service) for a Twitch Extension.
-	* Perform API calls related to Extensions (create secret, revoke, channles using extension, etc.)
+	* Perform API calls related to Extensions (create secret, revoke, channels using extension, etc.)
 	* Validation of requests to EBS using extension secret and JWT.
 	* Interact with extension via PubSub.
 
