@@ -46,7 +46,7 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 	    * Hosting and raid detection
 	    * Chat clear, user timeouts, user bans
 * **TwitchLib.APi**:
-	* Supported Twitch API endpoitns:**v5**, **Helix**
+	* Supported Twitch API endpoints: **v5**, **Helix**
 	* Supported API sections:
 	    * Badges, Bits, Blocks
 	    * ChannelFeeds, Channels, Chat, Clips, Collections, Communities,
