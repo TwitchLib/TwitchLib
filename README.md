@@ -131,26 +131,26 @@ namespace TestConsole
             client = new TwitchClient();
             client.Initialize(credentials, "channel");
 
-	          client.OnLog += Client_OnLog;
+            client.OnLog += Client_OnLog;
             client.OnJoinedChannel += Client_OnJoinedChannel;
-	          client.OnMessageReceived += Client_OnMessageReceived;
+            client.OnMessageReceived += Client_OnMessageReceived;
             client.OnWhisperReceived += Client_OnWhisperReceived;
             client.OnNewSubscriber += Client_OnNewSubscriber;
             client.OnConnected += Client_OnConnected;
 
             client.Connect();
         }
-	
-	      private void Client_OnLog(object sender, OnLogArgs e)
+  
+        private void Client_OnLog(object sender, OnLogArgs e)
         {
             Console.WriteLine($"{e.DateTime.ToString()}: {e.BotPUsername} - {e.Data}");
         }
-	
+  
         private void Client_OnConnected(object sender, OnConnectedArgs e)
         {
             Console.WriteLine($"Connected to {e.AutoJoinChannel}");
         }
-	
+  
         private void Client_OnJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
             Console.WriteLine("Hey guys! I am a bot connected via TwitchLib!");
