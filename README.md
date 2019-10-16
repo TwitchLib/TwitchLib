@@ -123,11 +123,17 @@ namespace TestConsole
     class Bot
     {
         TwitchClient client;
-
+	
         public Bot()
         {
             ConnectionCredentials credentials = new ConnectionCredentials("twitch_username", "access_token");
-
+	    var clientOptions = new ClientOptions
+                {
+                    MessagesAllowedInPeriod = 750,
+                    ThrottlingPeriod = TimeSpan.FromSeconds(30)
+                };
+            WebSocketClient customClient = new WebSocketClient(clientOptions);
+            client = new TwitchClient(customClient);
             client = new TwitchClient();
             client.Initialize(credentials, "channel");
 
