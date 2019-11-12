@@ -282,7 +282,7 @@ namespace Example
             //Get channels a specified user follows.
             GetUsersFollowsResponse userFollows = await api.Helix.Users.GetUsersFollowsAsync("user_id");
 
-            //Get Spedicified Channel Follows
+            //Get Specified Channel Follows
             var channelFollowers = await api.V5.Channels.GetChannelFollowersAsync("channel_id");
 
             //Return bool if channel is online/offline.
@@ -344,7 +344,7 @@ Module Module1
     End Function
 
     Private Async Function getchanfollows() As Task
-        'Get Spedicified Channel Follows
+        'Get Specified Channel Follows
         Dim channelFollowers = Await api.Channels.v5.GetChannelFollowersAsync("channel_id")
         Console.WriteLine(channelFollowers.Total.ToString)
     End Function
