@@ -134,7 +134,6 @@ namespace TestConsole
                 };
             WebSocketClient customClient = new WebSocketClient(clientOptions);
             client = new TwitchClient(customClient);
-            client = new TwitchClient();
             client.Initialize(credentials, "channel");
 
             client.OnLog += Client_OnLog;
