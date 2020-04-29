@@ -28,7 +28,6 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 * **TwitchLib.Client**:
     * Send formatted or raw messages to Twitch
     * Chat and Whisper command detection and parsing
-    * Supports Twitch Rooms
     * Helper methods
         * Timeout, ban, unban users
         * Change chat color and clear chat
