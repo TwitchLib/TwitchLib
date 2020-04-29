@@ -17,7 +17,7 @@ TwitchLib is a powerful C# library that allows for interaction with various Twit
 
 Talk directly with us on Discord. https://discord.gg/8NXaEyV
 
-* **[TwitchLib.Client](https://github.com/TwitchLib/TwitchLib.Client)**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Supports Twitch Rooms. Helper methods also exist for replying to whispers or fetching moderator lists.
+* **[TwitchLib.Client](https://github.com/TwitchLib/TwitchLib.Client)**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Helper methods also exist for replying to whispers or fetching moderator lists.
 * **[TwitchLib.Api](https://github.com/TwitchLib/TwitchLib.Api)**: Complete coverage of v5, and Helix endpoints. The API is now a singleton class. This class allows fetching all publicly accessible data as well as modify Twitch services like profiles and streams.
 * **[TwitchLib.PubSub](https://github.com/TwitchLib/TwitchLib.PubSub)**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
 * **[TwitchLib.Extension](https://github.com/TwitchLib/TwitchLib.Extension)**: EBS implementation for validating requests, interacting with extension via PubSub and calling Extension endpoints.
@@ -28,7 +28,6 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 * **TwitchLib.Client**:
     * Send formatted or raw messages to Twitch
     * Chat and Whisper command detection and parsing
-    * Supports Twitch Rooms
     * Helper methods
         * Timeout, ban, unban users
         * Change chat color and clear chat
