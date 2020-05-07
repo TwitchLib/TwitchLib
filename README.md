@@ -271,8 +271,10 @@ namespace Example
         private void Main()
         {
             api = new TwitchAPI();
+	    
+	    // Client ID and Secret can be found at https://dev.twitch.tv/
             api.Settings.ClientId = "client_id";
-            api.Settings.AccessToken = "access_token";
+            api.Settings.Secret = "secret"; 
         }
 
         private async Task ExampleCallsAsync()
@@ -315,8 +317,11 @@ Module Module1
 
     Sub Main()
         api = New TwitchAPI()
+	
+	// Client ID and Secret can be found at https://dev.twitch.tv/
         api.Settings.ClientId = "Client_id"
-        api.Settings.AccessToken = "access_token"
+        api.Settings.Secret = "secret"
+	
         streaming().Wait()
         getchanfollows().Wait()
         getusersubs().Wait()
