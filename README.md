@@ -381,41 +381,55 @@ For a complete list of TwitchAPI calls, click <a href="https://swiftyspiffy.com/
 ```csharp
 using System;
 using TwitchLib.PubSub;
+using TwitchLib.PubSub.Events;
 
-namespace Example
+namespace TwitchLibPubSubExample
 {
     class Program
     {
-        private TwitchPubSub pubsub;
-
-        //You will have to supply an entry to point to Start().
-
-        public void Start()
+        private TwitchPubSub client;
+        
+        static void Main(string[] args)
         {
-            pubsub = new TwitchPubSub();
-            pubsub.OnPubSubServiceConnected += Pubsub_OnPubSubServiceConnected;
-            pubsub.OnListenResponse += Pubsub_OnListenResponse;
-            pubsub.OnBitsReceived += Pubsub_OnBitsReceived;
+            Run();
+        }
+        
+        private void Run()
+        {
+            client = new TwitchPubSub();
 
-            pubsub.Connect();
+            client.OnPubSubServiceConnected += onPubSubServiceConnected;
+            client.OnListenResponse += onListenResponse;
+            client.OnStreamUp += onStreamUp;
+            client.OnStreamDown += onStreamDown;
+
+            client.ListenToVideoPlayback("channelUsername");
+            client.ListenToBitsEvents("channelTwitchID");
+            
+            client.Connect();
+        }
+        
+
+        private void onPubSubServiceConnected(object sender, EventArgs e)
+        {
+            // SendTopics accepts an oauth optionally, which is necessary for some topics
+            client.SendTopics();
+        }
+        
+        private void onListenResponse(object sender, OnListenResponseArgs e)
+        {
+            if (!e.Successful)
+                throw new Exception($"Failed to listen! Response: {e.Response}");
         }
 
-        private void Pubsub_OnPubSubServiceConnected(object sender, System.EventArgs e)
+        private void onStreamUp(object sender, OnStreamUpArgs e)
         {
-            pubsub.ListenToWhispers("Channel_Id");
+            Console.WriteLine($"Stream just went up! Play delay: {e.PlayDelay}, server time: {e.ServerTime}");
         }
 
-        private void Pubsub_OnBitsReceived(object sender, TwitchLib.PubSub.Events.OnBitsReceivedArgs e)
+        private void onStreamDown(object sender, OnStreamDownArgs e)
         {
-           Console.WriteLine($"Just received {e.BitsUsed} bits from {e.Username}. That brings their total to {e.TotalBitsUsed} bits!");
-        }
-
-        private void Pubsub_OnListenResponse(object sender, TwitchLib.PubSub.Events.OnListenResponseArgs e)
-        {
-            if (e.Successful)
-                Console.WriteLine($"Successfully verified listening to topic: {e.Topic}");
-            else
-                Console.WriteLine($"Failed to listen! Error: {e.Response.Error}");
+            Console.WriteLine($"Stream just went down! Server time: {e.ServerTime}");
         }
     }
 }
