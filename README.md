@@ -107,6 +107,8 @@ using TwitchLib.Client.Enums;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Extensions;
 using TwitchLib.Client.Models;
+using TwitchLib.Communication.Clients;
+using TwitchLib.Communication.Models;
 
 namespace TestConsole
 {
@@ -192,7 +194,6 @@ Imports TwitchLib.Client.Enums
 Imports TwitchLib.Client.Events
 Imports TwitchLib.Client.Extensions
 Imports TwitchLib.Client.Models
-
 
 Module Module1
 
