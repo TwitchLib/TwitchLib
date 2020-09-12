@@ -12,6 +12,8 @@
 
 </p>
 
+**PLEASE check the "Dev" build before doing a PR if master does not have a feature your looking for.**
+
 ## About
 TwitchLib is a powerful C# library that allows for interaction with various Twitch services. Currently supported services are: chat and whisper, API's (v5, helix, undocumented, and third party), PubSub event system, and Twitch Extensions. Below are the descriptions of the core components that make up TwitchLib.
 
