@@ -51,6 +51,7 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 	    * ChannelFeeds, Channels, Chat, Clips, Collections, Communities,
 	    * Follows
 	    * Games
+	    * HypeTrain
 	    * Ingests
 	    * Root
 	    * Search, Streams, Subscriptions
@@ -85,6 +86,7 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 	    * VideoPlayback
 	    * Whispers
 	    * Subscriptions
+	    * (Dev) Channel Points
 * **TwitchLib.Extension**:
 	* Developed to be used as part of an EBS (extension back-end service) for a Twitch Extension.
 	* Perform API calls related to Extensions (create secret, revoke, channels using extension, etc.)
