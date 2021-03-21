@@ -40,7 +40,7 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 	    * Connected and Joined channel
 	    * Channel and User state changed
 	    * Message received/sent
-	    * Whisper received/sent
+	    * Whisper received/sent (Sending requires a known/verified bot)
 	    * User joined/left
 	    * Moderator joined/left
 	    * New subscriptions and resubscriptions
