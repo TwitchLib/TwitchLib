@@ -412,6 +412,8 @@ namespace TwitchLibPubSubExample
             client.ListenToBitsEvents("channelTwitchID");
             
             client.Connect();
+	    
+	    Console.ReadLine(); // Quick fix to keep program from closing right away. ReadKey could also be used.
         }
         
 
