@@ -384,6 +384,7 @@ End Module
 For a complete list of TwitchAPI calls, click <a href="https://swiftyspiffy.com/TwitchLib/Api/index.html" target="_blank">here</a>
 #### Twitchlib.PubSub
 ```csharp
+#region Class1
 using TwitchLibPubSubExample;
 
 namespace TwitchLibPubSubExample
@@ -397,7 +398,9 @@ namespace TwitchLibPubSubExample
         }
     }
 }
+#endRegion
 
+#region Class2
 using System;
 using TwitchLib.PubSub;
 using TwitchLib.PubSub.Events;
@@ -446,6 +449,7 @@ namespace TwitchLibPubSubExample
         }
     }
 }
+#endregion
 ```
 For a complete list of TwitchPubSub functionality, click <a href="https://swiftyspiffy.com/TwitchLib/PubSub/index.html" target="_blank">here</a>
 
