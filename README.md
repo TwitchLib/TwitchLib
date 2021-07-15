@@ -384,22 +384,31 @@ End Module
 For a complete list of TwitchAPI calls, click <a href="https://swiftyspiffy.com/TwitchLib/Api/index.html" target="_blank">here</a>
 #### Twitchlib.PubSub
 ```csharp
+using TwitchLibPubSubExample;
+
+namespace TwitchLibPubSubExample
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var Twitch = new Twitch();
+            Twitch.Run();
+        }
+    }
+}
+
 using System;
 using TwitchLib.PubSub;
 using TwitchLib.PubSub.Events;
 
 namespace TwitchLibPubSubExample
 {
-    class Program
+    public class Twitch
     {
         private TwitchPubSub client;
-        
-        static void Main(string[] args)
-        {
-            Run();
-        }
-        
-        private void Run()
+
+        public void Run()
         {
             client = new TwitchPubSub();
 
@@ -410,17 +419,16 @@ namespace TwitchLibPubSubExample
 
             client.ListenToVideoPlayback("channelUsername");
             client.ListenToBitsEvents("channelTwitchID");
-            
+
             client.Connect();
         }
-        
 
         private void onPubSubServiceConnected(object sender, EventArgs e)
         {
             // SendTopics accepts an oauth optionally, which is necessary for some topics
             client.SendTopics();
         }
-        
+
         private void onListenResponse(object sender, OnListenResponseArgs e)
         {
             if (!e.Successful)
