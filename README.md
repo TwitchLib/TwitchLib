@@ -396,7 +396,7 @@ namespace TwitchLibPubSubExample
         
         static void Main(string[] args)
         {
-            Run();
+            new Program().Run();
         }
         
         private void Run()
