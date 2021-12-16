@@ -1,5 +1,5 @@
 <p align="center"> 
-<img src="http://swiftyspiffy.com/img/twitchlib.png" style="max-height: 300px;">
+<img src="https://cdn.syzuna-programs.de/images/twitchlib.png" style="max-height: 300px;">
 </p>
 
 <p align="center">
