@@ -257,7 +257,7 @@ End Module
 
 For a complete list of TwitchClient events and calls, click <a href="https://swiftyspiffy.com/TwitchLib/Client/index.html" target="_blank">here</a>
 #### Twitchlib.API - CSharp
-Note: TwitchAPI is now a singleton class that needs to be instantiated with optional clientid and auth token. Please know that failure to provide at least a client id, and sometimes an access token will result in exceptions. The v3 subclass operates almost entirely on Twitch usernames. v5 and Helix operate almost entirely on Twitch user id's. There are methods in all Twitch api versions to get corresponding usernames/userids.
+Note: TwitchAPI is now a singleton class that needs to be instantiated with optional clientid and auth token. Please know that failure to provide at least a client id, and sometimes an access token will result in exceptions. v5(Deprecated) and Helix operate almost entirely on Twitch user id's. There are methods in all Twitch api versions to get corresponding usernames/userids.
 
 ```csharp
 using System.Collections.Generic;
@@ -282,23 +282,22 @@ namespace Example
 
         private async Task ExampleCallsAsync()
         {
-            //Checks subscription for a specific user and the channel specified.
-            Subscription subscription = await api.V5.Channels.CheckChannelSubscriptionByUserAsync("channel_id", "user_id");
-
             //Gets a list of all the subscritions of the specified channel.
-            List<Subscription> allSubscriptions = await api.V5.Channels.GetAllSubscribersAsync("channel_id");
+	    var allSubscriptions = await api.Helix.Subscriptions.GetBroadcasterSubscriptionsAsync("broadcasterID",null ,100 ,"accesstoken")
 
             //Get channels a specified user follows.
-            GetUsersFollowsResponse userFollows = await api.Helix.Users.GetUsersFollowsAsync("user_id");
+            var userFollows = await api.Helix.Users.GetUsersFollowsAsync("user_id");
 
             //Get Specified Channel Follows
-            var channelFollowers = await api.V5.Channels.GetChannelFollowersAsync("channel_id");
+            var channelFollowers = await api.Helix.Users.GetUsersFollowsAsync(fromId: "channel_id");
 
-            //Return bool if channel is online/offline.
-            bool isStreaming = await api.V5.Streams.BroadcasterOnlineAsync("channel_id");
+            //Returns a stream object if online, if channel is offline it will be null/empty.
+            var streams = await api.Helix.Streams.GetStreamsAsync(userIds: userIdsList); // Alternative: userLogins: userLoginsList
 
             //Update Channel Title/Game
-            await api.V5.Channels.UpdateChannelAsync("channel_id", "New stream title", "Stronghold Crusader");
+	    var request = new ModifyChannelInformationRequest(){GameId = "New_Game_Id", Title = "New stream title", BroadcasterLanguage = "New_Language", Delay = New_Delay} 
+	    // Only require 1 option here.
+            await api.Helix.Channels.ModifyChannelInformationAsync("broadcaster_Id", request, "AccessToken");
         }
     }
 }
