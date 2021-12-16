@@ -294,9 +294,8 @@ namespace Example
             //Returns a stream object if online, if channel is offline it will be null/empty.
             var streams = await api.Helix.Streams.GetStreamsAsync(userIds: userIdsList); // Alternative: userLogins: userLoginsList
 
-            //Update Channel Title/Game
-	    var request = new ModifyChannelInformationRequest(){GameId = "New_Game_Id", Title = "New stream title", BroadcasterLanguage = "New_Language", Delay = New_Delay} 
-	    // Only require 1 option here.
+            //Update Channel Title/Game/Language/Delay - Only require 1 option here.
+	    var request = new ModifyChannelInformationRequest(){GameId = "New_Game_Id", Title = "New stream title", BroadcasterLanguage = "New_Language", Delay = New_Delay};
             await api.Helix.Channels.ModifyChannelInformationAsync("broadcaster_Id", request, "AccessToken");
         }
     }
