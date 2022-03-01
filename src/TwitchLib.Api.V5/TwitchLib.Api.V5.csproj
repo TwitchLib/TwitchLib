@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>TwitchLib.Api.V5</PackageId>
+    <VersionPrefix>3.3.0</VersionPrefix>
+    <VersionSuffix>$(VersionSuffix)</VersionSuffix>
+    <Description>Project containing the V5 section of TwitchLib.Api</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>swiftyspiffy, Prom3theu5, Syzuna, LuckyNoS7evin</Authors>
+    <Company></Company>
+    <PackageIcon>twitchlib.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright 2021</Copyright>
+    <PackageReleaseNotes>Incremental changes.</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>twitch library irc chat c# csharp api events pubsub net standard 2.0</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyVersion>3.3.0</AssemblyVersion>
+    <FileVersion>3.3.0</FileVersion>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TwitchLib.Api.Core\TwitchLib.Api.Core.csproj" />
+    <ProjectReference Include="..\TwitchLib.Api.V5.Models\TwitchLib.Api.V5.Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="twitchlib.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

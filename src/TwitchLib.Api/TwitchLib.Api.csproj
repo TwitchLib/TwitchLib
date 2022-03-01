@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+	<TargetFramework>net6.0</TargetFramework>
+    <PackageId>TwitchLib.Api</PackageId>
+    <VersionPrefix>4.0.0</VersionPrefix>
+    <VersionSuffix>$(VersionSuffix)</VersionSuffix>
+    <Description>Api component of TwitchLib. This component allows you to access the Twitch API, as well as undocumented and third party APIs.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>swiftyspiffy, Prom3theu5, Syzuna, LuckyNoS7evin</Authors>
+    <Company></Company>
+    <PackageIcon>twitchlib.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/TwitchLib/TwitchLib.Api</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright 2021</Copyright>
+    <PackageReleaseNotes>Added Subpoints to GetBroadcasterSubscriptions, Added Creator Goals, fixed GetCustomRewardRedemptions, fixed Url double encoding, removed Websub and more</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/swiftyspiffy/TwitchLib</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+	<PackageTags>twitch library irc chat c# csharp api events pubsub eventsub net 6 net6.0</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyVersion>4.0.0</AssemblyVersion>
+    <FileVersion>4.0.0</FileVersion>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="twitchlib.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

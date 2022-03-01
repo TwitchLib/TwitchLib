@@ -1,0 +1,19 @@
+﻿@msg-id=host_on :tmi.twitch.tv NOTICE #burkeblack :Now hosting DjTechlive.
+
+:blubott.tmi.twitch.tv 366 blubott #monstercat :End of /NAMES list
+
+:jtv!jtv@jtv.tmi.twitch.tv PRIVMSG (HOSTED):(HOSTER) is now hosting you for (VIEWERS_TOTAL) viewers.
+:jtv!jtv@jtv.tmi.twitch.tv PRIVMSG swiftyspiffy :BurkeBlack is now hosting you.
+:jtv!jtv@jtv.tmi.twitch.tv PRIVMSG annemunition :WhateverChannelNameHere is auto hosting you for up to 100 viewers.
+
+@badges=;color=#FF0000;display-name=Heinki;emotes=;id=4fb7ab2d-aa2c-4886-a286-46e20443f3d6;login=heinki;mod=0;msg-id=raid;msg-param-displayName=Heinki;msg-param-login=heinki;msg-param-viewerCount=4;room-id=27229958;subscriber=0;system-msg=4\sraiders\sfrom\sHeinki\shave\sjoined\n!;tmi-sent-ts=1510249711023;turbo=0;user-id=44110799;user-type= :tmi.twitch.tv USERNOTICE #pandablack
+
+@badges=;color=;display-name=gekkebelg1803;emotes=;id=ad77ae72-83fd-4b46-947b-27b6aae5db41;login=gekkebelg1803;mod=0;msg-id=subgift;msg-param-months=1;msg-param-recipient-display-name=Chewwy94;msg-param-recipient-id=44452165;msg-param-recipient-user-name=chewwy94;msg-param-sub-plan-name=Channel\sSubscription\s(LIRIK);msg-param-sub-plan=1000;room-id=23161357;subscriber=0;system-msg=gekkebelg1803\sgifted\sa\s$4.99\ssub\sto\sChewwy94!;tmi-sent-ts=1510781070702;turbo=0;user-id=127964463;user-type= :tmi.twitch.tv USERNOTICE #lirik
+
+@msg-id=raid_error_self :tmi.twitch.tv NOTICE #swiftyspiffy :A channel cannot raid itself.
+
+@msg-id=no_permission :tmi.twitch.tv NOTICE #swiftyspiffy :You don't have permission to perform that action.
+
+@msg-id=raid_notice_mature :tmi.twitch.tv NOTICE #swiftyspiffy :This channel is intended for mature audiences.
+
+@badges=subscriber/0;color=#0000FF;display-name=KittyJinxu;emotes=30259:0-6;id=1154b7c0-8923-464e-a66b-3ef55b1d4e50;login=kittyjinxu;mod=0;msg-id=ritual;msg-param-ritual-name=new_chatter;room-id=35740817;subscriber=1;system-msg=@KittyJinxu\sis\snew\shere.\sSay\shello!;tmi-sent-ts=1514387871555;turbo=0;user-id=187446639;user-type=USERNOTICE #thorlar kittyjinxu > #thorlar: HeyGuys
