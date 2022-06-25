@@ -103,7 +103,7 @@ For complete library documentation, view the doxygen docs <a href="http://swifty
 Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples. 
 *NOTE: Twitchlib.API currently does not support Visual Basic. UPDATE: PR'd Visual Basic fix but requires testing by someone that uses it.*
 
-#### Twitchlib.Client - CSharp
+#### Twitchlib.Client - CSharp (NET 6 Reference Material)
 ```csharp
 using System;
 using TwitchLib.Client;
@@ -120,26 +120,26 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            Bot bot = new Bot();
+            _ = new Bot();
             Console.ReadLine();
         }
     }
 
     class Bot
     {
-        TwitchClient client;
-	
+        readonly TwitchClient client;
+
         public Bot()
         {
-            ConnectionCredentials credentials = new ConnectionCredentials("twitch_username", "access_token");
-	    var clientOptions = new ClientOptions
-                {
-                    MessagesAllowedInPeriod = 750,
-                    ThrottlingPeriod = TimeSpan.FromSeconds(30)
-                };
-            WebSocketClient customClient = new WebSocketClient(clientOptions);
+            ConnectionCredentials credentials = new("mah__bot", "11qk2zmdi5trdhlh79yd7kjdi5d1fy");
+            var clientOptions = new ClientOptions
+            {
+                MessagesAllowedInPeriod = 750,
+                ThrottlingPeriod = TimeSpan.FromSeconds(30)
+            };
+            WebSocketClient customClient = new(clientOptions);
             client = new TwitchClient(customClient);
-            client.Initialize(credentials, "channel");
+            client.Initialize(credentials, "mah__bot");
 
             client.OnLog += Client_OnLog;
             client.OnJoinedChannel += Client_OnJoinedChannel;
@@ -150,36 +150,39 @@ namespace TestConsole
 
             client.Connect();
         }
-  
-        private void Client_OnLog(object sender, OnLogArgs e)
+
+        private void Client_OnLog(object? sender, OnLogArgs e)
         {
-            Console.WriteLine($"{e.DateTime.ToString()}: {e.BotUsername} - {e.Data}");
+            Console.WriteLine($"{e.DateTime}: {e.BotUsername} - {e.Data}");
         }
-  
-        private void Client_OnConnected(object sender, OnConnectedArgs e)
+
+        private void Client_OnConnected(object? sender, OnConnectedArgs e)
         {
             Console.WriteLine($"Connected to {e.AutoJoinChannel}");
+            Console.WriteLine($"test");
+            Console.WriteLine($"test 1");
+            Console.WriteLine($"test 2");
         }
-  
-        private void Client_OnJoinedChannel(object sender, OnJoinedChannelArgs e)
+
+        private void Client_OnJoinedChannel(object? sender, OnJoinedChannelArgs e)
         {
             Console.WriteLine("Hey guys! I am a bot connected via TwitchLib!");
             client.SendMessage(e.Channel, "Hey guys! I am a bot connected via TwitchLib!");
         }
 
-        private void Client_OnMessageReceived(object sender, OnMessageReceivedArgs e)
+        private void Client_OnMessageReceived(object? sender, OnMessageReceivedArgs e)
         {
             if (e.ChatMessage.Message.Contains("badword"))
                 client.TimeoutUser(e.ChatMessage.Channel, e.ChatMessage.Username, TimeSpan.FromMinutes(30), "Bad word! 30 minute timeout!");
         }
-        
-        private void Client_OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
+
+        private void Client_OnWhisperReceived(object? sender, OnWhisperReceivedArgs e)
         {
             if (e.WhisperMessage.Username == "my_friend")
                 client.SendWhisper(e.WhisperMessage.Username, "Hey! Whispers are so cool!!");
         }
-        
-        private void Client_OnNewSubscriber(object sender, OnNewSubscriberArgs e)
+
+        private void Client_OnNewSubscriber(object? sender, OnNewSubscriberArgs e)
         {
             if (e.Subscriber.SubscriptionPlan == SubscriptionPlan.Prime)
                 client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points! So kind of you to use your Twitch Prime on this channel!");
