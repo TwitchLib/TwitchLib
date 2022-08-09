@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>TwitchLib</id>
-    <version>3.4.0</version>
+    <version>3.4.1</version>
     <authors>swiftyspiffy,Prom3theu5,Syzuna,LuckyNoS7evin</authors>
     <owners>swiftyspiffy,TwitchLib</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -14,7 +14,7 @@
     <copyright>Copyright 2021</copyright>
     <tags>twitch library irc chat c# csharp api events pubsub net standard 2.0</tags>
     <dependencies>
-      <dependency id="TwitchLib.Api" version="3.6.0" />
+      <dependency id="TwitchLib.Api" version="3.6.1" />
       <dependency id="TwitchLib.Client" version="3.2.6" />
       <dependency id="TwitchLib.Pubsub" version="3.2.5" />
     </dependencies>
