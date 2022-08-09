@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>TwitchLib</id>
+    <version>3.4.0</version>
+    <authors>swiftyspiffy,Prom3theu5,Syzuna,LuckyNoS7evin</authors>
+    <owners>swiftyspiffy,TwitchLib</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <iconUrl>https://cdn.syzuna-programs.de/images/twitchlib.png</iconUrl>
+    <projectUrl>https://github.com/TwitchLib/TwitchLib</projectUrl>
+    <description>Twitch C# library for accessing Twitch chat and whispers with events, Twitch API with both authenticated and unauthenticated calls, and PubSub with events.</description>
+    <releaseNotes>See changelog of included packages for release notes</releaseNotes>
+    <copyright>Copyright 2021</copyright>
+    <tags>twitch library irc chat c# csharp api events pubsub net standard 2.0</tags>
+    <dependencies>
+      <dependency id="TwitchLib.Api" version="3.6.0" />
+      <dependency id="TwitchLib.Client" version="3.2.6" />
+      <dependency id="TwitchLib.Pubsub" version="3.2.5" />
+    </dependencies>
+  </metadata>
+</package>
