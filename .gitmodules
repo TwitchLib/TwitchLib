@@ -10,3 +10,6 @@
 [submodule "TwitchLib.WebSocket"]
 	path = TwitchLib.WebSocket
 	url = https://github.com/TwitchLib/TwitchLib.WebSocket
+[submodule "TwitchLib.EventSub.Websockets"]
+	path = TwitchLib.EventSub.Websockets
+	url = https://github.com/TwitchLib/TwitchLib.EventSub.Websockets.git
