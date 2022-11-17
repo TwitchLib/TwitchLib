@@ -97,7 +97,7 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 
 ## Documentation
 #### Doxygen
-For complete library documentation, view the doxygen docs <a href="http://swiftyspiffy.com/TwitchLib/index.html" target="_blank">here</a>.
+For complete library documentation, view the doxygen docs <a href="https://twitchlib.github.io/" target="_blank">here</a>.
 	
 ## Implementing
 Below are basic examples of how to utilize each of the core components of TwitchLib. These are C# examples. 
