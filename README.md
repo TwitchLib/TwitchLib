@@ -59,9 +59,8 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 	    * Search, Streams, Subscriptions
 	    * Teams
 	    * ThirdParty
-	        * Username Changes courtesy of CommanderRoot's [twitch-tools.rootonline.de/](twitch-tools.rootonline.de/)
-	        * Moderator Lookup courtesy of 3v's [https://twitchstuff.3v.fi](https://twitchstuff.3v.fi)
-	        * Twitch Authenticaiton Flow courtesy of swiftyspiffy's [https://twitchtokengenerator.com/](https://twitchtokengenerator.com/)
+	        * Moderator Lookup courtesy of 3v's [https://t.3v.fi](https://t.3v.fi)
+	        * Twitch Authentication Flow courtesy of swiftyspiffy's [https://twitchtokengenerator.com/](https://twitchtokengenerator.com/)
 	    * Undocumented
 	        * ClipChat
 	        * TwitchPrimeOffers
@@ -255,7 +254,7 @@ End Module
 ```
 
 
-For a complete list of TwitchClient events and calls, click <a href="https://swiftyspiffy.com/TwitchLib/Client/index.html" target="_blank">here</a>
+For a complete list of TwitchClient events and calls, click <a href="https://twitchlib.github.io/class_twitch_lib_1_1_client_1_1_twitch_client.html" target="_blank">here</a>
 #### Twitchlib.API - CSharp
 Note: TwitchAPI is now a singleton class that needs to be instantiated with optional clientid and auth token. Please know that failure to provide at least a client id, and sometimes an access token will result in exceptions. v5(Deprecated) and Helix operate almost entirely on Twitch user id's. There are methods in all Twitch api versions to get corresponding usernames/userids.
 
@@ -379,7 +378,7 @@ Module Module1
 
 End Module
 ```
-For a complete list of TwitchAPI calls, click <a href="https://swiftyspiffy.com/TwitchLib/Api/index.html" target="_blank">here</a>
+For a complete list of TwitchAPI calls, click <a href="https://twitchlib.github.io/class_twitch_lib_1_1_api_1_1_twitch_a_p_i.html" target="_blank">here</a>
 #### Twitchlib.PubSub
 ```csharp
 using System;
@@ -439,7 +438,7 @@ namespace TwitchLibPubSubExample
     }
 }
 ```
-For a complete list of TwitchPubSub functionality, click <a href="https://swiftyspiffy.com/TwitchLib/PubSub/index.html" target="_blank">here</a>
+For a complete list of TwitchPubSub functionality, click <a href="https://twitchlib.github.io/class_twitch_lib_1_1_pub_sub_1_1_twitch_pub_sub.html" target="_blank">here</a>
 
 #### TwitchLib.Extension
 See the Extension README <a href="https://github.com/TwitchLib/TwitchLib.Extension" target="_blank">here</a>.
