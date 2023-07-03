@@ -500,11 +500,11 @@ You are also more than welcome to clone/fork this repo and build the library you
  * LuckyNoS7evin ([luckynos7evin](https://twitch.tv/luckynos7evin))
  * Peter Richter ([DumpsterDoofus](DumpsterDoofus))
  * Mahsaap ([Mahsaap](https://twitter.com/mahsabludra))
- * neon-sunset ([neon-sunset](https://github.com/neon-sunset)
- * AoshiW ([AoshiW](https://github.com/AoshiW)
- * JulanDeAlb ([JulanDeAlb](https://github.com/JulanDeAlb)
- * GimliCZ ([GimliCZ](https://github.com/GimliCZ)
- * Bukk94 ([Bukk94](https://github.com/Bukk94)
+ * neon-sunset ([neon-sunset](https://github.com/neon-sunset))
+ * AoshiW ([AoshiW](https://github.com/AoshiW))
+ * JulanDeAlb ([JulanDeAlb](https://github.com/JulanDeAlb))
+ * GimliCZ ([GimliCZ](https://github.com/GimliCZ))
+ * Bukk94 ([Bukk94](https://github.com/Bukk94))
 
 ## Credits and Other Project Licenses
  * TwitchChatSharp - https://github.com/3ventic/TwitchChatSharp
