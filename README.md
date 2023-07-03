@@ -482,9 +482,9 @@ You are also more than welcome to clone/fork this repo and build the library you
 * WebSocketSharp-NonPreRelease ([nuget link](https://www.nuget.org/packages/WebSocketSharp-NonPreRelease/)) ([GitHub](https://github.com/sta/websocket-sharp))
 
 ## Contributors
- * Cole ([@swiftyspiffy](http://twitter.com/swiftyspiffy))
- * SkyHuk ([@SkyHukTV](http://twitter.com/SkyHukTV))
- * Nadermane ([@Nadermane](http://twitter.com/nadermane))
+ * Cole ([swiftyspiffy](http://twitter.com/swiftyspiffy))
+ * SkyHuk ([SkyHukTV](http://twitter.com/SkyHukTV))
+ * Nadermane ([Nadermane](http://twitter.com/nadermane))
  * BenWoodford ([BenWoodford](https://github.com/BenWoodford))
  * igor523 ([igor523](https://github.com/igor523))
  * jxlarrea ([jxlarrea](https://github.com/jxlarrea))
@@ -493,13 +493,18 @@ You are also more than welcome to clone/fork this repo and build the library you
  * toffaste1337([toffaste1337](https://github.com/toffaste1337))
  * Mr_Examed ([Mr_Examed](https://www.twitch.tv/mr_examed))
  * XuluniX ([XuluniX](https://github.com/XuluniX))
- * prom3theu5 ([@prom3theu5](https://twitter.com/prom3theu5))
+ * prom3theu5 ([prom3theu5](https://twitter.com/prom3theu5))
  * Ethan Lu ([elu00](https://github.com/elu00))
  * BeerHawk ([BeerHawk](https://github.com/BeerHawk))
  * Syzuna ([Syzuna](https://github.com/Syzuna))
  * LuckyNoS7evin ([luckynos7evin](https://twitch.tv/luckynos7evin))
  * Peter Richter ([DumpsterDoofus](DumpsterDoofus))
- * Mahsaap (@[Mahsaap](https://twitter.com/mahsabludra))
+ * Mahsaap ([Mahsaap](https://twitter.com/mahsabludra))
+ * neon-sunset ([neon-sunset](https://github.com/neon-sunset)
+ * AoshiW ([AoshiW](https://github.com/AoshiW)
+ * JulanDeAlb ([JulanDeAlb](https://github.com/JulanDeAlb)
+ * GimliCZ ([GimliCZ](https://github.com/GimliCZ)
+ * Bukk94 ([Bukk94](https://github.com/Bukk94)
 
 ## Credits and Other Project Licenses
  * TwitchChatSharp - https://github.com/3ventic/TwitchChatSharp
