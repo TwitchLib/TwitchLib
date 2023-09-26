@@ -49,7 +49,7 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 * **TwitchLib.API**:
 	* Supported Twitch API endpoints:**v5(deprecated)**, **Helix**
 	* Supported API sections:
-	    * Helix API   (**[See Helix API Readme for Examples](https://github.com/TwitchLib/TwitchLib.Api/tree/master/TwitchLib.Api.Helix/README.MD)**)
+	    * Helix API   (**[See Helix API Readme for Examples](https://github.com/TwitchLib/TwitchLib.Api/blob/master/TwitchLib.Api.Helix/README.MD)**)
 			* Ads
 			* Analytics
 			* Bits
