@@ -4,6 +4,9 @@
 [submodule "TwitchLib.Client"]
 	path = TwitchLib.Client
 	url = https://github.com/TwitchLib/TwitchLib.Client
+[submodule "TwitchLib.Communication"]
+	path = TwitchLib.Communication
+	url = https://github.com/TwitchLib/TwitchLib.Communication
 [submodule "TwitchLib.Api"]
 	path = TwitchLib.Api
 	url = https://github.com/TwitchLib/TwitchLib.Api
