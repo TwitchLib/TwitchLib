@@ -130,6 +130,7 @@ namespace TestConsole
 	
         public Bot()
         {
+            // Make sure your OAuth token has the chat:read and chat:edit scopes.
             ConnectionCredentials credentials = new ConnectionCredentials("twitch_username", "access_token");
 	    var clientOptions = new ClientOptions
                 {
