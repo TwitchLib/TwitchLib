@@ -15,17 +15,16 @@
 **PLEASE check the "Dev" build before doing a PR if master does not have a feature your looking for.**
 
 ## About
-TwitchLib is a powerful C# library that allows for interaction with various Twitch services. Currently supported services are: chat and whisper, API's (v5(deprecated), helix, undocumented, and third party), PubSub event system, and Twitch Extensions. Below are the descriptions of the core components that make up TwitchLib.
+TwitchLib is a powerful C# library that allows for interaction with various Twitch services. Currently supported services are: chat and whisper, API's (v5(deprecated), helix, undocumented, and third party), EventSub, and Twitch Extensions. Below are the descriptions of the core components that make up TwitchLib.
 
 Talk directly with us on Discord. https://discord.gg/8NXaEyV
 
 * **[TwitchLib.Client](https://github.com/TwitchLib/TwitchLib.Client)**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Helper methods also exist for replying to whispers or fetching moderator lists.
 * **[TwitchLib.Api](https://github.com/TwitchLib/TwitchLib.Api)**: Complete coverage of v5(deprecated), and Helix endpoints. The API is now a singleton class. This class allows fetching all publicly accessible data as well as modify Twitch services like profiles and streams.
-* **[TwitchLib.PubSub](https://github.com/TwitchLib/TwitchLib.PubSub)**: Supports all documented Twitch PubSub topics as well as a few undocumented ones.
 * **[TwitchLib.Extension](https://github.com/TwitchLib/TwitchLib.Extension)**: EBS implementation for validating requests, interacting with extension via PubSub and calling Extension endpoints.
 * **[TwitchLib.Unity](https://github.com/TwitchLib/TwitchLib.Unity)**: Unity wrapper system for TwitchLib to allow easy usage of TwitchLib in Unity projects!
-* **[TwitchLib.Webhook](https://github.com/TwitchLib/TwitchLib.Webhook)**: Implements ASP.NET Core Webhook Receiver with TwitchLib. [Requires DotNet Core 2.1+]
-
+* **[TwitchLib.EventSub.Webhooks](https://github.com/TwitchLib/TwitchLib.EventSub.Webhooks)**: EventSub implementation via webhooks for ASP.NET Core.
+* **[TwitchLib.EventSub.Websockets](https://github.com/TwitchLib/TwitchLib.EventSub.Websockets)**: EventSub implementation via websocket.
 ## Features
 * **TwitchLib.Client**:
     * Send formatted or raw messages to Twitch
@@ -80,14 +79,6 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 		* **FollowerService**: Service for detection of new followers in somewhat real time.
 		* **LiveStreamMonitor**: Service for detecting when a channel goes online/offline in somewhat real time.
 		* **MessageThrottler**: Service to throttle chat messages to abide by Twitch use requirements.
-* **TwitchLib.PubSub**:
-	* Supported topics:
-	    * ChatModeratorActions
-	    * BitsEvents
-	    * VideoPlayback
-	    * Whispers
-	    * Subscriptions
-	    * (Dev) Channel Points
 * **TwitchLib.Extension**:
 	* Developed to be used as part of an EBS (extension back-end service) for a Twitch Extension.
 	* Perform API calls related to Extensions (create secret, revoke, channels using extension, etc.)
@@ -379,66 +370,6 @@ Module Module1
 End Module
 ```
 For a complete list of TwitchAPI calls, click <a href="https://twitchlib.github.io/class_twitch_lib_1_1_api_1_1_twitch_a_p_i.html" target="_blank">here</a>
-#### Twitchlib.PubSub
-```csharp
-using System;
-using TwitchLib.PubSub;
-using TwitchLib.PubSub.Events;
-
-namespace TwitchLibPubSubExample
-{
-    class Program
-    {
-        private TwitchPubSub client;
-        
-        static void Main(string[] args)
-        {
-            new Program().Run();
-        }
-        
-        private void Run()
-        {
-            client = new TwitchPubSub();
-
-            client.OnPubSubServiceConnected += onPubSubServiceConnected;
-            client.OnListenResponse += onListenResponse;
-            client.OnStreamUp += onStreamUp;
-            client.OnStreamDown += onStreamDown;
-
-            client.ListenToVideoPlayback("channelUsername");
-            client.ListenToBitsEvents("channelTwitchID");
-            
-            client.Connect();
-	    
-	    Console.ReadLine(); // Quick fix to keep program from closing right away. ReadKey could also be used.
-        }
-        
-
-        private void onPubSubServiceConnected(object sender, EventArgs e)
-        {
-            // SendTopics accepts an oauth optionally, which is necessary for some topics
-            client.SendTopics();
-        }
-        
-        private void onListenResponse(object sender, OnListenResponseArgs e)
-        {
-            if (!e.Successful)
-                throw new Exception($"Failed to listen! Response: {e.Response}");
-        }
-
-        private void onStreamUp(object sender, OnStreamUpArgs e)
-        {
-            Console.WriteLine($"Stream just went up! Play delay: {e.PlayDelay}, server time: {e.ServerTime}");
-        }
-
-        private void onStreamDown(object sender, OnStreamDownArgs e)
-        {
-            Console.WriteLine($"Stream just went down! Server time: {e.ServerTime}");
-        }
-    }
-}
-```
-For a complete list of TwitchPubSub functionality, click <a href="https://twitchlib.github.io/class_twitch_lib_1_1_pub_sub_1_1_twitch_pub_sub.html" target="_blank">here</a>
 
 #### TwitchLib.Extension
 See the Extension README <a href="https://github.com/TwitchLib/TwitchLib.Extension" target="_blank">here</a>.
