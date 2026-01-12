@@ -5,10 +5,6 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Api", "TwitchLib.Api\TwitchLib.Api\TwitchLib.Api.csproj", "{381039A8-3521-4E7B-8C8D-42E30E7530D9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.Client", "TwitchLib.Client\TwitchLib.Client\TwitchLib.Client.csproj", "{91A779AA-FCD9-4408-90C3-4A451C77CC37}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitchLib.PubSub", "TwitchLib.PubSub\TwitchLib.PubSub\TwitchLib.PubSub.csproj", "{69BB3ED3-E927-4196-A2BC-168317B5094C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,14 +15,6 @@ Global
 		{381039A8-3521-4E7B-8C8D-42E30E7530D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{381039A8-3521-4E7B-8C8D-42E30E7530D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{381039A8-3521-4E7B-8C8D-42E30E7530D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{91A779AA-FCD9-4408-90C3-4A451C77CC37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91A779AA-FCD9-4408-90C3-4A451C77CC37}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91A779AA-FCD9-4408-90C3-4A451C77CC37}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91A779AA-FCD9-4408-90C3-4A451C77CC37}.Release|Any CPU.Build.0 = Release|Any CPU
-		{69BB3ED3-E927-4196-A2BC-168317B5094C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69BB3ED3-E927-4196-A2BC-168317B5094C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69BB3ED3-E927-4196-A2BC-168317B5094C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69BB3ED3-E927-4196-A2BC-168317B5094C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D9600F9E-C773-4657-92D4-0E7883D45667}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D9600F9E-C773-4657-92D4-0E7883D45667}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9600F9E-C773-4657-92D4-0E7883D45667}.Release|Any CPU.ActiveCfg = Release|Any CPU
