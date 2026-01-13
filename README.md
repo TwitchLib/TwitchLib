@@ -1,5 +1,5 @@
 <p align="center"> 
-<img src="https://cdn.syzuna-programs.de/images/twitchlib.png" style="max-height: 300px;">
+<img src="https://raw.githubusercontent.com/TwitchLib/TwitchLib/refs/heads/master/twitchlib.png" style="max-height: 300px;">
 </p>
 
 <p align="center">
@@ -21,7 +21,6 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 
 * **[TwitchLib.Client](https://github.com/TwitchLib/TwitchLib.Client)**: Handles chat and whisper Twitch services. Complete with a suite of events that fire for virtually every piece of data received from Twitch. Helper methods also exist for replying to whispers or fetching moderator lists.
 * **[TwitchLib.Api](https://github.com/TwitchLib/TwitchLib.Api)**: Complete coverage of v5(deprecated), and Helix endpoints. The API is now a singleton class. This class allows fetching all publicly accessible data as well as modify Twitch services like profiles and streams.
-* **[TwitchLib.Extension](https://github.com/TwitchLib/TwitchLib.Extension)**: EBS implementation for validating requests, interacting with extension via PubSub and calling Extension endpoints.
 * **[TwitchLib.Unity](https://github.com/TwitchLib/TwitchLib.Unity)**: Unity wrapper system for TwitchLib to allow easy usage of TwitchLib in Unity projects!
 * **[TwitchLib.EventSub.Webhooks](https://github.com/TwitchLib/TwitchLib.EventSub.Webhooks)**: EventSub implementation via webhooks for ASP.NET Core.
 * **[TwitchLib.EventSub.Websockets](https://github.com/TwitchLib/TwitchLib.EventSub.Websockets)**: EventSub implementation via websocket.
@@ -73,11 +72,6 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 		* **FollowerService**: Service for detection of new followers in somewhat real time.
 		* **LiveStreamMonitor**: Service for detecting when a channel goes online/offline in somewhat real time.
 		* **MessageThrottler**: Service to throttle chat messages to abide by Twitch use requirements.
-* **TwitchLib.Extension**:
-	* Developed to be used as part of an EBS (extension back-end service) for a Twitch Extension.
-	* Perform API calls related to Extensions (create secret, revoke, channels using extension, etc.)
-	* Validation of requests to EBS using extension secret and JWT.
-	* Interact with extension via PubSub.
 
 ## Documentation
 #### Doxygen
@@ -215,9 +209,6 @@ Module Module1
 End Module
 ```
 For a complete list of TwitchAPI calls, click <a href="https://twitchlib.github.io/class_twitch_lib_1_1_api_1_1_twitch_a_p_i.html" target="_blank">here</a>
-
-#### TwitchLib.Extension
-See the Extension README <a href="https://github.com/TwitchLib/TwitchLib.Extension" target="_blank">here</a>.
 
 ## Examples, Applications, Community Work, and Projects
 
