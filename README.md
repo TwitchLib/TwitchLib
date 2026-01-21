@@ -38,18 +38,39 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 	    * New subscriptions and resubscriptions
 	    * Hosting and raid detection
 	    * Chat clear, user timeouts, user bans
-* **TwitchLib.APi**:
+* **TwitchLib.API**:
 	* Supported Twitch API endpoints:**v5(deprecated)**, **Helix**
 	* Supported API sections:
-	    * Badges, Bits, Blocks
-	    * ChannelFeeds, Channels, Chat, Clips, Collections, Communities,
-	    * Follows
-	    * Games
-	    * HypeTrain
-	    * Ingests
-	    * Root
-	    * Search, Streams, Subscriptions
-	    * Teams
+	    * Helix API   (**[See Helix API Readme for Examples](https://github.com/TwitchLib/TwitchLib.Api/blob/master/TwitchLib.Api.Helix/README.MD)**)
+			* Ads
+			* Analytics
+			* Bits
+			* ChannelPoints
+			* Channels
+			* Charity
+			* Chat
+			* Clips
+			* Entitlements
+			* EventSub
+			* Extensions
+			* Games
+			* Goals
+			* Helix
+			* HypeTrain
+			* Moderation
+			* Polls
+			* Predictions
+			* Raids
+			* Schedule
+			* Search
+			* Soundtrack
+			* Streams
+			* Subscriptions
+			* Tags
+			* Teams
+			* Users
+			* Videos
+			* Whispers
 	    * ThirdParty
 	        * Moderator Lookup courtesy of 3v's [https://t.3v.fi](https://t.3v.fi)
 	        * Twitch Authentication Flow courtesy of swiftyspiffy's [https://twitchtokengenerator.com/](https://twitchtokengenerator.com/)
@@ -66,8 +87,6 @@ Talk directly with us on Discord. https://discord.gg/8NXaEyV
 	        * RecentChannelEvents
 	        * ChatUser
 	        * UsernameAvailable
-	    * User
-	    * Videos
 	* Services
 		* **FollowerService**: Service for detection of new followers in somewhat real time.
 		* **LiveStreamMonitor**: Service for detecting when a channel goes online/offline in somewhat real time.
